@@ -1,7 +1,7 @@
 == What ==
 KitchenSync is a utility for periodic synchronization of data in UIQ3 with internet servers. It makes use of the existing SyncML support in the system, and adds timing capabilities.
 
-The code is stable but primitive.
+The code tagged as "alpha1" in subversion is stable and works well. I run it constantly on my Sony Ericsson P1i.
 
 == Why == 
 
