@@ -1,3 +1,5 @@
+_because UIQ provides everything but..._
+
 == What ==
 KitchenSync is a utility for periodic synchronization of data in UIQ3 with internet servers. It makes use of the existing SyncML support in the system, and adds timing capabilities.
 
