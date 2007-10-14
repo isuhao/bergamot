@@ -1,0 +1,19 @@
+== What ==
+KitchenSync is a utility for periodic synchronization of data in UIQ3 with internet servers. It makes use of the existing SyncML support in the system, and adds timing capabilities.
+
+The code is stable but primitive.
+
+== Why == 
+
+This program was written for two reasons. Firstly, UIQ mysteriously lacks the ability to periodically trigger synchronization of data. Secondly, I needed a project to learn Symbian programming.
+
+== Issues ==
+
+Symbian 9/UIQ 3 requires programs that make use of more than basic functionality to be signed before they can be installed on a device. KitchenSync makes use of the following capabilities of Symbian that require signing:
+
+* LocalServices 
+* NetworkServices 
+* ReadDeviceData
+* ReadUserData
+
+Right now the only way to make KitchenSync work on your device is to get your own developer certificate, and sign it for your very phone. Hopefully I will find a way around this.
