@@ -1,0 +1,20 @@
+// KitchenSync.hrh
+#ifndef __KitchenSync_HRH__
+#define __KitchenSync_HRH__
+
+enum TKitchenSyncCommands
+    {
+    EKitchenSyncBaseViewPage = 1,
+    EMyAbout
+    };
+    
+enum TKitchenSyncDefines
+	{
+	EMyViewBuildingBlockBase,
+	EMyViewChoiceListBase
+	};
+
+
+#endif
+
+
