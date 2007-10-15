@@ -72,4 +72,4 @@ SOURCE          C16 KitchenSync_64x64.bmp
 SOURCE          8   KitchenSync_64x64_mask.bmp
 END
 
-CAPABILITY LocalServices NetworkServices ReadDeviceData ReadUserData
+CAPABILITY LocalServices NetworkServices ReadDeviceData ReadUserData WriteUserData

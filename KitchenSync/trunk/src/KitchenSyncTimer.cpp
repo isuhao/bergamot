@@ -81,13 +81,13 @@ void CKitchenSyncTimer::RunPeriodically() {
 	}
 	case 3: {
 		TTimeIntervalHours tmi;
-		tmi = 24;
+		tmi = 4;
 		time = time + tmi;
 		break;
 	}
 	case 4: {
-		TTimeIntervalDays tmi;
-		tmi = 7;
+		TTimeIntervalHours tmi;
+		tmi = 24;
 		time = time + tmi;
 		break;
 	}

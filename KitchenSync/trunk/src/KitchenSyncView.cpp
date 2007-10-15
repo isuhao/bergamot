@@ -107,8 +107,8 @@ void CKitchenSyncView::CreateChoiceListItem(CQikScrollableContainer* container, 
 	_LIT(KChoiceListText1, "Manually");
 	_LIT(KChoiceListText2, "Every 5 minutes");
 	_LIT(KChoiceListText3, "Every hour");
-	_LIT(KChoiceListText4, "Daily");
-	_LIT(KChoiceListText5, "Weekly");
+	_LIT(KChoiceListText4, "Every four hours");
+	_LIT(KChoiceListText5, "Daily");
 	
 	CEikChoiceList* chlst = new (ELeave) CEikChoiceList();
 	block->AddControlLC(chlst, EQikItemSlot2);
@@ -197,7 +197,7 @@ void CKitchenSyncView::ViewConstructL()
         container->SetLayoutManagerL(rowlayout);
         CleanupStack::Pop(rowlayout);        
         
-        LoadAllProfiles(container);        
+        LoadAllProfiles(container);
     }
 
 void CKitchenSyncView::HandleControlEventL(CCoeControl *aControl, TCoeEvent aEventType) {
