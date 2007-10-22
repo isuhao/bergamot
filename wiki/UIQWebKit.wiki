@@ -1,0 +1,9 @@
+...because UIQ needs a decent web browser
+
+= UIQ WebKit =
+
+I am attempting to port the open source Series 60 WebKit to UIQ. This project just started, and I am still hopeful. We'll see how difficult this turns out to be.
+
+= Links =
+
+[http://trac.webkit.org/projects/webkit/wiki/S60Webkit S60WebKit]
