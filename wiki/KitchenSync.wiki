@@ -13,13 +13,18 @@ This program was written for two reasons. Firstly, UIQ mysteriously lacks the ab
 == Releases ==
 The complete source code is found in the subversion repository. Compiled binaries for each release exists as well. Note that these are unusable without signing them yourself. See "Issues" below.
 
-  * Alpha 2 
+  * Alpha 3 (soon!)
+    * New client/server architecture, which enables
+    * Automatic start at phone bootup
+
+  * Alpha 2 (2007-10-22)
     * Will now remember settings between starts, however
     * Still does not start when phone boots
     * Download
       * [http://bergamot.googlecode.com/svn/KitchenSync/tags/alpha2 Source]
       * [http://bergamot.googlecode.com/svn/KitchenSync/tags/alpha2/group/KitchenSync_unsigned.sis SIS] 
-  * Alpha 1 
+
+  * Alpha 1 (2007-10-14)
     * First working release
     * Download
       * [http://bergamot.googlecode.com/svn/KitchenSync/tags/alpha1 Source] 
