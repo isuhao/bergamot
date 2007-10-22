@@ -9,11 +9,15 @@ The code tagged as "alpha1" in subversion is stable and works well. I run it con
 
 This program was written for two reasons. Firstly, UIQ mysteriously lacks the ability to periodically trigger synchronization of data. Secondly, I needed a project to learn Symbian programming.
 
-== How to obtain ==
+== How to Obtain ==
+The complete source code is found in the subversion repository. 
 
-The complete source code is found in the subversion repository.
+Compiled binaries for each "official" release exists as well. Note that these are unusable without signing them yourself. See "Issues" below.
 
-An unsigned compiled version of KitchenSync is available for download [http://bergamot.googlecode.com/svn/KitchenSync/tags/alpha1/group/KitchenSync_unsigned.sis here]. Note that this is unusable without signing it yourself. See "Issues" below.
+=== Releases ===
+
+  * [http://bergamot.googlecode.com/svn/KitchenSync/tags/alpha1/group/KitchenSync_unsigned.sis Alpha1] - First working release
+
 
 == Issues ==
 
