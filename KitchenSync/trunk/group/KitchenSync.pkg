@@ -13,4 +13,4 @@
 "\Symbian\UIQ3SDK\epoc32\data\z\private\10003a3f\apps\KitchenSync_reg.rsc"-"!:\private\10003a3f\import\apps\KitchenSync_reg.rsc"
 
 ; Install autostart file
-".\KitchenSyncAutoStart.ast"-"!:\private\10274b9f\import\KitchenSyncAutoToStart.ast"
+;".\KitchenSyncAutoStart.ast"-"!:\private\10274b9f\import\KitchenSyncAutoToStart.ast"

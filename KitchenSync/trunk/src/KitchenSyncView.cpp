@@ -13,7 +13,21 @@
 #include <SyncMLClientDS.h>
 #include "KitchenSyncTimer.h"
 #include "e32debug.h"
+#include "f32file.h"
+#include <BAUTILS.H>
 
+void CKitchenSyncData::ExternalizeL(RWriteStream& aStream) const {
+	aStream.WriteInt32L(profileId);
+	aStream.WriteInt32L(period);
+	RDebug::Print(_L("Wrote %d, %d"), profileId, period);
+}
+
+void CKitchenSyncData::InternalizeL(RReadStream& aStream) {
+	profileId = aStream.ReadInt32L();
+	period = aStream.ReadInt32L();
+	RDebug::Print(_L("Read %d, %d"), profileId, period);
+}
+	
 /**
 Creates and constructs the view.
 
@@ -42,9 +56,6 @@ default view.
 CKitchenSyncView::CKitchenSyncView(CQikAppUi& aAppUi) 
 	: CQikViewBase(aAppUi, KNullViewId)
 	{
-	for (int i=0;i<100;i++) {
-		timerArray[i]=NULL;
-	}
 	}
 
 /**
@@ -114,7 +125,6 @@ void CKitchenSyncView::CreateChoiceListItem(CQikScrollableContainer* container, 
 	block->AddControlLC(chlst, EQikItemSlot2);
 	
 	chlst->ConstructL(0 /*flags*/, 0 /*maxDisplayChar*/);
-	chlst->SetCurrentItem(state);
 	chlst->SetObserver(this);
 	CDesCArrayFlat* array = new(ELeave) CDesCArrayFlat(5);
 	CleanupStack::PushL(array);
@@ -126,12 +136,14 @@ void CKitchenSyncView::CreateChoiceListItem(CQikScrollableContainer* container, 
 	chlst->SetArrayL(array);
 	CleanupStack::Pop(array);
 	chlst->SetUniqueHandle(EMyViewChoiceListBase+id);
+	chlst->SetCurrentItem(state);
 	chlst->SetObserver(this);
 	CleanupStack::Pop(chlst);
 	CleanupStack::Pop(block);
 }
 
-void CKitchenSyncView::LoadAllProfiles(CQikScrollableContainer* container) {
+void CKitchenSyncView::LoadAllProfiles() {
+	RDebug::Print(_L("LoadAllProfiles"));
 	RSyncMLSession session;
 	
 	TInt error;
@@ -150,12 +162,32 @@ void CKitchenSyncView::LoadAllProfiles(CQikScrollableContainer* container) {
 		}
 	
 	TInt numItems = profileArray.Count();
+	RDebug::Print(_L("Found %d SyncML profiles"), numItems);
+	for (TInt i=0;i<numItems;i++) {		
+		CKitchenSyncData *data = new CKitchenSyncData;
+		data->period = -1;
+		data->profileId = profileArray[i];
+		data->timer = NULL;
+		timerArray.Append(*data);
+		RDebug::Print(_L("Created SyncData for profile=%d"), data->profileId);
+
+	}
+	
+	session.Close();
+}
+
+void CKitchenSyncView::ShowAllProfiles(CQikScrollableContainer* container) {
+	RDebug::Print(_L("ShowAllProfiles"));
+	RSyncMLSession session;
+	TRAPD(error, session.OpenL());
 	
 	TBuf<255> Buffer;
-	
-	for (TInt i=0;i<numItems;i++) {		
+	for (int i=0;i<timerArray.Count();i++) {		
+		CKitchenSyncData &data = timerArray[i];
+			
 		RSyncMLDataSyncProfile profile;
-		TRAP(error,profile.OpenL(session, profileArray[i],ESmlOpenRead));
+		RDebug::Print(_L("Reading profile %d"), data.profileId);
+		TRAPD(error,profile.OpenL(session, data.profileId,ESmlOpenRead));
 		if (error!=KErrNone)
 			{
 				_LIT(KRowFormatter, "OpenL error: %d");
@@ -170,10 +202,18 @@ void CKitchenSyncView::LoadAllProfiles(CQikScrollableContainer* container) {
 				Buffer.Format(KRowFormatter, error);
 				CEikonEnv::InfoWinL(_L("KitchenSync"), Buffer);
 			}
+		RDebug::Print(_L("DisplayName: %S, period=%d"), &profile.DisplayName(), data.period);
+
 		if(profile.DisplayName().Compare(_L("iSync")) != 0) {
-			CreateChoiceListItem(container, (int)profileArray[i], (TDesC &)profile.DisplayName(), 0);
+			int selection = 0;
+			if (data.period != -1) {
+				selection = data.period;
+			}
+			CreateChoiceListItem(container, i, (TDesC &)profile.DisplayName(), selection);
 		}
+
 		profile.Close();
+
 	}
 	
 	session.Close();
@@ -191,14 +231,96 @@ void CKitchenSyncView::ViewConstructL()
         Controls().AppendLC(container);
         container->ConstructL(EFalse);
         CleanupStack::Pop(container);
+        iContainer = container;
                             
         // Create a layout manager to be used inside the container
         CQikRowLayoutManager* rowlayout = CQikRowLayoutManager::NewLC();
         container->SetLayoutManagerL(rowlayout);
         CleanupStack::Pop(rowlayout);        
         
-        LoadAllProfiles(container);
+        LoadAllProfiles();
+        LoadSettings();
+        ShowAllProfiles(iContainer);
+
     }
+
+void CKitchenSyncView::SaveSettings() 
+	{
+	RDebug::Print(_L("SaveSettings"));
+	RFs fsSession;
+	fsSession.Connect(); 
+	TFileName path;
+	TParse	filestorename;
+
+	TBuf<100> privatePath;
+	fsSession.PrivatePath(privatePath);
+	RDebug::Print(_L("PrivatePath: %S"), &privatePath);
+	BaflUtils::EnsurePathExistsL(fsSession, privatePath);
+	RDebug::Print(_L("Folder: %S"), &KDirNameOfFileStore);
+	RDebug::Print(_L("File: %S"), &KFullNameOfFileStore);
+	fsSession.Parse(KFullNameOfFileStore, filestorename);
+	CFileStore* store = CDirectFileStore::ReplaceLC(fsSession, filestorename.FullName(), EFileWrite);
+	store->SetTypeL(KDirectFileStoreLayoutUid);
+	
+	RStoreWriteStream outstream;
+	TStreamId id = outstream.CreateLC(*store);
+	
+	for (int i=0;i<timerArray.Count();i++) {
+		RDebug::Print(_L("Storing account %i"), i);
+		outstream  << timerArray[i];
+	}
+	
+	outstream.CommitL();
+	store->SetRootL(id);
+	store->CommitL();
+	CleanupStack::PopAndDestroy(); // outstream
+	fsSession.Close();
+	
+	CleanupStack::Pop(store);
+	}
+
+void CKitchenSyncView::LoadSettings() 
+	{
+	RFs fsSession;
+	fsSession.Connect(); 
+	TFileName path;
+	TParse	filestorename;
+	if (!BaflUtils::FileExists(fsSession, KFullNameOfFileStore)) {
+		RDebug::Print(_L("No config file"));	
+		return;
+	}
+	fsSession.Parse(KFullNameOfFileStore,filestorename);
+	
+	
+	CFileStore* store = CDirectFileStore::OpenLC(fsSession,filestorename.FullName(),EFileRead);
+
+	RStoreReadStream instream;
+	instream.OpenLC(*store,store->Root());
+
+	CKitchenSyncData readData;
+	int error = 0;
+	
+	/*
+	 * read all stored profiles and copy data to matching profiles in the system
+	 */
+	TRAP(error, instream  >> readData);	
+	while (error==0) {
+		// iterate over system profiles
+		for (int i=0;i<timerArray.Count();i++) {
+			CKitchenSyncData &data = timerArray[i];
+			if (data.profileId == readData.profileId) {
+				RDebug::Print(_L("Found profile=%d"), data.profileId);
+				data.period = readData.period;
+				StartTimer(i, data.period);
+			}
+		}
+		TRAP(error, instream  >> readData);
+	}
+	
+	CleanupStack::PopAndDestroy(); // instream
+	fsSession.Close();
+	CleanupStack::Pop(store);
+	}
 
 void CKitchenSyncView::HandleControlEventL(CCoeControl *aControl, TCoeEvent aEventType) {
 	if(aEventType == EEventStateChanged)
@@ -207,25 +329,33 @@ void CKitchenSyncView::HandleControlEventL(CCoeControl *aControl, TCoeEvent aEve
 		
 		CEikChoiceList* chlst = LocateControlByUniqueHandle<CEikChoiceList>(aControl->UniqueHandle());
 		int item = chlst->CurrentItem();
+		RDebug::Print(_L("HandleControlEvent for profile=%d, item=%d"), syncProfile, item);
 		TBuf<255> Buffer;
-		StartaTimer((int)syncProfile,item);
+		StartTimer((int)syncProfile,item);
+		SaveSettings();
 	}
 }
 
-void CKitchenSyncView::StartaTimer(int profileId, int timeout) {
+void CKitchenSyncView::StartTimer(int profile, int period) {
+	RDebug::Print(_L("Starting timer for profile=%d, period=%d"), profile, period);
+	StopTimer(profile);
 
-	if (timerArray[profileId] != NULL)
-		StoppaTimer(profileId);
-
-	timerArray[profileId] = NULL;
-
-    CKitchenSyncTimer *sTimer = new CKitchenSyncTimer(profileId);
+    CKitchenSyncTimer *sTimer = new CKitchenSyncTimer(profile);
 	sTimer->ConstructL();
-	sTimer->SetPeriod(timeout);
+	sTimer->SetPeriod(period);
     sTimer->RunPeriodically();
-	timerArray[profileId]=sTimer;
+	timerArray[profile].timer=sTimer;
+	timerArray[profile].period = period;
 }
 
-void CKitchenSyncView::StoppaTimer(int profileId) {
-	timerArray[profileId]->Cancel();
+void CKitchenSyncView::StopTimer(int profile) {
+	RDebug::Print(_L("Stopping timer for profile=%d"), profile);
+	CKitchenSyncTimer* timer = timerArray[profile].timer;
+	if (timer != NULL) {
+		timer->Cancel();
+		delete timer;
+		timerArray[profile].timer = NULL;
+	} else {
+		RDebug::Print(_L("No timer running"));
+	}
 }

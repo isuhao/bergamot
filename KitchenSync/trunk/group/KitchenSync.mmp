@@ -57,7 +57,7 @@ LIBRARY			qikctl.lib // added due to the qik controls
 LIBRARY			eikctl.lib // added due to the eik controls
 LIBRARY			qikdlg.lib // added for the dialog that are used
 LIBRARY			qikallocdll.lib 
-LIBRARY			SmlClient.lib
+LIBRARY			SmlClient.lib estor.lib efsrv.lib
 
 
 START BITMAP    KitchenSync.mbm
@@ -72,4 +72,4 @@ SOURCE          C16 KitchenSync_64x64.bmp
 SOURCE          8   KitchenSync_64x64_mask.bmp
 END
 
-CAPABILITY LocalServices NetworkServices ReadDeviceData ReadUserData WriteUserData
+CAPABILITY LocalServices NetworkServices ReadDeviceData ReadUserData WriteDeviceData WriteUserData
