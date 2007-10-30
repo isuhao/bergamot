@@ -22,6 +22,7 @@ The complete source code is found in the subversion repository. Compiled binarie
     * Download
       * [http://bergamot.googlecode.com/svn/KitchenSync/tags/alpha3 Source]
       * [http://bergamot.googlecode.com/svn/KitchenSync/tags/alpha3/group/KitchenSync_unsigned.sis SIS] 
+
   * Alpha 2 (2007-10-22)
     * Will now remember settings between starts, however
     * Still does not start when phone boots
