@@ -135,7 +135,9 @@ void CKitchenSyncView::CreateChoiceListItem(CQikScrollableContainer* container, 
 	array->AppendL(KChoiceListText5);
 	chlst->SetArrayL(array);
 	CleanupStack::Pop(array);
+	RDebug::Print(_L("Setting handle to: %d"), EMyViewChoiceListBase+id);
 	chlst->SetUniqueHandle(EMyViewChoiceListBase+id);
+
 	chlst->SetCurrentItem(state);
 	chlst->SetObserver(this);
 	CleanupStack::Pop(chlst);
@@ -325,22 +327,22 @@ void CKitchenSyncView::LoadSettings()
 void CKitchenSyncView::HandleControlEventL(CCoeControl *aControl, TCoeEvent aEventType) {
 	if(aEventType == EEventStateChanged)
 	{
-		int syncProfile = aControl->UniqueHandle() - EMyViewChoiceListBase;
-		
-		CEikChoiceList* chlst = LocateControlByUniqueHandle<CEikChoiceList>(aControl->UniqueHandle());
+		int profileNum = aControl->UniqueHandle() - EMyViewChoiceListBase;
+		CEikChoiceList* chlst = (CEikChoiceList*) aControl; //LocateControlByUniqueHandle<CEikChoiceList>(aControl->UniqueHandle());
+		RDebug::Print(_L("Handle: %d"), aControl->UniqueHandle());
 		int item = chlst->CurrentItem();
-		RDebug::Print(_L("HandleControlEvent for profile=%d, item=%d"), syncProfile, item);
-		TBuf<255> Buffer;
-		StartTimer((int)syncProfile,item);
+		RDebug::Print(_L("HandleControlEvent for profileNum=%d, item=%d"), profileNum, item);
+		
+		StartTimer(profileNum,item);
 		SaveSettings();
 	}
 }
 
 void CKitchenSyncView::StartTimer(int profile, int period) {
-	RDebug::Print(_L("Starting timer for profile=%d, period=%d"), profile, period);
+	RDebug::Print(_L("Starting timer for profile number=%d, period=%d"), profile, period);
 	StopTimer(profile);
-
-    CKitchenSyncTimer *sTimer = new CKitchenSyncTimer(profile);
+	int profileId = timerArray[profile].profileId;
+    CKitchenSyncTimer *sTimer = new CKitchenSyncTimer(profileId);
 	sTimer->ConstructL();
 	sTimer->SetPeriod(period);
     sTimer->RunPeriodically();

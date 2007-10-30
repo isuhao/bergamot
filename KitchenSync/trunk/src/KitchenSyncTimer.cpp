@@ -16,7 +16,7 @@ void CKitchenSyncTimer::ConstructL() {
 }
 
 void CKitchenSyncTimer::RunL() {
-	RDebug::Print(_L("Synkar konto %d"), profileId);
+	RDebug::Print(_L("Sync account %d"), profileId);
 	RSyncMLSession session;
 	TInt error;
 	TRAP(error, session.OpenL());
@@ -57,10 +57,12 @@ void CKitchenSyncTimer::RunL() {
 }
 
 void CKitchenSyncTimer::SetPeriod(int aPeriod) {
+	RDebug::Print(_L("Setting period to %d"), aPeriod);
 	thePeriod = aPeriod;
 }
 
 void CKitchenSyncTimer::RunPeriodically() {
+	RDebug::Print(_L("RunPeriodically; thePeriod=%d"), thePeriod);
 	TTime time;
 	time.UniversalTime();
 
@@ -68,6 +70,7 @@ void CKitchenSyncTimer::RunPeriodically() {
 	case 0:
 		return;
 	case 1: {
+//		TTimeIntervalSeconds tmi; // for testing
 		TTimeIntervalMinutes tmi;
 		tmi = 5;
 		time = time + tmi;
@@ -95,5 +98,10 @@ void CKitchenSyncTimer::RunPeriodically() {
 		return;
 	}
 
+	RDebug::Print(_L("Running timer"));
 	TRAPD(error,AtUTC(time));
+	
+	if (error != KErrNone) {
+		RDebug::Print(_L("Error from AtUTC: %d"), error);
+	}
 }
