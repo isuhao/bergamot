@@ -20,6 +20,10 @@ void CKitchenSyncServer::PanicServer(TKitchenSyncServerPanic aPanic)
     User::Panic(KTxtServerPanic,aPanic);
 }
 
+void CKitchenSyncServer::RunL() {
+	RDebug::Print(_L("***Server RunL"));
+	CServer2::RunL();
+}
 TInt CKitchenSyncServer::ThreadFunction(TAny * /*aStarted */)
 {
 	CTrapCleanup* cleanup=CTrapCleanup::New();
@@ -30,18 +34,33 @@ TInt CKitchenSyncServer::ThreadFunction(TAny * /*aStarted */)
 
 	CActiveScheduler *pA=new CActiveScheduler;
 	__ASSERT_ALWAYS(pA!=NULL,CKitchenSyncServer::PanicServer(EMainSchedulerError));
-	
-	CKitchenSyncServer *pS = new CKitchenSyncServer(EPriorityStandard);
-	
 	CActiveScheduler::Install(pA);
 	
-	TInt err = pS->Start(KKitchenSyncServerName);
-    if (err != KErrNone)
+	CKitchenSyncServer *pS = new CKitchenSyncServer(EPriorityHigh);
+	
+    TRAPD(error, pS->LoadSettingsL());	
+    if (error != KErrNone)
     {
-           CKitchenSyncServer::PanicServer(EStartServer);
+        	RDebug::Print(_L("LoadSettingsL error %d"), error);
+            CKitchenSyncServer::PanicServer(EStartServer);
     }
-    TRAPD(error, pS->LoadSettingsL());
-	RThread::Rendezvous(KErrNone);
+
+    error = pS->Start(KKitchenSyncServerName);
+    if (error != KErrNone)
+    {
+    	RDebug::Print(_L("pS->Start error"));
+        CKitchenSyncServer::PanicServer(EStartServer);
+    }
+
+    RSemaphore s;
+	error = s.OpenGlobal(KKitchenSyncServerSemaphore);
+	if (error == KErrNone) {
+		RDebug::Print(_L("Signalling semaphore"));
+		s.Signal();
+	}
+	s.Close();
+	
+	RDebug::Print(_L("CActiveScheduler::Start"));
 	CActiveScheduler::Start();
 	RDebug::Print(_L("CActiveScheduler::Start done"));
     delete pS;
@@ -199,22 +218,19 @@ TKitchenSyncPeriod CKitchenSyncServer::GetTimer(TSmlProfileId profileId)
 
 void RunServer()
 {
-		
-	CKitchenSyncServer x(CActive::EPriorityIdle);
-	x.ThreadFunction(NULL);
-	
-	
-/*	RThread serverThread;
+	CKitchenSyncServer::ThreadFunction(NULL);
+/*
+	RThread serverThread;
 	RDebug::Print(_L("Starting server thread"));
 	_LIT(KKitchenSyncServerName, "KitchenSyncServer");
-	serverThread.Create(KKitchenSyncServerName, x.ThreadFunction,
+	serverThread.Create(KKitchenSyncServerName, CKitchenSyncServer::ThreadFunction,
 			KDefaultStackSize, KDefaultHeapSize, KDefaultHeapSize, NULL);
 	
 	TRequestStatus rdvzStatus;
-	
 	serverThread.Rendezvous(rdvzStatus);
 	serverThread.Resume();
-	RDebug::Print(_L("Server thread running"));*/
+	
+	RDebug::Print(_L("after rendezvous"));
 	RSemaphore s;
 	int error = s.OpenGlobal(KKitchenSyncServerSemaphore);
 	if (error == KErrNone) {
@@ -222,7 +238,10 @@ void RunServer()
 		s.Signal();
 	}
 	s.Close();
-	User::WaitForAnyRequest();
+
+	RDebug::Print(_L("Server thread running"));
+	
+	User::WaitForAnyRequest();*/
 }
 
 GLDEF_C TInt E32Main()

@@ -29,5 +29,6 @@ void CKitchenSyncServerSession::ServiceL(const RMessage2& aMessage)
 void CKitchenSyncServerSession::PanicClient(const RMessage2& aMessage,TInt aPanic) const
 {
 	_LIT(KTxtServer,"Sync server");
+	RDebug::Print(_L("Panic från servern"));
 	aMessage.Panic(KTxtServer,aPanic);
 }

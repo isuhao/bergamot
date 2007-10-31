@@ -37,6 +37,7 @@ public:
 	void SaveSettings();
 	
 private:
+	void RunL();
 	RArray<CKitchenSyncData> timerArray;
 };
 

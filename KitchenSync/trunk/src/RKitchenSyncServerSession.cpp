@@ -20,11 +20,11 @@ TInt RKitchenSyncServerSession::Connect()
 		
 		if (error == KErrNone) {
 			RDebug::Print(_L("Successfully started server"));
-			kss.Resume();
+			kss.Resume();			
 			RDebug::Print(_L("Waiting for semaphore"));
 	    	s.Wait();
 			RDebug::Print(_L("Got semaphore"));
-	    	kss.Close();
+	    	//kss.Close();
 		} else {
 			RDebug::Print(_L("Failed to start server"));
 		}
