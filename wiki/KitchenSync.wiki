@@ -26,7 +26,7 @@ The complete source code is found in the subversion repository. Compiled binarie
   * Alpha 2 (2007-10-22)
     * Will now remember settings between starts, however
     * Still does not start when phone boots
-    * ~~~Download~~~
+    * ~~Download~~
 
   * Alpha 1 (2007-10-14)
     * First working release
