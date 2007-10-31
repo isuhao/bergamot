@@ -22,7 +22,7 @@ void CKitchenSyncTimer::RunL() {
 	TRAP(error, session.OpenL());
 	if (error!=KErrNone)
 		{
-		CEikonEnv::InfoWinL(_L("KitchenSync"), _L("OpenL error"));
+		RDebug::Print(_L("Session OpenL error: %d"), error);
 		}
 	RSyncMLDataSyncJob job;
 	TBuf<255> Buffer;
@@ -31,12 +31,9 @@ void CKitchenSyncTimer::RunL() {
 	TRAP(error,profile.OpenL(session, profileId,ESmlOpenRead));
 	if (error!=KErrNone)
 	{
-		_LIT(KRowFormatter, "OpenL id=%d error: %d");
-		Buffer.Format(KRowFormatter, profileId, error);
-		CEikonEnv::InfoWinL(_L("KitchenSync"), Buffer);
+		RDebug::Print(_L("ProfileOpenL error: %d"), error);
 	}
 	
-	//CEikonEnv::InfoWinL(_L("KitchenSync"), profile.DisplayName());
 	profile.Close();
 	
 	// sync!
@@ -44,9 +41,7 @@ void CKitchenSyncTimer::RunL() {
 	
 	if (error!=KErrNone)
 	{
-		_LIT(KRowFormatter, "CreateL error: %d");
-		Buffer.Format(KRowFormatter, error);
-		CEikonEnv::InfoWinL(_L("KitchenSync"), Buffer);
+		RDebug::Print(_L("CreateL error: %d"), error);
 	}
 	
 	job.Close();

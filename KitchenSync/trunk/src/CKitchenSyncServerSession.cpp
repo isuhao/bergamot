@@ -11,6 +11,7 @@ void CKitchenSyncServerSession::ServiceL(const RMessage2& aMessage)
 		TKitchenSyncPeriod period = (TKitchenSyncPeriod) aMessage.Int1();
 		RDebug::Print(_L("SetTimer: profileId=%d, period=%d"), profileId, period);
 		srv->SetTimer(profileId, period);
+		srv->SaveSettings();
 		break;
 	}
 	case EGetTimer: {

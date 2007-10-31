@@ -7,8 +7,7 @@
 const TUint KDefaultHeapSize=0x10000;
 const TUint KDefaultMessageSlots=4;
 
-_LIT(KFullNameOfFileStore,"c:\\private\\2000E8A1\\config.dat");
-_LIT(KDirNameOfFileStore,"c:\\private\\2000E8A1");
+_LIT(KConfigFileName, "config.dat");
 _LIT(KKitchenSyncServerName, "KitchenSyncServer");
 
 enum TKitchenSyncServerPanic

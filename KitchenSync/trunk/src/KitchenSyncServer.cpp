@@ -58,13 +58,20 @@ void CKitchenSyncServer::LoadSettingsL() {
 	RDebug::Print(_L("RFs error: %d"), error);
 	TFileName path;
 	TParse	filestorename;
-	if (!BaflUtils::FileExists(fsSession, KFullNameOfFileStore)) {
+	
+	TBuf<100> privatePath;
+	fsSession.PrivatePath(privatePath);
+	RDebug::Print(_L("PrivatePath: %S"), &privatePath);
+	BaflUtils::EnsurePathExistsL(fsSession, privatePath);
+	privatePath.Append(KConfigFileName);
+	RDebug::Print(_L("File: %S"), &privatePath);
+	fsSession.Parse(privatePath, filestorename);
+
+	if (!BaflUtils::FileExists(fsSession, privatePath)) {
 		RDebug::Print(_L("No config file"));	
 		return;
 	}
 	
-	error = fsSession.Parse(KFullNameOfFileStore,filestorename);
-	RDebug::Print(_L("Parse error: %d"), error);
 	CFileStore* store;
 	TRAP(error, store = CDirectFileStore::OpenL(fsSession,filestorename.FullName(),EFileRead));
 	CleanupStack::PushL(store);
@@ -79,17 +86,16 @@ void CKitchenSyncServer::LoadSettingsL() {
 	RStoreReadStream instream;
 	instream.OpenLC(*store, store->Root());
 
-	CKitchenSyncData readData;
-	
-	TRAP(error, instream  >> readData);	
-	while (error==0) {
-		// iterate over system profiles
+	int count = instream.ReadInt32L();
+	RDebug::Print(_L("Read count: %d"), count);
+	for (int i=0;i<count;i++) {
+		CKitchenSyncData readData;
+		instream  >> readData;	
 		timerArray.Append(readData);
-		RDebug::Print(_L("Read settings: profile %d with period %d"), readData.profileId, readData.period);
+		RDebug::Print(_L("Read settings %d: profile %d with period %d"), i, readData.profileId, readData.period);
 		SetTimer(readData.profileId, readData.period);
-		TRAP(error, instream  >> readData);
 	}
-	
+	RDebug::Print(_L("Read all accounts"));
 	CleanupStack::PopAndDestroy(); // instream
 	fsSession.Close();
 	CleanupStack::Pop(store);
@@ -107,15 +113,16 @@ void CKitchenSyncServer::SaveSettings()
 	fsSession.PrivatePath(privatePath);
 	RDebug::Print(_L("PrivatePath: %S"), &privatePath);
 	BaflUtils::EnsurePathExistsL(fsSession, privatePath);
-	RDebug::Print(_L("Folder: %S"), &KDirNameOfFileStore);
-	RDebug::Print(_L("File: %S"), &KFullNameOfFileStore);
-	fsSession.Parse(KFullNameOfFileStore, filestorename);
+	privatePath.Append(KConfigFileName);
+	RDebug::Print(_L("File: %S"), &privatePath);
+	fsSession.Parse(privatePath, filestorename);
 	CFileStore* store = CDirectFileStore::ReplaceLC(fsSession, filestorename.FullName(), EFileWrite);
 	store->SetTypeL(KDirectFileStoreLayoutUid);
 	
 	RStoreWriteStream outstream;
 	TStreamId id = outstream.CreateLC(*store);
 	
+	outstream.WriteInt32L(timerArray.Count());
 	for (int i=0;i<timerArray.Count();i++) {
 		RDebug::Print(_L("Storing account %i"), i);
 		outstream  << timerArray[i];
@@ -175,8 +182,6 @@ void CKitchenSyncServer::SetTimer(TSmlProfileId profileId, TKitchenSyncPeriod pe
 		}
 
 	}
-
-	SaveSettings();
 }
 
 TKitchenSyncPeriod CKitchenSyncServer::GetTimer(TSmlProfileId profileId)
