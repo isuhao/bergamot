@@ -7,7 +7,7 @@
 "\Symbian\UIQ3SDK\KitchenSync\group\FreewareWarningEN.txt"-"",FT 
 
 "\Symbian\UIQ3SDK\epoc32\release\gcce\urel\KitchenSync.exe"-"!:\sys\bin\KitchenSync.exe"
-"\Symbian\UIQ3SDK\epoc32\release\gcce\urel\KitchenSync.exe"-"!:\sys\bin\KitchenSyncServer.exe"
+"\Symbian\UIQ3SDK\epoc32\release\gcce\urel\KitchenSyncServer.exe"-"!:\sys\bin\KitchenSyncServer.exe"
 "\Symbian\UIQ3SDK\epoc32\data\z\resource\apps\KitchenSync.rsc"-"!:\resource\apps\KitchenSync.rsc"
 "\Symbian\UIQ3SDK\epoc32\data\Z\Resource\Apps\KitchenSync.mbm"-"!:\resource\apps\KitchenSync.mbm"
 "\Symbian\UIQ3SDK\epoc32\data\z\resource\apps\KitchenSync_loc.RSC"-"!:\resource\apps\KitchenSync_loc.RSC"
