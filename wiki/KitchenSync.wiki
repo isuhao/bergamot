@@ -5,6 +5,8 @@ KitchenSync is a utility for periodic synchronization of data in UIQ3 with inter
 
 The code tagged as "alpha4" in subversion is stable and works well. I run it constantly on my Sony Ericsson P1i.
 
+http://bergamot.googlecode.com/svn/KitchenSync/trunk/images/screenshot.jpg
+
 == Why == 
 
 This program was written for two reasons. Firstly, UIQ mysteriously lacks the ability to periodically trigger synchronization of data. Secondly, I needed a project to learn Symbian programming.
