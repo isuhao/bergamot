@@ -9,13 +9,20 @@ The code tagged as "alpha2" in subversion is stable and works well. I run it con
 
 This program was written for two reasons. Firstly, UIQ mysteriously lacks the ability to periodically trigger synchronization of data. Secondly, I needed a project to learn Symbian programming.
 
-
 == Releases ==
 The complete source code is found in the subversion repository. Compiled binaries for each release exists as well. Note that these are unusable without signing them yourself. See "Issues" below.
 
-  * Alpha 4 (soon!)
-    * New client/server architecture, which enables:
+  * Beta (soon!)
+    * Client will be able to start the server, instead of crashing...
+    * Icons and other pretty things
+
+  * Alpha 4 (2007-10-31)
+    * New client/server architecture
     * Automatic start at phone bootup
+    * Important note! After installation, reboot the phone in order to start server, otherwise the client will crash on startup.
+    * Download
+      * [http://bergamot.googlecode.com/svn/KitchenSync/tags/alpha4 Source]
+      * [http://bergamot.googlecode.com/svn/KitchenSync/tags/alpha4/group/KitchenSync_unsigned.sis SIS] 
 
   * Alpha 3 (2007-10-30)
     * Working version of alpha 2, which was accidentally broken. Thanks for pointing this out!
