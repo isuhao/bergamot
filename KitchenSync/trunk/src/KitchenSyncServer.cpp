@@ -51,15 +51,21 @@ TInt CKitchenSyncServer::ThreadFunction(TAny * /*aStarted */)
     	RDebug::Print(_L("pS->Start error"));
         CKitchenSyncServer::PanicServer(EStartServer);
     }
-
-    RSemaphore s;
+    
+    
+    /*RSemaphore s;
 	error = s.OpenGlobal(KKitchenSyncServerSemaphore);
 	if (error == KErrNone) {
 		RDebug::Print(_L("Signalling semaphore"));
 		s.Signal();
 	}
 	s.Close();
-	
+	*/
+    User::RenameThread(KKitchenSyncServerName);
+    RDebug::Print(_L("Rendezvous"));
+   
+    RProcess::Rendezvous(KErrNone);
+
 	RDebug::Print(_L("CActiveScheduler::Start"));
 	CActiveScheduler::Start();
 	RDebug::Print(_L("CActiveScheduler::Start done"));
@@ -247,10 +253,16 @@ void RunServer()
 GLDEF_C TInt E32Main()
 {
 	RDebug::Print(_L("KitchenSyncServer: Starting"));
-	CTrapCleanup* cleanup=CTrapCleanup::New(); 
-	TRAPD(error,RunServer()); 
-	delete cleanup; 
-	RDebug::Print(_L("KitchenSyncServer: Exiting, error=%d"), error);	
-	return 0;
+
+	CTrapCleanup* cleanup=CTrapCleanup::New();
+	TInt r=KErrNoMemory;
+	if (cleanup)
+		{
+		TRAP(r,RunServer());
+		delete cleanup;
+		}
+	__UHEAP_MARKEND;
+	RDebug::Print(_L("KitchenSyncServer: Exiting, error=%d"), r);	
+	return r;
 }
 

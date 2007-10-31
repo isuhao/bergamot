@@ -11,13 +11,22 @@ TInt RKitchenSyncServerSession::Connect()
 	} else {
 		RDebug::Print(_L("Failed to connect to sync server"));
 		RDebug::Print(_L("Attempting to start server"));
-		RProcess kss;
+		RProcess server;
 
-		RSemaphore s;
-		s.CreateGlobal(KKitchenSyncServerSemaphore, 0);
+		//RSemaphore s;
+		//s.CreateGlobal(KKitchenSyncServerSemaphore, 0);
 		
-		error = kss.Create(KKitchenSyncServerExe, TPtr(NULL,0));
+		error = server.Create(KKitchenSyncServerExe, TPtr(NULL,0));
 		
+		TRequestStatus stat;
+		server.Rendezvous(stat);
+		if (stat!=KRequestPending)
+			server.Kill(0);		// abort startup
+		else
+			server.Resume();	// logon OK - start the server
+		
+		User::WaitForRequest(stat);		// wait for start or death
+		/*
 		if (error == KErrNone) {
 			RDebug::Print(_L("Successfully started server"));
 			kss.Resume();			
@@ -27,8 +36,8 @@ TInt RKitchenSyncServerSession::Connect()
 	    	//kss.Close();
 		} else {
 			RDebug::Print(_L("Failed to start server"));
-		}
-		s.Close();	
+		}*/
+	//	s.Close();	
 	}
 	
 	RDebug::Print(_L("RKitchenSyncServerSession::Connect returning %d"), error);
