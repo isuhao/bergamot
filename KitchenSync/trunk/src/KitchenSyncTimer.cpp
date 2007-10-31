@@ -105,3 +105,4 @@ void CKitchenSyncTimer::RunPeriodically() {
 		RDebug::Print(_L("Error from AtUTC: %d"), error);
 	}
 }
+

@@ -17,5 +17,5 @@ private:
 	TSmlProfileId profileId;
 	int thePeriod;
 };
-
 #endif
+

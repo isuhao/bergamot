@@ -1,9 +1,8 @@
 // KitchenSync.mmp
 
-TARGET            KitchenSync.exe
+TARGET            KitchenSyncServer.exe
 TARGETTYPE        exe
-TARGETPATH        \sys\bin
-UID               0x100039CE 0x2000E8A1
+UID 0x100039CE 0x2000F993
 
 
 VENDORID          0
@@ -35,10 +34,7 @@ SOURCEPATH      ..\src
 USERINCLUDE     ..\inc
 
 
-SOURCE          KitchenSyncAppUi.cpp
-SOURCE          KitchenSyncDocument.cpp
-SOURCE          KitchenSyncApplication.cpp
-SOURCE			KitchenSyncView.cpp
+SOURCE			KitchenSyncTimer.cpp KitchenSyncServer.cpp CKitchenSyncServerSession.cpp KitchenSyncData.cpp
 
 LIBRARY         euser.lib
 LIBRARY         apparc.lib
@@ -72,5 +68,3 @@ SOURCE          8   KitchenSync_64x64_mask.bmp
 END
 
 CAPABILITY LocalServices NetworkServices ReadDeviceData ReadUserData WriteDeviceData WriteUserData
-
-SOURCE RKitchenSyncServerSession.cpp

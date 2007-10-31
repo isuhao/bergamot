@@ -35,5 +35,3 @@ CQikAppUi* CKitchenSyncDocument::CreateAppUiL()
 {
   return new(ELeave) CKitchenSyncAppUi;
 }
-
-
