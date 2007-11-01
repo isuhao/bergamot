@@ -63,12 +63,12 @@ START BITMAP    KitchenSync.mbm
 TARGETPATH      \resource\apps
 HEADER
 SOURCEPATH      ..\images
-SOURCE          c16 KitchenSync_18x18.bmp
-SOURCE          8   KitchenSync_18x18_mask.bmp
+SOURCE          c16 KitchenSync_40x40.bmp
+SOURCE          8   KitchenSync_40x40_mask.bmp
 SOURCE          C16 KitchenSync_40x40.bmp
 SOURCE          8   KitchenSync_40x40_mask.bmp
-SOURCE          C16 KitchenSync_64x64.bmp
-SOURCE          8   KitchenSync_64x64_mask.bmp
+SOURCE          C16 KitchenSync_40x40.bmp
+SOURCE          8   KitchenSync_40x40_mask.bmp
 END
 
 CAPABILITY LocalServices NetworkServices ReadDeviceData ReadUserData WriteDeviceData WriteUserData
