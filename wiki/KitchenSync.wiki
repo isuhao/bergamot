@@ -3,7 +3,7 @@ _because UIQ provides everything but..._
 == What ==
 KitchenSync is a utility for periodic synchronization of data in UIQ3 with internet servers. It makes use of the existing SyncML support in the system, and adds timing capabilities.
 
-The code tagged as "alpha4" in subversion is stable and works well. I run it constantly on my Sony Ericsson P1i.
+The code tagged as "beta1" in subversion is stable and works well. I run it constantly on my Sony Ericsson P1i.
 
 http://bergamot.googlecode.com/svn/KitchenSync/trunk/images/screenshot.jpg
 
@@ -14,9 +14,12 @@ This program was written for two reasons. Firstly, UIQ mysteriously lacks the ab
 == Releases ==
 The complete source code is found in the subversion repository. Compiled binaries for each release exists as well. Note that these are unusable without signing them yourself. See "Issues" below.
 
-  * Beta (soon!)
-    * Client will be able to start the server, instead of crashing...
-    * Icons and other pretty things
+  * Beta1 (2007-11-01)
+    * Client is able to start the server
+    * 40x40 pixel icon
+    * Download
+      * [http://bergamot.googlecode.com/svn/KitchenSync/tags/beta1 Source]
+      * [http://bergamot.googlecode.com/svn/KitchenSync/tags/beta1/group/KitchenSync_unsigned.sis SIS] 
 
   * Alpha 4 (2007-10-31)
     * New client/server architecture
