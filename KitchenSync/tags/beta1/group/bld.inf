@@ -1,0 +1,9 @@
+// bld.inf
+prj_mmpfiles
+KitchenSync.mmp
+KitchenSyncServer.mmp
+
+PRJ_PLATFORMS
+GCCE
+WINSCW
+
