@@ -1,0 +1,4 @@
+= How to sign a SIS =
+
+A self signing guide can be found here:
+http://www.gsmblog.net/article.do?keyword=symbian-self-signing
