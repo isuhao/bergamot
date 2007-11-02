@@ -13,7 +13,7 @@ RESOURCE LOCALISABLE_APP_INFO
       {
       caption = "KitchenSync";
       number_of_icons = 3;
-      icon_file = "z:\\resource\\apps\\KitchenSync.mbm";
+      icon_file = "z:\\resource\\apps\\SyncClient.mbm";
       }
    };
    

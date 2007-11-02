@@ -1,8 +1,9 @@
 // KitchenSync.mmp
 
-TARGET            KitchenSyncServer.exe
+TARGET            KitchenSync.exe
 TARGETTYPE        exe
-UID 0x100039CE 0x2000F993
+TARGETPATH        \sys\bin
+UID               0x100039CE 0x2000E8A1
 
 
 VENDORID          0
@@ -10,21 +11,9 @@ VENDORID          0
 
 SOURCEPATH        ..\group
 
-START RESOURCE    KitchenSync.rss
-TARGETPATH        \resource\apps
-HEADER
-END
 
 
-START RESOURCE    KitchenSync_reg.rss
-TARGETPATH        \private\10003A3F\apps
-END
 
-START RESOURCE    KitchenSync_loc.rss
-TARGETPATH        \resource\apps
-LANG              SC
-HEADER
-END
 
 
 SYSTEMINCLUDE   \epoc32\include
@@ -34,7 +23,10 @@ SOURCEPATH      ..\src
 USERINCLUDE     ..\inc
 
 
-SOURCE			KitchenSyncTimer.cpp KitchenSyncServer.cpp CKitchenSyncServerSession.cpp KitchenSyncData.cpp
+SOURCE          KitchenSyncAppUi.cpp
+SOURCE          KitchenSyncDocument.cpp
+SOURCE          KitchenSyncApplication.cpp
+SOURCE			KitchenSyncView.cpp
 
 LIBRARY         euser.lib
 LIBRARY         apparc.lib
@@ -55,16 +47,32 @@ LIBRARY			qikallocdll.lib
 LIBRARY			SmlClient.lib estor.lib efsrv.lib
 
 
-START BITMAP    KitchenSync.mbm
-TARGETPATH      \resource\apps
-HEADER
-SOURCEPATH      ..\images
-//SOURCE          c16 KitchenSync_18x18.bmp
-//SOURCE          8   KitchenSync_18x18_mask.bmp
-SOURCE          C16 KitchenSync_40x40.bmp
-SOURCE          8   KitchenSync_40x40_mask.bmp
-//SOURCE          C16 KitchenSync_64x64.bmp
-//SOURCE          8   KitchenSync_64x64_mask.bmp
+START BITMAP KitchenSync.mbm
+	TARGETPATH \resource\apps
+	HEADER
+	SOURCEPATH ..\images
+	SOURCE c16 SyncClient_40x40.bmp
+	SOURCE 8 SyncClient_40x40_mask.bmp
+	SOURCE c16 SyncClient_40x40.bmp
+	SOURCE 8 SyncClient_40x40_mask.bmp
+	SOURCE c16 SyncClient_40x40.bmp
+	SOURCE 8 SyncClient_40x40_mask.bmp
 END
 
 CAPABILITY LocalServices NetworkServices ReadDeviceData ReadUserData WriteDeviceData WriteUserData
+
+SOURCE RKitchenSyncServerSession.cpp
+START RESOURCE SyncClient_loc.rss
+	TARGETPATH \resource\apps
+	HEADER
+	LANG SC
+END
+SOURCEPATH ..\src
+START RESOURCE SyncClient_reg.rss
+	TARGETPATH \private\10003A3F\apps
+END
+SOURCEPATH ..\src
+START RESOURCE SyncClient.rss
+	TARGETPATH \resource\apps
+	HEADER
+END

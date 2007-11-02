@@ -1,7 +1,7 @@
 // bld.inf
 prj_mmpfiles
-KitchenSync.mmp
-KitchenSyncServer.mmp
+SyncClient.mmp
+SyncServer.mmp
 
 PRJ_PLATFORMS
 GCCE
