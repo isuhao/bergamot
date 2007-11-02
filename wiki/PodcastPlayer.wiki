@@ -9,10 +9,11 @@ Oh, and Podcast Player Project is just a placeholder name. Come up with somethin
 = Feature Ideas =
 
   * Download RSS in the background
-  * Parse RSS
   * Download MP3/whatever format
+  * Manual/automatic download
+  * Automatic check if on WLAN or 3G, option to download only on WLAN
   * Notify the user of a new podcast
-  * Keep track of position inside audio file, even between restarts
+  * Keep track of position inside audio file, even between restarts, and for multiple podcasts at a time
 
 = Help! =
 
