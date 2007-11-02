@@ -8,10 +8,10 @@
 
 "\Symbian\UIQ3SDK\epoc32\release\gcce\udeb\PodcastClient.exe"-"!:\sys\bin\PodcastClient.exe"
 "\Symbian\UIQ3SDK\epoc32\release\gcce\udeb\PodcastServer.exe"-"!:\sys\bin\PodcastServer.exe"
-"\Symbian\UIQ3SDK\epoc32\data\z\resource\apps\Podcast.rsc"-"!:\resource\apps\Podcast.rsc"
-"\Symbian\UIQ3SDK\epoc32\data\Z\Resource\Apps\Podcast.mbm"-"!:\resource\apps\Podcast.mbm"
-"\Symbian\UIQ3SDK\epoc32\data\z\resource\apps\Podcast_loc.RSC"-"!:\resource\apps\Podcast_loc.RSC"
-"\Symbian\UIQ3SDK\epoc32\data\z\private\10003a3f\apps\Podcast_reg.rsc"-"!:\private\10003a3f\import\apps\Podcast_reg.rsc"
+"\Symbian\UIQ3SDK\epoc32\data\z\resource\apps\PodcastClient.rsc"-"!:\resource\apps\PodcastClient.rsc"
+"\Symbian\UIQ3SDK\epoc32\data\Z\Resource\Apps\PodcastClient.mbm"-"!:\resource\apps\PodcastClient.mbm"
+"\Symbian\UIQ3SDK\epoc32\data\z\resource\apps\PodcastClient_loc.RSC"-"!:\resource\apps\PodcastClient_loc.RSC"
+"\Symbian\UIQ3SDK\epoc32\data\z\private\10003a3f\apps\PodcastClient_reg.rsc"-"!:\private\10003a3f\import\apps\PodcastClient_reg.rsc"
 
 ; Install autostart file
 ".\PodcastServerAutostart.ast"-"!:\private\10274b9f\import\PodcastServerAutostart.ast"

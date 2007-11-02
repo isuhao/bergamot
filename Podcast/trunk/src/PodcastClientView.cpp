@@ -111,9 +111,27 @@ void CPodcastClientView::ViewConstructL()
         CleanupStack::Pop(rowlayout);        
         
         User::LeaveIfError(serverSession.Connect());
-       
+        iPlayer = CMdaAudioPlayerUtility::NewL(*this);
+        TRAPD(error, iPlayer->OpenFileL(_L("d:\\test.mp3")));
+        
+        if (error != KErrNone) {
+        	RDebug::Print(_L("Error: %d"), error);
+        }
     }
 
 void CPodcastClientView::HandleControlEventL(CCoeControl *aControl, TCoeEvent aEventType) {
 
+}
+
+void CPodcastClientView::MapcPlayComplete(TInt aError) {
+	RDebug::Print(_L("Play Complete: %d"), aError);
+}
+
+void CPodcastClientView::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds &aDuration) {
+	RDebug::Print(_L("Init Complete: %d"), aError);
+	
+	if (aError == KErrNone) {
+	  iPlayer->Play();
+	  //  player->
+	}
 }
