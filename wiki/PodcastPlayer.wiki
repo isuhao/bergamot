@@ -1,10 +1,10 @@
-= Podcast Player =
+= Podcast Player Project =
 
 There seems to be interest in a good podcasting client for UIQ 3. The built-in media player does not cut it for serious podcast use.
 
-This project has just started, and there is no code as of today, however the basic structure  från KitchenSync is suitable as a starting point.
+This project has just started, and the code is based on the Sync project. There is [http://bergamot.googlecode.com/svn/Podcast/ some code] in Subversion, however it does not yet do anything useful.
 
-Oh, and Podcast Player is just a placeholder name. Come up with something better!
+Oh, and Podcast Player Project is just a placeholder name. Come up with something better!
 
 = Feature Ideas =
 
