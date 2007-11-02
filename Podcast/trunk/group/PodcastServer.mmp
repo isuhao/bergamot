@@ -1,0 +1,30 @@
+// PodcastServer.mmp
+
+TARGET            PodcastServer.exe
+TARGETTYPE        exe
+UID 0x100039CE 0x2000FB06
+
+VENDORID          0
+
+SYSTEMINCLUDE   \epoc32\include
+
+SOURCEPATH      ..\src
+USERINCLUDE     ..\inc
+
+SOURCE		PodcastServerTimer.cpp PodcastServer.cpp CPodcastServerSession.cpp PodcastData.cpp
+
+LIBRARY         euser.lib
+LIBRARY         apparc.lib
+LIBRARY         cone.lib
+LIBRARY         eikcore.lib
+LIBRARY         eikcoctl.lib
+LIBRARY         qikcore.lib
+LIBRARY         apgrfx.lib
+LIBRARY         ws32.lib
+LIBRARY         fbscli.lib
+LIBRARY         bafl.lib
+LIBRARY         gdi.lib
+LIBRARY         quiconfigclient.lib
+LIBRARY			estor.lib efsrv.lib
+
+CAPABILITY LocalServices NetworkServices ReadDeviceData ReadUserData WriteDeviceData WriteUserData

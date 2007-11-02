@@ -1,0 +1,19 @@
+#ifndef __PODCASTCLIENT_HRH__
+#define __PODCASTCLIENT_HRH__
+
+enum TPodcatClientCommands
+    {
+    EPodcastClientBaseViewPage = 1,
+    EMyAbout
+    };
+    
+enum TPodcastClientDefines
+	{
+	EMyViewBuildingBlockBase,
+	EMyViewChoiceListBase
+	};
+
+
+#endif
+
+

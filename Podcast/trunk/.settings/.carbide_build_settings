@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CarbideBuilderConfigInfo version="1">
+  <configuration name="Emulator Debug (WINSCW) [UIQ3]">
+    <sisBuilder additionalOptions="" cert="" contentSearchLocation="" key="" outputFileName="" password="" pkgFile="(none)" signedFileName=""/>
+    <envVars/>
+  </configuration>
+  <configuration name="Phone Release (GCCE) [UIQ3]">
+    <sisBuilder additionalOptions="" cert="" contentSearchLocation="" key="" outputFileName="" password="" pkgFile="(none)" signedFileName=""/>
+    <envVars/>
+  </configuration>
+</CarbideBuilderConfigInfo>

@@ -1,0 +1,9 @@
+// bld.inf
+prj_mmpfiles
+PodcastClient.mmp
+PodcastServer.mmp
+
+PRJ_PLATFORMS
+GCCE
+WINSCW
+
