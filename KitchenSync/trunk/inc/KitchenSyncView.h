@@ -24,6 +24,7 @@ public:
 	
 protected: 
 	void ViewConstructL();
+	void ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage);
 	
 private:
 	CKitchenSyncView(CQikAppUi& aAppUi);

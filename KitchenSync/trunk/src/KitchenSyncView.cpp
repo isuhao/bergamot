@@ -214,8 +214,15 @@ void CKitchenSyncView::ViewConstructL()
         
         User::LeaveIfError(serverSession.Connect());
        
-        ShowSyncProfiles(iContainer);
+        
     }
+
+void CKitchenSyncView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage)
+	{
+	iContainer->ResetAndDestroy();
+	ShowSyncProfiles(iContainer);
+	CQikViewBase::ViewActivatedL(aPrevViewId, aCustomMessageId, aCustomMessage);
+	}
 
 void CKitchenSyncView::HandleControlEventL(CCoeControl *aControl, TCoeEvent aEventType) {
 	if(aEventType == EEventStateChanged)
