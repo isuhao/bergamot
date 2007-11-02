@@ -1,5 +1,5 @@
-#ifndef KITCHENSYNCTIMER_H
-#define KITCHENSYNCTIMER_H
+#ifndef PODCASTSERVERTIMER_H
+#define PODCASTSERVERTIMER_H
 
 #include <e32base.h>
 #include "SyncMLDef.h"

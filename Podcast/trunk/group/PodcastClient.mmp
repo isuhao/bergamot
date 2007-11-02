@@ -61,12 +61,12 @@ START BITMAP    PodcastClient.mbm
 TARGETPATH      \resource\apps
 HEADER
 SOURCEPATH      ..\images
-SOURCE          c16 KitchenSync_40x40.bmp
-SOURCE          8   KitchenSync_40x40_mask.bmp
-SOURCE          C16 KitchenSync_40x40.bmp
-SOURCE          8   KitchenSync_40x40_mask.bmp
-SOURCE          C16 KitchenSync_40x40.bmp
-SOURCE          8   KitchenSync_40x40_mask.bmp
+SOURCE          c16 PodcastClient_40x40.bmp
+SOURCE          8   PodcastClient_40x40_mask.bmp
+SOURCE          C16 PodcastClient_40x40.bmp
+SOURCE          8   PodcastClient_40x40_mask.bmp
+SOURCE          C16 PodcastClient_40x40.bmp
+SOURCE          8   PodcastClient_40x40_mask.bmp
 END
 
 CAPABILITY LocalServices NetworkServices ReadDeviceData ReadUserData WriteDeviceData WriteUserData
