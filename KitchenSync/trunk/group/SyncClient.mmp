@@ -1,32 +1,20 @@
-// KitchenSync.mmp
-
-TARGET            KitchenSync.exe
+TARGET            SyncClient.exe
 TARGETTYPE        exe
 TARGETPATH        \sys\bin
 UID               0x100039CE 0x2000E8A1
 
-
 VENDORID          0
 
-
-SOURCEPATH        ..\group
-
-
-
-
-
-
 SYSTEMINCLUDE   \epoc32\include
-
 
 SOURCEPATH      ..\src
 USERINCLUDE     ..\inc
 
-
-SOURCE          KitchenSyncAppUi.cpp
-SOURCE          KitchenSyncDocument.cpp
-SOURCE          KitchenSyncApplication.cpp
-SOURCE			KitchenSyncView.cpp
+SOURCE          SyncClientAppUi.cpp
+SOURCE			SyncClientDocument.cpp 
+SOURCE			SyncClientApplication.cpp
+SOURCE 			SyncClientView.cpp 
+SOURCE			RSyncServerSession.cpp
 
 LIBRARY         euser.lib
 LIBRARY         apparc.lib
@@ -46,8 +34,7 @@ LIBRARY			qikdlg.lib // added for the dialog that are used
 LIBRARY			qikallocdll.lib 
 LIBRARY			SmlClient.lib estor.lib efsrv.lib
 
-
-START BITMAP KitchenSync.mbm
+START BITMAP SyncClient.mbm
 	TARGETPATH \resource\apps
 	HEADER
 	SOURCEPATH ..\images
@@ -59,9 +46,6 @@ START BITMAP KitchenSync.mbm
 	SOURCE 8 SyncClient_40x40_mask.bmp
 END
 
-CAPABILITY LocalServices NetworkServices ReadDeviceData ReadUserData WriteDeviceData WriteUserData
-
-SOURCE RKitchenSyncServerSession.cpp
 START RESOURCE SyncClient_loc.rss
 	TARGETPATH \resource\apps
 	HEADER
@@ -76,3 +60,5 @@ START RESOURCE SyncClient.rss
 	TARGETPATH \resource\apps
 	HEADER
 END
+
+CAPABILITY LocalServices NetworkServices ReadDeviceData ReadUserData WriteDeviceData WriteUserData
