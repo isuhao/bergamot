@@ -1,0 +1,17 @@
+= Podcast Player =
+
+There seems to be interest in a good podcasting client for UIQ 3. The built-in media player does not cut it for serious podcast use.
+
+This project has just started, and there is no code as of today, however the basic structure  från KitchenSync is suitable as a starting point.
+
+= Feature Ideas =
+
+  * Download RSS in the background
+  * Parse RSS
+  * Download MP3/whatever format
+  * Notify the user of a new podcast
+  * Keep track of position inside audio file, even between restarts
+
+= Help! =
+
+Please help me out! Add any ideas as comments to this wiki page, or contact me at teknolog (at) gmail (dot) com.
