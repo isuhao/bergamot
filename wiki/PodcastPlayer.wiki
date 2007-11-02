@@ -4,6 +4,8 @@ There seems to be interest in a good podcasting client for UIQ 3. The built-in m
 
 This project has just started, and there is no code as of today, however the basic structure  från KitchenSync is suitable as a starting point.
 
+Oh, and Podcast Player is just a placeholder name. Come up with something better!
+
 = Feature Ideas =
 
   * Download RSS in the background
