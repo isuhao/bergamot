@@ -1,0 +1,17 @@
+%{"SyncClient"}
+:"AVendor"
+#{"SyncClient"}, (0x2000E8A1), 1, 0, 0, TYPE=SA
+(0x101F6300), 3, 0, 0, {"UIQ30ProductID"}
+
+; Freeware installation "warning" required by Symbian signed
+"\Symbian\UIQ3SDK\KitchenSync\group\FreewareWarningEN.txt"-"",FT 
+
+"\Symbian\UIQ3SDK\epoc32\release\gcce\urel\SyncClient.exe"-"!:\sys\bin\SyncClient.exe"
+"\Symbian\UIQ3SDK\epoc32\release\gcce\urel\SyncServer.exe"-"!:\sys\bin\SyncServer.exe"
+"\Symbian\UIQ3SDK\epoc32\data\z\resource\apps\SyncClient.rsc"-"!:\resource\apps\SyncClient.rsc"
+"\Symbian\UIQ3SDK\epoc32\data\Z\Resource\Apps\SyncClient.mbm"-"!:\resource\apps\SyncClient.mbm"
+"\Symbian\UIQ3SDK\epoc32\data\z\resource\apps\SyncClient_loc.RSC"-"!:\resource\apps\SyncClient_loc.RSC"
+"\Symbian\UIQ3SDK\epoc32\data\z\private\10003a3f\apps\SyncClient_reg.rsc"-"!:\private\10003a3f\import\apps\SyncClient_reg.rsc"
+
+; Install autostart file
+".\SyncServerAutostart.ast"-"!:\private\10274b9f\import\SyncServerAutostart.ast"

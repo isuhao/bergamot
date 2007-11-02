@@ -1,0 +1,8 @@
+prj_mmpfiles
+SyncClient.mmp
+SyncServer.mmp
+
+PRJ_PLATFORMS
+GCCE
+WINSCW
+
