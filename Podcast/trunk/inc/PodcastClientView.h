@@ -9,14 +9,17 @@
 #include <e32cmn.h>
 #include "RPodcastServerSession.h"
 #include "PodcastClientGlobals.h"
+#include <MdaAudioSamplePlayer.h>
 
-class CPodcastClientView : public CQikViewBase
+class CPodcastClientView : public CQikViewBase,  public MMdaAudioPlayerCallback
 	{
 public:
 	static CPodcastClientView* NewLC(CQikAppUi& aAppUi);
 	~CPodcastClientView();
 	TVwsViewId ViewId()const;
 	void HandleCommandL(CQikCommand& aCommand);
+    void MapcPlayComplete(TInt aError);
+	void MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds &aDuration);
 	
 protected: 
 	void ViewConstructL();
@@ -29,5 +32,6 @@ private:
 private:
 	RPodcastServerSession serverSession;
 	CQikScrollableContainer* iContainer;
+    CMdaAudioPlayerUtility *iPlayer;
 	};
 #endif

@@ -56,6 +56,9 @@ LIBRARY			eikctl.lib // added due to the eik controls
 LIBRARY			qikdlg.lib // added for the dialog that are used
 LIBRARY			qikallocdll.lib 
 LIBRARY			estor.lib efsrv.lib
+LIBRARY			MediaClientAudio.lib
+LIBRARY			MediaClient.lib
+LIBRARY			MMCommon.lib
 
 START BITMAP    PodcastClient.mbm
 TARGETPATH      \resource\apps
