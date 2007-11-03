@@ -1,21 +1,21 @@
-#include "KitchenSyncTimer.h"
+#include "SyncServerTimer.h"
 #include "e32std.h"
 #include <EIKENV.h>
 #include <SyncMLClient.h>
 #include <SyncMLClientDS.h>
 
-CKitchenSyncTimer::CKitchenSyncTimer(TSmlProfileId anId) : CTimer::CTimer(EPriorityIdle) {
+CSyncServerTimer::CSyncServerTimer(TSmlProfileId anId) : CTimer::CTimer(EPriorityIdle) {
 	profileId = anId;
 }
 
-CKitchenSyncTimer::~CKitchenSyncTimer() {
+CSyncServerTimer::~CSyncServerTimer() {
 }
-void CKitchenSyncTimer::ConstructL() {
+void CSyncServerTimer::ConstructL() {
 	CTimer::ConstructL();
 	CActiveScheduler::Add(this);
 }
 
-void CKitchenSyncTimer::RunL() {
+void CSyncServerTimer::RunL() {
 	RDebug::Print(_L("Sync account %d"), profileId);
 	RSyncMLSession session;
 	TInt error;
@@ -51,12 +51,12 @@ void CKitchenSyncTimer::RunL() {
 	RunPeriodically();
 }
 
-void CKitchenSyncTimer::SetPeriod(int aPeriod) {
+void CSyncServerTimer::SetPeriod(int aPeriod) {
 	RDebug::Print(_L("Setting period to %d"), aPeriod);
 	thePeriod = aPeriod;
 }
 
-void CKitchenSyncTimer::RunPeriodically() {
+void CSyncServerTimer::RunPeriodically() {
 	RDebug::Print(_L("RunPeriodically; thePeriod=%d"), thePeriod);
 	TTime time;
 	time.UniversalTime();

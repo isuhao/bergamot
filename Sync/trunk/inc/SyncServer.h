@@ -1,16 +1,16 @@
-#ifndef KITCHENSYNCSERVER_H_
-#define KITCHENSYNCSERVER_H_
+#ifndef SYNCSERVER_H_
+#define SYNCSERVER_H_
 
 #include <e32base.h>
-#include "KitchenSyncData.h"
+#include "SyncServerData.h"
 
 const TUint KDefaultHeapSize=0x10000;
 const TUint KDefaultMessageSlots=4;
 
 _LIT(KConfigFileName, "config.dat");
-_LIT(KKitchenSyncServerName, "KitchenSyncServer");
+_LIT(KSyncServerName, "SyncServer");
 
-enum TKitchenSyncServerPanic
+enum TSyncServerPanic
 {
 	EBadRequest,
 	EGetTimer,
@@ -20,17 +20,17 @@ enum TKitchenSyncServerPanic
 	EStartServer
 };
 
-class CKitchenSyncServer : public CServer2
+class CSyncServer : public CServer2
 {
 public:
-	CKitchenSyncServer(CActive::TPriority aActiveObjectPriority);
+	CSyncServer(CActive::TPriority aActiveObjectPriority);
 	CSession2 * NewSessionL(const TVersion& aVersion,
 	const RMessage2& aMessage) const;
 	static TInt ThreadFunction(TAny *aParam);
-	static void PanicServer(TKitchenSyncServerPanic aPanic);
+	static void PanicServer(TSyncServerPanic aPanic);
 public:
-	void SetTimer(TSmlProfileId profileId, TKitchenSyncPeriod period);
-	TKitchenSyncPeriod GetTimer(TSmlProfileId profileId);
+	void SetTimer(TSmlProfileId profileId, TSyncServerPeriod period);
+	TSyncServerPeriod GetTimer(TSmlProfileId profileId);
 
 public:
 	void LoadSettingsL();
@@ -38,7 +38,7 @@ public:
 	
 private:
 	void RunL();
-	RArray<CKitchenSyncData> timerArray;
+	RArray<CSyncServerData> timerArray;
 };
 
-#endif /*KITCHENSYNCSERVER_H_*/
+#endif

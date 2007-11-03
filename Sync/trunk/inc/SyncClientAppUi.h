@@ -1,22 +1,20 @@
-// KitchenSyncAppUi.h
-
-#ifndef __KitchenSyncAPPUI_H__
-#define __KitchenSyncAPPUI_H__
+#ifndef __SYNCCLIENTAPPUI_H__
+#define __SYNCCLIENTAPPUI_H__
 
 #include <QikAppUi.h>
-#include "KitchenSyncView.h"
+#include "SyncClientView.h"
 
 
-class CKitchenSyncAppUi : public CQikAppUi
+class CSyncClientAppUi : public CQikAppUi
 {
 public:
   void ConstructL();
-  ~CKitchenSyncAppUi();
+  ~CSyncClientAppUi();
 
 private:
   void HandleCommandL(CQikCommand &aCommand);
 
-  CKitchenSyncView* iBaseView;
+  CSyncClientView* iBaseView;
 };
 
 

@@ -1,21 +1,21 @@
-#ifndef RKITCHENSYNCSERVERSESSION_H_
-#define RKITCHENSYNCSERVERSESSION_H_
+#ifndef RSYNCSERVERSESSION_H_
+#define RSYNCSERVERSESSION_H_
 
 #include <e32std.h>
-#include "CKitchenSyncServerSession.h"
+#include "CSyncServerSession.h"
 
-_LIT(KKitchenSyncServerExe, "\\sys\\bin\\KitchenSyncServer.exe");
-_LIT(KKitchenSyncServerSemaphore, "KSSSemaphore");
+_LIT(KSyncServerExe, "\\sys\\bin\\SyncServer.exe");
+_LIT(KSyncServerSemaphore, "KSyncServerSemaphore");
 
-class RKitchenSyncServerSession : public RSessionBase
+class RSyncServerSession : public RSessionBase
 {
 public:
 	TInt Connect();
-	void SetTimer(TSmlProfileId profileId, TKitchenSyncPeriod period);
-	TKitchenSyncPeriod GetTimer(TSmlProfileId profileId);
+	void SetTimer(TSmlProfileId profileId, TSyncServerPeriod period);
+	TSyncServerPeriod GetTimer(TSmlProfileId profileId);
 	
 private:
 	RThread iServerThread;
 };
 
-#endif /*KITCHENSYNCSERVERSESSION_H_*/
+#endif

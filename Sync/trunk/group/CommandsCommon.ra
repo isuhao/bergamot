@@ -1,7 +1,7 @@
 // bld.inf
 #include <eikcore.rsg>
 
-RESOURCE QIK_COMMAND_LIST r_KitchenSync_baseview_commands
+RESOURCE QIK_COMMAND_LIST r_SyncClient_baseview_commands
   {
   items=
     {

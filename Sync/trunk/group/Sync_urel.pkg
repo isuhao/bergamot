@@ -4,7 +4,7 @@
 (0x101F6300), 3, 0, 0, {"UIQ30ProductID"}
 
 ; Freeware installation "warning" required by Symbian signed
-"\Symbian\UIQ3SDK\KitchenSync\group\FreewareWarningEN.txt"-"",FT 
+"\Symbian\UIQ3SDK\Sync\group\FreewareWarningEN.txt"-"",FT 
 
 "\Symbian\UIQ3SDK\epoc32\release\gcce\urel\SyncClient.exe"-"!:\sys\bin\SyncClient.exe"
 "\Symbian\UIQ3SDK\epoc32\release\gcce\urel\SyncServer.exe"-"!:\sys\bin\SyncServer.exe"

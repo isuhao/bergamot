@@ -1,12 +1,11 @@
-// KitchenSyncApplication.h
-#ifndef __KitchenSyncAPPLICATION_H__
-#define __KitchenSyncAPPLICATION_H__
+#ifndef __SYNCCLIENTAPPLICATION_H__
+#define __SYNCCLIENTAPPLICATION_H__
 
 #include <QikApplication.h>
 #include <EikStart.h>
-#include "KitchenSyncDocument.h"
+#include "SyncClientDocument.h"
 
-class CKitchenSyncApplication : public CQikApplication
+class CSyncClientApplication : public CQikApplication
 {
 public:
   CApaDocument* CreateDocumentL();

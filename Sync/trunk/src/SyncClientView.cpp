@@ -5,13 +5,13 @@
 #include <QikGridLayoutManager.h>
 #include <QikBuildingBlock.h>
 #include <QikCommand.h>
-#include "KitchenSync.hrh"
-#include "KitchenSyncView.h"
-#include <KitchenSync.rsg>
+#include "SyncClient.hrh"
+#include "SyncClientView.h"
+#include <SyncClient.rsg>
 #include <QikGridLayoutManager.h>
 #include <SyncMLClient.h>
 #include <SyncMLClientDS.h>
-#include "KitchenSyncTimer.h"
+#include "SyncServerTimer.h"
 #include "e32debug.h"
 #include "f32file.h"
 #include <BAUTILS.H>
@@ -20,11 +20,11 @@
 Creates and constructs the view.
 
 @param aAppUi Reference to the AppUi
-@return Pointer to a CKitchenSyncView object
+@return Pointer to a CSyncClientView object
 */
-CKitchenSyncView* CKitchenSyncView::NewLC(CQikAppUi& aAppUi)
+CSyncClientView* CSyncClientView::NewLC(CQikAppUi& aAppUi)
 	{
-	CKitchenSyncView* self = new (ELeave) CKitchenSyncView(aAppUi);
+	CSyncClientView* self = new (ELeave) CSyncClientView(aAppUi);
 	CleanupStack::PushL(self);
 	self->ConstructL();
 	return self;
@@ -41,7 +41,7 @@ default view.
 
 @param aAppUi Reference to the application UI
 */
-CKitchenSyncView::CKitchenSyncView(CQikAppUi& aAppUi) 
+CSyncClientView::CSyncClientView(CQikAppUi& aAppUi) 
 	: CQikViewBase(aAppUi, KNullViewId)
 	{
 	}
@@ -49,14 +49,14 @@ CKitchenSyncView::CKitchenSyncView(CQikAppUi& aAppUi)
 /**
 Destructor for the view
 */
-CKitchenSyncView::~CKitchenSyncView()
+CSyncClientView::~CSyncClientView()
 	{
 	}
 
 /**
 2nd stage construction of the view.
 */
-void CKitchenSyncView::ConstructL()
+void CSyncClientView::ConstructL()
 	{
 	// Calls ConstructL that initialises the standard values. 
 	// This should always be called in the concrete view implementations.
@@ -68,9 +68,9 @@ Returns the view Id
 
 @return Returns the Uid of the view
 */
-TVwsViewId CKitchenSyncView::ViewId()const
+TVwsViewId CSyncClientView::ViewId()const
 	{
-	return TVwsViewId(KUidKitchenSyncID, KUidListBoxListView);
+	return TVwsViewId(KUidSyncClientID, KUidListBoxListView);
 	}
 
 /**
@@ -81,7 +81,7 @@ The command Ids are defined in the .hrh file.
 @param aCommand The command to be executed
 @see CQikViewBase::HandleCommandL
 */
-void CKitchenSyncView::HandleCommandL(CQikCommand& aCommand)
+void CSyncClientView::HandleCommandL(CQikCommand& aCommand)
 	{
 	switch(aCommand.Id())
 		{
@@ -94,7 +94,7 @@ void CKitchenSyncView::HandleCommandL(CQikCommand& aCommand)
 	}
 
 
-void CKitchenSyncView::CreateChoiceListItem(CQikScrollableContainer* container, int id, TDesC16 &caption, int state ) {
+void CSyncClientView::CreateChoiceListItem(CQikScrollableContainer* container, int id, TDesC16 &caption, int state ) {
 	// Create the System Building Block and set the caption.
 	CQikBuildingBlock* block = CQikBuildingBlock::CreateSystemBuildingBlockL(EQikCtCaptionedTwolineBuildingBlock);
 	container->AddControlLC(block, EMyViewBuildingBlockBase+id);
@@ -132,7 +132,7 @@ void CKitchenSyncView::CreateChoiceListItem(CQikScrollableContainer* container, 
 	CleanupStack::Pop(block);
 }
 
-void CKitchenSyncView::ShowSyncProfiles(CQikScrollableContainer* container) {
+void CSyncClientView::ShowSyncProfiles(CQikScrollableContainer* container) {
 	RDebug::Print(_L("ShowSyncProfiles"));
 	RSyncMLSession session;
 	
@@ -148,7 +148,7 @@ void CKitchenSyncView::ShowSyncProfiles(CQikScrollableContainer* container) {
 	TRAP(error, session.ListProfilesL(profiles, ESmlDataSync));
 	if (error!=KErrNone)
 		{
-		CEikonEnv::InfoWinL(_L("KitchenSync"), _L("ListProfilesL error"));
+		CEikonEnv::InfoWinL(_L("SyncClient"), _L("ListProfilesL error"));
 		}
 	
 	TInt numItems = profiles.Count();
@@ -164,7 +164,7 @@ void CKitchenSyncView::ShowSyncProfiles(CQikScrollableContainer* container) {
 			{
 				_LIT(KRowFormatter, "OpenL error: %d");
 				Buffer.Format(KRowFormatter, error);
-				CEikonEnv::InfoWinL(_L("KitchenSync"), Buffer);
+				CEikonEnv::InfoWinL(_L("SyncClient"), Buffer);
 			}
 	
 		TRAP(error, profile.DisplayName());
@@ -172,10 +172,10 @@ void CKitchenSyncView::ShowSyncProfiles(CQikScrollableContainer* container) {
 			{
 				_LIT(KRowFormatter, "DisplayName error: %d");
 				Buffer.Format(KRowFormatter, error);
-				CEikonEnv::InfoWinL(_L("KitchenSync"), Buffer);
+				CEikonEnv::InfoWinL(_L("SyncClient"), Buffer);
 			}
 		
-		TKitchenSyncPeriod period = serverSession.GetTimer(profiles[i]);
+		TSyncServerPeriod period = serverSession.GetTimer(profiles[i]);
 		RDebug::Print(_L("DisplayName: %S, period=%d"), &profile.DisplayName(), period);
 
 		if(profile.DisplayName().Compare(_L("iSync")) != 0) {
@@ -193,7 +193,7 @@ void CKitchenSyncView::ShowSyncProfiles(CQikScrollableContainer* container) {
 	session.Close();
 }
 
-void CKitchenSyncView::ViewConstructL()
+void CSyncClientView::ViewConstructL()
     {
         // Give a layout manager to the view
         CQikGridLayoutManager* gridlayout = CQikGridLayoutManager::NewLC();
@@ -217,20 +217,20 @@ void CKitchenSyncView::ViewConstructL()
         
     }
 
-void CKitchenSyncView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage)
+void CSyncClientView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage)
 	{
 	iContainer->ResetAndDestroy();
 	ShowSyncProfiles(iContainer);
 	CQikViewBase::ViewActivatedL(aPrevViewId, aCustomMessageId, aCustomMessage);
 	}
 
-void CKitchenSyncView::HandleControlEventL(CCoeControl *aControl, TCoeEvent aEventType) {
+void CSyncClientView::HandleControlEventL(CCoeControl *aControl, TCoeEvent aEventType) {
 	if(aEventType == EEventStateChanged)
 	{
 		int profileId = aControl->UniqueHandle() - EMyViewChoiceListBase;
 		CEikChoiceList* chlst = (CEikChoiceList*) aControl; //LocateControlByUniqueHandle<CEikChoiceList>(aControl->UniqueHandle());
 		RDebug::Print(_L("Handle: %d"), aControl->UniqueHandle());
-		TKitchenSyncPeriod period = (TKitchenSyncPeriod) chlst->CurrentItem();
+		TSyncServerPeriod period = (TSyncServerPeriod) chlst->CurrentItem();
 		RDebug::Print(_L("HandleControlEvent for profileNum=%d, item=%d"), profileId, period);
 		serverSession.SetTimer(profileId,period);
 	}

@@ -1,67 +1,67 @@
-#include "KitchenSyncServer.h"
-#include "CKitchenSyncServerSession.h"
-#include "RKitchenSyncServerSession.h"
-#include "KitchenSyncData.h"
+#include "SyncServer.h"
+#include "CSyncServerSession.h"
+#include "RSyncServerSession.h"
+#include "SyncServerData.h"
 #include <f32file.h>
 #include <BAUTILS.H>
 #include <S32FILE.H>
 #include <e32base.h>
-CKitchenSyncServer::CKitchenSyncServer(CActive::TPriority aActiveObjectPriority) 
+
+CSyncServer::CSyncServer(CActive::TPriority aActiveObjectPriority) 
 	: CServer2(aActiveObjectPriority) { }
 
-CSession2* CKitchenSyncServer::NewSessionL(const TVersion& aVersion, const RMessage2& /*aMessage*/) const
+CSession2* CSyncServer::NewSessionL(const TVersion& /*aVersion*/, const RMessage2& /*aMessage*/) const
 {
-	return new (ELeave) CKitchenSyncServerSession;
+	return new (ELeave) CSyncServerSession;
 }
 
-void CKitchenSyncServer::PanicServer(TKitchenSyncServerPanic aPanic)
+void CSyncServer::PanicServer(TSyncServerPanic aPanic)
 {
     _LIT(KTxtServerPanic,"Sync server panic");
     User::Panic(KTxtServerPanic,aPanic);
 }
 
-void CKitchenSyncServer::RunL() {
-	RDebug::Print(_L("***Server RunL"));
+void CSyncServer::RunL() {
 	CServer2::RunL();
 }
-TInt CKitchenSyncServer::ThreadFunction(TAny * /*aStarted */)
+TInt CSyncServer::ThreadFunction(TAny * /*aStarted */)
 {
 	CTrapCleanup* cleanup=CTrapCleanup::New();
 	if (cleanup == NULL)
 	 {
-	    CKitchenSyncServer::PanicServer(ECreateTrapCleanup);
+	    CSyncServer::PanicServer(ECreateTrapCleanup);
 	 }
 
 	CActiveScheduler *pA=new CActiveScheduler;
-	__ASSERT_ALWAYS(pA!=NULL,CKitchenSyncServer::PanicServer(EMainSchedulerError));
+	__ASSERT_ALWAYS(pA!=NULL,CSyncServer::PanicServer(EMainSchedulerError));
 	CActiveScheduler::Install(pA);
 	
-	CKitchenSyncServer *pS = new CKitchenSyncServer(EPriorityHigh);
+	CSyncServer *pS = new CSyncServer(EPriorityHigh);
 	
     TRAPD(error, pS->LoadSettingsL());	
     if (error != KErrNone)
     {
         	RDebug::Print(_L("LoadSettingsL error %d"), error);
-            CKitchenSyncServer::PanicServer(EStartServer);
+            CSyncServer::PanicServer(EStartServer);
     }
 
-    error = pS->Start(KKitchenSyncServerName);
+    error = pS->Start(KSyncServerName);
     if (error != KErrNone)
     {
     	RDebug::Print(_L("pS->Start error"));
-        CKitchenSyncServer::PanicServer(EStartServer);
+        CSyncServer::PanicServer(EStartServer);
     }
     
     
     RSemaphore s;
-	error = s.OpenGlobal(KKitchenSyncServerSemaphore);
+	error = s.OpenGlobal(KSyncServerSemaphore);
 	if (error == KErrNone) {
 		RDebug::Print(_L("Signalling semaphore"));
 		s.Signal();
 	}
 	s.Close();
 	
-    //User::RenameThread(KKitchenSyncServerName);
+    //User::RenameThread(KSyncServerName);
     //RDebug::Print(_L("Rendezvous"));
    
     //RProcess::Rendezvous(KErrNone);
@@ -76,7 +76,7 @@ TInt CKitchenSyncServer::ThreadFunction(TAny * /*aStarted */)
     return KErrNone;
 }
 
-void CKitchenSyncServer::LoadSettingsL() {
+void CSyncServer::LoadSettingsL() {
 	RDebug::Print(_L("LoadSettings"));
 	RFs fsSession;
 	int error = fsSession.Connect(); 
@@ -114,7 +114,7 @@ void CKitchenSyncServer::LoadSettingsL() {
 	int count = instream.ReadInt32L();
 	RDebug::Print(_L("Read count: %d"), count);
 	for (int i=0;i<count;i++) {
-		CKitchenSyncData readData;
+		CSyncServerData readData;
 		instream  >> readData;	
 		timerArray.Append(readData);
 		RDebug::Print(_L("Read settings %d: profile %d with period %d"), i, readData.profileId, readData.period);
@@ -126,7 +126,7 @@ void CKitchenSyncServer::LoadSettingsL() {
 	CleanupStack::Pop(store);
 }
 
-void CKitchenSyncServer::SaveSettings() 
+void CSyncServer::SaveSettings() 
 {
 	RDebug::Print(_L("SaveSettings"));
 	RFs fsSession;
@@ -162,9 +162,9 @@ void CKitchenSyncServer::SaveSettings()
 	CleanupStack::Pop(store);
 }
 
-void CKitchenSyncServer::SetTimer(TSmlProfileId profileId, TKitchenSyncPeriod period)
+void CSyncServer::SetTimer(TSmlProfileId profileId, TSyncServerPeriod period)
 	{
-	CKitchenSyncData* sData = NULL;
+	CSyncServerData* sData = NULL;
 	RDebug::Print(_L("SetTimer for profile %d"), profileId);
 	
 	for (int i=0;i<timerArray.Count();i++) {
@@ -176,8 +176,8 @@ void CKitchenSyncServer::SetTimer(TSmlProfileId profileId, TKitchenSyncPeriod pe
 	
 	if (sData == NULL) {
 		RDebug::Print(_L("Creating new sync data for profile %d"), profileId);
-		sData = new CKitchenSyncData();
-		sData->timer = new CKitchenSyncTimer(profileId);
+		sData = new CSyncServerData();
+		sData->timer = new CSyncServerTimer(profileId);
 		sData->timer->ConstructL();
 		sData->profileId = profileId;
 		sData->period = period;
@@ -190,7 +190,7 @@ void CKitchenSyncServer::SetTimer(TSmlProfileId profileId, TKitchenSyncPeriod pe
 	} else {
 		if (sData->timer == NULL) {
 			RDebug::Print(_L("Creating new timer for profile %d"), profileId);
-			sData->timer = new CKitchenSyncTimer(profileId);
+			sData->timer = new CSyncServerTimer(profileId);
 			sData->timer->ConstructL();
 		} else if (sData->timer != NULL) {
 			RDebug::Print(_L("Stopping existing timer for profile %d"), profileId);
@@ -209,13 +209,13 @@ void CKitchenSyncServer::SetTimer(TSmlProfileId profileId, TKitchenSyncPeriod pe
 	}
 }
 
-TKitchenSyncPeriod CKitchenSyncServer::GetTimer(TSmlProfileId profileId)
+TSyncServerPeriod CSyncServer::GetTimer(TSmlProfileId profileId)
 	{
 	for (int i=0;i<timerArray.Count();i++)
 		{
 			if (timerArray[i].profileId == profileId) {
 				RDebug::Print(_L("Found profile %d with period %d"), profileId, timerArray[i].period);
-				return (TKitchenSyncPeriod) timerArray[i].period;
+				return (TSyncServerPeriod) timerArray[i].period;
 			}
 		}
 	
@@ -224,17 +224,17 @@ TKitchenSyncPeriod CKitchenSyncServer::GetTimer(TSmlProfileId profileId)
 
 GLDEF_C TInt E32Main()
 {
-	RDebug::Print(_L("KitchenSyncServer: Starting"));
+	RDebug::Print(_L("SyncServer: Starting"));
 
 	CTrapCleanup* cleanup=CTrapCleanup::New();
 	TInt r=KErrNoMemory;
 	if (cleanup)
 		{
-		TRAP(r,CKitchenSyncServer::ThreadFunction(NULL););
+		TRAP(r,CSyncServer::ThreadFunction(NULL););
 		delete cleanup;
 		}
 	__UHEAP_MARKEND;
-	RDebug::Print(_L("KitchenSyncServer: Exiting, error=%d"), r);	
+	RDebug::Print(_L("SyncServer: Exiting, error=%d"), r);	
 	return r;
 }
 

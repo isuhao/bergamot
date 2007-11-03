@@ -1,10 +1,10 @@
-#ifndef KITCHENSYNCDATA_H_
-#define KITCHENSYNCDATA_H_
+#ifndef SYNCSERVERDATA_H_
+#define SYNCSERVERDATA_H_
 
 #include <S32STRM.H>
-#include "KitchenSyncTimer.h"
+#include "SyncServerTimer.h"
 
-enum TKitchenSyncPeriod
+enum TSyncServerPeriod
 {
 	ENever,
 	EFiveMinutes,
@@ -14,15 +14,15 @@ enum TKitchenSyncPeriod
 	ENoPeriod = -1
 };
 
-class CKitchenSyncData {
+class CSyncServerData {
 public:
 	void ExternalizeL(RWriteStream& aStream) const;
 	void InternalizeL(RReadStream& aStream);
 
 public:
 	TSmlProfileId profileId;
-	TKitchenSyncPeriod period;
-	CKitchenSyncTimer* timer;
+	TSyncServerPeriod period;
+	CSyncServerTimer* timer;
 };
 
 #endif

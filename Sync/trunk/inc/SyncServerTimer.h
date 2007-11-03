@@ -1,13 +1,13 @@
-#ifndef KITCHENSYNCTIMER_H
-#define KITCHENSYNCTIMER_H
+#ifndef SYNCSERVERTIMER_H
+#define SYNCSERVERTIMER_H
 
 #include <e32base.h>
 #include "SyncMLDef.h"
 
-class CKitchenSyncTimer : public CTimer {
+class CSyncServerTimer : public CTimer {
 public:
-	CKitchenSyncTimer(TSmlProfileId anId);
-	~CKitchenSyncTimer();
+	CSyncServerTimer(TSmlProfileId anId);
+	~CSyncServerTimer();
 	void ConstructL();
 	void RunL();
 	void RunPeriodically();

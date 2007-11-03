@@ -1,19 +1,17 @@
-// KitchenSync.hrh
-#ifndef __KitchenSync_HRH__
-#define __KitchenSync_HRH__
+#ifndef __SYNCCLIENT_HRH__
+#define __SYNCCLIENT_HRH__
 
-enum TKitchenSyncCommands
+enum TSyncClientCommands
     {
-    EKitchenSyncBaseViewPage = 1,
+    ESyncClientBaseViewPage = 1,
     EMyAbout
     };
     
-enum TKitchenSyncDefines
+enum TSyncClientDefines
 	{
 	EMyViewBuildingBlockBase,
 	EMyViewChoiceListBase
 	};
-
 
 #endif
 

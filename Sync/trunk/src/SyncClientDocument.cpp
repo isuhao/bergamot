@@ -1,17 +1,17 @@
-// KitchenSyncDocument.cpp
-#include "KitchenSyncDocument.h"
+// SyncClientDocument.cpp
+#include "SyncClientDocument.h"
 
 
 /*-----------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------*/
-CKitchenSyncDocument::CKitchenSyncDocument (CQikApplication& aApp) : CQikDocument(aApp) {}
+CSyncClientDocument::CSyncClientDocument (CQikApplication& aApp) : CQikDocument(aApp) {}
 
 
 /*-----------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------*/
-CKitchenSyncDocument* CKitchenSyncDocument::NewL(CQikApplication& aApp)
+CSyncClientDocument* CSyncClientDocument::NewL(CQikApplication& aApp)
 {
-  CKitchenSyncDocument* self = new (ELeave) CKitchenSyncDocument(aApp);
+  CSyncClientDocument* self = new (ELeave) CSyncClientDocument(aApp);
   CleanupStack::PushL(self);
   self->ConstructL();
   CleanupStack::Pop(self);
@@ -21,17 +21,17 @@ CKitchenSyncDocument* CKitchenSyncDocument::NewL(CQikApplication& aApp)
 
 /*-----------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------*/
-void CKitchenSyncDocument::ConstructL() {}
+void CSyncClientDocument::ConstructL() {}
 
 
 /*-----------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------*/
-CKitchenSyncDocument::~CKitchenSyncDocument() {}
+CSyncClientDocument::~CSyncClientDocument() {}
 
 
 /*-----------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------*/
-CQikAppUi* CKitchenSyncDocument::CreateAppUiL()
+CQikAppUi* CSyncClientDocument::CreateAppUiL()
 {
-  return new(ELeave) CKitchenSyncAppUi;
+  return new(ELeave) CSyncClientAppUi;
 }

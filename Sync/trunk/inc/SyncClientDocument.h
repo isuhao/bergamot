@@ -1,22 +1,19 @@
-// KitchenSyncDocument.h
-
-#ifndef __KitchenSyncDOCUMENT_H__
-#define __KitchenSyncDOCUMENT_H__
+#ifndef __SYNCCLIENTDOCUMENT_H__
+#define __SYNCCLIENTDOCUMENT_H__
 
 #include <QikDocument.h>
 #include <QikApplication.h>
 #include <QikAppUi.h>
-#include "KitchenSyncAppUi.h"
+#include "SyncClientAppUi.h"
 
-
-class CKitchenSyncDocument : public CQikDocument
+class CSyncClientDocument : public CQikDocument
 {
 public:
-  static CKitchenSyncDocument* NewL(CQikApplication& aAppUi);
-  ~CKitchenSyncDocument();
+  static CSyncClientDocument* NewL(CQikApplication& aAppUi);
+  ~CSyncClientDocument();
 private:
   CQikAppUi* CreateAppUiL();
-  CKitchenSyncDocument (CQikApplication& aApp);
+  CSyncClientDocument (CQikApplication& aApp);
   void ConstructL();
 };
 

@@ -1,16 +1,14 @@
-// KitchenSyncAppUi.cpp
-
-#include "KitchenSyncAppUi.h"
-#include "KitchenSyncView.h"
+#include "SyncClientAppUi.h"
+#include "SyncClientView.h"
 #include <QikCommand.h>
 
 
 /*-----------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------*/
-void CKitchenSyncAppUi::ConstructL()
+void CSyncClientAppUi::ConstructL()
 {
   CQikAppUi::ConstructL();
-  CKitchenSyncView* baseView = CKitchenSyncView::NewLC(*this);
+  CSyncClientView* baseView = CSyncClientView::NewLC(*this);
   AddViewL(*baseView);
   iBaseView = baseView;
   CleanupStack::Pop(baseView);
@@ -18,13 +16,13 @@ void CKitchenSyncAppUi::ConstructL()
 
 /*-----------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------*/
-CKitchenSyncAppUi::~CKitchenSyncAppUi()
+CSyncClientAppUi::~CSyncClientAppUi()
 {
 }
 
 /*-----------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------*/
-void CKitchenSyncAppUi::HandleCommandL(CQikCommand &aCommand)
+void CSyncClientAppUi::HandleCommandL(CQikCommand &aCommand)
 {
   TQikViewMode viewMode = iBaseView->ViewMode();
 
@@ -32,7 +30,7 @@ void CKitchenSyncAppUi::HandleCommandL(CQikCommand &aCommand)
   {
         case EMyAbout:
         {
-                CEikonEnv::InfoWinL(_L("KitchenSync"), _L("Version 1.0"));
+                CEikonEnv::InfoWinL(_L("SyncClient"), _L("Version 1.0"));
         }
         return;
   }

@@ -1,29 +1,29 @@
 // Application.cpp
 
-#include "KitchenSyncView.h"
-#include "KitchenSyncApplication.h"
+#include "SyncClientView.h"
+#include "SyncClientApplication.h"
 
 
 /*-----------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------*/
-CApaDocument* CKitchenSyncApplication::CreateDocumentL()
+CApaDocument* CSyncClientApplication::CreateDocumentL()
 {
-  return CKitchenSyncDocument::NewL(*this);
+  return CSyncClientDocument::NewL(*this);
 }
 
 /*-----------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------*/
-TUid CKitchenSyncApplication::AppDllUid() const
+TUid CSyncClientApplication::AppDllUid() const
 {
-  return KUidKitchenSyncID;
+  return KUidSyncClientID;
 }
 
 
 /*-----------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------*/
-EXPORT_C CApaApplication* CKitchenSyncApplication::NewApplication()
+EXPORT_C CApaApplication* CSyncClientApplication::NewApplication()
 {
-  return new CKitchenSyncApplication;
+  return new CSyncClientApplication;
 }
 
 
@@ -31,7 +31,7 @@ EXPORT_C CApaApplication* CKitchenSyncApplication::NewApplication()
 /*-----------------------------------------------------------------------*/
 LOCAL_C CApaApplication* NewApplication()
 {
-  return new CKitchenSyncApplication;
+  return new CSyncClientApplication;
 }
 
 

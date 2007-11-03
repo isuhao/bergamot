@@ -1,4 +1,3 @@
-// _reg.rss
 #include <appinfo.rh>
 
 UID2 KUidAppRegistrationResourceFile
@@ -6,8 +5,8 @@ UID3 0x2000E8A1
 
 RESOURCE APP_REGISTRATION_INFO
 {
-    app_file="KitchenSync";
-    localisable_resource_file="\\resource\\apps\\KitchenSync_loc";
+    app_file="SyncClient";
+    localisable_resource_file="\\resource\\apps\\SyncClient_loc";
     }
 
 

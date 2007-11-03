@@ -1,10 +1,10 @@
-#include "RKitchenSyncServerSession.h"
+#include "RSyncServerSession.h"
 #include "e32debug.h"
 
-TInt RKitchenSyncServerSession::Connect()
+TInt RSyncServerSession::Connect()
 {
-	RDebug::Print(_L("RKitchenSyncServerSession::Connect"));
-	int error = CreateSession(KKitchenSyncServerName, TVersion(1,0,0), KDefaultMessageSlots);
+	RDebug::Print(_L("RSyncServerSession::Connect"));
+	int error = CreateSession(KSyncServerName, TVersion(1,0,0), KDefaultMessageSlots);
 	
 	if (error == KErrNone) {
 		RDebug::Print(_L("Successfully connected to sync server"));
@@ -13,16 +13,16 @@ TInt RKitchenSyncServerSession::Connect()
 		RProcess server;
 
 		RSemaphore s;
-		s.CreateGlobal(KKitchenSyncServerSemaphore, 0);
+		s.CreateGlobal(KSyncServerSemaphore, 0);
 		
-		error = server.Create(KKitchenSyncServerExe, TPtr(NULL,0));
+		error = server.Create(KSyncServerExe, TPtr(NULL,0));
 		if (error == KErrNone) {
 			RDebug::Print(_L("Successfully started server"));
 			server.Resume();			
 	    	s.Wait();
 			RDebug::Print(_L("Got semaphore"));
 
-			error = CreateSession(KKitchenSyncServerName, TVersion(1,0,0), KDefaultMessageSlots);
+			error = CreateSession(KSyncServerName, TVersion(1,0,0), KDefaultMessageSlots);
 				
 			if (error == KErrNone) {
 				RDebug::Print(_L("Successfully connected to sync server"));
@@ -36,28 +36,28 @@ TInt RKitchenSyncServerSession::Connect()
 		s.Close();	
 	}
 	
-	RDebug::Print(_L("RKitchenSyncServerSession::Connect returning %d"), error);
+	RDebug::Print(_L("RSyncServerSession::Connect returning %d"), error);
 	return error;
 }
 
 
-void RKitchenSyncServerSession::SetTimer(TSmlProfileId profileId, TKitchenSyncPeriod period)
+void RSyncServerSession::SetTimer(TSmlProfileId profileId, TSyncServerPeriod period)
 	{
-	RDebug::Print(_L("RKitchenSyncServerSession::SetTimer"));
+	RDebug::Print(_L("RSyncServerSession::SetTimer"));
 	TIpcArgs args(profileId, period);
 	SendReceive(ESetTimer, args);
 	
 	}
 
-TKitchenSyncPeriod RKitchenSyncServerSession::GetTimer(TSmlProfileId profileId)
+TSyncServerPeriod RSyncServerSession::GetTimer(TSmlProfileId profileId)
 	{
-	RDebug::Print(_L("RKitchenSyncServerSession::GetTimer, profileId=%d"), profileId);
+	RDebug::Print(_L("RSyncServerSession::GetTimer, profileId=%d"), profileId);
     TPckgBuf<TInt> pckg;
     TIpcArgs args(profileId, &pckg);
 	
 	SendReceive(EGetTimer, args);
 	
 	TInt res = pckg();
-	RDebug::Print(_L("RKitchenSyncServerSession::GetTimer returning %d"), res);
-	return (TKitchenSyncPeriod) res;
+	RDebug::Print(_L("RSyncServerSession::GetTimer returning %d"), res);
+	return (TSyncServerPeriod) res;
 	}

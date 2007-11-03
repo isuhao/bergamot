@@ -46,16 +46,17 @@ START BITMAP SyncClient.mbm
 	SOURCE 8 SyncClient_40x40_mask.bmp
 END
 
+SOURCEPATH ..\group
 START RESOURCE SyncClient_loc.rss
 	TARGETPATH \resource\apps
 	HEADER
 	LANG SC
 END
-SOURCEPATH ..\src
+
 START RESOURCE SyncClient_reg.rss
 	TARGETPATH \private\10003A3F\apps
 END
-SOURCEPATH ..\src
+
 START RESOURCE SyncClient.rss
 	TARGETPATH \resource\apps
 	HEADER
