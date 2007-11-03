@@ -22,6 +22,7 @@ public:
 public:
 	TPodcastPeriod period;
 	CPodcastServerTimer* timer;
+	TDes *fileName;
 };
 
 #endif

@@ -11,6 +11,7 @@
 #include <PodcastClient.rsg>
 #include <QikGridLayoutManager.h>
 #include "e32debug.h"
+#include <eiklabel.h>
 
 
 /**
@@ -112,12 +113,72 @@ void CPodcastClientView::ViewConstructL()
         
         User::LeaveIfError(serverSession.Connect());
         iPlayer = CMdaAudioPlayerUtility::NewL(*this);
-        TRAPD(error, iPlayer->OpenFileL(_L("d:\\test.mp3")));
-        
+        /*TRAPD(error, iPlayer->OpenFileL(_L("d:\\test.mp3")));
         if (error != KErrNone) {
-        	RDebug::Print(_L("Error: %d"), error);
-        }
+    	RDebug::Print(_L("Error: %d"), error);
+        }*/
+        
+        TRAPD(error, ListAllPodcastsL());
+        
+        RDebug::Print(_L("ListAllPodcastsL error: %d"), error);
+        
     }
+
+void CPodcastClientView::CreatePodcastListItem(CQikScrollableContainer* container, int id, TPtrC fileName)
+	{
+	// Create the System Building Block and set the caption.
+	CQikBuildingBlock* block = CQikBuildingBlock::CreateSystemBuildingBlockL(EQikCtCaptionedTwolineBuildingBlock);
+	container->AddControlLC(block, EMyViewBuildingBlockBase+id);
+	block->ConstructL();
+	block->SetUniqueHandle(EMyViewBuildingBlockBase+id);
+	block->SetDividerBelow(ETrue);
+	block->SetCaptionL(fileName, EQikItemSlot1); //the slot ids are defined in qikon.hrh
+	
+	CEikLabel *lbl = new CEikLabel();
+	lbl->ConstructL();
+	lbl->SetText(_L("Wongo")); //fileName);
+	block->AddControlLC(lbl, EQikItemSlot2);
+	CleanupStack::Pop(lbl);
+	CleanupStack::Pop(block);
+}
+
+void CPodcastClientView::ListDirL(RFs &rfs, TDesC &folder) {
+	CDirScan *dirScan = CDirScan::NewLC(rfs);
+	RDebug::Print(_L("Listing dir: %S"), &folder);
+	dirScan ->SetScanDataL(folder, KEntryAttDir, ESortByName);
+	
+	CDir *dirPtr;
+	dirScan->NextL(dirPtr);
+	for (int i=0;i<dirPtr->Count();i++) {
+		const TEntry &entry = (*dirPtr)[i];
+		if (entry.IsDir())  {
+			TBuf<100> subFolder;
+			subFolder.Copy(folder);
+			subFolder.Append(entry.iName);
+			subFolder.Append(_L("\\"));
+			ListDirL(rfs, subFolder);
+		}
+		RDebug::Print(entry.iName);
+		CreatePodcastListItem(iContainer, iControlIdCount++, entry.iName);
+	}
+	delete dirPtr;
+	CleanupStack::Pop(dirScan);
+
+}
+
+void CPodcastClientView::ListAllPodcastsL()
+{
+	RFs rfs;
+	rfs.Connect();
+	
+	TBuf<100> podcastDir;
+	podcastDir.Copy(_L("c:\\logs\\"));
+
+	RDebug::Print(_L("Listing podcasts"));
+	
+	ListDirL(rfs, podcastDir);
+	RDebug::Print(_L("Listing complete"));
+}
 
 void CPodcastClientView::HandleControlEventL(CCoeControl *aControl, TCoeEvent aEventType) {
 

@@ -20,7 +20,6 @@ public:
 	void HandleCommandL(CQikCommand& aCommand);
     void MapcPlayComplete(TInt aError);
 	void MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds &aDuration);
-	
 protected: 
 	void ViewConstructL();
 	
@@ -28,10 +27,14 @@ private:
 	CPodcastClientView(CQikAppUi& aAppUi);
 	void ConstructL();
 	void HandleControlEventL(CCoeControl *aControl, TCoeEvent aEventType);
+	void ListAllPodcastsL();
+	void ListDirL(RFs &rfs, TDesC &folder);
+	void CreatePodcastListItem(CQikScrollableContainer* container, int id, TPtrC fileName);
 
 private:
 	RPodcastServerSession serverSession;
 	CQikScrollableContainer* iContainer;
     CMdaAudioPlayerUtility *iPlayer;
+    int iControlIdCount;
 	};
 #endif
