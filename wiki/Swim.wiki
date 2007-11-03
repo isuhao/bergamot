@@ -1,4 +1,4 @@
-== ~~KitchenSync~~ Swim == 
+== Swim == 
 
 KitchenSync is now named Swim!
 
