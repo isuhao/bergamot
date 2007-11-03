@@ -1,8 +1,6 @@
 == Swim == 
 
-KitchenSync is now named Swim!
-
-It has come to my attention that the fine folks at KDE have named one of their programs KitchenSync as well. As it is in none of our interests to create confusion, I am changing the name of KitchenSync. I think the new name will be Swim, as in "Sync or Swim".
+KitchenSync is now named Swim, as the former name happened to clash with a similar program for KDE. Why Swim? you say, well as I see it you can either Sync, or Swim!
 
 == What ==
 Swim is a utility for periodic synchronization of data in UIQ3 with internet servers. It makes use of the existing SyncML support in the system, and adds timing capabilities.
