@@ -2,9 +2,19 @@
 
 There seems to be interest in a good podcasting client for UIQ 3. The built-in media player does not cut it for serious podcast use.
 
-This project has just started, and the code is based on the Sync project. There is [http://bergamot.googlecode.com/svn/Podcast/ some code] in Subversion, however it does not yet do anything useful.
+This project has just started, and the code is based on the Sync project. There is [http://bergamot.googlecode.com/svn/Podcast/ some code] in Subversion, however it does not yet do anything useful. The first usable version will be alpha 1, which will be available in the near future!
 
 Oh, and Podcast Player Project is just a placeholder name. Come up with something better!
+
+= Release Plan =
+
+  * Alpha 1 (sometime in November)
+    * Plays files from memory
+    * Stores position in audio file
+    * Rudimentary UI
+
+  * Alpha 2 (also November)
+    * Downloads file from URL
 
 = Feature Ideas =
 
