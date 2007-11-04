@@ -5,7 +5,7 @@ KitchenSync is now named Swim, as the former name happened to clash with a simil
 == What ==
 Swim is a utility for periodic synchronization of data in UIQ3 with internet servers. It makes use of the existing SyncML support in the system, and adds timing capabilities.
 
-The code tagged as "beta1" in subversion is stable and works well. I run it constantly on my Sony Ericsson P1i.
+The latest code in [http://bergamot.googlecode.com/svn/Sync/trunk Subversion] is stable and works well. I run it constantly on my Sony Ericsson P1i.
 
 http://bergamot.googlecode.com/svn/KitchenSync/trunk/images/screenshot.jpg
 
@@ -15,6 +15,16 @@ This program was written for two reasons. Firstly, UIQ mysteriously lacks the ab
 
 == Releases ==
 The complete source code is found in the subversion repository. Compiled binaries for each release exists as well. Note that these are unusable without signing them yourself. See "Issues" below.
+
+  * Beta2 (2007-11-04)
+    * Client loads list of sync accounts every time it's shown
+    * KitchenSync is now Swim, and KitchenSync.exe is SyncClient.exe, while KitchenSyncServer.exe is SyncServer.exe
+    * Note! Since the executable name has changed since last version, while the app ID remains, KitchenSync must be uninstalled before this version can be installed
+    * Download
+      * [http://bergamot.googlecode.com/svn/Sync/tags/beta2 Source]
+      * [http://bergamot.googlecode.com/svn/Sync/tags/beta2/group/Swim_unsigned.SIS SIS] 
+
+_Previous releases were called KitchenSync._
 
   * Beta1 (2007-11-01)
     * Client is able to start the server
