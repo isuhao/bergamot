@@ -7,7 +7,10 @@ Swim is a utility for periodic synchronization of data in UIQ3 with internet ser
 
 The latest code in [http://bergamot.googlecode.com/svn/Sync/trunk Subversion] is stable and works well. I run it constantly on my Sony Ericsson P1i.
 
-http://bergamot.googlecode.com/svn/KitchenSync/trunk/images/screenshot.jpg
+== Screenshots ==
+
+http://bergamot.googlecode.com/svn/wiki/swim1.jpg
+http://bergamot.googlecode.com/svn/wiki/swim2.jpg
 
 == Why == 
 
