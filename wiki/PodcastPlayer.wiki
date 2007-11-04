@@ -16,6 +16,12 @@ Oh, and Podcast Player Project is just a placeholder name. Come up with somethin
   * Alpha 2 (also November)
     * Downloads file from URL
 
+  * Alpha 3 
+    * RSS parsing, automated downloads
+
+  * Alpha 4
+    * Check connection type, option to download only on WLAN
+
 = Feature Ideas =
 
   * Download RSS in the background
