@@ -95,7 +95,13 @@ void CSyncClientView::HandleCommandL(CQikCommand& aCommand)
 
 
 void CSyncClientView::CreateChoiceListItem(CQikScrollableContainer* container, int id, TDesC16 &caption, int state ) {
+	RDebug::Print(_L("CreateChoiceListItem START"));
+	// Check if control already exists
+	if (container->Controls().Find(EMyViewBuildingBlockBase+id).IsValid() == (int) ETrue) {
+		return;
+	}
 	// Create the System Building Block and set the caption.
+		
 	CQikBuildingBlock* block = CQikBuildingBlock::CreateSystemBuildingBlockL(EQikCtCaptionedTwolineBuildingBlock);
 	container->AddControlLC(block, EMyViewBuildingBlockBase+id);
 	block->ConstructL();
@@ -130,10 +136,11 @@ void CSyncClientView::CreateChoiceListItem(CQikScrollableContainer* container, i
 	chlst->SetObserver(this);
 	CleanupStack::Pop(chlst);
 	CleanupStack::Pop(block);
+	RDebug::Print(_L("CreateChoiceListItem END"));
 }
 
 void CSyncClientView::ShowSyncProfiles(CQikScrollableContainer* container) {
-	RDebug::Print(_L("ShowSyncProfiles"));
+	RDebug::Print(_L("ShowSyncProfiles BEGIN"));
 	RSyncMLSession session;
 	
 	TInt error;
@@ -191,6 +198,7 @@ void CSyncClientView::ShowSyncProfiles(CQikScrollableContainer* container) {
 	}
 	
 	session.Close();
+	RDebug::Print(_L("ShowSyncProfiles END"));
 }
 
 void CSyncClientView::ViewConstructL()
@@ -202,6 +210,7 @@ void CSyncClientView::ViewConstructL()
                             
         // Create a container and add it to the view
         CQikScrollableContainer* container = new (ELeave) CQikScrollableContainer();
+        Controls().Reset();
         Controls().AppendLC(container);
         container->ConstructL(EFalse);
         CleanupStack::Pop(container);
@@ -214,14 +223,26 @@ void CSyncClientView::ViewConstructL()
         
         User::LeaveIfError(serverSession.Connect());
        
-        
+    	ShowSyncProfiles(iContainer);
     }
 
 void CSyncClientView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage)
 	{
-	iContainer->ResetAndDestroy();
+	RDebug::Print(_L("ViewActivatedL START"));
+	iContainer->BeginUpdateLC();
+	CCoeControlArray &array = iContainer->Controls();
+
+	// this causes crashes when the container tries to refocus the control
+	//iContainer->ResetAndDestroy();
+    // so instead we remove them manually
+	for (int i=0;i<array.Count();i++) {
+		iContainer->RemoveControl(*(array.At(i).iControl));
+	}
 	ShowSyncProfiles(iContainer);
+	iContainer->EndUpdateL();
+	//ViewConstructL();
 	CQikViewBase::ViewActivatedL(aPrevViewId, aCustomMessageId, aCustomMessage);
+	RDebug::Print(_L("ViewActivatedL END"));
 	}
 
 void CSyncClientView::HandleControlEventL(CCoeControl *aControl, TCoeEvent aEventType) {
