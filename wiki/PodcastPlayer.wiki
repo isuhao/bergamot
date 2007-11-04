@@ -33,4 +33,12 @@ Oh, and Podcast Player Project is just a placeholder name. Come up with somethin
 
 = Help! =
 
-Please help me out! Add any ideas as comments to this wiki page, or contact me at teknolog (at) gmail (dot) com.
+Please help me out with the podcast project! If you don't think you can help, I think you're wrong. Most people can do at least one of the below:
+
+  * Feedback
+  * Feature ideas
+  * Graphics, icons etc. (please!)
+  * UI design
+  * Coding
+
+Add any ideas as comments to this wiki page, or contact me at teknolog (at) gmail (dot) com.
