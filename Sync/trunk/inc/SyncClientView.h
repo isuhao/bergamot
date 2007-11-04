@@ -34,6 +34,6 @@ public:
 private:
 	RSyncServerSession serverSession;
 	CQikScrollableContainer* iContainer;
-	RArray<TSmlProfileId> profiles;
+	RArray<TSmlProfileId> lastViewProfiles;
 	};
 #endif

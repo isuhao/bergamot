@@ -1,13 +1,13 @@
-%{"SyncClient"}
-:"AVendor"
-#{"SyncClient"}, (0x2000E8A1), 1, 0, 0, TYPE=SA
+%{"Swim"}
+:"Teknolog"
+#{"Swim"}, (0x2000E8A1), 1, 0, 0, TYPE=SA
 (0x101F6300), 3, 0, 0, {"UIQ30ProductID"}
 
 ; Freeware installation "warning" required by Symbian signed
 "\Symbian\UIQ3SDK\Sync\group\FreewareWarningEN.txt"-"",FT 
 
-"\Symbian\UIQ3SDK\epoc32\release\gcce\urel\SyncClient.exe"-"!:\sys\bin\SyncClient.exe"
-"\Symbian\UIQ3SDK\epoc32\release\gcce\urel\SyncServer.exe"-"!:\sys\bin\SyncServer.exe"
+"\Symbian\UIQ3SDK\epoc32\release\gcce\udeb\SyncClient.exe"-"!:\sys\bin\SyncClient.exe"
+"\Symbian\UIQ3SDK\epoc32\release\gcce\udeb\SyncServer.exe"-"!:\sys\bin\SyncServer.exe"
 "\Symbian\UIQ3SDK\epoc32\data\z\resource\apps\SyncClient.rsc"-"!:\resource\apps\SyncClient.rsc"
 "\Symbian\UIQ3SDK\epoc32\data\Z\Resource\Apps\SyncClient.mbm"-"!:\resource\apps\SyncClient.mbm"
 "\Symbian\UIQ3SDK\epoc32\data\z\resource\apps\SyncClient_loc.RSC"-"!:\resource\apps\SyncClient_loc.RSC"

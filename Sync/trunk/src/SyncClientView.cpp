@@ -161,42 +161,69 @@ void CSyncClientView::ShowSyncProfiles(CQikScrollableContainer* container) {
 	TInt numItems = profiles.Count();
 	RDebug::Print(_L("Found %d SyncML profiles"), numItems);
 	TBuf<255> Buffer;
+	TBool mustRedraw = EFalse;
 	
-	for (int i=0;i<profiles.Count();i++) {		
-			
-		RSyncMLDataSyncProfile profile;
-		RDebug::Print(_L("Reading profile %d"), profiles[i]);
-		TRAPD(error,profile.OpenL(session, profiles[i],ESmlOpenRead));
-		if (error!=KErrNone)
-			{
-				_LIT(KRowFormatter, "OpenL error: %d");
-				Buffer.Format(KRowFormatter, error);
-				CEikonEnv::InfoWinL(_L("SyncClient"), Buffer);
+	if (profiles.Count() != lastViewProfiles.Count()) {
+		RDebug::Print(_L("Profile count mismatch, clearing list"));
+		mustRedraw = ETrue;
+	} else {
+		for (int i=0;i<profiles.Count();i++) {
+			if (lastViewProfiles.Find(profiles[i]) == KErrNotFound) {
+				RDebug::Print(_L("Did not find new profile %d, clearing list"), profiles[i]);
+				mustRedraw = ETrue;
+				break;
 			}
-	
-		TRAP(error, profile.DisplayName());
-		if (error!=KErrNone)
-			{
-				_LIT(KRowFormatter, "DisplayName error: %d");
-				Buffer.Format(KRowFormatter, error);
-				CEikonEnv::InfoWinL(_L("SyncClient"), Buffer);
-			}
-		
-		TSyncServerPeriod period = serverSession.GetTimer(profiles[i]);
-		RDebug::Print(_L("DisplayName: %S, period=%d"), &profile.DisplayName(), period);
-
-		if(profile.DisplayName().Compare(_L("iSync")) != 0) {
-			int selection = 0;
-			if (period != -1) {
-				selection = period;
-			}
-			CreateChoiceListItem(container, profiles[i], (TDesC &)profile.DisplayName(), selection);
 		}
-
-		profile.Close();
-
 	}
 	
+	if (mustRedraw) {
+		lastViewProfiles = profiles;
+		CCoeControlArray &array = iContainer->Controls();
+	
+		// this causes crashes when the container tries to refocus the control
+		//iContainer->ResetAndDestroy();
+	    // so instead we remove them manually
+		for (int i=0;i<array.Count();i++) {
+			iContainer->RemoveControl(*(array.At(i).iControl));
+		}
+		
+		for (int i=0;i<profiles.Count();i++) {		
+				
+			RSyncMLDataSyncProfile profile;
+			RDebug::Print(_L("Reading profile %d"), profiles[i]);
+			TRAPD(error,profile.OpenL(session, profiles[i],ESmlOpenRead));
+			if (error!=KErrNone)
+				{
+					_LIT(KRowFormatter, "OpenL error: %d");
+					Buffer.Format(KRowFormatter, error);
+					CEikonEnv::InfoWinL(_L("SyncClient"), Buffer);
+				}
+		
+			TRAP(error, profile.DisplayName());
+			if (error!=KErrNone)
+				{
+					_LIT(KRowFormatter, "DisplayName error: %d");
+					Buffer.Format(KRowFormatter, error);
+					CEikonEnv::InfoWinL(_L("SyncClient"), Buffer);
+				}
+			
+			TSyncServerPeriod period = serverSession.GetTimer(profiles[i]);
+			RDebug::Print(_L("DisplayName: %S, period=%d"), &profile.DisplayName(), period);
+	
+			if(profile.DisplayName().Compare(_L("iSync")) != 0) {
+				int selection = 0;
+				if (period != -1) {
+					selection = period;
+				}
+				CreateChoiceListItem(container, profiles[i], (TDesC &)profile.DisplayName(), selection);
+			}
+	
+			profile.Close();
+	
+		}
+	} else {
+		RDebug::Print(_L("Nothing new to show"));
+	}
 	session.Close();
 	RDebug::Print(_L("ShowSyncProfiles END"));
 }
@@ -222,25 +249,16 @@ void CSyncClientView::ViewConstructL()
         CleanupStack::Pop(rowlayout);        
         
         User::LeaveIfError(serverSession.Connect());
-       
-    	ShowSyncProfiles(iContainer);
     }
 
 void CSyncClientView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage)
 	{
 	RDebug::Print(_L("ViewActivatedL START"));
-	iContainer->BeginUpdateLC();
-	CCoeControlArray &array = iContainer->Controls();
 
-	// this causes crashes when the container tries to refocus the control
-	//iContainer->ResetAndDestroy();
-    // so instead we remove them manually
-	for (int i=0;i<array.Count();i++) {
-		iContainer->RemoveControl(*(array.At(i).iControl));
-	}
+	iContainer->BeginUpdateLC();
 	ShowSyncProfiles(iContainer);
 	iContainer->EndUpdateL();
-	//ViewConstructL();
+
 	CQikViewBase::ViewActivatedL(aPrevViewId, aCustomMessageId, aCustomMessage);
 	RDebug::Print(_L("ViewActivatedL END"));
 	}
