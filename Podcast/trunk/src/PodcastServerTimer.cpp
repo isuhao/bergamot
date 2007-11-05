@@ -1,9 +1,8 @@
 #include "PodcastServerTimer.h"
 #include "e32std.h"
-#include <EIKENV.h>
+#include <eikenv.h>
 
-CPodcastServerTimer::CPodcastServerTimer(TSmlProfileId anId) : CTimer::CTimer(EPriorityIdle) {
-	profileId = anId;
+CPodcastServerTimer::CPodcastServerTimer() : CTimer::CTimer(EPriorityIdle) {
 }
 
 CPodcastServerTimer::~CPodcastServerTimer() {

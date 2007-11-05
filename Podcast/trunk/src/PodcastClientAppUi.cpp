@@ -1,6 +1,6 @@
 #include "PodcastClientAppUi.h"
 #include "PodcastClientView.h"
-#include <QikCommand.h>
+#include <qikcommand.h>
 
 /*-----------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------*/

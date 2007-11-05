@@ -41,17 +41,17 @@ TInt RPodcastServerSession::Connect()
 }
 
 
-void RPodcastServerSession::SetTimer(TSmlProfileId profileId, TPodcastPeriod period)
+void RPodcastServerSession::SetTimer(TInt podcastId, TPodcastPeriod period)
 	{
 	RDebug::Print(_L("RPodcastServerSession::SetTimer"));
-	TIpcArgs args(profileId, period);
+	TIpcArgs args(podcastId, period);
 	SendReceive(ESetTimer, args);
 	
 	}
 
-TPodcastPeriod RPodcastServerSession::GetTimer(TSmlProfileId profileId)
+TPodcastPeriod RPodcastServerSession::GetTimer(TInt podcastId)
 	{
-	RDebug::Print(_L("RPodcastServerSession::GetTimer, profileId=%d"), profileId);
+	/*RDebug::Print(_L("RPodcastServerSession::GetTimer, profileId=%d"), profileId);
     TPckgBuf<TInt> pckg;
     TIpcArgs args(profileId, &pckg);
 	
@@ -59,5 +59,6 @@ TPodcastPeriod RPodcastServerSession::GetTimer(TSmlProfileId profileId)
 	
 	TInt res = pckg();
 	RDebug::Print(_L("RPodcastServerSession::GetTimer returning %d"), res);
-	return (TPodcastPeriod) res;
+	return (TPodcastPeriod) res;*/
+	return EOneHour;
 	}

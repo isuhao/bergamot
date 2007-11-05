@@ -2,11 +2,10 @@
 #define PODCASTSERVERTIMER_H
 
 #include <e32base.h>
-#include "SyncMLDef.h"
 
 class CPodcastServerTimer : public CTimer {
 public:
-	CPodcastServerTimer(TSmlProfileId anId);
+	CPodcastServerTimer();
 	~CPodcastServerTimer();
 	void ConstructL();
 	void RunL();
@@ -14,7 +13,6 @@ public:
 	void SetPeriod(int period);
 	
 private:
-	TSmlProfileId profileId;
 	int thePeriod;
 };
 #endif

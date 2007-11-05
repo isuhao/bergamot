@@ -1,15 +1,15 @@
 #include <badesca.h>
 #include <eikchlst.h>
-#include <QikScrollableContainer.h>
-#include <QikRowLayoutManager.h>
-#include <QikGridLayoutManager.h>
-#include <QikBuildingBlock.h>
-#include <QikCommand.h>
+#include <qikscrollablecontainer.h>
+#include <qikrowlayoutmanager.h>
+#include <qikgridlayoutmanager.h>
+#include <qikbuildingblock.h>
+#include <qikcommand.h>
 #include "PodcastClient.hrh"
 #include "PodcastClientView.h"
 #include "PodcastClientGlobals.h"
 #include <PodcastClient.rsg>
-#include <QikGridLayoutManager.h>
+#include <qikgridlayoutmanager.h>
 #include "e32debug.h"
 #include <eiklabel.h>
 

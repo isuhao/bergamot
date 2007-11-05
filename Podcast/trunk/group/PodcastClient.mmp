@@ -56,19 +56,19 @@ LIBRARY			eikctl.lib // added due to the eik controls
 LIBRARY			qikdlg.lib // added for the dialog that are used
 LIBRARY			qikallocdll.lib 
 LIBRARY			estor.lib efsrv.lib
-LIBRARY			MediaClientAudio.lib
-LIBRARY			MediaClient.lib
-LIBRARY			MMCommon.lib
+LIBRARY			mediaclientaudio.lib
+LIBRARY			mediaclient.lib
+LIBRARY			mmcommon.lib
 
 START BITMAP    PodcastClient.mbm
 TARGETPATH      \resource\apps
 HEADER
 SOURCEPATH      ..\images
-SOURCE          c16 PodcastClient_40x40.bmp
+SOURCE          16 PodcastClient_40x40.bmp
 SOURCE          8   PodcastClient_40x40_mask.bmp
-SOURCE          C16 PodcastClient_40x40.bmp
+SOURCE          16 PodcastClient_40x40.bmp
 SOURCE          8   PodcastClient_40x40_mask.bmp
-SOURCE          C16 PodcastClient_40x40.bmp
+SOURCE          16 PodcastClient_40x40.bmp
 SOURCE          8   PodcastClient_40x40_mask.bmp
 END
 

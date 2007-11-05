@@ -1,9 +1,9 @@
 #ifndef __PODCASTCLIENTDOCUMENT_H__
 #define __PODCASTCLIENTDOCUMENT_H__
 
-#include <QikDocument.h>
-#include <QikApplication.h>
-#include <QikAppUi.h>
+#include <qikdocument.h>
+#include <qikapplication.h>
+#include <qikappui.h>
 #include "PodcastClientAppUi.h"
 
 

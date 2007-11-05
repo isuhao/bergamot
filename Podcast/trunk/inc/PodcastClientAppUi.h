@@ -1,7 +1,7 @@
 #ifndef __PODCASTCLIENTAPPUI_H__
 #define __PODCASTCLIENTAPPUI_H__
 
-#include <QikAppUi.h>
+#include <qikappui.h>
 #include "PodcastClientView.h"
 
 

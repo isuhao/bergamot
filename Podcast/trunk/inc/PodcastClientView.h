@@ -1,15 +1,15 @@
 #ifndef PODCASTCLIENTVIEW_H
 #define PODCASTCLIENTVIEW_H
 
-#include <QikViewBase.h>
-#include <QikScrollableContainer.h>
+#include <qikviewbase.h>
+#include <qikscrollablecontainer.h>
 #include "PodcastClient.hrh"
-#include "S32FILE.H"
+#include "s32file.h"
 #include "e32debug.h"
 #include <e32cmn.h>
 #include "RPodcastServerSession.h"
 #include "PodcastClientGlobals.h"
-#include <MdaAudioSamplePlayer.h>
+#include <mdaaudiosampleplayer.h>
 
 class CPodcastClientView : public CQikViewBase,  public MMdaAudioPlayerCallback
 	{

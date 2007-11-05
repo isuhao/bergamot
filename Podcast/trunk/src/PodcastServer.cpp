@@ -3,8 +3,8 @@
 #include "RPodcastServerSession.h"
 #include "PodcastData.h"
 #include <f32file.h>
-#include <BAUTILS.H>
-#include <S32FILE.H>
+#include <bautils.h>
+#include <s32file.h>
 #include <e32base.h>
 
 CPodcastServer::CPodcastServer(CActive::TPriority aActiveObjectPriority) 

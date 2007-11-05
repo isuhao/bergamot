@@ -1,8 +1,8 @@
 #ifndef __PODCASTCLIENTAPPLICATION_H__
 #define __PODCASTCLIENTAPPLICATION_H__
 
-#include <QikApplication.h>
-#include <EikStart.h>
+#include <qikapplication.h>
+#include <eikstart.h>
 #include "PodcastClientDocument.h"
 
 class CPodcastClientApplication : public CQikApplication

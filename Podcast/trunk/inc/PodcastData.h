@@ -1,7 +1,7 @@
 #ifndef PODCASTDATA_H_
 #define PODCASTDATA_H_
 
-#include <S32STRM.H>
+#include <s32strm.h>
 #include "PodcastServerTimer.h"
 
 enum TPodcastPeriod

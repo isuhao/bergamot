@@ -11,8 +11,8 @@ class RPodcastServerSession : public RSessionBase
 {
 public:
 	TInt Connect();
-	void SetTimer(TSmlProfileId profileId, TPodcastPeriod period);
-	TPodcastPeriod GetTimer(TSmlProfileId profileId);
+	void SetTimer(TInt podcastId, TPodcastPeriod period);
+	TPodcastPeriod GetTimer(TInt podcastId);
 	
 private:
 	RThread iServerThread;

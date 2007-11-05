@@ -4,7 +4,7 @@ NAME HSEM
 
 #include <eikon.rh>
 #include <qikon.rh>
-#include <QikCommand.rh>
+#include <qikcommand.rh>
 #include "PodcastClient.hrh"
 
 
