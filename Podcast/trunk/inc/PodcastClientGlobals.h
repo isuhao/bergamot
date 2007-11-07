@@ -6,6 +6,8 @@ const TUid KUidPodcastClientID          = {0x2000FB05};
 const TUid KUidPodcastClientBaseViewID = {0x00000001};
 const TUid KUidListBoxListView = {0x00001000};
 
+_LIT(KPodcastDir, "d:\\podcasts\\");
+//_LIT(KPodcastDir, "c:\\logs\\");
 
 #endif
 

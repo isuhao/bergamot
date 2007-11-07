@@ -10,10 +10,19 @@ enum TPodcatClientCommands
 enum TPodcastClientDefines
 	{
 	EMyViewBuildingBlockBase,
-	EMyViewChoiceListBase
+	EMyViewCommandButton = 1000,
+	EMyViewChoiceListBase = 2000
 	};
 
+	enum TMyViewControls
+    {
+    EMyViewScrollBar,
+    EMyViewScrollableContainer,
+    EMyViewBuildingBlock,
+    EMyViewNumberOfControls
+    };
 
+    
 #endif
 
 

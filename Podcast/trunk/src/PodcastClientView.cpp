@@ -12,6 +12,7 @@
 #include <qikgridlayoutmanager.h>
 #include "e32debug.h"
 #include <eiklabel.h>
+#include <eikcmbut.h>
 
 
 /**
@@ -94,6 +95,7 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 
 void CPodcastClientView::ViewConstructL()
     {
+    
         // Give a layout manager to the view
         CQikGridLayoutManager* gridlayout = CQikGridLayoutManager::NewLC();
         SetLayoutManagerL(gridlayout);
@@ -102,7 +104,9 @@ void CPodcastClientView::ViewConstructL()
         // Create a container and add it to the view
         CQikScrollableContainer* container = new (ELeave) CQikScrollableContainer();
         Controls().AppendLC(container);
-        container->ConstructL(EFalse);
+        container->ConstructL(ETrue);
+        int one = 1; int zero = 0;
+        container->ScrollBarsNeeded(one, zero);
         CleanupStack::Pop(container);
         iContainer = container;
                             
@@ -113,34 +117,104 @@ void CPodcastClientView::ViewConstructL()
         
         User::LeaveIfError(serverSession.Connect());
         iPlayer = CMdaAudioPlayerUtility::NewL(*this);
-        /*TRAPD(error, iPlayer->OpenFileL(_L("d:\\test.mp3")));
-        if (error != KErrNone) {
-    	RDebug::Print(_L("Error: %d"), error);
-        }*/
+
         
+        iContainer->BeginUpdateLC();
         TRAPD(error, ListAllPodcastsL());
-        
         RDebug::Print(_L("ListAllPodcastsL error: %d"), error);
-        
+        iContainer->EndUpdateL();        
+        TSize sz = rowlayout->CalcMinimumSize(); //)Container->MinimumSize(); //iContainer->PageSize();
+        RDebug::Print(_L("sz.iWidth: %d, sz.iHeight: %d"), sz.iWidth, sz.iHeight);
+        TSize mySize;
+        mySize.iWidth = 400;
+        mySize.iHeight = 600;
+       iContainer->SetPageSize(mySize);
+    //ViewConstructFromResourceL(R_MY_SCROLL_BAR_UI_CONFIGURATIONS, R_MY_SCROLL_BAR_VIEW_CONTROLS);
+
     }
 
-void CPodcastClientView::CreatePodcastListItem(CQikScrollableContainer* container, int id, TPtrC fileName)
+void CPodcastClientView::CreatePodcastListItem(TPodcastId *pID)
 	{
 	// Create the System Building Block and set the caption.
 	CQikBuildingBlock* block = CQikBuildingBlock::CreateSystemBuildingBlockL(EQikCtCaptionedTwolineBuildingBlock);
-	container->AddControlLC(block, EMyViewBuildingBlockBase+id);
+	iContainer->AddControlLC(block, EMyViewBuildingBlockBase+pID->iId);
 	block->ConstructL();
-	block->SetUniqueHandle(EMyViewBuildingBlockBase+id);
+	//block->SetUniqueHandle(EMyViewBuildingBlockBase+pID->iId);
 	block->SetDividerBelow(ETrue);
-	block->SetCaptionL(fileName, EQikItemSlot1); //the slot ids are defined in qikon.hrh
+	block->SetCaptionL(pID->iTitle, EQikItemSlot1); //the slot ids are defined in qikon.hrh
+	CEikCommandButton* cmdbutton = new (ELeave) CEikCommandButton();
+    cmdbutton->SetTextL(_L("Play/Pause"));
+    cmdbutton->SetObserver(this);
+    cmdbutton->SetUniqueHandle(EMyViewCommandButton+pID->iId);
+	block->AddControlLC(cmdbutton, EQikItemSlot2);
+    CleanupStack::Pop(cmdbutton);
 	
-	CEikLabel *lbl = new CEikLabel();
-	lbl->ConstructL();
-	lbl->SetText(_L("Wongo")); //fileName);
-	block->AddControlLC(lbl, EQikItemSlot2);
-	CleanupStack::Pop(lbl);
 	CleanupStack::Pop(block);
 }
+
+void CPodcastClientView::PlayPausePodcast(TPodcastId *podcast) 
+	{
+	if (iPlayingPodcast == podcast->iId) {
+		if (podcast->iPlaying) {
+			RDebug::Print(_L("Pausing"));
+			iPlayer->Pause();
+			iPlayer->GetPosition(podcast->iPosition);
+			podcast->iPlaying = EFalse;
+		} else {
+			RDebug::Print(_L("Resuming"));
+			iPlayer->Play();
+			podcast->iPlaying = ETrue;
+		}
+	} else {
+		RDebug::Print(_L("Starting: %S"), &(podcast->iFileName));
+		TRAPD(error, iPlayer->OpenFileL(podcast->iFileName));
+	    if (error != KErrNone) {
+	    	RDebug::Print(_L("Error: %d"), error);
+	    }
+	    podcast->iPlaying = ETrue;
+		iPlayingPodcast = podcast->iId;
+
+	}
+}
+void CPodcastClientView::HandleControlEventL(CCoeControl *aControl, TCoeEvent aEventType)
+	{
+	int id = aControl->UniqueHandle() - EMyViewCommandButton;
+	TPodcastId *podcast = podcasts[id];
+	switch(aEventType)
+    {
+    case EEventStateChanged:
+    	RDebug::Print(_L("EEventStateChanged"));
+    	RDebug::Print(_L("HandleControlEventL: %S, %S"), &(podcast->iTitle), &(podcast->iFileName));
+    	PlayPausePodcast(podcast);
+        // The internal state of the Command Button was changed.
+        break;
+                                
+    case EEventRequestExit:
+    	//RDebug::Print(_L("EEventRequestExit"));
+		break;
+                                
+    case EEventRequestCancel:
+    	//RDebug::Print(_L("EEventRequestCancel"));
+        break;
+                                
+    case EEventRequestFocus:
+    	//RDebug::Print(_L("EEventRequestFocus"));
+        // The Command Button received a pointer down event
+        break;                      
+    case EEventPrepareFocusTransition:
+    	//RDebug::Print(_L("EEventPrepareFocusTransition"));
+        // A focus change is about to appear
+        break;
+                            
+    case EEventInteractionRefused:
+    	//RDebug::Print(_L("EEventInteractionRefused"));
+        // The Command Button is dimmed and received a pointer down event.
+        break;                
+    default:
+        break;
+    }
+
+	}
 
 void CPodcastClientView::ListDirL(RFs &rfs, TDesC &folder) {
 	CDirScan *dirScan = CDirScan::NewLC(rfs);
@@ -159,7 +233,14 @@ void CPodcastClientView::ListDirL(RFs &rfs, TDesC &folder) {
 			ListDirL(rfs, subFolder);
 		}
 		RDebug::Print(entry.iName);
-		CreatePodcastListItem(iContainer, iControlIdCount++, entry.iName);
+		int id = podcasts.Count();
+		TBuf<100> fileName;
+		fileName.Copy(folder);
+		fileName.Append(entry.iName);
+
+		TPodcastId *pID = new TPodcastId(id, fileName, entry.iName);
+		podcasts.Append(pID);
+		CreatePodcastListItem(pID);
 	}
 	delete dirPtr;
 	CleanupStack::Pop(dirScan);
@@ -172,16 +253,12 @@ void CPodcastClientView::ListAllPodcastsL()
 	rfs.Connect();
 	
 	TBuf<100> podcastDir;
-	podcastDir.Copy(_L("c:\\logs\\"));
+	podcastDir.Copy(KPodcastDir);
 
 	RDebug::Print(_L("Listing podcasts"));
 	
 	ListDirL(rfs, podcastDir);
 	RDebug::Print(_L("Listing complete"));
-}
-
-void CPodcastClientView::HandleControlEventL(CCoeControl *aControl, TCoeEvent aEventType) {
-
 }
 
 void CPodcastClientView::MapcPlayComplete(TInt aError) {
