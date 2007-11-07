@@ -3,7 +3,7 @@
 KitchenSync is now named Swim, as the former name happened to clash with a similar program for KDE. "Why Swim?" you say, well now you have the option just to Sync, or to Swim!
 
 == What ==
-Swim is a utility for periodic synchronization of data in UIQ3 with internet servers. It makes use of the existing SyncML support in the system, and adds timing capabilities.
+Swim is a utility for automatic periodic synchronization of data in UIQ3 with internet servers. It makes use of the existing SyncML support in the system, and adds timing capabilities. You can set it to sync your data every 5 minutes, every hour, every 4 hours or every 24 hours.
 
 The latest code in [http://bergamot.googlecode.com/svn/Sync/trunk Subversion] is stable and works well. I run it constantly on my Sony Ericsson P1i.
 
