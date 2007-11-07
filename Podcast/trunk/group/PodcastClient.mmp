@@ -25,6 +25,7 @@ LANG              SC
 HEADER
 END
 
+SYSTEMINCLUDE   \epoc32\include\ecom
 SYSTEMINCLUDE   \epoc32\include
 
 
@@ -37,7 +38,7 @@ SOURCE          PodcastClientDocument.cpp
 SOURCE          PodcastClientApplication.cpp
 SOURCE			PodcastClientView.cpp
 SOURCE 			RPodcastServerSession.cpp
-SOURCE			PodcastData.cpp
+SOURCE			PodcastData.cpp PodcastDownloader.cpp HttpClient.cpp
 
 LIBRARY         euser.lib
 LIBRARY         apparc.lib
@@ -58,7 +59,7 @@ LIBRARY			qikallocdll.lib
 LIBRARY			estor.lib efsrv.lib
 LIBRARY			mediaclientaudio.lib
 LIBRARY			mediaclient.lib
-LIBRARY			mmcommon.lib
+LIBRARY			mmcommon.lib http.lib InetProtUtil.lib
 
 START BITMAP    PodcastClient.mbm
 TARGETPATH      \resource\apps

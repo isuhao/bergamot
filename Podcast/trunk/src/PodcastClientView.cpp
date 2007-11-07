@@ -13,6 +13,8 @@
 #include "e32debug.h"
 #include <eiklabel.h>
 #include <eikcmbut.h>
+#include "PodcastDownloader.h"
+#include "HttpClient.h"
 
 
 /**
@@ -131,6 +133,16 @@ void CPodcastClientView::ViewConstructL()
        iContainer->SetPageSize(mySize);
     //ViewConstructFromResourceL(R_MY_SCROLL_BAR_UI_CONFIGURATIONS, R_MY_SCROLL_BAR_VIEW_CONTROLS);
 
+	   	// create an active scheduler to use
+	   	//CActiveScheduler* scheduler = new(ELeave) CActiveScheduler();
+	   	//CleanupStack::PushL(scheduler);
+	   //	CActiveScheduler::Install(scheduler);
+	
+	   	// Create and start the client
+	   	CHttpClient* httpCli = CHttpClient::NewLC();
+	   	httpCli->StartClientL();
+	
+	   	CleanupStack::PopAndDestroy(1); // httpCli, scheduler
     }
 
 void CPodcastClientView::CreatePodcastListItem(TPodcastId *pID)
@@ -166,6 +178,7 @@ void CPodcastClientView::PlayPausePodcast(TPodcastId *podcast)
 			podcast->iPlaying = ETrue;
 		}
 	} else {
+		iPlayer->Stop();
 		RDebug::Print(_L("Starting: %S"), &(podcast->iFileName));
 		TRAPD(error, iPlayer->OpenFileL(podcast->iFileName));
 	    if (error != KErrNone) {
