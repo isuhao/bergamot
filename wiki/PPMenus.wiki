@@ -1,14 +1,17 @@
 Proposed menu layout
 
-  * Main menu
-    * New
-      * Listen
-    * All
-      * Update
-    * Current Downloads and Queue
-    * Search/Add
-    * Settings
-      * Update interval
-      * Download only on WLAN
-      * Download only at night/during times x to y
-      * Remove after period
+Main menu
+  * New episodes
+    * Listen
+  * All
+    * <Subscription>
+      * Episodes
+        * List
+    * Update
+  * Current Downloads and Queue
+  * Search/Add
+  * Settings
+    * Update interval
+    * Download only on WLAN
+    * Download only at night/during times x to y
+    * Remove after period
