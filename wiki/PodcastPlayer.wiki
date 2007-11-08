@@ -1,8 +1,6 @@
 = Podcast Player Project =
 
-The aim of this project is to create pretty much a UIQ clone of [http://www.blogs.s60.com/nokiapodcasting/ Nokia Podcasting].
-
-This project has just started, and the code is based on the Sync project. There is [http://bergamot.googlecode.com/svn/Podcast/trunk some code] in Subversion, however it is not yet very useful. It can play audio files, and contains semi-working download code.
+The aim of this project is to create pretty much a UIQ clone of [http://www.blogs.s60.com/nokiapodcasting/ Nokia Podcasting]. This project has just started, and the code is based on the Sync project. There is [http://bergamot.googlecode.com/svn/Podcast/trunk some code] in Subversion, however it is not yet very useful. It can play audio files, and contains semi-working download code.
 
 The first usable (meaning it actually does _something_) version will be alpha 1, which will be available in the near future!
 
