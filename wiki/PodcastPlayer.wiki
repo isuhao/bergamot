@@ -1,6 +1,6 @@
 = Podcast Player Project =
 
-There seems to be interest in a good podcasting client for UIQ 3. The built-in media player does not cut it for serious podcast use.
+The aim of this project is to create pretty much a UIQ clone of [http://www.blogs.s60.com/nokiapodcasting/ Nokia Podcasting].
 
 This project has just started, and the code is based on the Sync project. There is [http://bergamot.googlecode.com/svn/Podcast/trunk some code] in Subversion, however it is not yet very useful. It can play audio files, and contains semi-working download code.
 
