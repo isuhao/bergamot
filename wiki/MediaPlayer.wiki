@@ -1,0 +1,7 @@
+== MediaPlayer ==
+
+The obvious solution is to port one of the many fine open source media players, such as Xine/MPlayer/VLC/GStreamer
+
+Or maybe Symbian [http://symbianoggplay.sourceforge.net/ OggPlay] may be the right starting point.
+
+There is also the [https://symbian.helixcommunity.org/ HelixPlayer]
