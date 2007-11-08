@@ -1,0 +1,8 @@
+Proposed menu layout
+
+  * Main menu
+    * New
+      * Listen
+    * All
+      * Update
+    * Search/Add
