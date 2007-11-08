@@ -6,3 +6,8 @@ Proposed menu layout
     * All
       * Update
     * Search/Add
+    * Settings
+      * Update interval
+      * Download only on WLAN
+      * Download only at night/during times x to y
+      * Remove after period
