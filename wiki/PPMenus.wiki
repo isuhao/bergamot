@@ -5,6 +5,7 @@ Proposed menu layout
       * Listen
     * All
       * Update
+    * Current Downloads and Queue
     * Search/Add
     * Settings
       * Update interval
