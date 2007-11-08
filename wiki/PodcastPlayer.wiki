@@ -31,6 +31,10 @@ Oh, and Podcast Player Project is just a placeholder name. Come up with somethin
   * Notify the user of a new podcast
   * Keep track of position inside audio file, even between restarts, and for multiple podcasts at a time
 
+= Design =
+
+  * [PPMenus Menu design]
+
 = Help! =
 
 Please help me out with the podcast project! If you don't think you can help, I think you're wrong. Most people can do at least one of the below:
