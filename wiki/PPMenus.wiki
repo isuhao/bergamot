@@ -15,3 +15,14 @@ Main menu
     * Download only on WLAN
     * Download only at night/during times x to y
     * Remove after period
+
+Nokia menus
+
+Main
+  * Podcasts
+    * <Subscription>
+      * <Episode>
+        * Click downloads
+  * Directories
+     * Featured 
+  * Search
