@@ -13,6 +13,14 @@ http://bergamot.googlecode.com/svn/wiki/swim2.jpg
 
 This program was written for two reasons. Firstly, UIQ mysteriously lacks the ability to periodically trigger synchronization of data. Secondly, I needed a project to learn Symbian programming.
 
+== Usage ==
+
+Note! Before the new Symbian Open Signed option is available (which should be any day now!) you need a developer certificate to use Swim.
+
+  # Set up one or more SyncML accounts in your agenda manager
+  # Run Swim, and set up a timer
+  # Enjoy your synchronized data!
+
 == Releases ==
 The complete source code is found in the subversion repository. Compiled binaries for each release exists as well. Note that these are unusable without signing them yourself. See "Issues" below.
 
