@@ -2,7 +2,7 @@
 #include <f32file.h>
 #include <bautils.h>
 
-CFeedEngine::CFeedEngine()
+CFeedEngine::CFeedEngine() : parser(*this)
 	{
 	iClient = CHttpClient::NewL(*this);
 	}
@@ -31,9 +31,17 @@ void CFeedEngine::DownloadFeed(TDesC &feedUrl)
 	} else {
 		privatePath.Append(_L("unknown"));
 	}
-	
+	iFileName.Copy(privatePath);
 	iClient->SetSaveFileName(privatePath);
-	iClient->StartClientL();
+//	iClient->StartClientL();
+	TFileName fn;
+	fn.Copy(_L("C:\\Private\\2000fb05\\tech5.xml"));
+	parser.ParseFeedL(fn);
+	}
+
+void CFeedEngine::Item(TPodcastItem *item)
+	{
+	RDebug::Print(_L("\nTitle: %S\nURL: %S\nDescription: %S"), &(item->iTitle), &(item->iUrl), &(item->iDescription));
 	}
 
 void CFeedEngine::ConnectedCallback()
@@ -41,9 +49,14 @@ void CFeedEngine::ConnectedCallback()
 	
 	}
 
+void CFeedEngine::FileCompleteCallback(TFileName &fileName)
+	{
+	RDebug::Print(_L("File to parse: %S"), &fileName);
+	parser.ParseFeedL(fileName);
+	
+	}
 void CFeedEngine::TransactionFinishedCallback()
 	{
-	
 	}
 
 void CFeedEngine::DisconnectedCallback()

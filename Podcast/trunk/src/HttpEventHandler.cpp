@@ -106,9 +106,6 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 				}
 			else if (iSavingResponseBody) // If we're saving, then open a file handle for the new file
 				{
-				iParsedFileName.Set(_L("C:\\logs\\outfile.txt"),NULL,NULL);
-
-				// Check it exists and open a file handle
 				iFileServ.Parse(iFileName, iParsedFileName);
 				TInt valid = iFileServ.IsValidName(iFileName);
 				if (!valid)
@@ -121,7 +118,7 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 					RDebug::Print(_L("Setting file to save to"));
 					TInt err = iRespBodyFile.Replace(iFileServ,
 													 iParsedFileName.FullName(),
-													 EFileWrite|EFileShareExclusive);
+													 EFileWrite);
 					if (err)
 						{
 						RDebug::Print(_L("There was an error"));
@@ -148,6 +145,7 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 				TBool lastChunk = iRespBody->GetNextDataPart(bodyData);
 				iRespBodyFile.Write(bodyData);
 				if (lastChunk)
+					//iRespBodyFile.Flush();
 					iRespBodyFile.Close();
 				}
 
@@ -157,11 +155,12 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 		case THTTPEvent::EResponseComplete:
 			{
 			// The transaction's response is complete
-			iCallbacks.TransactionFinishedCallback();
+
 			RDebug::Print(_L("Transaction Complete"));
 			} break;
 		case THTTPEvent::ESucceeded:
 			{
+			iCallbacks.FileCompleteCallback(iFileName);
 			RDebug::Print(_L("Transaction Successful"));
 			aTransaction.Close();
 			CActiveScheduler::Stop();

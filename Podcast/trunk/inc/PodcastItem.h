@@ -3,11 +3,16 @@
 
 #include <e32cmn.h>
 
+const int KTitleLength = 256;
+const int KUrlLength = 256;
+const int KDescriptionLength = 2048;
+
+
 class TPodcastItem {
 public:
-	TDesC iTitle;
-	TDesC iUrl;
-	TDesC iDescription;
+	TBuf<KTitleLength> iTitle;
+	TBuf<KUrlLength> iUrl;
+	TBuf<KDescriptionLength> iDescription;
 };
 
 #endif

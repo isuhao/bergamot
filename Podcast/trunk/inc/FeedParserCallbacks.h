@@ -5,7 +5,7 @@
 
 class MFeedParserCallbacks
 {
-protected:
+public:
 	virtual void Item(TPodcastItem *item) = 0;
 };
 
