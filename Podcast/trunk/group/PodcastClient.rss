@@ -79,9 +79,39 @@ controls =
         {
         type = EQikCtOnelineBuildingBlock;
         control = r_my_scroll_bar_building_block;
+        },
+       QIK_CONTAINER_ITEM_CI_LI
+        {
+        type = EQikCtOnelineBuildingBlock;
+        control = r_my_scroll_bar_building_block2;
         }
     };
 }
+
+/*RESOURCE QIK_CONTROL_COLLECTION r_my_menu_items
+    {
+    items =
+        {
+        QIK_CONTROL
+            { 
+            unique_handle = EMyViewScrollableContainer;
+            type = EQikCtScrollableContainer;
+            control = r_my_scroll_pane;
+            },
+        QIK_CONTROL
+            {
+            unique_handle = EMyViewLabel;
+            type = EEikCtLabel;
+            control = r_my_label;
+            },
+        QIK_CONTROL
+            {
+            unique_handle = EMyViewBuildingBlock;
+            type = EQikCtCaptionedTwolineBuildingBlock;
+            control = r_my_building_block;
+            }
+        };
+    }*/
 
 RESOURCE QIK_SYSTEM_BUILDING_BLOCK r_my_scroll_bar_building_block
 {
@@ -91,25 +121,22 @@ content =
         {
         slot_id = EQikItemSlot1;
         caption = "Available Podcasts";
-        },
-    QIK_SLOT_CONTENT_DIRECT
-        {
-        slot_id = EQikItemSlot2;
-        type=EEikCtEdwin;
-        
-        control =
-            {
-            EDWIN
-                {
-                flags=0;
-                width=10;
-                lines=1;
-                maxlength=25;
-                }
-            };
         }
     };
 }
+
+RESOURCE QIK_SYSTEM_BUILDING_BLOCK r_my_scroll_bar_building_block2
+{
+content =
+    {
+    QIK_SLOT_CONTENT
+        {
+        slot_id = EQikItemSlot1;
+        caption = "Wongo";
+        }
+    };
+}
+
 
 RESOURCE QIK_VIEW_CONFIGURATIONS r_my_scroll_bar_ui_configurations
 {

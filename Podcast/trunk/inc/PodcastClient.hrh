@@ -11,7 +11,8 @@ enum TPodcastClientDefines
 	{
 	EMyViewBuildingBlockBase,
 	EMyViewCommandButton = 1000,
-	EMyViewChoiceListBase = 2000
+	EMyViewChoiceListBase = 2000,
+	EMyWebCommand = 3000
 	};
 
 	enum TMyViewControls

@@ -84,6 +84,10 @@ The command Ids are defined in the .hrh file.
 */
 void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 	{
+	
+   	//httpCli->StartClientL();
+	//CActiveScheduler::Start();
+
 	switch(aCommand.Id())
 		{
 		// Just issue simple info messages to show that
@@ -120,8 +124,27 @@ void CPodcastClientView::ViewConstructL()
         User::LeaveIfError(serverSession.Connect());
         iPlayer = CMdaAudioPlayerUtility::NewL(*this);
 
-        
         iContainer->BeginUpdateLC();
+        
+        
+        //// create button
+        
+        CQikBuildingBlock* block = CQikBuildingBlock::CreateSystemBuildingBlockL(EQikCtOnelineBuildingBlock);
+    	iContainer->AddControlLC(block, EMyViewBuildingBlockBase+239);
+    	block->ConstructL();
+    	//block->SetUniqueHandle(EMyViewBuildingBlockBase+pID->iId);
+    	CEikCommandButton* cmdbutton = new (ELeave) CEikCommandButton();
+        cmdbutton->SetTextL(_L("Go!"));
+        cmdbutton->SetObserver(this);
+        cmdbutton->SetUniqueHandle(EMyWebCommand);
+        block->AddControlLC(cmdbutton, EQikItemSlot1);
+        CleanupStack::Pop(cmdbutton);
+    	
+    	CleanupStack::Pop(block);
+    	
+        /// end
+        
+        
         TRAPD(error, ListAllPodcastsL());
         RDebug::Print(_L("ListAllPodcastsL error: %d"), error);
         iContainer->EndUpdateL();        
@@ -131,18 +154,9 @@ void CPodcastClientView::ViewConstructL()
         mySize.iWidth = 400;
         mySize.iHeight = 600;
        iContainer->SetPageSize(mySize);
-    //ViewConstructFromResourceL(R_MY_SCROLL_BAR_UI_CONFIGURATIONS, R_MY_SCROLL_BAR_VIEW_CONTROLS);
+    
+      // ViewConstructFromResourceL(R_MY_SCROLL_BAR_UI_CONFIGURATIONS, R_MY_SCROLL_BAR_VIEW_CONTROLS);
 
-	   	// create an active scheduler to use
-	   	//CActiveScheduler* scheduler = new(ELeave) CActiveScheduler();
-	   	//CleanupStack::PushL(scheduler);
-	   //	CActiveScheduler::Install(scheduler);
-	
-	   	// Create and start the client
-	   	CHttpClient* httpCli = CHttpClient::NewLC();
-	   	httpCli->StartClientL();
-	
-	   	CleanupStack::PopAndDestroy(1); // httpCli, scheduler
     }
 
 void CPodcastClientView::CreatePodcastListItem(TPodcastId *pID)
@@ -191,14 +205,23 @@ void CPodcastClientView::PlayPausePodcast(TPodcastId *podcast)
 }
 void CPodcastClientView::HandleControlEventL(CCoeControl *aControl, TCoeEvent aEventType)
 	{
-	int id = aControl->UniqueHandle() - EMyViewCommandButton;
-	TPodcastId *podcast = podcasts[id];
 	switch(aEventType)
     {
     case EEventStateChanged:
-    	RDebug::Print(_L("EEventStateChanged"));
-    	RDebug::Print(_L("HandleControlEventL: %S, %S"), &(podcast->iTitle), &(podcast->iFileName));
-    	PlayPausePodcast(podcast);
+    	if (aControl->UniqueHandle() == EMyWebCommand) {
+    		RDebug::Print(_L("Webbaroo"));
+    		  iClient = CHttpClient::NewL(*this);
+    		  iClient->StartClientL();
+    	} else {
+    	int id = aControl->UniqueHandle() - EMyViewCommandButton;
+    	
+    	if (id < podcasts.Count()) {
+    		TPodcastId *podcast = podcasts[id];
+    		RDebug::Print(_L("EEventStateChanged"));
+    		RDebug::Print(_L("HandleControlEventL: %S, %S"), &(podcast->iTitle), &(podcast->iFileName));
+    		PlayPausePodcast(podcast);
+    	}
+    	}
         // The internal state of the Command Button was changed.
         break;
                                 
@@ -228,6 +251,25 @@ void CPodcastClientView::HandleControlEventL(CCoeControl *aControl, TCoeEvent aE
     }
 
 	}
+
+
+void CPodcastClientView::AddResult(const TDesC& aText)
+	{
+	RDebug::Print(_L("AddResult: %S"), &aText);
+	}
+void CPodcastClientView::SetConnected()
+	{
+	RDebug::Print(_L("SetConnected"));	
+	}
+void CPodcastClientView::SetDisconnected()
+	{
+	RDebug::Print(_L("SetDisconnected"));	
+	}
+
+
+void CPodcastClientView::Item(TPodcastItem *item) {
+	RDebug::Print(_L("New item\n  title: %S\n  url: %S\n  description: %S"), &(item->iTitle), &(item->iUrl), &(item->iDescription));
+}
 
 void CPodcastClientView::ListDirL(RFs &rfs, TDesC &folder) {
 	CDirScan *dirScan = CDirScan::NewLC(rfs);
@@ -278,7 +320,7 @@ void CPodcastClientView::MapcPlayComplete(TInt aError) {
 	RDebug::Print(_L("Play Complete: %d"), aError);
 }
 
-void CPodcastClientView::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds &aDuration) {
+void CPodcastClientView::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds &/*aDuration */) {
 	RDebug::Print(_L("Init Complete: %d"), aError);
 	
 	if (aError == KErrNone) {

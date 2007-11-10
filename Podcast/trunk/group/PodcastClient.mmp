@@ -38,7 +38,10 @@ SOURCE          PodcastClientDocument.cpp
 SOURCE          PodcastClientApplication.cpp
 SOURCE			PodcastClientView.cpp
 SOURCE 			RPodcastServerSession.cpp
-SOURCE			PodcastData.cpp PodcastDownloader.cpp HttpClient.cpp
+SOURCE			PodcastData.cpp 
+SOURCE			PodcastDownloader.cpp 
+SOURCE			HttpClient.cpp
+SOURCE			HttpEventHandler.cpp FeedParser.cpp
 
 LIBRARY         euser.lib
 LIBRARY         apparc.lib
@@ -60,12 +63,13 @@ LIBRARY			estor.lib efsrv.lib
 LIBRARY			mediaclientaudio.lib
 LIBRARY			mediaclient.lib
 LIBRARY			mmcommon.lib http.lib InetProtUtil.lib
+LIBRARY			charconv.lib
 
 START BITMAP    PodcastClient.mbm
 TARGETPATH      \resource\apps
 HEADER
 SOURCEPATH      ..\images
-SOURCE          16 PodcastClient_40x40.bmp
+SOURCE			16 PodcastClient_40x40.bmp
 SOURCE          8   PodcastClient_40x40_mask.bmp
 SOURCE          16 PodcastClient_40x40.bmp
 SOURCE          8   PodcastClient_40x40_mask.bmp

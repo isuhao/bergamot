@@ -10,41 +10,39 @@ relation to the condition, suitability, availability, accuracy, reliability,
 merchantability and/or non-infringement of the software provided herein. 
 *****************************************************************************/
 
-// HttpClient.h
+// HttpEventHandler.h
 
-#ifndef __HTTPCLIENT_H__
-#define __HTTPCLIENT_H__
+#ifndef HTTPEVENTHANDLER_H
+#define HTTPEVENTHANDLER_H
 
-
-#include <http\rhttpsession.h>
+#include <e32base.h>
+#include <http\mhttptransactioncallback.h>
 #include "MResultObs.h"
-#include "HttpEventHandler.h"
 
-class CHttpClient : public CBase
-{
+class CHttpEventHandler : public CBase,
+                          public MHTTPTransactionCallback
+  {
 public:
-  virtual ~CHttpClient();
-  static CHttpClient* NewL(MResultObs& aResObs);
+  virtual ~CHttpEventHandler();
+  static CHttpEventHandler* NewL(MResultObs& aResObs);
 
-  void StartClientL();
+  // from MHTTPTransactionCallback
+  virtual void MHFRunL(RHTTPTransaction aTransaction,
+                       const THTTPEvent& aEvent);
+  virtual TInt MHFRunError(TInt aError,
+                           RHTTPTransaction aTransaction, 
+                           const THTTPEvent& aEvent);
 
 protected:
-  CHttpClient(MResultObs& aResObs);
+  CHttpEventHandler(MResultObs& aResObs);
 
 private:
-  static CHttpClient* NewLC(MResultObs& aResObs);
+  static CHttpEventHandler* NewLC(MResultObs& aResObs);
   void ConstructL();
-
-  void InvokeHttpMethodL(const TDesC8& aUri, RStringF aMethod);
-  void SetHeaderL(RHTTPHeaders aHeaders, TInt aHdrField, const TDesC8& aHdrValue);
+  void Dump(TPtrC8 aDataChunk);
 
 private:
-  RHTTPSession iSession;
-  CHttpEventHandler* iTransObs;
-
   MResultObs& iResObs;
-
 };
-
 
 #endif
