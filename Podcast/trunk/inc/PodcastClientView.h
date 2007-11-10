@@ -7,7 +7,7 @@
 #include "s32file.h"
 #include "e32debug.h"
 #include <e32cmn.h>
-#include "RPodcastServerSession.h"
+//#include "RPodcastServerSession.h"
 #include "PodcastClientGlobals.h"
 #include <mdaaudiosampleplayer.h>
 #include <coecobs.h>
@@ -66,7 +66,7 @@ private:
 //	RArray<TPodcastId*> podcasts;
 	RArray<TFeedInfo*> feeds;
 	RArray<TPodcastId*> files;
-	RPodcastServerSession serverSession;
+	//RPodcastServerSession serverSession;
 	CQikScrollableContainer* iContainer;
     CMdaAudioPlayerUtility *iPlayer;
     int iPlayingPodcast;

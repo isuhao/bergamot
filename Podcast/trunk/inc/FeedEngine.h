@@ -6,8 +6,7 @@
 #include "FeedParser.h"
 #include "FeedInfo.h"
 #include <e32cmn.h>
-
-_LIT(KPodcastDirectory, "c:\\logs\\");
+#include "PodcastClientGlobals.h"
 
 class CFeedEngine : public MHttpEventHandlerCallbacks, public MFeedParserCallbacks
 {

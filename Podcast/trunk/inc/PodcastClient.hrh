@@ -10,9 +10,18 @@ enum TPodcatClientCommands
     enum TListBoxControl
 	{
 	EListBoxListViewListCtrl,
-	EListBoxListViewPage
+	EListBoxListViewPage,
+	EFeedEditor
 	};
 	
+    
+	enum TSimpleDialogControls
+    {
+    ESimpleDialogBB,
+    ESimpleDialogImage,
+    ESimpleDialogLabel,
+    ESimpleDialogEdwin
+    };
     
 enum TPodcastClientDefines
 	{

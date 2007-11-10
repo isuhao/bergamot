@@ -181,3 +181,120 @@ RESOURCE QIK_ROW_LAYOUT_DATA r_listbox_row_layout_data_fill
 	vertical_alignment = EQikLayoutVAlignFill;
 	vertical_excess_grab_weight = 1;
 	}
+
+
+/// dialog
+
+RESOURCE QIK_DIALOG r_my_simple_dialog 
+{
+title = "Enter some info";
+configurations = 
+    {
+    QIK_DIALOG_CONFIGURATION
+        {
+        ui_config_mode = 0;
+        container = r_my_simple_dialog_container;
+        command_list = r_my_simple_dialog_commands;
+        }
+    };
+controls = r_my_simple_dialog_controls;
+}
+
+RESOURCE QIK_CONTROL_COLLECTION r_my_simple_dialog_controls
+{
+items = 
+    {
+    QIK_CONTROL
+        {
+        unique_handle = ESimpleDialogBB;
+        type = EQikCtIconCaptionedOnelineBuildingBlock;
+        control = r_my_simple_dialog_building_block;
+        },
+    QIK_CONTROL
+        {
+        unique_handle = ESimpleDialogLabel;
+        type = EEikCtLabel;
+        control = r_my_simple_dialog_label;
+        },
+    QIK_CONTROL
+        {
+        unique_handle = ESimpleDialogImage;
+        type = EEikCtImage;
+        control = r_my_simple_dialog_image;
+        },
+    QIK_CONTROL
+        {
+        unique_handle = ESimpleDialogEdwin;
+        type = EEikCtEdwin;
+        control = r_my_simple_dialog_edwin;
+        }
+    };
+}
+
+RESOURCE QIK_SCROLLABLE_CONTAINER_SETTINGS r_my_simple_dialog_container
+{
+controls = 
+    {
+    QIK_CONTAINER_ITEM
+        {
+        unique_handle = ESimpleDialogBB;
+        }
+    };
+}
+
+RESOURCE QIK_SYSTEM_BUILDING_BLOCK r_my_simple_dialog_building_block
+{
+content =
+    {
+    QIK_SLOT_CONTENT
+        {
+        slot_id = EQikIconSlot1;
+        unique_handle = ESimpleDialogImage;
+        },
+    QIK_SLOT_CONTENT
+        {
+        slot_id = EQikItemSlot1;
+        unique_handle = ESimpleDialogLabel;
+        },
+    QIK_SLOT_CONTENT
+        {
+        slot_id = EQikItemSlot2;
+        unique_handle = ESimpleDialogEdwin;
+        }
+    };
+}
+
+RESOURCE IMAGE r_my_simple_dialog_image
+{
+bmpfile = "z:\\Resource\\Apps\\default_app_icon.MBM";
+bmpid = 0;
+bmpmask = -1;
+}
+
+RESOURCE LABEL r_my_simple_dialog_label
+{
+txt = "Please enter something:";
+}
+
+RESOURCE EDWIN r_my_simple_dialog_edwin
+{
+}
+
+RESOURCE QIK_COMMAND_LIST r_my_simple_dialog_commands
+{
+items=
+    {
+    QIK_COMMAND
+     {
+     id = EEikBidYes;
+     type = EQikCommandTypeYes;
+     text = "Yes";
+     },
+    QIK_COMMAND
+     {
+     id = EEikBidNo;
+     type = EQikCommandTypeNo;
+     text = "No";
+     }
+    };
+}

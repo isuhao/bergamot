@@ -18,6 +18,8 @@
 #include <QikListBoxModel.h>
 #include <QikListBox.h>
 #include <QikListBoxData.h>
+#include <eikdialg.h>
+
 
 /**
 Creates and constructs the view.
@@ -262,7 +264,6 @@ void CPodcastClientView::MapcInitComplete(TInt aError, const TTimeIntervalMicroS
 	
 	if (aError == KErrNone) {
 	  iPlayer->Play();
-	  //  player->
 	}
 }
 void CPodcastClientView::HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxEvent aEventType, TInt aItemIndex, TInt aSlotId)
@@ -286,11 +287,15 @@ void CPodcastClientView::HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxE
 			PlayPausePodcast(files[aItemIndex]);
 			break;
 		case EMenuFeeds:
-			RDebug::Print(_L("URL: %S"), &(feeds[aItemIndex]->iUrl));
-			User::InfoPrint(_L("Getting feed..."));
-			iFeedEngine.GetFeed(*feeds[aItemIndex]);
-			iMenuState = EMenuEpisodes;
-			CreateMenu();
+			if (aItemIndex == 0) {
+
+			} else {
+				RDebug::Print(_L("URL: %S"), &(feeds[aItemIndex-1]->iUrl));
+				User::InfoPrint(_L("Getting feed..."));
+				iFeedEngine.GetFeed(*feeds[aItemIndex-1]);
+				iMenuState = EMenuEpisodes;
+				CreateMenu();
+			}
 			break;
 		case EMenuEpisodes:
 			RArray <TPodcastInfo*>& fItems = iFeedEngine.GetItems();
@@ -345,10 +350,16 @@ void CPodcastClientView::CreateMenu()
 	case EMenuFeeds:
 		{
 		int len = feeds.Count();
+		MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
+		CleanupClosePushL(*listBoxData);
+	
+		itemName.Copy(_L("Add feed..."));
+		listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
+		CleanupStack::PopAndDestroy();
 		
 		if (len > 0) {
 			for (int i=0;i<len;i++) {
-			MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
+			listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
 			CleanupClosePushL(*listBoxData);
 			TFeedInfo *fi = feeds[i];
 			listBoxData->AddTextL(fi->iTitle, EQikListBoxSlotText1);
@@ -356,7 +367,7 @@ void CPodcastClientView::CreateMenu()
 			}
 		} else {
 			{
-			MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
+			listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
 			CleanupClosePushL(*listBoxData);
 		
 			itemName.Copy(_L("No feeds"));

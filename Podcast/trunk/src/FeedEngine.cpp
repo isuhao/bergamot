@@ -50,7 +50,7 @@ void CFeedEngine::GetPodcast(TPodcastInfo &info)
 	TBuf<100> filePath;
 	RFs rfs;
 	rfs.Connect();
-	filePath.Copy(KPodcastDirectory);
+	filePath.Copy(KPodcastDir);
 	BaflUtils::EnsurePathExistsL(rfs, filePath);
 	
 	int pos = info.iUrl.LocateReverse('/');

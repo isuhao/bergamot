@@ -63,8 +63,10 @@ LIBRARY			mediaclientaudio.lib
 LIBRARY			mediaclient.lib
 LIBRARY			mmcommon.lib http.lib InetProtUtil.lib
 LIBRARY			charconv.lib
-LIBRARY			xmlframework.lib	// for Xml::CParser
-library			qiklbx.lib 
+LIBRARY			xmlframework.lib
+LIBRARY			qiklbx.lib 
+LIBRARY			eikdlg.lib
+
 START BITMAP    PodcastClient.mbm
 TARGETPATH      \resource\apps
 HEADER
