@@ -15,8 +15,8 @@ public:
 	virtual ~CFeedEngine();
 	
 public:
-	void DownloadFeed(TDesC &feedUrl);
-	void DownloadPodcast(TDesC &fileUrl);
+	void GetFeed(TFeedInfo& feedInfo);
+	void GetPodcast(TDesC &fileUrl);
 	
 private:
 	CHttpClient* iClient;
@@ -29,7 +29,6 @@ private:
 	CFeedParser parser;
 	
 	void Item(TPodcastItem *item);
-	TPodcastItem *anItem;
 };
 
 #endif /*FEEDENGINE_H_*/
