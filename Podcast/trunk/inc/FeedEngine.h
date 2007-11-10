@@ -4,6 +4,7 @@
 #include "HttpEventHandlerCallbacks.h"
 #include "HttpClient.h"
 #include "FeedParser.h"
+#include "FeedInfo.h"
 #include <e32cmn.h>
 
 _LIT(KPodcastDirectory, "c:\\logs\\");
@@ -16,8 +17,8 @@ public:
 	
 public:
 	void GetFeed(TFeedInfo& feedInfo);
-	void GetPodcast(TDesC &fileUrl);
-	
+	void GetPodcast(TPodcastInfo &info);
+	RArray <TPodcastInfo*>& GetItems();
 private:
 	CHttpClient* iClient;
 	
@@ -27,8 +28,8 @@ private:
 	void FileCompleteCallback(TFileName &fileName);
 	TFileName iFileName;
 	CFeedParser parser;
-	
-	void Item(TPodcastItem *item);
+	RArray<TPodcastInfo*> items;
+	void Item(TPodcastInfo *item);
 };
 
 #endif /*FEEDENGINE_H_*/

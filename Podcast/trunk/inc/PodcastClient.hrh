@@ -7,6 +7,13 @@ enum TPodcatClientCommands
     EMyAbout
     };
     
+    enum TListBoxControl
+	{
+	EListBoxListViewListCtrl,
+	EListBoxListViewPage
+	};
+	
+    
 enum TPodcastClientDefines
 	{
 	EMyViewBuildingBlockBase,

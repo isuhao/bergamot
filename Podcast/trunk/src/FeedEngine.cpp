@@ -13,6 +13,7 @@ CFeedEngine::~CFeedEngine()
 
 void CFeedEngine::GetFeed(TFeedInfo& feedInfo)
 	{
+	items.Reset();
 	TBuf<100> privatePath;
 	RFs rfs;
 	rfs.Connect();
@@ -23,7 +24,7 @@ void CFeedEngine::GetFeed(TFeedInfo& feedInfo)
 	int pos = feedInfo.iUrl.LocateReverse('/');
 	
 	if (pos != KErrNotFound) {
-		TPtrC str = feedUrl.Mid(pos+1);
+		TPtrC str = feedInfo.iUrl.Mid(pos+1);
 		RDebug::Print(_L("Separated filename: %S"), &str);
 		privatePath.Append(str);
 	} else {
@@ -32,14 +33,19 @@ void CFeedEngine::GetFeed(TFeedInfo& feedInfo)
 	iFileName.Copy(privatePath);
 	iClient->SetUrl(feedInfo.iUrl);
 	iClient->SetSaveFileName(privatePath);
-//	iClient->StartClientL();
-	TFileName fn;
-	fn.Copy(_L("C:\\Private\\2000fb05\\tech5.xml"));
-	parser.ParseFeedL(fn);
+	iClient->StartClientL();
+//	TFileName fn;
+//	fn.Copy(_L("C:\\Private\\2000fb05\\tech5.xml"));
+//	parser.ParseFeedL(private);
 	RDebug::Print(_L("DownloadFeed END"));
 	}
 
-void CFeedEngine::GetPodcast(TDesC &fileUrl)
+RArray <TPodcastInfo*>& CFeedEngine::GetItems() 
+{
+	return items;
+}
+
+void CFeedEngine::GetPodcast(TPodcastInfo &info)
 	{
 	TBuf<100> filePath;
 	RFs rfs;
@@ -47,23 +53,24 @@ void CFeedEngine::GetPodcast(TDesC &fileUrl)
 	filePath.Copy(KPodcastDirectory);
 	BaflUtils::EnsurePathExistsL(rfs, filePath);
 	
-	int pos = fileUrl.LocateReverse('/');
+	int pos = info.iUrl.LocateReverse('/');
 	
 	if (pos != KErrNotFound) {
-		TPtrC str = fileUrl.Mid(pos+1);
+		TPtrC str = info.iUrl.Mid(pos+1);
 		RDebug::Print(_L("Separated filename: %S"), &str);
 		filePath.Append(str);
 	} else {
 		filePath.Append(_L("unknown"));
 	}
 	iClient->SetSaveFileName(filePath);
-	iClient->SetUrl(fileUrl);
+	iClient->SetUrl(info.iUrl);
 	iClient->StartClientL();
 	}
 
-void CFeedEngine::Item(TPodcastItem *item)
+void CFeedEngine::Item(TPodcastInfo *item)
 	{
 	RDebug::Print(_L("\nTitle: %S\nURL: %S\nDescription: %S"), &(item->iTitle), &(item->iUrl), &(item->iDescription));
+	items.Append(item);
 	}
 
 void CFeedEngine::ConnectedCallback()

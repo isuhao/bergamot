@@ -64,7 +64,7 @@ private:
 	MFeedParserCallbacks& iCallbacks;
 	TFeedState iFeedState;
 	RStringPool feedStringPool;
-	TPodcastItem* activeItem;
+	TPodcastInfo* activeItem;
 };
 
 #endif

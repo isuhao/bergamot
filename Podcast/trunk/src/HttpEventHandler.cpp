@@ -143,6 +143,7 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 				{
 				TPtrC8 bodyData;
 				TBool lastChunk = iRespBody->GetNextDataPart(bodyData);
+				User::InfoPrint(_L("Downloading..."));
 				iRespBodyFile.Write(bodyData);
 				if (lastChunk)
 					//iRespBodyFile.Flush();
@@ -301,6 +302,7 @@ void CHttpEventHandler::DumpIt(const TDesC8& aData)
 	TBuf<KMaxFileName - 2> logLine;
 	TBuf<KMaxFileName - 2> anEntry;
 	const TInt dataLength = aData.Length();
+
 	while (pos < dataLength)
 		{
 		//start-line hexadecimal( a 4 digit number)

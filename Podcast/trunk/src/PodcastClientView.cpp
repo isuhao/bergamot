@@ -15,6 +15,9 @@
 #include <eikcmbut.h>
 #include "HttpClient.h"
 #include "bautils.h"
+#include <QikListBoxModel.h>
+#include <QikListBox.h>
+#include <QikListBoxData.h>
 
 /**
 Creates and constructs the view.
@@ -100,98 +103,46 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 
 void CPodcastClientView::ViewConstructL()
     {
-    
-        // Give a layout manager to the view
-        CQikGridLayoutManager* gridlayout = CQikGridLayoutManager::NewLC();
-        SetLayoutManagerL(gridlayout);
-        CleanupStack::Pop(gridlayout);
-                            
-        // Create a container and add it to the view
-        CQikScrollableContainer* container = new (ELeave) CQikScrollableContainer();
-        Controls().AppendLC(container);
-        container->ConstructL(ETrue);
-        int one = 1; int zero = 0;
-        container->ScrollBarsNeeded(one, zero);
-        CleanupStack::Pop(container);
-        iContainer = container;
-                            
-        // Create a layout manager to be used inside the container
-        CQikRowLayoutManager* rowlayout = CQikRowLayoutManager::NewLC();
-        container->SetLayoutManagerL(rowlayout);
-        CleanupStack::Pop(rowlayout);        
-        
-        User::LeaveIfError(serverSession.Connect());
-        iPlayer = CMdaAudioPlayerUtility::NewL(*this);
+    iPlayer = CMdaAudioPlayerUtility::NewL(*this);
+    TFeedInfo *info = new TFeedInfo;
+    info->iTitle.Copy(_L("tech5"));
+    info->iUrl.Copy(_L("http://www.podshow.com/feeds/tech5.xml"));
+    feeds.Append(info);
 
-        iContainer->BeginUpdateLC();
-        
-        
-        //// create button
-        
-        CQikBuildingBlock* block = CQikBuildingBlock::CreateSystemBuildingBlockL(EQikCtOnelineBuildingBlock);
-    	iContainer->AddControlLC(block, EMyViewBuildingBlockBase+239);
-    	block->ConstructL();
-    	//block->SetUniqueHandle(EMyViewBuildingBlockBase+pID->iId);
-    	CEikCommandButton* cmdbutton = new (ELeave) CEikCommandButton();
-        cmdbutton->SetTextL(_L("Go!"));
-        cmdbutton->SetObserver(this);
-        cmdbutton->SetUniqueHandle(EMyWebCommand);
-        block->AddControlLC(cmdbutton, EQikItemSlot1);
-        CleanupStack::Pop(cmdbutton);
+    info = new TFeedInfo;
+    info->iTitle.Copy(_L("Daily Giz Wiz"));
+    info->iUrl.Copy(_L("http://www.leoville.tv/podcasts/dgw.xml"));
+    feeds.Append(info);
     	
-    	CleanupStack::Pop(block);
-    	
-        /// end
-        
-        
-        TRAPD(error, ListAllPodcastsL());
-        RDebug::Print(_L("ListAllPodcastsL error: %d"), error);
-        iContainer->EndUpdateL();        
-        TSize sz = rowlayout->CalcMinimumSize(); //)Container->MinimumSize(); //iContainer->PageSize();
-        RDebug::Print(_L("sz.iWidth: %d, sz.iHeight: %d"), sz.iWidth, sz.iHeight);
-        TSize mySize;
-        mySize.iWidth = 400;
-        mySize.iHeight = 600;
-       iContainer->SetPageSize(mySize);
-    
-      // ViewConstructFromResourceL(R_MY_SCROLL_BAR_UI_CONFIGURATIONS, R_MY_SCROLL_BAR_VIEW_CONTROLS);
-
+    ViewConstructFromResourceL(R_LISTBOX_LISTVIEW_UI_CONFIGURATIONS);
+    iMenuState = EMenuMain;
+       
+    CreateMenu();
+    SetParentView(ViewId());
     }
 
-void CPodcastClientView::CreatePodcastListItem(TPodcastId *pID)
+void CPodcastClientView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage)
 	{
-	// Create the System Building Block and set the caption.
-	CQikBuildingBlock* block = CQikBuildingBlock::CreateSystemBuildingBlockL(EQikCtCaptionedTwolineBuildingBlock);
-	iContainer->AddControlLC(block, EMyViewBuildingBlockBase+pID->iId);
-	block->ConstructL();
-	//block->SetUniqueHandle(EMyViewBuildingBlockBase+pID->iId);
-	block->SetDividerBelow(ETrue);
-	block->SetCaptionL(pID->iTitle, EQikItemSlot1); //the slot ids are defined in qikon.hrh
-	CEikCommandButton* cmdbutton = new (ELeave) CEikCommandButton();
-    cmdbutton->SetTextL(_L("Play/Pause"));
-    cmdbutton->SetObserver(this);
-    cmdbutton->SetUniqueHandle(EMyViewCommandButton+pID->iId);
-	block->AddControlLC(cmdbutton, EQikItemSlot2);
-    CleanupStack::Pop(cmdbutton);
-	
-	CleanupStack::Pop(block);
-}
+		iMenuState = EMenuMain;
+		CreateMenu();
+	}
 
 void CPodcastClientView::PlayPausePodcast(TPodcastId *podcast) 
 	{
 	if (iPlayingPodcast == podcast->iId) {
 		if (podcast->iPlaying) {
-			RDebug::Print(_L("Pausing"));
+			User::InfoPrint(_L("Pausing"));
 			iPlayer->Pause();
 			iPlayer->GetPosition(podcast->iPosition);
 			podcast->iPlaying = EFalse;
 		} else {
-			RDebug::Print(_L("Resuming"));
+			User::InfoPrint(_L("Resuming"));
 			iPlayer->Play();
 			podcast->iPlaying = ETrue;
 		}
 	} else {
 		iPlayer->Stop();
+		User::InfoPrint(_L("Playing"));
 		RDebug::Print(_L("Starting: %S"), &(podcast->iFileName));
 		TRAPD(error, iPlayer->OpenFileL(podcast->iFileName));
 	    if (error != KErrNone) {
@@ -203,16 +154,16 @@ void CPodcastClientView::PlayPausePodcast(TPodcastId *podcast)
 	}
 }
 
-
-void CPodcastClientView::HandleControlEventL(CCoeControl *aControl, TCoeEvent aEventType)
+void CPodcastClientView::HandleControlEventL(CCoeControl */*aControl*/, TCoeEvent aEventType)
 	{
+	RDebug::Print(_L("ControlEvent"));
 	switch(aEventType)
     {
     case EEventStateChanged:
-    	if (aControl->UniqueHandle() == EMyWebCommand) {
-    		TBuf<100> url;
-    		url.Copy(_L("http://www.podshow.com/feeds/tech5.xml"));
-    		iFeedEngine.DownloadFeed(url);
+    	/*if (aControl->UniqueHandle() == EMyWebCommand) {
+    		TFeedInfo feedInfo;
+    		feedInfo.iUrl.Copy(_L("http://www.podshow.com/feeds/tech5.xml"));
+    		iFeedEngine.GetFeed(feedInfo);
     	} else {
     	int id = aControl->UniqueHandle() - EMyViewCommandButton;
     	
@@ -222,7 +173,7 @@ void CPodcastClientView::HandleControlEventL(CCoeControl *aControl, TCoeEvent aE
     		RDebug::Print(_L("HandleControlEventL: %S, %S"), &(podcast->iTitle), &(podcast->iFileName));
     		PlayPausePodcast(podcast);
     	}
-    	}
+    	}*/
         // The internal state of the Command Button was changed.
         break;
                                 
@@ -263,21 +214,25 @@ void CPodcastClientView::ListDirL(RFs &rfs, TDesC &folder) {
 	for (int i=0;i<dirPtr->Count();i++) {
 		const TEntry &entry = (*dirPtr)[i];
 		if (entry.IsDir())  {
-			TBuf<100> subFolder;
+			/*TBuf<100> subFolder;
 			subFolder.Copy(folder);
 			subFolder.Append(entry.iName);
 			subFolder.Append(_L("\\"));
-			ListDirL(rfs, subFolder);
+			ListDirL(rfs, subFolder);*/
+		} else {
+			RDebug::Print(_L("Right(3): %S"), &entry.iName.Right(3));
+		if (entry.iName.Right(3).CompareF(_L("mp3")) == 0 ||
+				entry.iName.Right(3).CompareF(_L("aac")) == 0 ||
+				entry.iName.Right(3).CompareF(_L("wav")) == 0) {
+			RDebug::Print(entry.iName);
+			int id = files.Count();
+			TBuf<100> fileName;
+			fileName.Copy(folder);
+			fileName.Append(entry.iName);
+			TPodcastId *pID = new TPodcastId(id, fileName, entry.iName);
+			files.Append(pID);
 		}
-		RDebug::Print(entry.iName);
-		int id = podcasts.Count();
-		TBuf<100> fileName;
-		fileName.Copy(folder);
-		fileName.Append(entry.iName);
-
-		TPodcastId *pID = new TPodcastId(id, fileName, entry.iName);
-		podcasts.Append(pID);
-		CreatePodcastListItem(pID);
+		}
 	}
 	delete dirPtr;
 	CleanupStack::Pop(dirScan);
@@ -285,7 +240,7 @@ void CPodcastClientView::ListDirL(RFs &rfs, TDesC &folder) {
 }
 
 void CPodcastClientView::ListAllPodcastsL()
-{
+	{
 	RFs rfs;
 	rfs.Connect();
 	
@@ -310,3 +265,156 @@ void CPodcastClientView::MapcInitComplete(TInt aError, const TTimeIntervalMicroS
 	  //  player->
 	}
 }
+void CPodcastClientView::HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxEvent aEventType, TInt aItemIndex, TInt aSlotId)
+	{
+	RDebug::Print(_L("HandleListBoxEvent, itemIndex=%d, slotId=%d, aEventType=%d"), aItemIndex, aSlotId, aEventType);
+	
+	switch (aEventType)
+	{
+	case EEventHighlightMoved:
+		break;
+	case EEventItemConfirmed:
+	case EEventItemTapped:
+		switch (iMenuState)
+		{
+		case EMenuMain:
+			iMenuState = (TMenus) (aItemIndex + 1);
+			CreateMenu();
+			break;
+		case EMenuFiles:
+			RDebug::Print(_L("File: %S"), &(files[aItemIndex]->iFileName));
+			PlayPausePodcast(files[aItemIndex]);
+			break;
+		case EMenuFeeds:
+			RDebug::Print(_L("URL: %S"), &(feeds[aItemIndex]->iUrl));
+			User::InfoPrint(_L("Getting feed..."));
+			iFeedEngine.GetFeed(*feeds[aItemIndex]);
+			iMenuState = EMenuEpisodes;
+			CreateMenu();
+			break;
+		case EMenuEpisodes:
+			RArray <TPodcastInfo*>& fItems = iFeedEngine.GetItems();
+			RDebug::Print(_L("Get podcast URL: %S"), &(fItems[aItemIndex]->iUrl));
+			iFeedEngine.GetPodcast(*fItems[aItemIndex]);
+			User::InfoPrint(_L("Done!"));
+		}
+		break;
+		
+	}
+	}
+
+void CPodcastClientView::CreateMenu()
+{
+	// Get the list box and the list box model
+	CQikListBox* listBox = (CQikListBox*) LocateControlByUniqueHandle<const CQikListBox>(EListBoxListViewListCtrl);
+	listBox->RemoveAllItemsL();
+	MQikListBoxModel& model(listBox->Model());
+	listBox->SetListBoxObserver(this);
+	// Informs the list box model that there will be an update of the data.
+	// Notify the list box model that changes will be made after this point.
+	// Observe that a cleanupitem has been put on the cleanupstack and 
+	// will be removed by ModelEndUpdateL. This means that you have to 
+	// balance the cleanupstack.
+	// When you act directly on the model you always need to encapsulate 
+	// the calls between ModelBeginUpdateLC and ModelEndUpdateL.
+	model.ModelBeginUpdateLC();
+	
+	TBuf<100> itemName;
+	RDebug::Print(_L("CreateMenu, iMenuState: %d"), (int)iMenuState);
+	switch (iMenuState) {
+	case EMenuMain:
+		{
+		MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
+		CleanupClosePushL(*listBoxData);
+		itemName.Copy(_L("Episodes"));
+		listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
+	
+		listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
+		CleanupClosePushL(*listBoxData);
+		itemName.Copy(_L("Subscriptions"));
+		listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
+	
+		listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
+		CleanupClosePushL(*listBoxData);
+		itemName.Copy(_L("Downloads"));
+		listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
+	
+		CleanupStack::PopAndDestroy(3);
+		}
+		break;
+	case EMenuFeeds:
+		{
+		int len = feeds.Count();
+		
+		if (len > 0) {
+			for (int i=0;i<len;i++) {
+			MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
+			CleanupClosePushL(*listBoxData);
+			TFeedInfo *fi = feeds[i];
+			listBoxData->AddTextL(fi->iTitle, EQikListBoxSlotText1);
+			CleanupStack::PopAndDestroy();	
+			}
+		} else {
+			{
+			MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
+			CleanupClosePushL(*listBoxData);
+		
+			itemName.Copy(_L("No feeds"));
+			listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
+			CleanupStack::PopAndDestroy();
+			}
+		}
+		
+		}
+
+	break;
+	case EMenuFiles:
+		{	RFs rfs;
+		rfs.Connect();
+		files.Reset();
+		ListAllPodcastsL();
+		
+		for (int i=0;i<files.Count();i++) {
+			MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
+			CleanupClosePushL(*listBoxData);
+			TPodcastId *item = files[i];
+			listBoxData->AddTextL(item->iTitle, EQikListBoxSlotText1);
+			CleanupStack::PopAndDestroy();	
+		}
+		break;
+		}
+	break;
+	case EMenuEpisodes:
+		{
+		RArray <TPodcastInfo*>& fItems = iFeedEngine.GetItems();
+		int len = fItems.Count();
+		
+		if (len > 0) {
+			for (int i=0;i<len;i++) {
+			MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
+			CleanupClosePushL(*listBoxData);
+			TPodcastInfo *fi = fItems[i];
+			listBoxData->AddTextL(fi->iTitle, EQikListBoxSlotText1);
+			CleanupStack::PopAndDestroy();	
+			}
+		} else {
+			{
+			MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
+			CleanupClosePushL(*listBoxData);
+		
+			itemName.Copy(_L("No items"));
+			listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
+			CleanupStack::PopAndDestroy();
+			}
+		}
+		
+		}
+
+	break;
+	}
+
+	
+	// Informs that the update of the list box model has ended
+	model.ModelEndUpdateL();
+}
+

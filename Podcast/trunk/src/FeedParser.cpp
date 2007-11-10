@@ -72,7 +72,7 @@ void CFeedParser::ParseFeedL(TFileName &feedFileName)
 void CFeedParser::OnStartDocumentL(const RDocumentParameters& aDocParam, TInt aErrorCode)
 	{
 	//RDebug::Print(_L("OnStartDocumentL()"));
-	activeItem=new TPodcastItem;
+	activeItem=new TPodcastInfo;
 	}
 
 void CFeedParser::OnEndDocumentL(TInt aErrorCode)
@@ -95,7 +95,7 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 	if(str.CompareF(KFeedItem) == 0) {
 	
 		iFeedState=EStateItem;
-		activeItem = new TPodcastItem();
+		activeItem = new TPodcastInfo();
 	} else if (iFeedState == EStateItem) {
 		if (str.CompareF(KFeedTitle) == 0) {
 			iFeedState=EStateTitle;

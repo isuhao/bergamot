@@ -13,6 +13,7 @@
 #include <coecobs.h>
 #include "HttpClient.h"
 #include "FeedEngine.h"
+#include <MQikListBoxObserver.h>
 
 class TPodcastId {
 public:
@@ -30,7 +31,15 @@ public:
 	TBool iPlaying;
 };
 
-class CPodcastClientView : public CQikViewBase, public MMdaAudioPlayerCallback
+enum TMenus {
+	EMenuMain,
+	EMenuFiles,
+	EMenuFeeds,
+	EMenuDownloads,
+	EMenuEpisodes,
+};
+
+class CPodcastClientView : public CQikViewBase, public MMdaAudioPlayerCallback, public MCoeControlObserver, public MQikListBoxObserver
 	{
 public:
 	static CPodcastClientView* NewLC(CQikAppUi& aAppUi);
@@ -41,8 +50,10 @@ public:
 	void MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds &aDuration);
 	void HandleControlEventL(CCoeControl *aControl, TCoeEvent aEventType);
 	void PlayPausePodcast(TPodcastId *podcast);
+	void HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxEvent aEventType, TInt aItemIndex, TInt aSlotId);
 protected: 
 	void ViewConstructL();
+	void ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage);
 	
 private:
 	CPodcastClientView(CQikAppUi& aAppUi);
@@ -50,13 +61,16 @@ private:
 	void ListAllPodcastsL();
 	void ListDirL(RFs &rfs, TDesC &folder);
 	void CreatePodcastListItem(TPodcastId *pid);
-	
+	void CreateMenu();
 private:
-	RArray<TPodcastId*> podcasts;
+//	RArray<TPodcastId*> podcasts;
+	RArray<TFeedInfo*> feeds;
+	RArray<TPodcastId*> files;
 	RPodcastServerSession serverSession;
 	CQikScrollableContainer* iContainer;
     CMdaAudioPlayerUtility *iPlayer;
     int iPlayingPodcast;
+    TMenus iMenuState;
     CFeedEngine iFeedEngine;
 	};
 #endif
