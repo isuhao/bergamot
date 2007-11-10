@@ -12,7 +12,7 @@
 #include <mdaaudiosampleplayer.h>
 #include <coecobs.h>
 #include "HttpClient.h"
-#include "FeedParserCallbacks.h"
+#include "FeedEngine.h"
 
 class TPodcastId {
 public:
@@ -30,7 +30,7 @@ public:
 	TBool iPlaying;
 };
 
-class CPodcastClientView : public CQikViewBase, public MRssParserCallbacks, public MResultObs, public MMdaAudioPlayerCallback
+class CPodcastClientView : public CQikViewBase, public MMdaAudioPlayerCallback
 	{
 public:
 	static CPodcastClientView* NewLC(CQikAppUi& aAppUi);
@@ -51,18 +51,12 @@ private:
 	void ListDirL(RFs &rfs, TDesC &folder);
 	void CreatePodcastListItem(TPodcastId *pid);
 	
-	virtual void AddResult(const TDesC& aText);
-	virtual void SetConnected();
-    virtual void SetDisconnected();
-    
-	void Item(TPodcastItem *item);
-
 private:
 	RArray<TPodcastId*> podcasts;
 	RPodcastServerSession serverSession;
 	CQikScrollableContainer* iContainer;
     CMdaAudioPlayerUtility *iPlayer;
     int iPlayingPodcast;
-    CHttpClient* iClient;
+    CFeedEngine iFeedEngine;
 	};
 #endif

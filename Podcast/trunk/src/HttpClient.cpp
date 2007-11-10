@@ -23,8 +23,6 @@ merchantability and/or non-infringement of the software provided herein.
 // Standard headers used by default
 _LIT8(KUserAgent, "HTTPExampleClient (1.0)");
 _LIT8(KAccept, "*/*");
-_LIT(KWebAddress, "http://www.podshow.com/feeds/tech5.xml");
-
 
 CHttpClient::~CHttpClient()
   {
@@ -36,25 +34,25 @@ CHttpClient::~CHttpClient()
 void CHttpClient::StartClientL()
   {
   TBuf8<256> url8;
-  url8.Copy(KWebAddress);
+  url8.Copy(iUrl);
   RStringPool strP = iSession.StringPool();
   RStringF method;
   method = strP.StringF(HTTP::EGET, RHTTPSession::GetTable());
   InvokeHttpMethodL(url8, method);
   }
 
-CHttpClient* CHttpClient::NewL(MResultObs& aResObs)
+CHttpClient* CHttpClient::NewL(MHttpEventHandlerCallbacks& aResObs)
   {
   CHttpClient* me = NewLC(aResObs);
   CleanupStack::Pop(me);
   return me;
   }
 
-CHttpClient::CHttpClient(MResultObs& aResObs) : iResObs(aResObs)
+CHttpClient::CHttpClient(MHttpEventHandlerCallbacks& aResObs) : iResObs(aResObs)
   {
   }
 
-CHttpClient* CHttpClient::NewLC(MResultObs& aResObs)
+CHttpClient* CHttpClient::NewLC(MHttpEventHandlerCallbacks& aResObs)
   {
   CHttpClient* me = new (ELeave) CHttpClient(aResObs);
   CleanupStack::PushL(me);
@@ -70,6 +68,7 @@ void CHttpClient::ConstructL()
 
 void CHttpClient::InvokeHttpMethodL(const TDesC8& aUri, RStringF aMethod)
   {
+  RDebug::Print(_L("InvokeHttpMethodL"));
   TUriParser8 uri; 
   uri.Parse(aUri);
   RHTTPTransaction trans = iSession.OpenTransactionL(uri, *iTransObs, aMethod);
@@ -85,6 +84,18 @@ void CHttpClient::InvokeHttpMethodL(const TDesC8& aUri, RStringF aMethod)
   // an error the scheduler will be stopped in the event handler
   CActiveScheduler::Start();
   }
+
+void CHttpClient::SetUrl(TDesC &url)
+	{
+	RDebug::Print(_L("SetUrl: %S"), &url);
+	iUrl.Copy(url);
+	}
+
+void CHttpClient::SetSaveFileName(TDesC &fName)
+	{
+	RDebug::Print(_L("SetSaveFileName: %S"), &fName);
+	iTransObs->SetSaveFileName(fName);
+	}
 
 void CHttpClient::SetHeaderL(RHTTPHeaders aHeaders,
                              TInt aHdrField,

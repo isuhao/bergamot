@@ -13,9 +13,8 @@
 #include "e32debug.h"
 #include <eiklabel.h>
 #include <eikcmbut.h>
-#include "PodcastDownloader.h"
 #include "HttpClient.h"
-
+#include "bautils.h"
 
 /**
 Creates and constructs the view.
@@ -203,15 +202,17 @@ void CPodcastClientView::PlayPausePodcast(TPodcastId *podcast)
 
 	}
 }
+
+
 void CPodcastClientView::HandleControlEventL(CCoeControl *aControl, TCoeEvent aEventType)
 	{
 	switch(aEventType)
     {
     case EEventStateChanged:
     	if (aControl->UniqueHandle() == EMyWebCommand) {
-    		RDebug::Print(_L("Webbaroo"));
-    		  iClient = CHttpClient::NewL(*this);
-    		  iClient->StartClientL();
+    		TBuf<100> url;
+    		url.Copy(_L("http://www.podshow.com/feeds/tech5.xml"));
+    		iFeedEngine.DownloadFeed(url);
     	} else {
     	int id = aControl->UniqueHandle() - EMyViewCommandButton;
     	
@@ -251,25 +252,6 @@ void CPodcastClientView::HandleControlEventL(CCoeControl *aControl, TCoeEvent aE
     }
 
 	}
-
-
-void CPodcastClientView::AddResult(const TDesC& aText)
-	{
-	RDebug::Print(_L("AddResult: %S"), &aText);
-	}
-void CPodcastClientView::SetConnected()
-	{
-	RDebug::Print(_L("SetConnected"));	
-	}
-void CPodcastClientView::SetDisconnected()
-	{
-	RDebug::Print(_L("SetDisconnected"));	
-	}
-
-
-void CPodcastClientView::Item(TPodcastItem *item) {
-	RDebug::Print(_L("New item\n  title: %S\n  url: %S\n  description: %S"), &(item->iTitle), &(item->iUrl), &(item->iDescription));
-}
 
 void CPodcastClientView::ListDirL(RFs &rfs, TDesC &folder) {
 	CDirScan *dirScan = CDirScan::NewLC(rfs);

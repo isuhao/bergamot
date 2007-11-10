@@ -17,32 +17,33 @@ merchantability and/or non-infringement of the software provided herein.
 
 
 #include <http\rhttpsession.h>
-#include "MResultObs.h"
+#include "HttpEventHandlerCallbacks.h"
 #include "HttpEventHandler.h"
 
 class CHttpClient : public CBase
 {
 public:
   virtual ~CHttpClient();
-  static CHttpClient* NewL(MResultObs& aResObs);
-
+  static CHttpClient* NewL(MHttpEventHandlerCallbacks& aResObs);
+  void SetUrl(TDesC &url);
+  void SetSaveFileName(TDesC &fName);
   void StartClientL();
 
 protected:
-  CHttpClient(MResultObs& aResObs);
+  CHttpClient(MHttpEventHandlerCallbacks& aResObs);
 
 private:
-  static CHttpClient* NewLC(MResultObs& aResObs);
+  static CHttpClient* NewLC(MHttpEventHandlerCallbacks& aResObs);
   void ConstructL();
 
   void InvokeHttpMethodL(const TDesC8& aUri, RStringF aMethod);
   void SetHeaderL(RHTTPHeaders aHeaders, TInt aHdrField, const TDesC8& aHdrValue);
 
 private:
+  TBuf<1024> iUrl;
   RHTTPSession iSession;
   CHttpEventHandler* iTransObs;
-
-  MResultObs& iResObs;
+  MHttpEventHandlerCallbacks& iResObs;
 
 };
 

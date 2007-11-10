@@ -16,33 +16,50 @@ merchantability and/or non-infringement of the software provided herein.
 #define HTTPEVENTHANDLER_H
 
 #include <e32base.h>
+#include <http\mhttpdatasupplier.h>
+#include <http\rhttpsession.h>
+#include <http\rhttpheaders.h>
 #include <http\mhttptransactioncallback.h>
-#include "MResultObs.h"
+#include <httpstringconstants.h>
+#include "HttpEventHandlerCallbacks.h"
+
+const TInt KMaxSubmitSize = 1024;
+const TInt KMaxHeaderNameLen = 32;
+const TInt KMaxHeaderValueLen = 128;
 
 class CHttpEventHandler : public CBase,
                           public MHTTPTransactionCallback
   {
-public:
-  virtual ~CHttpEventHandler();
-  static CHttpEventHandler* NewL(MResultObs& aResObs);
-
-  // from MHTTPTransactionCallback
-  virtual void MHFRunL(RHTTPTransaction aTransaction,
-                       const THTTPEvent& aEvent);
-  virtual TInt MHFRunError(TInt aError,
-                           RHTTPTransaction aTransaction, 
-                           const THTTPEvent& aEvent);
+  public:
+	virtual ~CHttpEventHandler();
+	static CHttpEventHandler* NewLC(MHttpEventHandlerCallbacks &aCallbacks);
+	static CHttpEventHandler* NewL(MHttpEventHandlerCallbacks &aCallbacks);
+	void SetVerbose(TBool aVerbose);
+	void SetSaveFileName(TDesC &fName);
+	
+	TBool Verbose() const;
+	//
+	// methods from MHTTPTransactionCallback
+	//
+	virtual void MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent& aEvent);
+	virtual TInt MHFRunError(TInt aError, RHTTPTransaction aTransaction, const THTTPEvent& aEvent);
 
 protected:
-  CHttpEventHandler(MResultObs& aResObs);
-
+	CHttpEventHandler(MHttpEventHandlerCallbacks &aCallbacks);
+	void ConstructL();
 private:
-  static CHttpEventHandler* NewLC(MResultObs& aResObs);
-  void ConstructL();
-  void Dump(TPtrC8 aDataChunk);
-
-private:
-  MResultObs& iResObs;
+	void DumpRespHeadersL(RHTTPTransaction& aTrans);
+	void DumpRespBody(RHTTPTransaction& aTrans);
+	void DumpIt(const TDesC8& aData);
+	TBool iVerbose;
+	TBool iSavingResponseBody;
+	RFs iFileServ;
+	RFile iRespBodyFile;
+	//TFileName iRespBodyFileName;
+	TFileName iFileName;
+	TParse iParsedFileName;
+	MHTTPDataSupplier* iRespBody;
+	MHttpEventHandlerCallbacks& iCallbacks;
 };
 
 #endif

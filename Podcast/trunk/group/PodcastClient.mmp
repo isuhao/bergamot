@@ -39,9 +39,8 @@ SOURCE          PodcastClientApplication.cpp
 SOURCE			PodcastClientView.cpp
 SOURCE 			RPodcastServerSession.cpp
 SOURCE			PodcastData.cpp 
-SOURCE			PodcastDownloader.cpp 
 SOURCE			HttpClient.cpp
-SOURCE			HttpEventHandler.cpp FeedParser.cpp
+SOURCE			HttpEventHandler.cpp FeedParser.cpp FeedEngine.cpp
 
 LIBRARY         euser.lib
 LIBRARY         apparc.lib
