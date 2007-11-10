@@ -71,13 +71,13 @@ void CFeedParser::ParseFeedL(TFileName &feedFileName)
 // from MContentHandler
 void CFeedParser::OnStartDocumentL(const RDocumentParameters& aDocParam, TInt aErrorCode)
 	{
-	RDebug::Print(_L("OnStartDocumentL()"));
+	//RDebug::Print(_L("OnStartDocumentL()"));
 	activeItem=new TPodcastItem;
 	}
 
 void CFeedParser::OnEndDocumentL(TInt aErrorCode)
 	{
-	RDebug::Print(_L("OnEndDocumentL()"));
+	//RDebug::Print(_L("OnEndDocumentL()"));
 	}
 
 void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArray& aAttributes, TInt aErrorCode)
@@ -90,7 +90,7 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 	TDesC8 lName = aElement.LocalName().DesC();
 	TBuf<100> str;
 	str.Copy(aElement.LocalName().DesC());
-	RDebug::Print(_L("OnStartElementL START state=%d, element=%S"), iFeedState, &str);
+	//RDebug::Print(_L("OnStartElementL START state=%d, element=%S"), iFeedState, &str);
 
 	if(str.CompareF(KFeedItem) == 0) {
 	
@@ -106,7 +106,7 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 		}
 	}
 	//	collection.Close();
-	RDebug::Print(_L("OnStartElementL END state=%d"), iFeedState);
+	//RDebug::Print(_L("OnStartElementL END state=%d"), iFeedState);
 	}
 
 void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
@@ -132,7 +132,7 @@ void CFeedParser::OnContentL(const TDesC8& aBytes, TInt aErrorCode)
 	{
 	TBuf<2048> str;
 	str.Copy(aBytes);
-	RDebug::Print(_L("OnContentL: %S, state: %d"), &str, iFeedState);
+	//RDebug::Print(_L("OnContentL: %S, state: %d"), &str, iFeedState);
 
 	
 	switch (iFeedState) {

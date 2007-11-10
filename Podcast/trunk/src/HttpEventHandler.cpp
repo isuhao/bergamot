@@ -160,10 +160,11 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 			} break;
 		case THTTPEvent::ESucceeded:
 			{
-			iCallbacks.FileCompleteCallback(iFileName);
-			RDebug::Print(_L("Transaction Successful"));
 			aTransaction.Close();
 			CActiveScheduler::Stop();
+			iCallbacks.FileCompleteCallback(iFileName);
+			RDebug::Print(_L("Transaction Successful"));
+
 			} break;
 		case THTTPEvent::EFailed:
 			{

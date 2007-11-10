@@ -6,6 +6,8 @@
 #include "FeedParser.h"
 #include <e32cmn.h>
 
+_LIT(KPodcastDirectory, "c:\\logs\\");
+
 class CFeedEngine : public MHttpEventHandlerCallbacks, public MFeedParserCallbacks
 {
 public:
@@ -14,6 +16,7 @@ public:
 	
 public:
 	void DownloadFeed(TDesC &feedUrl);
+	void DownloadPodcast(TDesC &fileUrl);
 	
 private:
 	CHttpClient* iClient;
@@ -26,6 +29,7 @@ private:
 	CFeedParser parser;
 	
 	void Item(TPodcastItem *item);
+	TPodcastItem *anItem;
 };
 
 #endif /*FEEDENGINE_H_*/
