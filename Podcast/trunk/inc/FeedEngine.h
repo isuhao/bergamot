@@ -5,26 +5,9 @@
 #include "HttpClient.h"
 #include "FeedParser.h"
 #include "FeedInfo.h"
+#include "ShowInfo.h"
 #include <e32cmn.h>
 #include "PodcastClientGlobals.h"
-
-class TPodcastId {
-public:
-	TPodcastId(int aId, const TDesC &aFileName, const TDesC &aTitle) {
-		iId =aId;
-		iFileName.Copy(aFileName);
-		iTitle.Copy(aTitle);
-		iPlaying = EFalse;
-	}
-	
-	int iId;
-	TBuf<256> iFileName;
-	TBuf<256> iTitle;
-	TTimeIntervalMicroSeconds iPosition;
-	TBool iPlaying;
-};
-
-typedef RArray<TPodcastId*> TPodcastIdArray;
 
 class CFeedEngine : public MHttpEventHandlerCallbacks, public MFeedParserCallbacks
 {
@@ -34,35 +17,37 @@ public:
 	
 public:
 	void GetFeed(TFeedInfo& feedInfo);
-	void GetPodcast(TPodcastInfo &info);
+	void GetPodcast(TShowInfo *info);
 	void Cancel();
-	
 	void LoadSettings();
 	void LoadFeeds();
 	void SaveFeeds();
 
-	RArray<TPodcastId*> & GetPodcasts();
+	TShowInfoArray& GetPodcasts();
 	void ListAllPodcasts();
-	void ListDir(RFs &rfs, TDesC &folder, TPodcastIdArray &files);
+	void ListDir(RFs &rfs, TDesC &folder, TShowInfoArray &files);
 	
-	RArray <TPodcastInfo*>& GetItems();
-	RArray <TFeedInfo*>& GetFeeds();
+	TShowInfoArray & GetItems();
+	TFeedInfoArray& GetFeeds();
+	
+private:
+	void ConnectedCallback();
+	void DisconnectedCallback();
+	void ProgressCallback(int percent);
+	void FileCompleteCallback(TFileName &fileName);
+	void DownloadInfoCallback(int size);
 	
 private:
 	CHttpClient* iClient;
-	
-	void ConnectedCallback();
-	void TransactionFinishedCallback();
-	void DisconnectedCallback();
-	void FileCompleteCallback(TFileName &fileName);
 	TFileName iFileName;
 	CFeedParser parser;
-	RArray<TPodcastInfo*> items;
-	void Item(TPodcastInfo *item);
-	TPodcastIdArray files;
-	RArray<TFeedInfo*> feeds;
+	TShowInfoArray items;
+	void Item(TShowInfo *item);
+	TShowInfoArray files;
+	TFeedInfoArray feeds;
 	TFileName iFeedListFile;
 	TFileName iPodcastDir;
+	TShowInfoArray downloadQueue;
 };
 
 #endif /*FEEDENGINE_H_*/

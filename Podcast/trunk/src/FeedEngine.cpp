@@ -25,24 +25,24 @@ void CFeedEngine::GetFeed(TFeedInfo& feedInfo)
 	RDebug::Print(_L("PrivatePath: %S"), &privatePath);
 	BaflUtils::EnsurePathExistsL(rfs, privatePath);
 	
-	int pos = feedInfo.iUrl.LocateReverse('/');
+	int pos = feedInfo.url.LocateReverse('/');
 	
 	if (pos != KErrNotFound) {
-		TPtrC str = feedInfo.iUrl.Mid(pos+1);
+		TPtrC str = feedInfo.url.Mid(pos+1);
 		RDebug::Print(_L("Separated filename: %S"), &str);
 		privatePath.Append(str);
 	} else {
 		privatePath.Append(_L("unknown"));
 	}
 	iFileName.Copy(privatePath);
-	iClient->SetUrl(feedInfo.iUrl);
+	iClient->SetUrl(feedInfo.url);
 	iClient->SetSaveFileName(privatePath);
 	iClient->StartClientL();
 
 	RDebug::Print(_L("DownloadFeed END"));
 	}
 
-RArray <TPodcastInfo*>& CFeedEngine::GetItems() 
+RArray <TShowInfo*>& CFeedEngine::GetItems() 
 {
 	return items;
 }
@@ -51,7 +51,7 @@ RArray <TFeedInfo*>& CFeedEngine::GetFeeds()
 {
 	return feeds;
 }
-void CFeedEngine::GetPodcast(TPodcastInfo &info)
+void CFeedEngine::GetPodcast(TShowInfo *info)
 	{
 	TBuf<100> filePath;
 	RFs rfs;
@@ -59,28 +59,37 @@ void CFeedEngine::GetPodcast(TPodcastInfo &info)
 	filePath.Copy(KPodcastDir);
 	BaflUtils::EnsurePathExistsL(rfs, filePath);
 	
-	int pos = info.iUrl.LocateReverse('/');
+	int pos = info->url.LocateReverse('/');
 	
 	if (pos != KErrNotFound) {
-		TPtrC str = info.iUrl.Mid(pos+1);
+		TPtrC str = info->url.Mid(pos+1);
 		RDebug::Print(_L("Separated filename: %S"), &str);
 		filePath.Append(str);
 	} else {
 		filePath.Append(_L("unknown"));
 	}
 	iClient->SetSaveFileName(filePath);
-	iClient->SetUrl(info.iUrl);
+	iClient->SetUrl(info->url);
 	iClient->StartClientL();
+	RDebug::Print(_L("Klara!"));
 	}
 
-void CFeedEngine::Item(TPodcastInfo *item)
+void CFeedEngine::Item(TShowInfo *item)
 	{
-	RDebug::Print(_L("\nTitle: %S\nURL: %S\nDescription: %S"), &(item->iTitle), &(item->iUrl), &(item->iDescription));
+	RDebug::Print(_L("\nTitle: %S\nURL: %S\nDescription: %S"), &(item->title), &(item->url), &(item->description));
 	items.Append(item);
 	}
 
 void CFeedEngine::ConnectedCallback()
 	{
+	
+	}
+
+void CFeedEngine::ProgressCallback(int percent)
+	{
+	TBuf<100> printBuffer;
+	printBuffer.Format(_L("Downloading... %d%%"), percent);
+	User::InfoPrint(printBuffer);
 	
 	}
 
@@ -90,15 +99,16 @@ void CFeedEngine::FileCompleteCallback(TFileName &fileName)
 	parser.ParseFeedL(fileName);
 	
 	}
-void CFeedEngine::TransactionFinishedCallback()
-	{
-	}
 
 void CFeedEngine::DisconnectedCallback()
 	{
 	
 	}
 
+void CFeedEngine::DownloadInfoCallback(int size)
+	{
+	RDebug::Print(_L("About to download %d bytes"), size);
+	}
 
 void CFeedEngine::LoadSettings()
 	{
@@ -176,12 +186,12 @@ void CFeedEngine::LoadFeeds()
 		TFeedInfo *fi = new TFeedInfo;
 		int pos = line.Locate('|');
 		if (pos == KErrNotFound) {
-			fi->iTitle.Copy(line);
-			fi->iUrl.Copy(line);
+			fi->title.Copy(line);
+			fi->url.Copy(line);
 		}else {
-			fi->iTitle.Copy(line.Left(pos));
-			fi->iUrl.Copy(line.Mid(pos+1));
-			RDebug::Print(_L("Read title: '%S', url: '%S'"), &fi->iTitle, &fi->iUrl);
+			fi->title.Copy(line.Left(pos));
+			fi->url.Copy(line.Mid(pos+1));
+			RDebug::Print(_L("Read title: '%S', url: '%S'"), &fi->title, &fi->url);
 		}
 		feeds.Append(fi);
 		 error = tft.Read(line);
@@ -194,7 +204,7 @@ void CFeedEngine::SaveFeeds()
 	}
 
 
-void CFeedEngine::ListDir(RFs &rfs, TDesC &folder, TPodcastIdArray &files) {
+void CFeedEngine::ListDir(RFs &rfs, TDesC &folder, TShowInfoArray &files) {
 	CDirScan *dirScan = CDirScan::NewLC(rfs);
 	RDebug::Print(_L("Listing dir: %S"), &folder);
 	dirScan ->SetScanDataL(folder, KEntryAttDir, ESortByName);
@@ -218,7 +228,9 @@ void CFeedEngine::ListDir(RFs &rfs, TDesC &folder, TPodcastIdArray &files) {
 			TBuf<100> fileName;
 			fileName.Copy(folder);
 			fileName.Append(entry.iName);
-			TPodcastId *pID = new TPodcastId(id, fileName, entry.iName);
+			TShowInfo *pID = new TShowInfo;
+			pID->fileName.Copy(fileName);
+			pID->title.Copy(entry.iName);
 			files.Append(pID);
 		}
 		}
@@ -228,7 +240,7 @@ void CFeedEngine::ListDir(RFs &rfs, TDesC &folder, TPodcastIdArray &files) {
 
 }
 
-TPodcastIdArray& CFeedEngine::GetPodcasts()
+TShowInfoArray& CFeedEngine::GetPodcasts()
 {
 	return files;
 }

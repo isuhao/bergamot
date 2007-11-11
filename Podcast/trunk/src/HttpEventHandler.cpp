@@ -79,21 +79,24 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 			RDebug::Print(_L("Status: %d (%S)"), status, &statusStr16);
 
 			// Dump the headers if we're being verbose
-			if (iVerbose)
-				DumpRespHeadersL(aTransaction);
+			DumpRespHeadersL(aTransaction);
 
 			// Determine if the body will be saved to disk
 			iSavingResponseBody = ETrue;
 			TBool cancelling = EFalse;
 			if (resp.HasBody() && (status >= 200) && (status < 300) && (status != 204))
 				{
+				iBytesDownloaded = 0;
 				TInt dataSize = resp.Body()->OverallDataSize();
-				if (dataSize >= 0)
+				if (dataSize >= 0) {
 					RDebug::Print(_L("Response body size is %d"), dataSize);
-				else
+					iBytesTotal = dataSize;	
+				} else {
 					RDebug::Print(_L("Response body size is unknown"));
+					iBytesTotal = -1;
+				}
+				iCallbacks.DownloadInfoCallback(dataSize);
 
-				iSavingResponseBody =ETrue;
 				cancelling = EFalse;
 				}
 
@@ -143,8 +146,14 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 				{
 				TPtrC8 bodyData;
 				TBool lastChunk = iRespBody->GetNextDataPart(bodyData);
-				User::InfoPrint(_L("Downloading..."));
+				if (iBytesTotal != -1) {
+					iBytesDownloaded += bodyData.Length();
+					int percent = (int) ((float)iBytesDownloaded * 100.0 / (float)iBytesTotal) ;
+					//				RDebug::Print(_L("Downloading: %d, %d total"), iBytesDownloaded, iBytesTotal);
+					iCallbacks.ProgressCallback(percent);
+				}
 				iRespBodyFile.Write(bodyData);
+
 				if (lastChunk)
 					//iRespBodyFile.Flush();
 					iRespBodyFile.Close();

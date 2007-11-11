@@ -72,7 +72,7 @@ void CFeedParser::ParseFeedL(TFileName &feedFileName)
 void CFeedParser::OnStartDocumentL(const RDocumentParameters& aDocParam, TInt aErrorCode)
 	{
 	//RDebug::Print(_L("OnStartDocumentL()"));
-	activeItem=new TPodcastInfo;
+	activeItem=new TShowInfo;
 	}
 
 void CFeedParser::OnEndDocumentL(TInt aErrorCode)
@@ -95,7 +95,7 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 	if(str.CompareF(KFeedItem) == 0) {
 	
 		iFeedState=EStateItem;
-		activeItem = new TPodcastInfo();
+		activeItem = new TShowInfo();
 	} else if (iFeedState == EStateItem) {
 		if (str.CompareF(KFeedTitle) == 0) {
 			iFeedState=EStateTitle;
@@ -137,18 +137,18 @@ void CFeedParser::OnContentL(const TDesC8& aBytes, TInt aErrorCode)
 	
 	switch (iFeedState) {
 	case EStateTitle:
-		if(activeItem->iTitle.Length()+str.Length() < KTitleLength) {
-			activeItem->iTitle.Append(str);
+		if(activeItem->title.Length()+str.Length() < KTitleLength) {
+			activeItem->title.Append(str);
 		}
 		break;
 	case EStateDescription:
-		if(activeItem->iDescription.Length()+str.Length() < KDescriptionLength) {
-			activeItem->iDescription.Append(str);
+		if(activeItem->description.Length()+str.Length() < KDescriptionLength) {
+			activeItem->description.Append(str);
 		}
 		break;
 	case EStateLink:
-	if(activeItem->iUrl.Length()+str.Length() < KUrlLength) {
-			activeItem->iUrl.Append(str);
+	if(activeItem->url.Length()+str.Length() < KUrlLength) {
+			activeItem->url.Append(str);
 		}
 		break;	
 	}

@@ -33,7 +33,7 @@ public:
     void MapcPlayComplete(TInt aError);
 	void MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds &aDuration);
 	void HandleControlEventL(CCoeControl *aControl, TCoeEvent aEventType);
-	void PlayPausePodcast(TPodcastId *podcast);
+	void PlayPausePodcast(TShowInfo *podcast);
 	void HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxEvent aEventType, TInt aItemIndex, TInt aSlotId);
 protected: 
 	void ViewConstructL();
@@ -48,7 +48,7 @@ private:
 	//RPodcastServerSession serverSession;
 	CQikScrollableContainer* iContainer;
     CMdaAudioPlayerUtility *iPlayer;
-    int iPlayingPodcast;
+    TShowInfo* iPlayingPodcast;
     TMenus iMenuState;
     CFeedEngine iFeedEngine;
     TBool iDownloading;

@@ -4,8 +4,11 @@
 class TFeedInfo
 {
 public:
-	TBuf<1024> iUrl;
-	TBuf<1024> iTitle;
+	TBuf<KUrlLength> url;
+	TBuf<KTitleLength> title;
+	TBuf<KDescriptionLength> description;
 };
+
+typedef RArray<TFeedInfo*> TFeedInfoArray;
 
 #endif

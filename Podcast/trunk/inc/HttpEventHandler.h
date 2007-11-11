@@ -60,6 +60,8 @@ private:
 	TParse iParsedFileName;
 	MHTTPDataSupplier* iRespBody;
 	MHttpEventHandlerCallbacks& iCallbacks;
+	TInt iBytesDownloaded;
+	TInt iBytesTotal;
 };
 
 #endif

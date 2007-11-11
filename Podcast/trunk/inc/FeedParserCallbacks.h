@@ -1,12 +1,12 @@
 #ifndef FEEDPARSERCALLBACKS_H_
 #define FEEDPARSERCALLBACKS_H_
 
-#include "PodcastInfo.h"
+#include "ShowInfo.h"
 
 class MFeedParserCallbacks
 {
 public:
-	virtual void Item(TPodcastInfo *item) = 0;
+	virtual void Item(TShowInfo *item) = 0;
 };
 
 #endif

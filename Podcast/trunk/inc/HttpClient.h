@@ -28,6 +28,7 @@ public:
   void SetUrl(TDesC &url);
   void SetSaveFileName(TDesC &fName);
   void StartClientL();
+  void StopClient();
 
 protected:
   CHttpClient(MHttpEventHandlerCallbacks& aResObs);
@@ -44,6 +45,7 @@ private:
   RHTTPSession iSession;
   CHttpEventHandler* iTransObs;
   MHttpEventHandlerCallbacks& iResObs;
+  RHTTPTransaction *iTrans;
 
 };
 

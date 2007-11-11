@@ -41,6 +41,12 @@ void CHttpClient::StartClientL()
   InvokeHttpMethodL(url8, method);
   }
 
+void CHttpClient::StopClient()
+	{
+	if (iTrans != NULL) {
+		iTrans->Cancel();
+	}
+	}
 CHttpClient* CHttpClient::NewL(MHttpEventHandlerCallbacks& aResObs)
   {
   CHttpClient* me = NewLC(aResObs);
@@ -50,6 +56,7 @@ CHttpClient* CHttpClient::NewL(MHttpEventHandlerCallbacks& aResObs)
 
 CHttpClient::CHttpClient(MHttpEventHandlerCallbacks& aResObs) : iResObs(aResObs)
   {
+  iTrans = NULL;
   }
 
 CHttpClient* CHttpClient::NewLC(MHttpEventHandlerCallbacks& aResObs)
@@ -72,7 +79,7 @@ void CHttpClient::InvokeHttpMethodL(const TDesC8& aUri, RStringF aMethod)
   TUriParser8 uri; 
   uri.Parse(aUri);
   RHTTPTransaction trans = iSession.OpenTransactionL(uri, *iTransObs, aMethod);
-
+  iTrans = &trans;
   RHTTPHeaders hdr = trans.Request().GetHeaderCollection();
   // Add headers appropriate to all methods
   SetHeaderL(hdr, HTTP::EUserAgent, KUserAgent);
