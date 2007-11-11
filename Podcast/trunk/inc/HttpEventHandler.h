@@ -16,10 +16,10 @@ merchantability and/or non-infringement of the software provided herein.
 #define HTTPEVENTHANDLER_H
 
 #include <e32base.h>
-#include <http\mhttpdatasupplier.h>
-#include <http\rhttpsession.h>
-#include <http\rhttpheaders.h>
-#include <http\mhttptransactioncallback.h>
+#include <http/mhttpdatasupplier.h>
+#include <http/rhttpsession.h>
+#include <http/rhttpheaders.h>
+#include <http/mhttptransactioncallback.h>
 #include <httpstringconstants.h>
 #include "HttpEventHandlerCallbacks.h"
 

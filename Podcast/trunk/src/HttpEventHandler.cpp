@@ -14,7 +14,7 @@ merchantability and/or non-infringement of the software provided herein.
 
 #include "HttpEventHandler.h"
 #include "e32debug.h"
-#include "BAUTILS.H"
+#include "bautils.h"
 
 void CHttpEventHandler::ConstructL()
 	{

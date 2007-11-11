@@ -65,7 +65,7 @@ LIBRARY			mediaclientaudio.lib
 LIBRARY			mediaclient.lib
 LIBRARY			mmcommon.lib 
 LIBRARY			http.lib 
-LIBRARY			InetProtUtil.lib
+LIBRARY			inetprotutil.lib
 LIBRARY			charconv.lib
 LIBRARY			xmlframework.lib
 LIBRARY			qiklbx.lib 

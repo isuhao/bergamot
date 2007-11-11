@@ -15,7 +15,7 @@ merchantability and/or non-infringement of the software provided herein.
 
 #include <e32base.h>
 #include "HttpClient.h"
-#include <http\rhttpheaders.h>
+#include <http/rhttpheaders.h>
 #include <http.h>
 #include <eikenv.h>
 

@@ -3,7 +3,7 @@
 
 #include "FeedParserCallbacks.h"
 #include <xml/parser.h> // for CParser
-#include <Xml/ContentHandler.h>	// for Xml::MContentHandler
+#include <xml/contenthandler.h>	// for Xml::MContentHandler
 
 using namespace Xml;
 

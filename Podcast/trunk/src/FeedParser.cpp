@@ -3,7 +3,7 @@
 #include <bautils.h>
 #include <s32file.h>
 #include <charconv.h>
-#include <xml/StringDictionaryCollection.h>
+#include <xml/stringdictionarycollection.h>
 
 CFeedParser::CFeedParser(MFeedParserCallbacks& aCallbacks) : 	iCallbacks(aCallbacks)
 {
@@ -58,7 +58,7 @@ void CFeedParser::ParseFeedL(TFileName &feedFileName)
 	while(error == KErrNone) {
 		int pos = buf.Find(_L8("<"));
 		int pos2 = buf.Find(_L("<"));
-		RDebug::Print(_L("Hittade < på pos: %d, pos2: %d"), pos, pos2);
+		RDebug::Print(_L("Hittade < p pos: %d, pos2: %d"), pos, pos2);
 		error = feed.Read(buf);
 	}
 	

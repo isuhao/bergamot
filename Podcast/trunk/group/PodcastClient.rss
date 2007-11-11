@@ -5,9 +5,9 @@
 
 #include <eikon.rh>
 #include <qikon.rh>
-#include <QikCommand.rh>
-#include <QikListBox.rh>
-#include <QikListBoxStandardLayouts.hrh>
+#include <qikcommand.rh>
+#include <qiklistbox.rh>
+#include <qiklistboxstandardlayouts.hrh>
 #include "PodcastClient.hrh"
 #include "PodcastClient.rls"
 

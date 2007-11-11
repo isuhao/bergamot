@@ -16,7 +16,7 @@ merchantability and/or non-infringement of the software provided herein.
 #define __HTTPCLIENT_H__
 
 
-#include <http\rhttpsession.h>
+#include <http/rhttpsession.h>
 #include "HttpEventHandlerCallbacks.h"
 #include "HttpEventHandler.h"
 

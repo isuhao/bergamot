@@ -15,9 +15,9 @@
 #include <eikcmbut.h>
 #include "HttpClient.h"
 #include "bautils.h"
-#include <QikListBoxModel.h>
-#include <QikListBox.h>
-#include <QikListBoxData.h>
+#include <qiklistboxmodel.h>
+#include <qiklistbox.h>
+#include <qiklistboxdata.h>
 #include <eikdialg.h>
 
 

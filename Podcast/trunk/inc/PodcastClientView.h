@@ -13,7 +13,7 @@
 #include <coecobs.h>
 #include "HttpClient.h"
 #include "FeedEngine.h"
-#include <MQikListBoxObserver.h>
+#include <mqiklistboxobserver.h>
 
 enum TMenus {
 	EMenuMain,
