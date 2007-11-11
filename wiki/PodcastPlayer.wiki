@@ -4,7 +4,7 @@ The aim of this project is to create a fully functional podcatcher, in the spiri
 
 The intention is to release one alpha version every week. I intend to have a fully functional beta version by christmas at the latest.
 
-Oh, and Podcast Player is just a placeholder name. Come up with something better!
+Oh, and Podcast Player is just a placeholder name. [http://groups.google.com/group/bergamot Come up with something better!]
 
 = Releases = 
 
@@ -30,7 +30,7 @@ Oh, and Podcast Player is just a placeholder name. Come up with something better
 
 = Planning =
 
-This is how I plan to implement features. Please help me find out what's important!
+This is how I plan to implement features. Please [http://groups.google.com/group/bergamot help me find out what's important!]
 
   * Alpha 2 (November 18th)
     * Improved UI
@@ -54,7 +54,7 @@ This is how I plan to implement features. Please help me find out what's importa
 
 = Help! =
 
-Please help me out with the podcast project! If you don't think you can help, I think you're wrong. Most people can do at least one of the below:
+Please [http://groups.google.com/group/bergamot help me out] with Podcast Player! If you don't think you can help, I think you're wrong. Most people can do at least one of the below:
 
   * Feedback
   * Feature ideas
@@ -62,7 +62,7 @@ Please help me out with the podcast project! If you don't think you can help, I 
   * UI design
   * Coding
 
-Add any ideas as comments to this wiki page, or contact me at teknolog (at) gmail (dot) com.
+Add any ideas as comments to this wiki page, or contact me at teknolog (at) gmail (dot) com, or write in the [http://groups.google.com/group/bergamot discussion group].
 
 = Links =
 These links might give us ideas
