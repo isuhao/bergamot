@@ -255,16 +255,11 @@ void CHttpEventHandler::DumpRespHeadersL(RHTTPTransaction& aTrans)
 				RDebug::Print(_L("%S: %S"), &fieldName16, &fieldVal16);
 				}
 				break;
-			/*case THTTPHdrVal::KDateVal:
-				/*{
+			case THTTPHdrVal::KDateVal:
+				{
 				TDateTime date = fieldVal.DateTime();
-				TBuf<40> dateTimeString;
-				TTime t(date);
-				t.FormatL(dateTimeString,KDateFormat);
-
-				RDebug::Print(_L("%S: %S"), &fieldName16, &dateTimeString);
 				} 
-				break;*/
+				break;
 			default:
 				RDebug::Print(_L("%S: <unrecognised value type>"), &fieldName16);
 				break;

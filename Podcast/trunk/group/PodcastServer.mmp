@@ -2,7 +2,7 @@
 
 TARGET            PodcastServer.exe
 TARGETTYPE        exe
-UID 0x100039CE 0x2000FB06
+UID 0x100039CE 0xA00046BE
 
 VENDORID          0
 

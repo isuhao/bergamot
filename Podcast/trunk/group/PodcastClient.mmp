@@ -1,6 +1,6 @@
 // PodcastClient.mmp
 
-TARGET            PodcastClient.exe
+TARGET            PodcastClient_0xA00046AE.exe
 TARGETTYPE        exe
 TARGETPATH        \sys\bin
 //UID               0x100039CE 0x2000FB05
