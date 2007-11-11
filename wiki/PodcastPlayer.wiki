@@ -1,6 +1,6 @@
 = Podcast Player Project =
 
-The aim of this project is to create a fully functional podcatcher, in the spirit of for instance [http://www.blogs.s60.com/nokiapodcasting/ Nokia Podcasting]. This project has just started but there is working [http://bergamot.googlecode.com/svn/Podcast/trunk code] in Subversion, as well as the latest [http://bergamot.googlecode.com/svn/Podcast/trunk debug build].
+The aim of this project is to create a fully functional podcatcher, in the spirit of for instance [http://www.blogs.s60.com/nokiapodcasting/ Nokia Podcasting]. This project has just started but there is working [http://bergamot.googlecode.com/svn/Podcast/trunk code] in Subversion, as well as the latest [http://bergamot.googlecode.com/svn/Podcast/trunk/group/Podcast_udeb_signed.sis debug build].
 
 The intention is to have one tagged alpha version will be release each week. I intend to have a fully functional beta version by christmas at the latest.
 
@@ -38,8 +38,9 @@ This is how I plan to implement features. Please help me find out what's importa
     * Support for other feeds (Atom, RSS 0.9, any more?)
 
   * Alpha 3 (November 25th)
-        * ID3 parsing
-        * Check connection type, option to download only on WLAN
+      * Proper feed handling, i.e. know what's new
+      * ID3 parsing
+      * Check connection type, option to download only on WLAN
 
 = Feature Ideas =
 
