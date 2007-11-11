@@ -36,7 +36,8 @@ class CHttpEventHandler : public CBase,
 	static CHttpEventHandler* NewL(MHttpEventHandlerCallbacks &aCallbacks);
 	void SetVerbose(TBool aVerbose);
 	void SetSaveFileName(TDesC &fName);
-	
+	void SetFeedInfo(TFeedInfo *info);
+	void SetShowInfo(TShowInfo *info);
 	TBool Verbose() const;
 	//
 	// methods from MHTTPTransactionCallback
@@ -62,6 +63,8 @@ private:
 	MHttpEventHandlerCallbacks& iCallbacks;
 	TInt iBytesDownloaded;
 	TInt iBytesTotal;
+	TShowInfo *showInfo;
+	TFeedInfo *feedInfo;
 };
 
 #endif

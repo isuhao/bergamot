@@ -29,7 +29,7 @@ Creates and constructs the view.
 */
 CPodcastClientView* CPodcastClientView::NewLC(CQikAppUi& aAppUi)
 	{
-	RDebug::Print(_L("NewLC"));
+	//RDebug::Print(_L("NewLC"));
 	CPodcastClientView* self = new (ELeave) CPodcastClientView(aAppUi);
 	CleanupStack::PushL(self);
 	self->ConstructL();
@@ -64,7 +64,7 @@ CPodcastClientView::~CPodcastClientView()
 */
 void CPodcastClientView::ConstructL()
 	{
-	RDebug::Print(_L("ConstructL"));
+	//RDebug::Print(_L("ConstructL"));
 	// Calls ConstructL that initialises the standard values. 
 	// This should always be called in the concrete view implementations.
 	BaseConstructL();
@@ -103,7 +103,7 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 
 void CPodcastClientView::ViewConstructL()
     {
-    RDebug::Print(_L("ViewConstructL"));
+    //RDebug::Print(_L("ViewConstructL"));
     iPlayer = CMdaAudioPlayerUtility::NewL(*this);
     ViewConstructFromResourceL(R_LISTBOX_LISTVIEW_UI_CONFIGURATIONS);
     iMenuState = EMenuMain;
@@ -212,7 +212,7 @@ void CPodcastClientView::HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxE
 				RDebug::Print(_L("URL: %S"), &(feeds[aItemIndex]->url));
 				User::InfoPrint(_L("Getting feed..."));
 				iDownloading = ETrue;
-				iFeedEngine.GetFeed(*feeds[aItemIndex]);
+				iFeedEngine.GetFeed(feeds[aItemIndex]);
 				iMenuState = EMenuEpisodes;
 				CreateMenu();
 				iDownloading = EFalse;
@@ -222,8 +222,7 @@ void CPodcastClientView::HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxE
 			{
 			TShowInfoArray& fItems = iFeedEngine.GetItems();
 			RDebug::Print(_L("Get podcast URL: %S"), &(fItems[aItemIndex]->url));
-			iFeedEngine.GetPodcast(fItems[aItemIndex]);
-			User::InfoPrint(_L("Done!"));
+			iFeedEngine.AddDownload(fItems[aItemIndex]);
 			}
 			break;
 		case EMenuDownloads:
@@ -266,27 +265,30 @@ void CPodcastClientView::CreateMenu()
 		itemName.Copy(_L("Subscriptions"));
 		listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
 	
-		/*listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
+		listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
 		CleanupClosePushL(*listBoxData);
 		itemName.Copy(_L("Downloads"));
-		listBoxData->AddTextL(itemName, EQikListBoxSlotText1);*/
+		listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
 	
-		CleanupStack::PopAndDestroy(2);
+		CleanupStack::PopAndDestroy(3);
 		}
 		break;
 	case EMenuDownloads:
-		/*TShowInfoArray& feeds = iFeedEngine.GetDownloads();
-		int len = feeds.Count();
-		MQikListBoxData* listBoxData;// = model.NewDataL(MQikListBoxModel::EDataNormal);
+		{
+		TShowInfoArray& downloads = iFeedEngine.GetDownloads();
+		int len = downloads .Count();
+		MQikListBoxData* listBoxData;
 		
 		if (len > 0) {
 			for (int i=0;i<len;i++) {
 			listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
 			CleanupClosePushL(*listBoxData);
-			TFeedInfo *fi = feeds[i];
-			listBoxData->AddTextL(fi->iTitle, EQikListBoxSlotText1);
+			TShowInfo *show = downloads[i];
+			listBoxData->AddTextL(show->title, EQikListBoxSlotText1);
 			CleanupStack::PopAndDestroy();	
-			}*/
+			}
+		}
+		}
 		break;
 	case EMenuFeeds:
 		{

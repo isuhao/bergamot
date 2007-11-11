@@ -8,4 +8,4 @@ WINSCW
 
 PRJ_EXPORTS
 
-.\config.cfg \epoc32\winscw\c\private\A00046AE\config.cfg
+.\config_emu.cfg \epoc32\winscw\c\private\A00046AE\config.cfg

@@ -7,6 +7,11 @@ const int KTitleLength=256;
 const int KUrlLength=1024;
 const int KDescriptionLength=1024;
 
+enum TShowState {
+	EPlaying,
+	EDownloading
+};
+
 class TShowInfo {
 public:
 	TBuf<KTitleLength> title;
@@ -14,6 +19,7 @@ public:
 	TBuf<KDescriptionLength> description;
 	TFileName fileName;
 	TTimeIntervalMicroSeconds position;
+	TShowState state;
 	TBool playing;
 };
 

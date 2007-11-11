@@ -15,7 +15,7 @@ CFeedEngine::~CFeedEngine()
 void CFeedEngine::Cancel() 
 	{
 	}
-void CFeedEngine::GetFeed(TFeedInfo& feedInfo)
+void CFeedEngine::GetFeed(TFeedInfo* feedInfo)
 	{
 	items.Reset();
 	TBuf<100> privatePath;
@@ -25,19 +25,18 @@ void CFeedEngine::GetFeed(TFeedInfo& feedInfo)
 	RDebug::Print(_L("PrivatePath: %S"), &privatePath);
 	BaflUtils::EnsurePathExistsL(rfs, privatePath);
 	
-	int pos = feedInfo.url.LocateReverse('/');
+	int pos = feedInfo->url.LocateReverse('/');
 	
 	if (pos != KErrNotFound) {
-		TPtrC str = feedInfo.url.Mid(pos+1);
+		TPtrC str = feedInfo->url.Mid(pos+1);
 		RDebug::Print(_L("Separated filename: %S"), &str);
 		privatePath.Append(str);
 	} else {
 		privatePath.Append(_L("unknown"));
 	}
-	iFileName.Copy(privatePath);
-	iClient->SetUrl(feedInfo.url);
-	iClient->SetSaveFileName(privatePath);
-	iClient->StartClientL();
+	//iFileName.Copy(privatePath);
+	feedInfo->fileName.Copy(privatePath);
+	iClient->GetFeed(feedInfo);
 
 	RDebug::Print(_L("DownloadFeed END"));
 	}
@@ -51,12 +50,12 @@ RArray <TFeedInfo*>& CFeedEngine::GetFeeds()
 {
 	return feeds;
 }
-void CFeedEngine::GetPodcast(TShowInfo *info)
+void CFeedEngine::GetShow(TShowInfo *info)
 	{
 	TBuf<100> filePath;
 	RFs rfs;
 	rfs.Connect();
-	filePath.Copy(KPodcastDir);
+	filePath.Copy(iShowDir);
 	BaflUtils::EnsurePathExistsL(rfs, filePath);
 	
 	int pos = info->url.LocateReverse('/');
@@ -68,15 +67,14 @@ void CFeedEngine::GetPodcast(TShowInfo *info)
 	} else {
 		filePath.Append(_L("unknown"));
 	}
-	iClient->SetSaveFileName(filePath);
-	iClient->SetUrl(info->url);
-	iClient->StartClientL();
-	RDebug::Print(_L("Klara!"));
+	info->state = EDownloading;
+	info->fileName.Copy(filePath);
+	iClient->GetShow(info);
 	}
 
 void CFeedEngine::Item(TShowInfo *item)
 	{
-	RDebug::Print(_L("\nTitle: %S\nURL: %S\nDescription: %S"), &(item->title), &(item->url), &(item->description));
+	//RDebug::Print(_L("\nTitle: %S\nURL: %S\nDescription: %S"), &(item->title), &(item->url), &(item->description));
 	items.Append(item);
 	}
 
@@ -93,10 +91,23 @@ void CFeedEngine::ProgressCallback(int percent)
 	
 	}
 
-void CFeedEngine::FileCompleteCallback(TFileName &fileName)
+void CFeedEngine::ShowCompleteCallback(TShowInfo *info)
 	{
-	RDebug::Print(_L("File to parse: %S"), &fileName);
-	parser.ParseFeedL(fileName);
+	RDebug::Print(_L("File %S complete"), &info->fileName);
+	TInt pos = downloadQueue.Find(info);
+	
+	if (pos != KErrNotFound) {
+		RDebug::Print(_L("Removing from list..."));
+		downloadQueue.Remove(pos);
+	}
+	DownloadNextShow();
+
+	}
+
+void CFeedEngine::FeedCompleteCallback(TFeedInfo *info)
+	{
+	RDebug::Print(_L("File to parse: %S"), &info->fileName);
+	parser.ParseFeedL(info->fileName);
 	
 	}
 
@@ -147,7 +158,7 @@ void CFeedEngine::LoadSettings()
 			TPtrC value = line.Mid(equalsPos+1);
 			RDebug::Print(_L("line: %S, tag: '%S', value: '%S'"), &line, &tag, &value);
 			if (tag.CompareF(_L("PodcastDir")) == 0) {
-				iPodcastDir.Copy(value);
+				iShowDir.Copy(value);
 			} else if (tag.CompareF(_L("FeedList")) == 0) {
 				iFeedListFile.Copy(value);
 			}
@@ -255,4 +266,25 @@ void CFeedEngine::ListAllPodcasts()
 	ListDir(rfs, podcastDir, files);	
 }
 
+void CFeedEngine::AddDownload(TShowInfo *info)
+	{
+	downloadQueue.Append(info);
 
+	if (downloadQueue.Count() == 1) {
+		DownloadNextShow();
+	}
+	}
+
+TShowInfoArray& CFeedEngine::GetDownloads()
+	{
+	return downloadQueue;
+	}
+
+void CFeedEngine::DownloadNextShow()
+{
+	if(downloadQueue.Count() > 0) {
+		TShowInfo *info = downloadQueue[0];
+		RDebug::Print(_L("Downloading %S"), &(info->title));
+		GetShow(info);
+	}
+}

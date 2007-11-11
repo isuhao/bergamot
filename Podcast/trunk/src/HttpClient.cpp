@@ -79,7 +79,6 @@ void CHttpClient::InvokeHttpMethodL(const TDesC8& aUri, RStringF aMethod)
   TUriParser8 uri; 
   uri.Parse(aUri);
   RHTTPTransaction trans = iSession.OpenTransactionL(uri, *iTransObs, aMethod);
-  iTrans = &trans;
   RHTTPHeaders hdr = trans.Request().GetHeaderCollection();
   // Add headers appropriate to all methods
   SetHeaderL(hdr, HTTP::EUserAgent, KUserAgent);
@@ -116,3 +115,22 @@ void CHttpClient::SetHeaderL(RHTTPHeaders aHeaders,
   valStr.Close();
   }
 
+
+void CHttpClient::GetFeed(TFeedInfo *info)
+	{
+	iTransObs->SetSaveFileName(info->fileName);
+	iTransObs->SetFeedInfo(info);
+	iUrl.Copy(info->url);
+	
+	StartClientL();	
+	}
+
+void CHttpClient::GetShow(TShowInfo *info)
+	{
+	iTransObs->SetSaveFileName(info->fileName);
+	iTransObs->SetShowInfo(info);
+	iUrl.Copy(info->url);
+	
+	StartClientL();
+	
+	}

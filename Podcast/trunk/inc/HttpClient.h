@@ -29,6 +29,9 @@ public:
   void SetSaveFileName(TDesC &fName);
   void StartClientL();
   void StopClient();
+  
+  void GetFeed(TFeedInfo *info);
+  void GetShow(TShowInfo *info);
 
 protected:
   CHttpClient(MHttpEventHandlerCallbacks& aResObs);

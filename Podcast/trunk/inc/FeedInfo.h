@@ -7,6 +7,7 @@ public:
 	TBuf<KUrlLength> url;
 	TBuf<KTitleLength> title;
 	TBuf<KDescriptionLength> description;
+	TFileName fileName;
 };
 
 typedef RArray<TFeedInfo*> TFeedInfoArray;
