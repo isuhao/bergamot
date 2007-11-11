@@ -1,20 +1,35 @@
 = Podcast Player Project =
 
-The aim of this project is to create pretty much a UIQ clone of [http://www.blogs.s60.com/nokiapodcasting/ Nokia Podcasting]. This project has just started, and the code is based on the Sync project. There is [http://bergamot.googlecode.com/svn/Podcast/trunk code] in Subversion, as well as the latest [http://bergamot.googlecode.com/svn/Podcast/trunk debug build].
+The aim of this project is to create a fully functional podcatcher, in the spirit of for instance [http://www.blogs.s60.com/nokiapodcasting/ Nokia Podcasting]. This project has just started but there is working [http://bergamot.googlecode.com/svn/Podcast/trunk code] in Subversion, as well as the latest [http://bergamot.googlecode.com/svn/Podcast/trunk debug build].
 
-The first usable version will be alpha 1, which I intend to release this Sunday! From then on one tagged version will be release each week. I intend to have a pretty functional beta version by christmas.
+The intention is to have one tagged alpha version will be release each week. I intend to have a fully functional beta version by christmas at the latest.
 
 Oh, and Podcast Player Project is just a placeholder name. Come up with something better!
 
+= How to use =
+
+  # Install on your phone
+  # Run the program
+  # Choose Subscriptions
+  # Choose one of the pre-configured subscriptions, the feed is downloaded and parsed
+  # Download an episode by selecting it
+  # When the Download is complete, go back to the main menu
+  # Choose Episodes
+  # Select a file to play it
+  # Select again to pause and again to resume
+  # Add your own feeds by editing d:\podcasts\feeds.cfg, the syntax is "title|URL" without the quotes.
+
 = Releases = 
 
-  * Alpha 1 (November 11th)
+  * Alpha 1 (November 11th) |  [http://bergamot.googlecode.com/svn/Podcast/tags/alpha1/group/ code]
     * Plays files from memory card (must be D:\podcasts)
     * Fetches and parses RSS 2.0 feeds
     * Feeds are defined in the plain text D:\podcasts\feeds.cfg
     * Rudimentary UI
 
-= Release Plan =
+= Feature Plan =
+
+This is how I plan to implement features. Please help me find out what's important!
 
   * Alpha 2 (November 18th)
     * Improved UI
@@ -23,6 +38,7 @@ Oh, and Podcast Player Project is just a placeholder name. Come up with somethin
     * Support for other feeds (Atom, RSS 0.9, any more?)
 
   * Alpha 3 (November 25th)
+        * ID3 parsing
         * Check connection type, option to download only on WLAN
 
 = Feature Ideas =
