@@ -61,6 +61,10 @@ Podcast Player is just a placeholder name. [http://groups.google.com/group/berga
 Some ideas
   * Tedesco (means German in Italian, and TDesC is a string in Symbian)
   * Some kind of play on casting (injection molding, CNC, forging)
+  * Solid
+  * Ingot
+  * Foundry (in which you produce casts)
+
 
 = Help! =
 
