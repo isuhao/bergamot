@@ -25,6 +25,7 @@ LIBRARY         fbscli.lib
 LIBRARY         bafl.lib
 LIBRARY         gdi.lib
 LIBRARY         quiconfigclient.lib
-LIBRARY			estor.lib efsrv.lib
+LIBRARY			estor.lib 
+LIBRARY			efsrv.lib
 
-CAPABILITY LocalServices NetworkServices ReadDeviceData ReadUserData WriteDeviceData WriteUserData
+CAPABILITY NetworkServices UserEnvironment

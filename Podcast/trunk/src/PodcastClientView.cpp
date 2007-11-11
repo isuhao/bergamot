@@ -29,6 +29,7 @@ Creates and constructs the view.
 */
 CPodcastClientView* CPodcastClientView::NewLC(CQikAppUi& aAppUi)
 	{
+	RDebug::Print(_L("NewLC"));
 	CPodcastClientView* self = new (ELeave) CPodcastClientView(aAppUi);
 	CleanupStack::PushL(self);
 	self->ConstructL();
@@ -63,6 +64,7 @@ CPodcastClientView::~CPodcastClientView()
 */
 void CPodcastClientView::ConstructL()
 	{
+	RDebug::Print(_L("ConstructL"));
 	// Calls ConstructL that initialises the standard values. 
 	// This should always be called in the concrete view implementations.
 	BaseConstructL();
@@ -101,6 +103,7 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 
 void CPodcastClientView::ViewConstructL()
     {
+    RDebug::Print(_L("ViewConstructL"));
     iPlayer = CMdaAudioPlayerUtility::NewL(*this);
     ViewConstructFromResourceL(R_LISTBOX_LISTVIEW_UI_CONFIGURATIONS);
     iMenuState = EMenuMain;
