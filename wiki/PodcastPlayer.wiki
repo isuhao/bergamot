@@ -1,8 +1,8 @@
 = Podcast Player Project =
 
-The aim of this project is to create a fully functional podcatcher, in the spirit of for instance [http://www.blogs.s60.com/nokiapodcasting/ Nokia Podcasting]. This project has just started but there is working [http://bergamot.googlecode.com/svn/Podcast/trunk code] in Subversion, as well as the latest [http://bergamot.googlecode.com/svn/Podcast/trunk/group/Podcast_udeb_signed.sis debug build].
+The aim of this project is to create a fully functional podcatcher, in the spirit of for instance [http://www.blogs.s60.com/nokiapodcasting/ Nokia Podcasting]. There is working [http://bergamot.googlecode.com/svn/Podcast/trunk code] in Subversion, as well as the latest [http://bergamot.googlecode.com/svn/Podcast/trunk/group/Podcast_udeb_signed.sis debug build].
 
-The intention is to have one tagged alpha version will be release each week. I intend to have a fully functional beta version by christmas at the latest.
+The intention is to release one alpha version every week. I intend to have a fully functional beta version by christmas at the latest.
 
 Oh, and Podcast Player Project is just a placeholder name. Come up with something better!
 
@@ -21,13 +21,13 @@ Oh, and Podcast Player Project is just a placeholder name. Come up with somethin
 
 = Releases = 
 
-  * Alpha 1 (November 11th) |  [http://bergamot.googlecode.com/svn/Podcast/tags/alpha1/group/ code]
-    * Plays files from memory card (must be D:\podcasts)
+  * Alpha 1 (November 11th) |  [http://bergamot.googlecode.com/svn/Podcast/tags/alpha1 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha1/group/Podcast_udeb_signed.sis SIS]
+    * Plays files from memory card (must be in D:\podcasts)
     * Fetches and parses RSS 2.0 feeds
     * Feeds are defined in the plain text D:\podcasts\feeds.cfg
     * Rudimentary UI
 
-= Feature Plan =
+= Planning =
 
 This is how I plan to implement features. Please help me find out what's important!
 
@@ -42,7 +42,7 @@ This is how I plan to implement features. Please help me find out what's importa
       * ID3 parsing
       * Check connection type, option to download only on WLAN
 
-= Feature Ideas =
+= Ideas =
 
   * Download RSS in the background
   * Download MP3/whatever format
