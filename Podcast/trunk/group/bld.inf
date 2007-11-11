@@ -1,5 +1,4 @@
-// bld.inf
-prj_mmpfiles
+PRJ_MMPFILES
 PodcastClient.mmp
 //PodcastServer.mmp
 
@@ -7,3 +6,6 @@ PRJ_PLATFORMS
 GCCE
 WINSCW
 
+PRJ_EXPORTS
+
+.\config.cfg \epoc32\winscw\c\private\A00046AE\config.cfg

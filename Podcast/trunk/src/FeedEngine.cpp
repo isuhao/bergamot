@@ -5,6 +5,7 @@
 CFeedEngine::CFeedEngine() : parser(*this)
 	{
 	iClient = CHttpClient::NewL(*this);
+	iFeedListFile.Copy(KFeedsFileName);
 	}
 
 CFeedEngine::~CFeedEngine()
@@ -46,6 +47,10 @@ RArray <TPodcastInfo*>& CFeedEngine::GetItems()
 	return items;
 }
 
+RArray <TFeedInfo*>& CFeedEngine::GetFeeds() 
+{
+	return feeds;
+}
 void CFeedEngine::GetPodcast(TPodcastInfo &info)
 	{
 	TBuf<100> filePath;
@@ -93,3 +98,149 @@ void CFeedEngine::DisconnectedCallback()
 	{
 	
 	}
+
+
+void CFeedEngine::LoadSettings()
+	{
+	RFs rfs;
+	rfs.Connect();
+	
+	TBuf<100> configPath;
+	rfs.PrivatePath(configPath);
+	configPath.Append(KConfigFile);
+	
+	BaflUtils::EnsurePathExistsL(rfs, configPath);
+	RDebug::Print(_L("Reading config from %S"), &configPath);
+	RFile rfile;
+	int error = rfile.Open(rfs, configPath,  EFileRead);
+	
+	if (error != KErrNone) {
+		RDebug::Print(_L("Failed to read settings"));
+		return;
+	}
+	
+	TFileText tft;
+	tft.Set(rfile);
+	
+	TBuf<1024> line;
+	error = tft.Read(line);
+	
+	while (error == KErrNone) {
+		if (line.Locate('#') == 0) {
+			error = tft.Read(line);
+			continue;
+		}
+		
+		int equalsPos = line.Locate('=');
+		if (equalsPos != KErrNotFound) {
+			TPtrC tag = line.Left(equalsPos);
+			TPtrC value = line.Mid(equalsPos+1);
+			RDebug::Print(_L("line: %S, tag: '%S', value: '%S'"), &line, &tag, &value);
+			if (tag.CompareF(_L("PodcastDir")) == 0) {
+				iPodcastDir.Copy(value);
+			} else if (tag.CompareF(_L("FeedList")) == 0) {
+				iFeedListFile.Copy(value);
+			}
+		}
+		
+		error = tft.Read(line);
+		}
+	
+	}
+
+void CFeedEngine::LoadFeeds()
+	{
+	RFs rfs;
+	rfs.Connect();
+	
+	TBuf<100> configPath;
+	configPath.Copy(iFeedListFile);
+	RDebug::Print(_L("Reading feeds from %S"), &configPath);
+	RFile rfile;
+	int error = rfile.Open(rfs, configPath,  EFileRead);
+	
+	if (error != KErrNone) {
+		RDebug::Print(_L("Failed to read feeds"));
+		return;
+	}
+
+	
+	TFileText tft;
+	tft.Set(rfile);
+	
+	TBuf<1024> line;
+	error = tft.Read(line);
+	
+	while (error == KErrNone) {
+		RDebug::Print(_L("Line: %S"), &line);
+		TFeedInfo *fi = new TFeedInfo;
+		int pos = line.Locate('|');
+		if (pos == KErrNotFound) {
+			fi->iTitle.Copy(line);
+			fi->iUrl.Copy(line);
+		}else {
+			fi->iTitle.Copy(line.Left(pos));
+			fi->iUrl.Copy(line.Mid(pos+1));
+			RDebug::Print(_L("Read title: '%S', url: '%S'"), &fi->iTitle, &fi->iUrl);
+		}
+		feeds.Append(fi);
+		 error = tft.Read(line);
+		}
+	}
+	
+void CFeedEngine::SaveFeeds()
+	{
+	
+	}
+
+
+void CFeedEngine::ListDir(RFs &rfs, TDesC &folder, TPodcastIdArray &files) {
+	CDirScan *dirScan = CDirScan::NewLC(rfs);
+	RDebug::Print(_L("Listing dir: %S"), &folder);
+	dirScan ->SetScanDataL(folder, KEntryAttDir, ESortByName);
+	
+	CDir *dirPtr;
+	dirScan->NextL(dirPtr);
+	for (int i=0;i<dirPtr->Count();i++) {
+		const TEntry &entry = (*dirPtr)[i];
+		if (entry.IsDir())  {
+			/*TBuf<100> subFolder;
+			subFolder.Copy(folder);
+			subFolder.Append(entry.iName);
+			subFolder.Append(_L("\\"));
+			ListDir(rfs, subFolder, array);*/
+		} else {
+		if (entry.iName.Right(3).CompareF(_L("mp3")) == 0 ||
+				entry.iName.Right(3).CompareF(_L("aac")) == 0 ||
+				entry.iName.Right(3).CompareF(_L("wav")) == 0) {
+			RDebug::Print(entry.iName);
+			int id = files.Count();
+			TBuf<100> fileName;
+			fileName.Copy(folder);
+			fileName.Append(entry.iName);
+			TPodcastId *pID = new TPodcastId(id, fileName, entry.iName);
+			files.Append(pID);
+		}
+		}
+	}
+	delete dirPtr;
+	CleanupStack::Pop(dirScan);
+
+}
+
+TPodcastIdArray& CFeedEngine::GetPodcasts()
+{
+	return files;
+}
+void CFeedEngine::ListAllPodcasts()
+	{
+	RFs rfs;
+	rfs.Connect();
+	files.Reset();
+	TBuf<100> podcastDir;
+	podcastDir.Copy(KPodcastDir);
+
+	ListDir(rfs, podcastDir, files);	
+}
+
+

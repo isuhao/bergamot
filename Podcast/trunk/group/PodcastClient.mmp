@@ -67,6 +67,7 @@ LIBRARY			charconv.lib
 LIBRARY			xmlframework.lib
 LIBRARY			qiklbx.lib 
 LIBRARY			eikdlg.lib
+LIBRARY			mmfcontrollerframework.lib 
 
 START BITMAP    PodcastClient.mbm
 TARGETPATH      \resource\apps

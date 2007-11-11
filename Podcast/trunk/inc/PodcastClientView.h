@@ -15,22 +15,6 @@
 #include "FeedEngine.h"
 #include <MQikListBoxObserver.h>
 
-class TPodcastId {
-public:
-	TPodcastId(int aId, const TDesC &aFileName, const TDesC &aTitle) {
-		iId =aId;
-		iFileName.Copy(aFileName);
-		iTitle.Copy(aTitle);
-		iPlaying = EFalse;
-	}
-	
-	int iId;
-	TBuf<256> iFileName;
-	TBuf<256> iTitle;
-	TTimeIntervalMicroSeconds iPosition;
-	TBool iPlaying;
-};
-
 enum TMenus {
 	EMenuMain,
 	EMenuFiles,
@@ -39,7 +23,7 @@ enum TMenus {
 	EMenuEpisodes,
 };
 
-class CPodcastClientView : public CQikViewBase, public MMdaAudioPlayerCallback, public MCoeControlObserver, public MQikListBoxObserver
+class CPodcastClientView : public CQikViewBase, public MMdaAudioPlayerCallback, public MQikListBoxObserver
 	{
 public:
 	static CPodcastClientView* NewLC(CQikAppUi& aAppUi);
@@ -58,18 +42,9 @@ protected:
 private:
 	CPodcastClientView(CQikAppUi& aAppUi);
 	void ConstructL();
-	void ListAllPodcastsL();
-	void ListDirL(RFs &rfs, TDesC &folder);
-	void CreatePodcastListItem(TPodcastId *pid);
 	void CreateMenu();
 	
-	void LoadFeeds();
-	void SaveFeeds();
-	
 private:
-//	RArray<TPodcastId*> podcasts;
-	RArray<TFeedInfo*> feeds;
-	RArray<TPodcastId*> files;
 	//RPodcastServerSession serverSession;
 	CQikScrollableContainer* iContainer;
     CMdaAudioPlayerUtility *iPlayer;

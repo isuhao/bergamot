@@ -63,7 +63,6 @@ CPodcastClientView::~CPodcastClientView()
 */
 void CPodcastClientView::ConstructL()
 	{
-	RDebug::Print(_L("View:ConstructL"));
 	// Calls ConstructL that initialises the standard values. 
 	// This should always be called in the concrete view implementations.
 	BaseConstructL();
@@ -107,14 +106,14 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 void CPodcastClientView::ViewConstructL()
     {
     iPlayer = CMdaAudioPlayerUtility::NewL(*this);
-    RDebug::Print(_L("ViewConstructL"));
     ViewConstructFromResourceL(R_LISTBOX_LISTVIEW_UI_CONFIGURATIONS);
     iMenuState = EMenuMain;
     iPlayingPodcast = -1;
     iDownloading = EFalse;
-    LoadFeeds();
-    CreateMenu();
+    iFeedEngine.LoadSettings();
+    iFeedEngine.LoadFeeds();
 
+    CreateMenu();
     }
 
 void CPodcastClientView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage)
@@ -200,53 +199,6 @@ void CPodcastClientView::HandleControlEventL(CCoeControl */*aControl*/, TCoeEven
 
 	}
 
-void CPodcastClientView::ListDirL(RFs &rfs, TDesC &folder) {
-	CDirScan *dirScan = CDirScan::NewLC(rfs);
-	RDebug::Print(_L("Listing dir: %S"), &folder);
-	dirScan ->SetScanDataL(folder, KEntryAttDir, ESortByName);
-	
-	CDir *dirPtr;
-	dirScan->NextL(dirPtr);
-	for (int i=0;i<dirPtr->Count();i++) {
-		const TEntry &entry = (*dirPtr)[i];
-		if (entry.IsDir())  {
-			/*TBuf<100> subFolder;
-			subFolder.Copy(folder);
-			subFolder.Append(entry.iName);
-			subFolder.Append(_L("\\"));
-			ListDirL(rfs, subFolder);*/
-		} else {
-		if (entry.iName.Right(3).CompareF(_L("mp3")) == 0 ||
-				entry.iName.Right(3).CompareF(_L("aac")) == 0 ||
-				entry.iName.Right(3).CompareF(_L("wav")) == 0) {
-			RDebug::Print(entry.iName);
-			int id = files.Count();
-			TBuf<100> fileName;
-			fileName.Copy(folder);
-			fileName.Append(entry.iName);
-			TPodcastId *pID = new TPodcastId(id, fileName, entry.iName);
-			files.Append(pID);
-		}
-		}
-	}
-	delete dirPtr;
-	CleanupStack::Pop(dirScan);
-
-}
-
-void CPodcastClientView::ListAllPodcastsL()
-	{
-	RFs rfs;
-	rfs.Connect();
-	
-	TBuf<100> podcastDir;
-	podcastDir.Copy(KPodcastDir);
-
-	RDebug::Print(_L("Listing podcasts"));
-	
-	ListDirL(rfs, podcastDir);
-	RDebug::Print(_L("Listing complete"));
-}
 
 void CPodcastClientView::MapcPlayComplete(TInt aError) {
 	RDebug::Print(_L("Play Complete: %d"), aError);
@@ -255,6 +207,15 @@ void CPodcastClientView::MapcPlayComplete(TInt aError) {
 
 void CPodcastClientView::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds &/*aDuration */) {
 	RDebug::Print(_L("Init Complete: %d"), aError);
+
+	int numEntries = 0;
+	int error = iPlayer->GetNumberOfMetaDataEntries(numEntries);
+	RDebug::Print(_L("Found %d meta data entries"), numEntries);
+	
+	for (int i=0;i<numEntries;i++) {
+		CMMFMetaDataEntry* entry = iPlayer->GetMetaDataEntryL(i);
+		RDebug::Print(_L("Entry: Name: %S, Value: %S"), &entry->Name(), &entry->Value());
+	}
 	
 	if (aError == KErrNone) {
 	  iPlayer->Play();
@@ -277,6 +238,7 @@ void CPodcastClientView::HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxE
 			CreateMenu();
 			break;
 		case EMenuFiles:
+			TPodcastIdArray &files = iFeedEngine.GetPodcasts();
 			RDebug::Print(_L("File: %S"), &(files[aItemIndex]->iFileName));
 			PlayPausePodcast(files[aItemIndex]);
 			break;
@@ -288,6 +250,7 @@ void CPodcastClientView::HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxE
 					User::InfoPrint(_L("Cancel not implemented"));
 					iDownloading = EFalse;
 				} else {
+					RArray <TFeedInfo*>& feeds = iFeedEngine.GetFeeds();
 					RDebug::Print(_L("URL: %S"), &(feeds[aItemIndex]->iUrl));
 					User::InfoPrint(_L("Getting feed..."));
 					iDownloading = ETrue;
@@ -350,6 +313,7 @@ void CPodcastClientView::CreateMenu()
 		break;
 	case EMenuFeeds:
 		{
+		RArray <TFeedInfo*>& feeds = iFeedEngine.GetFeeds();
 		int len = feeds.Count();
 		MQikListBoxData* listBoxData;// = model.NewDataL(MQikListBoxModel::EDataNormal);
 		//CleanupClosePushL(*listBoxData);
@@ -383,8 +347,8 @@ void CPodcastClientView::CreateMenu()
 	case EMenuFiles:
 		{	RFs rfs;
 		rfs.Connect();
-		files.Reset();
-		ListAllPodcastsL();
+		iFeedEngine.ListAllPodcasts();
+		TPodcastIdArray & files = iFeedEngine.GetPodcasts();
 		
 		for (int i=0;i<files.Count();i++) {
 			MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
@@ -434,45 +398,3 @@ void CPodcastClientView::CreateMenu()
 	// Informs that the update of the list box model has ended
 	model.ModelEndUpdateL();
 }
-void CPodcastClientView::LoadFeeds()
-	{
-	RFs rfs;
-	rfs.Connect();
-	
-	TBuf<100> configPath;
-	configPath.Copy(KPodcastDir);
-	configPath.Append(KFeedsFileName);
-	
-	BaflUtils::EnsurePathExistsL(rfs, configPath);
-	RDebug::Print(_L("Reading config from %S"), &configPath);
-	RFile rfile;
-	rfile.Open(rfs, configPath,  EFileRead);
-	
-	TFileText tft;
-	tft.Set(rfile);
-	
-	TBuf<1024> line;
-	int error = tft.Read(line);
-	
-	while (error == KErrNone) {
-		RDebug::Print(_L("Line: %S"), &line);
-		TFeedInfo *fi = new TFeedInfo;
-		int pos = line.Locate('|');
-		if (pos == KErrNotFound) {
-			fi->iTitle.Copy(line);
-			fi->iUrl.Copy(line);
-		}else {
-			fi->iTitle.Copy(line.Left(pos));
-			fi->iUrl.Copy(line.Mid(pos+1));
-			RDebug::Print(_L("Read title: '%S', url: '%S'"), &fi->iTitle, &fi->iUrl);
-		}
-		feeds.Append(fi);
-		 error = tft.Read(line);
-		}
-	}
-	
-void CPodcastClientView::SaveFeeds()
-	{
-	
-	}
-
