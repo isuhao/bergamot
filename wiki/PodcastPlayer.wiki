@@ -12,7 +12,7 @@ Oh, and Podcast Player Project is just a placeholder name. Come up with somethin
   # Run the program
   # Choose Subscriptions
   # Choose one of the pre-configured subscriptions, the feed is downloaded and parsed
-  # Download an episode by selecting it
+  # Download an episode by selecting it (WARNING! the download can't be stopped, and may be very large)
   # When the Download is complete, go back to the main menu
   # Choose Episodes
   # Select a file to play it
