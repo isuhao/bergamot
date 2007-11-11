@@ -4,8 +4,6 @@ The aim of this project is to create a fully functional podcatcher, in the spiri
 
 The intention is to release one alpha version every week. I intend to have a fully functional beta version by christmas at the latest.
 
-Oh, and Podcast Player is just a placeholder name. [http://groups.google.com/group/bergamot Come up with something better!]
-
 = Releases = 
 
   * Alpha 1 (November 11th) |  [http://bergamot.googlecode.com/svn/Podcast/tags/alpha1 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha1/group/Podcast_udeb_signed.sis SIS]
@@ -48,6 +46,15 @@ This is how I plan to implement features. Please [http://groups.google.com/group
     * Automatic background downloading
     * New podcast notification
     * Video support
+
+
+= Name =
+
+Podcast Player is just a placeholder name. [http://groups.google.com/group/bergamot Come up with something better!]
+
+Some ideas
+  * Tedesco (means German in Italian, and TDesC is a string in Symbian)
+  * Some kind of play on casting (injection molding, CNC, forging)
 
 = Help! =
 
