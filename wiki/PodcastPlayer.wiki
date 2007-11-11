@@ -1,26 +1,29 @@
 = Podcast Player Project =
 
-The aim of this project is to create pretty much a UIQ clone of [http://www.blogs.s60.com/nokiapodcasting/ Nokia Podcasting]. This project has just started, and the code is based on the Sync project. There is [http://bergamot.googlecode.com/svn/Podcast/trunk some code] in Subversion, however it is not yet very useful. It can play audio files, and contains semi-working download code.
+The aim of this project is to create pretty much a UIQ clone of [http://www.blogs.s60.com/nokiapodcasting/ Nokia Podcasting]. This project has just started, and the code is based on the Sync project. There is [http://bergamot.googlecode.com/svn/Podcast/trunk code] in Subversion, as well as the latest [http://bergamot.googlecode.com/svn/Podcast/trunk debug build].
 
 The first usable version will be alpha 1, which I intend to release this Sunday! From then on one tagged version will be release each week. I intend to have a pretty functional beta version by christmas.
 
 Oh, and Podcast Player Project is just a placeholder name. Come up with something better!
 
-= Release Plan =
+= Releases = 
 
-  * Alpha 1 (November 11th?)
-    * Plays files from memory
-    * Stores position in audio file
+  * Alpha 1 (November 11th)
+    * Plays files from memory card (must be D:\podcasts)
+    * Fetches and parses RSS 2.0 feeds
+    * Feeds are defined in the plain text D:\podcasts\feeds.cfg
     * Rudimentary UI
 
+= Release Plan =
+
   * Alpha 2 (November 18th)
-    * Downloads file from URL
+    * Improved UI
+    * Volume control
+    * More Configuration
+    * Support for other feeds (Atom, RSS 0.9, any more?)
 
-  * Alpha 3 
-    * RSS parsing, automated downloads
-
-  * Alpha 4
-    * Check connection type, option to download only on WLAN
+  * Alpha 3 (November 25th)
+        * Check connection type, option to download only on WLAN
 
 = Feature Ideas =
 
@@ -30,10 +33,6 @@ Oh, and Podcast Player Project is just a placeholder name. Come up with somethin
   * Automatic check if on WLAN or 3G, option to download only on WLAN
   * Notify the user of a new podcast
   * Keep track of position inside audio file, even between restarts, and for multiple podcasts at a time
-
-= Design =
-
-  * [PPMenus Menu design]
 
 = Help! =
 
