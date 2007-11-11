@@ -22,9 +22,10 @@ Oh, and Podcast Player Project is just a placeholder name. Come up with somethin
 = Releases = 
 
   * Alpha 1 (November 11th) |  [http://bergamot.googlecode.com/svn/Podcast/tags/alpha1 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha1/group/Podcast_udeb_signed.sis SIS]
-    * Plays files from memory card (must be in D:\podcasts)
+    * Plays MP3 and AAC from memory card (must be in D:\podcasts)
     * Fetches and parses RSS 2.0 feeds
     * Feeds are defined in the plain text D:\podcasts\feeds.cfg
+    * Downloads audio files from feeds
     * Rudimentary UI
 
 = Planning =
