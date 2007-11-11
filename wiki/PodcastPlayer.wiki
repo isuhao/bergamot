@@ -4,6 +4,12 @@ The aim of this project is to create a fully functional podcatcher, in the spiri
 
 The intention is to release one alpha version every week. I intend to have a fully functional beta version by christmas at the latest.
 
+
+== Screenshots ==
+
+http://bergamot.googlecode.com/svn/wiki/pp1.jpg
+http://bergamot.googlecode.com/svn/wiki/pp2.jpg
+
 = Releases = 
 
   * Alpha 1 (November 11th) |  [http://bergamot.googlecode.com/svn/Podcast/tags/alpha1 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha1/group/Podcast_udeb_signed.sis SIS]
