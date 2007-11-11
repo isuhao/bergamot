@@ -1,0 +1,83 @@
+// PodcastClient.mmp
+
+TARGET            PodcastClient.exe
+TARGETTYPE        exe
+TARGETPATH        \sys\bin
+//UID               0x100039CE 0x2000FB05
+UID               0x100039CE 0xA00046AE
+ 
+VENDORID          0
+
+SOURCEPATH        ..\group
+
+START RESOURCE    PodcastClient.rss
+TARGETPATH        \resource\apps
+HEADER
+END
+
+
+START RESOURCE    PodcastClient_reg.rss
+TARGETPATH        \private\10003A3F\apps
+END
+
+START RESOURCE    PodcastClient_loc.rss
+TARGETPATH        \resource\apps
+LANG              SC
+HEADER
+END
+
+SYSTEMINCLUDE   \epoc32\include\ecom
+SYSTEMINCLUDE   \epoc32\include
+
+
+SOURCEPATH      ..\src
+USERINCLUDE     ..\inc
+
+
+SOURCE          PodcastClientAppUi.cpp
+SOURCE          PodcastClientDocument.cpp
+SOURCE          PodcastClientApplication.cpp
+SOURCE			PodcastClientView.cpp
+SOURCE 			RPodcastServerSession.cpp
+SOURCE			PodcastData.cpp 
+SOURCE			HttpClient.cpp
+SOURCE			HttpEventHandler.cpp FeedParser.cpp FeedEngine.cpp
+
+LIBRARY         euser.lib
+LIBRARY         apparc.lib
+LIBRARY         cone.lib
+LIBRARY         eikcore.lib
+LIBRARY         eikcoctl.lib
+LIBRARY         qikcore.lib
+LIBRARY         apgrfx.lib
+LIBRARY         ws32.lib
+LIBRARY         fbscli.lib
+LIBRARY         bafl.lib
+LIBRARY         gdi.lib
+LIBRARY         quiconfigclient.lib
+LIBRARY			qikctl.lib // added due to the qik controls
+LIBRARY			eikctl.lib // added due to the eik controls
+LIBRARY			qikdlg.lib // added for the dialog that are used
+LIBRARY			qikallocdll.lib 
+LIBRARY			estor.lib efsrv.lib
+LIBRARY			mediaclientaudio.lib
+LIBRARY			mediaclient.lib
+LIBRARY			mmcommon.lib http.lib InetProtUtil.lib
+LIBRARY			charconv.lib
+LIBRARY			xmlframework.lib
+LIBRARY			qiklbx.lib 
+LIBRARY			eikdlg.lib
+
+START BITMAP    PodcastClient.mbm
+TARGETPATH      \resource\apps
+HEADER
+SOURCEPATH      ..\images
+SOURCE			16 PodcastClient_40x40.bmp
+SOURCE          8   PodcastClient_40x40_mask.bmp
+SOURCE          16 PodcastClient_40x40.bmp
+SOURCE          8   PodcastClient_40x40_mask.bmp
+SOURCE          16 PodcastClient_40x40.bmp
+SOURCE          8   PodcastClient_40x40_mask.bmp
+END
+
+CAPABILITY NetworkServices UserEnvironment

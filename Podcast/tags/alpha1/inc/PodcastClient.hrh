@@ -1,0 +1,45 @@
+#ifndef __PODCASTCLIENT_HRH__
+#define __PODCASTCLIENT_HRH__
+
+enum TPodcatClientCommands
+    {
+    EPodcastClientBaseViewPage = 1,
+    EMyAbout
+    };
+    
+    enum TListBoxControl
+	{
+	EListBoxListViewListCtrl,
+	EListBoxListViewPage,
+	EFeedEditor
+	};
+	
+    
+	enum TSimpleDialogControls
+    {
+    ESimpleDialogBB,
+    ESimpleDialogImage,
+    ESimpleDialogLabel,
+    ESimpleDialogEdwin
+    };
+    
+enum TPodcastClientDefines
+	{
+	EMyViewBuildingBlockBase,
+	EMyViewCommandButton = 1000,
+	EMyViewChoiceListBase = 2000,
+	EMyWebCommand = 3000
+	};
+
+	enum TMyViewControls
+    {
+    EMyViewScrollBar,
+    EMyViewScrollableContainer,
+    EMyViewBuildingBlock,
+    EMyViewNumberOfControls
+    };
+
+    
+#endif
+
+

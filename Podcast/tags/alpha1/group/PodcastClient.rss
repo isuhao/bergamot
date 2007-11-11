@@ -1,0 +1,300 @@
+// ListBoxEasy.rss
+//
+// © Symbian Software Ltd 2005. All rights reserved.
+//
+
+#include <eikon.rh>
+#include <qikon.rh>
+#include <QikCommand.rh>
+#include <QikListBox.rh>
+#include <QikListBoxStandardLayouts.hrh>
+#include "PodcastClient.hrh"
+#include "PodcastClient.rls"
+
+// Use this statement to ensure that the resources in the file have a unique ID
+// so that an application can use multiple resource files without resource ID
+// conflict. This statement must be the first non-comment statement in the file.
+NAME LIST
+
+// The three following resources are mandatory fields and need to be the 
+// first resource fields in the resource file. Need to be defined in this order.
+// These resources don't need to contain any useful info, just need to be there.
+
+// RSS_SIGNATURE can be used to specify version information
+RESOURCE RSS_SIGNATURE { }
+
+// Defines the name of the default file the application framework creates.
+// This resource must always be the second resource in the resource file.
+RESOURCE TBUF { buf = ""; }
+
+// This resource is used to define an application's GUI. 
+// Although it's not used directly by UIQ, its declaration is mandatory.
+RESOURCE EIK_APP_INFO
+	{
+	}
+	
+//----------------------------------------------------
+//------------------ TEXT CONSTANTS ------------------
+//----------------------------------------------------
+// Normal text that is used for list box item name
+RESOURCE TBUF32 r_listbox_listview_normal_text { buf = STRING_r_listbox_listview_normal_text; }
+
+//----------------------------------------------------
+//------------ CONFIGURATION FOR LISTVIEW ------------
+//----------------------------------------------------
+// The application supports the reference UI Configurations that are supported
+// in the UIQ 3 SDK. Use the UiqEnv tool, to change the UI Configuration in the
+// emulator in order to develop and test the application with varying phone styles.
+RESOURCE QIK_VIEW_CONFIGURATIONS r_listbox_listview_ui_configurations
+	{
+	configurations = 
+		{
+		QIK_VIEW_CONFIGURATION
+			{
+			ui_config_mode = KQikPenStyleTouchPortrait;
+			command_list = r_listbox_listview_commands;
+			view = r_listbox_listview_layout;
+			},
+		QIK_VIEW_CONFIGURATION
+			{
+			ui_config_mode = KQikPenStyleTouchLandscape;
+			command_list = r_listbox_listview_commands;
+			view = r_listbox_listview_layout;
+			},
+		QIK_VIEW_CONFIGURATION
+			{
+			ui_config_mode = KQikSoftkeyStyleTouchPortrait;
+			command_list = r_listbox_listview_commands;
+			view = r_listbox_listview_layout;
+			},
+		QIK_VIEW_CONFIGURATION
+			{
+			ui_config_mode = KQikSoftkeyStylePortrait;
+			command_list = r_listbox_listview_commands;
+			view = r_listbox_listview_layout;
+			},
+		QIK_VIEW_CONFIGURATION
+			{
+			ui_config_mode = KQikSoftkeyStyleSmallPortrait;
+			command_list = r_listbox_listview_commands;
+			view = r_listbox_listview_layout;
+			}
+		};
+	}
+
+//----------------------------------------------------
+//------------------ VIEW COMMANDS -------------------
+//----------------------------------------------------
+RESOURCE QIK_COMMAND_LIST r_listbox_listview_commands
+	{
+	items=
+		{
+		// This command shall only be visible in debug mode because it is only
+		// used to find memory leaks during development of the application.
+		QIK_COMMAND
+			{
+			id = EEikCmdExit;
+			type = EQikCommandTypeScreen;
+			// Indicate that it will only be created in debug builds
+			stateFlags = EQikCmdFlagDebugOnly;
+			text = STRING_r_listbox_listview_cmd_close_debug;
+			shortText = STRING_r_listbox_listview_cmd_close_debug_shorttext;
+			}
+		};
+	}
+
+//----------------------------------------------------
+//----------------- LISTVIEW LAYOUT ------------------
+//----------------------------------------------------
+RESOURCE QIK_VIEW r_listbox_listview_layout
+	{
+	pages = r_listbox_listview_layout_pages;
+	}
+
+RESOURCE QIK_VIEW_PAGES r_listbox_listview_layout_pages
+	{
+	pages = 
+		{
+		QIK_VIEW_PAGE
+			{
+			page_id = EListBoxListViewPage;
+			page_content = r_listbox_listview_page_control;
+			}
+		};
+	}
+
+// The page contains a list box that fills the whole application space.
+RESOURCE QIK_CONTAINER_SETTINGS r_listbox_listview_page_control
+	{
+	layout_manager_type = EQikRowLayoutManager;
+	layout_manager = r_listbox_row_layout_manager_default;
+	controls = 
+		{
+		QIK_CONTAINER_ITEM_CI_LI
+			{ 
+			unique_handle = EListBoxListViewListCtrl;
+			type = EQikCtListBox; 
+			control = r_listbox_listview_listbox;
+			// This will make it so that the list box fills the whole 
+			// application space.
+			layout_data = r_listbox_row_layout_data_fill;
+			}
+		};
+	}
+	
+//----------------------------------------------------
+//----------- LISTVIEW CONTROL: LISTBOX --------------
+//----------------------------------------------------
+// The list box structs type property default to EQikRowListBox, so we need to 
+// redefine it. As we want default values for the QIK_LISTBOX_ROW_VIEW struct, 
+// we do not need to declare such a resource and link to it, since the default 
+// behavior is to load a resource for the row view which already has all 
+// properties set to default. All we really have to do is to define our layout 
+// pair and add them to the list box.
+RESOURCE QIK_LISTBOX r_listbox_listview_listbox
+	{
+	layouts = { r_listbox_listview_normal_layout_pair };
+	}
+
+// Layouts are always added in layout pair to the list box. A layout pair 
+// consists of one mandatory normal layout and an optional highlight layout.
+// Normal layout - The layout used when an item is not highlighted, or is 
+// highlighted but has no additional highlight layout.
+RESOURCE QIK_LISTBOX_LAYOUT_PAIR r_listbox_listview_normal_layout_pair
+	{
+	standard_normal_layout = EQikListBoxLine;
+	}
+
+//----------------------------------------------------
+//--------------- ROW LAYOUT MANAGER -----------------
+//----------------------------------------------------
+RESOURCE QIK_ROW_LAYOUT_MANAGER r_listbox_row_layout_manager_default
+	{
+	default_layout_data = QIK_ROW_LAYOUT_DATA {};
+	}
+
+//----------------------------------------------------
+//----------------- ROW LAYOUT DATA ------------------
+//----------------------------------------------------
+RESOURCE QIK_ROW_LAYOUT_DATA r_listbox_row_layout_data_fill
+	{
+	vertical_alignment = EQikLayoutVAlignFill;
+	vertical_excess_grab_weight = 1;
+	}
+
+
+/// dialog
+
+RESOURCE QIK_DIALOG r_my_simple_dialog 
+{
+title = "Enter some info";
+configurations = 
+    {
+    QIK_DIALOG_CONFIGURATION
+        {
+        ui_config_mode = 0;
+        container = r_my_simple_dialog_container;
+        command_list = r_my_simple_dialog_commands;
+        }
+    };
+controls = r_my_simple_dialog_controls;
+}
+
+RESOURCE QIK_CONTROL_COLLECTION r_my_simple_dialog_controls
+{
+items = 
+    {
+    QIK_CONTROL
+        {
+        unique_handle = ESimpleDialogBB;
+        type = EQikCtIconCaptionedOnelineBuildingBlock;
+        control = r_my_simple_dialog_building_block;
+        },
+    QIK_CONTROL
+        {
+        unique_handle = ESimpleDialogLabel;
+        type = EEikCtLabel;
+        control = r_my_simple_dialog_label;
+        },
+    QIK_CONTROL
+        {
+        unique_handle = ESimpleDialogImage;
+        type = EEikCtImage;
+        control = r_my_simple_dialog_image;
+        },
+    QIK_CONTROL
+        {
+        unique_handle = ESimpleDialogEdwin;
+        type = EEikCtEdwin;
+        control = r_my_simple_dialog_edwin;
+        }
+    };
+}
+
+RESOURCE QIK_SCROLLABLE_CONTAINER_SETTINGS r_my_simple_dialog_container
+{
+controls = 
+    {
+    QIK_CONTAINER_ITEM
+        {
+        unique_handle = ESimpleDialogBB;
+        }
+    };
+}
+
+RESOURCE QIK_SYSTEM_BUILDING_BLOCK r_my_simple_dialog_building_block
+{
+content =
+    {
+    QIK_SLOT_CONTENT
+        {
+        slot_id = EQikIconSlot1;
+        unique_handle = ESimpleDialogImage;
+        },
+    QIK_SLOT_CONTENT
+        {
+        slot_id = EQikItemSlot1;
+        unique_handle = ESimpleDialogLabel;
+        },
+    QIK_SLOT_CONTENT
+        {
+        slot_id = EQikItemSlot2;
+        unique_handle = ESimpleDialogEdwin;
+        }
+    };
+}
+
+RESOURCE IMAGE r_my_simple_dialog_image
+{
+bmpfile = "z:\\Resource\\Apps\\default_app_icon.MBM";
+bmpid = 0;
+bmpmask = -1;
+}
+
+RESOURCE LABEL r_my_simple_dialog_label
+{
+txt = "Please enter something:";
+}
+
+RESOURCE EDWIN r_my_simple_dialog_edwin
+{
+}
+
+RESOURCE QIK_COMMAND_LIST r_my_simple_dialog_commands
+{
+items=
+    {
+    QIK_COMMAND
+     {
+     id = EEikBidYes;
+     type = EQikCommandTypeYes;
+     text = "Yes";
+     },
+    QIK_COMMAND
+     {
+     id = EEikBidNo;
+     type = EQikCommandTypeNo;
+     text = "No";
+     }
+    };
+}
