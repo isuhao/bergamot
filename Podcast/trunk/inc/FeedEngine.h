@@ -17,6 +17,7 @@ public:
 public:
 	void GetFeed(TFeedInfo& feedInfo);
 	void GetPodcast(TPodcastInfo &info);
+	void Cancel();
 	RArray <TPodcastInfo*>& GetItems();
 private:
 	CHttpClient* iClient;

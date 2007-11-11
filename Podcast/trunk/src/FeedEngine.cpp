@@ -11,6 +11,9 @@ CFeedEngine::~CFeedEngine()
 	{
 	}
 
+void CFeedEngine::Cancel() 
+	{
+	}
 void CFeedEngine::GetFeed(TFeedInfo& feedInfo)
 	{
 	items.Reset();
@@ -34,9 +37,7 @@ void CFeedEngine::GetFeed(TFeedInfo& feedInfo)
 	iClient->SetUrl(feedInfo.iUrl);
 	iClient->SetSaveFileName(privatePath);
 	iClient->StartClientL();
-//	TFileName fn;
-//	fn.Copy(_L("C:\\Private\\2000fb05\\tech5.xml"));
-//	parser.ParseFeedL(private);
+
 	RDebug::Print(_L("DownloadFeed END"));
 	}
 

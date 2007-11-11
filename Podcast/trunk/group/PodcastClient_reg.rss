@@ -2,8 +2,7 @@
 #include <appinfo.rh>
 
 UID2 KUidAppRegistrationResourceFile
-UID3 0x2000FB05
-
+UID3 0xA00046AE
 RESOURCE APP_REGISTRATION_INFO
 {
     app_file="PodcastClient";

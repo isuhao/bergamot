@@ -62,6 +62,10 @@ private:
 	void ListDirL(RFs &rfs, TDesC &folder);
 	void CreatePodcastListItem(TPodcastId *pid);
 	void CreateMenu();
+	
+	void LoadFeeds();
+	void SaveFeeds();
+	
 private:
 //	RArray<TPodcastId*> podcasts;
 	RArray<TFeedInfo*> feeds;
@@ -72,5 +76,6 @@ private:
     int iPlayingPodcast;
     TMenus iMenuState;
     CFeedEngine iFeedEngine;
+    TBool iDownloading;
 	};
 #endif

@@ -1,6 +1,7 @@
 %{"Podcast"}
 :"AVendor"
-#{"Podcast"}, (0x2000FB05), 1, 0, 0, TYPE=SA
+#{"Podcast Player"}, (0xA00046AE), 0, 1, 0, TYPE=SA
+
 (0x101F6300), 3, 0, 0, {"UIQ30ProductID"}
 
 ; Freeware installation "warning" required by Symbian signed
@@ -12,6 +13,7 @@
 "\Symbian\UIQ3SDK\epoc32\data\Z\Resource\Apps\PodcastClient.mbm"-"!:\resource\apps\PodcastClient.mbm"
 "\Symbian\UIQ3SDK\epoc32\data\z\resource\apps\PodcastClient_loc.RSC"-"!:\resource\apps\PodcastClient_loc.RSC"
 "\Symbian\UIQ3SDK\epoc32\data\z\private\10003a3f\apps\PodcastClient_reg.rsc"-"!:\private\10003a3f\import\apps\PodcastClient_reg.rsc"
+".\feeds.cfg"-"d:\podcasts\feeds.cfg"
 
 ; Install autostart file
 ;".\PodcastServerAutostart.ast"-"!:\private\10274b9f\import\PodcastServerAutostart.ast"

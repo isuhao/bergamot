@@ -63,6 +63,7 @@ CPodcastClientView::~CPodcastClientView()
 */
 void CPodcastClientView::ConstructL()
 	{
+	RDebug::Print(_L("View:ConstructL"));
 	// Calls ConstructL that initialises the standard values. 
 	// This should always be called in the concrete view implementations.
 	BaseConstructL();
@@ -106,21 +107,14 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 void CPodcastClientView::ViewConstructL()
     {
     iPlayer = CMdaAudioPlayerUtility::NewL(*this);
-    TFeedInfo *info = new TFeedInfo;
-    info->iTitle.Copy(_L("tech5"));
-    info->iUrl.Copy(_L("http://www.podshow.com/feeds/tech5.xml"));
-    feeds.Append(info);
-
-    info = new TFeedInfo;
-    info->iTitle.Copy(_L("Daily Giz Wiz"));
-    info->iUrl.Copy(_L("http://www.leoville.tv/podcasts/dgw.xml"));
-    feeds.Append(info);
-    	
+    RDebug::Print(_L("ViewConstructL"));
     ViewConstructFromResourceL(R_LISTBOX_LISTVIEW_UI_CONFIGURATIONS);
     iMenuState = EMenuMain;
-       
+    iPlayingPodcast = -1;
+    iDownloading = EFalse;
+    LoadFeeds();
     CreateMenu();
-    SetParentView(ViewId());
+
     }
 
 void CPodcastClientView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage)
@@ -222,7 +216,6 @@ void CPodcastClientView::ListDirL(RFs &rfs, TDesC &folder) {
 			subFolder.Append(_L("\\"));
 			ListDirL(rfs, subFolder);*/
 		} else {
-			RDebug::Print(_L("Right(3): %S"), &entry.iName.Right(3));
 		if (entry.iName.Right(3).CompareF(_L("mp3")) == 0 ||
 				entry.iName.Right(3).CompareF(_L("aac")) == 0 ||
 				entry.iName.Right(3).CompareF(_L("wav")) == 0) {
@@ -257,6 +250,7 @@ void CPodcastClientView::ListAllPodcastsL()
 
 void CPodcastClientView::MapcPlayComplete(TInt aError) {
 	RDebug::Print(_L("Play Complete: %d"), aError);
+	User::InfoPrint(_L("Done!"));
 }
 
 void CPodcastClientView::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds &/*aDuration */) {
@@ -287,15 +281,22 @@ void CPodcastClientView::HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxE
 			PlayPausePodcast(files[aItemIndex]);
 			break;
 		case EMenuFeeds:
-			if (aItemIndex == 0) {
+/*			if (aItemIndex == 0) {
 
-			} else {
-				RDebug::Print(_L("URL: %S"), &(feeds[aItemIndex-1]->iUrl));
-				User::InfoPrint(_L("Getting feed..."));
-				iFeedEngine.GetFeed(*feeds[aItemIndex-1]);
-				iMenuState = EMenuEpisodes;
-				CreateMenu();
-			}
+			} else {*/
+				if (iDownloading) {
+					User::InfoPrint(_L("Cancel not implemented"));
+					iDownloading = EFalse;
+				} else {
+					RDebug::Print(_L("URL: %S"), &(feeds[aItemIndex]->iUrl));
+					User::InfoPrint(_L("Getting feed..."));
+					iDownloading = ETrue;
+					iFeedEngine.GetFeed(*feeds[aItemIndex]);
+					iMenuState = EMenuEpisodes;
+					CreateMenu();
+					iDownloading = EFalse;
+				}
+//			}
 			break;
 		case EMenuEpisodes:
 			RArray <TPodcastInfo*>& fItems = iFeedEngine.GetItems();
@@ -339,23 +340,23 @@ void CPodcastClientView::CreateMenu()
 		itemName.Copy(_L("Subscriptions"));
 		listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
 	
-		listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
+		/*listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
 		CleanupClosePushL(*listBoxData);
 		itemName.Copy(_L("Downloads"));
-		listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
+		listBoxData->AddTextL(itemName, EQikListBoxSlotText1);*/
 	
-		CleanupStack::PopAndDestroy(3);
+		CleanupStack::PopAndDestroy(2);
 		}
 		break;
 	case EMenuFeeds:
 		{
 		int len = feeds.Count();
-		MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
-		CleanupClosePushL(*listBoxData);
+		MQikListBoxData* listBoxData;// = model.NewDataL(MQikListBoxModel::EDataNormal);
+		//CleanupClosePushL(*listBoxData);
 	
-		itemName.Copy(_L("Add feed..."));
-		listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
-		CleanupStack::PopAndDestroy();
+		//itemName.Copy(_L("Add feed..."));
+		//listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
+		//CleanupStack::PopAndDestroy();
 		
 		if (len > 0) {
 			for (int i=0;i<len;i++) {
@@ -424,8 +425,54 @@ void CPodcastClientView::CreateMenu()
 	break;
 	}
 
+		if (iMenuState == EMenuMain) {
+		    SetParentView(KNullViewId);
+		} else {
+		    SetParentView(ViewId());
+		}
 	
 	// Informs that the update of the list box model has ended
 	model.ModelEndUpdateL();
 }
+void CPodcastClientView::LoadFeeds()
+	{
+	RFs rfs;
+	rfs.Connect();
+	
+	TBuf<100> configPath;
+	configPath.Copy(KPodcastDir);
+	configPath.Append(KFeedsFileName);
+	
+	BaflUtils::EnsurePathExistsL(rfs, configPath);
+	RDebug::Print(_L("Reading config from %S"), &configPath);
+	RFile rfile;
+	rfile.Open(rfs, configPath,  EFileRead);
+	
+	TFileText tft;
+	tft.Set(rfile);
+	
+	TBuf<1024> line;
+	int error = tft.Read(line);
+	
+	while (error == KErrNone) {
+		RDebug::Print(_L("Line: %S"), &line);
+		TFeedInfo *fi = new TFeedInfo;
+		int pos = line.Locate('|');
+		if (pos == KErrNotFound) {
+			fi->iTitle.Copy(line);
+			fi->iUrl.Copy(line);
+		}else {
+			fi->iTitle.Copy(line.Left(pos));
+			fi->iUrl.Copy(line.Mid(pos+1));
+			RDebug::Print(_L("Read title: '%S', url: '%S'"), &fi->iTitle, &fi->iUrl);
+		}
+		feeds.Append(fi);
+		 error = tft.Read(line);
+		}
+	}
+	
+void CPodcastClientView::SaveFeeds()
+	{
+	
+	}
 
