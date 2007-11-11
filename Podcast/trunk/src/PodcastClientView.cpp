@@ -88,10 +88,6 @@ The command Ids are defined in the .hrh file.
 */
 void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 	{
-	
-   	//httpCli->StartClientL();
-	//CActiveScheduler::Start();
-
 	switch(aCommand.Id())
 		{
 		// Just issue simple info messages to show that
@@ -151,52 +147,7 @@ void CPodcastClientView::PlayPausePodcast(TShowInfo* podcast)
 
 void CPodcastClientView::HandleControlEventL(CCoeControl */*aControl*/, TCoeEvent aEventType)
 	{
-	RDebug::Print(_L("ControlEvent"));
-	switch(aEventType)
-    {
-    case EEventStateChanged:
-    	/*if (aControl->UniqueHandle() == EMyWebCommand) {
-    		TFeedInfo feedInfo;
-    		feedInfo.iUrl.Copy(_L("http://www.podshow.com/feeds/tech5.xml"));
-    		iFeedEngine.GetFeed(feedInfo);
-    	} else {
-    	int id = aControl->UniqueHandle() - EMyViewCommandButton;
-    	
-    	if (id < podcasts.Count()) {
-    		TPodcastId *podcast = podcasts[id];
-    		RDebug::Print(_L("EEventStateChanged"));
-    		RDebug::Print(_L("HandleControlEventL: %S, %S"), &(podcast->iTitle), &(podcast->iFileName));
-    		PlayPausePodcast(podcast);
-    	}
-    	}*/
-        // The internal state of the Command Button was changed.
-        break;
-                                
-    case EEventRequestExit:
-    	//RDebug::Print(_L("EEventRequestExit"));
-		break;
-                                
-    case EEventRequestCancel:
-    	//RDebug::Print(_L("EEventRequestCancel"));
-        break;
-                                
-    case EEventRequestFocus:
-    	//RDebug::Print(_L("EEventRequestFocus"));
-        // The Command Button received a pointer down event
-        break;                      
-    case EEventPrepareFocusTransition:
-    	//RDebug::Print(_L("EEventPrepareFocusTransition"));
-        // A focus change is about to appear
-        break;
-                            
-    case EEventInteractionRefused:
-    	//RDebug::Print(_L("EEventInteractionRefused"));
-        // The Command Button is dimmed and received a pointer down event.
-        break;                
-    default:
-        break;
-    }
-
+	RDebug::Print(_L("HandleControlEvent"));
 	}
 
 
@@ -208,19 +159,24 @@ void CPodcastClientView::MapcPlayComplete(TInt aError) {
 void CPodcastClientView::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds &/*aDuration */) {
 	RDebug::Print(_L("Init Complete: %d"), aError);
 
+	if (aError != KErrNone) {
+		return;
+	}
+
 	int numEntries = 0;
 	int error = iPlayer->GetNumberOfMetaDataEntries(numEntries);
-	RDebug::Print(_L("Found %d meta data entries"), numEntries);
+	if (error == KErrNone) {
+		RDebug::Print(_L("Found %d meta data entries"), numEntries);
 	
-	for (int i=0;i<numEntries;i++) {
-		CMMFMetaDataEntry* entry = iPlayer->GetMetaDataEntryL(i);
-		RDebug::Print(_L("Entry: Name: %S, Value: %S"), &entry->Name(), &entry->Value());
+		for (int i=0;i<numEntries;i++) {
+			CMMFMetaDataEntry* entry = iPlayer->GetMetaDataEntryL(i);
+			RDebug::Print(_L("Entry: Name: %S, Value: %S"), &entry->Name(), &entry->Value());
+		}
 	}
 	
-	if (aError == KErrNone) {
 	  iPlayer->Play();
-	}
 }
+
 void CPodcastClientView::HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxEvent aEventType, TInt aItemIndex, TInt aSlotId)
 	{
 	RDebug::Print(_L("HandleListBoxEvent, itemIndex=%d, slotId=%d, aEventType=%d"), aItemIndex, aSlotId, aEventType);
@@ -238,37 +194,41 @@ void CPodcastClientView::HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxE
 			CreateMenu();
 			break;
 		case EMenuFiles:
+			{
 			TShowInfoArray &files = iFeedEngine.GetPodcasts();
 			RDebug::Print(_L("File: %S"), &(files[aItemIndex]->fileName));
 			PlayPausePodcast(files[aItemIndex]);
+			}
 			break;
 		case EMenuFeeds:
-/*			if (aItemIndex == 0) {
-
-			} else {*/
-				if (iDownloading) {
-					User::InfoPrint(_L("Cancel not implemented"));
-					iDownloading = EFalse;
-				} else {
-					TFeedInfoArray& feeds = iFeedEngine.GetFeeds();
-					RDebug::Print(_L("URL: %S"), &(feeds[aItemIndex]->url));
-					User::InfoPrint(_L("Getting feed..."));
-					iDownloading = ETrue;
-					iFeedEngine.GetFeed(*feeds[aItemIndex]);
-					iMenuState = EMenuEpisodes;
-					CreateMenu();
-					iDownloading = EFalse;
-				}
-//			}
+			if (iDownloading) {
+				User::InfoPrint(_L("Cancel not implemented"));
+				iDownloading = EFalse;
+			} else {
+				TFeedInfoArray& feeds = iFeedEngine.GetFeeds();
+				RDebug::Print(_L("URL: %S"), &(feeds[aItemIndex]->url));
+				User::InfoPrint(_L("Getting feed..."));
+				iDownloading = ETrue;
+				iFeedEngine.GetFeed(*feeds[aItemIndex]);
+				iMenuState = EMenuEpisodes;
+				CreateMenu();
+				iDownloading = EFalse;
+			}
 			break;
 		case EMenuEpisodes:
+			{
 			TShowInfoArray& fItems = iFeedEngine.GetItems();
 			RDebug::Print(_L("Get podcast URL: %S"), &(fItems[aItemIndex]->url));
 			iFeedEngine.GetPodcast(fItems[aItemIndex]);
 			User::InfoPrint(_L("Done!"));
+			}
+			break;
+		case EMenuDownloads:
+			break;
 		}
 		break;
-		
+	default:
+		break;
 	}
 	}
 
