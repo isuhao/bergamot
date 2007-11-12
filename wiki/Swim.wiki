@@ -1,4 +1,4 @@
-== Swim == 
+= Swim =
 
 Swim is a utility for automatic periodic synchronization of data in UIQ3 with internet servers. It makes use of the existing SyncML support in the system, and adds timing capabilities, something UIQ mysteriously lacks! You can set it to sync your data every 5 minutes, every hour, every 4 hours or every 24 hours.
 
