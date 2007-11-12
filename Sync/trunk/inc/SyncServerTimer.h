@@ -4,6 +4,8 @@
 #include <e32base.h>
 #include "SyncMLDef.h"
 
+_LIT(KSyncServerMutex, "SyncServerMutex");
+
 class CSyncServerTimer : public CTimer {
 public:
 	CSyncServerTimer(TSmlProfileId anId);
@@ -16,6 +18,7 @@ public:
 private:
 	TSmlProfileId profileId;
 	int thePeriod;
+//	RMutex mutex;
 };
 #endif
 

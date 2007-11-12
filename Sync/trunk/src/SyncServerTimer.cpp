@@ -13,9 +13,13 @@ CSyncServerTimer::~CSyncServerTimer() {
 void CSyncServerTimer::ConstructL() {
 	CTimer::ConstructL();
 	CActiveScheduler::Add(this);
+//	mutex.CreateGlobal(KSyncServerMutex);
 }
 
 void CSyncServerTimer::RunL() {
+//	mutex.OpenGlobal(KSyncServerMutex);
+//	mutex.Wait();
+	RDebug::Print(_L("Mutex Wait finished"));
 	RDebug::Print(_L("Sync account %d"), profileId);
 	RSyncMLSession session;
 	TInt error;
@@ -47,6 +51,9 @@ void CSyncServerTimer::RunL() {
 	job.Close();
 	
 	session.Close();
+//	RDebug::Print(_L("Mutex Signal"));
+//	mutex.Signal();
+//	mutex.Close();
 	// run again
 	RunPeriodically();
 }

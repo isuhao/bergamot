@@ -22,4 +22,4 @@ LIBRARY			SmlClient.lib
 LIBRARY 		estor.lib
 LIBRARY			efsrv.lib
 
-CAPABILITY LocalServices NetworkServices
+CAPABILITY LocalServices NetworkServices ReadDeviceData
