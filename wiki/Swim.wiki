@@ -11,7 +11,7 @@ http://bergamot.googlecode.com/svn/wiki/swim2.jpg
 
 == How To Get ==
 
-Swim makes use of Symbian features that require signing (ReadDeviceData specifically). As I have not deemed it good enough to send for signing yet, you have a few options:
+You can download the SIS file from Releases below, however Swim makes use of Symbian features that require signing. As I have not deemed it good enough to send for signing yet, you have a few options:
 
   * Wait until the Symbian Open Signed method becomes avialable (it says Q4 on the website) and sign it yourself in a simple manner.
   * Get a developer certificate from symbiansigned.com and sign it yourself in a complicated manner.
