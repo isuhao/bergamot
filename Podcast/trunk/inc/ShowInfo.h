@@ -8,6 +8,7 @@ const int KUrlLength=1024;
 const int KDescriptionLength=1024;
 
 enum TShowState {
+	EStateless,
 	EPlaying,
 	EDownloading
 };

@@ -162,7 +162,7 @@ RESOURCE QIK_LISTBOX r_listbox_listview_listbox
 // highlighted but has no additional highlight layout.
 RESOURCE QIK_LISTBOX_LAYOUT_PAIR r_listbox_listview_normal_layout_pair
 	{
-	standard_normal_layout = EQikListBoxLine;
+	standard_normal_layout = EQikListBoxMediumThumbTwoLines; //EQikListBoxLine;
 	}
 
 //----------------------------------------------------

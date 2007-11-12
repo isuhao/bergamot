@@ -285,6 +285,12 @@ void CPodcastClientView::CreateMenu()
 			CleanupClosePushL(*listBoxData);
 			TShowInfo *show = downloads[i];
 			listBoxData->AddTextL(show->title, EQikListBoxSlotText1);
+			if (show->state == EDownloading) {
+				listBoxData->AddTextL(_L("Downloading..."), EQikListBoxSlotText2);
+			} else {
+				listBoxData->AddTextL(_L("Queued"), EQikListBoxSlotText2);
+			}
+			
 			CleanupStack::PopAndDestroy();	
 			}
 		}

@@ -95,7 +95,7 @@ void CFeedEngine::ShowCompleteCallback(TShowInfo *info)
 	{
 	RDebug::Print(_L("File %S complete"), &info->fileName);
 	TInt pos = downloadQueue.Find(info);
-	
+	info->state = EStateless;
 	if (pos != KErrNotFound) {
 		RDebug::Print(_L("Removing from list..."));
 		downloadQueue.Remove(pos);
@@ -285,6 +285,7 @@ void CFeedEngine::DownloadNextShow()
 	if(downloadQueue.Count() > 0) {
 		TShowInfo *info = downloadQueue[0];
 		RDebug::Print(_L("Downloading %S"), &(info->title));
+		info->state = EDownloading;
 		GetShow(info);
 	}
 }
