@@ -1,6 +1,6 @@
 == Swim == 
 
-Swim is a utility for automatic periodic synchronization of data in UIQ3 with internet servers. It makes use of the existing SyncML support in the system, and adds timing capabilities. You can set it to sync your data every 5 minutes, every hour, every 4 hours or every 24 hours.
+Swim is a utility for automatic periodic synchronization of data in UIQ3 with internet servers. It makes use of the existing SyncML support in the system, and adds timing capabilities, something UIQ mysteriously lacks! You can set it to sync your data every 5 minutes, every hour, every 4 hours or every 24 hours.
 
 The latest code in [http://bergamot.googlecode.com/svn/Sync/trunk Subversion] is stable and works well. I run it constantly on my Sony Ericsson P1i in order to sync my calendar with Google Calendar, through [http://www.goosync.com/ GooSync], and my contacts with [http://www.mobical.net Mobical].
 
@@ -9,19 +9,22 @@ The latest code in [http://bergamot.googlecode.com/svn/Sync/trunk Subversion] is
 http://bergamot.googlecode.com/svn/wiki/swim1.jpg
 http://bergamot.googlecode.com/svn/wiki/swim2.jpg
 
-== Why == 
+== How To Get Swim ==
 
-This program was written for two reasons. Firstly, UIQ mysteriously lacks the ability to periodically trigger synchronization of data. Secondly, I needed a project to learn Symbian programming.
+Note! This program makes use of Symbian features that REQUIRE signing. Before the new Symbian Open Signed option is available (which should be any day now!) you need to sign Swim using a developer certificate. If you don't know how to do this, I can sign it for your very phone if you send me your IMEI number in an email.
+
+If you do have your own developer certificate, or if the open signed option has finally become available, you can get the unsigned version below and sign it yourself.
+
+Once I am convinced it works fine, and that there is at least some demand for this, I will submit it for free software signing.
 
 == Usage ==
-
-Note! Before the new Symbian Open Signed option is available (which should be any day now!) you need a developer certificate to use Swim.
 
   # Set up one or more SyncML accounts in your agenda manager
   # Run Swim, and set up a timer
   # Enjoy your synchronized data!
 
 == Releases ==
+
 The complete source code is found in the subversion repository. Compiled binaries for each release exists as well. Note that these are unusable without signing them yourself. See "Issues" below.
 
   * Beta2 (2007-11-04)
@@ -65,14 +68,3 @@ _Previous releases were called KitchenSync._
     * Download
       * [http://bergamot.googlecode.com/svn/KitchenSync/tags/alpha1 Source] 
       * [http://bergamot.googlecode.com/svn/KitchenSync/tags/alpha1/group/KitchenSync_unsigned.sis SIS]
-
-== Issues ==
-
-Symbian 9/UIQ 3 requires programs that make use of more than basic functionality to be signed before they can be installed on a device. Swim makes use of the following capabilities of Symbian that require signing:
-
-  * LocalServices 
-  * NetworkServices 
-  * ReadDeviceData
-  * ReadUserData
-
-Right now the only way to make Swim work on your device is to get your own developer certificate, and sign it for your very phone. 
