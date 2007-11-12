@@ -112,7 +112,7 @@ void CSyncClientView::CreateChoiceListItem(CQikScrollableContainer* container, i
 	_LIT(KChoiceListText1, "Manually");
 	_LIT(KChoiceListText2, "Every 5 minutes");
 	_LIT(KChoiceListText3, "Every hour");
-	_LIT(KChoiceListText4, "Every four hours");
+	_LIT(KChoiceListText4, "Every 4 hours");
 	_LIT(KChoiceListText5, "Daily");
 	
 	CEikChoiceList* chlst = new (ELeave) CEikChoiceList();

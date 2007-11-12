@@ -1,8 +1,6 @@
 TARGET            SyncClient.exe
 TARGETTYPE        exe
-TARGETPATH        \sys\bin
-UID               0x100039CE 0x2000E8A1
-
+UID               0x100039CE 0x2000FED6
 VENDORID          0
 
 SYSTEMINCLUDE   \epoc32\include
@@ -28,11 +26,11 @@ LIBRARY         fbscli.lib
 LIBRARY         bafl.lib
 LIBRARY         gdi.lib
 LIBRARY         quiconfigclient.lib
-LIBRARY			qikctl.lib // added due to the qik controls
-LIBRARY			eikctl.lib // added due to the eik controls
-LIBRARY			qikdlg.lib // added for the dialog that are used
+LIBRARY			qikctl.lib
+LIBRARY			eikctl.lib
+LIBRARY			qikdlg.lib
 LIBRARY			qikallocdll.lib 
-LIBRARY			SmlClient.lib estor.lib efsrv.lib
+LIBRARY			SmlClient.lib
 
 START BITMAP SyncClient.mbm
 	TARGETPATH \resource\apps
@@ -62,4 +60,4 @@ START RESOURCE SyncClient.rss
 	HEADER
 END
 
-CAPABILITY LocalServices NetworkServices ReadDeviceData ReadUserData WriteDeviceData WriteUserData
+CAPABILITY LocalServices NetworkServices ReadDeviceData

@@ -1,6 +1,6 @@
 %{"Swim"}
 :"Teknolog"
-#{"Swim"}, (0x2000E8A1), 1, 0, 0, TYPE=SA
+#{"Swim"}, (0x2000FED5), 1, 0, 0, TYPE=SA
 (0x101F6300), 3, 0, 0, {"UIQ30ProductID"}
 
 ; Freeware installation "warning" required by Symbian signed
