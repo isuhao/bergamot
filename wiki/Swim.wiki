@@ -9,13 +9,14 @@ The latest code in [http://bergamot.googlecode.com/svn/Sync/trunk Subversion] is
 http://bergamot.googlecode.com/svn/wiki/swim1.jpg
 http://bergamot.googlecode.com/svn/wiki/swim2.jpg
 
-== How To Get Swim ==
+== How To Get ==
 
-Note! This program makes use of Symbian features that REQUIRE signing. Before the new Symbian Open Signed option is available (which should be any day now!) you need to sign Swim using a developer certificate. If you don't know how to do this, I can sign it for your very phone if you send me your IMEI number in an email.
+Swim makes use of Symbian features that require signing (ReadDeviceData specifically). As I have not deemed it good enough to send for signing yet, you have a few options:
 
-If you do have your own developer certificate, or if the open signed option has finally become available, you can get the unsigned version below and sign it yourself.
-
-Once I am convinced it works fine, and that there is at least some demand for this, I will submit it for free software signing.
+  * Wait until the Symbian Open Signed method becomes avialable (it says Q4 on the website) and sign it yourself in a simple manner.
+  * Get a developer certificate from symbiansigned.com and sign it yourself in a complicated manner.
+  * Send me your IMEI number (which you get by pressing *#06# on your handset) in an email to teknolog (at) gmail (dot) com, and I will sign it for you.
+  * Wait until I have it signed for everybody to enjoy.
 
 == Usage ==
 
