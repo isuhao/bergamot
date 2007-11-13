@@ -398,18 +398,19 @@ void CFeedEngine::DownloadNextShow()
 
 void CFeedEngine::CleanHtml(TDes &str)
 {
-	RDebug::Print(_L("CleanHtml %d, %S"), str.Length(), &str);
+//	RDebug::Print(_L("CleanHtml %d, %S"), str.Length(), &str);
 	int startPos = str.Locate('<');
 	int endPos = str.Locate('>');
-	RDebug::Print(_L("startPos: %d, endPos: %d"), startPos, endPos);
-	if (startPos != KErrNotFound && endPos != KErrNotFound && endPos > startPos) {
-		RDebug::Print(_L("Cleaning out %S"), &str.Mid(startPos, endPos-startPos+1));
-		TBuf<1000> tmp;
+	//RDebug::Print(_L("length: %d, startPos: %d, endPos: %d"), str.Length(), startPos, endPos);
+	TBuf<KDescriptionLength> tmp;
+	while (startPos != KErrNotFound && endPos != KErrNotFound && endPos > startPos) {
+		//RDebug::Print(_L("Cleaning out %S"), &str.Mid(startPos, endPos-startPos+1));
 		tmp.Copy(str.Left(startPos));
-		tmp.Append(str.Mid(endPos+1));
-		str = tmp;
-		CleanHtml(str);
+		if (str.Length() > endPos+1) {
+			tmp.Append(str.Mid(endPos+1));
+		}
+		str.Copy(tmp);
+		startPos = str.Locate('<');
+		endPos = str.Locate('>');
 	}
-	
-	
 }
