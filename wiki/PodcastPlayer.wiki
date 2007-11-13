@@ -1,9 +1,8 @@
 = Podcast Player =
 
-The aim of this project is to create a fully functional podcatcher, in the spirit of for instance [http://www.blogs.s60.com/nokiapodcasting/ Nokia Podcasting]. There is working [http://bergamot.googlecode.com/svn/Podcast/trunk code] in Subversion, as well as the latest [http://bergamot.googlecode.com/svn/Podcast/trunk/group/Podcast_udeb_signed.sis debug build].
+The aim of this project is to create a fully functional podcatcher, in the spirit of for instance [http://www.blogs.s60.com/nokiapodcasting/ Nokia Podcasting]. There is working [http://bergamot.googlecode.com/svn/Podcast/trunk code] in Subversion, as well as the latest "trunk" [http://bergamot.googlecode.com/svn/Podcast/trunk/group/Podcast_udeb_signed.sis debug build]. For more stable versions, see Releases below.
 
 The intention is to release one alpha version every week. I intend to have a fully functional beta version by christmas at the latest.
-
 
 == Screenshots ==
 
