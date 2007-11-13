@@ -59,7 +59,6 @@ public: // from MContentHandler
 	void OnProcessingInstructionL(const TDesC8& aTarget, const TDesC8& aData, TInt aErrorCode);
 	void OnError(TInt aErrorCode);
 	TAny* GetExtendedInterface(const TInt32 aUid);
-
 private:
 	MFeedParserCallbacks& iCallbacks;
 	TFeedState iFeedState;

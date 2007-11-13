@@ -1,6 +1,7 @@
 #include "FeedEngine.h"
 #include <f32file.h>
 #include <bautils.h>
+#include <S32FILE.h>
 
 CFeedEngine::CFeedEngine() : parser(*this)
 	{
@@ -75,6 +76,8 @@ void CFeedEngine::GetShow(TShowInfo *info)
 void CFeedEngine::Item(TShowInfo *item)
 	{
 	//RDebug::Print(_L("\nTitle: %S\nURL: %S\nDescription: %S"), &(item->title), &(item->url), &(item->description));
+	CleanHtml(item->description);
+	
 	items.Append(item);
 	}
 
@@ -100,6 +103,7 @@ void CFeedEngine::ShowCompleteCallback(TShowInfo *info)
 		RDebug::Print(_L("Removing from list..."));
 		downloadQueue.Remove(pos);
 	}
+	SaveMetaData();
 	DownloadNextShow();
 
 	}
@@ -215,6 +219,91 @@ void CFeedEngine::SaveFeeds()
 	}
 
 
+void CFeedEngine::LoadMetaData()
+	{
+	RDebug::Print(_L("LoadMetaData"));
+	RFs fsSession;
+	int error = fsSession.Connect(); 
+	RDebug::Print(_L("RFs error: %d"), error);
+	TFileName path;
+	TParse	filestorename;
+	
+	TBuf<100> privatePath;
+	fsSession.PrivatePath(privatePath);
+	BaflUtils::EnsurePathExistsL(fsSession, privatePath);
+	privatePath.Append(KMetaDataFile);
+	fsSession.Parse(privatePath, filestorename);
+
+	if (!BaflUtils::FileExists(fsSession, privatePath)) {
+		RDebug::Print(_L("No metadata file"));	
+		return;
+	}
+	
+	CFileStore* store;
+	TRAP(error, store = CDirectFileStore::OpenL(fsSession,filestorename.FullName(),EFileRead));
+	CleanupStack::PushL(store);
+	
+	if (error != KErrNone) {
+		RDebug::Print(_L("error=%d"), error);
+		fsSession.Close();
+		CleanupStack::Pop(store);
+		return;
+	}
+	
+	RStoreReadStream instream;
+	instream.OpenLC(*store, store->Root());
+
+	int count = instream.ReadInt32L();
+	RDebug::Print(_L("Read count: %d"), count);
+	for (int i=0;i<count;i++) {
+		TShowInfo *readData = new TShowInfo;
+		instream  >> *readData;	
+		files.Append(readData);
+	}
+	RDebug::Print(_L("Read all metadata"));
+	CleanupStack::PopAndDestroy(); // instream
+	fsSession.Close();
+	CleanupStack::Pop(store);	
+	}
+
+void CFeedEngine::SaveMetaData()
+	{
+	RDebug::Print(_L("SaveMetaData"));
+	RFs fsSession;
+	fsSession.Connect(); 
+	TFileName path;
+	TParse	filestorename;
+
+	TBuf<100> privatePath;
+	fsSession.PrivatePath(privatePath);
+	BaflUtils::EnsurePathExistsL(fsSession, privatePath);
+	privatePath.Append(KMetaDataFile);
+	
+	RDebug::Print(_L("File: %S"), &privatePath);
+	fsSession.Parse(privatePath, filestorename);
+	CFileStore* store = CDirectFileStore::ReplaceLC(fsSession, filestorename.FullName(), EFileWrite);
+	store->SetTypeL(KDirectFileStoreLayoutUid);
+	
+	RStoreWriteStream outstream;
+	TStreamId id = outstream.CreateLC(*store);
+	
+	outstream.WriteInt32L(files.Count());
+	for (int i=0;i<files.Count();i++) {
+		RDebug::Print(_L("Storing account %i"), i);
+		outstream  << files[i];
+	}
+	
+	outstream.CommitL();
+	store->SetRootL(id);
+	store->CommitL();
+	CleanupStack::PopAndDestroy(); // outstream
+	fsSession.Close();
+	
+	CleanupStack::Pop(store);	
+	
+	}
+
+
 void CFeedEngine::ListDir(RFs &rfs, TDesC &folder, TShowInfoArray &files) {
 	CDirScan *dirScan = CDirScan::NewLC(rfs);
 	RDebug::Print(_L("Listing dir: %S"), &folder);
@@ -223,7 +312,7 @@ void CFeedEngine::ListDir(RFs &rfs, TDesC &folder, TShowInfoArray &files) {
 	CDir *dirPtr;
 	dirScan->NextL(dirPtr);
 	for (int i=0;i<dirPtr->Count();i++) {
-		const TEntry &entry = (*dirPtr)[i];
+		const TEntry &entry = (TEntry) (*dirPtr)[i];
 		if (entry.IsDir())  {
 			/*TBuf<100> subFolder;
 			subFolder.Copy(folder);
@@ -232,16 +321,32 @@ void CFeedEngine::ListDir(RFs &rfs, TDesC &folder, TShowInfoArray &files) {
 			ListDir(rfs, subFolder, array);*/
 		} else {
 		if (entry.iName.Right(3).CompareF(_L("mp3")) == 0 ||
-				entry.iName.Right(3).CompareF(_L("aac")) == 0 ||
-				entry.iName.Right(3).CompareF(_L("wav")) == 0) {
-			RDebug::Print(entry.iName);
-			int id = files.Count();
-			TBuf<100> fileName;
+			entry.iName.Right(3).CompareF(_L("aac")) == 0 ||
+			entry.iName.Right(3).CompareF(_L("wav")) == 0) {
+			TBool exists = EFalse;
+			TFileName fileName;
 			fileName.Copy(folder);
 			fileName.Append(entry.iName);
+
+			for (int i=0;i<files.Count();i++) {
+				if (files[i]->fileName.Compare(fileName) == 0) {
+					RDebug::Print(_L("Already listed %S"), &fileName);
+					exists = ETrue;
+					break;
+				}
+			}
+			
+			if (exists) {
+				continue;
+			}
+			
+			RDebug::Print(entry.iName);
 			TShowInfo *pID = new TShowInfo;
 			pID->fileName.Copy(fileName);
 			pID->title.Copy(entry.iName);
+			pID->playing = EFalse;
+			pID->position = 0;
+			pID->state = EStateless;
 			files.Append(pID);
 		}
 		}
@@ -259,7 +364,7 @@ void CFeedEngine::ListAllPodcasts()
 	{
 	RFs rfs;
 	rfs.Connect();
-	files.Reset();
+//	files.Reset();
 	TBuf<100> podcastDir;
 	podcastDir.Copy(KPodcastDir);
 
@@ -288,4 +393,23 @@ void CFeedEngine::DownloadNextShow()
 		info->state = EDownloading;
 		GetShow(info);
 	}
+}
+
+
+void CFeedEngine::CleanHtml(TDes &str)
+{
+	RDebug::Print(_L("CleanHtml %d, %S"), str.Length(), &str);
+	int startPos = str.Locate('<');
+	int endPos = str.Locate('>');
+	RDebug::Print(_L("startPos: %d, endPos: %d"), startPos, endPos);
+	if (startPos != KErrNotFound && endPos != KErrNotFound && endPos > startPos) {
+		RDebug::Print(_L("Cleaning out %S"), &str.Mid(startPos, endPos-startPos+1));
+		TBuf<1000> tmp;
+		tmp.Copy(str.Left(startPos));
+		tmp.Append(str.Mid(endPos+1));
+		str = tmp;
+		CleanHtml(str);
+	}
+	
+	
 }

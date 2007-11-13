@@ -13,5 +13,6 @@ const TUid KUidListBoxListView = {0x00001000};
 
 _LIT(KConfigFile, "config.cfg");
 _LIT(KFeedsFileName, "feeds.cfg");
+_LIT(KMetaDataFile, "metadata.db");
 
 #endif

@@ -19,10 +19,15 @@ public:
 	void GetFeed(TFeedInfo* feedInfo);
 	void GetShow(TShowInfo *info);
 	void Cancel();
+
 	void LoadSettings();
+	
 	void LoadFeeds();
 	void SaveFeeds();
 
+	void LoadMetaData();
+	void SaveMetaData();
+	
 	void AddDownload(TShowInfo *info);
 	TShowInfoArray& GetDownloads();
 	TShowInfoArray& GetPodcasts();
@@ -42,6 +47,7 @@ private:
 	void FeedCompleteCallback(TFeedInfo *info);
 	  
 	void DownloadNextShow();
+	void CleanHtml(TDes &str);
 	
 private:
 	CHttpClient* iClient;

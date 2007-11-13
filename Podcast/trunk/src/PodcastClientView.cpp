@@ -111,6 +111,7 @@ void CPodcastClientView::ViewConstructL()
     iDownloading = EFalse;
     iFeedEngine.LoadSettings();
     iFeedEngine.LoadFeeds();
+    iFeedEngine.LoadMetaData();
 
     CreateMenu();
     }
@@ -123,6 +124,8 @@ void CPodcastClientView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCus
 
 void CPodcastClientView::PlayPausePodcast(TShowInfo* podcast) 
 	{
+	
+	// special treatment if this podcast is already active
 	if (iPlayingPodcast == podcast) {
 		if (podcast->playing) {
 			User::InfoPrint(_L("Pausing"));
@@ -135,16 +138,22 @@ void CPodcastClientView::PlayPausePodcast(TShowInfo* podcast)
 			podcast->playing = ETrue;
 		}
 	} else {
+		// switching file, so save position
+		iPlayer->Pause();
+		if (iPlayingPodcast != NULL) {
+			iPlayer->GetPosition(iPlayingPodcast->position);
+			iPlayingPodcast->playing = EFalse;
+		}
+		
 		iPlayer->Stop();
+
 		User::InfoPrint(_L("Playing"));
 		RDebug::Print(_L("Starting: %S"), &(podcast->fileName));
 		TRAPD(error, iPlayer->OpenFileL(podcast->fileName));
 	    if (error != KErrNone) {
 	    	RDebug::Print(_L("Error: %d"), error);
 	    }
-	    podcast->playing = ETrue;
 		iPlayingPodcast = podcast;
-
 	}
 }
 
@@ -155,29 +164,60 @@ void CPodcastClientView::HandleControlEventL(CCoeControl */*aControl*/, TCoeEven
 
 
 void CPodcastClientView::MapcPlayComplete(TInt aError) {
-	RDebug::Print(_L("Play Complete: %d"), aError);
-	User::InfoPrint(_L("Done!"));
+//	RDebug::Print(_L("Play Complete: %d"), aError);
+//	User::InfoPrint(_L("Done!"));
 }
 
 void CPodcastClientView::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds &/*aDuration */) {
-	RDebug::Print(_L("Init Complete: %d"), aError);
-
 	if (aError != KErrNone) {
+		RDebug::Print(_L("MapcInitComplete error=%d"), aError);
 		return;
 	}
 
+	
+	if (iPlayingPodcast != NULL) {
+		RDebug::Print(_L("Resuming from position: %ld"), iPlayingPodcast->position.Int64());
+		iPlayer->SetPosition(iPlayingPodcast->position);
+		
+		//if(iPlayingPodcast->title.Length() == 0) {
+			LoadMetaDataFromFile(iPlayingPodcast);
+		//}
+		iPlayingPodcast->playing = ETrue;
+	}
+
+	iPlayer->Play();
+}
+
+void CPodcastClientView::LoadMetaDataFromFile(TShowInfo *info) {
 	int numEntries = 0;
 	int error = iPlayer->GetNumberOfMetaDataEntries(numEntries);
-	if (error == KErrNone) {
-		RDebug::Print(_L("Found %d meta data entries"), numEntries);
-	
-		for (int i=0;i<numEntries;i++) {
-			CMMFMetaDataEntry* entry = iPlayer->GetMetaDataEntryL(i);
-			RDebug::Print(_L("Entry: Name: %S, Value: %S"), &entry->Name(), &entry->Value());
-		}
+	if (error != KErrNone) {
+		return;
 	}
 	
-	  iPlayer->Play();
+	RDebug::Print(_L("Found %d meta data entries"), numEntries);
+	/*
+	 * Entry: Name: year, Value:
+	Entry: Name: title, Value:
+	Entry: Name: album, Value:
+	Entry: Name: genre, Value:
+	Entry: Name: comment, Value:
+	Entry: Name: artist, Value:
+	Entry: Name: duration, Value:
+	Entry: Name: num-tracks, Value:
+	Entry: Name: track-info/audio/format, Value:
+	Entry: Name: track-info/bit-rate, Value:
+	Entry: Name: track-info/sample-rate, Value:
+	Entry: Name: track-info/audio/channels, Value:
+	Entry: Name: graphic;format=APIC;index=0, Value:*/
+		
+	for (int i=0;i<numEntries;i++) {
+		CMMFMetaDataEntry* entry = iPlayer->GetMetaDataEntryL(i);
+		RDebug::Print(_L("Entry: Name: %S, Value: "), &entry->Name()); //, &entry->Value());
+		if (entry->Name().CompareF(_L("title")) == 0) {
+			info->title.Copy(entry->Value());
+		}
+	}
 }
 
 void CPodcastClientView::HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxEvent aEventType, TInt aItemIndex, TInt aSlotId)
@@ -290,7 +330,6 @@ void CPodcastClientView::CreateMenu()
 			} else {
 				listBoxData->AddTextL(_L("Queued"), EQikListBoxSlotText2);
 			}
-			
 			CleanupStack::PopAndDestroy();	
 			}
 		}
@@ -313,6 +352,7 @@ void CPodcastClientView::CreateMenu()
 			CleanupClosePushL(*listBoxData);
 			TFeedInfo *fi = feeds[i];
 			listBoxData->AddTextL(fi->title, EQikListBoxSlotText1);
+			listBoxData->AddTextL(fi->description, EQikListBoxSlotText2);
 			CleanupStack::PopAndDestroy();	
 			}
 		} else {
@@ -334,12 +374,29 @@ void CPodcastClientView::CreateMenu()
 		rfs.Connect();
 		iFeedEngine.ListAllPodcasts();
 		TShowInfoArray& files = iFeedEngine.GetPodcasts();
-		
+		RDebug::Print(_L("Showing menu files..."));
 		for (int i=0;i<files.Count();i++) {
 			MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
 			CleanupClosePushL(*listBoxData);
 			TShowInfo *item = files[i];
 			listBoxData->AddTextL(item->title, EQikListBoxSlotText1);
+			if (item->playing) {
+				listBoxData->AddTextL(_L("Playing"), EQikListBoxSlotText2);
+			} else if (item->position.Int64() != 0) {
+				TTime time(item->position.Int64());
+				TTime ref(0);
+				TTimeIntervalSeconds seconds;
+				TTimeIntervalHours hours;
+				TTimeIntervalMinutes minutes;
+				
+				time.HoursFrom(ref, hours);
+				time.MinutesFrom(ref, minutes);
+				time.SecondsFrom(ref,seconds);
+				TBuf<100> buf;
+				buf.Format(_L("Paused at %d h %d m %d s"), hours.Int(), minutes.Int(), seconds.Int());
+				listBoxData->AddTextL(buf, EQikListBoxSlotText2);
+			}
+			
 			CleanupStack::PopAndDestroy();	
 		}
 		break;
@@ -356,6 +413,7 @@ void CPodcastClientView::CreateMenu()
 			CleanupClosePushL(*listBoxData);
 			TShowInfo *fi = fItems[i];
 			listBoxData->AddTextL(fi->title, EQikListBoxSlotText1);
+			listBoxData->AddTextL(fi->description, EQikListBoxSlotText2);
 			CleanupStack::PopAndDestroy();	
 			}
 		} else {

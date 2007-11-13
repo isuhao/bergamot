@@ -165,6 +165,20 @@ RESOURCE QIK_LISTBOX_LAYOUT_PAIR r_listbox_listview_normal_layout_pair
 	standard_normal_layout = EQikListBoxMediumThumbTwoLines; //EQikListBoxLine;
 	}
 
+RESOURCE QIK_LISTBOX_LAYOUT r_normal_layout
+{
+columns=
+    {
+    QIK_LISTBOX_COLUMN
+        {
+        // Set the text to be scrolled/swapped if it does not fit
+        type=QIK_LISTBOX_TEXT_TYPE{scroll=EQikListBoxTextScrollWhenHighlighted;};
+        width_type=EQikListBoxColWidthGrab;
+        width_value=1;
+        slot_id=EQikListBoxSlotText1;
+        }
+    };
+}
 //----------------------------------------------------
 //--------------- ROW LAYOUT MANAGER -----------------
 //----------------------------------------------------
