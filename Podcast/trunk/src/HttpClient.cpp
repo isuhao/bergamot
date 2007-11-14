@@ -19,34 +19,11 @@ merchantability and/or non-infringement of the software provided herein.
 #include <http.h>
 #include <eikenv.h>
 
-
-// Standard headers used by default
-_LIT8(KUserAgent, "HTTPExampleClient (1.0)");
-_LIT8(KAccept, "*/*");
-
 CHttpClient::~CHttpClient()
   {
   iSession.Close();
-  if(iTransObs)
-    delete iTransObs;
   }
 
-void CHttpClient::StartClientL()
-  {
-  TBuf8<256> url8;
-  url8.Copy(iUrl);
-  RStringPool strP = iSession.StringPool();
-  RStringF method;
-  method = strP.StringF(HTTP::EGET, RHTTPSession::GetTable());
-  InvokeHttpMethodL(url8, method);
-  }
-
-void CHttpClient::StopClient()
-	{
-	if (iTrans != NULL) {
-		iTrans->Cancel();
-	}
-	}
 CHttpClient* CHttpClient::NewL(MHttpEventHandlerCallbacks& aCallbacks)
   {
   CHttpClient* me = NewLC(aCallbacks);
@@ -56,7 +33,6 @@ CHttpClient* CHttpClient::NewL(MHttpEventHandlerCallbacks& aCallbacks)
 
 CHttpClient::CHttpClient(MHttpEventHandlerCallbacks& aCallbacks) : iCallbacks(aCallbacks)
   {
-  iTrans = NULL;
   }
 
 CHttpClient* CHttpClient::NewLC(MHttpEventHandlerCallbacks& aCallbacks)
@@ -70,44 +46,7 @@ CHttpClient* CHttpClient::NewLC(MHttpEventHandlerCallbacks& aCallbacks)
 void CHttpClient::ConstructL()
   {
   iSession.OpenL();
-  iTransObs = CHttpEventHandler::NewL(iCallbacks);
   }
-
-void CHttpClient::InvokeHttpMethodL(const TDesC8& aUri, RStringF aMethod)
-  {
-  RDebug::Print(_L("InvokeHttpMethodL"));
-  TUriParser8 uri; 
-  uri.Parse(aUri);
-  RHTTPTransaction trans = iSession.OpenTransactionL(uri, *iTransObs, aMethod);
-  RHTTPHeaders hdr = trans.Request().GetHeaderCollection();
-  // Add headers appropriate to all methods
-  SetHeaderL(hdr, HTTP::EUserAgent, KUserAgent);
-  SetHeaderL(hdr, HTTP::EAccept, KAccept);
-
-  // submit the transaction
-  trans.SubmitL();
-  // Start the scheduler, once the transaction completes or is cancelled on 
-  // an error the scheduler will be stopped in the event handler
-  CActiveScheduler::Start();
-	if (iShowInfo != NULL) {
-		iCallbacks.ShowCompleteCallback(iShowInfo);
-	} else {
-		iCallbacks.FeedCompleteCallback(iFeedInfo);
-	}
-  RDebug::Print(_L("InvokeHttpMethodL END"));
-  }
-
-void CHttpClient::SetUrl(TDesC &url)
-	{
-	RDebug::Print(_L("SetUrl: %S"), &url);
-	iUrl.Copy(url);
-	}
-
-void CHttpClient::SetSaveFileName(TDesC &fName)
-	{
-	RDebug::Print(_L("SetSaveFileName: %S"), &fName);
-	iTransObs->SetSaveFileName(fName);
-	}
 
 void CHttpClient::SetHeaderL(RHTTPHeaders aHeaders,
                              TInt aHdrField,
@@ -124,21 +63,42 @@ void CHttpClient::SetHeaderL(RHTTPHeaders aHeaders,
 
 void CHttpClient::GetFeed(TFeedInfo *info)
 	{
-	iTransObs->SetSaveFileName(info->fileName);
-	iFeedInfo = info;
-	iShowInfo = NULL;
-	iUrl.Copy(info->url);
-	
-	StartClientL();	
+	RDebug::Print(_L("GetFeed START"));
+	Get(info->url, info->fileName);
+	iCallbacks.FeedCompleteCallback(info);
+	RDebug::Print(_L("GetFeed END"));
 	}
 
 void CHttpClient::GetShow(TShowInfo *info)
 	{
-	iTransObs->SetSaveFileName(info->fileName);
-	iUrl.Copy(info->url);
-
-	iFeedInfo = NULL;
-	iShowInfo = info;
-	StartClientL();
-	
+	RDebug::Print(_L("GetShow START"));
+	Get(info->url, info->fileName);
+	iCallbacks.ShowCompleteCallback(info);
+	RDebug::Print(_L("GetShow END"));
 	}
+
+void CHttpClient::Get(TDesC& url, TDesC& fileName) {
+	TBuf8<256> url8;
+	url8.Copy(url);
+	RStringPool strP = iSession.StringPool();
+	RStringF method;
+	method = strP.StringF(HTTP::EGET, RHTTPSession::GetTable());
+	
+	TUriParser8 uri; 
+	uri.Parse(url8);
+	CHttpEventHandler* eHandler;
+	eHandler = CHttpEventHandler::NewL(iCallbacks);
+	eHandler->SetSaveFileName(fileName);
+	RHTTPTransaction trans = iSession.OpenTransactionL(uri, *eHandler, method);
+	  
+	RHTTPHeaders hdr = trans.Request().GetHeaderCollection();
+	// Add headers appropriate to all methods
+	SetHeaderL(hdr, HTTP::EUserAgent, KUserAgent);
+	SetHeaderL(hdr, HTTP::EAccept, KAccept);
+	
+	// submit the transaction
+	trans.SubmitL();
+	// Start the scheduler, once the transaction completes or is cancelled on 
+	// an error the scheduler will be stopped in the event handler
+	CActiveScheduler::Start();
+}

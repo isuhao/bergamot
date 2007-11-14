@@ -19,6 +19,7 @@ CFeedEngine::~CFeedEngine()
 void CFeedEngine::Cancel() 
 	{
 	}
+
 void CFeedEngine::GetFeed(TFeedInfo* feedInfo)
 	{
 	items.Reset();
@@ -374,6 +375,13 @@ void CFeedEngine::ListAllPodcasts()
 //	files.Reset();
 	TBuf<100> podcastDir;
 	podcastDir.Copy(KPodcastDir);
+	
+	for (int i=0;i<files.Count();i++) {
+		if(BaflUtils::FileExists(rfs, files[i]->fileName) == EFalse) {
+			RDebug::Print(_L("%S was removed, delisting"), &files[i]->fileName);
+			files.Remove(i);
+		}
+	}
 
 	ListDir(rfs, podcastDir, files);	
 }
