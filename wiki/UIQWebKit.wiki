@@ -6,7 +6,7 @@ I am attempting to port the open source Series 60 WebKit to UIQ. This project ju
 
 == Status ==
 
-As of late October, I have basically just managed to compile WebKit for S60.
+As of late October, I have basically just managed to compile relase 21772 of WebKit for S60. 
 
 == Links ==
 
