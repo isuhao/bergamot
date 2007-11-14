@@ -15,7 +15,7 @@ You can download the SIS file from Releases below, however Swim makes use of Sym
 
   * Wait until the Symbian Open Signed method becomes avialable (it says Q4 on the website) and sign it yourself in a simple manner.
   * Get a developer certificate from symbiansigned.com and sign it yourself in a complicated manner.
-  * Send me your IMEI number (which you get by pressing {{{*#06}}} on your handset) in an email to teknolog (at) gmail (dot) com, and I will sign it for you.
+  * Send me your IMEI number (which you get by pressing {{{*#06#}}} on your handset) in an email to teknolog (at) gmail (dot) com, and I will sign it for you.
   * Wait until I have it signed for everybody to enjoy.
 
 == Usage ==
