@@ -1,0 +1,9 @@
+== Broken feeds ==
+
+These feeds have been reported as not working, so the RSS parser must be improved to handle them
+
+  * http://feeds.feedburner.com/mrbrownshow
+  * http://www2.rozhlas.cz/podcast/leonardo.rss
+  * http://www2.rozhlas.cz/podcast/radio_cesko.rss
+  * http://www.evropa2.cz/script/podcast.rss?path=/download_e2/ranni_show
+  * http://www.hrej.cz/podcasty/podcast.xml 
