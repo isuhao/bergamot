@@ -44,6 +44,8 @@ SOURCE			HttpEventHandler.cpp
 SOURCE			FeedParser.cpp 
 SOURCE			FeedEngine.cpp 
 SOURCE			ShowInfo.cpp
+SOURCE			SoundEngine.cpp
+SOURCE			PodCastModel.cpp
 
 LIBRARY         euser.lib
 LIBRARY         apparc.lib

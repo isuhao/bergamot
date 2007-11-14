@@ -5,21 +5,23 @@
 #include <qikgridlayoutmanager.h>
 #include <qikbuildingblock.h>
 #include <qikcommand.h>
-#include "PodcastClient.hrh"
-#include "PodcastClientView.h"
-#include "PodcastClientGlobals.h"
 #include <PodcastClient.rsg>
 #include <qikgridlayoutmanager.h>
-#include "e32debug.h"
+#include <e32debug.h>
 #include <eiklabel.h>
 #include <eikcmbut.h>
-#include "HttpClient.h"
-#include "bautils.h"
+#include <bautils.h>
 #include <qiklistboxmodel.h>
 #include <qiklistbox.h>
 #include <qiklistboxdata.h>
 #include <eikdialg.h>
 
+#include "HttpClient.h"
+#include "PodcastModel.h"
+#include "PodcastClient.hrh"
+#include "PodcastClientView.h"
+#include "PodcastClientGlobals.h"
+#include "SoundEngine.h"
 
 /**
 Creates and constructs the view.
@@ -27,10 +29,10 @@ Creates and constructs the view.
 @param aAppUi Reference to the AppUi
 @return Pointer to a CPodcastClientView object
 */
-CPodcastClientView* CPodcastClientView::NewLC(CQikAppUi& aAppUi)
+CPodcastClientView* CPodcastClientView::NewLC(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel)
 	{
 	//RDebug::Print(_L("NewLC"));
-	CPodcastClientView* self = new (ELeave) CPodcastClientView(aAppUi);
+	CPodcastClientView* self = new (ELeave) CPodcastClientView(aAppUi, aPodcastModel);
 	CleanupStack::PushL(self);
 	self->ConstructL();
 	return self;
@@ -47,8 +49,8 @@ default view.
 
 @param aAppUi Reference to the application UI
 */
-CPodcastClientView::CPodcastClientView(CQikAppUi& aAppUi) 
-	: CQikViewBase(aAppUi, KNullViewId)
+CPodcastClientView::CPodcastClientView(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel) 
+	: CQikViewBase(aAppUi, KNullViewId), iPodcastModel(aPodcastModel)
 	{
 	}
 
@@ -104,14 +106,9 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 void CPodcastClientView::ViewConstructL()
     {
     //RDebug::Print(_L("ViewConstructL"));
-    iPlayer = CMdaAudioPlayerUtility::NewL(*this);
     ViewConstructFromResourceL(R_LISTBOX_LISTVIEW_UI_CONFIGURATIONS);
     iMenuState = EMenuMain;
-    iPlayingPodcast = NULL;
     iDownloading = EFalse;
-    iFeedEngine.LoadSettings();
-    iFeedEngine.LoadFeeds();
-    iFeedEngine.LoadMetaData();
 
     CreateMenu();
     }
@@ -122,38 +119,38 @@ void CPodcastClientView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCus
 		CreateMenu();
 	}
 
-void CPodcastClientView::PlayPausePodcast(TShowInfo* podcast) 
+void CPodcastClientView::PlayPausePodcast(TShowInfo* aPodcast) 
 	{
 	
 	// special treatment if this podcast is already active
-	if (iPlayingPodcast == podcast) {
-		if (podcast->playing) {
+	if (iPodcastModel.PlayingPodcast() == aPodcast) {
+		if (aPodcast->playing) {
 			User::InfoPrint(_L("Pausing"));
-			iPlayer->Pause();
-			iPlayer->GetPosition(podcast->position);
-			podcast->playing = EFalse;
+			iPodcastModel.SoundEngine().Pause();
+			aPodcast->position = iPodcastModel.SoundEngine().Position();
+			aPodcast->playing = EFalse;
 		} else {
 			User::InfoPrint(_L("Resuming"));
-			iPlayer->Play();
-			podcast->playing = ETrue;
+			iPodcastModel.SoundEngine().Play();
+			aPodcast->playing = ETrue;
 		}
 	} else {
 		// switching file, so save position
-		iPlayer->Pause();
-		if (iPlayingPodcast != NULL) {
-			iPlayer->GetPosition(iPlayingPodcast->position);
-			iPlayingPodcast->playing = EFalse;
+		iPodcastModel.SoundEngine().Pause();
+		if (iPodcastModel.PlayingPodcast() != NULL) {
+			iPodcastModel.PlayingPodcast()->position = iPodcastModel.SoundEngine().Position();
+			iPodcastModel.PlayingPodcast()->playing = EFalse;
 		}
 		
-		iPlayer->Stop();
+		iPodcastModel.SoundEngine().Stop();
 
 		User::InfoPrint(_L("Playing"));
-		RDebug::Print(_L("Starting: %S"), &(podcast->fileName));
-		TRAPD(error, iPlayer->OpenFileL(podcast->fileName));
+		RDebug::Print(_L("Starting: %S"), &(aPodcast->fileName));
+		TRAPD(error, iPodcastModel.SoundEngine().OpenFileL(aPodcast->fileName));
 	    if (error != KErrNone) {
 	    	RDebug::Print(_L("Error: %d"), error);
 	    }
-		iPlayingPodcast = podcast;
+		iPodcastModel.SetPlayingPodcast(aPodcast);
 	}
 }
 
@@ -163,27 +160,6 @@ void CPodcastClientView::HandleControlEventL(CCoeControl */*aControl*/, TCoeEven
 	}
 
 
-void CPodcastClientView::MapcPlayComplete(TInt aError) {
-//	RDebug::Print(_L("Play Complete: %d"), aError);
-//	User::InfoPrint(_L("Done!"));
-}
-
-void CPodcastClientView::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds &/*aDuration */) {
-	if (aError != KErrNone) {
-		RDebug::Print(_L("MapcInitComplete error=%d"), aError);
-		return;
-	}
-
-	
-	if (iPlayingPodcast != NULL) {
-		RDebug::Print(_L("Resuming from position: %ld"), iPlayingPodcast->position.Int64());
-		iPlayer->SetPosition(iPlayingPodcast->position);
-		
-		iPlayingPodcast->playing = ETrue;
-	}
-
-	iPlayer->Play();
-}
 
 void CPodcastClientView::HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxEvent aEventType, TInt aItemIndex, TInt aSlotId)
 	{
@@ -203,7 +179,7 @@ void CPodcastClientView::HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxE
 			break;
 		case EMenuFiles:
 			{
-			TShowInfoArray &files = iFeedEngine.GetPodcasts();
+			TShowInfoArray &files = iPodcastModel.FeedEngine().GetPodcasts();
 			RDebug::Print(_L("File: %S"), &(files[aItemIndex]->fileName));
 			PlayPausePodcast(files[aItemIndex]);
 			}
@@ -213,11 +189,11 @@ void CPodcastClientView::HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxE
 				User::InfoPrint(_L("Cancel not implemented"));
 				iDownloading = EFalse;
 			} else {
-				TFeedInfoArray& feeds = iFeedEngine.GetFeeds();
+				TFeedInfoArray& feeds = iPodcastModel.FeedEngine().GetFeeds();
 				RDebug::Print(_L("URL: %S"), &(feeds[aItemIndex]->url));
 				User::InfoPrint(_L("Getting feed..."));
 				iDownloading = ETrue;
-				iFeedEngine.GetFeed(feeds[aItemIndex]);
+				iPodcastModel.FeedEngine().GetFeed(feeds[aItemIndex]);
 				iMenuState = EMenuEpisodes;
 				CreateMenu();
 				iDownloading = EFalse;
@@ -225,9 +201,9 @@ void CPodcastClientView::HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxE
 			break;
 		case EMenuEpisodes:
 			{
-			TShowInfoArray& fItems = iFeedEngine.GetItems();
+			TShowInfoArray& fItems = iPodcastModel.FeedEngine().GetItems();
 			RDebug::Print(_L("Get podcast URL: %S"), &(fItems[aItemIndex]->url));
-			iFeedEngine.AddDownload(fItems[aItemIndex]);
+			iPodcastModel.FeedEngine().AddDownload(fItems[aItemIndex]);
 			}
 			break;
 		case EMenuDownloads:
@@ -280,7 +256,7 @@ void CPodcastClientView::CreateMenu()
 		break;
 	case EMenuDownloads:
 		{
-		TShowInfoArray& downloads = iFeedEngine.GetDownloads();
+		TShowInfoArray& downloads = iPodcastModel.FeedEngine().GetDownloads();
 		int len = downloads .Count();
 		MQikListBoxData* listBoxData;
 		
@@ -302,7 +278,7 @@ void CPodcastClientView::CreateMenu()
 		break;
 	case EMenuFeeds:
 		{
-		RArray <TFeedInfo*>& feeds = iFeedEngine.GetFeeds();
+		RArray <TFeedInfo*>& feeds = iPodcastModel.FeedEngine().GetFeeds();
 		int len = feeds.Count();
 		MQikListBoxData* listBoxData;// = model.NewDataL(MQikListBoxModel::EDataNormal);
 		//CleanupClosePushL(*listBoxData);
@@ -337,8 +313,8 @@ void CPodcastClientView::CreateMenu()
 	case EMenuFiles:
 		{	RFs rfs;
 		rfs.Connect();
-		iFeedEngine.ListAllPodcasts();
-		TShowInfoArray& files = iFeedEngine.GetPodcasts();
+		iPodcastModel.FeedEngine().ListAllPodcasts();
+		TShowInfoArray& files = iPodcastModel.FeedEngine().GetPodcasts();
 		RDebug::Print(_L("Showing menu files..."));
 		for (int i=0;i<files.Count();i++) {
 			MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
@@ -369,7 +345,7 @@ void CPodcastClientView::CreateMenu()
 	break;
 	case EMenuEpisodes:
 		{
-		TShowInfoArray& fItems = iFeedEngine.GetItems();
+		TShowInfoArray& fItems = iPodcastModel.FeedEngine().GetItems();
 		int len = fItems.Count();
 		
 		if (len > 0) {

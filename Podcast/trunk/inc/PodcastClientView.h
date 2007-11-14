@@ -9,10 +9,10 @@
 #include <e32cmn.h>
 //#include "RPodcastServerSession.h"
 #include "PodcastClientGlobals.h"
-#include <mdaaudiosampleplayer.h>
-#include <coecobs.h>
 #include "HttpClient.h"
 #include "FeedEngine.h"
+
+#include <coecobs.h>
 #include <mqiklistboxobserver.h>
 
 enum TMenus {
@@ -22,16 +22,16 @@ enum TMenus {
 	EMenuDownloads,
 	EMenuEpisodes,
 };
+class CPodcastModel;
 
-class CPodcastClientView : public CQikViewBase, public MMdaAudioPlayerCallback, public MQikListBoxObserver
+class CPodcastClientView : public CQikViewBase, public MQikListBoxObserver
 	{
 public:
-	static CPodcastClientView* NewLC(CQikAppUi& aAppUi);
+	static CPodcastClientView* NewLC(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel);
 	~CPodcastClientView();
 	TVwsViewId ViewId()const;
 	void HandleCommandL(CQikCommand& aCommand);
-    void MapcPlayComplete(TInt aError);
-	void MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds &aDuration);
+  
 	void HandleControlEventL(CCoeControl *aControl, TCoeEvent aEventType);
 	void PlayPausePodcast(TShowInfo *podcast);
 	void HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxEvent aEventType, TInt aItemIndex, TInt aSlotId);
@@ -40,16 +40,14 @@ protected:
 	void ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage);
 	
 private:
-	CPodcastClientView(CQikAppUi& aAppUi);
+	CPodcastClientView(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel);
 	void ConstructL();
 	void CreateMenu();
 private:
 	//RPodcastServerSession serverSession;
 	CQikScrollableContainer* iContainer;
-    CMdaAudioPlayerUtility *iPlayer;
-    TShowInfo* iPlayingPodcast;
     TMenus iMenuState;
-    CFeedEngine iFeedEngine;
     TBool iDownloading;
+	CPodcastModel& iPodcastModel;
 	};
 #endif

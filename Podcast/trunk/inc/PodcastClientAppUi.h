@@ -4,7 +4,7 @@
 #include <qikappui.h>
 #include "PodcastClientView.h"
 
-
+class CPodcastModel;
 class CPodcastClientAppUi : public CQikAppUi
 {
 public:
@@ -15,6 +15,7 @@ private:
   void HandleCommandL(CQikCommand &aCommand);
 
   CPodcastClientView* iBaseView;
+  CPodcastModel* iPodcastModel;
 };
 
 
