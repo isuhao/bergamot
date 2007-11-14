@@ -3,6 +3,22 @@
 #include <bautils.h>
 #include <S32FILE.h>
 
+CFeedEngine* CFeedEngine::NewL()
+{
+	CFeedEngine* self = new (ELeave) CFeedEngine;
+	CleanupStack::PushL(self);
+	self->ConstructL();
+	CleanupStack::Pop(self);
+	return self;
+}
+
+void CFeedEngine::ConstructL()
+{
+	LoadSettings();
+    LoadFeeds();
+    LoadMetaData();
+}
+
 CFeedEngine::CFeedEngine() : parser(*this)
 	{
 	iClient = CHttpClient::NewL(*this);
