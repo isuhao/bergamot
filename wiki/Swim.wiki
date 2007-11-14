@@ -28,11 +28,11 @@ You can download the SIS file from Releases below, however Swim makes use of Sym
 
 I've been thinking about turning Swim into a generic maintenance tool for UIQ. Features that could be added are for instance
 
-  * NTP support
+  * [http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/117211 SNTP] support
 
 == Releases ==
 
-The complete source code is found in the subversion repository. Compiled binaries for each release exists as well. Note that these are unusable without signing them yourself. See "Issues" below.
+The complete source code is found in the [http://bergamot.googlecode.com/svn/Sync/trunk subversion repository]. Compiled binaries for each release exists as well. Note that these are unusable without signing them yourself. See "Issues" below.
 
   * Beta2 (2007-11-04)
     * Client loads list of sync accounts every time it's shown
@@ -41,37 +41,3 @@ The complete source code is found in the subversion repository. Compiled binarie
     * Download
       * [http://bergamot.googlecode.com/svn/Sync/tags/beta2 Source]
       * [http://bergamot.googlecode.com/svn/Sync/tags/beta2/group/Swim_unsigned.SIS SIS] 
-
-_Previous releases were called KitchenSync._
-
-  * Beta1 (2007-11-01)
-    * Client is able to start the server
-    * 40x40 pixel icon
-    * Download
-      * [http://bergamot.googlecode.com/svn/KitchenSync/tags/beta1 Source]
-      * [http://bergamot.googlecode.com/svn/KitchenSync/tags/beta1/group/KitchenSync_unsigned.sis SIS] 
-
-  * Alpha 4 (2007-10-31)
-    * New client/server architecture
-    * Automatic start at phone bootup
-    * Important note! After installation, reboot the phone in order to start server, otherwise the client will crash on startup.
-    * Download
-      * [http://bergamot.googlecode.com/svn/KitchenSync/tags/alpha4 Source]
-      * [http://bergamot.googlecode.com/svn/KitchenSync/tags/alpha4/group/KitchenSync_unsigned.sis SIS] 
-
-  * Alpha 3 (2007-10-30)
-    * Working version of alpha 2, which was accidentally broken. Thanks for pointing this out!
-    * Download
-      * [http://bergamot.googlecode.com/svn/KitchenSync/tags/alpha3 Source]
-      * [http://bergamot.googlecode.com/svn/KitchenSync/tags/alpha3/group/KitchenSync_unsigned.sis SIS] 
-
-  * Alpha 2 (2007-10-22)
-    * Will now remember settings between starts, however
-    * Still does not start when phone boots
-    * ~~Download~~
-
-  * Alpha 1 (2007-10-14)
-    * First working release
-    * Download
-      * [http://bergamot.googlecode.com/svn/KitchenSync/tags/alpha1 Source] 
-      * [http://bergamot.googlecode.com/svn/KitchenSync/tags/alpha1/group/KitchenSync_unsigned.sis SIS]
