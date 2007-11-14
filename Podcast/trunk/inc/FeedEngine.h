@@ -15,7 +15,7 @@ _LIT(KMetaDataSemaphoreName, "MetaData");
 class CFeedEngine : public MHttpEventHandlerCallbacks, public MMdaAudioPlayerCallback, public MFeedParserCallbacks
 {
 public:
-	CFeedEngine();
+	static CFeedEngine* NewL();
 	virtual ~CFeedEngine();
 	
 public:
@@ -43,6 +43,9 @@ public:
 	void LoadMetaDataFromFile(TShowInfo *info);
 	
 private:
+	void ConstructL();
+	CFeedEngine();
+
 	void ConnectedCallback();
 	void DisconnectedCallback();
 	void ProgressCallback(int percent);
