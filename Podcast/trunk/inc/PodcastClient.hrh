@@ -1,27 +1,38 @@
 #ifndef __PODCASTCLIENT_HRH__
 #define __PODCASTCLIENT_HRH__
 
-enum TPodcatClientCommands
+enum TPodcatClientPages
     {
-    EPodcastClientBaseViewPage = 1,
-    EMyAbout
+    EPodcastClientBaseViewPage = 1
     };
-    
-    enum TListBoxControl
+
+enum TPodcatClientCommands
 	{
-	EListBoxListViewListCtrl,
-	EListBoxListViewPage,
+	EPodcastView = 0x1000,
+	EPodcastViewFiles,
+	EPodcastViewEpisodes,
+    EPodcastViewSubscriptions,
+	EPodcastViewDownloads,
+	EPodcastViewPlayer,
+	EPodcastPlay,
+	EPodcastStop,
+	EPodcastPause,
+	EMyAbout
+	};
+
+    enum TPodcastControl
+	{
+	EPodcastListViewListCtrl= 0x1000,
+	EPodcastListViewPage,
+	EPodcastPlayViewTitleCtrl,
+	EPodcastPlayViewProgressCtrl,
+	EPodcastPlayViewVolumeCtrl,
+	EPodcastPlayViewProgressTime,
+	EPodcastPlayViewInformation,
+	EPodcastPlayViewProgressInfo,
 	EFeedEditor
 	};
 	
-    
-	enum TSimpleDialogControls
-    {
-    ESimpleDialogBB,
-    ESimpleDialogImage,
-    ESimpleDialogLabel,
-    ESimpleDialogEdwin
-    };
     
 enum TPodcastClientDefines
 	{

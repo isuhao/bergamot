@@ -3,6 +3,8 @@
 
 const TUid KUidPodcastClientID          = {0xA00046AE};
 const TUid KUidPodcastClientBaseViewID = {0x00000001};
+const TUid KUidPodcastClientPlayViewID = {0x00000002};
+
 const TUid KUidListBoxListView = {0x00001000};
 
 #ifdef __WINS__

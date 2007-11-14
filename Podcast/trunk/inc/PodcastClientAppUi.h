@@ -3,7 +3,7 @@
 
 #include <qikappui.h>
 #include "PodcastClientView.h"
-
+class CPodcastClientPlayView;
 class CPodcastModel;
 class CPodcastClientAppUi : public CQikAppUi
 {
@@ -13,7 +13,7 @@ public:
 
 private:
   void HandleCommandL(CQikCommand &aCommand);
-
+   CPodcastClientPlayView* iPlayView;
   CPodcastClientView* iBaseView;
   CPodcastModel* iPodcastModel;
 };

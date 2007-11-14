@@ -49,5 +49,6 @@ private:
     TMenus iMenuState;
     TBool iDownloading;
 	CPodcastModel& iPodcastModel;
+	CQikListBox* iListbox;
 	};
 #endif

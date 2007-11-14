@@ -40,10 +40,20 @@ void CSoundEngine::MapcPlayComplete(TInt aError) {
 void CSoundEngine::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds &/*aDuration */) {
 	if (aError != KErrNone) {
 		RDebug::Print(_L("MapcInitComplete error=%d"), aError);
+		if (iPodcastModel.PlayingPodcast() != NULL) {			
+			iPodcastModel.PlayingPodcast()->playing = EFalse;
+		}
+		iPlayerInit = EFalse;
 		return;
 	}
+	iPlayerInit = ETrue;
+	if(iVolume == 0)
+	{
+		iVolume = iPlayer->MaxVolume();
+	}
 
-	
+	iPlayer->SetVolume(iVolume);
+
 	if (iPodcastModel.PlayingPodcast() != NULL) {
 		RDebug::Print(_L("Resuming from position: %ld"), iPodcastModel.PlayingPodcast()->position.Int64());
 		iPlayer->SetPosition(iPodcastModel.PlayingPodcast()->position);
@@ -56,27 +66,78 @@ void CSoundEngine::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds
 
 void CSoundEngine::OpenFileL(TDesC& aFileName)
 {
+	iPlayer->OpenFileL(aFileName);
 }
 
 TTimeIntervalMicroSeconds CSoundEngine::Position()
 {
-	TTimeIntervalMicroSeconds pos;
-    iPlayer->GetPosition(pos);
+	TTimeIntervalMicroSeconds pos = 0;
+	
+	if(iPlayerInit)
+	{
+		iPlayer->GetPosition(pos);
+	}
+
 	return pos;
+}
+
+void CSoundEngine::SetPosition(TUint aPos)
+{
+	if(iPlayerInit)
+	{
+		TTimeIntervalMicroSeconds pos = aPos*1000000;
+		iPlayer->SetPosition(pos);
+	}
+}
+
+
+TUint CSoundEngine::PlayTime()
+{
+	if(iPlayerInit)
+	{
+		return iPlayer->Duration().Int64()/1000000;
+	}
+
+	return 0;
 }
 
 
 void CSoundEngine::Play()
 {
-	iPlayer->Play();
+	if(iPlayerInit)
+	{
+		iPlayer->Play();
+	}
 }
 
 void CSoundEngine::Stop()
 {
-	iPlayer->Stop();
+	if(iPlayerInit)
+	{
+		iPlayer->Stop();
+	}
 }
 
 void CSoundEngine::Pause()
 {
-	iPlayer->Pause();
+	if(iPlayerInit)
+	{
+		iPlayer->Pause();
+	}
 }
+
+TUint CSoundEngine::Volume()
+{
+	return iVolume;
+}
+
+void CSoundEngine::SetVolume(TUint aVolume)
+{
+	iVolume = aVolume;
+
+	if(iPlayerInit)
+	{
+		iPlayer->SetVolume(aVolume);
+	}
+}
+

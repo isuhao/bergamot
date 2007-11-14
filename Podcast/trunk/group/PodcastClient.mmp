@@ -37,6 +37,8 @@ SOURCE          PodcastClientAppUi.cpp
 SOURCE          PodcastClientDocument.cpp
 SOURCE          PodcastClientApplication.cpp
 SOURCE			PodcastClientView.cpp
+SOURCE			PodcastClientPlayView.cpp
+
 SOURCE 			RPodcastServerSession.cpp
 SOURCE			PodcastData.cpp 
 SOURCE			HttpClient.cpp
@@ -88,3 +90,5 @@ SOURCE          8   PodcastClient_40x40_mask.bmp
 END
 
 CAPABILITY NetworkServices UserEnvironment
+
+EPOCSTACKSIZE 81920

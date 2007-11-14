@@ -1,5 +1,4 @@
 #include <badesca.h>
-#include <eikchlst.h>
 #include <qikscrollablecontainer.h>
 #include <qikrowlayoutmanager.h>
 #include <qikgridlayoutmanager.h>
@@ -8,13 +7,10 @@
 #include <PodcastClient.rsg>
 #include <qikgridlayoutmanager.h>
 #include <e32debug.h>
-#include <eiklabel.h>
-#include <eikcmbut.h>
-#include <bautils.h>
 #include <qiklistboxmodel.h>
 #include <qiklistbox.h>
 #include <qiklistboxdata.h>
-#include <eikdialg.h>
+#include <qikappui.h>
 
 #include "HttpClient.h"
 #include "PodcastModel.h"
@@ -91,25 +87,54 @@ The command Ids are defined in the .hrh file.
 @see CQikViewBase::HandleCommandL
 */
 void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
-	{
+{
 	switch(aCommand.Id())
+	{
+	case EPodcastViewPlayer:
 		{
+			TVwsViewId playView = TVwsViewId(KUidPodcastClientID, KUidPodcastClientPlayViewID);
+			iQikAppUi.ActivateViewL(playView);
+		}
+		break;		
+	case EPodcastViewFiles:
+		{
+		iMenuState = EMenuFiles;
+		CreateMenu();
+		}break;
+	case EPodcastViewEpisodes:
+		{
+		iMenuState = EMenuEpisodes;
+		CreateMenu();
+		}break;
+	case EPodcastViewSubscriptions:
+		{
+		iMenuState = EMenuFeeds;
+		CreateMenu();
+		}break;
+	case EPodcastViewDownloads:
+		{
+		iMenuState = EMenuDownloads;
+		CreateMenu();
+		}break;
+		
 		// Just issue simple info messages to show that
 		// the commands have been selected
-		default:
-			CQikViewBase::HandleCommandL(aCommand);
-			break;
-		}
+	default:
+		CQikViewBase::HandleCommandL(aCommand);
+		break;
+	}
 	}
 
 
 void CPodcastClientView::ViewConstructL()
     {
     //RDebug::Print(_L("ViewConstructL"));
-    ViewConstructFromResourceL(R_LISTBOX_LISTVIEW_UI_CONFIGURATIONS);
+    ViewConstructFromResourceL(R_PODCAST_LISTVIEW_UI_CONFIGURATIONS);
     iMenuState = EMenuMain;
     iDownloading = EFalse;
-
+	// Get the list box and the list box model
+	iListbox = (CQikListBox*) LocateControlByUniqueHandle<const CQikListBox>(EPodcastListViewListCtrl);
+	iListbox->SetListBoxObserver(this);
     CreateMenu();
     }
 
@@ -217,11 +242,9 @@ void CPodcastClientView::HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxE
 
 void CPodcastClientView::CreateMenu()
 {
-	// Get the list box and the list box model
-	CQikListBox* listBox = (CQikListBox*) LocateControlByUniqueHandle<const CQikListBox>(EListBoxListViewListCtrl);
-	listBox->RemoveAllItemsL();
-	MQikListBoxModel& model(listBox->Model());
-	listBox->SetListBoxObserver(this);
+	iListbox->RemoveAllItemsL();
+
+	MQikListBoxModel& model(iListbox->Model());
 	// Informs the list box model that there will be an update of the data.
 	// Notify the list box model that changes will be made after this point.
 	// Observe that a cleanupitem has been put on the cleanupstack and 
@@ -238,12 +261,12 @@ void CPodcastClientView::CreateMenu()
 		{
 		MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
 		CleanupClosePushL(*listBoxData);
-		itemName.Copy(_L("Episodes"));
+		itemName.Copy(_L("Files"));
 		listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
-	
+
 		listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
 		CleanupClosePushL(*listBoxData);
-		itemName.Copy(_L("Subscriptions"));
+		itemName.Copy(_L("Feeds"));
 		listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
 	
 		listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
@@ -251,7 +274,12 @@ void CPodcastClientView::CreateMenu()
 		itemName.Copy(_L("Downloads"));
 		listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
 	
-		CleanupStack::PopAndDestroy(3);
+		listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
+		CleanupClosePushL(*listBoxData);
+		itemName.Copy(_L("Episodes"));
+		listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
+	
+		CleanupStack::PopAndDestroy(4);
 		}
 		break;
 	case EMenuDownloads:

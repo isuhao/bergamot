@@ -14,15 +14,17 @@ enum TPodcastPeriod
 	ENoPeriod = -1
 };
 
-class CPodcastData {
+class CPodcastData:public CBase {
 public:
+	CPodcastData();
+	~CPodcastData();
 	void ExternalizeL(RWriteStream& aStream) const;
 	void InternalizeL(RReadStream& aStream);
 
 public:
 	TPodcastPeriod period;
-	CPodcastServerTimer* timer;
-	TDes *fileName;
+	CPodcastServerTimer* iTimer;
+	TFileName iFilename;
 };
 
 #endif

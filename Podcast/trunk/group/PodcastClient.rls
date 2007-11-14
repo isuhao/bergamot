@@ -14,4 +14,14 @@ rls_string STRING_r_listbox_listview_cmd_close_debug "Close (debug)"
 rls_string STRING_r_listbox_listview_cmd_close_debug_shorttext "Close"
 
 // the name used for each list box item, max 32 chars long
-rls_string STRING_r_listbox_listview_normal_text "My item: %d"
+rls_string STRING_r_view_cmd "View"
+rls_string STRING_r_view_files_cmd "Files"
+rls_string STRING_r_view_episodes_cmd "Episodes"
+rls_string STRING_r_view_subscriptions_cmd "Feeds"
+rls_string STRING_r_view_downloads_cmd "Downloads"
+rls_string STRING_r_view_player_cmd "Player"
+
+rls_string STRING_r_play_cmd "Play"
+rls_string STRING_r_stop_cmd "Stop"
+rls_string STRING_r_pause_cmd "Pause"
+

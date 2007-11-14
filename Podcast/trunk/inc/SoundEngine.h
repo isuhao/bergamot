@@ -17,7 +17,17 @@ public:
 	void Play();
 	void Stop();
 	TTimeIntervalMicroSeconds Position();
+	void SetPosition(TUint aPos);
+
+	/**
+	 * Returns the playtime/duration in seconds 
+	 * @return Value in a TUint
+	 */
+	TUint PlayTime();
 	void Pause();
+
+	TUint Volume();
+	void SetVolume(TUint aVolume);
 protected:
 	CSoundEngine(CPodcastModel& aPodcastModel);
 	void ConstructL();
@@ -26,7 +36,10 @@ protected:
 private:
     CMdaAudioPlayerUtility *iPlayer;
 	CPodcastModel& iPodcastModel;
+	TInt iVolume;
+	TBool iPlayerInit;
 	
 };
 
 #endif // SOUND_ENGINE_H
+
