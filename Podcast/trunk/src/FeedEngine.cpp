@@ -7,6 +7,9 @@ CFeedEngine::CFeedEngine() : parser(*this)
 	{
 	iClient = CHttpClient::NewL(*this);
 	iFeedListFile.Copy(KFeedsFileName);
+    iPlayer = CMdaAudioPlayerUtility::NewL(*this);
+    RSemaphore semaphore;
+    semaphore.CreateGlobal(KMetaDataSemaphoreName, 0);
 	}
 
 CFeedEngine::~CFeedEngine()
@@ -47,10 +50,6 @@ RArray <TShowInfo*>& CFeedEngine::GetItems()
 	return items;
 }
 
-RArray <TFeedInfo*>& CFeedEngine::GetFeeds() 
-{
-	return feeds;
-}
 void CFeedEngine::GetShow(TShowInfo *info)
 	{
 	TBuf<100> filePath;
@@ -66,7 +65,7 @@ void CFeedEngine::GetShow(TShowInfo *info)
 		RDebug::Print(_L("Separated filename: %S"), &str);
 		filePath.Append(str);
 	} else {
-		filePath.Append(_L("unknown"));
+		filePath.Append(_L("unknown.mp3"));
 	}
 	info->state = EDownloading;
 	info->fileName.Copy(filePath);
@@ -170,6 +169,9 @@ void CFeedEngine::LoadSettings()
 		
 		error = tft.Read(line);
 		}
+	
+	rfile.Close();
+	rfs.Close();
 	
 	}
 
@@ -347,6 +349,7 @@ void CFeedEngine::ListDir(RFs &rfs, TDesC &folder, TShowInfoArray &files) {
 			pID->playing = EFalse;
 			pID->position = 0;
 			pID->state = EStateless;
+			//LoadMetaDataFromFile(pID);
 			files.Append(pID);
 		}
 		}
@@ -356,6 +359,10 @@ void CFeedEngine::ListDir(RFs &rfs, TDesC &folder, TShowInfoArray &files) {
 
 }
 
+RArray <TFeedInfo*>& CFeedEngine::GetFeeds() 
+{
+	return feeds;
+}
 TShowInfoArray& CFeedEngine::GetPodcasts()
 {
 	return files;
@@ -413,4 +420,69 @@ void CFeedEngine::CleanHtml(TDes &str)
 		startPos = str.Locate('<');
 		endPos = str.Locate('>');
 	}
+}
+
+void CFeedEngine::MapcPlayComplete(TInt aError)
+	{
+	
+	}
+
+void CFeedEngine::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds &aDuration)
+	{
+	int numEntries = 0;
+	int error = iPlayer->GetNumberOfMetaDataEntries(numEntries);
+	if (error != KErrNone) {
+		return;
+	}
+	
+	RDebug::Print(_L("Found %d meta data entries"), numEntries);
+	/*
+	 * Entry: Name: year, Value:
+	Entry: Name: title, Value:
+	Entry: Name: album, Value:
+	Entry: Name: genre, Value:
+	Entry: Name: comment, Value:
+	Entry: Name: artist, Value:
+	Entry: Name: duration, Value:
+	Entry: Name: num-tracks, Value:
+	Entry: Name: track-info/audio/format, Value:
+	Entry: Name: track-info/bit-rate, Value:
+	Entry: Name: track-info/sample-rate, Value:
+	Entry: Name: track-info/audio/channels, Value:
+	Entry: Name: graphic;format=APIC;index=0, Value:*/
+		
+	for (int i=0;i<numEntries;i++) {
+		CMMFMetaDataEntry* entry = iPlayer->GetMetaDataEntryL(i);
+		RDebug::Print(_L("Entry: Name: %S, Value: "), &entry->Name()); //, &entry->Value());
+		if (entry->Name().CompareF(_L("title")) == 0) {
+			metadataFile->title.Copy(entry->Value());
+		}
+	}
+    iPlayer->Close();
+    /*RSemaphore s;
+	error = s.OpenGlobal(KMetaDataSemaphoreName);
+	if (error == KErrNone) {
+		RDebug::Print(_L("Signalling semaphore"));
+		s.Signal();
+	}
+	s.Close();*/
+	
+	}
+
+
+void CFeedEngine::LoadMetaDataFromFile(TShowInfo *info) {
+	metadataFile = info;
+	TRAPD(error, iPlayer->OpenFileL(info->fileName));
+    if (error != KErrNone) {
+		RDebug::Print(_L("Error: %d"), error);
+		return;
+    }
+    /*RSemaphore s;
+	error = s.OpenGlobal(KMetaDataSemaphoreName);
+	if (error == KErrNone) {
+		RDebug::Print(_L("Waiting for semaphore"));
+		s.Wait();
+	}
+    RDebug::Print(_L("Done reading meta data"));
+    s.Close();*/
 }

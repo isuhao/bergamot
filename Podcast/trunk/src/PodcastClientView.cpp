@@ -179,45 +179,10 @@ void CPodcastClientView::MapcInitComplete(TInt aError, const TTimeIntervalMicroS
 		RDebug::Print(_L("Resuming from position: %ld"), iPlayingPodcast->position.Int64());
 		iPlayer->SetPosition(iPlayingPodcast->position);
 		
-		//if(iPlayingPodcast->title.Length() == 0) {
-			LoadMetaDataFromFile(iPlayingPodcast);
-		//}
 		iPlayingPodcast->playing = ETrue;
 	}
 
 	iPlayer->Play();
-}
-
-void CPodcastClientView::LoadMetaDataFromFile(TShowInfo *info) {
-	int numEntries = 0;
-	int error = iPlayer->GetNumberOfMetaDataEntries(numEntries);
-	if (error != KErrNone) {
-		return;
-	}
-	
-	RDebug::Print(_L("Found %d meta data entries"), numEntries);
-	/*
-	 * Entry: Name: year, Value:
-	Entry: Name: title, Value:
-	Entry: Name: album, Value:
-	Entry: Name: genre, Value:
-	Entry: Name: comment, Value:
-	Entry: Name: artist, Value:
-	Entry: Name: duration, Value:
-	Entry: Name: num-tracks, Value:
-	Entry: Name: track-info/audio/format, Value:
-	Entry: Name: track-info/bit-rate, Value:
-	Entry: Name: track-info/sample-rate, Value:
-	Entry: Name: track-info/audio/channels, Value:
-	Entry: Name: graphic;format=APIC;index=0, Value:*/
-		
-	for (int i=0;i<numEntries;i++) {
-		CMMFMetaDataEntry* entry = iPlayer->GetMetaDataEntryL(i);
-		RDebug::Print(_L("Entry: Name: %S, Value: "), &entry->Name()); //, &entry->Value());
-		if (entry->Name().CompareF(_L("title")) == 0) {
-			info->title.Copy(entry->Value());
-		}
-	}
 }
 
 void CPodcastClientView::HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxEvent aEventType, TInt aItemIndex, TInt aSlotId)

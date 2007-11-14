@@ -47,21 +47,21 @@ void CHttpClient::StopClient()
 		iTrans->Cancel();
 	}
 	}
-CHttpClient* CHttpClient::NewL(MHttpEventHandlerCallbacks& aResObs)
+CHttpClient* CHttpClient::NewL(MHttpEventHandlerCallbacks& aCallbacks)
   {
-  CHttpClient* me = NewLC(aResObs);
+  CHttpClient* me = NewLC(aCallbacks);
   CleanupStack::Pop(me);
   return me;
   }
 
-CHttpClient::CHttpClient(MHttpEventHandlerCallbacks& aResObs) : iResObs(aResObs)
+CHttpClient::CHttpClient(MHttpEventHandlerCallbacks& aCallbacks) : iCallbacks(aCallbacks)
   {
   iTrans = NULL;
   }
 
-CHttpClient* CHttpClient::NewLC(MHttpEventHandlerCallbacks& aResObs)
+CHttpClient* CHttpClient::NewLC(MHttpEventHandlerCallbacks& aCallbacks)
   {
-  CHttpClient* me = new (ELeave) CHttpClient(aResObs);
+  CHttpClient* me = new (ELeave) CHttpClient(aCallbacks);
   CleanupStack::PushL(me);
   me->ConstructL();
   return me;
@@ -70,7 +70,7 @@ CHttpClient* CHttpClient::NewLC(MHttpEventHandlerCallbacks& aResObs)
 void CHttpClient::ConstructL()
   {
   iSession.OpenL();
-  iTransObs = CHttpEventHandler::NewL(iResObs);
+  iTransObs = CHttpEventHandler::NewL(iCallbacks);
   }
 
 void CHttpClient::InvokeHttpMethodL(const TDesC8& aUri, RStringF aMethod)
@@ -89,6 +89,12 @@ void CHttpClient::InvokeHttpMethodL(const TDesC8& aUri, RStringF aMethod)
   // Start the scheduler, once the transaction completes or is cancelled on 
   // an error the scheduler will be stopped in the event handler
   CActiveScheduler::Start();
+	if (iShowInfo != NULL) {
+		iCallbacks.ShowCompleteCallback(iShowInfo);
+	} else {
+		iCallbacks.FeedCompleteCallback(iFeedInfo);
+	}
+  RDebug::Print(_L("InvokeHttpMethodL END"));
   }
 
 void CHttpClient::SetUrl(TDesC &url)
@@ -119,7 +125,8 @@ void CHttpClient::SetHeaderL(RHTTPHeaders aHeaders,
 void CHttpClient::GetFeed(TFeedInfo *info)
 	{
 	iTransObs->SetSaveFileName(info->fileName);
-	iTransObs->SetFeedInfo(info);
+	iFeedInfo = info;
+	iShowInfo = NULL;
 	iUrl.Copy(info->url);
 	
 	StartClientL();	
@@ -128,9 +135,10 @@ void CHttpClient::GetFeed(TFeedInfo *info)
 void CHttpClient::GetShow(TShowInfo *info)
 	{
 	iTransObs->SetSaveFileName(info->fileName);
-	iTransObs->SetShowInfo(info);
 	iUrl.Copy(info->url);
-	
+
+	iFeedInfo = NULL;
+	iShowInfo = info;
 	StartClientL();
 	
 	}

@@ -56,19 +56,6 @@ void CHttpEventHandler::SetVerbose(TBool aVerbose)
 	iVerbose = aVerbose;
 	}
 
-
-void CHttpEventHandler::SetFeedInfo(TFeedInfo *info)
-	{
-	feedInfo = info;
-	showInfo = NULL;
-	}
-
-void CHttpEventHandler::SetShowInfo(TShowInfo *info)
-	{
-	feedInfo = NULL;
-	showInfo = info;
-	}
-
 TBool CHttpEventHandler::Verbose() const
 	{
 	return iVerbose;
@@ -184,11 +171,7 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 			{
 			aTransaction.Close();
 			CActiveScheduler::Stop();
-			if (showInfo) {
-				iCallbacks.ShowCompleteCallback(showInfo);
-			} else {
-				iCallbacks.FeedCompleteCallback(feedInfo);
-			}
+
 			RDebug::Print(_L("Transaction Successful"));
 
 			} break;

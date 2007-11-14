@@ -43,8 +43,6 @@ private:
 	CPodcastClientView(CQikAppUi& aAppUi);
 	void ConstructL();
 	void CreateMenu();
-	
-	void LoadMetaDataFromFile(TShowInfo *info);
 private:
 	//RPodcastServerSession serverSession;
 	CQikScrollableContainer* iContainer;

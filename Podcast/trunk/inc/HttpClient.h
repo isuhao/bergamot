@@ -47,8 +47,12 @@ private:
   TBuf<1024> iUrl;
   RHTTPSession iSession;
   CHttpEventHandler* iTransObs;
-  MHttpEventHandlerCallbacks& iResObs;
+  MHttpEventHandlerCallbacks& iCallbacks;
   RHTTPTransaction *iTrans;
+  
+  TFeedInfo* iFeedInfo;
+  TShowInfo* iShowInfo;
+
 
 };
 
