@@ -418,7 +418,7 @@ RESOURCE QIK_LISTBOX r_podcast_listview_listbox
 // highlighted but has no additional highlight layout.
 RESOURCE QIK_LISTBOX_LAYOUT_PAIR r_podcast_listview_normal_layout_pair
 	{
-	standard_normal_layout = EQikListBoxMediumThumbTwoLines; //EQikListBoxLine;
+	standard_normal_layout = EQikListBoxMediumIconTwoLines; //EQikListBoxLine;
 	}
 
 RESOURCE QIK_LISTBOX_LAYOUT r_normal_layout

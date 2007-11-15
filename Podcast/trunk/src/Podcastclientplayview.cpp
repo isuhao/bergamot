@@ -70,7 +70,7 @@ Returns the view Id
 */
 TVwsViewId CPodcastClientPlayView::ViewId()const
 	{
-	return TVwsViewId(KUidPodcastClientID, KUidPodcastClientPlayViewID);
+	return TVwsViewId(KUidPodcastClientID, KUidPodcastPlayViewID);
 	}
 
 void CPodcastClientPlayView::HandleControlEventL(CCoeControl* aControl,TCoeEvent aEventType)
@@ -122,17 +122,17 @@ void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 		}break;
 	case EPodcastViewMain:
 		{			
-			TVwsViewId playView = TVwsViewId(KUidPodcastClientID, KUidPodcastClientBaseViewID);
+			TVwsViewId playView = TVwsViewId(KUidPodcastClientID, KUidPodcastBaseViewID);
 			iQikAppUi.ActivateViewL(playView);
 		}break;
 	case EPodcastViewPodcasts:
 		{
-			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastClientPodcastsViewID);
+			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastPodcastsViewID);
 			iQikAppUi.ActivateViewL(podcastsView);
 		}break;
 	case EPodcastViewFeeds:
 		{
-			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastClientFeedViewID);
+			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastFeedViewID);
 			iQikAppUi.ActivateViewL(podcastsView);
 		}break;		
 		// Just issue simple info messages to show that

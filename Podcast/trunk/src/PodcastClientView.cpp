@@ -63,23 +63,23 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 	{
 	case EPodcastViewMain:
 		{			
-			TVwsViewId playView = TVwsViewId(KUidPodcastClientID, KUidPodcastClientBaseViewID);
+			TVwsViewId playView = TVwsViewId(KUidPodcastClientID, KUidPodcastBaseViewID);
 			iQikAppUi.ActivateViewL(playView);
 		}break;
 	case EPodcastViewPlayer:
 		{
-			TVwsViewId playView = TVwsViewId(KUidPodcastClientID, KUidPodcastClientPlayViewID);
+			TVwsViewId playView = TVwsViewId(KUidPodcastClientID, KUidPodcastPlayViewID);
 			iQikAppUi.ActivateViewL(playView);
 		}
 		break;		
 	case EPodcastViewPodcasts:
 		{
-			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastClientPodcastsViewID);
+			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastPodcastsViewID);
 			iQikAppUi.ActivateViewL(podcastsView);
 		}break;
 	case EPodcastViewFeeds:
 		{
-			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastClientFeedViewID);
+			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastFeedViewID);
 			iQikAppUi.ActivateViewL(podcastsView);
 		}break;		
 		// Just issue simple info messages to show that

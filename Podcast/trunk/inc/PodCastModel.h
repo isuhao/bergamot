@@ -26,7 +26,6 @@ private:
    TShowInfo* iPlayingPodcast;
    CFeedEngine* iFeedEngine;
    CSoundEngine* iSoundEngine;
-
 };
 
 #endif // PODCASTMODEL_H

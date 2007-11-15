@@ -22,7 +22,7 @@ Returns the view Id
 */
 TVwsViewId CPodcastClientBaseView::ViewId()const
 	{
-	return TVwsViewId(KUidPodcastClientID, KUidPodcastBaseView);
+	return TVwsViewId(KUidPodcastClientID, KUidPodcastBaseViewID);
 	}
 
 CPodcastClientBaseView::CPodcastClientBaseView(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel):CPodcastClientView(aAppUi, aPodcastModel)
@@ -90,15 +90,15 @@ void CPodcastClientBaseView::HandleListBoxEventL(CQikListBox * aListBox, TQikLis
 			{
 			case EBaseViewPlayer:
 				{
-					newview = KUidPodcastClientPlayViewID;
+					newview = KUidPodcastPlayViewID;
 				}break;
 			case EBaseViewPodcasts:
 				{
-					newview = KUidPodcastClientPodcastsViewID;
+					newview = KUidPodcastPodcastsViewID;
 				}break;
 			case EBaseViewFeeds:
 				{
-					newview = KUidPodcastClientFeedViewID;
+					newview = KUidPodcastFeedViewID;
 				}break;
 			default:
 				break;

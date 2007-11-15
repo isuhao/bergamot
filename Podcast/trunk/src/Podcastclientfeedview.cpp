@@ -31,7 +31,7 @@ Returns the view Id
 */
 TVwsViewId CPodcastClientFeedView::ViewId()const
 	{
-	return TVwsViewId(KUidPodcastClientID, KUidPodcastFeedView);
+	return TVwsViewId(KUidPodcastClientID, KUidPodcastFeedViewID);
 	}
 
 void CPodcastClientFeedView::ViewConstructL()
@@ -112,7 +112,7 @@ void CPodcastClientFeedView::HandleListBoxEventL(CQikListBox *aListBox, TQikList
 				User::InfoPrint(_L("Getting feed..."));
 				iDownloading = ETrue;
 				iPodcastModel.FeedEngine().GetFeed(feeds[aItemIndex]);
-				TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastClientPodcastsViewID);
+				TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastPodcastsViewID);
 				iQikAppUi.ActivateViewL(podcastsView);
 			}
 		}

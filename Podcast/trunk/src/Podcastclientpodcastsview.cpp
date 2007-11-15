@@ -32,7 +32,7 @@ Returns the view Id
 */
 TVwsViewId CPodcastClientPodcastsView::ViewId()const
 	{
-	return TVwsViewId(KUidPodcastClientID, KUidPodcastPodcastsView);
+	return TVwsViewId(KUidPodcastClientID, KUidPodcastPodcastsViewID);
 	}
 
 void CPodcastClientPodcastsView::ViewConstructL()
