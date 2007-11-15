@@ -153,9 +153,9 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 				}
 				iRespBodyFile.Write(bodyData);
 
-				if (lastChunk)
+				//if (lastChunk) {
 					//iRespBodyFile.Flush();
-					iRespBodyFile.Close();
+				//}
 				}
 
 			// Done with that bit of body data
@@ -166,6 +166,8 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 			// The transaction's response is complete
 
 			RDebug::Print(_L("Transaction Complete"));
+			RDebug::Print(_L("Closing file"));
+			iRespBodyFile.Close();
 			} break;
 		case THTTPEvent::ESucceeded:
 			{

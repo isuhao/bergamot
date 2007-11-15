@@ -283,6 +283,7 @@ void CFeedEngine::LoadMetaData()
 
 	if (version != KMetaDataFileVersion) {
 		RDebug::Print(_L("Wrong version, discarding"));
+		goto exit_point;
 	}
 	
 	int count = instream.ReadInt32L();
@@ -295,7 +296,7 @@ void CFeedEngine::LoadMetaData()
 		RDebug::Print(_L("error: %d"), error);
 		files.Append(readData);
 	}
-	
+	exit_point:
 	CleanupStack::PopAndDestroy(); // instream
 	fsSession.Close();
 	CleanupStack::Pop(store);	
