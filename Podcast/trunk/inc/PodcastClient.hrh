@@ -9,10 +9,9 @@ enum TPodcatClientPages
 enum TPodcatClientCommands
 	{
 	EPodcastView = 0x1000,
-	EPodcastViewFiles,
-	EPodcastViewEpisodes,
-    EPodcastViewSubscriptions,
-	EPodcastViewDownloads,
+	EPodcastViewMain,
+	EPodcastViewPodcasts,
+    EPodcastViewFeeds,
 	EPodcastViewPlayer,
 	EPodcastPlay,
 	EPodcastStop,
@@ -24,6 +23,7 @@ enum TPodcatClientCommands
 	{
 	EPodcastListViewListCtrl= 0x1000,
 	EPodcastListViewPage,
+	EPodcastListViewContextLabel,
 	EPodcastPlayViewTitleCtrl,
 	EPodcastPlayViewProgressCtrl,
 	EPodcastPlayViewVolumeCtrl,

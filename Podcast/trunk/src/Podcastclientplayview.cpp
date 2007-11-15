@@ -6,6 +6,7 @@
 #include <eiklabel.h>
 #include <qikslider.h>
 #include <coecobs.h>
+#include <qikappui.h>
 
 #include "HttpClient.h"
 #include "PodcastModel.h"
@@ -104,34 +105,28 @@ void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 {
 	switch(aCommand.Id())
 	{
-	case EPodcastViewFiles:
-		{
-	//	iMenuState = EMenuFiles;
-	//	CreateMenu();
+	case EPodcastViewMain:
+		{			
+			TVwsViewId playView = TVwsViewId(KUidPodcastClientID, KUidPodcastClientBaseViewID);
+			iQikAppUi.ActivateViewL(playView);
 		}break;
-	case EPodcastViewEpisodes:
+	case EPodcastViewPodcasts:
 		{
-	//	iMenuState = EMenuEpisodes;
-	//	CreateMenu();
+			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastClientPodcastsViewID);
+			iQikAppUi.ActivateViewL(podcastsView);
 		}break;
-	case EPodcastViewSubscriptions:
+	case EPodcastViewFeeds:
 		{
-	//	iMenuState = EMenuFeeds;
-	//	CreateMenu();
-		}break;
-	case EPodcastViewDownloads:
-		{
-	//	iMenuState = EMenuDownloads;
-	//	CreateMenu();
-		}break;
-		
+			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastClientFeedViewID);
+			iQikAppUi.ActivateViewL(podcastsView);
+		}break;		
 		// Just issue simple info messages to show that
 		// the commands have been selected
 	default:
 		CQikViewBase::HandleCommandL(aCommand);
 		break;
 	}
-	}
+}
 
 
 void CPodcastClientPlayView::ViewConstructL()

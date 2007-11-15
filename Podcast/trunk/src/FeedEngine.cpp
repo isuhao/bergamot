@@ -31,6 +31,9 @@ CFeedEngine::CFeedEngine() : parser(*this)
 
 CFeedEngine::~CFeedEngine()
 	{
+	items.Close();
+	files.Close();
+	feeds.Close();
 	}
 
 void CFeedEngine::Cancel() 

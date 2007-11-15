@@ -106,33 +106,25 @@ RESOURCE QIK_COMMAND_LIST r_podcast_playview_commands
 			},
 			QIK_COMMAND
 			{
-			id = EPodcastViewFiles;
+			id = EPodcastViewMain;
 			type = EQikCommandTypeScreen;
-			text = STRING_r_view_files_cmd;
+			text = STRING_r_view_main_cmd;
 			namedGroupId = 1;
 			},
 			QIK_COMMAND
 			{
-			id = EPodcastViewEpisodes;
+			id = EPodcastViewPodcasts;
 			type = EQikCommandTypeScreen;
-			text = STRING_r_view_episodes_cmd;
+			text = STRING_r_view_podcasts_cmd;
 			namedGroupId = 1;
 			},
 			QIK_COMMAND
 			{
-			id = EPodcastViewSubscriptions;
+			id = EPodcastViewFeeds;
 			type = EQikCommandTypeScreen;
-			text = STRING_r_view_subscriptions_cmd;
+			text = STRING_r_view_feeds_cmd;
 			namedGroupId = 1;
 			},
-			QIK_COMMAND
-			{
-			id = EPodcastViewDownloads;
-			type = EQikCommandTypeScreen;
-			text = STRING_r_view_downloads_cmd;
-			namedGroupId = 1;
-			},
-
 		QIK_COMMAND
 			{
 			id = EEikCmdExit;
@@ -336,33 +328,25 @@ RESOURCE QIK_COMMAND_LIST r_podcast_listview_commands
 		
 			QIK_COMMAND
 			{
-			id = EPodcastViewFiles;
+			id = EPodcastViewMain;
 			type = EQikCommandTypeScreen;
-			text = STRING_r_view_files_cmd;
+			text = STRING_r_view_main_cmd;
 			namedGroupId = 1;
 			},
 			QIK_COMMAND
 			{
-			id = EPodcastViewEpisodes;
+			id = EPodcastViewPodcasts;
 			type = EQikCommandTypeScreen;
-			text = STRING_r_view_episodes_cmd;
+			text = STRING_r_view_podcasts_cmd;
 			namedGroupId = 1;
 			},
 			QIK_COMMAND
 			{
-			id = EPodcastViewSubscriptions;
+			id = EPodcastViewFeeds;
 			type = EQikCommandTypeScreen;
-			text = STRING_r_view_subscriptions_cmd;
+			text = STRING_r_view_feeds_cmd;
 			namedGroupId = 1;
 			},
-			QIK_COMMAND
-			{
-			id = EPodcastViewDownloads;
-			type = EQikCommandTypeScreen;
-			text = STRING_r_view_downloads_cmd;
-			namedGroupId = 1;
-			},
-
 		QIK_COMMAND
 			{
 			id = EEikCmdExit;
@@ -468,3 +452,13 @@ RESOURCE QIK_ROW_LAYOUT_DATA r_podcast_row_layout_data_fill
 	vertical_excess_grab_weight = 1;
 	}
 
+// Common string resources
+RESOURCE TBUF r_podcast_feeds_title
+{
+	buf = STRING_r_view_feeds_title;
+}
+
+RESOURCE TBUF r_podcast_podcasts_title
+{
+	buf = STRING_r_view_podcasts_title;
+}

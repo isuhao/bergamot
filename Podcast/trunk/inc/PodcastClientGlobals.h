@@ -4,8 +4,13 @@
 const TUid KUidPodcastClientID          = {0xA00046AE};
 const TUid KUidPodcastClientBaseViewID = {0x00000001};
 const TUid KUidPodcastClientPlayViewID = {0x00000002};
+const TUid KUidPodcastClientFeedViewID = {0x00000003};
+const TUid KUidPodcastClientPodcastsViewID = {0x00000004};
 
-const TUid KUidListBoxListView = {0x00001000};
+const TUid KUidPodcastBaseView = {KUidPodcastClientBaseViewID};
+const TUid KUidPodcastPlayView = {KUidPodcastClientPlayViewID};
+const TUid KUidPodcastFeedView = {KUidPodcastClientFeedViewID};
+const TUid KUidPodcastPodcastsView = {KUidPodcastClientPodcastsViewID};
 
 #ifdef __WINS__
 	_LIT(KPodcastDir, "c:\\logs\\");

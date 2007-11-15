@@ -6,11 +6,6 @@
 #include <qikcommand.h>
 #include <PodcastClient.rsg>
 #include <qikgridlayoutmanager.h>
-#include <e32debug.h>
-#include <qiklistboxmodel.h>
-#include <qiklistbox.h>
-#include <qiklistboxdata.h>
-#include <qikappui.h>
 
 #include "HttpClient.h"
 #include "PodcastModel.h"
@@ -18,21 +13,6 @@
 #include "PodcastClientView.h"
 #include "PodcastClientGlobals.h"
 #include "SoundEngine.h"
-
-/**
-Creates and constructs the view.
-
-@param aAppUi Reference to the AppUi
-@return Pointer to a CPodcastClientView object
-*/
-CPodcastClientView* CPodcastClientView::NewLC(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel)
-	{
-	//RDebug::Print(_L("NewLC"));
-	CPodcastClientView* self = new (ELeave) CPodcastClientView(aAppUi, aPodcastModel);
-	CleanupStack::PushL(self);
-	self->ConstructL();
-	return self;
-	}
 
 /**
 Constructor for the view.
@@ -55,6 +35,7 @@ Destructor for the view
 */
 CPodcastClientView::~CPodcastClientView()
 	{
+	delete iViewLabel;
 	}
 
 /**
@@ -69,16 +50,6 @@ void CPodcastClientView::ConstructL()
 	}
 
 /**
-Returns the view Id
-
-@return Returns the Uid of the view
-*/
-TVwsViewId CPodcastClientView::ViewId()const
-	{
-	return TVwsViewId(KUidPodcastClientID, KUidListBoxListView);
-	}
-
-/**
 Handles all commands in the view.
 Called by the UI framework when a command has been issued.
 The command Ids are defined in the .hrh file.
@@ -90,58 +61,52 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 {
 	switch(aCommand.Id())
 	{
+	case EPodcastViewMain:
+		{			
+			TVwsViewId playView = TVwsViewId(KUidPodcastClientID, KUidPodcastClientBaseViewID);
+			iQikAppUi.ActivateViewL(playView);
+		}break;
 	case EPodcastViewPlayer:
 		{
 			TVwsViewId playView = TVwsViewId(KUidPodcastClientID, KUidPodcastClientPlayViewID);
 			iQikAppUi.ActivateViewL(playView);
 		}
 		break;		
-	case EPodcastViewFiles:
+	case EPodcastViewPodcasts:
 		{
-		iMenuState = EMenuFiles;
-		CreateMenu();
+			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastClientPodcastsViewID);
+			iQikAppUi.ActivateViewL(podcastsView);
 		}break;
-	case EPodcastViewEpisodes:
+	case EPodcastViewFeeds:
 		{
-		iMenuState = EMenuEpisodes;
-		CreateMenu();
-		}break;
-	case EPodcastViewSubscriptions:
-		{
-		iMenuState = EMenuFeeds;
-		CreateMenu();
-		}break;
-	case EPodcastViewDownloads:
-		{
-		iMenuState = EMenuDownloads;
-		CreateMenu();
-		}break;
-		
+			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastClientFeedViewID);
+			iQikAppUi.ActivateViewL(podcastsView);
+		}break;		
 		// Just issue simple info messages to show that
 		// the commands have been selected
 	default:
 		CQikViewBase::HandleCommandL(aCommand);
 		break;
 	}
-	}
+}
 
 
 void CPodcastClientView::ViewConstructL()
-    {
+{
     //RDebug::Print(_L("ViewConstructL"));
     ViewConstructFromResourceL(R_PODCAST_LISTVIEW_UI_CONFIGURATIONS);
-    iMenuState = EMenuMain;
-    iDownloading = EFalse;
+
+	ViewContext()->AddTextL(EPodcastListViewContextLabel, KNullDesC(), EHCenterVCenter);
+
 	// Get the list box and the list box model
 	iListbox = LocateControlByUniqueHandle<CQikListBox>(EPodcastListViewListCtrl);
 	iListbox->SetListBoxObserver(this);
-    CreateMenu();
+    UpdateListboxItemsL();
     }
 
 void CPodcastClientView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage)
 	{
-		iMenuState = EMenuMain;
-		CreateMenu();
+		UpdateListboxItemsL();
 	}
 
 void CPodcastClientView::PlayPausePodcast(TShowInfo* aPodcast) 
@@ -186,60 +151,8 @@ void CPodcastClientView::HandleControlEventL(CCoeControl */*aControl*/, TCoeEven
 
 
 
-void CPodcastClientView::HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxEvent aEventType, TInt aItemIndex, TInt aSlotId)
-	{
-	RDebug::Print(_L("HandleListBoxEvent, itemIndex=%d, slotId=%d, aEventType=%d"), aItemIndex, aSlotId, aEventType);
-	
-	switch (aEventType)
-	{
-	case EEventHighlightMoved:
-		break;
-	case EEventItemConfirmed:
-	case EEventItemTapped:
-		switch (iMenuState)
-		{
-		case EMenuMain:
-			iMenuState = (TMenus) (aItemIndex + 1);
-			CreateMenu();
-			break;
-		case EMenuFiles:
-			{
-			TShowInfoArray &files = iPodcastModel.FeedEngine().GetPodcasts();
-			RDebug::Print(_L("File: %S"), &(files[aItemIndex]->fileName));
-			PlayPausePodcast(files[aItemIndex]);
-			}
-			break;
-		case EMenuFeeds:
-			if (iDownloading) {
-				User::InfoPrint(_L("Cancel not implemented"));
-				iDownloading = EFalse;
-			} else {
-				TFeedInfoArray& feeds = iPodcastModel.FeedEngine().GetFeeds();
-				RDebug::Print(_L("URL: %S"), &(feeds[aItemIndex]->url));
-				User::InfoPrint(_L("Getting feed..."));
-				iDownloading = ETrue;
-				iPodcastModel.FeedEngine().GetFeed(feeds[aItemIndex]);
-				iMenuState = EMenuEpisodes;
-				CreateMenu();
-				iDownloading = EFalse;
-			}
-			break;
-		case EMenuEpisodes:
-			{
-			TShowInfoArray& fItems = iPodcastModel.FeedEngine().GetItems();
-			RDebug::Print(_L("Get podcast URL: %S"), &(fItems[aItemIndex]->url));
-			iPodcastModel.FeedEngine().AddDownload(fItems[aItemIndex]);
-			}
-			break;
-		case EMenuDownloads:
-			break;
-		}
-		break;
-	default:
-		break;
-	}
-	}
 
+/*
 void CPodcastClientView::CreateMenu()
 {
 	iListbox->RemoveAllItemsL();
@@ -257,87 +170,9 @@ void CPodcastClientView::CreateMenu()
 	TBuf<100> itemName;
 	RDebug::Print(_L("CreateMenu, iMenuState: %d"), (int)iMenuState);
 	switch (iMenuState) {
-	case EMenuMain:
-		{
-		MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
-		CleanupClosePushL(*listBoxData);
-		itemName.Copy(_L("Files"));
-		listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
 
-		listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
-		CleanupClosePushL(*listBoxData);
-		itemName.Copy(_L("Feeds"));
-		listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
-	
-		listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
-		CleanupClosePushL(*listBoxData);
-		itemName.Copy(_L("Downloads"));
-		listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
-	
-		listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
-		CleanupClosePushL(*listBoxData);
-		itemName.Copy(_L("Episodes"));
-		listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
-	
-		CleanupStack::PopAndDestroy(4);
-		}
-		break;
-	case EMenuDownloads:
-		{
-		TShowInfoArray& downloads = iPodcastModel.FeedEngine().GetDownloads();
-		int len = downloads .Count();
-		MQikListBoxData* listBoxData;
-		
-		if (len > 0) {
-			for (int i=0;i<len;i++) {
-			listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
-			CleanupClosePushL(*listBoxData);
-			TShowInfo *show = downloads[i];
-			listBoxData->AddTextL(show->title, EQikListBoxSlotText1);
-			if (show->state == EDownloading) {
-				listBoxData->AddTextL(_L("Downloading..."), EQikListBoxSlotText2);
-			} else {
-				listBoxData->AddTextL(_L("Queued"), EQikListBoxSlotText2);
-			}
-			CleanupStack::PopAndDestroy();	
-			}
-		}
-		}
-		break;
-	case EMenuFeeds:
-		{
-		RArray <TFeedInfo*>& feeds = iPodcastModel.FeedEngine().GetFeeds();
-		int len = feeds.Count();
-		MQikListBoxData* listBoxData;// = model.NewDataL(MQikListBoxModel::EDataNormal);
-		//CleanupClosePushL(*listBoxData);
-	
-		//itemName.Copy(_L("Add feed..."));
-		//listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
-		//CleanupStack::PopAndDestroy();
-		
-		if (len > 0) {
-			for (int i=0;i<len;i++) {
-			listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
-			CleanupClosePushL(*listBoxData);
-			TFeedInfo *fi = feeds[i];
-			listBoxData->AddTextL(fi->title, EQikListBoxSlotText1);
-			listBoxData->AddTextL(fi->description, EQikListBoxSlotText2);
-			CleanupStack::PopAndDestroy();	
-			}
-		} else {
-			{
-			listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
-			CleanupClosePushL(*listBoxData);
-		
-			itemName.Copy(_L("No feeds"));
-			listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
-			CleanupStack::PopAndDestroy();
-			}
-		}
-		
-		}
 
-	break;
+
 	case EMenuFiles:
 		{	RFs rfs;
 		rfs.Connect();
@@ -371,42 +206,10 @@ void CPodcastClientView::CreateMenu()
 		break;
 		}
 	break;
-	case EMenuEpisodes:
-		{
-		TShowInfoArray& fItems = iPodcastModel.FeedEngine().GetItems();
-		int len = fItems.Count();
-		
-		if (len > 0) {
-			for (int i=0;i<len;i++) {
-			MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
-			CleanupClosePushL(*listBoxData);
-			TShowInfo *fi = fItems[i];
-			listBoxData->AddTextL(fi->title, EQikListBoxSlotText1);
-			listBoxData->AddTextL(fi->description, EQikListBoxSlotText2);
-			CleanupStack::PopAndDestroy();	
-			}
-		} else {
-			{
-			MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
-			CleanupClosePushL(*listBoxData);
-		
-			itemName.Copy(_L("No items"));
-			listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
-			CleanupStack::PopAndDestroy();
-			}
-		}
-		
-		}
 
-	break;
 	}
 
-		if (iMenuState == EMenuMain) {
-		    SetParentView(KNullViewId);
-		} else {
-		    SetParentView(ViewId());
-		}
-	
 	// Informs that the update of the list box model has ended
 	model.ModelEndUpdateL();
 }
+*/
