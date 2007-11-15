@@ -59,7 +59,7 @@ void CFeedEngine::GetFeed(TFeedInfo* feedInfo)
 	feedInfo->fileName.Copy(privatePath);
 	iClient->GetFeed(feedInfo);
 
-	RDebug::Print(_L("DownloadFeed END"));
+	RDebug::Print(_L("GetFeed END"));
 	}
 
 RArray <TShowInfo*>& CFeedEngine::GetItems() 
@@ -97,6 +97,11 @@ void CFeedEngine::Item(TShowInfo *item)
 	items.Append(item);
 	}
 
+void CFeedEngine::ParsingComplete()
+	{
+	
+	}
+
 void CFeedEngine::ConnectedCallback()
 	{
 	
@@ -119,6 +124,7 @@ void CFeedEngine::ShowCompleteCallback(TShowInfo *info)
 		RDebug::Print(_L("Removing from list..."));
 		downloadQueue.Remove(pos);
 	}
+	files.Append(info);
 	SaveMetaData();
 	DownloadNextShow();
 
@@ -272,14 +278,24 @@ void CFeedEngine::LoadMetaData()
 	RStoreReadStream instream;
 	instream.OpenLC(*store, store->Root());
 
+	int version = instream.ReadInt32L();
+	RDebug::Print(_L("Read version: %d"), version);
+
+	if (version != KMetaDataFileVersion) {
+		RDebug::Print(_L("Wrong version, discarding"));
+	}
+	
 	int count = instream.ReadInt32L();
 	RDebug::Print(_L("Read count: %d"), count);
+	TShowInfo *readData;
+	
 	for (int i=0;i<count;i++) {
-		TShowInfo *readData = new TShowInfo;
-		instream  >> *readData;	
+		readData = new TShowInfo;
+		TRAP(error, instream  >> *readData);
+		RDebug::Print(_L("error: %d"), error);
 		files.Append(readData);
 	}
-	RDebug::Print(_L("Read all metadata"));
+	
 	CleanupStack::PopAndDestroy(); // instream
 	fsSession.Close();
 	CleanupStack::Pop(store);	
@@ -305,11 +321,12 @@ void CFeedEngine::SaveMetaData()
 	
 	RStoreWriteStream outstream;
 	TStreamId id = outstream.CreateLC(*store);
-	
+	outstream.WriteInt32L(KMetaDataFileVersion);
+	RDebug::Print(_L("Saving %d items"), files.Count());
 	outstream.WriteInt32L(files.Count());
 	for (int i=0;i<files.Count();i++) {
-		RDebug::Print(_L("Storing account %i"), i);
-		outstream  << files[i];
+		RDebug::Print(_L("Storing show %i"), i);
+		outstream  << *files[i];
 	}
 	
 	outstream.CommitL();

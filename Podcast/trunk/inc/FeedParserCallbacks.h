@@ -7,6 +7,7 @@ class MFeedParserCallbacks
 {
 public:
 	virtual void Item(TShowInfo *item) = 0;
+	virtual void ParsingComplete() = 0;
 };
 
 #endif

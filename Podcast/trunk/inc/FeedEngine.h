@@ -11,6 +11,7 @@
 #include <MdaAudioSamplePlayer.h>
 
 _LIT(KMetaDataSemaphoreName, "MetaData");
+const int KMetaDataFileVersion = 1;
 
 class CFeedEngine : public MHttpEventHandlerCallbacks, public MMdaAudioPlayerCallback, public MFeedParserCallbacks
 {
@@ -59,13 +60,15 @@ private:
 
 	void DownloadNextShow();
 	void CleanHtml(TDes &str);
-	
+
+	void Item(TShowInfo *item);
+	void ParsingComplete();
+
 private:
 	CHttpClient* iClient;
 	TFileName iFileName;
 	CFeedParser parser;
 	TShowInfoArray items;
-	void Item(TShowInfo *item);
 	TShowInfoArray files;
 	TFeedInfoArray feeds;
 	TFileName iFeedListFile;

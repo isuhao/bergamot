@@ -78,6 +78,7 @@ void CFeedParser::OnStartDocumentL(const RDocumentParameters& aDocParam, TInt aE
 void CFeedParser::OnEndDocumentL(TInt aErrorCode)
 	{
 	//RDebug::Print(_L("OnEndDocumentL()"));
+	iCallbacks.ParsingComplete();
 	}
 
 void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArray& aAttributes, TInt aErrorCode)
