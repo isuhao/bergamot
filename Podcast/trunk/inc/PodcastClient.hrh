@@ -16,7 +16,9 @@ enum TPodcatClientCommands
 	EPodcastPlay,
 	EPodcastStop,
 	EPodcastPause,
-	EMyAbout
+	EPodcastSettings,
+	EPodcastSubscribeFeed,
+	EPodcastUpdateFeed
 	};
 
     enum TPodcastControl

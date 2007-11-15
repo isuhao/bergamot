@@ -105,6 +105,21 @@ void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 {
 	switch(aCommand.Id())
 	{
+	case EPodcastPlay:
+		{
+			if(iPodcastModel.SoundEngine().State() == ESoundEnginePlaying)
+			{
+				iPodcastModel.SoundEngine().Pause();
+			}
+			else
+			{
+				iPodcastModel.SoundEngine().Play();
+			}
+		}break;
+	case EPodcastStop:
+		{
+			iPodcastModel.SoundEngine().Stop();	
+		}break;
 	case EPodcastViewMain:
 		{			
 			TVwsViewId playView = TVwsViewId(KUidPodcastClientID, KUidPodcastClientBaseViewID);
@@ -170,7 +185,7 @@ void CPodcastClientPlayView::UpdateViewL()
 			iInformationEdwin->SetTextL(&_L("Lots of text that has come from the description field in RSS, and perhaps even a picture!!"));
 
 			iInformationEdwin->UpdateAllFieldsL();
-
+			iInformationEdwin->HandleTextChangedL();
 			if(iProgress != NULL)
 			{			
 				iProgress->SetValue(50);

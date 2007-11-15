@@ -102,7 +102,16 @@ void CPodcastClientPodcastsView::HandleListBoxEventL(CQikListBox *aListBox, TQik
 		{
 			TShowInfoArray& fItems = iPodcastModel.FeedEngine().GetItems();
 			RDebug::Print(_L("Get podcast URL: %S"), &(fItems[aItemIndex]->url));
-			iPodcastModel.FeedEngine().AddDownload(fItems[aItemIndex]);
+			if(!fItems[aItemIndex]->iShowDownloaded)
+			{
+				fItems[aItemIndex]->iShowDownloaded = ETrue;
+				iPodcastModel.FeedEngine().AddDownload(fItems[aItemIndex]);
+			}
+			// play the podcast if downloaded and its not currently downloading
+			else if(fItems[aItemIndex]->state !=  EDownloading)
+			{
+				iPodcastModel.PlayPausePodcastL(fItems[aItemIndex]);
+			}
 		}
 		break;
 	default:

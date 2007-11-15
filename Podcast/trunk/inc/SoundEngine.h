@@ -5,6 +5,14 @@
 
 class CPodcastModel;
 
+
+enum TSoundEngineState
+{
+	ESoundEngineNotInitialized,
+	ESoundEnginePlaying,
+	ESoundEnginePaused,
+	ESoundEngineStopped
+};
 /**
  * This class handles all playback and audio associated resources that the application/client needs
  */
@@ -28,6 +36,8 @@ public:
 
 	TUint Volume();
 	void SetVolume(TUint aVolume);
+
+	TSoundEngineState State();
 protected:
 	CSoundEngine(CPodcastModel& aPodcastModel);
 	void ConstructL();
@@ -37,8 +47,7 @@ private:
     CMdaAudioPlayerUtility *iPlayer;
 	CPodcastModel& iPodcastModel;
 	TInt iVolume;
-	TBool iPlayerInit;
-	
+	TSoundEngineState iState;	
 };
 
 #endif // SOUND_ENGINE_H

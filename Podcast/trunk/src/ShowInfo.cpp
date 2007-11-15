@@ -90,5 +90,6 @@ void TShowInfo::InternalizeL(RReadStream& aStream) {
 	if (error != KErrNone) {
 		return;
 	}
-	playing = EFalse;
+
+	iShowDownloaded = EFalse;
 }

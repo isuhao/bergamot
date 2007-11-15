@@ -42,16 +42,6 @@ CPodcastClientAppUi::~CPodcastClientAppUi()
 /*-----------------------------------------------------------------------*/
 void CPodcastClientAppUi::HandleCommandL(CQikCommand &aCommand)
 {
-  TQikViewMode viewMode = iBaseView->ViewMode();
-
-  switch(aCommand.Id())
-  {
-        case EMyAbout:
-        {
-                CEikonEnv::InfoWinL(_L("PodcastClient"), _L("Version 1.0"));
-        }
-        return;
-  }
   CQikAppUi::HandleCommandL(aCommand);
 }
 

@@ -73,6 +73,7 @@ void CFeedParser::OnStartDocumentL(const RDocumentParameters& aDocParam, TInt aE
 	{
 	//RDebug::Print(_L("OnStartDocumentL()"));
 	activeItem=new TShowInfo;
+	activeItem->iShowDownloaded = EFalse;
 	}
 
 void CFeedParser::OnEndDocumentL(TInt aErrorCode)
@@ -97,6 +98,8 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 	
 		iFeedState=EStateItem;
 		activeItem = new TShowInfo();
+		activeItem->iShowDownloaded = EFalse;
+
 	} else if (iFeedState == EStateItem) {
 		if (str.CompareF(KFeedTitle) == 0) {
 			iFeedState=EStateTitle;

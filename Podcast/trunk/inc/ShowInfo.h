@@ -27,7 +27,7 @@ public:
 	TFileName fileName;
 	TTimeIntervalMicroSeconds position;
 	TShowState state;
-	TBool playing;
+	TBool iShowDownloaded;
 };
 
 

@@ -46,3 +46,39 @@ CSoundEngine& CPodcastModel::SoundEngine()
 {
 	return *iSoundEngine;
 }
+
+void CPodcastModel::PlayPausePodcastL(TShowInfo* aPodcast) 
+	{
+	
+	// special treatment if this podcast is already active
+	if (iPlayingPodcast == aPodcast) {
+		if (aPodcast->state == EPlaying) {
+			User::InfoPrint(_L("Pausing"));
+			SoundEngine().Pause();
+			aPodcast->position = iSoundEngine->Position();
+			aPodcast->state == EStateless;
+		} else {
+			User::InfoPrint(_L("Resuming"));
+			iSoundEngine->Play();
+		}
+	} else {
+		// switching file, so save position
+		iSoundEngine->Pause();
+		if (iPlayingPodcast != NULL) {
+			iPlayingPodcast->position = iSoundEngine->Position();
+			iPlayingPodcast->state  = EStateless;
+		}
+		
+		iSoundEngine->Stop();
+
+		User::InfoPrint(_L("Playing"));
+		RDebug::Print(_L("Starting: %S"), &(aPodcast->fileName));
+		TRAPD(error, iSoundEngine->OpenFileL(aPodcast->fileName));
+	    if (error != KErrNone) {
+	    	RDebug::Print(_L("Error: %d"), error);
+	    }
+
+		iPlayingPodcast = aPodcast;
+	}
+}
+

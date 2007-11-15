@@ -18,6 +18,7 @@ public:
 	CSoundEngine& SoundEngine();
 	TShowInfo* PlayingPodcast();
 	void SetPlayingPodcast(TShowInfo* aPodcast);
+	void PlayPausePodcastL(TShowInfo * aPodcast);
 protected:
 	CPodcastModel();
 	void ConstructL();

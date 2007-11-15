@@ -109,40 +109,6 @@ void CPodcastClientView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCus
 		UpdateListboxItemsL();
 	}
 
-void CPodcastClientView::PlayPausePodcast(TShowInfo* aPodcast) 
-	{
-	
-	// special treatment if this podcast is already active
-	if (iPodcastModel.PlayingPodcast() == aPodcast) {
-		if (aPodcast->playing) {
-			User::InfoPrint(_L("Pausing"));
-			iPodcastModel.SoundEngine().Pause();
-			aPodcast->position = iPodcastModel.SoundEngine().Position();
-			aPodcast->playing = EFalse;
-		} else {
-			User::InfoPrint(_L("Resuming"));
-			iPodcastModel.SoundEngine().Play();
-			aPodcast->playing = ETrue;
-		}
-	} else {
-		// switching file, so save position
-		iPodcastModel.SoundEngine().Pause();
-		if (iPodcastModel.PlayingPodcast() != NULL) {
-			iPodcastModel.PlayingPodcast()->position = iPodcastModel.SoundEngine().Position();
-			iPodcastModel.PlayingPodcast()->playing = EFalse;
-		}
-		
-		iPodcastModel.SoundEngine().Stop();
-
-		User::InfoPrint(_L("Playing"));
-		RDebug::Print(_L("Starting: %S"), &(aPodcast->fileName));
-		TRAPD(error, iPodcastModel.SoundEngine().OpenFileL(aPodcast->fileName));
-	    if (error != KErrNone) {
-	    	RDebug::Print(_L("Error: %d"), error);
-	    }
-		iPodcastModel.SetPlayingPodcast(aPodcast);
-	}
-}
 
 void CPodcastClientView::HandleControlEventL(CCoeControl */*aControl*/, TCoeEvent aEventType)
 	{

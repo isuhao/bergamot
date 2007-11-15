@@ -27,7 +27,6 @@ public:
 	void HandleCommandL(CQikCommand& aCommand);
   
 	void HandleControlEventL(CCoeControl *aControl, TCoeEvent aEventType);
-	void PlayPausePodcast(TShowInfo *podcast);
 protected: 
 	void ViewConstructL();
 	void ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage);

@@ -384,10 +384,10 @@ void CFeedEngine::ListDir(RFs &rfs, TDesC &folder, TShowInfoArray &files) {
 			RDebug::Print(entry.iName);
 			TShowInfo *pID = new TShowInfo;
 			pID->fileName.Copy(fileName);
-			pID->title.Copy(entry.iName);
-			pID->playing = EFalse;
+			pID->title.Copy(entry.iName);		
 			pID->position = 0;
 			pID->state = EStateless;
+			pID->iShowDownloaded = ETrue;
 			//LoadMetaDataFromFile(pID);
 			files.Append(pID);
 		}
