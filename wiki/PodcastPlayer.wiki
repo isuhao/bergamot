@@ -38,21 +38,20 @@ This is how I plan to implement features. Please [http://groups.google.com/group
 
   * Alpha 2 (November 18th)
     * Improved UI
-    * Volume control
     * More Configuration
     * Support for other feeds (Atom, RSS 0.9, any more?)
     * Keep track of position inside audio file, even between restarts, and for multiple podcasts at a time
+    * ID3 parsing
 
   * Alpha 3 (November 25th)
     * Proper feed handling, i.e. know what's new
-    * ID3 parsing
     * Check connection type, option to download only on WLAN
+    * Volume control
 
   * Alpha 4
     * Automatic background downloading
     * New podcast notification
     * Video support
-
 
 = Name =
 
@@ -64,7 +63,7 @@ Some ideas
   * Solid
   * Ingot
   * Foundry (in which you produce casts)
-
+  * Mint
 
 = Help! =
 
