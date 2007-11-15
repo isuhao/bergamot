@@ -135,7 +135,10 @@ void CFeedParser::OnContentL(const TDesC8& aBytes, TInt aErrorCode)
 	str.Copy(aBytes);
 	//RDebug::Print(_L("OnContentL: %S, state: %d"), &str, iFeedState);
 
-	
+	if (activeItem == NULL) {
+		RDebug::Print(_L("*** Content without active item!"));
+		return;
+	}
 	switch (iFeedState) {
 	case EStateTitle:
 		if(activeItem->title.Length()+str.Length() < KTitleLength) {

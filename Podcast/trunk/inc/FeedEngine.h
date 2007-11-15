@@ -65,7 +65,8 @@ private:
 	void ParsingComplete();
 
 private:
-	CHttpClient* iClient;
+	CHttpClient* showClient;
+	CHttpClient* feedClient;
 	TFileName iFileName;
 	CFeedParser parser;
 	TShowInfoArray items;

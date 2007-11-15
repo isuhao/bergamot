@@ -21,7 +21,8 @@ void CFeedEngine::ConstructL()
 
 CFeedEngine::CFeedEngine() : parser(*this)
 	{
-	iClient = CHttpClient::NewL(*this);
+	showClient = CHttpClient::NewL(*this);
+	feedClient = CHttpClient::NewL(*this);
 	iFeedListFile.Copy(KFeedsFileName);
     iPlayer = CMdaAudioPlayerUtility::NewL(*this);
     RSemaphore semaphore;
@@ -57,7 +58,7 @@ void CFeedEngine::GetFeed(TFeedInfo* feedInfo)
 	}
 	//iFileName.Copy(privatePath);
 	feedInfo->fileName.Copy(privatePath);
-	iClient->GetFeed(feedInfo);
+	feedClient->GetFeed(feedInfo);
 
 	RDebug::Print(_L("GetFeed END"));
 	}
@@ -86,7 +87,7 @@ void CFeedEngine::GetShow(TShowInfo *info)
 	}
 	info->state = EDownloading;
 	info->fileName.Copy(filePath);
-	iClient->GetShow(info);
+	showClient->GetShow(info);
 	}
 
 void CFeedEngine::Item(TShowInfo *item)
