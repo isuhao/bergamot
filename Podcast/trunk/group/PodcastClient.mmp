@@ -36,8 +36,14 @@ USERINCLUDE     ..\inc
 SOURCE          PodcastClientAppUi.cpp
 SOURCE          PodcastClientDocument.cpp
 SOURCE          PodcastClientApplication.cpp
-SOURCE			PodcastClientView.cpp
-SOURCE			PodcastClientPlayView.cpp
+// This is a generic view which all listviews inherits from
+SOURCE		PodcastClientView.cpp
+// The three different listviews, baseview, feedview and 
+SOURCE		PodcastClientBaseView.cpp
+SOURCE		PodcastClientPodcastsView.cpp
+SOURCE		PodcastClientFeedView.cpp
+// This is the playview
+SOURCE		PodcastClientPlayView.cpp
 
 SOURCE 			RPodcastServerSession.cpp
 SOURCE			PodcastData.cpp 
@@ -92,4 +98,5 @@ END
 CAPABILITY NetworkServices UserEnvironment
 
 EPOCSTACKSIZE 81920
-EPOCHEAPSIZE 81920 2097152
+
+EPOCHEAPSIZE 1024000 32768000
