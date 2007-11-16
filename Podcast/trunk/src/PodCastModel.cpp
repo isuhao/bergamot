@@ -88,7 +88,7 @@ TFeedInfo& CPodcastModel::ActiveFeedInfo()
 	return iActiveFeed;
 }
 
-void CPodcastModel::SetActiveFeedInfo(TFeedInfo& aFeedInfo)
+void CPodcastModel::SetActiveFeedInfo(const TFeedInfo& aFeedInfo)
 {
 	iActiveFeed = aFeedInfo;
 }

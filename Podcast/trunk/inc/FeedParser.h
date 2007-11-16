@@ -57,7 +57,7 @@ private:
 	TDes* activeString;
 	TBuf<1024> iChannelTitle;
 	TBuf<2048> iChannelDescription;
-	TFeedInfo *activeFeed;
+	TFeedInfo *iActiveFeed;
 };
 
 #endif

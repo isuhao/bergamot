@@ -15,6 +15,8 @@ protected:
 	void ViewConstructL();
 	void ConstructL();
 	void ShowListUpdated();
+    void FeedInfoUpdated(const TFeedInfo& aFeedInfo);
+
 	void HandleCommandL(CQikCommand& aCommand);
 	// from MQikCommandModelOwner	
 	CQikCommand* DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& aControlAddingCommands);

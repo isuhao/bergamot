@@ -21,7 +21,7 @@ public:
 	void SetPlayingPodcast(TShowInfo* aPodcast);
 	void PlayPausePodcastL(TShowInfo * aPodcast);
 	TFeedInfo& ActiveFeedInfo();
-	void SetActiveFeedInfo(TFeedInfo& aFeedInfo);
+	void SetActiveFeedInfo(const TFeedInfo& aFeedInfo);
 
 	TShowInfoArray& ActiveShowList();
 	void SetActiveShowList(TShowInfoArray& aShowArray);

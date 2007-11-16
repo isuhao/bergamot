@@ -259,6 +259,7 @@ void CFeedEngine::LoadFeeds()
 	while (error == KErrNone) {
 		RDebug::Print(_L("Line: %S"), &line);
 		TFeedInfo *fi = new TFeedInfo;
+		fi->iCategoryHandle = KErrNotFound;
 		fi->url.Copy(line);
 		int pos = line.Locate('|');
 		if (pos == KErrNotFound) {

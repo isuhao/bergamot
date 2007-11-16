@@ -86,6 +86,15 @@ void CPodcastClientShowsView::ShowListUpdated()
 	UpdateListboxItemsL();
 	}
 
+void CPodcastClientShowsView::FeedInfoUpdated(const TFeedInfo& aFeedInfo)
+{
+	if(aFeedInfo.url == iPodcastModel.ActiveFeedInfo().url)
+	{
+		iPodcastModel.SetActiveFeedInfo(aFeedInfo);
+	}
+}
+
+
 CQikCommand* CPodcastClientShowsView::DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& aControlAddingCommands)
 {
 	if(aCommand->Id() == EQikSoftkeyCmdSelectCategory)
@@ -152,9 +161,13 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 	RArray <TFeedInfo*>& feeds = iPodcastModel.FeedEngine().GetFeeds();
 	len = feeds.Count();
 	for (TInt i=0;i<len;i++) {
-		if(iFeedsCategories->CategoryHandle(feeds[i]->title) == KErrNotFound) 
+		if(feeds[i]->iCategoryHandle == KErrNotFound) 
 		{
 			feeds[i]->iCategoryHandle = iFeedsCategories->AddCategoryL(feeds[i]->title);
+		}
+		else
+		{
+			iFeedsCategories->RenameCategoryL(feeds[i]->iCategoryHandle, feeds[i]->title);
 		}
 	}
 }
