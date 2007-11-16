@@ -136,8 +136,8 @@ void CFeedEngine::ParsingComplete()
 	{
 	RDebug::Print(_L("Triggering ShowListUpdated"));
 	for (int i=0;i<observers.Count();i++) {
-		observers[i]->ShowListUpdated();
 		observers[i]->FeedInfoUpdated(iParser->ActiveFeed());
+		observers[i]->ShowListUpdated();
 	}
 	}
 
