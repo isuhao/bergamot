@@ -38,6 +38,7 @@ protected:
 protected:
 	CPodcastModel& iPodcastModel;
 	CQikListBox* iListbox;
+	TBuf<1024> activeFeedTitle;
 	HBufC* iViewLabel;
 	};
 #endif

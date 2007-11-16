@@ -31,8 +31,7 @@ CFeedEngine::CFeedEngine() : parser(*this)
 
 CFeedEngine::~CFeedEngine()
 	{
-	items.Close();
-	files.Close();
+	shows.Close();
 	feeds.Close();
 	}
 
@@ -42,7 +41,6 @@ void CFeedEngine::Cancel()
 
 void CFeedEngine::GetFeed(TFeedInfo* feedInfo)
 	{
-	items.Reset();
 	TBuf<100> privatePath;
 	RFs rfs;
 	rfs.Connect();
@@ -66,11 +64,6 @@ void CFeedEngine::GetFeed(TFeedInfo* feedInfo)
 	RDebug::Print(_L("GetFeed END"));
 	}
 
-RArray <TShowInfo*>& CFeedEngine::GetItems() 
-{
-	return items;
-}
-
 void CFeedEngine::GetShow(TShowInfo *info)
 	{
 	TBuf<100> filePath;
@@ -90,16 +83,20 @@ void CFeedEngine::GetShow(TShowInfo *info)
 	}
 	info->state = EDownloading;
 	info->fileName.Copy(filePath);
+	iDownloading = ETrue;
 	showClient->GetShow(info);
 	}
 
 void CFeedEngine::Item(TShowInfo *item)
 	{
-	//RDebug::Print(_L("\nTitle: %S\nURL: %S\nDescription: %S"), &(item->title), &(item->url), &(item->description));
+	RDebug::Print(_L("\nTitle: %S\nURL: %S\nDescription length: %d\nFeed: %S"), &(item->title), &(item->url), item->description.Length(), &(item->feedTitle));
 	CleanHtml(item->description);
-	
-	items.Append(item);
+	AddShow(item);
 	}
+
+void CFeedEngine::AddShow(TShowInfo *item) {
+	shows.Append(item);
+}
 
 void CFeedEngine::ParsingComplete()
 	{
@@ -122,16 +119,10 @@ void CFeedEngine::ProgressCallback(int percent)
 void CFeedEngine::ShowCompleteCallback(TShowInfo *info)
 	{
 	RDebug::Print(_L("File %S complete"), &info->fileName);
-	TInt pos = downloadQueue.Find(info);
-	info->state = EStateless;
-	if (pos != KErrNotFound) {
-		RDebug::Print(_L("Removing from list..."));
-		downloadQueue.Remove(pos);
-	}
-	files.Append(info);
+	info->state = EDownloaded;
 	SaveMetaData();
+	iDownloading = EFalse;
 	DownloadNextShow();
-
 	}
 
 void CFeedEngine::FeedCompleteCallback(TFeedInfo *info)
@@ -298,7 +289,7 @@ void CFeedEngine::LoadMetaData()
 		readData = new TShowInfo;
 		TRAP(error, instream  >> *readData);
 		RDebug::Print(_L("error: %d"), error);
-		files.Append(readData);
+		AddShow(readData);
 	}
 	exit_point:
 	CleanupStack::PopAndDestroy(); // instream
@@ -327,11 +318,11 @@ void CFeedEngine::SaveMetaData()
 	RStoreWriteStream outstream;
 	TStreamId id = outstream.CreateLC(*store);
 	outstream.WriteInt32L(KMetaDataFileVersion);
-	RDebug::Print(_L("Saving %d items"), files.Count());
-	outstream.WriteInt32L(files.Count());
-	for (int i=0;i<files.Count();i++) {
+	RDebug::Print(_L("Saving %d items"), shows.Count());
+	outstream.WriteInt32L(shows.Count());
+	for (int i=0;i<shows.Count();i++) {
 		RDebug::Print(_L("Storing show %i"), i);
-		outstream  << *files[i];
+		outstream  << *shows[i];
 	}
 	
 	outstream.CommitL();
@@ -402,52 +393,75 @@ RArray <TFeedInfo*>& CFeedEngine::GetFeeds()
 {
 	return feeds;
 }
-TShowInfoArray& CFeedEngine::GetPodcasts()
+
+TShowInfoArray* CFeedEngine::GetShowsByFeed(TDesC& feedTitle)
 {
-	return files;
+	RDebug::Print(_L("GetShowsByFeed: %S"), &feedTitle);
+	TShowInfoArray *array = new TShowInfoArray;
+	RDebug::Print(_L("Searching through %d shows"), shows.Count());
+	for (int i=0;i<shows.Count();i++) {
+		RDebug::Print(_L("Comparing '%S' to '%S'"), &(shows[i]->feedTitle), &feedTitle);
+		if (shows[i]->feedTitle.Compare(feedTitle) == 0) {
+			array->Append(shows[i]);
+		}
+	
+	}
+	RDebug::Print(_L("GetShowsByFeed returning %d shows"), array->Count());
+	return array;
 }
-void CFeedEngine::ListAllPodcasts()
+
+TShowInfoArray* CFeedEngine::GetShowsDownloading()
+{
+	TShowInfoArray *array = new TShowInfoArray;
+
+	for (int i=0;i<shows.Count();i++) {
+		if (shows[i]->state == EDownloading) {
+			array->Append(shows[i]);
+		}
+	}
+	return array;
+
+}
+
+void CFeedEngine::ListAllFiles()
 	{
-	RFs rfs;
+/*	RFs rfs;
 	rfs.Connect();
-//	files.Reset();
 	TBuf<100> podcastDir;
 	podcastDir.Copy(KPodcastDir);
 	
-	for (int i=0;i<files.Count();i++) {
+	for (int i=0;i<shows.Count();i++) {
 		if(BaflUtils::FileExists(rfs, files[i]->fileName) == EFalse) {
 			RDebug::Print(_L("%S was removed, delisting"), &files[i]->fileName);
 			files.Remove(i);
 		}
 	}
 
-	ListDir(rfs, podcastDir, files);	
+	ListDir(rfs, podcastDir, files);	*/
 }
 
 void CFeedEngine::AddDownload(TShowInfo *info)
 	{
-	downloadQueue.Append(info);
-
-	if (downloadQueue.Count() == 1) {
-		DownloadNextShow();
-	}
+	info->state = EDownloading;
+	DownloadNextShow();
 	}
 
-TShowInfoArray& CFeedEngine::GetDownloads()
-	{
-	return downloadQueue;
-	}
 
 void CFeedEngine::DownloadNextShow()
 {
-	if(downloadQueue.Count() > 0) {
-		TShowInfo *info = downloadQueue[0];
+	if (iDownloading) {
+		return;
+	}
+	
+	TShowInfoArray* array = GetShowsDownloading();
+	if(array->Count() > 0) {
+		TShowInfo *info = (*array)[0];
 		RDebug::Print(_L("Downloading %S"), &(info->title));
 		info->state = EDownloading;
 		GetShow(info);
 	}
+	delete array;
 }
-
 
 void CFeedEngine::CleanHtml(TDes &str)
 {
@@ -496,7 +510,7 @@ void CFeedEngine::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds 
 	Entry: Name: track-info/sample-rate, Value:
 	Entry: Name: track-info/audio/channels, Value:
 	Entry: Name: graphic;format=APIC;index=0, Value:*/
-		
+	/*	
 	for (int i=0;i<numEntries;i++) {
 		CMMFMetaDataEntry* entry = iPlayer->GetMetaDataEntryL(i);
 		RDebug::Print(_L("Entry: Name: %S, Value: "), &entry->Name()); //, &entry->Value());
@@ -504,7 +518,7 @@ void CFeedEngine::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds 
 			metadataFile->title.Copy(entry->Value());
 		}
 	}
-    iPlayer->Close();
+    iPlayer->Close();*/
     /*RSemaphore s;
 	error = s.OpenGlobal(KMetaDataSemaphoreName);
 	if (error == KErrNone) {
@@ -517,12 +531,12 @@ void CFeedEngine::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds 
 
 
 void CFeedEngine::LoadMetaDataFromFile(TShowInfo *info) {
-	metadataFile = info;
+	/*metadataFile = info;
 	TRAPD(error, iPlayer->OpenFileL(info->fileName));
     if (error != KErrNone) {
 		RDebug::Print(_L("Error: %d"), error);
 		return;
-    }
+    }*/
     /*RSemaphore s;
 	error = s.OpenGlobal(KMetaDataSemaphoreName);
 	if (error == KErrNone) {

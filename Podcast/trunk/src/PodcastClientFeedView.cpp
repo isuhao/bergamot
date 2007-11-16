@@ -112,6 +112,8 @@ void CPodcastClientFeedView::HandleListBoxEventL(CQikListBox *aListBox, TQikList
 				User::InfoPrint(_L("Getting feed..."));
 				iDownloading = ETrue;
 				iPodcastModel.FeedEngine().GetFeed(feeds[aItemIndex]);
+				iPodcastModel.iActiveShowList = iPodcastModel.FeedEngine().GetShowsByFeed(feeds[aItemIndex]->title);
+				iPodcastModel.iActiveFeed = feeds[aItemIndex];
 				TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastPodcastsViewID);
 				iQikAppUi.ActivateViewL(podcastsView);
 			}

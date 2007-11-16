@@ -33,12 +33,12 @@ public:
 	void SaveMetaData();
 	
 	void AddDownload(TShowInfo *info);
-	TShowInfoArray& GetDownloads();
-	TShowInfoArray& GetPodcasts();
-	void ListAllPodcasts();
+	TShowInfoArray* GetShowsDownloading();
+	TShowInfoArray* GetShowsByFeed(TDesC &feedTitle);
+
+	void ListAllFiles();
 	void ListDir(RFs &rfs, TDesC &folder, TShowInfoArray &files);
 	
-	TShowInfoArray & GetItems();
 	TFeedInfoArray& GetFeeds();
 	
 	void LoadMetaDataFromFile(TShowInfo *info);
@@ -63,20 +63,29 @@ private:
 
 	void Item(TShowInfo *item);
 	void ParsingComplete();
+	
+	void AddShow(TShowInfo *item);
 
 private:
+	// two HTTP connections, one for feeds and one for shows
 	CHttpClient* showClient;
 	CHttpClient* feedClient;
-	TFileName iFileName;
+
 	CFeedParser parser;
-	TShowInfoArray items;
-	TShowInfoArray files;
+
+	// the complete database of shows
+	TShowInfoArray shows;
+	// where we store our shows
+	TFileName iShowDir;
+	
+	// the list of feeds
 	TFeedInfoArray feeds;
 	TFileName iFeedListFile;
-	TFileName iShowDir;
-	TShowInfoArray downloadQueue;
+
+	// for reading meta data from files
     CMdaAudioPlayerUtility *iPlayer;
-    TShowInfo *metadataFile;
+    
+    TBool iDownloading;
 };
 
 #endif /*FEEDENGINE_H_*/

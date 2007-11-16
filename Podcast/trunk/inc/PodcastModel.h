@@ -1,10 +1,11 @@
 #ifndef PODCASTMODEL_H
 #define PODCASTMODEL_H
 #include <e32base.h>
-
+#include "FeedInfo.h"
+#include "ShowInfo.h"
 class CFeedEngine;
 class CSoundEngine;
-class TShowInfo;
+//class TShowInfo;
 
 /**
  * This class handles application storage needs and ownership of audioplayer, resource lists etc.
@@ -19,6 +20,9 @@ public:
 	TShowInfo* PlayingPodcast();
 	void SetPlayingPodcast(TShowInfo* aPodcast);
 	void PlayPausePodcastL(TShowInfo * aPodcast);
+	
+	TShowInfoArray* iActiveShowList;
+	TFeedInfo* iActiveFeed;
 protected:
 	CPodcastModel();
 	void ConstructL();

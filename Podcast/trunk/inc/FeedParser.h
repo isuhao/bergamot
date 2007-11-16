@@ -7,34 +7,24 @@
 
 using namespace Xml;
 
-/*
-_STLIT8(K1, "item");
-_STLIT8(K2, "title");
-_STLIT8(K3, "link");
-_STLIT8(K4, "description");
-
-const void * const KStringPointers[] =
-    {
-    (const void*)&K1,
-    (const void*)&K2,
-    (const void*)&K3,
-    (const void*)&K4
-    };
-
-const TStringTable FeedXmlTable = {4, KStringPointers, ETrue};
-*/
-
-_LIT(KFeedItem, "item");
-_LIT(KFeedTitle, "title");
-_LIT(KFeedLink, "link");
-_LIT(KFeedDescription, "description");
+_LIT(KTagItem, "item");
+_LIT(KTagTitle, "title");
+_LIT(KTagImage, "image");
+_LIT(KTagLink, "link");
+_LIT(KTagDescription, "description");
+_LIT(KTagChannel, "channel");
 
 enum TFeedState {
 	EStateNone,
+	EStateRoot,
+	EStateChannel,
+	EStateChannelTitle,
+	EStateChannelDescription,
+	EStateChannelImage,
 	EStateItem,
-	EStateTitle,
-	EStateLink,
-	EStateDescription
+	EStateItemTitle,
+	EStateItemLink,
+	EStateItemDescription
 };
 
 class CFeedParser : public MContentHandler
@@ -62,8 +52,10 @@ public: // from MContentHandler
 private:
 	MFeedParserCallbacks& iCallbacks;
 	TFeedState iFeedState;
-	RStringPool feedStringPool;
 	TShowInfo* activeItem;
+	TDes* activeString;
+	TBuf<1024> iChannelTitle;
+	TBuf<2048> iChannelDescription;
 };
 
 #endif
