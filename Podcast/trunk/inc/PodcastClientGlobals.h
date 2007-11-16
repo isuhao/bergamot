@@ -10,7 +10,7 @@ const TUid KUidPodcastPlayViewID = {0x00000004};
 #ifdef __WINS__
 	_LIT(KPodcastDir, "c:\\logs\\");
 #else
-	_LIT(KPodcastDir, "d:\\podcasts\\");	
+	_LIT(KPodcastDir, "e:\\podcasts\\");	
 #endif
 
 _LIT(KConfigFile, "config.cfg");
