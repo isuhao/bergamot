@@ -14,6 +14,7 @@ _LIT(KTagImage, "image");
 _LIT(KTagLink, "link");
 _LIT(KTagDescription, "description");
 _LIT(KTagChannel, "channel");
+_LIT(KTagEnclosure, "enclosure");
 
 enum TFeedState {
 	EStateNone,
@@ -25,6 +26,7 @@ enum TFeedState {
 	EStateItem,
 	EStateItemTitle,
 	EStateItemLink,
+	EStateItemEnclosure,
 	EStateItemDescription
 };
 

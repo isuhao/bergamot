@@ -46,7 +46,6 @@ void CFeedParser::OnEndDocumentL(TInt aErrorCode)
 
 void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArray& aAttributes, TInt aErrorCode)
 	{
-	TDesC8 lName = aElement.LocalName().DesC();
 	TBuf<100> str;
 	str.Copy(aElement.LocalName().DesC());
 	//RDebug::Print(_L("OnStartElementL START state=%d, element=%S"), iFeedState, &str);
@@ -80,12 +79,28 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 		}
 		break;
 	case EStateItem:
+		// <channel> <item> <title>
 		if (str.CompareF(KTagTitle) == 0) {
 			activeString = &activeItem->title;
 			iFeedState=EStateItemTitle;
+		// <channel> <item> <link>
 		} else if (str.CompareF(KTagLink) == 0) {
-			activeString = &activeItem->url;
+			//activeString = &activeItem->url;
 			iFeedState=EStateItemLink;
+		// <channel> <item> <enclosure url=...>
+		} else if (str.CompareF(KTagEnclosure) == 0) {
+			//RDebug::Print(_L("Enclosure"));
+			for (int i=0;i<aAttributes.Count();i++) {
+				RAttribute attr = aAttributes[i];
+				TBuf<100> attr16;
+				attr16.Copy(attr.Attribute().LocalName().DesC());
+				if (attr16.Compare(_L("url")) == 0) {
+					TBuf<100> val16;
+					val16.Copy(attr.Value().DesC());
+					activeItem->url.Copy(val16);
+//					RDebug::Print(_L("Attr %S=%S"), &attr16, &val16);
+				}
+			}
 		} else if (str.CompareF(KTagDescription) == 0) {
 			activeString = &activeItem->description;
 			iFeedState=EStateItemDescription;
@@ -93,7 +108,7 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 		break;
 	default:
 		activeString = NULL;
-		RDebug::Print(_L("Ignoring tag %S when in state %d"), &str, iFeedState);
+		//RDebug::Print(_L("Ignoring tag %S when in state %d"), &str, iFeedState);
 	}
 //	RDebug::Print(_L("OnStartElementL END state=%d"), iFeedState);
 	}

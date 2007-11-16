@@ -95,7 +95,7 @@ void CFeedEngine::GetShow(TShowInfo *info)
 	ReplaceString(buf, _L("/"), _L("_"));
 	ReplaceString(buf, _L(":"), _L("_"));
 	ReplaceString(buf, _L("?"), _L("_"));
-	
+	buf.Trim();
 	filePath.Append(buf);
 	filePath.Append(_L("\\"));
 	RDebug::Print(_L("directory to store in: %S"), &filePath);
@@ -118,7 +118,7 @@ void CFeedEngine::GetShow(TShowInfo *info)
 
 void CFeedEngine::Item(TShowInfo *item)
 	{
-	RDebug::Print(_L("\nTitle: %S\nURL: %S\nDescription length: %d\nFeed: %S"), &(item->title), &(item->url), item->description.Length(), &(item->feedUrl));
+	//RDebug::Print(_L("\nTitle: %S\nURL: %S\nDescription length: %d\nFeed: %S"), &(item->title), &(item->url), item->description.Length(), &(item->feedUrl));
 	CleanHtml(item->description);
 	AddShow(item);
 	}
@@ -261,6 +261,7 @@ void CFeedEngine::LoadFeeds()
 	while (error == KErrNone) {
 		RDebug::Print(_L("Line: %S"), &line);
 		TFeedInfo *fi = new TFeedInfo;
+		line.Trim();
 		fi->iCategoryHandle = KErrNotFound;
 		fi->url.Copy(line);
 		int pos = line.Locate('|');
@@ -272,8 +273,11 @@ void CFeedEngine::LoadFeeds()
 			fi->url.Copy(line.Mid(pos+1));
 			RDebug::Print(_L("Read title: '%S', url: '%S'"), &fi->title, &fi->url);
 		}
+		
+		fi->title.Trim();
+		fi->url.Trim();
 		feeds.Append(fi);
-		 error = tft.Read(line);
+		error = tft.Read(line);
 		}
 	}
 	
@@ -332,7 +336,7 @@ void CFeedEngine::LoadMetaData()
 	for (int i=0;i<count;i++) {
 		readData = new TShowInfo;
 		TRAP(error, instream  >> *readData);
-		RDebug::Print(_L("error: %d"), error);
+		//RDebug::Print(_L("error: %d"), error);
 		AddShow(readData);
 	}
 	exit_point:
@@ -376,7 +380,7 @@ void CFeedEngine::SaveMetaData()
 	RDebug::Print(_L("Saving %d items"), shows.Count());
 	outstream.WriteInt32L(shows.Count());
 	for (int i=0;i<shows.Count();i++) {
-		RDebug::Print(_L("Storing show %i"), i);
+//		RDebug::Print(_L("Storing show %i"), i);
 		outstream  << *shows[i];
 	}
 	
@@ -451,16 +455,16 @@ TFeedInfoArray& CFeedEngine::GetFeeds()
 TShowInfoArray* CFeedEngine::GetShowsByFeed(TFeedInfo *info)
 {
 	RDebug::Print(_L("GetShowsByFeed: %S"), &info->title);
+
 	TShowInfoArray *array = new TShowInfoArray;
-	RDebug::Print(_L("Searching through %d shows"), shows.Count());
 	for (int i=0;i<shows.Count();i++) {
-		RDebug::Print(_L("Comparing '%S' to '%S'"), &(shows[i]->feedUrl), &info->url);
+		//RDebug::Print(_L("Comparing '%S' to '%S'"), &(shows[i]->feedUrl), &info->url);
 		if (shows[i]->feedUrl.Compare(info->url) == 0) {
 			array->Append(shows[i]);
 		}
 	
 	}
-	RDebug::Print(_L("GetShowsByFeed returning %d shows"), array->Count());
+	RDebug::Print(_L("GetShowsByFeed returning %d out of %d shows"), array->Count(), shows.Count());
 	return array;
 }
 
