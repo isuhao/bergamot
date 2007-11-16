@@ -57,23 +57,13 @@ void CFeedEngine::GetFeed(TFeedInfo* feedInfo)
 	} else {
 		privatePath.Append(_L("unknown"));
 	}
-	//iFileName.Copy(privatePath);
+
 	feedInfo->fileName.Copy(privatePath);
+	
 	feedClient->GetFeed(feedInfo);
 
 	SaveMetaData();
 	RDebug::Print(_L("GetFeed END"));
-	}
-
-void CFeedEngine::ReplaceString(TDes & aString, const TDesC& aStringToReplace,const TDesC& aReplacement )
-	{
-		TInt pos=aString.Find(aStringToReplace);
-		while (pos>=0)
-		{
-			aString.Replace(pos,aStringToReplace.Length(),aReplacement);
-			pos=aString.Find(aStringToReplace);
-		}
-		
 	}
 
 void CFeedEngine::GetShow(TShowInfo *info)
@@ -111,6 +101,17 @@ void CFeedEngine::GetShow(TShowInfo *info)
 	info->fileName.Copy(filePath);
 	iDownloading = ETrue;
 	showClient->GetShow(info);
+	}
+
+void CFeedEngine::ReplaceString(TDes & aString, const TDesC& aStringToReplace,const TDesC& aReplacement )
+	{
+		TInt pos=aString.Find(aStringToReplace);
+		while (pos>=0)
+		{
+			aString.Replace(pos,aStringToReplace.Length(),aReplacement);
+			pos=aString.Find(aStringToReplace);
+		}
+		
 	}
 
 void CFeedEngine::Item(TShowInfo *item)
