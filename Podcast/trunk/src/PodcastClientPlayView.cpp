@@ -107,13 +107,17 @@ void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 	{
 	case EPodcastPlay:
 		{
+			CQikCommandManager& comMan = CQikCommandManager::Static();
+
 			if(iPodcastModel.SoundEngine().State() == ESoundEnginePlaying)
 			{
 				iPodcastModel.SoundEngine().Pause();
+				comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PLAY_CMD);
 			}
 			else
 			{
 				iPodcastModel.SoundEngine().Play();
+				comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PAUSE_CMD);
 			}
 		}break;
 	case EPodcastStop:
@@ -170,6 +174,8 @@ void CPodcastClientPlayView::UpdateViewL()
 {
 		if(iPodcastModel.PlayingPodcast() != NULL)
 		{
+			CQikCommandManager& comMan = CQikCommandManager::Static();
+
 			TShowInfo showInfo = *iPodcastModel.PlayingPodcast();
 			ViewContext()->ChangeTextL(EPodcastPlayViewTitleCtrl, showInfo.title);
 			TBuf<32> time = _L("00:00");
@@ -182,16 +188,18 @@ void CPodcastClientPlayView::UpdateViewL()
 			iTimeLabel->SetSize(iTimeLabel->MinimumSize());
 
 			iInformationEdwin->SetTextL(&showInfo.description);
-			//iInformationEdwin->SetTextL(&_L("Lots of text that has come from the description field in RSS, and perhaps even a picture!!"));
 
-			iInformationEdwin->UpdateAllFieldsL();
 			iInformationEdwin->HandleTextChangedL();
-			if(iProgress != NULL)
-			{			
-				iProgress->SetValue(50);
-			}
-					
+			
 			RequestRelayout(this);
+			if(iPodcastModel.SoundEngine().State() == ESoundEnginePlaying)
+			{
+				comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PAUSE_CMD);
+			}
+			else
+			{
+				comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PLAY_CMD);
+			}
 		}
 }
 
