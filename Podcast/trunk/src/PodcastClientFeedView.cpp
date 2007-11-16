@@ -1,5 +1,5 @@
-#include <podcastclient.rsg>
-#include "PodcastClientFeedview.h"
+#include <PodcastClient.rsg>
+#include "PodcastClientFeedView.h"
 #include "PodcastModel.h"
 
 /**

@@ -1,6 +1,6 @@
 #ifndef PODCASTCLIENTBASEVIEW_H
 #define PODCASTCLIENTBASEVIEW_H
-#include "PodCastClientView.h"
+#include "PodcastClientView.h"
 
 enum TBaseViewSelections
 {

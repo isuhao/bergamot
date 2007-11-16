@@ -1,4 +1,4 @@
-#include "PodcastClientBaseview.h"
+#include "PodcastClientBaseView.h"
 #include "PodcastModel.h"
 
 /**

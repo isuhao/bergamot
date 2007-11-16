@@ -8,7 +8,7 @@
 #include "ShowInfo.h"
 #include <e32cmn.h>
 #include "PodcastClientGlobals.h"
-#include <MdaAudioSamplePlayer.h>
+#include <mdaaudiosampleplayer.h>
 
 _LIT(KMetaDataSemaphoreName, "MetaData");
 const int KMetaDataFileVersion = 1;

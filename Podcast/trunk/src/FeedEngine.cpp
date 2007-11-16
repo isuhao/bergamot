@@ -1,7 +1,7 @@
 #include "FeedEngine.h"
 #include <f32file.h>
 #include <bautils.h>
-#include <S32FILE.h>
+#include <s32file.h>
 
 CFeedEngine* CFeedEngine::NewL()
 {

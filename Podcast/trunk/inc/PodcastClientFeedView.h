@@ -1,6 +1,6 @@
 #ifndef PODCASTCLIENTFEEDVIEW_H
 #define PODCASTCLIENTFEEDVIEW_H
-#include "PodCastClientView.h"
+#include "PodcastClientView.h"
 class CPodcastClientFeedView : public CPodcastClientView
 {
 public:
