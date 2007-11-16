@@ -15,6 +15,7 @@ CPodcastModel::~CPodcastModel()
 {
 	delete iFeedEngine;
 	delete iSoundEngine;
+	iActiveShowList.Close();
 }
 
 CPodcastModel::CPodcastModel()
@@ -82,3 +83,28 @@ void CPodcastModel::PlayPausePodcastL(TShowInfo* aPodcast)
 	}
 }
 
+TFeedInfo& CPodcastModel::ActiveFeedInfo()
+{
+	return iActiveFeed;
+}
+
+void CPodcastModel::SetActiveFeedInfo(TFeedInfo& aFeedInfo)
+{
+	iActiveFeed = aFeedInfo;
+}
+
+TShowInfoArray& CPodcastModel::ActiveShowList()
+{
+	return iActiveShowList;
+}
+
+void CPodcastModel::SetActiveShowList(TShowInfoArray& aShowArray)
+{
+	iActiveShowList.Reset();
+	TInt cnt = aShowArray.Count();
+
+	for(TInt loop = 0;loop < cnt; loop++)
+	{
+		iActiveShowList.Append(aShowArray[loop]);
+	}
+}

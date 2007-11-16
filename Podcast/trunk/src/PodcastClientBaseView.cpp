@@ -1,3 +1,6 @@
+#include <QikContent.h>
+#include <PodcastClient.mbg>
+
 #include "PodcastClientBaseView.h"
 #include "PodcastModel.h"
 
@@ -46,24 +49,22 @@ void CPodcastClientBaseView::UpdateListboxItemsL()
 	// When you act directly on the model you always need to encapsulate 
 	// the calls between ModelBeginUpdateLC and ModelEndUpdateL.
 	model.ModelBeginUpdateLC();
-	
-	TBuf<100> itemName;
-	
+		
 	MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
 	CleanupClosePushL(*listBoxData);
-	itemName.Copy(_L("Player"));
-	listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
+	listBoxData->AddTextL(_L("Player"), EQikListBoxSlotText1);
 	
 	listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
 	CleanupClosePushL(*listBoxData);
-	itemName.Copy(_L("Podcasts"));
-	listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
+	listBoxData->AddTextL(_L("Shows"), EQikListBoxSlotText1);
 	
 	listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
 	CleanupClosePushL(*listBoxData);
-	itemName.Copy(_L("Feeds"));
-	listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
-	
+	listBoxData->AddTextL(_L("Feeds"), EQikListBoxSlotText1);
+	CQikContent* content = CQikContent::NewL(this, _L("*"), EMbmPodcastclientFeeds_40x40, EMbmPodcastclientFeeds_40x40m);
+	CleanupStack::PushL(content);
+	listBoxData->AddIconL(content, EQikListBoxSlotLeftMediumIcon1);
+	CleanupStack::Pop(content);
 	CleanupStack::PopAndDestroy(3);
 	
 	
@@ -92,9 +93,9 @@ void CPodcastClientBaseView::HandleListBoxEventL(CQikListBox * aListBox, TQikLis
 				{
 					newview = KUidPodcastPlayViewID;
 				}break;
-			case EBaseViewPodcasts:
+			case EBaseViewShows:
 				{
-					newview = KUidPodcastPodcastsViewID;
+					newview = KUidPodcastShowsViewID;
 				}break;
 			case EBaseViewFeeds:
 				{

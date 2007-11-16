@@ -10,7 +10,7 @@ enum TPodcatClientCommands
 	{
 	EPodcastView = 0x1000,
 	EPodcastViewMain,
-	EPodcastViewPodcasts,
+	EPodcastViewShows,
     EPodcastViewFeeds,
 	EPodcastViewPlayer,
 	EPodcastPlay,

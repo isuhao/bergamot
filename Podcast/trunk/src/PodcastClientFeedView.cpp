@@ -36,8 +36,9 @@ TVwsViewId CPodcastClientFeedView::ViewId()const
 
 void CPodcastClientFeedView::ViewConstructL()
 {
-	CPodcastClientView::ViewConstructL();
 	iViewLabel = iEikonEnv->AllocReadResourceL(R_PODCAST_FEEDS_TITLE);
+
+	CPodcastClientView::ViewConstructL();
 	ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *iViewLabel);
 }
 
@@ -104,9 +105,9 @@ void CPodcastClientFeedView::HandleListBoxEventL(CQikListBox *aListBox, TQikList
 	case EEventItemTapped:
 		{
 			TFeedInfoArray& feeds = iPodcastModel.FeedEngine().GetFeeds();
-			iPodcastModel.iActiveShowList = iPodcastModel.FeedEngine().GetShowsByFeed(feeds[aItemIndex]);
-			iPodcastModel.iActiveFeed = feeds[aItemIndex];
-			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastPodcastsViewID);
+			iPodcastModel.SetActiveShowList(*iPodcastModel.FeedEngine().GetShowsByFeed(feeds[aItemIndex]));
+			iPodcastModel.SetActiveFeedInfo(*(feeds[aItemIndex]));
+			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID);
 			iQikAppUi.ActivateViewL(podcastsView);
 		}
 		break;

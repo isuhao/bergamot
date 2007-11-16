@@ -1,4 +1,6 @@
 #include <PodcastClient.rsg>
+#include <qikcategorymodel.h>
+#include <qikcommand.h>
 
 #include "PodcastClientShowsView.h"
 #include "PodcastModel.h"
@@ -23,6 +25,14 @@ CPodcastClientShowsView::CPodcastClientShowsView(CQikAppUi& aAppUi, CPodcastMode
 {
 }
 
+void CPodcastClientShowsView::ConstructL()
+{
+	CPodcastClientView::ConstructL();
+	iFeedsCategories = CQikCategoryModel::NewL();
+	SetCategoryModel(iFeedsCategories);
+	SetCategoryModelAsCommandsL();
+}
+
 CPodcastClientShowsView::~CPodcastClientShowsView()
 {
 }
@@ -33,16 +43,42 @@ Returns the view Id
 */
 TVwsViewId CPodcastClientShowsView::ViewId()const
 	{
-	return TVwsViewId(KUidPodcastClientID, KUidPodcastPodcastsViewID);
+	return TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID);
 	}
 
 void CPodcastClientShowsView::ViewConstructL()
 {
+	iViewLabel = iEikonEnv->AllocReadResourceL(R_PODCAST_SHOWS_TITLE);
 	CPodcastClientView::ViewConstructL();
-	iViewLabel = iEikonEnv->AllocReadResourceL(R_PODCAST_PODCASTS_TITLE);
+	
 	ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *iViewLabel);
 }
 
+void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
+{
+	if(aCommand.Type() == EQikCommandTypeCategory)
+	{
+		RArray <TFeedInfo*>& feeds = iPodcastModel.FeedEngine().GetFeeds();
+		TInt len = feeds.Count();
+		for (TInt i=0;i<len;i++) {
+			if(feeds[i]->iCategoryHandle == CategoryHandleForCommandId(aCommand.Id()))
+			{
+				iPodcastModel.SetActiveFeedInfo(*feeds[i]);
+				iPodcastModel.SetActiveShowList(*iPodcastModel.FeedEngine().GetShowsByFeed(feeds[i]));
+				UpdateListboxItemsL();
+				return;
+			}
+		}
+	}
+
+	switch(aCommand.Id())
+	{
+		default:
+			CPodcastClientView::HandleCommandL(aCommand);
+			break;
+	}
+
+}
 
 // Engine callback when new shows are available
 void CPodcastClientShowsView::ShowListUpdated()
@@ -50,10 +86,29 @@ void CPodcastClientShowsView::ShowListUpdated()
 	UpdateListboxItemsL();
 	}
 
+CQikCommand* CPodcastClientShowsView::DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& aControlAddingCommands)
+{
+	if(aCommand->Id() == EQikSoftkeyCmdSelectCategory)
+	{
+		aCommand->SetTextL(R_PODCAST_FEEDS_CATEGORY);
+	}
+
+	return aCommand;
+}
+
+
+
+_LIT(KShowsTitleFormat, "%S - %S");
 void CPodcastClientShowsView::UpdateListboxItemsL()
 {
 	iListbox->RemoveAllItemsL();
 	
+
+	HBufC* titleBuffer = HBufC::NewLC(iViewLabel->Length()+KShowsTitleFormat().Length()+iPodcastModel.ActiveFeedInfo().title.Length());
+	titleBuffer->Des().Format(KShowsTitleFormat, iViewLabel, &iPodcastModel.ActiveFeedInfo().title);
+	ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *titleBuffer);
+	CleanupStack::PopAndDestroy(titleBuffer);
+
 	MQikListBoxModel& model(iListbox->Model());
 	
 	// Informs the list box model that there will be an update of the data.
@@ -65,15 +120,14 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 	// the calls between ModelBeginUpdateLC and ModelEndUpdateL.
 	model.ModelBeginUpdateLC();
 	
-	TBuf<100> itemName;
-	if (iPodcastModel.iActiveShowList == NULL) {
-		iPodcastModel.iActiveShowList = iPodcastModel.FeedEngine().GetAllShows();
+	if (iPodcastModel.ActiveShowList().Count() == 0) {
+		iPodcastModel.SetActiveShowList(*iPodcastModel.FeedEngine().GetShowsByFeed(&iPodcastModel.ActiveFeedInfo()));
 	}
-	TShowInfoArray &fItems = *iPodcastModel.iActiveShowList;
-	int len = fItems.Count();
+	TShowInfoArray &fItems = iPodcastModel.ActiveShowList();
+	TInt len = fItems.Count();
 	
 	if (len > 0) {
-		for (int i=0;i<len;i++) {
+		for (TInt i=0;i<len;i++) {
 			MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
 			CleanupClosePushL(*listBoxData);
 			TShowInfo *fi = fItems[i];
@@ -85,15 +139,24 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 		{
 			MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
 			CleanupClosePushL(*listBoxData);
-			
-			itemName.Copy(_L("No items"));
-			listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
+					
+			listBoxData->AddTextL(_L("No items"), EQikListBoxSlotText1);
 			CleanupStack::PopAndDestroy();
 		}
 	}
 	
 	// Informs that the update of the list box model has ended
 	model.ModelEndUpdateL();
+
+		
+	RArray <TFeedInfo*>& feeds = iPodcastModel.FeedEngine().GetFeeds();
+	len = feeds.Count();
+	for (TInt i=0;i<len;i++) {
+		if(iFeedsCategories->CategoryHandle(feeds[i]->title) == KErrNotFound) 
+		{
+			feeds[i]->iCategoryHandle = iFeedsCategories->AddCategoryL(feeds[i]->title);
+		}
+	}
 }
 
 
@@ -108,11 +171,21 @@ case EEventHighlightMoved:
 case EEventItemConfirmed:
 case EEventItemTapped:
 	{
-		TShowInfoArray &fItems = *iPodcastModel.iActiveShowList;
+		TShowInfoArray &fItems = iPodcastModel.ActiveShowList();
 		RDebug::Print(_L("Handle event for podcast %S, downloadState is %d"), &(fItems[aItemIndex]->title), fItems[aItemIndex]->downloadState);
 		if(fItems[aItemIndex]->downloadState == ENotDownloaded)
 		{
-			iPodcastModel.FeedEngine().AddDownload(fItems[aItemIndex]);
+			TShowInfoArray &fItems = iPodcastModel.ActiveShowList();
+
+			if(!fItems[aItemIndex]->downloadState == EDownloaded)
+			{
+				iPodcastModel.FeedEngine().AddDownload(fItems[aItemIndex]);
+			}
+			// play the podcast if downloaded and its not currently downloading
+			else if(fItems[aItemIndex]->downloadState !=  EDownloading)
+			{
+				iPodcastModel.PlayPausePodcastL(fItems[aItemIndex]);
+			}
 		}
 		// play the podcast if downloaded
 		else if(fItems[aItemIndex]->downloadState == EDownloaded)

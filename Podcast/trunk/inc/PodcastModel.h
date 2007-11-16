@@ -20,9 +20,11 @@ public:
 	TShowInfo* PlayingPodcast();
 	void SetPlayingPodcast(TShowInfo* aPodcast);
 	void PlayPausePodcastL(TShowInfo * aPodcast);
-	
-	TShowInfoArray* iActiveShowList;
-	TFeedInfo* iActiveFeed;
+	TFeedInfo& ActiveFeedInfo();
+	void SetActiveFeedInfo(TFeedInfo& aFeedInfo);
+
+	TShowInfoArray& ActiveShowList();
+	void SetActiveShowList(TShowInfoArray& aShowArray);
 protected:
 	CPodcastModel();
 	void ConstructL();
@@ -30,6 +32,9 @@ private:
    TShowInfo* iPlayingPodcast;
    CFeedEngine* iFeedEngine;
    CSoundEngine* iSoundEngine;
+   TShowInfoArray iActiveShowList;
+   TFeedInfo iActiveFeed;
+
 };
 
 #endif // PODCASTMODEL_H

@@ -72,9 +72,9 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 			iQikAppUi.ActivateViewL(playView);
 		}
 		break;		
-	case EPodcastViewPodcasts:
+	case EPodcastViewShows:
 		{
-			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastPodcastsViewID);
+			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID);
 			iQikAppUi.ActivateViewL(podcastsView);
 		}break;
 	case EPodcastViewFeeds:
@@ -83,20 +83,25 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 			iQikAppUi.ActivateViewL(podcastsView);
 		}break;		
 	case EPodcastUpdateFeed:
-		if (iPodcastModel.iActiveFeed != NULL) {
-			User::InfoPrint(_L("Getting feed..."));
-			iPodcastModel.FeedEngine().GetFeed(iPodcastModel.iActiveFeed);
-		} else {
-			TFeedInfoArray& array = iPodcastModel.FeedEngine().GetFeeds();
-			
-			for (int i=0;i<array.Count();i++) {
-				TBuf<1024> buf;
-				buf.Format(_L("Getting %S"), &(array[i]->title));
-				User::InfoPrint(buf);
-				iPodcastModel.FeedEngine().GetFeed(array[i]);
+		{
+			if (iPodcastModel.ActiveFeedInfo().url.Length()>0) {
+				User::InfoPrint(_L("Getting feed..."));
+				iPodcastModel.FeedEngine().GetFeed(&iPodcastModel.ActiveFeedInfo());
+			} else 
+			{
+				TFeedInfoArray& array = iPodcastModel.FeedEngine().GetFeeds();
 				
+				for (int i=0;i<array.Count();i++) 
+				{
+					TBuf<1024> buf;
+					buf.Format(_L("Getting %S"), &(array[i]->title));
+					User::InfoPrint(buf);
+					iPodcastModel.FeedEngine().GetFeed(array[i]);
+					
+				}
 			}
 		}
+		break;
 		// Just issue simple info messages to show that
 		// the commands have been selected
 	default:

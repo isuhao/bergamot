@@ -16,7 +16,7 @@ rls_string STRING_r_listbox_listview_cmd_close_debug_shorttext "Close"
 // the name used for each list box item, max 32 chars long
 rls_string STRING_r_view_cmd "View"
 rls_string STRING_r_view_main_cmd "Main"
-rls_string STRING_r_view_podcasts_cmd "Podcasts"
+rls_string STRING_r_view_shows_cmd "Shows"
 rls_string STRING_r_view_feeds_cmd "Feeds"
 rls_string STRING_r_view_player_cmd "Player"
 

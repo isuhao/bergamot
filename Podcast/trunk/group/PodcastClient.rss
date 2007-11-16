@@ -113,9 +113,9 @@ RESOURCE QIK_COMMAND_LIST r_podcast_playview_commands
 			},
 			QIK_COMMAND
 			{
-			id = EPodcastViewPodcasts;
+			id = EPodcastViewShows;
 			type = EQikCommandTypeScreen;
-			text = STRING_r_view_podcasts_cmd;
+			text = STRING_r_view_shows_cmd;
 			namedGroupId = 1;
 			},
 			QIK_COMMAND
@@ -124,13 +124,7 @@ RESOURCE QIK_COMMAND_LIST r_podcast_playview_commands
 			type = EQikCommandTypeScreen;
 			text = STRING_r_view_feeds_cmd;
 			namedGroupId = 1;
-			},
-			QIK_COMMAND
-			{
-			id = EPodcastUpdateFeed;
-			type = EQikCommandTypeScreen;
-			text = STRING_r_update_feeds_cmd;
-			},
+			},		
 			
 		QIK_COMMAND
 			{
@@ -342,9 +336,9 @@ RESOURCE QIK_COMMAND_LIST r_podcast_listview_commands
 			},
 			QIK_COMMAND
 			{
-			id = EPodcastViewPodcasts;
+			id = EPodcastViewShows;
 			type = EQikCommandTypeScreen;
-			text = STRING_r_view_podcasts_cmd;
+			text = STRING_r_view_shows_cmd;
 			namedGroupId = 1;
 			},
 			QIK_COMMAND
@@ -357,7 +351,7 @@ RESOURCE QIK_COMMAND_LIST r_podcast_listview_commands
 			QIK_COMMAND
 			{
 			id = EPodcastUpdateFeed;
-			type = EQikCommandTypeScreen;
+			type = EQikCommandTypeItem;
 			text = STRING_r_update_feeds_cmd;
 			},
 			
@@ -472,7 +466,12 @@ RESOURCE TBUF r_podcast_feeds_title
 	buf = STRING_r_view_feeds_title;
 }
 
-RESOURCE TBUF r_podcast_podcasts_title
+RESOURCE TBUF r_podcast_feeds_category
 {
-	buf = STRING_r_view_podcasts_title;
+	buf = STRING_r_view_feeds_cmd;
+}
+
+RESOURCE TBUF r_podcast_shows_title
+{
+	buf = STRING_r_view_shows_title;
 }
