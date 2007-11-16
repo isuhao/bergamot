@@ -48,9 +48,9 @@ void CPodcastClientShowsView::ViewConstructL()
 void CPodcastClientShowsView::UpdateListboxItemsL()
 {
 	iListbox->RemoveAllItemsL();
-
+	
 	MQikListBoxModel& model(iListbox->Model());
-
+	
 	// Informs the list box model that there will be an update of the data.
 	// Notify the list box model that changes will be made after this point.
 	// Observe that a cleanupitem has been put on the cleanupstack and 
@@ -94,29 +94,29 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 
 void CPodcastClientShowsView::HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxEvent aEventType, TInt aItemIndex, TInt aSlotId)
 {
-	RDebug::Print(_L("HandleListBoxEvent, itemIndex=%d, slotId=%d, aEventType=%d"), aItemIndex, aSlotId, aEventType);
-	
-	switch (aEventType)
-	{
-	case EEventHighlightMoved:
-		break;
-	case EEventItemConfirmed:
-	case EEventItemTapped:
-		{
-			TShowInfoArray &fItems = *iPodcastModel.iActiveShowList;
+RDebug::Print(_L("HandleListBoxEvent, itemIndex=%d, slotId=%d, aEventType=%d"), aItemIndex, aSlotId, aEventType);
 
-			if(!fItems[aItemIndex]->iShowDownloaded)
-			{
-				iPodcastModel.FeedEngine().AddDownload(fItems[aItemIndex]);
-			}
-			// play the podcast if downloaded and its not currently downloading
-			else if(fItems[aItemIndex]->state !=  EDownloading)
-			{
-				iPodcastModel.PlayPausePodcastL(fItems[aItemIndex]);
-			}
+switch (aEventType)
+{
+case EEventHighlightMoved:
+	break;
+case EEventItemConfirmed:
+case EEventItemTapped:
+	{
+		TShowInfoArray &fItems = *iPodcastModel.iActiveShowList;
+		RDebug::Print(_L("Handle event for podcast %S, downloadState is %d"), &(fItems[aItemIndex]->title), fItems[aItemIndex]->downloadState);
+		if(fItems[aItemIndex]->downloadState == ENotDownloaded)
+		{
+			iPodcastModel.FeedEngine().AddDownload(fItems[aItemIndex]);
 		}
-		break;
-	default:
-		break;
+		// play the podcast if downloaded and its not currently downloading
+		else if(fItems[aItemIndex]->downloadState == EDownloaded)
+		{
+			iPodcastModel.PlayPausePodcastL(fItems[aItemIndex]);
+		}
 	}
+	break;
+default:
+	break;
+}
 }

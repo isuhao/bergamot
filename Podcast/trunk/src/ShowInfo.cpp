@@ -1,7 +1,7 @@
 #include "ShowInfo.h"
 TShowInfo::TShowInfo()
 	{
-	iShowDownloaded = EFalse;
+	downloadState = ENotDownloaded;
 	}
 
 void TShowInfo::ExternalizeL(RWriteStream& aStream) const {
@@ -30,8 +30,15 @@ void TShowInfo::ExternalizeL(RWriteStream& aStream) const {
 	aStream.WriteL(fileName);
 	RDebug::Print(_L("wrote fileName: %S"), &fileName);
 
+	aStream.WriteInt32L(feedUrl.Length());
+	RDebug::Print(_L("wrote len: %d"), feedUrl.Length());
+
+	aStream.WriteL(feedUrl);
+	RDebug::Print(_L("wrote feedUrl: %S"), &feedUrl);
+
 	aStream.WriteInt32L(position.Int64());
-	aStream.WriteInt32L(state);
+	aStream.WriteInt32L(downloadState);
+	aStream.WriteInt32L(playState);
 	}
 
 void TShowInfo::InternalizeL(RReadStream& aStream) {
@@ -85,15 +92,35 @@ void TShowInfo::InternalizeL(RReadStream& aStream) {
 	}
 	RDebug::Print(_L("read fileName: %S"), &fileName);
 	
+	TRAP(error,len = aStream.ReadInt32L()); 
+	if (error != KErrNone) {
+		return;
+	}
+	RDebug::Print(_L("len: %d"), len);
+
+	TRAP(error,aStream.ReadL(feedUrl, len));
+	if (error != KErrNone) {
+		return;
+	}
+	RDebug::Print(_L("read feedUrl: %S"), &feedUrl);
+	
 	TRAP(error,position = aStream.ReadInt32L();) 
 	if (error != KErrNone) {
 		return;
 	}
 
-	TRAP(error,state = (TShowState) aStream.ReadInt32L());
+	TRAP(error,downloadState = (TDownloadState) aStream.ReadInt32L());
 	if (error != KErrNone) {
 		return;
 	}
 
-	iShowDownloaded = EFalse;
+	TRAP(error,playState = (TPlayState) aStream.ReadInt32L());
+	if (error != KErrNone) {
+		return;
+	}
+
+	// no point in setting playing directly
+	if (playState != ENeverPlayed) {
+		playState = EPlayed;
+	}
 }

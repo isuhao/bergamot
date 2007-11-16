@@ -182,7 +182,7 @@ void CPodcastClientPlayView::UpdateViewL()
 			iTimeLabel->SetSize(iTimeLabel->MinimumSize());
 
 			iInformationEdwin->SetTextL(&showInfo.description);
-			iInformationEdwin->SetTextL(&_L("Lots of text that has come from the description field in RSS, and perhaps even a picture!!"));
+			//iInformationEdwin->SetTextL(&_L("Lots of text that has come from the description field in RSS, and perhaps even a picture!!"));
 
 			iInformationEdwin->UpdateAllFieldsL();
 			iInformationEdwin->HandleTextChangedL();

@@ -9,6 +9,7 @@
 #include <e32cmn.h>
 #include "PodcastClientGlobals.h"
 #include <mdaaudiosampleplayer.h>
+#include "FeedEngineObserver.h"
 
 _LIT(KMetaDataSemaphoreName, "MetaData");
 const int KMetaDataFileVersion = 1;
@@ -35,14 +36,16 @@ public:
 	void AddDownload(TShowInfo *info);
 	TShowInfoArray* GetAllShows();	
 	TShowInfoArray* GetShowsDownloading();
-	TShowInfoArray* GetShowsByFeed(TDesC &feedTitle);
+	TShowInfoArray* GetShowsByFeed(TFeedInfo *info);
 
 	void ListAllFiles();
 	void ListDir(RFs &rfs, TDesC &folder, TShowInfoArray &files);
-	
+
 	TFeedInfoArray& GetFeeds();
 	
 	void LoadMetaDataFromFile(TShowInfo *info);
+	
+	void AddObserver(MFeedEngineObserver *observer);
 	
 private:
 	void ConstructL();
@@ -66,6 +69,8 @@ private:
 	void ParsingComplete();
 	
 	void AddShow(TShowInfo *item);
+	
+	void ReplaceString(TDes & aString, const TDesC& aStringToReplace,const TDesC& aReplacement);
 
 private:
 	// two HTTP connections, one for feeds and one for shows
@@ -85,6 +90,8 @@ private:
 
 	// for reading meta data from files
     CMdaAudioPlayerUtility *iPlayer;
+    
+    RArray<MFeedEngineObserver*> observers;
     
     TBool iDownloading;
 };

@@ -14,7 +14,7 @@ CFeedParser::~CFeedParser()
 }
 
 
-void CFeedParser::ParseFeedL(TFileName &feedFileName)
+void CFeedParser::ParseFeedL(TFileName &feedFileName, TFeedInfo *info)
 	{
 	RDebug::Print(_L("ParseFeedL BEGIN: %S"), &feedFileName);
 	RFs rfs;
@@ -22,7 +22,7 @@ void CFeedParser::ParseFeedL(TFileName &feedFileName)
 	_LIT8(KXmlMimeType, "text/xml");
 	// Contruct the parser object
 	CParser* parser = CParser::NewLC(KXmlMimeType, *this);
-		
+	activeFeed = info;
 	ParseL(*parser, rfs, feedFileName);
 	
 	// Destroy the parser when done.
@@ -36,7 +36,6 @@ void CFeedParser::OnStartDocumentL(const RDocumentParameters& aDocParam, TInt aE
 	iFeedState = EStateRoot;
 	activeString = NULL;
 	activeItem=new TShowInfo;
-	activeItem->iShowDownloaded = EFalse;
 	}
 
 void CFeedParser::OnEndDocumentL(TInt aErrorCode)
@@ -67,7 +66,8 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 			activeItem = new TShowInfo();
 		// <channel> <title>
 		} else if (str.CompareF(KTagTitle) == 0) {
-			activeString = &iChannelTitle;
+			activeFeed->title.Copy(_L(""));
+			activeString = &activeFeed->title;
 			iFeedState=EStateChannelTitle;
 		// <channel> <description>
 		} else if (str.CompareF(KTagDescription) == 0) {
@@ -119,7 +119,7 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 		case EStateItem:
 			if (str.CompareF(KTagItem) == 0) {
 				iFeedState=EStateChannel;
-				activeItem->feedTitle.Copy(iChannelTitle);
+				activeItem->feedUrl.Copy(activeFeed->url);
 				iCallbacks.Item(activeItem);
 			}
 		break;

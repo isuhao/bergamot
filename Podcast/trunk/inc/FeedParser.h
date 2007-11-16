@@ -2,6 +2,7 @@
 #define FEEDPARSER_H_
 
 #include "FeedParserCallbacks.h"
+#include "FeedInfo.h"
 #include <xml/parser.h> // for CParser
 #include <xml/contenthandler.h>	// for Xml::MContentHandler
 
@@ -34,7 +35,7 @@ public:
 	virtual ~CFeedParser();
 	
 public:
-	void ParseFeedL(TFileName &feedFileName);
+	void ParseFeedL(TFileName &feedFileName, TFeedInfo *item);
 	
 public: // from MContentHandler
 	void OnStartDocumentL(const RDocumentParameters& aDocParam, TInt aErrorCode);
@@ -56,6 +57,7 @@ private:
 	TDes* activeString;
 	TBuf<1024> iChannelTitle;
 	TBuf<2048> iChannelDescription;
+	TFeedInfo *activeFeed;
 };
 
 #endif

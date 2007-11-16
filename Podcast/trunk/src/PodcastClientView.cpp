@@ -86,6 +86,16 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 		if (iPodcastModel.iActiveFeed != NULL) {
 			User::InfoPrint(_L("Getting feed..."));
 			iPodcastModel.FeedEngine().GetFeed(iPodcastModel.iActiveFeed);
+		} else {
+			TFeedInfoArray& array = iPodcastModel.FeedEngine().GetFeeds();
+			
+			for (int i=0;i<array.Count();i++) {
+				TBuf<1024> buf;
+				buf.Format(_L("Getting %S"), &(array[i]->title));
+				User::InfoPrint(buf);
+				iPodcastModel.FeedEngine().GetFeed(array[i]);
+				
+			}
 		}
 		// Just issue simple info messages to show that
 		// the commands have been selected

@@ -9,11 +9,17 @@ const int KTitleLength=256;
 const int KUrlLength=1024;
 const int KDescriptionLength=2048;
 
-enum TShowState {
-	EStateless,
-	EDownloading,
-	EDownloaded,
+enum TPlayState {
+	ENeverPlayed,
+	EPlayed,
 	EPlaying
+};
+
+enum TDownloadState {
+	ENotDownloaded,
+	EQueued,
+	EDownloading,
+	EDownloaded
 };
 
 class TShowInfo {
@@ -26,13 +32,11 @@ public:
 	TBuf<KTitleLength> title;
 	TBuf<KUrlLength> url;
 	TBuf<KDescriptionLength> description;
-	TBuf<KTitleLength> feedTitle;
+	TBuf<KUrlLength> feedUrl;
 	TFileName fileName;
 	TTimeIntervalMicroSeconds position;
-	TShowState state;
-	TBool played;
-	TBool playing;
-	TBool iShowDownloaded;
+	TPlayState playState;
+	TDownloadState downloadState;
 };
 
 

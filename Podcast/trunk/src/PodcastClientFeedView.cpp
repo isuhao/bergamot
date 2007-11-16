@@ -104,7 +104,7 @@ void CPodcastClientFeedView::HandleListBoxEventL(CQikListBox *aListBox, TQikList
 	case EEventItemTapped:
 		{
 			TFeedInfoArray& feeds = iPodcastModel.FeedEngine().GetFeeds();
-			iPodcastModel.iActiveShowList = iPodcastModel.FeedEngine().GetShowsByFeed(feeds[aItemIndex]->title);
+			iPodcastModel.iActiveShowList = iPodcastModel.FeedEngine().GetShowsByFeed(feeds[aItemIndex]);
 			iPodcastModel.iActiveFeed = feeds[aItemIndex];
 			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastPodcastsViewID);
 			iQikAppUi.ActivateViewL(podcastsView);
