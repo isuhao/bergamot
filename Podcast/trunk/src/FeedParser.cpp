@@ -186,3 +186,8 @@ TAny* CFeedParser::GetExtendedInterface(const TInt32 aUid)
 	RDebug::Print(_L("GetExtendedInterface()"));
 	return NULL;
 	}
+
+TFeedInfo& CFeedParser::ActiveFeed()
+	{
+		return *iActiveFeed;
+	}

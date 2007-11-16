@@ -4,22 +4,23 @@
 #include <s32file.h>
 
 CFeedEngine* CFeedEngine::NewL()
-{
+	{
 	CFeedEngine* self = new (ELeave) CFeedEngine;
 	CleanupStack::PushL(self);
 	self->ConstructL();
 	CleanupStack::Pop(self);
 	return self;
-}
+	}
 
 void CFeedEngine::ConstructL()
-{
+	{
+	iParser = new (ELeave) CFeedParser(*this);
 	LoadSettings();
     LoadFeeds();
     LoadMetaData();
-}
+	}
 
-CFeedEngine::CFeedEngine() : parser(*this)
+CFeedEngine::CFeedEngine()
 	{
 	showClient = CHttpClient::NewL(*this);
 	feedClient = CHttpClient::NewL(*this);
@@ -34,6 +35,7 @@ CFeedEngine::~CFeedEngine()
 	{
 	shows.Close();
 	feeds.Close();
+	delete iParser;
 	}
 
 void CFeedEngine::Cancel() 
@@ -135,6 +137,7 @@ void CFeedEngine::ParsingComplete()
 	RDebug::Print(_L("Triggering ShowListUpdated"));
 	for (int i=0;i<observers.Count();i++) {
 		observers[i]->ShowListUpdated();
+		observers[i]->FeedInfoUpdated(iParser->ActiveFeed());
 	}
 	}
 
@@ -165,11 +168,10 @@ void CFeedEngine::ShowCompleteCallback(TShowInfo *info)
 	DownloadNextShow();
 	}
 
-void CFeedEngine::FeedCompleteCallback(TFeedInfo *info)
+void CFeedEngine::FeedCompleteCallback(TFeedInfo * aInfo)
 	{
-	RDebug::Print(_L("File to parse: %S"), &info->fileName);
-	parser.ParseFeedL(info->fileName, info);
-	
+	RDebug::Print(_L("File to parse: %S"), &aInfo->fileName);
+	iParser->ParseFeedL(aInfo->fileName, aInfo);
 	}
 
 void CFeedEngine::DisconnectedCallback()

@@ -28,7 +28,7 @@ enum TFeedState {
 	EStateItemDescription
 };
 
-class CFeedParser : public MContentHandler
+class CFeedParser : public MContentHandler, public CBase
 {
 public:
 	CFeedParser(MFeedParserCallbacks& aCallbacks);
@@ -50,6 +50,7 @@ public: // from MContentHandler
 	void OnProcessingInstructionL(const TDesC8& aTarget, const TDesC8& aData, TInt aErrorCode);
 	void OnError(TInt aErrorCode);
 	TAny* GetExtendedInterface(const TInt32 aUid);
+	TFeedInfo& ActiveFeed();
 private:
 	MFeedParserCallbacks& iCallbacks;
 	TFeedState iFeedState;

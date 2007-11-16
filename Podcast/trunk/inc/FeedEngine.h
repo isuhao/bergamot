@@ -77,7 +77,7 @@ private:
 	CHttpClient* showClient;
 	CHttpClient* feedClient;
 
-	CFeedParser parser;
+	CFeedParser* iParser;
 
 	// the complete database of shows
 	TShowInfoArray shows;
