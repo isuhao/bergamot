@@ -125,7 +125,7 @@ void CSoundEngine::Stop()
 	if(iState > ESoundEngineNotInitialized)
 	{
 		iState = ESoundEngineStopped;
-
+		SetPosition(0);
 		iPlayer->Stop();
 	}
 }

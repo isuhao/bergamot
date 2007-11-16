@@ -2,7 +2,7 @@
 #define PODCASTCLIENTPODCASTSVIEW_H
 #include "PodcastClientView.h"
 
-class CPodcastClientShowsView : public CPodcastClientView
+class CPodcastClientShowsView : public CPodcastClientView, public MFeedEngineObserver
 {
 public:
 	static CPodcastClientShowsView* NewLC(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel);
@@ -13,6 +13,7 @@ protected:
 	void HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxEvent aEventType, TInt aItemIndex, TInt aSlotId);
 	TVwsViewId ViewId()const;
 	void ViewConstructL();
+	void ShowListUpdated();
 
 };
 

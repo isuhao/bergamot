@@ -15,6 +15,7 @@ CPodcastClientShowsView* CPodcastClientShowsView::NewLC(CQikAppUi& aAppUi, CPodc
 	CPodcastClientShowsView* self = new (ELeave) CPodcastClientShowsView(aAppUi, aPodcastModel);
 	CleanupStack::PushL(self);
 	self->ConstructL();
+	aPodcastModel.FeedEngine().AddObserver(self);
 	return self;
 	}
 
@@ -43,7 +44,11 @@ void CPodcastClientShowsView::ViewConstructL()
 }
 
 
-
+// Engine callback when new shows are available
+void CPodcastClientShowsView::ShowListUpdated()
+	{
+	UpdateListboxItemsL();
+	}
 
 void CPodcastClientShowsView::UpdateListboxItemsL()
 {
@@ -109,7 +114,7 @@ case EEventItemTapped:
 		{
 			iPodcastModel.FeedEngine().AddDownload(fItems[aItemIndex]);
 		}
-		// play the podcast if downloaded and its not currently downloading
+		// play the podcast if downloaded
 		else if(fItems[aItemIndex]->downloadState == EDownloaded)
 		{
 			iPodcastModel.PlayPausePodcastL(fItems[aItemIndex]);
