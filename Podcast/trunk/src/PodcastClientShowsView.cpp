@@ -156,20 +156,24 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 	
 	// Informs that the update of the list box model has ended
 	model.ModelEndUpdateL();
-
 		
 	RArray <TFeedInfo*>& feeds = iPodcastModel.FeedEngine().GetFeeds();
 	len = feeds.Count();
+
 	for (TInt i=0;i<len;i++) {
-		if(feeds[i]->iCategoryHandle == KErrNotFound) 
+		TFeedInfo* feedInfo = feeds[i];
+		if(feedInfo->iCategoryHandle == KErrNotFound) 
 		{
-			feeds[i]->iCategoryHandle = iFeedsCategories->AddCategoryL(feeds[i]->title);
+			feedInfo->iCategoryHandle = iFeedsCategories->AddCategoryL(feedInfo->title);
+			iFeedsCategories->SetCategoryRenameable(feedInfo->iCategoryHandle, ETrue);
 		}
 		else
 		{
-			iFeedsCategories->RenameCategoryL(feeds[i]->iCategoryHandle, feeds[i]->title);
+			iFeedsCategories->RenameCategoryL(feedInfo->iCategoryHandle, feedInfo->title);
 		}
 	}
+	// Clean out old category commands and get new names
+	SetCategoryModelAsCommandsL();
 }
 
 
