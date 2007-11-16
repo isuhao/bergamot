@@ -184,8 +184,8 @@ horiz_align=EEikLabelAlignHRight;
 
 RESOURCE EDWIN r_podcast_playview_info
 {
-flags = EEikEdwinDisplayOnly|EEikEdwinDisableAutoCurEnd;
-lines = 0;
+flags = EEikEdwinDisplayOnly|EEikEdwinDisableAutoCurEnd|EEikEdwinNoHorizScrolling;
+lines = 1;
 }
 
 RESOURCE QIK_SLIDER r_podcast_playview_progress
