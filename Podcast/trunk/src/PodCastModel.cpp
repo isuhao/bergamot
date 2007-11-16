@@ -56,7 +56,7 @@ void CPodcastModel::PlayPausePodcastL(TShowInfo* aPodcast)
 			User::InfoPrint(_L("Pausing"));
 			SoundEngine().Pause();
 			aPodcast->position = iSoundEngine->Position();
-			aPodcast->state == EStateless;
+			aPodcast->state = EStateless;
 		} else {
 			User::InfoPrint(_L("Resuming"));
 			iSoundEngine->Play();
