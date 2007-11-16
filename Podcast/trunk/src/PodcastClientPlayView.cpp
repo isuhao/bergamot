@@ -103,11 +103,12 @@ The command Ids are defined in the .hrh file.
 */
 void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 {
+	CQikCommandManager& comMan = CQikCommandManager::Static();
+
 	switch(aCommand.Id())
 	{
 	case EPodcastPlay:
 		{
-			CQikCommandManager& comMan = CQikCommandManager::Static();
 
 			if(iPodcastModel.SoundEngine().State() == ESoundEnginePlaying)
 			{
@@ -122,6 +123,8 @@ void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 		}break;
 	case EPodcastStop:
 		{
+			comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PLAY_CMD);
+
 			iPodcastModel.SoundEngine().Stop();	
 		}break;
 	case EPodcastViewMain:

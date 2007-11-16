@@ -13,6 +13,8 @@ enum TSoundEngineState
 	ESoundEnginePaused,
 	ESoundEngineStopped
 };
+
+
 /**
  * This class handles all playback and audio associated resources that the application/client needs
  */
