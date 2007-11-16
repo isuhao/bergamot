@@ -8,13 +8,11 @@
 #include "ShowInfo.h"
 #include <e32cmn.h>
 #include "PodcastClientGlobals.h"
-#include <mdaaudiosampleplayer.h>
 #include "FeedEngineObserver.h"
 
-_LIT(KMetaDataSemaphoreName, "MetaData");
 const int KMetaDataFileVersion = 1;
 
-class CFeedEngine : public MHttpEventHandlerCallbacks, public MMdaAudioPlayerCallback, public MFeedParserCallbacks
+class CFeedEngine : public MHttpEventHandlerCallbacks, public MFeedParserCallbacks
 {
 public:
 	static CFeedEngine* NewL();
@@ -59,11 +57,7 @@ private:
 	void ShowCompleteCallback(TShowInfo *info);
 	void FeedCompleteCallback(TFeedInfo *info);
 
-    void MapcPlayComplete(TInt aError);
-	void MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds &aDuration);
-
 	void DownloadNextShow();
-	void CleanHtml(TDes &str);
 
 	void Item(TShowInfo *item);
 	void ParsingComplete();
@@ -71,6 +65,7 @@ private:
 	void AddShow(TShowInfo *item);
 	
 	void ReplaceString(TDes & aString, const TDesC& aStringToReplace,const TDesC& aReplacement);
+	void CleanHtml(TDes &str);
 
 private:
 	// two HTTP connections, one for feeds and one for shows
@@ -88,9 +83,6 @@ private:
 	TFeedInfoArray feeds;
 	TFileName iFeedListFile;
 
-	// for reading meta data from files
-    CMdaAudioPlayerUtility *iPlayer;
-    
     RArray<MFeedEngineObserver*> observers;
     
     TBool iDownloading;
