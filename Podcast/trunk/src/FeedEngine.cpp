@@ -423,6 +423,11 @@ TShowInfoArray* CFeedEngine::GetShowsDownloading()
 
 }
 
+TShowInfoArray* CFeedEngine::GetAllShows()
+{
+	return &shows;
+}
+
 void CFeedEngine::ListAllFiles()
 	{
 /*	RFs rfs;

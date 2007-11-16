@@ -82,6 +82,11 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastFeedViewID);
 			iQikAppUi.ActivateViewL(podcastsView);
 		}break;		
+	case EPodcastUpdateFeed:
+		if (iPodcastModel.iActiveFeed != NULL) {
+			User::InfoPrint(_L("Getting feed..."));
+			iPodcastModel.FeedEngine().GetFeed(iPodcastModel.iActiveFeed);
+		}
 		// Just issue simple info messages to show that
 		// the commands have been selected
 	default:

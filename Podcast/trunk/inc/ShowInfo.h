@@ -18,6 +18,7 @@ enum TShowState {
 
 class TShowInfo {
 public:
+TShowInfo();
 void ExternalizeL(RWriteStream& aStream) const;
 void InternalizeL(RReadStream& aStream);
 

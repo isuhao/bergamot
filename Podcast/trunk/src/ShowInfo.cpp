@@ -1,4 +1,8 @@
 #include "ShowInfo.h"
+TShowInfo::TShowInfo()
+	{
+	iShowDownloaded = EFalse;
+	}
 
 void TShowInfo::ExternalizeL(RWriteStream& aStream) const {
 

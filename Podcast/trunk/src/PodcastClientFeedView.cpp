@@ -103,20 +103,11 @@ void CPodcastClientFeedView::HandleListBoxEventL(CQikListBox *aListBox, TQikList
 	case EEventItemConfirmed:
 	case EEventItemTapped:
 		{
-			if (iDownloading) {
-				User::InfoPrint(_L("Cancel not implemented"));
-				iDownloading = EFalse;
-			} else {
-				TFeedInfoArray& feeds = iPodcastModel.FeedEngine().GetFeeds();
-				RDebug::Print(_L("URL: %S"), &(feeds[aItemIndex]->url));
-				User::InfoPrint(_L("Getting feed..."));
-				iDownloading = ETrue;
-				iPodcastModel.FeedEngine().GetFeed(feeds[aItemIndex]);
-				iPodcastModel.iActiveShowList = iPodcastModel.FeedEngine().GetShowsByFeed(feeds[aItemIndex]->title);
-				iPodcastModel.iActiveFeed = feeds[aItemIndex];
-				TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastPodcastsViewID);
-				iQikAppUi.ActivateViewL(podcastsView);
-			}
+			TFeedInfoArray& feeds = iPodcastModel.FeedEngine().GetFeeds();
+			iPodcastModel.iActiveShowList = iPodcastModel.FeedEngine().GetShowsByFeed(feeds[aItemIndex]->title);
+			iPodcastModel.iActiveFeed = feeds[aItemIndex];
+			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastPodcastsViewID);
+			iQikAppUi.ActivateViewL(podcastsView);
 		}
 		break;
 	default:

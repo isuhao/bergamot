@@ -125,6 +125,13 @@ RESOURCE QIK_COMMAND_LIST r_podcast_playview_commands
 			text = STRING_r_view_feeds_cmd;
 			namedGroupId = 1;
 			},
+			QIK_COMMAND
+			{
+			id = EPodcastUpdateFeed;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_update_feeds_cmd;
+			},
+			
 		QIK_COMMAND
 			{
 			id = EEikCmdExit;
@@ -347,6 +354,13 @@ RESOURCE QIK_COMMAND_LIST r_podcast_listview_commands
 			text = STRING_r_view_feeds_cmd;
 			namedGroupId = 1;
 			},
+			QIK_COMMAND
+			{
+			id = EPodcastUpdateFeed;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_update_feeds_cmd;
+			},
+			
 		QIK_COMMAND
 			{
 			id = EEikCmdExit;

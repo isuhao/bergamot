@@ -33,6 +33,7 @@ public:
 	void SaveMetaData();
 	
 	void AddDownload(TShowInfo *info);
+	TShowInfoArray* GetAllShows();	
 	TShowInfoArray* GetShowsDownloading();
 	TShowInfoArray* GetShowsByFeed(TDesC &feedTitle);
 

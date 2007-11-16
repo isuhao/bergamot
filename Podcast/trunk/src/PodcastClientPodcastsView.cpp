@@ -61,6 +61,9 @@ void CPodcastClientPodcastsView::UpdateListboxItemsL()
 	model.ModelBeginUpdateLC();
 	
 	TBuf<100> itemName;
+	if (iPodcastModel.iActiveShowList == NULL) {
+		iPodcastModel.iActiveShowList = iPodcastModel.FeedEngine().GetAllShows();
+	}
 	TShowInfoArray &fItems = *iPodcastModel.iActiveShowList;
 	int len = fItems.Count();
 	
@@ -101,8 +104,7 @@ void CPodcastClientPodcastsView::HandleListBoxEventL(CQikListBox *aListBox, TQik
 	case EEventItemTapped:
 		{
 			TShowInfoArray &fItems = *iPodcastModel.iActiveShowList;
-			//TShowInfoArray& fItems = iPodcastModel.FeedEngine().GetItems();
-			RDebug::Print(_L("Get podcast URL: %S"), &(fItems[aItemIndex]->url));
+
 			if(!fItems[aItemIndex]->iShowDownloaded)
 			{
 				iPodcastModel.FeedEngine().AddDownload(fItems[aItemIndex]);
