@@ -29,3 +29,6 @@ rls_string STRING_r_play_cmd "Play"
 rls_string STRING_r_stop_cmd "Stop"
 rls_string STRING_r_pause_cmd "Pause"
 
+rls_string STRING_r_view_download_cmd "Download"
+rls_string STRING_r_view_play_cmd "Play"
+

@@ -110,6 +110,7 @@ CQikCommand* CPodcastClientShowsView::DynInitOrDeleteCommandL(CQikCommand* aComm
 _LIT(KShowsTitleFormat, "%S - %S");
 void CPodcastClientShowsView::UpdateListboxItemsL()
 {
+	CQikCommandManager& comMan = CQikCommandManager::Static();
 	iListbox->RemoveAllItemsL();
 	
 
@@ -136,6 +137,7 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 	TInt len = fItems.Count();
 	
 	if (len > 0) {
+		comMan.SetType(*this, EPodcastUpdateFeed, EQikCommandTypeScreen);
 		for (TInt i=0;i<len;i++) {
 			MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
 			CleanupClosePushL(*listBoxData);
@@ -145,13 +147,14 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 			CleanupStack::PopAndDestroy();	
 		}
 	} else {
-		{
-			MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
-			CleanupClosePushL(*listBoxData);
-					
-			listBoxData->AddTextL(_L("No items"), EQikListBoxSlotText1);
-			CleanupStack::PopAndDestroy();
-		}
+		
+		comMan.SetType(*this, EPodcastUpdateFeed, EQikCommandTypeItem);
+
+		MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
+		CleanupClosePushL(*listBoxData);
+		
+		listBoxData->AddTextL(_L("No items"), EQikListBoxSlotText1);
+		CleanupStack::PopAndDestroy();
 	}
 	
 	// Informs that the update of the list box model has ended
@@ -179,39 +182,63 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 
 void CPodcastClientShowsView::HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxEvent aEventType, TInt aItemIndex, TInt aSlotId)
 {
-RDebug::Print(_L("HandleListBoxEvent, itemIndex=%d, slotId=%d, aEventType=%d"), aItemIndex, aSlotId, aEventType);
-
-switch (aEventType)
-{
-case EEventHighlightMoved:
-	break;
-case EEventItemConfirmed:
-case EEventItemTapped:
+	RDebug::Print(_L("HandleListBoxEvent, itemIndex=%d, slotId=%d, aEventType=%d"), aItemIndex, aSlotId, aEventType);
+	CQikCommandManager& comMan = CQikCommandManager::Static();
+	
+	switch (aEventType)
 	{
+	case EEventHighlightMoved:
 		TShowInfoArray &fItems = iPodcastModel.ActiveShowList();
-		RDebug::Print(_L("Handle event for podcast %S, downloadState is %d"), &(fItems[aItemIndex]->title), fItems[aItemIndex]->downloadState);
-		if(fItems[aItemIndex]->downloadState == ENotDownloaded)
+		if(aItemIndex>= 0 && aItemIndex < fItems.Count())
+		{
+			if(fItems[aItemIndex]->downloadState == EDownloaded)
+			{
+				comMan.SetInvisible(*this, EQikListBoxCmdSelect, EFalse);
+				comMan.SetTextL(*this, EQikListBoxCmdSelect, R_PODCAST_FEEDS_PLAY_CMD);
+			}
+			else if(fItems[aItemIndex]->downloadState == ENotDownloaded)
+			{
+				comMan.SetInvisible(*this, EQikListBoxCmdSelect, EFalse);
+				comMan.SetTextL(*this, EQikListBoxCmdSelect, R_PODCAST_FEEDS_DOWNLOAD_CMD);
+			}
+			else
+			{
+				comMan.SetInvisible(*this, EQikListBoxCmdSelect, ETrue);
+			}
+		}
+		else
+		{
+			comMan.SetInvisible(*this, EQikListBoxCmdSelect, ETrue);
+		}
+		
+		break;
+	case EEventItemConfirmed:
+	case EEventItemTapped:
 		{
 			TShowInfoArray &fItems = iPodcastModel.ActiveShowList();
-
-			if(!fItems[aItemIndex]->downloadState == EDownloaded)
+			RDebug::Print(_L("Handle event for podcast %S, downloadState is %d"), &(fItems[aItemIndex]->title), fItems[aItemIndex]->downloadState);
+			if(fItems[aItemIndex]->downloadState == ENotDownloaded)
 			{
-				iPodcastModel.FeedEngine().AddDownload(fItems[aItemIndex]);
+				TShowInfoArray &fItems = iPodcastModel.ActiveShowList();
+				
+				if(!fItems[aItemIndex]->downloadState == EDownloaded)
+				{
+					iPodcastModel.FeedEngine().AddDownload(fItems[aItemIndex]);
+				}
+				// play the podcast if downloaded and its not currently downloading
+				else if(fItems[aItemIndex]->downloadState !=  EDownloading)
+				{
+					iPodcastModel.PlayPausePodcastL(fItems[aItemIndex]);
+				}
 			}
-			// play the podcast if downloaded and its not currently downloading
-			else if(fItems[aItemIndex]->downloadState !=  EDownloading)
+			// play the podcast if downloaded
+			else if(fItems[aItemIndex]->downloadState == EDownloaded)
 			{
 				iPodcastModel.PlayPausePodcastL(fItems[aItemIndex]);
 			}
 		}
-		// play the podcast if downloaded
-		else if(fItems[aItemIndex]->downloadState == EDownloaded)
-		{
-			iPodcastModel.PlayPausePodcastL(fItems[aItemIndex]);
-		}
+		break;
+	default:
+		break;
 	}
-	break;
-default:
-	break;
-}
 }
