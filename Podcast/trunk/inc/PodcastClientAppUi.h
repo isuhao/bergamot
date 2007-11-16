@@ -7,7 +7,7 @@ class CPodcastClientPlayView;
 class CPodcastModel;
 class CPodcastClientBaseView;
 class CPodcastClientFeedView;
-class CPodcastClientPodcastsView;
+class CPodcastClientShowsView;
 
 class CPodcastClientAppUi : public CQikAppUi
 {
@@ -20,7 +20,7 @@ private:
 private:
 	CPodcastClientBaseView* iBaseView;
 	CPodcastClientFeedView* iFeedView;
-	CPodcastClientPodcastsView* iPodcastsView;
+	CPodcastClientShowsView* iShowsView;
 	CPodcastClientPlayView* iPlayView;
 
 	CPodcastModel* iPodcastModel;

@@ -1,7 +1,7 @@
 #include "PodcastClientAppUi.h"
 #include "PodcastClientBaseView.h"
 #include "PodcastClientFeedView.h"
-#include "PodcastClientPodcastsView.h"
+#include "PodcastClientShowsView.h"
 #include "PodcastClientPlayView.h"
 #include "PodcastModel.h"
 #include <qikcommand.h>
@@ -21,9 +21,9 @@ void CPodcastClientAppUi::ConstructL()
   AddViewL(*iFeedView);
   CleanupStack::Pop(iFeedView);
 
-  iPodcastsView = CPodcastClientPodcastsView::NewLC(*this, *iPodcastModel);
-  AddViewL(*iPodcastsView);
-  CleanupStack::Pop(iPodcastsView);
+  iShowsView = CPodcastClientShowsView::NewLC(*this, *iPodcastModel);
+  AddViewL(*iShowsView);
+  CleanupStack::Pop(iShowsView);
 
   iPlayView = CPodcastClientPlayView::NewLC(*this, *iPodcastModel);
   AddViewL(*iPlayView);

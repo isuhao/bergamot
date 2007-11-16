@@ -23,7 +23,7 @@ rls_string STRING_r_view_player_cmd "Player"
 rls_string STRING_r_update_feeds_cmd "Update"
 
 rls_string STRING_r_view_feeds_title "Feeds"
-rls_string STRING_r_view_podcasts_title "Podcasts"
+rls_string STRING_r_view_shows_title "Shows"
 
 rls_string STRING_r_play_cmd "Play"
 rls_string STRING_r_stop_cmd "Stop"

@@ -2,13 +2,13 @@
 #define PODCASTCLIENTPODCASTSVIEW_H
 #include "PodcastClientView.h"
 
-class CPodcastClientPodcastsView : public CPodcastClientView
+class CPodcastClientShowsView : public CPodcastClientView
 {
 public:
-	static CPodcastClientPodcastsView* NewLC(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel);
-	~CPodcastClientPodcastsView();
+	static CPodcastClientShowsView* NewLC(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel);
+	~CPodcastClientShowsView();
 protected:
-	CPodcastClientPodcastsView(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel);
+	CPodcastClientShowsView(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel);
 	void UpdateListboxItemsL();
 	void HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxEvent aEventType, TInt aItemIndex, TInt aSlotId);
 	TVwsViewId ViewId()const;

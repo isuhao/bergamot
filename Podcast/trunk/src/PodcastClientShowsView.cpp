@@ -1,6 +1,6 @@
 #include <PodcastClient.rsg>
 
-#include "PodcastClientPodcastsView.h"
+#include "PodcastClientShowsView.h"
 #include "PodcastModel.h"
 
 /**
@@ -9,20 +9,20 @@ Creates and constructs the view.
 @param aAppUi Reference to the AppUi
 @return Pointer to a CPodcastClientView object
 */
-CPodcastClientPodcastsView* CPodcastClientPodcastsView::NewLC(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel)
+CPodcastClientShowsView* CPodcastClientShowsView::NewLC(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel)
 	{
 	//RDebug::Print(_L("NewLC"));
-	CPodcastClientPodcastsView* self = new (ELeave) CPodcastClientPodcastsView(aAppUi, aPodcastModel);
+	CPodcastClientShowsView* self = new (ELeave) CPodcastClientShowsView(aAppUi, aPodcastModel);
 	CleanupStack::PushL(self);
 	self->ConstructL();
 	return self;
 	}
 
-CPodcastClientPodcastsView::CPodcastClientPodcastsView(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel):CPodcastClientView(aAppUi, aPodcastModel)
+CPodcastClientShowsView::CPodcastClientShowsView(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel):CPodcastClientView(aAppUi, aPodcastModel)
 {
 }
 
-CPodcastClientPodcastsView::~CPodcastClientPodcastsView()
+CPodcastClientShowsView::~CPodcastClientShowsView()
 {
 }
 
@@ -30,12 +30,12 @@ CPodcastClientPodcastsView::~CPodcastClientPodcastsView()
 Returns the view Id
 @return Returns the Uid of the view
 */
-TVwsViewId CPodcastClientPodcastsView::ViewId()const
+TVwsViewId CPodcastClientShowsView::ViewId()const
 	{
 	return TVwsViewId(KUidPodcastClientID, KUidPodcastPodcastsViewID);
 	}
 
-void CPodcastClientPodcastsView::ViewConstructL()
+void CPodcastClientShowsView::ViewConstructL()
 {
 	CPodcastClientView::ViewConstructL();
 	iViewLabel = iEikonEnv->AllocReadResourceL(R_PODCAST_PODCASTS_TITLE);
@@ -45,7 +45,7 @@ void CPodcastClientPodcastsView::ViewConstructL()
 
 
 
-void CPodcastClientPodcastsView::UpdateListboxItemsL()
+void CPodcastClientShowsView::UpdateListboxItemsL()
 {
 	iListbox->RemoveAllItemsL();
 
@@ -92,7 +92,7 @@ void CPodcastClientPodcastsView::UpdateListboxItemsL()
 }
 
 
-void CPodcastClientPodcastsView::HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxEvent aEventType, TInt aItemIndex, TInt aSlotId)
+void CPodcastClientShowsView::HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxEvent aEventType, TInt aItemIndex, TInt aSlotId)
 {
 	RDebug::Print(_L("HandleListBoxEvent, itemIndex=%d, slotId=%d, aEventType=%d"), aItemIndex, aSlotId, aEventType);
 	
