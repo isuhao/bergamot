@@ -250,6 +250,7 @@ void CPodcastClientPlayView::UpdateViewL()
 			iInformationEdwin->SetTextL(&showInfo.description);
 
 			iInformationEdwin->HandleTextChangedL();
+			RequestRelayout(this);
 		}
 
 		UpdatePlayStatusL();
