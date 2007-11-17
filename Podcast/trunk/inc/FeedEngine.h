@@ -24,6 +24,7 @@ public:
 
 	void GetFeeds(TFeedInfoArray& array);
 	TFeedInfo* GetFeedInfoByUid(int aFeedUid);
+	
 	// show selection methods
 	void SelectAllShows();
 	void SelectShowsByFeed(TInt aFeedUid);
@@ -84,6 +85,9 @@ private:
 
 	// the current selection of shows
 	TShowInfoArray iSelectedShows;
+	
+	// list of shows waiting to download
+	TShowInfoArray iShowsDownloading;
 	
 	// where we store our shows
 	TFileName iShowDir;

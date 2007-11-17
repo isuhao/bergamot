@@ -32,6 +32,7 @@ CFeedEngine::CFeedEngine()
 
 CFeedEngine::~CFeedEngine()
 	{
+	iShowsDownloading.Close();
 	iShows.ResetAndDestroy();
 	iShows.Close();
 	iFeeds.ResetAndDestroy();
@@ -602,6 +603,7 @@ void CFeedEngine::AddDownload(TShowInfo *info)
 	{
 	RDebug::Print(_L("AddDownload START"));
 	info->iDownloadState = EQueued;
+	iShowsDownloading.Append(info);
 	DownloadNextShow();
 	}
 
@@ -612,17 +614,13 @@ void CFeedEngine::DownloadNextShow()
 		RDebug::Print(_L("Show client busy..."));
 		return;
 	}
-	//TODO, this will break things!
-	SelectShowsByDownloadState(EQueued);
-	TShowInfoArray &array = GetSelectedShows();
-	
-	if(array.Count() > 0) {
-		TShowInfo *info = array[0];
+	if (iShowsDownloading.Count() > 0) {
+		TShowInfo *info = iShowsDownloading[0];
+		iShowsDownloading.Remove(0);
 		RDebug::Print(_L("Downloading %S"), &(info->iTitle));
 		info->iDownloadState = EDownloading;
 		GetShow(info);
 	}
-	array.Close();
 }
 
 void CFeedEngine::CleanHtml(TDes &str)
