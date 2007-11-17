@@ -276,6 +276,8 @@ void CFeedEngine::LoadFeeds()
 		
 		fi->title.Trim();
 		fi->url.Trim();
+		fi->iUid = DefaultHash::Des16(fi->url);
+
 		feeds.Append(fi);
 		error = tft.Read(line);
 		}

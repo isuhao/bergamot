@@ -209,7 +209,7 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 
 	for (TInt i=0;i<len;i++) {
 		TFeedInfo* feedInfo = feeds[i];
-		if(feedInfo->iUid == KErrNotFound) 
+		if(iFeedsCategories->CategoryIndex(feedInfo->iUid) == KErrNotFound)
 		{
 			TInt& categoryValue = iFeedsCategories->AddCategoryL(feedInfo->title);
 			categoryValue = feedInfo->iUid;
