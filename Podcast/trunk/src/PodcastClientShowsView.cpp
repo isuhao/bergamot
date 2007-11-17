@@ -179,9 +179,10 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 			for (TInt i=0;i<len;i++) {
 				MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
 				CleanupClosePushL(*listBoxData);
-				TShowInfo *fi = fItems[i];
-				listBoxData->AddTextL(fi->title, EQikListBoxSlotText1);
-				listBoxData->AddTextL(fi->description, EQikListBoxSlotText2);
+				TShowInfo *si = fItems[i];
+				listBoxData->AddTextL(si->title, EQikListBoxSlotText1);
+				listBoxData->AddTextL(si->description, EQikListBoxSlotText2);
+				listBoxData->SetEmphasis(si->playState == ENeverPlayed);
 				CleanupStack::PopAndDestroy();	
 			}
 		} else {		

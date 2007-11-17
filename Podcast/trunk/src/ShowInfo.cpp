@@ -2,7 +2,7 @@
 TShowInfo::TShowInfo()
 	{
 	downloadState = ENotDownloaded;
-	playState = EPlayed;
+	playState = ENeverPlayed;
 	position = 0;
 	}
 
