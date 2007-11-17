@@ -25,23 +25,23 @@ CFeedEngine::CFeedEngine()
 	{
 	iShowClient = CHttpClient::NewL(*this);
 	iFeedClient = CHttpClient::NewL(*this);
-	iDownloading = EFalse;
 	iFeedListFile.Copy(KFeedsFileName);
 	}
 
 CFeedEngine::~CFeedEngine()
 	{
-	shows.ResetAndDestroy();
-	shows.Close();
-	feeds.ResetAndDestroy();
-	feeds.Close();
+	iShows.ResetAndDestroy();
+	iShows.Close();
+	iFeeds.ResetAndDestroy();
+	iFeeds.Close();
 	delete iParser;
 	delete iFeedClient;
 	delete iShowClient;
 	}
 
-void CFeedEngine::Cancel() 
+void CFeedEngine::StopDownloads() 
 	{
+	RDebug::Print(_L("StopDownloads"));
 	}
 
 void CFeedEngine::GetFeed(TFeedInfo* feedInfo)
@@ -64,7 +64,7 @@ void CFeedEngine::GetFeed(TFeedInfo* feedInfo)
 	}
 
 	feedInfo->fileName.Copy(privatePath);
-	
+	RDebug::Print(_L("URL: %S, fileName: %S"), &feedInfo->url, &feedInfo->fileName);
 	iFeedClient->GetFeed(feedInfo);
 	feedInfo->iUid = DefaultHash::Des16(feedInfo->url);
 	SaveMetaData();
@@ -104,7 +104,6 @@ void CFeedEngine::GetShow(TShowInfo *info)
 	}
 	RDebug::Print(_L("filePath: %S"), &filePath);
 	info->fileName.Copy(filePath);
-	iDownloading = ETrue;
 	iShowClient->GetShow(info);
 	}
 
@@ -119,29 +118,30 @@ void CFeedEngine::ReplaceString(TDes & aString, const TDesC& aStringToReplace,co
 		
 	}
 
-void CFeedEngine::Item(TShowInfo *item)
-	{
-	//RDebug::Print(_L("\nTitle: %S\nURL: %S\nDescription length: %d\nFeed: %S"), &(item->title), &(item->url), item->description.Length(), &(item->feedUrl));
-	CleanHtml(item->description);
-	item->uid = DefaultHash::Des16(item->url);
-	AddShow(item);
-	}
-
 void CFeedEngine::AddShow(TShowInfo *item) {
-	for (int i=0;i<shows.Count();i++) {
-		if (shows[i]->url.Compare(item->url) == 0) {
+	for (int i=0;i<iShows.Count();i++) {
+		if (iShows[i]->url.Compare(item->url) == 0) {
 			return;
 		}
 	}
-	shows.Append(item);
-}
+	iShows.Append(item);
+	}
 
-void CFeedEngine::ParsingComplete()
+void CFeedEngine::NewShowCallback(TShowInfo *item)
+	{
+	RDebug::Print(_L("\nTitle: %S\nURL: %S\nDescription length: %d\nFeed: %S"), &(item->title), &(item->url), item->description.Length(), &(item->feedUrl));
+	CleanHtml(item->description);
+	item->uid = DefaultHash::Des16(item->url);
+	RDebug::Print(_L("Setting UID to %d"), item->uid);
+	AddShow(item);
+	}
+
+void CFeedEngine::ParsingCompleteCallback()
 	{
 	RDebug::Print(_L("Triggering ShowListUpdated"));
-	for (int i=0;i<observers.Count();i++) {
-		observers[i]->FeedInfoUpdated(iParser->ActiveFeed());
-		observers[i]->ShowListUpdated();
+	for (int i=0;i<iObservers.Count();i++) {
+		iObservers[i]->FeedInfoUpdated(iParser->ActiveFeed());
+		iObservers[i]->ShowListUpdated();
 	}
 	}
 
@@ -152,13 +152,18 @@ void CFeedEngine::ConnectedCallback()
 
 void CFeedEngine::AddObserver(MFeedEngineObserver *observer)
 	{
-	observers.Append(observer);
+	iObservers.Append(observer);
 	}
 
 void CFeedEngine::ProgressCallback(int percent)
 	{
 	TBuf<100> printBuffer;
-	printBuffer.Format(_L("Downloading... %d%%"), percent);
+	if (percent == -1) {
+		printBuffer.Format(_L("Downloading..."));
+	
+	} else {
+		printBuffer.Format(_L("Downloading... %d%%"), percent);
+	}
 	User::InfoPrint(printBuffer);
 	
 	}
@@ -168,7 +173,6 @@ void CFeedEngine::ShowCompleteCallback(TShowInfo *info)
 	RDebug::Print(_L("File %S complete"), &info->fileName);
 	info->downloadState = EDownloaded;
 	SaveMetaData();
-	iDownloading = EFalse;
 	DownloadNextShow();
 	}
 
@@ -282,7 +286,7 @@ void CFeedEngine::LoadFeeds()
 		fi->url.Trim();
 		fi->iUid = DefaultHash::Des16(fi->url);
 
-		feeds.Append(fi);
+		iFeeds.Append(fi);
 		error = tft.Read(line);
 		}
 	}
@@ -384,11 +388,11 @@ void CFeedEngine::SaveMetaData()
 	RStoreWriteStream outstream;
 	TStreamId id = outstream.CreateLC(*store);
 	outstream.WriteInt32L(KShowInfoVersion);
-	RDebug::Print(_L("Saving %d items"), shows.Count());
-	outstream.WriteInt32L(shows.Count());
-	for (int i=0;i<shows.Count();i++) {
+	RDebug::Print(_L("Saving %d items"), iShows.Count());
+	outstream.WriteInt32L(iShows.Count());
+	for (int i=0;i<iShows.Count();i++) {
 //		RDebug::Print(_L("Storing show %i"), i);
-		outstream  << *shows[i];
+		outstream  << *iShows[i];
 	}
 	
 	outstream.CommitL();
@@ -457,8 +461,8 @@ void CFeedEngine::ListDir(RFs &rfs, TDesC &folder, TShowInfoArray &files) {
 
 void CFeedEngine::GetFeeds(TFeedInfoArray& array) 
 {
-	for (int i=0;i<feeds.Count();i++) {
-		array.Append(feeds[i]);
+	for (int i=0;i<iFeeds.Count();i++) {
+		array.Append(iFeeds[i]);
 	}
 }
 
@@ -467,21 +471,21 @@ void CFeedEngine::GetShowsByFeed(TFeedInfo *info, TShowInfoArray& array)
 	RDebug::Print(_L("GetShowsByFeed: %S"), &info->title);
 
 	
-	for (int i=0;i<shows.Count();i++) {
-		//RDebug::Print(_L("Comparing '%S' to '%S'"), &(shows[i]->feedUrl), &info->url);
-		if (shows[i]->feedUrl.Compare(info->url) == 0) {
-			array.Append(shows[i]);
+	for (int i=0;i<iShows.Count();i++) {
+		//RDebug::Print(_L("Comparing '%S' to '%S'"), &(iShows[i]->feedUrl), &info->url);
+		if (iShows[i]->feedUrl.Compare(info->url) == 0) {
+			array.Append(iShows[i]);
 		}
 	
 	}
-	RDebug::Print(_L("GetShowsByFeed returning %d out of %d shows"), array.Count(), shows.Count());
+	RDebug::Print(_L("GetShowsByFeed returning %d out of %d shows"), array.Count(), iShows.Count());
 }
 
 void CFeedEngine::GetShowsDownloading(TShowInfoArray& array)
 {
-	for (int i=0;i<shows.Count();i++) {
-		if (shows[i]->downloadState == EQueued) {
-			array.Append(shows[i]);
+	for (int i=0;i<iShows.Count();i++) {
+		if (iShows[i]->downloadState == EQueued) {
+			array.Append(iShows[i]);
 		}
 	}
 
@@ -489,8 +493,8 @@ void CFeedEngine::GetShowsDownloading(TShowInfoArray& array)
 
 void CFeedEngine::GetAllShows(TShowInfoArray &array)
 {
-	for (int i=0;i<shows.Count();i++) {
-		array.Append(shows[i]);
+	for (int i=0;i<iShows.Count();i++) {
+		array.Append(iShows[i]);
 	}
 }
 
@@ -521,8 +525,8 @@ void CFeedEngine::AddDownload(TShowInfo *info)
 
 void CFeedEngine::DownloadNextShow()
 {
-	if (iDownloading) {
-		RDebug::Print(_L("Already downloading"));
+	if (iShowClient->IsActive()) {
+		RDebug::Print(_L("Show client busy..."));
 		return;
 	}
 	

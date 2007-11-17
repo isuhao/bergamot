@@ -117,13 +117,12 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 					}
 				else
 					{
-					RDebug::Print(_L("Setting file to save to"));
 					TInt err = iRespBodyFile.Replace(iFileServ,
 													 iParsedFileName.FullName(),
 													 EFileWrite);
 					if (err)
 						{
-						RDebug::Print(_L("There was an error"));
+						RDebug::Print(_L("There was an error replacing file"));
 						iSavingResponseBody = EFalse;
 						User::Leave(err);
 						}
@@ -139,23 +138,21 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 			// Some (more) body data has been received (in the HTTP response)
 			if (iVerbose)
 				DumpRespBody(aTransaction);
-			
+			//RDebug::Print(_L("Saving: %d"), iSavingResponseBody);
 			// Append to the output file if we're saving responses
 			if (iSavingResponseBody)
 				{
 				TPtrC8 bodyData;
-				TBool lastChunk = iRespBody->GetNextDataPart(bodyData);
+				iRespBody->GetNextDataPart(bodyData);
 				if (iBytesTotal != -1) {
 					iBytesDownloaded += bodyData.Length();
 					int percent = (int) ((float)iBytesDownloaded * 100.0 / (float)iBytesTotal) ;
 					//				RDebug::Print(_L("Downloading: %d, %d total"), iBytesDownloaded, iBytesTotal);
 					iCallbacks.ProgressCallback(percent);
+				} else {
+					iCallbacks.ProgressCallback(-1);
 				}
 				iRespBodyFile.Write(bodyData);
-
-				//if (lastChunk) {
-					//iRespBodyFile.Flush();
-				//}
 				}
 
 			// Done with that bit of body data

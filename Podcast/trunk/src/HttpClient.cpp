@@ -54,30 +54,36 @@ void CHttpClient::SetHeaderL(RHTTPHeaders aHeaders,
   {
   RStringF valStr = iSession.StringPool().OpenFStringL(aHdrValue);
   THTTPHdrVal val(valStr);
-  aHeaders.SetFieldL(iSession.StringPool().StringF(aHdrField,
-                                                   RHTTPSession::GetTable()),
-                     val);
+  aHeaders.SetFieldL(
+		  iSession.StringPool().StringF(aHdrField,
+				  RHTTPSession::GetTable()),
+                  val);
   valStr.Close();
   }
 
+TBool CHttpClient::IsActive()
+	{
+	return iIsActive;
+	}
 
 void CHttpClient::GetFeed(TFeedInfo *info)
 	{
-	RDebug::Print(_L("GetFeed START"));
+	RDebug::Print(_L("CHttpClient::GetFeed START"));
 	Get(info->url, info->fileName);
 	iCallbacks.FeedCompleteCallback(info);
-	RDebug::Print(_L("GetFeed END"));
+	RDebug::Print(_L("CHttpClient::GetFeed END"));
 	}
 
 void CHttpClient::GetShow(TShowInfo *info)
 	{
-	RDebug::Print(_L("GetShow START"));
+	RDebug::Print(_L("CHttpClient::GetShow START"));
 	Get(info->url, info->fileName);
 	iCallbacks.ShowCompleteCallback(info);
-	RDebug::Print(_L("GetShow END"));
+	RDebug::Print(_L("CHttpClient::GetShow END"));
 	}
 
 void CHttpClient::Get(TDesC& url, TDesC& fileName) {
+	iIsActive = ETrue;
 	TBuf8<256> url8;
 	url8.Copy(url);
 	RStringPool strP = iSession.StringPool();
@@ -87,6 +93,7 @@ void CHttpClient::Get(TDesC& url, TDesC& fileName) {
 	TUriParser8 uri; 
 	uri.Parse(url8);
 	CHttpEventHandler* eHandler;
+	RDebug::Print(_L("Getting %S to %S"), &url, &fileName);
 	eHandler = CHttpEventHandler::NewL(iCallbacks);
 	eHandler->SetSaveFileName(fileName);
 	RHTTPTransaction trans = iSession.OpenTransactionL(uri, *eHandler, method);
@@ -101,4 +108,5 @@ void CHttpClient::Get(TDesC& url, TDesC& fileName) {
 	// Start the scheduler, once the transaction completes or is cancelled on 
 	// an error the scheduler will be stopped in the event handler
 	CActiveScheduler::Start();
+	iIsActive = EFalse;
 }

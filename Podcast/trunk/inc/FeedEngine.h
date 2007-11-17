@@ -18,8 +18,23 @@ public:
 	
 public:
 	void GetFeed(TFeedInfo* feedInfo);
+	
+	void AddDownload(TShowInfo *info);
+	void StopDownloads();
+
+	void GetAllShows(TShowInfoArray &array);	
+	void GetShowsDownloading(TShowInfoArray &array);
+	void GetShowsByFeed(TFeedInfo *info, TShowInfoArray &array);
+	void GetFeeds(TFeedInfoArray& array);
+	
+	void AddObserver(MFeedEngineObserver *observer);
+	
+private:
+	void ConstructL();
+	CFeedEngine();
+
+
 	void GetShow(TShowInfo *info);
-	void Cancel();
 
 	void LoadSettings();
 	
@@ -28,25 +43,11 @@ public:
 
 	void LoadMetaData();
 	void SaveMetaData();
-	
-	void AddDownload(TShowInfo *info);
-	void GetAllShows(TShowInfoArray &array);	
-	void GetShowsDownloading(TShowInfoArray &array);
-	void GetShowsByFeed(TFeedInfo *info, TShowInfoArray &array);
 
 	void ListAllFiles();
 	void ListDir(RFs &rfs, TDesC &folder, TShowInfoArray &files);
 
-	void GetFeeds(TFeedInfoArray& array);
-	
-	void LoadMetaDataFromFile(TShowInfo *info);
-	
-	void AddObserver(MFeedEngineObserver *observer);
-	
-private:
-	void ConstructL();
-	CFeedEngine();
-
+	// callbacks from HttpClient
 	void ConnectedCallback();
 	void DisconnectedCallback();
 	void ProgressCallback(int percent);
@@ -55,35 +56,34 @@ private:
 	void ShowCompleteCallback(TShowInfo *info);
 	void FeedCompleteCallback(TFeedInfo *info);
 
-	void DownloadNextShow();
-
-	void Item(TShowInfo *item);
-	void ParsingComplete();
+	// callbacks from FeedParser
+	void NewShowCallback(TShowInfo *item);
+	void ParsingCompleteCallback();
 	
 	void AddShow(TShowInfo *item);
+	void DownloadNextShow();
 	
 	void ReplaceString(TDes & aString, const TDesC& aStringToReplace,const TDesC& aReplacement);
 	void CleanHtml(TDes &str);
-
 private:
 	// two HTTP connections, one for feeds and one for shows
 	CHttpClient* iShowClient;
 	CHttpClient* iFeedClient;
 
+	// RSS parser
 	CFeedParser* iParser;
 
 	// the complete database of shows
-	TShowInfoArray shows;
+	TShowInfoArray iShows;
 	// where we store our shows
 	TFileName iShowDir;
 	
 	// the list of feeds
-	TFeedInfoArray feeds;
+	TFeedInfoArray iFeeds;
 	TFileName iFeedListFile;
 
-    RArray<MFeedEngineObserver*> observers;
-    
-    TBool iDownloading;
+	// observers that will receive callbacks
+    RArray<MFeedEngineObserver*> iObservers;
 };
 
 #endif /*FEEDENGINE_H_*/

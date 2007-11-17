@@ -131,4 +131,5 @@ void TShowInfo::InternalizeL(RReadStream& aStream) {
 	if (error != KErrNone) {
 		return;
 	}
+	
 }

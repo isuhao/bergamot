@@ -41,7 +41,7 @@ void CFeedParser::OnStartDocumentL(const RDocumentParameters& aDocParam, TInt aE
 void CFeedParser::OnEndDocumentL(TInt aErrorCode)
 	{
 	//RDebug::Print(_L("OnEndDocumentL()"));
-	iCallbacks.ParsingComplete();
+	iCallbacks.ParsingCompleteCallback();
 	}
 
 void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArray& aAttributes, TInt aErrorCode)
@@ -135,7 +135,7 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 			if (str.CompareF(KTagItem) == 0) {
 				iFeedState=EStateChannel;
 				activeItem->feedUrl.Copy(iActiveFeed->url);
-				iCallbacks.Item(activeItem);
+				iCallbacks.NewShowCallback(activeItem);
 			}
 		break;
 		case EStateItemTitle:
@@ -193,7 +193,7 @@ void CFeedParser::OnProcessingInstructionL(const TDesC8& aTarget, const TDesC8& 
 
 void CFeedParser::OnError(TInt aErrorCode)
 	{
-	RDebug::Print(_L("OnError()"));
+	RDebug::Print(_L("CFeedParser::OnError %d"), aErrorCode);
 	}
 
 TAny* CFeedParser::GetExtendedInterface(const TInt32 aUid)

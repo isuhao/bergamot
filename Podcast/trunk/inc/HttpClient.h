@@ -31,7 +31,7 @@ public:
   static CHttpClient* NewL(MHttpEventHandlerCallbacks& aResObs);
   void GetFeed(TFeedInfo *info);
   void GetShow(TShowInfo *info);
-
+  TBool IsActive();
 protected:
   CHttpClient(MHttpEventHandlerCallbacks& aResObs);
 
@@ -43,6 +43,7 @@ private:
 private:
   RHTTPSession iSession;
   MHttpEventHandlerCallbacks& iCallbacks;
+  TBool iIsActive;
 };
 
 
