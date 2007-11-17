@@ -129,6 +129,10 @@ void CSoundEngine::Play()
 	{
 		iPlayer->Play();
 		iState = ESoundEnginePlaying;
+		if(iObserver != NULL)
+		{
+			TRAPD(err, iObserver->PlaybackStartedL());
+		}
 	}
 }
 
