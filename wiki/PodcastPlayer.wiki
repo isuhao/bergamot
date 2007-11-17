@@ -1,6 +1,6 @@
 = Podcast Player =
 
-The aim of this project is to create a fully functional podcatcher, in the spirit of for instance [http://www.blogs.s60.com/nokiapodcasting/ Nokia Podcasting]. There is working [http://bergamot.googlecode.com/svn/Podcast/trunk code] in Subversion, as well as the latest "trunk" [http://bergamot.googlecode.com/svn/Podcast/trunk/group/Podcast_udeb_signed.sis debug build]. For more stable versions, see Releases below.
+The Podcast Player is a fully functional podcatcher for UIQ. It is still in early development, but there is working [http://bergamot.googlecode.com/svn/Podcast/trunk code] in Subversion, as well as the latest "trunk" [http://bergamot.googlecode.com/svn/Podcast/trunk/group/Podcast_udeb_signed.sis debug build]. For more stable versions, see Releases below.
 
 The intention is to release one alpha version every week. I intend to have a fully functional beta version by christmas at the latest.
 
@@ -37,20 +37,20 @@ http://bergamot.googlecode.com/svn/wiki/pp2.jpg
 This is how I plan to implement features. Please [http://groups.google.com/group/bergamot help me find out what's important!]
 
   * Alpha 2 (November 18th)
-    * Improved UI
-    * More Configuration
-    * Support for other feeds (Atom, RSS 0.9, any more?)
+    * New and improved UI
+    * Much improved feed handling
     * Keep track of position inside audio file, even between restarts, and for multiple podcasts at a time
-    * ID3 parsing
+    * Volume control
 
   * Alpha 3 (November 25th)
     * Proper feed handling, i.e. know what's new
+    * New podcast notification
+    * Automatic background downloading
     * Check connection type, option to download only on WLAN
-    * Volume control
+    * ID3 parsing if necessary
+    * Support for other feeds (Atom, RSS 0.9, any more?)
 
   * Alpha 4
-    * Automatic background downloading
-    * New podcast notification
     * Video support
 
 = Name =
