@@ -106,8 +106,8 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 			listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
 			CleanupClosePushL(*listBoxData);
 			TFeedInfo *fi = feeds[i];
-			listBoxData->AddTextL(fi->title, EQikListBoxSlotText1);
-			listBoxData->AddTextL(fi->description, EQikListBoxSlotText2);
+			listBoxData->AddTextL(fi->iTitle, EQikListBoxSlotText1);
+			listBoxData->AddTextL(fi->iDescription, EQikListBoxSlotText2);
 			CleanupStack::PopAndDestroy();	
 		}
 	} else {
@@ -141,14 +141,12 @@ void CPodcastClientFeedView::HandleListBoxEventL(CQikListBox *aListBox, TQikList
 			TFeedInfoArray feeds;
 			CleanupClosePushL(feeds);
 			iPodcastModel.FeedEngine().GetFeeds(feeds);
-			TShowInfoArray shows;
-			CleanupClosePushL(shows);
-			iPodcastModel.FeedEngine().GetShowsByFeed(feeds[aItemIndex], shows);
-			iPodcastModel.SetActiveShowList(shows);
+			iPodcastModel.FeedEngine().SelectShowsByFeed(feeds[aItemIndex]->iUid);
+			iPodcastModel.SetActiveShowList(iPodcastModel.FeedEngine().GetSelectedShows());
 			iPodcastModel.SetActiveFeedInfo(*feeds[aItemIndex]);
 			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID);
 			iQikAppUi.ActivateViewL(podcastsView);
-			CleanupStack::PopAndDestroy(2);// close shows and feeds
+			CleanupStack::PopAndDestroy();// close feeds
 		}
 		break;
 	default:

@@ -84,9 +84,9 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 		}break;		
 	case EPodcastUpdateFeed:
 		{
-			if (iPodcastModel.ActiveFeedInfo().url.Length()>0) {
+			if (iPodcastModel.ActiveFeedInfo().iUrl.Length()>0) {
 				User::InfoPrint(_L("Getting feed..."));
-				iPodcastModel.FeedEngine().GetFeed(&iPodcastModel.ActiveFeedInfo());
+				iPodcastModel.FeedEngine().UpdateFeed(iPodcastModel.ActiveFeedInfo().iUid);
 			} else 
 			{
 				TFeedInfoArray array;
@@ -96,9 +96,9 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 				for (int i=0;i<array.Count();i++) 
 				{
 					TBuf<1024> buf;
-					buf.Format(_L("Getting %S"), &(array[i]->title));
+					buf.Format(_L("Getting %S"), &(array[i]->iTitle));
 					User::InfoPrint(buf);
-					iPodcastModel.FeedEngine().GetFeed(array[i]);
+					iPodcastModel.FeedEngine().UpdateFeed(array[i]->iUid);
 					
 				}
 				CleanupStack::PopAndDestroy();//close array

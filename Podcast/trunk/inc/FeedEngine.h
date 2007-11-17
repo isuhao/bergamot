@@ -17,16 +17,19 @@ public:
 	virtual ~CFeedEngine();
 	
 public:
-	void GetFeed(TFeedInfo* feedInfo);
+	void UpdateFeed(TInt aFeedUid);
 	
 	void AddDownload(TShowInfo *info);
 	void StopDownloads();
 
-	void GetAllShows(TShowInfoArray &array);	
-	void GetShowsDownloading(TShowInfoArray &array);
-	void GetShowsDownloaded(TShowInfoArray &array);
-	void GetShowsByFeed(TFeedInfo *info, TShowInfoArray &array);
 	void GetFeeds(TFeedInfoArray& array);
+	TFeedInfo* GetFeedInfoByUid(int aFeedUid);
+	// show selection methods
+	void SelectAllShows();
+	void SelectShowsByFeed(TInt aFeedUid);
+	void SelectShowsByDownloadState(TInt aDownloadState);
+	
+	TShowInfoArray& GetSelectedShows();
 	
 	void AddObserver(MFeedEngineObserver *observer);
 	
@@ -78,6 +81,10 @@ private:
 
 	// the complete database of shows
 	TShowInfoArray iShows;
+
+	// the current selection of shows
+	TShowInfoArray iSelectedShows;
+	
 	// where we store our shows
 	TFileName iShowDir;
 	
@@ -87,7 +94,7 @@ private:
 
 	// the file session used to read and write settings
 	RFs iFs;
-
+	
 	// observers that will receive callbacks
     RArray<MFeedEngineObserver*> iObservers;
 };

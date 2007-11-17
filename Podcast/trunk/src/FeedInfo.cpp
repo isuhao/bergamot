@@ -2,28 +2,28 @@
 
 void TFeedInfo::ExternalizeL(RWriteStream& aStream) const {
 
-	aStream.WriteInt32L(title.Length());
+	aStream.WriteInt32L(iTitle.Length());
 //	RDebug::Print(_L("wrote len: %d"), title.Length());
 
-	aStream.WriteL(title);
-	RDebug::Print(_L("wrote title: %S"), &title);
+	aStream.WriteL(iTitle);
+	RDebug::Print(_L("wrote title: %S"), &iTitle);
 	
-	aStream.WriteInt32L(url.Length());
+	aStream.WriteInt32L(iUrl.Length());
 //	RDebug::Print(_L("wrote len: %d"), url.Length());
 	
-	aStream.WriteL(url);
+	aStream.WriteL(iUrl);
 //	RDebug::Print(_L("wrote url: %S"), &url);
 	
-	aStream.WriteInt32L(description.Length());
+	aStream.WriteInt32L(iDescription.Length());
 //	RDebug::Print(_L("wrote len: %d"), description.Length());
 
-	aStream.WriteL(description);
+	aStream.WriteL(iDescription);
 //	RDebug::Print(_L("wrote description: %S"), &description);
 	
-	aStream.WriteInt32L(fileName.Length());
+	aStream.WriteInt32L(iFileName.Length());
 //	RDebug::Print(_L("wrote len: %d"), fileName.Length());
 
-	aStream.WriteL(fileName);
+	aStream.WriteL(iFileName);
 //	RDebug::Print(_L("wrote fileName: %S"), &fileName);
 
 	aStream.WriteInt32L(iUid);
@@ -38,11 +38,11 @@ void TFeedInfo::InternalizeL(RReadStream& aStream) {
 	}
 	//RDebug::Print(_L("len: %d"), len);
 
-	TRAP(error, aStream.ReadL(title, len));
+	TRAP(error, aStream.ReadL(iTitle, len));
 	if (error != KErrNone) {
 		return;
 	}
-	RDebug::Print(_L("read title: %S"), &title);
+	RDebug::Print(_L("read title: %S"), &iTitle);
 	
 	TRAP(error,len = aStream.ReadInt32L());
 	if (error != KErrNone) {
@@ -50,7 +50,7 @@ void TFeedInfo::InternalizeL(RReadStream& aStream) {
 	}
 	//RDebug::Print(_L("len: %d"), len);
 
-	TRAP(error,aStream.ReadL(url, len));
+	TRAP(error,aStream.ReadL(iUrl, len));
 	if (error != KErrNone) {
 		return;
 	}
@@ -62,7 +62,7 @@ void TFeedInfo::InternalizeL(RReadStream& aStream) {
 	}
 	//RDebug::Print(_L("len: %d"), len);
 	
-	TRAP(error,aStream.ReadL(description, len));
+	TRAP(error,aStream.ReadL(iDescription, len));
 	if (error != KErrNone) {
 		return;
 	}
@@ -74,7 +74,7 @@ void TFeedInfo::InternalizeL(RReadStream& aStream) {
 	}
 	//RDebug::Print(_L("len: %d"), len);
 
-	TRAP(error,aStream.ReadL(fileName, len));
+	TRAP(error,aStream.ReadL(iFileName, len));
 	if (error != KErrNone) {
 		return;
 	}

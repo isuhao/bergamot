@@ -237,7 +237,7 @@ void CPodcastClientPlayView::UpdateViewL()
 			CQikCommandManager& comMan = CQikCommandManager::Static();
 
 			TShowInfo showInfo = *iPodcastModel.PlayingPodcast();
-			ViewContext()->ChangeTextL(EPodcastPlayViewTitleCtrl, showInfo.title);
+			ViewContext()->ChangeTextL(EPodcastPlayViewTitleCtrl, showInfo.iTitle);
 			TBuf<32> time = _L("00:00");
 			TUint playtime = iPodcastModel.SoundEngine().PlayTime();
 			if(playtime > 0)
@@ -247,7 +247,7 @@ void CPodcastClientPlayView::UpdateViewL()
 			iTimeLabel->SetText(time);
 			iTimeLabel->SetSize(iTimeLabel->MinimumSize());
 
-			iInformationEdwin->SetTextL(&showInfo.description);
+			iInformationEdwin->SetTextL(&showInfo.iDescription);
 
 			iInformationEdwin->HandleTextChangedL();
 			RequestRelayout(this);

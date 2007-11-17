@@ -71,8 +71,8 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 				iPodcastModel.SetActiveFeedInfo(*feeds[i]);
 				TShowInfoArray shows;
 				CleanupClosePushL(shows);
-				iPodcastModel.FeedEngine().GetShowsByFeed(feeds[i],shows);
-				iPodcastModel.SetActiveShowList(shows);
+				iPodcastModel.FeedEngine().SelectShowsByFeed(feeds[i]->iUid);
+				iPodcastModel.SetActiveShowList(iPodcastModel.FeedEngine().GetSelectedShows());
 				CleanupStack::PopAndDestroy();// close shows
 				UpdateListboxItemsL();				
 			}
@@ -99,7 +99,7 @@ void CPodcastClientShowsView::ShowListUpdated()
 
 void CPodcastClientShowsView::FeedInfoUpdated(const TFeedInfo& aFeedInfo)
 {
-	if(aFeedInfo.url == iPodcastModel.ActiveFeedInfo().url)
+	if(aFeedInfo.iUrl == iPodcastModel.ActiveFeedInfo().iUrl)
 	{
 		iPodcastModel.SetActiveFeedInfo(aFeedInfo);
 	}
@@ -151,8 +151,8 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 		iListbox->RemoveAllItemsL();
 		
 		
-		HBufC* titleBuffer = HBufC::NewLC(iViewLabel->Length()+KShowsTitleFormat().Length()+iPodcastModel.ActiveFeedInfo().title.Length());
-		titleBuffer->Des().Format(KShowsTitleFormat, iViewLabel, &iPodcastModel.ActiveFeedInfo().title);
+		HBufC* titleBuffer = HBufC::NewLC(iViewLabel->Length()+KShowsTitleFormat().Length()+iPodcastModel.ActiveFeedInfo().iTitle.Length());
+		titleBuffer->Des().Format(KShowsTitleFormat, iViewLabel, &iPodcastModel.ActiveFeedInfo().iTitle);
 		ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *titleBuffer);
 		CleanupStack::PopAndDestroy(titleBuffer);
 		
@@ -168,11 +168,8 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 		model.ModelBeginUpdateLC();
 		
 		if (iPodcastModel.ActiveShowList().Count() == 0) {
-			TShowInfoArray shows;
-			CleanupClosePushL(shows);
-			iPodcastModel.FeedEngine().GetShowsByFeed(&iPodcastModel.ActiveFeedInfo(), shows);
-			iPodcastModel.SetActiveShowList(shows);
-			CleanupStack::PopAndDestroy();// close shows
+			iPodcastModel.FeedEngine().SelectShowsByFeed(iPodcastModel.ActiveFeedInfo().iUid);
+			iPodcastModel.SetActiveShowList(iPodcastModel.FeedEngine().GetSelectedShows());
 		}
 		TShowInfoArray &fItems = iPodcastModel.ActiveShowList();
 		len = fItems.Count();
@@ -183,9 +180,9 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 				MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
 				CleanupClosePushL(*listBoxData);
 				TShowInfo *si = fItems[i];
-				listBoxData->AddTextL(si->title, EQikListBoxSlotText1);
-				listBoxData->AddTextL(si->description, EQikListBoxSlotText2);
-				listBoxData->SetEmphasis(si->playState == ENeverPlayed);
+				listBoxData->AddTextL(si->iTitle, EQikListBoxSlotText1);
+				listBoxData->AddTextL(si->iDescription, EQikListBoxSlotText2);
+				listBoxData->SetEmphasis(si->iPlayState == ENeverPlayed);
 				CleanupStack::PopAndDestroy();	
 			}
 		} else {		
@@ -215,13 +212,13 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 		TFeedInfo* feedInfo = feeds[i];
 		if(iFeedsCategories->CategoryIndex(feedInfo->iUid) == KErrNotFound)
 		{
-			TInt& categoryValue = iFeedsCategories->AddCategoryL(feedInfo->title);
+			TInt& categoryValue = iFeedsCategories->AddCategoryL(feedInfo->iTitle);
 			categoryValue = feedInfo->iUid;
 			iFeedsCategories->SetCategoryRenameable(feedInfo->iUid, ETrue);
 		}
 		else
 		{
-			iFeedsCategories->RenameCategoryL(feedInfo->iUid, feedInfo->title);
+			iFeedsCategories->RenameCategoryL(feedInfo->iUid, feedInfo->iTitle);
 		}
 	}
 	CleanupStack::PopAndDestroy(); // close feeds
@@ -242,13 +239,13 @@ void CPodcastClientShowsView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQ
 		TShowInfoArray &fItems = iPodcastModel.ActiveShowList();
 		if(aItemIndex>= 0 && aItemIndex < fItems.Count())
 		{
-			if(fItems[aItemIndex]->downloadState == EDownloaded)
+			if(fItems[aItemIndex]->iDownloadState == EDownloaded)
 			{
 				comMan.SetInvisible(*this, EQikListBoxCmdSelect, EFalse);
 				comMan.SetTextL(*this, EQikListBoxCmdSelect, R_PODCAST_FEEDS_PLAY_CMD);
 				comMan.SetShortTextL(*this, EQikListBoxCmdSelect, R_PODCAST_FEEDS_PLAY_CMD);
 			}
-			else if(fItems[aItemIndex]->downloadState == ENotDownloaded)
+			else if(fItems[aItemIndex]->iDownloadState == ENotDownloaded)
 			{
 				comMan.SetInvisible(*this, EQikListBoxCmdSelect, EFalse);
 				comMan.SetTextL(*this, EQikListBoxCmdSelect, R_PODCAST_FEEDS_DOWNLOAD_CMD);
@@ -271,14 +268,14 @@ void CPodcastClientShowsView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQ
 			TShowInfoArray &fItems = iPodcastModel.ActiveShowList();
 			if(aItemIndex>=0 && aItemIndex< fItems.Count())
 			{
-				RDebug::Print(_L("Handle event for podcast %S, downloadState is %d"), &(fItems[aItemIndex]->title), fItems[aItemIndex]->downloadState);
+				RDebug::Print(_L("Handle event for podcast %S, downloadState is %d"), &(fItems[aItemIndex]->iTitle), fItems[aItemIndex]->iDownloadState);
 				// add to downloads if not already downloading
-				if(fItems[aItemIndex]->downloadState == ENotDownloaded)
+				if(fItems[aItemIndex]->iDownloadState == ENotDownloaded)
 				{
 					iPodcastModel.FeedEngine().AddDownload(fItems[aItemIndex]);
 				}
 				// play the podcast if downloaded
-				else if(fItems[aItemIndex]->downloadState == EDownloaded)
+				else if(fItems[aItemIndex]->iDownloadState == EDownloaded)
 				{
 
 					iPodcastModel.PlayPausePodcastL(fItems[aItemIndex]);	

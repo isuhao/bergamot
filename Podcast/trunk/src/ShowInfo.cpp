@@ -1,47 +1,45 @@
 #include "ShowInfo.h"
+
 TShowInfo::TShowInfo()
 	{
-	downloadState = ENotDownloaded;
-	playState = ENeverPlayed;
-	position = 0;
+	iDownloadState = ENotDownloaded;
+	iPlayState = ENeverPlayed;
+	iPosition = 0;
 	}
 
 void TShowInfo::ExternalizeL(RWriteStream& aStream) const {
 
-	aStream.WriteInt32L(title.Length());
+	aStream.WriteInt32L(iTitle.Length());
 //	RDebug::Print(_L("wrote len: %d"), title.Length());
 
-	aStream.WriteL(title);
+	aStream.WriteL(iTitle);
 //	RDebug::Print(_L("wrote title: %S"), &title);
 	
-	aStream.WriteInt32L(url.Length());
+	aStream.WriteInt32L(iUrl.Length());
 //	RDebug::Print(_L("wrote len: %d"), url.Length());
 	
-	aStream.WriteL(url);
+	aStream.WriteL(iUrl);
 //	RDebug::Print(_L("wrote url: %S"), &url);
 	
-	aStream.WriteInt32L(description.Length());
+	aStream.WriteInt32L(iDescription.Length());
 //	RDebug::Print(_L("wrote len: %d"), description.Length());
 
-	aStream.WriteL(description);
+	aStream.WriteL(iDescription);
 //	RDebug::Print(_L("wrote description: %S"), &description);
 	
-	aStream.WriteInt32L(fileName.Length());
+	aStream.WriteInt32L(iFileName.Length());
 //	RDebug::Print(_L("wrote len: %d"), fileName.Length());
 
-	aStream.WriteL(fileName);
+	aStream.WriteL(iFileName);
 //	RDebug::Print(_L("wrote fileName: %S"), &fileName);
 
-	aStream.WriteInt32L(feedUrl.Length());
-//	RDebug::Print(_L("wrote len: %d"), feedUrl.Length());
-
-	aStream.WriteL(feedUrl);
+	aStream.WriteInt32L(iFeedUid);
 //	RDebug::Print(_L("wrote feedUrl: %S"), &feedUrl);
 
-	aStream.WriteInt32L(position.Int64());
-	aStream.WriteInt32L(downloadState);
-	aStream.WriteInt32L(playState);
-	aStream.WriteInt32L(uid);
+	aStream.WriteInt32L(iPosition.Int64());
+	aStream.WriteInt32L(iDownloadState);
+	aStream.WriteInt32L(iPlayState);
+	aStream.WriteInt32L(iUid);
 	}
 
 void TShowInfo::InternalizeL(RReadStream& aStream) {
@@ -53,7 +51,7 @@ void TShowInfo::InternalizeL(RReadStream& aStream) {
 	}
 	//RDebug::Print(_L("len: %d"), len);
 
-	TRAP(error, aStream.ReadL(title, len));
+	TRAP(error, aStream.ReadL(iTitle, len));
 	if (error != KErrNone) {
 		return;
 	}
@@ -65,7 +63,7 @@ void TShowInfo::InternalizeL(RReadStream& aStream) {
 	}
 	//RDebug::Print(_L("len: %d"), len);
 
-	TRAP(error,aStream.ReadL(url, len));
+	TRAP(error,aStream.ReadL(iUrl, len));
 	if (error != KErrNone) {
 		return;
 	}
@@ -77,7 +75,7 @@ void TShowInfo::InternalizeL(RReadStream& aStream) {
 	}
 	//RDebug::Print(_L("len: %d"), len);
 	
-	TRAP(error,aStream.ReadL(description, len));
+	TRAP(error,aStream.ReadL(iDescription, len));
 	if (error != KErrNone) {
 		return;
 	}
@@ -89,45 +87,39 @@ void TShowInfo::InternalizeL(RReadStream& aStream) {
 	}
 	//RDebug::Print(_L("len: %d"), len);
 
-	TRAP(error,aStream.ReadL(fileName, len));
+	TRAP(error,aStream.ReadL(iFileName, len));
 	if (error != KErrNone) {
 		return;
 	}
 	//RDebug::Print(_L("read fileName: %S"), &fileName);
+
+	TRAP(error,iFeedUid = aStream.ReadInt32L());
+	if (error != KErrNone) {
+		return;
+	}
+	//RDebug::Print(_L("read feedUid: %d"), iFeedUid);
 	
-	TRAP(error,len = aStream.ReadInt32L()); 
-	if (error != KErrNone) {
-		return;
-	}
-	//RDebug::Print(_L("len: %d"), len);
-
-	TRAP(error,aStream.ReadL(feedUrl, len));
-	if (error != KErrNone) {
-		return;
-	}
-	//RDebug::Print(_L("read feedUrl: %S"), &feedUrl);
-	
-	TRAP(error,position = aStream.ReadInt32L();) 
+	TRAP(error,iPosition = aStream.ReadInt32L();) 
 	if (error != KErrNone) {
 		return;
 	}
 
-	TRAP(error,downloadState = (TDownloadState) aStream.ReadInt32L());
+	TRAP(error,iDownloadState = (TDownloadState) aStream.ReadInt32L());
 	if (error != KErrNone) {
 		return;
 	}
 
-	TRAP(error,playState = (TPlayState) aStream.ReadInt32L());
+	TRAP(error,iPlayState = (TPlayState) aStream.ReadInt32L());
 	if (error != KErrNone) {
 		return;
 	}
 
 	// no point in setting playing directly
-	if (playState != ENeverPlayed) {
-		playState = EPlayed;
+	if (iPlayState != ENeverPlayed) {
+		iPlayState = EPlayed;
 	}
 	
-	TRAP(error,uid = aStream.ReadInt32L());
+	TRAP(error,iUid = aStream.ReadInt32L());
 	if (error != KErrNone) {
 		return;
 	}

@@ -18,11 +18,11 @@ public:
 	void ExternalizeL(RWriteStream& aStream) const;
 	void InternalizeL(RReadStream& aStream);
 public:
-	TBuf<KFeedUrlLength> url;
-	TBuf<KFeedTitleLength> title;
-	TBuf<KFeedDescriptionLength> description;
-	TFileName fileName;
-	TDateTime lastChecked;
+	TBuf<KFeedUrlLength> iUrl;
+	TBuf<KFeedTitleLength> iTitle;
+	TBuf<KFeedDescriptionLength> iDescription;
+	TFileName iFileName;
+	TDateTime iLastChecked;
 	TInt iUid;
 };
 

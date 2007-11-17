@@ -5,7 +5,7 @@
 #include <f32file.h>
 #include <s32strm.h>
 
-const int KShowInfoVersion = 2;
+const int KShowInfoVersion = 3;
 
 const int KTitleLength=256;
 const int KUrlLength=1024;
@@ -31,15 +31,15 @@ void ExternalizeL(RWriteStream& aStream) const;
 void InternalizeL(RReadStream& aStream);
 
 public:
-	TBuf<KTitleLength> title;
-	TBuf<KUrlLength> url;
-	TBuf<KDescriptionLength> description;
-	TBuf<KUrlLength> feedUrl;
-	TFileName fileName;
-	TTimeIntervalMicroSeconds position;
-	TPlayState playState;
-	TDownloadState downloadState;
-	TInt uid;
+	TBuf<KTitleLength> iTitle;
+	TBuf<KUrlLength> iUrl;
+	TBuf<KDescriptionLength> iDescription;
+	TInt iFeedUid;
+	TFileName iFileName;
+	TTimeIntervalMicroSeconds iPosition;
+	TPlayState iPlayState;
+	TDownloadState iDownloadState;
+	TInt iUid;
 };
 
 

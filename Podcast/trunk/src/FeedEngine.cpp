@@ -47,27 +47,27 @@ void CFeedEngine::StopDownloads()
 	RDebug::Print(_L("StopDownloads"));
 	}
 
-void CFeedEngine::GetFeed(TFeedInfo* feedInfo)
+void CFeedEngine::UpdateFeed(TInt aFeedUid)
 	{
 	TBuf<100> privatePath;
 	iFs.PrivatePath(privatePath);
 	RDebug::Print(_L("PrivatePath: %S"), &privatePath);
 	BaflUtils::EnsurePathExistsL(iFs, privatePath);
-	
-	int pos = feedInfo->url.LocateReverse('/');
+	TFeedInfo *feedInfo = GetFeedInfoByUid(aFeedUid);
+	int pos = feedInfo->iUrl.LocateReverse('/');
 	
 	if (pos != KErrNotFound) {
-		TPtrC str = feedInfo->url.Mid(pos+1);
+		TPtrC str = feedInfo->iUrl.Mid(pos+1);
 		RDebug::Print(_L("Separated filename: %S"), &str);
 		privatePath.Append(str);
 	} else {
 		privatePath.Append(_L("unknown"));
 	}
 
-	feedInfo->fileName.Copy(privatePath);
-	RDebug::Print(_L("URL: %S, fileName: %S"), &feedInfo->url, &feedInfo->fileName);
+	feedInfo->iFileName.Copy(privatePath);
+	RDebug::Print(_L("URL: %S, fileName: %S"), &feedInfo->iUrl, &feedInfo->iFileName);
 	iFeedClient->GetFeed(feedInfo);
-	RDebug::Print(_L("GetFeed END"));
+	RDebug::Print(_L("UpdateFeed END"));
 	}
 
 void CFeedEngine::GetShow(TShowInfo *info)
@@ -80,7 +80,8 @@ void CFeedEngine::GetShow(TShowInfo *info)
 	}
 	// fix filename
 	TBuf<1024> buf;
-	buf.Copy(info->feedUrl);
+	TFeedInfo *feedInfo = GetFeedInfoByUid(info->iFeedUid);
+	buf.Copy(feedInfo->iUrl);
 	ReplaceString(buf, _L("/"), _L("_"));
 	ReplaceString(buf, _L(":"), _L("_"));
 	ReplaceString(buf, _L("?"), _L("_"));
@@ -90,17 +91,17 @@ void CFeedEngine::GetShow(TShowInfo *info)
 	RDebug::Print(_L("directory to store in: %S"), &filePath);
 	BaflUtils::EnsurePathExistsL(iFs, filePath);
 
-	int pos = info->url.LocateReverse('/');
+	int pos = info->iUrl.LocateReverse('/');
 	
 	if (pos != KErrNotFound) {
-		TPtrC str = info->url.Mid(pos+1);
+		TPtrC str = info->iUrl.Mid(pos+1);
 		RDebug::Print(_L("Separated filename: %S"), &str);
 		filePath.Append(str);
 	} else {
 		filePath.Append(_L("unknown.mp3"));
 	}
 	RDebug::Print(_L("filePath: %S"), &filePath);
-	info->fileName.Copy(filePath);
+	info->iFileName.Copy(filePath);
 	iShowClient->GetShow(info);
 	}
 
@@ -117,7 +118,7 @@ void CFeedEngine::ReplaceString(TDes & aString, const TDesC& aStringToReplace,co
 
 void CFeedEngine::AddShow(TShowInfo *item) {
 	for (int i=0;i<iShows.Count();i++) {
-		if (iShows[i]->url.Compare(item->url) == 0) {
+		if (iShows[i]->iUrl.Compare(item->iUrl) == 0) {
 			return;
 		}
 	}
@@ -126,8 +127,8 @@ void CFeedEngine::AddShow(TShowInfo *item) {
 
 void CFeedEngine::AddFeed(TFeedInfo *item) {
 	for (int i=0;i<iFeeds.Count();i++) {
-		if (iFeeds[i]->url.Compare(item->url) == 0) {
-			RDebug::Print(_L("Already have feed %S, discarding"), &item->url);
+		if (iFeeds[i]->iUrl.Compare(item->iUrl) == 0) {
+			RDebug::Print(_L("Already have feed %S, discarding"), &item->iUrl);
 			return;
 		}
 	}
@@ -137,9 +138,9 @@ void CFeedEngine::AddFeed(TFeedInfo *item) {
 
 void CFeedEngine::NewShowCallback(TShowInfo *item)
 	{
-	//RDebug::Print(_L("\nTitle: %S\nURL: %S\nDescription length: %d\nFeed: %S"), &(item->title), &(item->url), item->description.Length(), &(item->feedUrl));
-	CleanHtml(item->description);
-	item->uid = DefaultHash::Des16(item->url);
+	//RDebug::Print(_L("\nTitle: %S\nURL: %S\nDescription length: %d\nFeed: %S"), &(item->iTitle), &(item->iUrl), item->description.Length(), &(item->feedUrl));
+	CleanHtml(item->iDescription);
+	item->iUid = DefaultHash::Des16(item->iUrl);
 	//RDebug::Print(_L("Setting UID to %d"), item->uid);
 	AddShow(item);
 	}
@@ -173,22 +174,21 @@ void CFeedEngine::ProgressCallback(int percent)
 		printBuffer.Format(_L("Downloading... %d%%"), percent);
 	}
 	User::InfoPrint(printBuffer);
-	
 	}
 
 void CFeedEngine::ShowCompleteCallback(TShowInfo *info)
 	{
-	RDebug::Print(_L("File %S complete"), &info->fileName);
-	info->downloadState = EDownloaded;
+	RDebug::Print(_L("File %S complete"), &info->iFileName);
+	info->iDownloadState = EDownloaded;
 	SaveShows();
 	DownloadNextShow();
 	}
 
 void CFeedEngine::FeedCompleteCallback(TFeedInfo * aInfo)
 	{
-	RDebug::Print(_L("File to parse: %S"), &aInfo->fileName);
-	iParser->ParseFeedL(aInfo->fileName, aInfo);
-	aInfo->iUid = DefaultHash::Des16(aInfo->url);
+	RDebug::Print(_L("File to parse: %S"), &aInfo->iFileName);
+	iParser->ParseFeedL(aInfo->iFileName, aInfo);
+	aInfo->iUid = DefaultHash::Des16(aInfo->iUrl);
 	SaveFeeds();
 	SaveShows();
 
@@ -276,20 +276,20 @@ void CFeedEngine::LoadUserFeeds()
 		TFeedInfo *fi = new TFeedInfo;
 		line.Trim();
 		fi->iUid = KErrNotFound;
-		fi->url.Copy(line);
+		fi->iUrl.Copy(line);
 		int pos = line.Locate('|');
 		if (pos == KErrNotFound) {
-			fi->title.Copy(line);
-			fi->url.Copy(line);
+			fi->iTitle.Copy(line);
+			fi->iUrl.Copy(line);
 		}else {
-			fi->title.Copy(line.Left(pos));
-			fi->url.Copy(line.Mid(pos+1));
-			RDebug::Print(_L("Read title: '%S', url: '%S'"), &fi->title, &fi->url);
+			fi->iTitle.Copy(line.Left(pos));
+			fi->iUrl.Copy(line.Mid(pos+1));
+			RDebug::Print(_L("Read title: '%S', url: '%S'"), &fi->iTitle, &fi->iUrl);
 		}
 		
-		fi->title.Trim();
-		fi->url.Trim();
-		fi->iUid = DefaultHash::Des16(fi->url);
+		fi->iTitle.Trim();
+		fi->iUrl.Trim();
+		fi->iUid = DefaultHash::Des16(fi->iUrl);
 
 		AddFeed(fi);
 		error = tft.Read(line);
@@ -495,7 +495,7 @@ void CFeedEngine::ListDir(RFs &rfs, TDesC &folder, TShowInfoArray &files) {
 			fileName.Append(entry.iName);
 
 			for (int i=0;i<iShows.Count();i++) {
-				if (iShows[i]->fileName.Compare(fileName) == 0) {
+				if (iShows[i]->iFileName.Compare(fileName) == 0) {
 					RDebug::Print(_L("Already listed %S"), &fileName);
 					exists = ETrue;
 					break;
@@ -508,10 +508,10 @@ void CFeedEngine::ListDir(RFs &rfs, TDesC &folder, TShowInfoArray &files) {
 			
 			RDebug::Print(entry.iName);
 			TShowInfo *pID = new TShowInfo;
-			pID->fileName.Copy(fileName);
-			pID->title.Copy(entry.iName);		
-			pID->position = 0;
-			pID->downloadState = EDownloaded;
+			pID->iFileName.Copy(fileName);
+			pID->iTitle.Copy(entry.iName);		
+			pID->iPosition = 0;
+			pID->iDownloadState = EDownloaded;
 			RDebug::Print(_L("Adding!"));
 			AddShow(pID);
 		}
@@ -522,6 +522,19 @@ void CFeedEngine::ListDir(RFs &rfs, TDesC &folder, TShowInfoArray &files) {
 
 }
 
+TFeedInfo* CFeedEngine::GetFeedInfoByUid(TInt aFeedUid)
+	{
+	for (int i=0;i<iFeeds.Count();i++)
+		{
+		if (iFeeds[i]->iUid == aFeedUid)
+			{
+			return iFeeds[i];
+			}
+		}
+	
+	return NULL;
+	}
+
 void CFeedEngine::GetFeeds(TFeedInfoArray& array) 
 {
 	for (int i=0;i<iFeeds.Count();i++) {
@@ -529,47 +542,44 @@ void CFeedEngine::GetFeeds(TFeedInfoArray& array)
 	}
 }
 
-void CFeedEngine::GetShowsByFeed(TFeedInfo *info, TShowInfoArray& array)
-{
-	RDebug::Print(_L("GetShowsByFeed: %S"), &info->title);
-
-	
-	for (int i=0;i<iShows.Count();i++) {
-		//RDebug::Print(_L("Comparing '%S' to '%S'"), &(iShows[i]->feedUrl), &info->url);
-		if (iShows[i]->feedUrl.Compare(info->url) == 0) {
-			array.Append(iShows[i]);
-		}
-	
-	}
-	RDebug::Print(_L("GetShowsByFeed returning %d out of %d shows"), array.Count(), iShows.Count());
-}
-
-void CFeedEngine::GetShowsDownloading(TShowInfoArray& array)
-{
-	for (int i=0;i<iShows.Count();i++) {
-		if (iShows[i]->downloadState == EQueued) {
-			array.Append(iShows[i]);
-		}
-	}
-
-}
-
-void CFeedEngine::GetShowsDownloaded(TShowInfoArray& array)
+void CFeedEngine::SelectAllShows()
 	{
-		for (int i=0;i<iShows.Count();i++) {
-			if (iShows[i]->downloadState == EDownloaded) {
-				array.Append(iShows[i]);
+	iSelectedShows.Reset();
+	
+	for (int i=0;i<iShows.Count();i++)
+		{
+		iSelectedShows.Append(iShows[i]);
+		}
+	}
+
+void CFeedEngine::SelectShowsByFeed(TInt aFeedUid)
+	{
+	iSelectedShows.Reset();
+	for (int i=0;i<iShows.Count();i++)
+		{
+		if (iShows[i]->iFeedUid == aFeedUid)
+			{
+			iSelectedShows.Append(iShows[i]);
 			}
 		}
-
 	}
 
-void CFeedEngine::GetAllShows(TShowInfoArray &array)
-{
-	for (int i=0;i<iShows.Count();i++) {
-		array.Append(iShows[i]);
+void CFeedEngine::SelectShowsByDownloadState(TInt aDownloadState)
+	{
+	iSelectedShows.Reset();
+	for (int i=0;i<iShows.Count();i++)
+		{
+		if (iShows[i]->iDownloadState == aDownloadState)
+			{
+			iSelectedShows.Append(iShows[i]);
+			}
+		}	
 	}
-}
+
+TShowInfoArray& CFeedEngine::GetSelectedShows()
+	{
+	return iSelectedShows;
+	}
 
 void CFeedEngine::ListAllFiles()
 	{
@@ -578,8 +588,8 @@ void CFeedEngine::ListAllFiles()
 	/*
 	for (int i=0;i<iShows.Count();i++) {
 		if (iShows[i]->iDownloadState == EDownloaded) {
-			if(BaflUtils::FileExists(iFs, iShows[i]->fileName) == EFalse) {
-				RDebug::Print(_L("%S was removed, marking"), &iShows[i]->fileName);
+			if(BaflUtils::FileExists(iFs, iShows[i]->iFileName) == EFalse) {
+				RDebug::Print(_L("%S was removed, marking"), &iShows[i]->iFileName);
 				iShows[i]->ifiles.Remove(i);
 			}
 	}*/
@@ -591,7 +601,7 @@ void CFeedEngine::ListAllFiles()
 void CFeedEngine::AddDownload(TShowInfo *info)
 	{
 	RDebug::Print(_L("AddDownload START"));
-	info->downloadState = EQueued;
+	info->iDownloadState = EQueued;
 	DownloadNextShow();
 	}
 
@@ -602,13 +612,14 @@ void CFeedEngine::DownloadNextShow()
 		RDebug::Print(_L("Show client busy..."));
 		return;
 	}
+	//TODO, this will break things!
+	SelectShowsByDownloadState(EQueued);
+	TShowInfoArray &array = GetSelectedShows();
 	
-	TShowInfoArray array;
-	GetShowsDownloading(array);
 	if(array.Count() > 0) {
 		TShowInfo *info = array[0];
-		RDebug::Print(_L("Downloading %S"), &(info->title));
-		info->downloadState = EDownloading;
+		RDebug::Print(_L("Downloading %S"), &(info->iTitle));
+		info->iDownloadState = EDownloading;
 		GetShow(info);
 	}
 	array.Close();

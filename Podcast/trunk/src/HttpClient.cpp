@@ -69,7 +69,7 @@ TBool CHttpClient::IsActive()
 void CHttpClient::GetFeed(TFeedInfo *info)
 	{
 	RDebug::Print(_L("CHttpClient::GetFeed START"));
-	Get(info->url, info->fileName);
+	Get(info->iUrl, info->iFileName);
 	iCallbacks.FeedCompleteCallback(info);
 	RDebug::Print(_L("CHttpClient::GetFeed END"));
 	}
@@ -77,7 +77,7 @@ void CHttpClient::GetFeed(TFeedInfo *info)
 void CHttpClient::GetShow(TShowInfo *info)
 	{
 	RDebug::Print(_L("CHttpClient::GetShow START"));
-	Get(info->url, info->fileName);
+	Get(info->iUrl, info->iFileName);
 	iCallbacks.ShowCompleteCallback(info);
 	RDebug::Print(_L("CHttpClient::GetShow END"));
 	}

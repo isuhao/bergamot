@@ -35,6 +35,7 @@ void CFeedParser::OnStartDocumentL(const RDocumentParameters& aDocParam, TInt aE
 //	RDebug::Print(_L("OnStartDocumentL()"));
 	iFeedState = EStateRoot;
 	activeString = NULL;
+	iChannelTitle.Copy(_L(""));
 	activeItem=new TShowInfo;
 	}
 
@@ -63,9 +64,10 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 			//RDebug::Print(_L("New item"));
 			iFeedState=EStateItem;
 			activeItem = new TShowInfo();
+			activeItem->iFeedUid = iActiveFeed->iUid;
 		// <channel> <title>
 		} else if (str.CompareF(KTagTitle) == 0) {
-			iActiveFeed->title.Copy(_L(""));
+			iActiveFeed->iTitle.Copy(_L(""));
 			RDebug::Print(_L("***Feed title!"));
 			activeString = &iChannelTitle;
 			iFeedState=EStateChannelTitle;
@@ -82,7 +84,7 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 	case EStateItem:
 		// <channel> <item> <title>
 		if (str.CompareF(KTagTitle) == 0) {
-			activeString = &activeItem->title;
+			activeString = &activeItem->iTitle;
 			iFeedState=EStateItemTitle;
 		// <channel> <item> <link>
 		} else if (str.CompareF(KTagLink) == 0) {
@@ -98,12 +100,12 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 				if (attr16.Compare(_L("url")) == 0) {
 					TBuf<100> val16;
 					val16.Copy(attr.Value().DesC());
-					activeItem->url.Copy(val16);
+					activeItem->iUrl.Copy(val16);
 //					RDebug::Print(_L("Attr %S=%S"), &attr16, &val16);
 				}
 			}
 		} else if (str.CompareF(KTagDescription) == 0) {
-			activeString = &activeItem->description;
+			activeString = &activeItem->iDescription;
 			iFeedState=EStateItemDescription;
 		}
 		break;
@@ -125,7 +127,7 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 	switch (iFeedState) {
 		case EStateChannelTitle:
 			RDebug::Print(_L("Feed title: %S"), &iChannelTitle);
-			iActiveFeed->title.Copy(iChannelTitle);
+			iActiveFeed->iTitle.Copy(iChannelTitle);
 		case EStateChannelDescription:
 			iFeedState = EStateChannel;
 			break;
@@ -137,7 +139,7 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 		case EStateItem:
 			if (str.CompareF(KTagItem) == 0) {
 				iFeedState=EStateChannel;
-				activeItem->feedUrl.Copy(iActiveFeed->url);
+//				activeItem->iFeedUrl.Copy(iActiveFeed->url);
 				iCallbacks.NewShowCallback(activeItem);
 			}
 		break;
