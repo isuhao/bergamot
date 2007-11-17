@@ -97,9 +97,31 @@ void CPodcastClientShowsView::FeedInfoUpdated(const TFeedInfo& aFeedInfo)
 
 CQikCommand* CPodcastClientShowsView::DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& aControlAddingCommands)
 {
-	if(aCommand->Id() == EQikSoftkeyCmdSelectCategory)
+	switch(aCommand->Id())
 	{
-		aCommand->SetTextL(R_PODCAST_FEEDS_CATEGORY);
+	case EPodcastViewShows:
+		aCommand = NULL;
+		break;
+	case EQikSoftkeyCmdSelectCategory:
+		{	
+			aCommand->SetTextL(R_PODCAST_FEEDS_CATEGORY);
+		}
+		break;
+	case EQikListBoxCmdSelect:
+		{
+			if(iPodcastModel.ActiveShowList().Count() == 0)
+			{
+				aCommand = NULL;
+				//aCommand->SetInvisible(ETrue);
+			}
+			else
+			{
+				aCommand->SetInvisible(EFalse);
+			}
+		}
+		break;
+	default:
+		break;
 	}
 
 	return aCommand;
@@ -111,55 +133,64 @@ _LIT(KShowsTitleFormat, "%S - %S");
 void CPodcastClientShowsView::UpdateListboxItemsL()
 {
 	CQikCommandManager& comMan = CQikCommandManager::Static();
-	iListbox->RemoveAllItemsL();
-	
 
-	HBufC* titleBuffer = HBufC::NewLC(iViewLabel->Length()+KShowsTitleFormat().Length()+iPodcastModel.ActiveFeedInfo().title.Length());
-	titleBuffer->Des().Format(KShowsTitleFormat, iViewLabel, &iPodcastModel.ActiveFeedInfo().title);
-	ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *titleBuffer);
-	CleanupStack::PopAndDestroy(titleBuffer);
+	TInt len = 0;
 
-	MQikListBoxModel& model(iListbox->Model());
-	
-	// Informs the list box model that there will be an update of the data.
-	// Notify the list box model that changes will be made after this point.
-	// Observe that a cleanupitem has been put on the cleanupstack and 
-	// will be removed by ModelEndUpdateL. This means that you have to 
-	// balance the cleanupstack.
-	// When you act directly on the model you always need to encapsulate 
-	// the calls between ModelBeginUpdateLC and ModelEndUpdateL.
-	model.ModelBeginUpdateLC();
-	
-	if (iPodcastModel.ActiveShowList().Count() == 0) {
-		iPodcastModel.SetActiveShowList(*iPodcastModel.FeedEngine().GetShowsByFeed(&iPodcastModel.ActiveFeedInfo()));
-	}
-	TShowInfoArray &fItems = iPodcastModel.ActiveShowList();
-	TInt len = fItems.Count();
-	
-	if (len > 0) {
-		comMan.SetType(*this, EPodcastUpdateFeed, EQikCommandTypeScreen);
-		for (TInt i=0;i<len;i++) {
+	if (iListbox != NULL)
+	{
+		iListbox->RemoveAllItemsL();
+		
+		
+		HBufC* titleBuffer = HBufC::NewLC(iViewLabel->Length()+KShowsTitleFormat().Length()+iPodcastModel.ActiveFeedInfo().title.Length());
+		titleBuffer->Des().Format(KShowsTitleFormat, iViewLabel, &iPodcastModel.ActiveFeedInfo().title);
+		ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *titleBuffer);
+		CleanupStack::PopAndDestroy(titleBuffer);
+		
+		MQikListBoxModel& model(iListbox->Model());
+		
+		// Informs the list box model that there will be an update of the data.
+		// Notify the list box model that changes will be made after this point.
+		// Observe that a cleanupitem has been put on the cleanupstack and 
+		// will be removed by ModelEndUpdateL. This means that you have to 
+		// balance the cleanupstack.
+		// When you act directly on the model you always need to encapsulate 
+		// the calls between ModelBeginUpdateLC and ModelEndUpdateL.
+		model.ModelBeginUpdateLC();
+		
+		if (iPodcastModel.ActiveShowList().Count() == 0) {
+			iPodcastModel.SetActiveShowList(*iPodcastModel.FeedEngine().GetShowsByFeed(&iPodcastModel.ActiveFeedInfo()));
+		}
+		TShowInfoArray &fItems = iPodcastModel.ActiveShowList();
+		len = fItems.Count();
+		
+		if (len > 0) {
+			comMan.SetType(*this, EPodcastUpdateFeed, EQikCommandTypeScreen);
+			for (TInt i=0;i<len;i++) {
+				MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
+				CleanupClosePushL(*listBoxData);
+				TShowInfo *fi = fItems[i];
+				listBoxData->AddTextL(fi->title, EQikListBoxSlotText1);
+				listBoxData->AddTextL(fi->description, EQikListBoxSlotText2);
+				CleanupStack::PopAndDestroy();	
+			}
+		} else {		
 			MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
 			CleanupClosePushL(*listBoxData);
-			TShowInfo *fi = fItems[i];
-			listBoxData->AddTextL(fi->title, EQikListBoxSlotText1);
-			listBoxData->AddTextL(fi->description, EQikListBoxSlotText2);
-			CleanupStack::PopAndDestroy();	
+			
+			listBoxData->AddTextL(_L("No items"), EQikListBoxSlotText1);
+			CleanupStack::PopAndDestroy();
 		}
-	} else {
 		
-		comMan.SetType(*this, EPodcastUpdateFeed, EQikCommandTypeItem);
-
-		MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
-		CleanupClosePushL(*listBoxData);
+		// Informs that the update of the list box model has ended
+		model.ModelEndUpdateL();
 		
-		listBoxData->AddTextL(_L("No items"), EQikListBoxSlotText1);
-		CleanupStack::PopAndDestroy();
 	}
-	
-	// Informs that the update of the list box model has ended
-	model.ModelEndUpdateL();
-		
+
+	if(len == 0)
+	{
+		comMan.SetType(*this, EPodcastUpdateFeed, EQikCommandTypeItem);
+	}
+
 	RArray <TFeedInfo*>& feeds = iPodcastModel.FeedEngine().GetFeeds();
 	len = feeds.Count();
 

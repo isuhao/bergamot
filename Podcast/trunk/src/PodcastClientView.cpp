@@ -122,7 +122,7 @@ void CPodcastClientView::ViewConstructL()
 	iListbox = LocateControlByUniqueHandle<CQikListBox>(EPodcastListViewListCtrl);
 	iListbox->SetListBoxObserver(this);
     UpdateListboxItemsL();
-    }
+}
 
 void CPodcastClientView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage)
 	{

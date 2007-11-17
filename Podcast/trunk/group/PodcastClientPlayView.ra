@@ -1,0 +1,201 @@
+//----------------------------------------------------
+//------------ CONFIGURATION FOR THE COMMON PLAYVIEW ------------
+//----------------------------------------------------
+// The application supports the reference UI Configurations that are supported
+// in the UIQ 3 SDK. Use the UiqEnv tool, to change the UI Configuration in the
+// emulator in order to develop and test the application with varying phone styles.
+RESOURCE QIK_VIEW_CONFIGURATIONS r_podcast_playview_ui_configurations
+	{
+	configurations = 
+		{
+		QIK_VIEW_CONFIGURATION
+			{
+			ui_config_mode = KQikPenStyleTouchPortrait;
+			command_list = r_podcast_playview_commands;
+			view = r_podcast_playview_layout;
+			},
+		QIK_VIEW_CONFIGURATION
+			{
+			ui_config_mode = KQikPenStyleTouchLandscape;
+			command_list = r_podcast_playview_commands;
+			view = r_podcast_playview_layout;
+			},
+		QIK_VIEW_CONFIGURATION
+			{
+			ui_config_mode = KQikSoftkeyStyleTouchPortrait;
+			command_list = r_podcast_playview_commands;
+			view = r_podcast_playview_layout;
+			},
+		QIK_VIEW_CONFIGURATION
+			{
+			ui_config_mode = KQikSoftkeyStylePortrait;
+			command_list = r_podcast_playview_commands;
+			view = r_podcast_playview_layout;
+			},
+		QIK_VIEW_CONFIGURATION
+			{
+			ui_config_mode = KQikSoftkeyStyleSmallPortrait;
+			command_list = r_podcast_playview_commands;
+			view = r_podcast_playview_layout;
+			}
+		};
+	}
+
+//----------------------------------------------------
+//------------------ PLAY COMMANDS -------------------
+//----------------------------------------------------
+RESOURCE QIK_COMMAND_LIST r_podcast_playview_commands
+	{
+	items=
+		{
+		// This command shall only be visible in debug mode because it is only
+		// used to find memory leaks during development of the application.
+		QIK_COMMAND
+			{
+			id = EPodcastPlay;
+			type = EQikCommandTypeItem;
+			text = STRING_r_play_cmd;
+			},
+		QIK_COMMAND
+			{
+			id = EPodcastStop;
+			type = EQikCommandTypeItem;
+			text = STRING_r_stop_cmd;
+			},
+		QIK_COMMAND
+			{
+			id = EPodcastView;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_view_cmd;
+			namedGroupLinkId= 1;
+			},
+			QIK_COMMAND
+			{
+			id = EPodcastViewMain;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_view_main_cmd;
+			namedGroupId = 1;
+			},
+			QIK_COMMAND
+			{
+			id = EPodcastViewShows;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_view_shows_cmd;
+			namedGroupId = 1;
+			},
+			QIK_COMMAND
+			{
+			id = EPodcastViewFeeds;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_view_feeds_cmd;
+			namedGroupId = 1;
+			},		
+			
+		QIK_COMMAND
+			{
+			id = EEikCmdExit;
+			type = EQikCommandTypeScreen;
+			// Indicate that it will only be created in debug builds
+			stateFlags = EQikCmdFlagDebugOnly;
+			text = STRING_r_listbox_listview_cmd_close_debug;
+			shortText = STRING_r_listbox_listview_cmd_close_debug_shorttext;
+			}
+		};
+	}
+//----------------------------------------------------
+//----------------- PLAYVIEW LAYOUT ------------------
+//----------------------------------------------------
+RESOURCE QIK_VIEW r_podcast_playview_layout
+	{
+	pages = r_podcast_playview_layout_pages;
+	}
+
+
+RESOURCE QIK_VIEW_PAGES r_podcast_playview_layout_pages
+	{
+	pages = 
+		{
+		QIK_VIEW_PAGE
+			{
+			page_id = EPodcastListViewPage;
+			page_content = r_podcast_playview_page_control;
+			}
+		};
+	}
+
+//----------------------------------------------------
+//----------------- ROW LAYOUT DATA ------------------
+//----------------------------------------------------
+RESOURCE QIK_ROW_LAYOUT_DATA r_podcast_row_layout_data_nofill
+	{
+	vertical_alignment = EQikLayoutVAlignFill;
+	horizontal_alignment = EQikLayoutHAlignFill;
+	vertical_excess_grab_weight = 0;
+	minimum_width = EQikLayoutUseControlMinimum;
+	}
+
+RESOURCE LABEL r_podcast_playview_time
+{
+txt = "00:00";
+horiz_align=EEikLabelAlignHRight;
+}
+
+RESOURCE EDWIN r_podcast_playview_info
+{
+flags = EEikEdwinDisplayOnly|EEikEdwinDisableAutoCurEnd|EEikEdwinNoHorizScrolling;
+lines = 1;
+}
+
+RESOURCE QIK_SLIDER r_podcast_playview_progress
+{
+	min_value = 0;
+	max_value = 100;
+	num_markers = 10;
+}
+
+RESOURCE QIK_SLIDER r_podcast_playview_volume
+{
+	min_value = 0;
+	max_value = 32;
+	num_markers = 16;
+}
+
+// The page contains a list box that fills the whole application space.
+RESOURCE QIK_CONTAINER_SETTINGS r_podcast_playview_page_control
+	{
+	layout_manager_type = EQikRowLayoutManager;
+	layout_manager = r_podcast_row_layout_manager_default;
+	controls = 
+		{	
+		QIK_CONTAINER_ITEM_CI_LI
+			{ 
+			itemflags = EQikCtrlFlagIsEditInPlace;
+			unique_handle = EPodcastPlayViewProgressCtrl;
+			type = EQikCtSlider; 
+			control = r_podcast_playview_progress;
+			// This will make it so that the list box fills the whole 
+			// application space.
+			layout_data = r_podcast_row_layout_data_nofill;
+			},	
+		
+		QIK_CONTAINER_ITEM_CI_LI
+			{ 
+			unique_handle = EPodcastPlayViewProgressTime;
+			type = EEikCtLabel; 
+			control = r_podcast_playview_time;
+			// This will make it so that the list box fills the whole 
+			// application space.
+			layout_data = r_podcast_row_layout_data_nofill;
+			},
+		QIK_CONTAINER_ITEM_CI_LI
+			{ 
+			itemflags = EQikCtrlFlagIsEditInPlace;
+			unique_handle = EPodcastPlayViewInformation;
+			type = EEikCtEdwin; 
+			control = r_podcast_playview_info;
+			// This will make it so that the list box fills the whole 
+			// application space.
+			layout_data = r_podcast_row_layout_data_fill;
+			}
+		};
+	}

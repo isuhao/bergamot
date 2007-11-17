@@ -8,7 +8,8 @@ UID               0x100039CE 0xA00046AE
 VENDORID          0
 
 SOURCEPATH        ..\group
-
+DOCUMENT		  PodcastClientMainView.ra
+DOCUMENT		  PodcastClientPlayView.ra
 START RESOURCE    PodcastClient.rss
 TARGETPATH        \resource\apps
 HEADER
@@ -99,6 +100,9 @@ SOURCE          c16 feeds_40x40.bmp
 SOURCE          8   feeds_40x40m.bmp
 SOURCE			c16	feeds_18x18.bmp
 SOURCE			8	feeds_18x18m.bmp
+SOURCE          c16 shows_40x40.bmp
+SOURCE          8   shows_40x40m.bmp
+
 END
 
 CAPABILITY NetworkServices UserEnvironment

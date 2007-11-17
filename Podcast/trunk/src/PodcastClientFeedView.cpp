@@ -1,3 +1,4 @@
+#include <qikcommand.h>
 #include <PodcastClient.rsg>
 #include "PodcastClientFeedView.h"
 #include "PodcastModel.h"
@@ -40,6 +41,26 @@ void CPodcastClientFeedView::ViewConstructL()
 
 	CPodcastClientView::ViewConstructL();
 	ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *iViewLabel);
+}
+
+
+CQikCommand* CPodcastClientFeedView::DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& aControlAddingCommands)
+{
+	switch(aCommand->Id())
+	{
+	case EPodcastViewFeeds:
+		aCommand = NULL;
+		break;
+	case EQikSoftkeyCmdSelectCategory:
+		{	
+			aCommand->SetTextL(R_PODCAST_FEEDS_CATEGORY);
+		}
+		break;
+	default:
+		break;
+	}
+
+	return aCommand;
 }
 
 

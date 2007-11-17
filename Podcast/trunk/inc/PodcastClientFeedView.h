@@ -12,7 +12,8 @@ protected:
 	void HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxEvent aEventType, TInt aItemIndex, TInt aSlotId);
 	TVwsViewId ViewId()const;
 	void ViewConstructL();
-
+	// from MQikCommandModelOwner	
+	CQikCommand* DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& aControlAddingCommands);
 private:
     TBool iDownloading;
 };

@@ -1,5 +1,7 @@
 #include <QikContent.h>
+#include <qikcommand.h>
 #include <PodcastClient.mbg>
+#include <PodcastClient.rsg>
 
 #include "PodcastClientBaseView.h"
 #include "PodcastModel.h"
@@ -28,6 +30,20 @@ TVwsViewId CPodcastClientBaseView::ViewId()const
 	return TVwsViewId(KUidPodcastClientID, KUidPodcastBaseViewID);
 	}
 
+void CPodcastClientBaseView::ViewConstructL()
+{
+    //RDebug::Print(_L("ViewConstructL"));
+    ViewConstructFromResourceL(R_PODCAST_MAINVIEW_UI_CONFIGURATIONS);
+
+	ViewContext()->AddTextL(EPodcastListViewContextLabel, KNullDesC(), EHCenterVCenter);
+
+	// Get the list box and the list box model
+	iListbox = LocateControlByUniqueHandle<CQikListBox>(EPodcastListViewListCtrl);
+	iListbox->SetListBoxObserver(this);
+    UpdateListboxItemsL();
+}
+
+
 CPodcastClientBaseView::CPodcastClientBaseView(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel):CPodcastClientView(aAppUi, aPodcastModel)
 {
 }
@@ -36,40 +52,26 @@ CPodcastClientBaseView::~CPodcastClientBaseView()
 {
 }
 
+CQikCommand* CPodcastClientBaseView::DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& aControlAddingCommands)
+{
+	switch(aCommand->Id())
+	{
+	case EPodcastViewMain:
+	case EPodcastUpdateFeed:
+		aCommand = NULL;
+		break;
+	default:
+		break;
+	}
+	
+
+	return aCommand;
+}
+
+
 void CPodcastClientBaseView::UpdateListboxItemsL()
 {
-	iListbox->RemoveAllItemsL();
-	
-	MQikListBoxModel& model(iListbox->Model());
-	// Informs the list box model that there will be an update of the data.
-	// Notify the list box model that changes will be made after this point.
-	// Observe that a cleanupitem has been put on the cleanupstack and 
-	// will be removed by ModelEndUpdateL. This means that you have to 
-	// balance the cleanupstack.
-	// When you act directly on the model you always need to encapsulate 
-	// the calls between ModelBeginUpdateLC and ModelEndUpdateL.
-	model.ModelBeginUpdateLC();
-		
-	MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
-	CleanupClosePushL(*listBoxData);
-	listBoxData->AddTextL(_L("Player"), EQikListBoxSlotText1);
-	
-	listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
-	CleanupClosePushL(*listBoxData);
-	listBoxData->AddTextL(_L("Shows"), EQikListBoxSlotText1);
-	
-	listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
-	CleanupClosePushL(*listBoxData);
-	listBoxData->AddTextL(_L("Feeds"), EQikListBoxSlotText1);
-	CQikContent* content = CQikContent::NewL(this, _L("*"), EMbmPodcastclientFeeds_40x40, EMbmPodcastclientFeeds_40x40m);
-	CleanupStack::PushL(content);
-	listBoxData->AddIconL(content, EQikListBoxSlotLeftMediumIcon1);
-	CleanupStack::Pop(content);
-	CleanupStack::PopAndDestroy(3);
-	
-	
-	// Informs that the update of the list box model has ended
-	model.ModelEndUpdateL();
+ // Update already existing items perhaps for special layout?
 }
 
 
