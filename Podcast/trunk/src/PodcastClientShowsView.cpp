@@ -110,9 +110,8 @@ CQikCommand* CPodcastClientShowsView::DynInitOrDeleteCommandL(CQikCommand* aComm
 	case EQikListBoxCmdSelect:
 		{
 			if(iPodcastModel.ActiveShowList().Count() == 0)
-			{
-				aCommand = NULL;
-				//aCommand->SetInvisible(ETrue);
+			{			
+				aCommand->SetInvisible(ETrue);
 			}
 			else
 			{
