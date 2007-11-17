@@ -195,7 +195,7 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 		comMan.SetType(*this, EPodcastUpdateFeed, EQikCommandTypeItem);
 	}
 
-	RArray <TFeedInfo*> feeds;
+	TFeedInfoArray feeds;
 	iPodcastModel.FeedEngine().GetFeeds(feeds);
 	len = feeds.Count();
 

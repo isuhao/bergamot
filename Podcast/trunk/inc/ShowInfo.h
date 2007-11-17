@@ -40,6 +40,6 @@ public:
 };
 
 
-typedef RArray<TShowInfo*> TShowInfoArray;
+typedef RPointerArray<TShowInfo> TShowInfoArray;
 
 #endif

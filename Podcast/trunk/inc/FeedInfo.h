@@ -16,6 +16,6 @@ public:
 	TInt iCategoryHandle;
 };
 
-typedef RArray<TFeedInfo*> TFeedInfoArray;
+typedef RPointerArray<TFeedInfo> TFeedInfoArray;
 
 #endif
