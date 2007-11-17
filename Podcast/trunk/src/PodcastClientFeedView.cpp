@@ -81,6 +81,7 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 	TBuf<100> itemName;
 	
 	TFeedInfoArray feeds;
+	CleanupClosePushL(feeds);
 	iPodcastModel.FeedEngine().GetFeeds(feeds);
 	int len = feeds.Count();
 	MQikListBoxData* listBoxData;// = model.NewDataL(MQikListBoxModel::EDataNormal);
@@ -112,6 +113,7 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 	
 	// Informs that the update of the list box model has ended
 	model.ModelEndUpdateL();
+	CleanupStack::PopAndDestroy();// close feeds
 }
 
 
@@ -127,13 +129,16 @@ void CPodcastClientFeedView::HandleListBoxEventL(CQikListBox *aListBox, TQikList
 	case EEventItemTapped:
 		{
 			TFeedInfoArray feeds;
+			CleanupClosePushL(feeds);
 			iPodcastModel.FeedEngine().GetFeeds(feeds);
 			TShowInfoArray shows;
+			CleanupClosePushL(shows);
 			iPodcastModel.FeedEngine().GetShowsByFeed(feeds[aItemIndex], shows);
 			iPodcastModel.SetActiveShowList(shows);
 			iPodcastModel.SetActiveFeedInfo(*feeds[aItemIndex]);
 			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID);
 			iQikAppUi.ActivateViewL(podcastsView);
+			CleanupStack::PopAndDestroy(2);// close shows and feeds
 		}
 		break;
 	default:

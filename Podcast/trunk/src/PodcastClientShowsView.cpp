@@ -59,6 +59,7 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 	if(aCommand.Type() == EQikCommandTypeCategory)
 	{
 		TFeedInfoArray feeds;
+		CleanupClosePushL(feeds);
 		iPodcastModel.FeedEngine().GetFeeds(feeds);
 		TInt len = feeds.Count();
 		for (TInt i=0;i<len;i++) {
@@ -66,19 +67,23 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 			{
 				iPodcastModel.SetActiveFeedInfo(*feeds[i]);
 				TShowInfoArray shows;
+				CleanupClosePushL(shows);
 				iPodcastModel.FeedEngine().GetShowsByFeed(feeds[i],shows);
 				iPodcastModel.SetActiveShowList(shows);
-				UpdateListboxItemsL();
-				return;
+				CleanupStack::PopAndDestroy();// close shows
+				UpdateListboxItemsL();				
 			}
 		}
+		CleanupStack::PopAndDestroy();// close feeds
 	}
-
-	switch(aCommand.Id())
-	{
+	else
+	{	
+		switch(aCommand.Id())
+		{
 		default:
 			CPodcastClientView::HandleCommandL(aCommand);
 			break;
+		}
 	}
 
 }
@@ -161,8 +166,10 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 		
 		if (iPodcastModel.ActiveShowList().Count() == 0) {
 			TShowInfoArray shows;
+			CleanupClosePushL(shows);
 			iPodcastModel.FeedEngine().GetShowsByFeed(&iPodcastModel.ActiveFeedInfo(), shows);
 			iPodcastModel.SetActiveShowList(shows);
+			CleanupStack::PopAndDestroy();// close shows
 		}
 		TShowInfoArray &fItems = iPodcastModel.ActiveShowList();
 		len = fItems.Count();

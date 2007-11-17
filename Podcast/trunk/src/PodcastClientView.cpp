@@ -90,6 +90,7 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 			} else 
 			{
 				TFeedInfoArray array;
+				CleanupClosePushL(array);
 				iPodcastModel.FeedEngine().GetFeeds(array);
 				
 				for (int i=0;i<array.Count();i++) 
@@ -100,6 +101,7 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 					iPodcastModel.FeedEngine().GetFeed(array[i]);
 					
 				}
+				CleanupStack::PopAndDestroy();//close array
 			}
 		}
 		break;
