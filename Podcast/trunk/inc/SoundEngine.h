@@ -14,6 +14,12 @@ enum TSoundEngineState
 	ESoundEngineStopped
 };
 
+class MSoundEngineObserver
+{
+public:
+	virtual void PlaybackStartedL() = 0;
+	virtual void PlaybackStoppedL() = 0;
+};
 
 /**
  * This class handles all playback and audio associated resources that the application/client needs
@@ -40,6 +46,7 @@ public:
 	void SetVolume(TUint aVolume);
 
 	TSoundEngineState State();
+	void SetObserver(MSoundEngineObserver* aObserver);
 protected:
 	CSoundEngine(CPodcastModel& aPodcastModel);
 	void ConstructL();
@@ -49,7 +56,8 @@ private:
     CMdaAudioPlayerUtility *iPlayer;
 	CPodcastModel& iPodcastModel;
 	TInt iVolume;
-	TSoundEngineState iState;	
+	TSoundEngineState iState;
+	MSoundEngineObserver* iObserver;
 };
 
 #endif // SOUND_ENGINE_H

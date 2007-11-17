@@ -28,6 +28,10 @@ void CSoundEngine::ConstructL()
     iPlayer = CMdaAudioPlayerUtility::NewL(*this);
 }
 
+void CSoundEngine::SetObserver(MSoundEngineObserver* aObserver)
+{
+	iObserver = aObserver;
+}
 
 void CSoundEngine::MapcPlayComplete(TInt aError) {
 //	RDebug::Print(_L("Play Complete: %d"), aError);
@@ -37,6 +41,10 @@ void CSoundEngine::MapcPlayComplete(TInt aError) {
 	}
 
 	iState = ESoundEngineStopped;
+	if(iObserver != NULL)
+	{
+		TRAPD(err, iObserver->PlaybackStoppedL());
+	}
 }
 
 void CSoundEngine::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds &/*aDuration */) {
@@ -69,12 +77,16 @@ void CSoundEngine::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds
 	iState = ESoundEnginePlaying;
 
 	iPlayer->Play();
+	if(iObserver != NULL)
+	{
+		TRAPD(err, iObserver->PlaybackStartedL());
+	}
 }
 
 void CSoundEngine::OpenFileL(TDesC& aFileName)
 {
 	iState = ESoundEngineNotInitialized;
-
+	iPlayer->Stop();
 	iPlayer->OpenFileL(aFileName);
 }
 

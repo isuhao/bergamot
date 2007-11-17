@@ -15,6 +15,7 @@
 #include "PodcastClientGlobals.h"
 #include "SoundEngine.h"
 
+const TInt KAudioTickerPeriod = 1000000;
 /**
 Creates and constructs the view.
 
@@ -51,6 +52,7 @@ Destructor for the view
 */
 CPodcastClientPlayView::~CPodcastClientPlayView()
 	{
+	delete iPlaybackTicker;
 	}
 
 /**
@@ -61,6 +63,8 @@ void CPodcastClientPlayView::ConstructL()
 	// Calls ConstructL that initialises the standard values. 
 	// This should always be called in the concrete view implementations.
 	BaseConstructL();
+	iPlaybackTicker = CPeriodic::NewL(CActive::EPriorityStandard);
+	iPodcastModel.SoundEngine().SetObserver(this);
 	}
 
 /**
@@ -90,6 +94,59 @@ void CPodcastClientPlayView::HandleControlEventL(CCoeControl* aControl,TCoeEvent
 			}
 		}
 	}
+}
+
+TInt CPodcastClientPlayView::PlayingUpdateStaticCallbackL(TAny* aPlayView)
+{
+	static_cast<CPodcastClientPlayView*>(aPlayView)->UpdatePlayStatusL();
+	return KErrNone;
+}
+
+void CPodcastClientPlayView::UpdatePlayStatusL()
+{
+	CQikCommandManager& comMan = CQikCommandManager::Static();
+
+	if(iPodcastModel.SoundEngine().State() == ESoundEnginePlaying)
+	{
+		comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PAUSE_CMD);
+	}
+	else
+	{
+		comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PLAY_CMD);
+	}
+
+
+	comMan.SetDimmed(*this, EPodcastPlay, iPodcastModel.SoundEngine().State() == ESoundEngineNotInitialized);
+	comMan.SetDimmed(*this, EPodcastStop, (iPodcastModel.SoundEngine().State() == ESoundEngineNotInitialized || iPodcastModel.SoundEngine().State() == ESoundEngineStopped));
+	if(iProgress != NULL)
+	{
+		iProgress->SetDimmed(iPodcastModel.SoundEngine().State() == ESoundEngineNotInitialized );
+		
+		if(iPodcastModel.SoundEngine().PlayTime()>0)
+		{
+			TUint duration = iPodcastModel.SoundEngine().PlayTime();
+			TUint pos = iPodcastModel.SoundEngine().Position().Int64()/1000000;
+			iProgress->SetValue((100*pos)/duration);
+			iProgress->DrawDeferred();
+		}
+		else
+		{
+			iProgress->SetValue(0);
+			iProgress->DrawDeferred();
+		}
+	}
+}
+
+void CPodcastClientPlayView::PlaybackStartedL()
+{
+	iPlaybackTicker->Cancel();
+	iPlaybackTicker->Start(KAudioTickerPeriod, KAudioTickerPeriod, TCallBack(PlayingUpdateStaticCallbackL, this));
+}
+
+void CPodcastClientPlayView::PlaybackStoppedL()
+{
+	iPlaybackTicker->Cancel();
+	UpdatePlayStatusL();
 }
 
 
@@ -193,16 +250,8 @@ void CPodcastClientPlayView::UpdateViewL()
 			iInformationEdwin->SetTextL(&showInfo.description);
 
 			iInformationEdwin->HandleTextChangedL();
-			
-			RequestRelayout(this);
-			if(iPodcastModel.SoundEngine().State() == ESoundEnginePlaying)
-			{
-				comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PAUSE_CMD);
-			}
-			else
-			{
-				comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PLAY_CMD);
-			}
 		}
+
+		UpdatePlayStatusL();
 }
 
