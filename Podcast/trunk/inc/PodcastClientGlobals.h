@@ -15,6 +15,6 @@ const TUid KUidPodcastPlayViewID = {0x00000004};
 
 _LIT(KConfigFile, "config.cfg");
 _LIT(KFeedsFileName, "feeds.cfg");
-_LIT(KMetaDataFile, "metadata.db");
-
+_LIT(KShowDB, "metadata.db");
+_LIT(KFeedDB, "feeds.db");
 #endif

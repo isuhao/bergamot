@@ -41,7 +41,7 @@ void CFeedParser::OnStartDocumentL(const RDocumentParameters& aDocParam, TInt aE
 void CFeedParser::OnEndDocumentL(TInt aErrorCode)
 	{
 	//RDebug::Print(_L("OnEndDocumentL()"));
-	iCallbacks.ParsingCompleteCallback();
+	iCallbacks.ParsingCompleteCallback(iActiveFeed);
 	}
 
 void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArray& aAttributes, TInt aErrorCode)
@@ -66,7 +66,8 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 		// <channel> <title>
 		} else if (str.CompareF(KTagTitle) == 0) {
 			iActiveFeed->title.Copy(_L(""));
-			activeString = &iActiveFeed->title;
+			RDebug::Print(_L("***Feed title!"));
+			activeString = &iChannelTitle;
 			iFeedState=EStateChannelTitle;
 		// <channel> <description>
 		} else if (str.CompareF(KTagDescription) == 0) {
@@ -123,6 +124,8 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 
 	switch (iFeedState) {
 		case EStateChannelTitle:
+			RDebug::Print(_L("Feed title: %S"), &iChannelTitle);
+			iActiveFeed->title.Copy(iChannelTitle);
 		case EStateChannelDescription:
 			iFeedState = EStateChannel;
 			break;

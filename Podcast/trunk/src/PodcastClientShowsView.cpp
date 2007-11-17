@@ -268,19 +268,10 @@ void CPodcastClientShowsView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQ
 			if(aItemIndex>=0 && aItemIndex< fItems.Count())
 			{
 				RDebug::Print(_L("Handle event for podcast %S, downloadState is %d"), &(fItems[aItemIndex]->title), fItems[aItemIndex]->downloadState);
+				// add to downloads if not already downloading
 				if(fItems[aItemIndex]->downloadState == ENotDownloaded)
 				{
-					TShowInfoArray &fItems = iPodcastModel.ActiveShowList();
-					
-					if(!fItems[aItemIndex]->downloadState == EDownloaded)
-					{
-						iPodcastModel.FeedEngine().AddDownload(fItems[aItemIndex]);
-					}
-					// play the podcast if downloaded and its not currently downloading
-					else if(fItems[aItemIndex]->downloadState !=  EDownloading)
-					{
-						iPodcastModel.PlayPausePodcastL(fItems[aItemIndex]);
-					}
+					iPodcastModel.FeedEngine().AddDownload(fItems[aItemIndex]);
 				}
 				// play the podcast if downloaded
 				else if(fItems[aItemIndex]->downloadState == EDownloaded)

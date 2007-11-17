@@ -33,16 +33,16 @@ private:
 	void ConstructL();
 	CFeedEngine();
 
-
 	void GetShow(TShowInfo *info);
 
 	void LoadSettings();
-	
+	void LoadUserFeeds();
+
 	void LoadFeeds();
 	void SaveFeeds();
 
-	void LoadMetaData();
-	void SaveMetaData();
+	void LoadShows();
+	void SaveShows();
 
 	void ListAllFiles();
 	void ListDir(RFs &rfs, TDesC &folder, TShowInfoArray &files);
@@ -58,9 +58,11 @@ private:
 
 	// callbacks from FeedParser
 	void NewShowCallback(TShowInfo *item);
-	void ParsingCompleteCallback();
+	void ParsingCompleteCallback(TFeedInfo *item);
 	
 	void AddShow(TShowInfo *item);
+	void AddFeed(TFeedInfo *item);
+
 	void DownloadNextShow();
 	
 	void ReplaceString(TDes & aString, const TDesC& aStringToReplace,const TDesC& aReplacement);
@@ -81,6 +83,9 @@ private:
 	// the list of feeds
 	TFeedInfoArray iFeeds;
 	TFileName iFeedListFile;
+
+	// the file session used to read and write settings
+	RFs iFs;
 
 	// observers that will receive callbacks
     RArray<MFeedEngineObserver*> iObservers;

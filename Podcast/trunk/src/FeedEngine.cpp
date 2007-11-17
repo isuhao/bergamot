@@ -16,9 +16,11 @@ CFeedEngine* CFeedEngine::NewL()
 void CFeedEngine::ConstructL()
 	{
 	iParser = new (ELeave) CFeedParser(*this);
+	iFs.Connect();
 	LoadSettings();
     LoadFeeds();
-    LoadMetaData();
+    LoadUserFeeds();
+    LoadShows();
 	}
 
 CFeedEngine::CFeedEngine()
@@ -34,6 +36,7 @@ CFeedEngine::~CFeedEngine()
 	iShows.Close();
 	iFeeds.ResetAndDestroy();
 	iFeeds.Close();
+	iFs.Close();
 	delete iParser;
 	delete iFeedClient;
 	delete iShowClient;
@@ -47,11 +50,9 @@ void CFeedEngine::StopDownloads()
 void CFeedEngine::GetFeed(TFeedInfo* feedInfo)
 	{
 	TBuf<100> privatePath;
-	RFs rfs;
-	rfs.Connect();
-	rfs.PrivatePath(privatePath);
+	iFs.PrivatePath(privatePath);
 	RDebug::Print(_L("PrivatePath: %S"), &privatePath);
-	BaflUtils::EnsurePathExistsL(rfs, privatePath);
+	BaflUtils::EnsurePathExistsL(iFs, privatePath);
 	
 	int pos = feedInfo->url.LocateReverse('/');
 	
@@ -66,16 +67,12 @@ void CFeedEngine::GetFeed(TFeedInfo* feedInfo)
 	feedInfo->fileName.Copy(privatePath);
 	RDebug::Print(_L("URL: %S, fileName: %S"), &feedInfo->url, &feedInfo->fileName);
 	iFeedClient->GetFeed(feedInfo);
-	feedInfo->iUid = DefaultHash::Des16(feedInfo->url);
-	SaveMetaData();
 	RDebug::Print(_L("GetFeed END"));
 	}
 
 void CFeedEngine::GetShow(TShowInfo *info)
 	{
 	TBuf<100> filePath;
-	RFs rfs;
-	rfs.Connect();
 	filePath.Copy(iShowDir);
 	if (filePath[filePath.Length()-1] != '\\') {
 		RDebug::Print(_L("%S has no terminating backslash"), &iShowDir);
@@ -91,7 +88,7 @@ void CFeedEngine::GetShow(TShowInfo *info)
 	filePath.Append(buf);
 	filePath.Append(_L("\\"));
 	RDebug::Print(_L("directory to store in: %S"), &filePath);
-	BaflUtils::EnsurePathExistsL(rfs, filePath);
+	BaflUtils::EnsurePathExistsL(iFs, filePath);
 
 	int pos = info->url.LocateReverse('/');
 	
@@ -127,20 +124,31 @@ void CFeedEngine::AddShow(TShowInfo *item) {
 	iShows.Append(item);
 	}
 
+void CFeedEngine::AddFeed(TFeedInfo *item) {
+	for (int i=0;i<iFeeds.Count();i++) {
+		if (iFeeds[i]->url.Compare(item->url) == 0) {
+			RDebug::Print(_L("Already have feed %S, discarding"), &item->url);
+			return;
+		}
+	}
+	iFeeds.Append(item);
+	}
+
+
 void CFeedEngine::NewShowCallback(TShowInfo *item)
 	{
-	RDebug::Print(_L("\nTitle: %S\nURL: %S\nDescription length: %d\nFeed: %S"), &(item->title), &(item->url), item->description.Length(), &(item->feedUrl));
+	//RDebug::Print(_L("\nTitle: %S\nURL: %S\nDescription length: %d\nFeed: %S"), &(item->title), &(item->url), item->description.Length(), &(item->feedUrl));
 	CleanHtml(item->description);
 	item->uid = DefaultHash::Des16(item->url);
-	RDebug::Print(_L("Setting UID to %d"), item->uid);
+	//RDebug::Print(_L("Setting UID to %d"), item->uid);
 	AddShow(item);
 	}
 
-void CFeedEngine::ParsingCompleteCallback()
+void CFeedEngine::ParsingCompleteCallback(TFeedInfo *item)
 	{
-	RDebug::Print(_L("Triggering ShowListUpdated"));
+	RDebug::Print(_L("ParsingCompleteCallback"));
 	for (int i=0;i<iObservers.Count();i++) {
-		iObservers[i]->FeedInfoUpdated(iParser->ActiveFeed());
+		iObservers[i]->FeedInfoUpdated(*item);
 		iObservers[i]->ShowListUpdated();
 	}
 	}
@@ -172,7 +180,7 @@ void CFeedEngine::ShowCompleteCallback(TShowInfo *info)
 	{
 	RDebug::Print(_L("File %S complete"), &info->fileName);
 	info->downloadState = EDownloaded;
-	SaveMetaData();
+	SaveShows();
 	DownloadNextShow();
 	}
 
@@ -180,6 +188,10 @@ void CFeedEngine::FeedCompleteCallback(TFeedInfo * aInfo)
 	{
 	RDebug::Print(_L("File to parse: %S"), &aInfo->fileName);
 	iParser->ParseFeedL(aInfo->fileName, aInfo);
+	aInfo->iUid = DefaultHash::Des16(aInfo->url);
+	SaveFeeds();
+	SaveShows();
+
 	}
 
 void CFeedEngine::DisconnectedCallback()
@@ -194,17 +206,14 @@ void CFeedEngine::DownloadInfoCallback(int size)
 
 void CFeedEngine::LoadSettings()
 	{
-	RFs rfs;
-	rfs.Connect();
-	
 	TBuf<100> configPath;
-	rfs.PrivatePath(configPath);
+	iFs.PrivatePath(configPath);
 	configPath.Append(KConfigFile);
 	
-	BaflUtils::EnsurePathExistsL(rfs, configPath);
+	BaflUtils::EnsurePathExistsL(iFs, configPath);
 	RDebug::Print(_L("Reading config from %S"), &configPath);
 	RFile rfile;
-	int error = rfile.Open(rfs, configPath,  EFileRead);
+	int error = rfile.Open(iFs, configPath,  EFileRead);
 	
 	if (error != KErrNone) {
 		RDebug::Print(_L("Failed to read settings"));
@@ -239,20 +248,16 @@ void CFeedEngine::LoadSettings()
 		}
 	
 	rfile.Close();
-	rfs.Close();
-	
 	}
 
-void CFeedEngine::LoadFeeds()
+void CFeedEngine::LoadUserFeeds()
 	{
-	RFs rfs;
-	rfs.Connect();
 	
 	TBuf<100> configPath;
 	configPath.Copy(iFeedListFile);
 	RDebug::Print(_L("Reading feeds from %S"), &configPath);
 	RFile rfile;
-	int error = rfile.Open(rfs, configPath,  EFileRead);
+	int error = rfile.Open(iFs, configPath,  EFileRead);
 	
 	if (error != KErrNone) {
 		RDebug::Print(_L("Failed to read feeds"));
@@ -286,44 +291,121 @@ void CFeedEngine::LoadFeeds()
 		fi->url.Trim();
 		fi->iUid = DefaultHash::Des16(fi->url);
 
-		iFeeds.Append(fi);
+		AddFeed(fi);
 		error = tft.Read(line);
 		}
 	}
 	
-void CFeedEngine::SaveFeeds()
+void CFeedEngine::LoadFeeds()
 	{
-	
-	}
-
-
-void CFeedEngine::LoadMetaData()
-	{
-	RDebug::Print(_L("LoadMetaData"));
-	RFs fsSession;
-	int error = fsSession.Connect(); 
-	RDebug::Print(_L("RFs error: %d"), error);
+	RDebug::Print(_L("LoadFeeds"));
 	TFileName path;
 	TParse	filestorename;
 	
 	TBuf<100> privatePath;
-	fsSession.PrivatePath(privatePath);
-	BaflUtils::EnsurePathExistsL(fsSession, privatePath);
-	privatePath.Append(KMetaDataFile);
-	fsSession.Parse(privatePath, filestorename);
+	iFs.PrivatePath(privatePath);
+	BaflUtils::EnsurePathExistsL(iFs, privatePath);
+	privatePath.Append(KFeedDB);
+	iFs.Parse(privatePath, filestorename);
 
-	if (!BaflUtils::FileExists(fsSession, privatePath)) {
-		RDebug::Print(_L("No metadata file"));	
+	if (!BaflUtils::FileExists(iFs, privatePath)) {
+		RDebug::Print(_L("No feed DB file"));	
 		return;
 	}
 	
 	CFileStore* store;
-	TRAP(error, store = CDirectFileStore::OpenL(fsSession,filestorename.FullName(),EFileRead));
+	TRAPD(error, store = CDirectFileStore::OpenL(iFs,filestorename.FullName(),EFileRead));
 	CleanupStack::PushL(store);
 	
 	if (error != KErrNone) {
 		RDebug::Print(_L("error=%d"), error);
-		fsSession.Close();
+		CleanupStack::Pop(store);
+		return;
+	}
+	
+	RStoreReadStream instream;
+	instream.OpenLC(*store, store->Root());
+
+	int version = instream.ReadInt32L();
+	RDebug::Print(_L("Read version: %d"), version);
+
+	if (version != KFeedInfoVersion) {
+		RDebug::Print(_L("Wrong version, discarding"));
+		goto exit_point;
+	}
+	
+	int count = instream.ReadInt32L();
+	RDebug::Print(_L("Read count: %d"), count);
+	TFeedInfo *readData;
+	
+	for (int i=0;i<count;i++) {
+		readData = new TFeedInfo;
+		TRAP(error, instream  >> *readData);
+		//RDebug::Print(_L("error: %d"), error);
+		iFeeds.Append(readData);
+	}
+	exit_point:
+	CleanupStack::PopAndDestroy(); // instream
+	
+	CleanupStack::PopAndDestroy(store);	
+	}
+
+void CFeedEngine::SaveFeeds()
+	{
+	RDebug::Print(_L("SaveFeeds"));
+	TFileName path;
+	TParse	filestorename;
+
+	TBuf<100> privatePath;
+	iFs.PrivatePath(privatePath);
+	BaflUtils::EnsurePathExistsL(iFs, privatePath);
+	privatePath.Append(KFeedDB);
+	
+	RDebug::Print(_L("File: %S"), &privatePath);
+	iFs.Parse(privatePath, filestorename);
+	CFileStore* store = CDirectFileStore::ReplaceLC(iFs, filestorename.FullName(), EFileWrite);
+	store->SetTypeL(KDirectFileStoreLayoutUid);
+	
+	RStoreWriteStream outstream;
+	TStreamId id = outstream.CreateLC(*store);
+	outstream.WriteInt32L(KFeedInfoVersion);
+	RDebug::Print(_L("Saving %d feeds"), iFeeds.Count());
+	outstream.WriteInt32L(iFeeds.Count());
+	for (int i=0;i<iFeeds.Count();i++) {
+//		RDebug::Print(_L("Storing feed %i"), i);
+		outstream  << *iFeeds[i];
+	}
+	
+	outstream.CommitL();
+	store->SetRootL(id);
+	store->CommitL();
+	CleanupStack::PopAndDestroy(); // outstream
+	CleanupStack::PopAndDestroy(store);		
+	}
+
+void CFeedEngine::LoadShows()
+	{
+	RDebug::Print(_L("LoadShows"));
+	TFileName path;
+	TParse	filestorename;
+	
+	TBuf<100> privatePath;
+	iFs.PrivatePath(privatePath);
+	BaflUtils::EnsurePathExistsL(iFs, privatePath);
+	privatePath.Append(KShowDB);
+	iFs.Parse(privatePath, filestorename);
+
+	if (!BaflUtils::FileExists(iFs, privatePath)) {
+		RDebug::Print(_L("No show DB file"));	
+		return;
+	}
+	
+	CFileStore* store;
+	TRAPD(error, store = CDirectFileStore::OpenL(iFs,filestorename.FullName(),EFileRead));
+	CleanupStack::PushL(store);
+	
+	if (error != KErrNone) {
+		RDebug::Print(_L("error=%d"), error);
 		CleanupStack::Pop(store);
 		return;
 	}
@@ -345,50 +427,36 @@ void CFeedEngine::LoadMetaData()
 	
 	for (int i=0;i<count;i++) {
 		readData = new TShowInfo;
-		TRAP(error, instream  >> *readData);
+		TRAPD(error, instream  >> *readData);
 		//RDebug::Print(_L("error: %d"), error);
 		AddShow(readData);
 	}
 	exit_point:
 	CleanupStack::PopAndDestroy(); // instream
 	
-	// check which shows have been downloaded
-	/*for (int i=0;i<shows.Count();i++) {
-		if (shows[i]->fileName.Length() > 0 && BaflUtils::FileExists(fsSession,shows[i]->fileName)) {
-			RDebug::Print(_L("File %S exists"), &(shows[i]->fileName));
-			shows[i]->iShowDownloaded = ETrue;
-		} else {
-			shows[i]->iShowDownloaded = EFalse;
-		}
-	}*/
-	
 	CleanupStack::PopAndDestroy(store);	
-
-	fsSession.Close();
 	}
 
-void CFeedEngine::SaveMetaData()
+void CFeedEngine::SaveShows()
 	{
-	RDebug::Print(_L("SaveMetaData"));
-	RFs fsSession;
-	fsSession.Connect(); 
+	RDebug::Print(_L("SaveShows"));
 	TFileName path;
 	TParse	filestorename;
 
 	TBuf<100> privatePath;
-	fsSession.PrivatePath(privatePath);
-	BaflUtils::EnsurePathExistsL(fsSession, privatePath);
-	privatePath.Append(KMetaDataFile);
+	iFs.PrivatePath(privatePath);
+	BaflUtils::EnsurePathExistsL(iFs, privatePath);
+	privatePath.Append(KShowDB);
 	
 	RDebug::Print(_L("File: %S"), &privatePath);
-	fsSession.Parse(privatePath, filestorename);
-	CFileStore* store = CDirectFileStore::ReplaceLC(fsSession, filestorename.FullName(), EFileWrite);
+	iFs.Parse(privatePath, filestorename);
+	CFileStore* store = CDirectFileStore::ReplaceLC(iFs, filestorename.FullName(), EFileWrite);
 	store->SetTypeL(KDirectFileStoreLayoutUid);
 	
 	RStoreWriteStream outstream;
 	TStreamId id = outstream.CreateLC(*store);
 	outstream.WriteInt32L(KShowInfoVersion);
-	RDebug::Print(_L("Saving %d items"), iShows.Count());
+	RDebug::Print(_L("Saving %d shows"), iShows.Count());
 	outstream.WriteInt32L(iShows.Count());
 	for (int i=0;i<iShows.Count();i++) {
 //		RDebug::Print(_L("Storing show %i"), i);
@@ -400,10 +468,6 @@ void CFeedEngine::SaveMetaData()
 	store->CommitL();
 	CleanupStack::PopAndDestroy(); // outstream
 	CleanupStack::PopAndDestroy(store);	
-
-	fsSession.Close();
-	
-	
 	}
 
 void CFeedEngine::ListDir(RFs &rfs, TDesC &folder, TShowInfoArray &files) {
