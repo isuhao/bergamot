@@ -42,7 +42,6 @@ private:
 private:
 	CPodcastModel& iPodcastModel;
 	CQikSlider* iProgress;
-//	CEikLabel* iTitleLabel;
 	CEikLabel* iTimeLabel;
 	CEikEdwin* iInformationEdwin;
 	CQikSlider* iVolumeSlider;

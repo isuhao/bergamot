@@ -264,25 +264,28 @@ void CPodcastClientShowsView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQ
 	case EEventItemTapped:
 		{
 			TShowInfoArray &fItems = iPodcastModel.ActiveShowList();
-			RDebug::Print(_L("Handle event for podcast %S, downloadState is %d"), &(fItems[aItemIndex]->title), fItems[aItemIndex]->downloadState);
-			if(fItems[aItemIndex]->downloadState == ENotDownloaded)
+			if(aItemIndex>=0 && aItemIndex< fItems.Count())
 			{
-				TShowInfoArray &fItems = iPodcastModel.ActiveShowList();
-				
-				if(!fItems[aItemIndex]->downloadState == EDownloaded)
+				RDebug::Print(_L("Handle event for podcast %S, downloadState is %d"), &(fItems[aItemIndex]->title), fItems[aItemIndex]->downloadState);
+				if(fItems[aItemIndex]->downloadState == ENotDownloaded)
 				{
-					iPodcastModel.FeedEngine().AddDownload(fItems[aItemIndex]);
+					TShowInfoArray &fItems = iPodcastModel.ActiveShowList();
+					
+					if(!fItems[aItemIndex]->downloadState == EDownloaded)
+					{
+						iPodcastModel.FeedEngine().AddDownload(fItems[aItemIndex]);
+					}
+					// play the podcast if downloaded and its not currently downloading
+					else if(fItems[aItemIndex]->downloadState !=  EDownloading)
+					{
+						iPodcastModel.PlayPausePodcastL(fItems[aItemIndex]);
+					}
 				}
-				// play the podcast if downloaded and its not currently downloading
-				else if(fItems[aItemIndex]->downloadState !=  EDownloading)
+				// play the podcast if downloaded
+				else if(fItems[aItemIndex]->downloadState == EDownloaded)
 				{
 					iPodcastModel.PlayPausePodcastL(fItems[aItemIndex]);
 				}
-			}
-			// play the podcast if downloaded
-			else if(fItems[aItemIndex]->downloadState == EDownloaded)
-			{
-				iPodcastModel.PlayPausePodcastL(fItems[aItemIndex]);
 			}
 		}
 		break;
