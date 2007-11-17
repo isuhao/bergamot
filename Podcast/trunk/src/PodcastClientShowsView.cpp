@@ -63,7 +63,7 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 		iPodcastModel.FeedEngine().GetFeeds(feeds);
 		TInt len = feeds.Count();
 		for (TInt i=0;i<len;i++) {
-			if(feeds[i]->iCategoryHandle == CategoryHandleForCommandId(aCommand.Id()))
+			if(feeds[i]->iUid == CategoryHandleForCommandId(aCommand.Id()))
 			{
 				iPodcastModel.SetActiveFeedInfo(*feeds[i]);
 				TShowInfoArray shows;
@@ -103,7 +103,7 @@ void CPodcastClientShowsView::FeedInfoUpdated(const TFeedInfo& aFeedInfo)
 }
 
 
-CQikCommand* CPodcastClientShowsView::DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& aControlAddingCommands)
+CQikCommand* CPodcastClientShowsView::DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& /*aControlAddingCommands*/)
 {
 	switch(aCommand->Id())
 	{
@@ -209,14 +209,15 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 
 	for (TInt i=0;i<len;i++) {
 		TFeedInfo* feedInfo = feeds[i];
-		if(feedInfo->iCategoryHandle == KErrNotFound) 
+		if(feedInfo->iUid == KErrNotFound) 
 		{
-			feedInfo->iCategoryHandle = iFeedsCategories->AddCategoryL(feedInfo->title);
-			iFeedsCategories->SetCategoryRenameable(feedInfo->iCategoryHandle, ETrue);
+			TInt& categoryValue = iFeedsCategories->AddCategoryL(feedInfo->title);
+			categoryValue = feedInfo->iUid;
+			iFeedsCategories->SetCategoryRenameable(feedInfo->iUid, ETrue);
 		}
 		else
 		{
-			iFeedsCategories->RenameCategoryL(feedInfo->iCategoryHandle, feedInfo->title);
+			iFeedsCategories->RenameCategoryL(feedInfo->iUid, feedInfo->title);
 		}
 	}
 	CleanupStack::PopAndDestroy(); // close feeds
@@ -225,7 +226,7 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 }
 
 
-void CPodcastClientShowsView::HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxEvent aEventType, TInt aItemIndex, TInt aSlotId)
+void CPodcastClientShowsView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQikListBoxEvent aEventType, TInt aItemIndex, TInt aSlotId)
 {
 	RDebug::Print(_L("HandleListBoxEvent, itemIndex=%d, slotId=%d, aEventType=%d"), aItemIndex, aSlotId, aEventType);
 	CQikCommandManager& comMan = CQikCommandManager::Static();
@@ -246,6 +247,7 @@ void CPodcastClientShowsView::HandleListBoxEventL(CQikListBox *aListBox, TQikLis
 			{
 				comMan.SetInvisible(*this, EQikListBoxCmdSelect, EFalse);
 				comMan.SetTextL(*this, EQikListBoxCmdSelect, R_PODCAST_FEEDS_DOWNLOAD_CMD);
+				comMan.SetShortTextL(*this, EQikListBoxCmdSelect, R_PODCAST_FEEDS_DOWNLOAD_SHORT_CMD);
 			}
 			else
 			{

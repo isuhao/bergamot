@@ -13,8 +13,7 @@ public:
 	TBuf<KFeedDescriptionLength> description;
 	TFileName fileName;
 	TDateTime lastChecked;
-	TInt uid;
-	TInt iCategoryHandle;
+	TInt iUid;
 };
 
 typedef RPointerArray<TFeedInfo> TFeedInfoArray;

@@ -51,6 +51,15 @@ CQikCommand* CPodcastClientFeedView::DynInitOrDeleteCommandL(CQikCommand* aComma
 	case EPodcastViewFeeds:
 		aCommand = NULL;
 		break;
+	case EPodcastUpdateFeed:
+		{
+			aCommand->SetType(EQikCommandTypeScreen);
+		}break;
+	case EQikListBoxCmdSelect:
+		{
+			aCommand->SetTextL(R_PODCAST_SHOW_CMD);
+		}
+		break;
 	case EQikSoftkeyCmdSelectCategory:
 		{	
 			aCommand->SetTextL(R_PODCAST_FEEDS_CATEGORY);

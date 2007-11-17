@@ -62,7 +62,7 @@ void CFeedEngine::GetFeed(TFeedInfo* feedInfo)
 	feedInfo->fileName.Copy(privatePath);
 	
 	feedClient->GetFeed(feedInfo);
-	feedInfo->uid = DefaultHash::Des16(feedInfo->url);
+	feedInfo->iUid = DefaultHash::Des16(feedInfo->url);
 	SaveMetaData();
 	RDebug::Print(_L("GetFeed END"));
 	}
@@ -262,7 +262,7 @@ void CFeedEngine::LoadFeeds()
 		RDebug::Print(_L("Line: %S"), &line);
 		TFeedInfo *fi = new TFeedInfo;
 		line.Trim();
-		fi->iCategoryHandle = KErrNotFound;
+		fi->iUid = KErrNotFound;
 		fi->url.Copy(line);
 		int pos = line.Locate('|');
 		if (pos == KErrNotFound) {

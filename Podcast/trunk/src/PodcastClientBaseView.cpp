@@ -52,7 +52,7 @@ CPodcastClientBaseView::~CPodcastClientBaseView()
 {
 }
 
-CQikCommand* CPodcastClientBaseView::DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& aControlAddingCommands)
+CQikCommand* CPodcastClientBaseView::DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& /*aControlAddingCommands*/)
 {
 	switch(aCommand->Id())
 	{
@@ -75,7 +75,7 @@ void CPodcastClientBaseView::UpdateListboxItemsL()
 }
 
 
-void CPodcastClientBaseView::HandleListBoxEventL(CQikListBox * aListBox, TQikListBoxEvent aEventType, TInt aItemIndex, TInt aSlotId)
+void CPodcastClientBaseView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQikListBoxEvent aEventType, TInt aItemIndex, TInt aSlotId)
 {
 	RDebug::Print(_L("HandleListBoxEvent, itemIndex=%d, slotId=%d, aEventType=%d"), aItemIndex, aSlotId, aEventType);
 	
