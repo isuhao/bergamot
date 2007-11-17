@@ -10,8 +10,6 @@
 #include "PodcastClientGlobals.h"
 #include "FeedEngineObserver.h"
 
-const int KMetaDataFileVersion = 1;
-
 class CFeedEngine : public MHttpEventHandlerCallbacks, public MFeedParserCallbacks
 {
 public:

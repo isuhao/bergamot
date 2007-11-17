@@ -5,6 +5,8 @@
 #include <f32file.h>
 #include <s32strm.h>
 
+const int KShowInfoVersion = 2;
+
 const int KTitleLength=256;
 const int KUrlLength=1024;
 const int KDescriptionLength=2048;
@@ -37,6 +39,7 @@ public:
 	TTimeIntervalMicroSeconds position;
 	TPlayState playState;
 	TDownloadState downloadState;
+	TInt uid;
 };
 
 

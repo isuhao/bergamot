@@ -2,6 +2,7 @@
 #include <f32file.h>
 #include <bautils.h>
 #include <s32file.h>
+#include <e32hashtab.h>
 
 CFeedEngine* CFeedEngine::NewL()
 	{
@@ -61,7 +62,7 @@ void CFeedEngine::GetFeed(TFeedInfo* feedInfo)
 	feedInfo->fileName.Copy(privatePath);
 	
 	feedClient->GetFeed(feedInfo);
-
+	feedInfo->uid = DefaultHash::Des16(feedInfo->url);
 	SaveMetaData();
 	RDebug::Print(_L("GetFeed END"));
 	}
@@ -118,6 +119,7 @@ void CFeedEngine::Item(TShowInfo *item)
 	{
 	//RDebug::Print(_L("\nTitle: %S\nURL: %S\nDescription length: %d\nFeed: %S"), &(item->title), &(item->url), item->description.Length(), &(item->feedUrl));
 	CleanHtml(item->description);
+	item->uid = DefaultHash::Des16(item->url);
 	AddShow(item);
 	}
 
@@ -322,7 +324,7 @@ void CFeedEngine::LoadMetaData()
 	int version = instream.ReadInt32L();
 	RDebug::Print(_L("Read version: %d"), version);
 
-	if (version != KMetaDataFileVersion) {
+	if (version != KShowInfoVersion) {
 		RDebug::Print(_L("Wrong version, discarding"));
 		goto exit_point;
 	}
@@ -374,7 +376,7 @@ void CFeedEngine::SaveMetaData()
 	
 	RStoreWriteStream outstream;
 	TStreamId id = outstream.CreateLC(*store);
-	outstream.WriteInt32L(KMetaDataFileVersion);
+	outstream.WriteInt32L(KShowInfoVersion);
 	RDebug::Print(_L("Saving %d items"), shows.Count());
 	outstream.WriteInt32L(shows.Count());
 	for (int i=0;i<shows.Count();i++) {

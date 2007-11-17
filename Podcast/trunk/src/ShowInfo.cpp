@@ -41,6 +41,7 @@ void TShowInfo::ExternalizeL(RWriteStream& aStream) const {
 	aStream.WriteInt32L(position.Int64());
 	aStream.WriteInt32L(downloadState);
 	aStream.WriteInt32L(playState);
+	aStream.WriteInt32L(uid);
 	}
 
 void TShowInfo::InternalizeL(RReadStream& aStream) {
@@ -124,5 +125,10 @@ void TShowInfo::InternalizeL(RReadStream& aStream) {
 	// no point in setting playing directly
 	if (playState != ENeverPlayed) {
 		playState = EPlayed;
+	}
+	
+	TRAP(error,uid = aStream.ReadInt32L());
+	if (error != KErrNone) {
+		return;
 	}
 }
