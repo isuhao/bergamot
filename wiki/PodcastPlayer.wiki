@@ -4,7 +4,7 @@ The Podcast Player is a fully functional podcatcher for UIQ. It is still in earl
 
 The intention is to release one alpha version every week. I intend to have a fully functional beta version by christmas at the latest.
 
-== Screenshots ==
+= Screenshots =
 
 http://bergamot.googlecode.com/svn/wiki/pp1.jpg
 http://bergamot.googlecode.com/svn/wiki/pp2.jpg
@@ -31,6 +31,10 @@ http://bergamot.googlecode.com/svn/wiki/pp2.jpg
   # Select a file to play it
   # Select again to pause and again to resume
   # Add your own feeds by editing d:\podcasts\feeds.cfg, the syntax is "title|URL" without the quotes.
+
+= The UIQ Open Contest =
+
+I stumbled upon the [http://uiqopen.uiq.com/ UIQ Open] contest. Hopefully the podcast player will be good enough to submit before December 31st.
 
 = Planning =
 
