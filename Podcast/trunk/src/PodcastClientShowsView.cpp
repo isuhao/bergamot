@@ -196,6 +196,7 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 	}
 
 	TFeedInfoArray feeds;
+	CleanupClosePushL(feeds);
 	iPodcastModel.FeedEngine().GetFeeds(feeds);
 	len = feeds.Count();
 
@@ -211,6 +212,7 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 			iFeedsCategories->RenameCategoryL(feedInfo->iCategoryHandle, feedInfo->title);
 		}
 	}
+	CleanupStack::PopAndDestroy(); // close feeds
 	// Clean out old category commands and get new names
 	SetCategoryModelAsCommandsL();
 }
