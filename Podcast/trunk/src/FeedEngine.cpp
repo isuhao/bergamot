@@ -358,8 +358,9 @@ void CFeedEngine::LoadMetaData()
 		}
 	}*/
 	
-	fsSession.Close();
 	CleanupStack::PopAndDestroy(store);	
+
+	fsSession.Close();
 	}
 
 void CFeedEngine::SaveMetaData()
@@ -394,9 +395,10 @@ void CFeedEngine::SaveMetaData()
 	store->SetRootL(id);
 	store->CommitL();
 	CleanupStack::PopAndDestroy(); // outstream
+	CleanupStack::PopAndDestroy(store);	
+
 	fsSession.Close();
 	
-	CleanupStack::PopAndDestroy(store);	
 	
 	}
 
