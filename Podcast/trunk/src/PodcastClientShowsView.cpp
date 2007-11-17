@@ -1,7 +1,10 @@
 #include <PodcastClient.rsg>
 #include <qikcategorymodel.h>
 #include <qikcommand.h>
-
+#include <QikListBoxLayoutPair.h>
+#include <QikListBoxLayoutElement.h>
+#include <QikListBoxLayout.h>
+#include <QikListBoxLayoutProperties.h>
 #include "PodcastClientShowsView.h"
 #include "PodcastModel.h"
 
@@ -173,7 +176,7 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 		}
 		TShowInfoArray &fItems = iPodcastModel.ActiveShowList();
 		len = fItems.Count();
-		
+
 		if (len > 0) {
 			comMan.SetType(*this, EPodcastUpdateFeed, EQikCommandTypeScreen);
 			for (TInt i=0;i<len;i++) {
@@ -243,6 +246,7 @@ void CPodcastClientShowsView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQ
 			{
 				comMan.SetInvisible(*this, EQikListBoxCmdSelect, EFalse);
 				comMan.SetTextL(*this, EQikListBoxCmdSelect, R_PODCAST_FEEDS_PLAY_CMD);
+				comMan.SetShortTextL(*this, EQikListBoxCmdSelect, R_PODCAST_FEEDS_PLAY_CMD);
 			}
 			else if(fItems[aItemIndex]->downloadState == ENotDownloaded)
 			{
@@ -276,7 +280,15 @@ void CPodcastClientShowsView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQ
 				// play the podcast if downloaded
 				else if(fItems[aItemIndex]->downloadState == EDownloaded)
 				{
-					iPodcastModel.PlayPausePodcastL(fItems[aItemIndex]);
+
+					iPodcastModel.PlayPausePodcastL(fItems[aItemIndex]);	
+					MQikListBoxModel& model(iListbox->Model());
+
+					model.ModelBeginUpdateLC();
+					MQikListBoxData* data = model.RetrieveDataL(aItemIndex);	
+					data->SetEmphasis(EFalse);
+					// Informs that the update of the list box model has ended
+					model.ModelEndUpdateL();
 				}
 			}
 		}
