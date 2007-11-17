@@ -80,7 +80,8 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 	
 	TBuf<100> itemName;
 	
-	RArray <TFeedInfo*>& feeds = iPodcastModel.FeedEngine().GetFeeds();
+	TFeedInfoArray feeds;
+	iPodcastModel.FeedEngine().GetFeeds(feeds);
 	int len = feeds.Count();
 	MQikListBoxData* listBoxData;// = model.NewDataL(MQikListBoxModel::EDataNormal);
 	//CleanupClosePushL(*listBoxData);
@@ -125,9 +126,12 @@ void CPodcastClientFeedView::HandleListBoxEventL(CQikListBox *aListBox, TQikList
 	case EEventItemConfirmed:
 	case EEventItemTapped:
 		{
-			TFeedInfoArray& feeds = iPodcastModel.FeedEngine().GetFeeds();
-			iPodcastModel.SetActiveShowList(*iPodcastModel.FeedEngine().GetShowsByFeed(feeds[aItemIndex]));
-			iPodcastModel.SetActiveFeedInfo(*(feeds[aItemIndex]));
+			TFeedInfoArray feeds;
+			iPodcastModel.FeedEngine().GetFeeds(feeds);
+			TShowInfoArray shows;
+			iPodcastModel.FeedEngine().GetShowsByFeed(feeds[aItemIndex], shows);
+			iPodcastModel.SetActiveShowList(shows);
+			iPodcastModel.SetActiveFeedInfo(*feeds[aItemIndex]);
 			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID);
 			iQikAppUi.ActivateViewL(podcastsView);
 		}

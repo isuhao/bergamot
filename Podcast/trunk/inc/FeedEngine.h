@@ -32,14 +32,14 @@ public:
 	void SaveMetaData();
 	
 	void AddDownload(TShowInfo *info);
-	TShowInfoArray* GetAllShows();	
-	TShowInfoArray* GetShowsDownloading();
-	TShowInfoArray* GetShowsByFeed(TFeedInfo *info);
+	void GetAllShows(TShowInfoArray &array);	
+	void GetShowsDownloading(TShowInfoArray &array);
+	void GetShowsByFeed(TFeedInfo *info, TShowInfoArray &array);
 
 	void ListAllFiles();
 	void ListDir(RFs &rfs, TDesC &folder, TShowInfoArray &files);
 
-	TFeedInfoArray& GetFeeds();
+	void GetFeeds(TFeedInfoArray& array);
 	
 	void LoadMetaDataFromFile(TShowInfo *info);
 	

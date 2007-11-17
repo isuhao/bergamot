@@ -58,13 +58,16 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 {
 	if(aCommand.Type() == EQikCommandTypeCategory)
 	{
-		RArray <TFeedInfo*>& feeds = iPodcastModel.FeedEngine().GetFeeds();
+		TFeedInfoArray feeds;
+		iPodcastModel.FeedEngine().GetFeeds(feeds);
 		TInt len = feeds.Count();
 		for (TInt i=0;i<len;i++) {
 			if(feeds[i]->iCategoryHandle == CategoryHandleForCommandId(aCommand.Id()))
 			{
 				iPodcastModel.SetActiveFeedInfo(*feeds[i]);
-				iPodcastModel.SetActiveShowList(*iPodcastModel.FeedEngine().GetShowsByFeed(feeds[i]));
+				TShowInfoArray shows;
+				iPodcastModel.FeedEngine().GetShowsByFeed(feeds[i],shows);
+				iPodcastModel.SetActiveShowList(shows);
 				UpdateListboxItemsL();
 				return;
 			}
@@ -157,7 +160,9 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 		model.ModelBeginUpdateLC();
 		
 		if (iPodcastModel.ActiveShowList().Count() == 0) {
-			iPodcastModel.SetActiveShowList(*iPodcastModel.FeedEngine().GetShowsByFeed(&iPodcastModel.ActiveFeedInfo()));
+			TShowInfoArray shows;
+			iPodcastModel.FeedEngine().GetShowsByFeed(&iPodcastModel.ActiveFeedInfo(), shows);
+			iPodcastModel.SetActiveShowList(shows);
 		}
 		TShowInfoArray &fItems = iPodcastModel.ActiveShowList();
 		len = fItems.Count();
@@ -190,7 +195,8 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 		comMan.SetType(*this, EPodcastUpdateFeed, EQikCommandTypeItem);
 	}
 
-	RArray <TFeedInfo*>& feeds = iPodcastModel.FeedEngine().GetFeeds();
+	RArray <TFeedInfo*> feeds;
+	iPodcastModel.FeedEngine().GetFeeds(feeds);
 	len = feeds.Count();
 
 	for (TInt i=0;i<len;i++) {

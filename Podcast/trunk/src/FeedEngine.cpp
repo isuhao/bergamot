@@ -445,43 +445,43 @@ void CFeedEngine::ListDir(RFs &rfs, TDesC &folder, TShowInfoArray &files) {
 
 }
 
-TFeedInfoArray& CFeedEngine::GetFeeds() 
+void CFeedEngine::GetFeeds(TFeedInfoArray& array) 
 {
-	return feeds;
+	for (int i=0;i<feeds.Count();i++) {
+		array.Append(feeds[i]);
+	}
 }
 
-TShowInfoArray* CFeedEngine::GetShowsByFeed(TFeedInfo *info)
+void CFeedEngine::GetShowsByFeed(TFeedInfo *info, TShowInfoArray& array)
 {
 	RDebug::Print(_L("GetShowsByFeed: %S"), &info->title);
 
-	TShowInfoArray *array = new TShowInfoArray;
+	
 	for (int i=0;i<shows.Count();i++) {
 		//RDebug::Print(_L("Comparing '%S' to '%S'"), &(shows[i]->feedUrl), &info->url);
 		if (shows[i]->feedUrl.Compare(info->url) == 0) {
-			array->Append(shows[i]);
+			array.Append(shows[i]);
 		}
 	
 	}
-	RDebug::Print(_L("GetShowsByFeed returning %d out of %d shows"), array->Count(), shows.Count());
-	return array;
+	RDebug::Print(_L("GetShowsByFeed returning %d out of %d shows"), array.Count(), shows.Count());
 }
 
-TShowInfoArray* CFeedEngine::GetShowsDownloading()
+void CFeedEngine::GetShowsDownloading(TShowInfoArray& array)
 {
-	TShowInfoArray *array = new TShowInfoArray;
-
 	for (int i=0;i<shows.Count();i++) {
 		if (shows[i]->downloadState == EQueued) {
-			array->Append(shows[i]);
+			array.Append(shows[i]);
 		}
 	}
-	return array;
 
 }
 
-TShowInfoArray* CFeedEngine::GetAllShows()
+void CFeedEngine::GetAllShows(TShowInfoArray &array)
 {
-	return &shows;
+	for (int i=0;i<shows.Count();i++) {
+		array.Append(shows[i]);
+	}
 }
 
 void CFeedEngine::ListAllFiles()
@@ -516,14 +516,15 @@ void CFeedEngine::DownloadNextShow()
 		return;
 	}
 	
-	TShowInfoArray* array = GetShowsDownloading();
-	if(array->Count() > 0) {
-		TShowInfo *info = (*array)[0];
+	TShowInfoArray array;
+	GetShowsDownloading(array);
+	if(array.Count() > 0) {
+		TShowInfo *info = array[0];
 		RDebug::Print(_L("Downloading %S"), &(info->title));
 		info->downloadState = EDownloading;
 		GetShow(info);
 	}
-	delete array;
+	array.Close();
 }
 
 void CFeedEngine::CleanHtml(TDes &str)

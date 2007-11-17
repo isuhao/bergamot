@@ -89,7 +89,8 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 				iPodcastModel.FeedEngine().GetFeed(&iPodcastModel.ActiveFeedInfo());
 			} else 
 			{
-				TFeedInfoArray& array = iPodcastModel.FeedEngine().GetFeeds();
+				TFeedInfoArray array;
+				iPodcastModel.FeedEngine().GetFeeds(array);
 				
 				for (int i=0;i<array.Count();i++) 
 				{
