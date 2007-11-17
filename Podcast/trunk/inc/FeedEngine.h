@@ -67,8 +67,8 @@ private:
 
 private:
 	// two HTTP connections, one for feeds and one for shows
-	CHttpClient* showClient;
-	CHttpClient* feedClient;
+	CHttpClient* iShowClient;
+	CHttpClient* iFeedClient;
 
 	CFeedParser* iParser;
 

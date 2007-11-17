@@ -23,17 +23,21 @@ void CFeedEngine::ConstructL()
 
 CFeedEngine::CFeedEngine()
 	{
-	showClient = CHttpClient::NewL(*this);
-	feedClient = CHttpClient::NewL(*this);
+	iShowClient = CHttpClient::NewL(*this);
+	iFeedClient = CHttpClient::NewL(*this);
 	iDownloading = EFalse;
 	iFeedListFile.Copy(KFeedsFileName);
 	}
 
 CFeedEngine::~CFeedEngine()
 	{
+	shows.ResetAndDestroy();
 	shows.Close();
+	feeds.ResetAndDestroy();
 	feeds.Close();
 	delete iParser;
+	delete iFeedClient;
+	delete iShowClient;
 	}
 
 void CFeedEngine::Cancel() 
@@ -61,7 +65,7 @@ void CFeedEngine::GetFeed(TFeedInfo* feedInfo)
 
 	feedInfo->fileName.Copy(privatePath);
 	
-	feedClient->GetFeed(feedInfo);
+	iFeedClient->GetFeed(feedInfo);
 	feedInfo->iUid = DefaultHash::Des16(feedInfo->url);
 	SaveMetaData();
 	RDebug::Print(_L("GetFeed END"));
@@ -101,7 +105,7 @@ void CFeedEngine::GetShow(TShowInfo *info)
 	RDebug::Print(_L("filePath: %S"), &filePath);
 	info->fileName.Copy(filePath);
 	iDownloading = ETrue;
-	showClient->GetShow(info);
+	iShowClient->GetShow(info);
 	}
 
 void CFeedEngine::ReplaceString(TDes & aString, const TDesC& aStringToReplace,const TDesC& aReplacement )
@@ -355,7 +359,7 @@ void CFeedEngine::LoadMetaData()
 	}*/
 	
 	fsSession.Close();
-	CleanupStack::Pop(store);	
+	CleanupStack::PopAndDestroy(store);	
 	}
 
 void CFeedEngine::SaveMetaData()
@@ -392,7 +396,7 @@ void CFeedEngine::SaveMetaData()
 	CleanupStack::PopAndDestroy(); // outstream
 	fsSession.Close();
 	
-	CleanupStack::Pop(store);	
+	CleanupStack::PopAndDestroy(store);	
 	
 	}
 
