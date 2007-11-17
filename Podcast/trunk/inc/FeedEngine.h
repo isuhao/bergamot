@@ -24,6 +24,7 @@ public:
 
 	void GetAllShows(TShowInfoArray &array);	
 	void GetShowsDownloading(TShowInfoArray &array);
+	void GetShowsDownloaded(TShowInfoArray &array);
 	void GetShowsByFeed(TFeedInfo *info, TShowInfoArray &array);
 	void GetFeeds(TFeedInfoArray& array);
 	

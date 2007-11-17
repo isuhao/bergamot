@@ -555,6 +555,16 @@ void CFeedEngine::GetShowsDownloading(TShowInfoArray& array)
 
 }
 
+void CFeedEngine::GetShowsDownloaded(TShowInfoArray& array)
+	{
+		for (int i=0;i<iShows.Count();i++) {
+			if (iShows[i]->downloadState == EDownloaded) {
+				array.Append(iShows[i]);
+			}
+		}
+
+	}
+
 void CFeedEngine::GetAllShows(TShowInfoArray &array)
 {
 	for (int i=0;i<iShows.Count();i++) {
