@@ -54,7 +54,7 @@ void CPodcastClientShowsView::ViewConstructL()
 	iViewLabel = iEikonEnv->AllocReadResourceL(R_PODCAST_SHOWS_TITLE);
 	CPodcastClientView::ViewConstructL();
 	
-	ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *iViewLabel);
+	//ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *iViewLabel);
 }
 
 void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
@@ -139,22 +139,19 @@ CQikCommand* CPodcastClientShowsView::DynInitOrDeleteCommandL(CQikCommand* aComm
 
 
 
-_LIT(KShowsTitleFormat, "%S - %S");
+_LIT(KShowsTitleFormat, "%d / %d");
 void CPodcastClientShowsView::UpdateListboxItemsL()
 {
 	CQikCommandManager& comMan = CQikCommandManager::Static();
 
 	TInt len = 0;
-
+	TUint unplayed = 0;
 	if (iListbox != NULL)
 	{
 		iListbox->RemoveAllItemsL();
-		
-		
-		HBufC* titleBuffer = HBufC::NewLC(iViewLabel->Length()+KShowsTitleFormat().Length()+iPodcastModel.ActiveFeedInfo().iTitle.Length());
-		titleBuffer->Des().Format(KShowsTitleFormat, iViewLabel, &iPodcastModel.ActiveFeedInfo().iTitle);
-		ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *titleBuffer);
-		CleanupStack::PopAndDestroy(titleBuffer);
+			
+		SetAppTitleNameL(iPodcastModel.ActiveFeedInfo().iTitle);
+
 		
 		MQikListBoxModel& model(iListbox->Model());
 		
@@ -183,6 +180,7 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 				listBoxData->AddTextL(si->iTitle, EQikListBoxSlotText1);
 				listBoxData->AddTextL(si->iDescription, EQikListBoxSlotText2);
 				listBoxData->SetEmphasis(si->iPlayState == ENeverPlayed);
+				unplayed+=(si->iPlayState == ENeverPlayed);
 				CleanupStack::PopAndDestroy();	
 			}
 		} else {		
@@ -201,8 +199,16 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 	if(len == 0)
 	{
 		comMan.SetType(*this, EPodcastUpdateFeed, EQikCommandTypeItem);
+		ViewContext()->ChangeTextL(EPodcastListViewContextLabel, KNullDesC());
 	}
+	else
+	{
+		HBufC* titleBuffer = HBufC::NewLC(iViewLabel->Length()+KShowsTitleFormat().Length()+8);
+		titleBuffer->Des().Format(KShowsTitleFormat, unplayed, len);
+		ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *titleBuffer);
+		CleanupStack::PopAndDestroy(titleBuffer);
 
+	}
 	TFeedInfoArray feeds;
 	CleanupClosePushL(feeds);
 	iPodcastModel.FeedEngine().GetFeeds(feeds);
