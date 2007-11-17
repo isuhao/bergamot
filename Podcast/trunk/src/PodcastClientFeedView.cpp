@@ -66,6 +66,9 @@ CQikCommand* CPodcastClientFeedView::DynInitOrDeleteCommandL(CQikCommand* aComma
 
 void CPodcastClientFeedView::UpdateListboxItemsL()
 {
+	TFeedInfoArray feeds;
+	CleanupClosePushL(feeds);
+
 	iListbox->RemoveAllItemsL();
 	
 	MQikListBoxModel& model(iListbox->Model());
@@ -80,8 +83,6 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 	
 	TBuf<100> itemName;
 	
-	TFeedInfoArray feeds;
-	CleanupClosePushL(feeds);
 	iPodcastModel.FeedEngine().GetFeeds(feeds);
 	int len = feeds.Count();
 	MQikListBoxData* listBoxData;// = model.NewDataL(MQikListBoxModel::EDataNormal);
