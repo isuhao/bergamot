@@ -218,6 +218,7 @@ void CPodcastClientShowsView::HandleListBoxEventL(CQikListBox *aListBox, TQikLis
 	switch (aEventType)
 	{
 	case EEventHighlightMoved:
+		{
 		TShowInfoArray &fItems = iPodcastModel.ActiveShowList();
 		if(aItemIndex>= 0 && aItemIndex < fItems.Count())
 		{
@@ -240,7 +241,7 @@ void CPodcastClientShowsView::HandleListBoxEventL(CQikListBox *aListBox, TQikLis
 		{
 			comMan.SetInvisible(*this, EQikListBoxCmdSelect, ETrue);
 		}
-		
+		}
 		break;
 	case EEventItemConfirmed:
 	case EEventItemTapped:

@@ -100,9 +100,12 @@ SOURCE          c16 feeds_40x40.bmp
 SOURCE          8   feeds_40x40m.bmp
 SOURCE			c16	feeds_18x18.bmp
 SOURCE			8	feeds_18x18m.bmp
+
+SOURCE			c16 play_40x40.bmp
+SOURCE			8   play_40x40m.bmp
+
 SOURCE          c16 shows_40x40.bmp
 SOURCE          8   shows_40x40m.bmp
-
 END
 
 CAPABILITY NetworkServices UserEnvironment
