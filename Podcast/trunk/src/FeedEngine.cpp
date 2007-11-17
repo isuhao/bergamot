@@ -480,11 +480,11 @@ void CFeedEngine::ListDir(RFs &rfs, TDesC &folder, TShowInfoArray &files) {
 	for (int i=0;i<dirPtr->Count();i++) {
 		const TEntry &entry = (TEntry) (*dirPtr)[i];
 		if (entry.IsDir())  {
-			/*TBuf<100> subFolder;
+			TBuf<100> subFolder;
 			subFolder.Copy(folder);
 			subFolder.Append(entry.iName);
 			subFolder.Append(_L("\\"));
-			ListDir(rfs, subFolder, array);*/
+			ListDir(iFs, subFolder, iShows);
 		} else {
 		if (entry.iName.Right(3).CompareF(_L("mp3")) == 0 ||
 			entry.iName.Right(3).CompareF(_L("aac")) == 0 ||
@@ -494,8 +494,8 @@ void CFeedEngine::ListDir(RFs &rfs, TDesC &folder, TShowInfoArray &files) {
 			fileName.Copy(folder);
 			fileName.Append(entry.iName);
 
-			for (int i=0;i<files.Count();i++) {
-				if (files[i]->fileName.Compare(fileName) == 0) {
+			for (int i=0;i<iShows.Count();i++) {
+				if (iShows[i]->fileName.Compare(fileName) == 0) {
 					RDebug::Print(_L("Already listed %S"), &fileName);
 					exists = ETrue;
 					break;
@@ -506,15 +506,14 @@ void CFeedEngine::ListDir(RFs &rfs, TDesC &folder, TShowInfoArray &files) {
 				continue;
 			}
 			
-			/*RDebug::Print(entry.iName);
+			RDebug::Print(entry.iName);
 			TShowInfo *pID = new TShowInfo;
 			pID->fileName.Copy(fileName);
 			pID->title.Copy(entry.iName);		
 			pID->position = 0;
-			pID->state = EStateless;
-			pID->iShowDownloaded = ETrue;
-			//LoadMetaDataFromFile(pID);
-			files.Append(pID);*/
+			pID->downloadState = EDownloaded;
+			RDebug::Print(_L("Adding!"));
+			AddShow(pID);
 		}
 		}
 	}
@@ -574,19 +573,19 @@ void CFeedEngine::GetAllShows(TShowInfoArray &array)
 
 void CFeedEngine::ListAllFiles()
 	{
-/*	RFs rfs;
-	rfs.Connect();
 	TBuf<100> podcastDir;
 	podcastDir.Copy(KPodcastDir);
-	
-	for (int i=0;i<shows.Count();i++) {
-		if(BaflUtils::FileExists(rfs, files[i]->fileName) == EFalse) {
-			RDebug::Print(_L("%S was removed, delisting"), &files[i]->fileName);
-			files.Remove(i);
-		}
-	}
+	/*
+	for (int i=0;i<iShows.Count();i++) {
+		if (iShows[i]->iDownloadState == EDownloaded) {
+			if(BaflUtils::FileExists(iFs, iShows[i]->fileName) == EFalse) {
+				RDebug::Print(_L("%S was removed, marking"), &iShows[i]->fileName);
+				iShows[i]->ifiles.Remove(i);
+			}
+	}*/
 
-	ListDir(rfs, podcastDir, files);	*/
+	ListDir(iFs, podcastDir, iShows);
+	SaveShows();
 }
 
 void CFeedEngine::AddDownload(TShowInfo *info)
