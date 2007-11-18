@@ -38,6 +38,9 @@ rls_string STRING_r_pause_cmd "Pause"
 rls_string STRING_r_view_download_cmd "Download"
 rls_string STRING_r_view_download_short_cmd "Get"
 rls_string STRING_r_view_show_cmd "Show"
+rls_string STRING_r_view_cmd "View"
+
+
 
 rls_string STRING_r_view_play_cmd "Play"
 

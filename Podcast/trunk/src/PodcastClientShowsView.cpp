@@ -336,16 +336,12 @@ void CPodcastClientShowsView::UpdateCommandsL()
 				comMan.SetTextL(*this, EQikListBoxCmdSelect, R_PODCAST_FEEDS_PLAY_CMD);
 				comMan.SetShortTextL(*this, EQikListBoxCmdSelect, R_PODCAST_FEEDS_PLAY_CMD);
 			}
-			else if(fItems[index]->iDownloadState == ENotDownloaded)
+			else 
 			{
 				comMan.SetInvisible(*this, EQikListBoxCmdSelect, EFalse);
-				comMan.SetTextL(*this, EQikListBoxCmdSelect, R_PODCAST_FEEDS_DOWNLOAD_CMD);
-				comMan.SetShortTextL(*this, EQikListBoxCmdSelect, R_PODCAST_FEEDS_DOWNLOAD_SHORT_CMD);
-			}
-			else
-			{
-				comMan.SetInvisible(*this, EQikListBoxCmdSelect, ETrue);
-			}
+				comMan.SetTextL(*this, EQikListBoxCmdSelect, R_PODCAST_VIEW_CMD);
+				comMan.SetShortTextL(*this, EQikListBoxCmdSelect, R_PODCAST_VIEW_CMD);
+			}			
 		}
 		else
 		{

@@ -329,6 +329,7 @@ RESOURCE TBUF r_podcast_show_cmd{buf = STRING_r_view_show_cmd;}
 RESOURCE TBUF r_podcast_update_cmd{buf = STRING_r_update_feeds_cmd;}
 
 RESOURCE TBUF r_podcast_update_all_cmd{buf = STRING_r_update_all_feeds_cmd;}
+RESOURCE TBUF r_podcast_view_cmd {buf = STRING_r_view_cmd;}
 
 
 RESOURCE ARRAY r_podcast_shows_categories
