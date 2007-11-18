@@ -2,7 +2,7 @@
 
 The Podcast Player aims to be a fully featured podcatcher for UIQ. It is still in early development, but there is working [http://bergamot.googlecode.com/svn/Podcast/trunk code] in Subversion, as well as the latest "trunk" [http://bergamot.googlecode.com/svn/Podcast/trunk/group/Podcast_udeb_signed.sis debug build]. For more stable versions, see Releases below.
 
-The intention is to release one alpha version every week. I intend to have a fully functional beta version by christmas at the latest.
+The intention is to release one alpha version every week, and hopefully a beta in December.
 
 = Screenshots =
 
@@ -14,7 +14,7 @@ http://bergamot.googlecode.com/svn/wiki/pp4.jpg
   * Alpha 2 (November 18th) |  [http://bergamot.googlecode.com/svn/Podcast/tags/alpha2 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha2/group/Podcast_udeb_signed.sis SIS]
     * New and improved UI thanks to Lars
     * Download queue
-    * Pretty much stable
+    * Pretty stable
     * Much improved feed handling
     * Keeps track of position inside audio file, even between restarts, and for multiple podcasts at a time
 
