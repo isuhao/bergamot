@@ -173,28 +173,27 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 		{
 		case EShowAllShows:
 			SelectCategoryL(EShowAllShows);
-			SetAppTitleNameL(iCategories->CategoryNameByHandle(iCurrentCategory));
+		//	SetAppTitleNameL(iCategories->CategoryNameByHandle(iCurrentCategory));
 			
 			iPodcastModel.FeedEngine().SelectAllShows();
 			break;
 		case EShowNewShows:
 			SelectCategoryL(EShowNewShows);
-			SetAppTitleNameL(iCategories->CategoryNameByHandle(iCurrentCategory));
+		//	SetAppTitleNameL(iCategories->CategoryNameByHandle(iCurrentCategory));
 			break;		
 		case EShowDownloadedShows:
 			SelectCategoryL(EShowDownloadedShows);
-			SetAppTitleNameL(iCategories->CategoryNameByHandle(iCurrentCategory));
+		//	SetAppTitleNameL(iCategories->CategoryNameByHandle(iCurrentCategory));
 			iPodcastModel.FeedEngine().SelectShowsByDownloadState(EDownloaded);
 			break;
 		case EShowPendingShows:
 			SelectCategoryL(EShowPendingShows);
-			SetAppTitleNameL(iCategories->CategoryNameByHandle(iCurrentCategory));
+		//	SetAppTitleNameL(iCategories->CategoryNameByHandle(iCurrentCategory));
 			iPodcastModel.FeedEngine().SelectShowsByDownloadState(EDownloading);
 			break;
 		default:
 
 			iCategories->RenameCategoryL(EShowFeedShows, iPodcastModel.ActiveFeedInfo().iTitle);
-			SetAppTitleNameL(iPodcastModel.ActiveFeedInfo().iTitle);
 			
 			iPodcastModel.FeedEngine().SelectShowsByFeed(iPodcastModel.ActiveFeedInfo().iUid);
 			SelectCategoryL(EShowFeedShows);
@@ -246,9 +245,6 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 	}
 
 	comMan.SetInvisible(*this, EPodcastUpdateFeed, iCurrentCategory != EShowFeedShows);
-
-	// Clean out old category commands and get new names
-	SetCategoryModelAsCommandsL();
 }
 
 

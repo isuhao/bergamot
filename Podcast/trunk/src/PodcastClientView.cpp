@@ -144,7 +144,6 @@ void CPodcastClientView::ViewConstructL()
 void CPodcastClientView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage)
 	{
 		SetAppTitleNameL(KNullDesC());
-
 		UpdateListboxItemsL();
 	}
 
