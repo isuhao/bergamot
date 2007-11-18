@@ -25,8 +25,6 @@ protected:
 	void ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage);
 
 private:
-	// Use this to change feeds
-	CQikCategoryModel* iCategories;
 	TPodcastClientShowCategory iCurrentCategory;
 };
 

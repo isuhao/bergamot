@@ -46,5 +46,7 @@ private:
 	CEikEdwin* iInformationEdwin;
 	CQikSlider* iVolumeSlider;
 	CPeriodic* iPlaybackTicker;
+	// Use this to change feeds
+	CQikCategoryModel* iCategories;
 	};
 #endif // PODCASTPLAYVIEW_H

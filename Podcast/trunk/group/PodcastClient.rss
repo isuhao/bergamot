@@ -386,3 +386,17 @@ RESOURCE ARRAY r_podcast_shows_categories
 			}
 		};
 	}
+
+RESOURCE ARRAY r_podcast_category
+	{
+	items=
+		{
+		QIK_CATEGORY
+			{
+			name = STRING_r_category_all;
+			flags = EQikCategoryCantBeRenamed | EQikCategoryCantBeDeleted | EQikCategoryAll;
+			handle = EShowAllShows;			
+			}
+		};
+	}
+

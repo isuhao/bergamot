@@ -40,5 +40,8 @@ protected:
 	CQikListBox* iListbox;
 	TBuf<1024> activeFeedTitle;
 	HBufC* iViewLabel;
+
+	// Use this to change feeds
+	CQikCategoryModel* iCategories;
 	};
 #endif

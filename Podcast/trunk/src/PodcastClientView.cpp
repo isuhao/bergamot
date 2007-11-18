@@ -139,10 +139,14 @@ void CPodcastClientView::ViewConstructL()
 	// Get the list box and the list box model
 	iListbox = LocateControlByUniqueHandle<CQikListBox>(EPodcastListViewListCtrl);
 	iListbox->SetListBoxObserver(this);
+	iCategories = QikCategoryUtils::ConstructCategoriesLC(R_PODCAST_CATEGORY);
+	SetCategoryModel(iCategories);
+	CleanupStack::Pop(iCategories);
 }
 
 void CPodcastClientView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage)
 	{
+		SelectCategoryL(EShowAllShows);
 		SetAppTitleNameL(KNullDesC());
 		UpdateListboxItemsL();
 	}

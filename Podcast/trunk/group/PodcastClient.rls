@@ -45,4 +45,6 @@ rls_string STRING_r_category_new "New shows"
 rls_string STRING_r_category_dled "Downloaded shows"
 rls_string STRING_r_category_pending "Pending shows"
 
+rls_string STRING_r_caption "Podcast Player"
+rls_string STRING_r_short_caption "Podcast"
 

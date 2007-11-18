@@ -189,11 +189,6 @@ void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 			TVwsViewId playView = TVwsViewId(KUidPodcastClientID, KUidPodcastBaseViewID);
 			iQikAppUi.ActivateViewL(playView);
 		}break;
-/*	case EPodcastViewShows:
-		{
-			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID);
-			iQikAppUi.ActivateViewL(podcastsView);
-		}break;*/
 	case EPodcastViewFeeds:
 		{
 			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastFeedViewID);
@@ -214,7 +209,6 @@ void CPodcastClientPlayView::ViewConstructL()
     ViewConstructFromResourceL(R_PODCAST_PLAYVIEW_UI_CONFIGURATIONS);
 
 	iProgress =LocateControlByUniqueHandle<CQikSlider>(EPodcastPlayViewProgressCtrl);
-//	iTitleLabel = LocateControlByUniqueHandle<CEikLabel>(EPodcastPlayViewTitleCtrl);
 	iTimeLabel = LocateControlByUniqueHandle<CEikLabel>(EPodcastPlayViewProgressTime);
 	iInformationEdwin = LocateControlByUniqueHandle<CEikEdwin>(EPodcastPlayViewInformation);
 	iInformationEdwin->CreateScrollBarFrameL();
@@ -222,11 +216,15 @@ void CPodcastClientPlayView::ViewConstructL()
 	CEikScrollBarFrame::EAuto);
 	iVolumeSlider = LocateControlByUniqueHandle<CQikSlider>(EPodcastPlayViewVolumeCtrl);
 	ViewContext()->AddTextL(EPodcastPlayViewTitleCtrl, KNullDesC(), EHCenterVCenter);
+	iCategories = QikCategoryUtils::ConstructCategoriesLC(R_PODCAST_CATEGORY);
+	SetCategoryModel(iCategories);
+	CleanupStack::Pop(iCategories);
     }
 
 void CPodcastClientPlayView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage)
 	{
 	CQikViewBase::ViewActivatedL(aPrevViewId, aCustomMessageId, aCustomMessage);
+	SelectCategoryL(EShowAllShows);
 	UpdateViewL();
 	}
 

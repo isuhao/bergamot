@@ -51,11 +51,13 @@ void CPodcastClientShowsView::ViewConstructL()
 {
 	iViewLabel = iEikonEnv->AllocReadResourceL(R_PODCAST_SHOWS_TITLE);
 	CPodcastClientView::ViewConstructL();
+	SetCategoryModel(NULL);
+	delete iCategories; 
+	iCategories = NULL;
 	iCategories = QikCategoryUtils::ConstructCategoriesLC(R_PODCAST_SHOWS_CATEGORIES);
 	SetCategoryModel(iCategories);
 	CleanupStack::Pop(iCategories);
 	SetCategoryModelAsCommandsL();
-	//ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *iViewLabel);
 }
 
 void CPodcastClientShowsView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage)
