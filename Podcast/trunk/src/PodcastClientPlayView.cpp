@@ -65,6 +65,7 @@ void CPodcastClientPlayView::ConstructL()
 	BaseConstructL();
 	iPlaybackTicker = CPeriodic::NewL(CActive::EPriorityStandard);
 	iPodcastModel.SoundEngine().SetObserver(this);
+	iPodcastModel.FeedEngine().AddObserver(this);
 	}
 
 /**
@@ -235,7 +236,7 @@ void CPodcastClientPlayView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid 
 
 void CPodcastClientPlayView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload)
 {
-	if(aPercentOfCurrentDownload>=0 && aPercentOfCurrentDownload < KOneHundredPercent)
+	if(aPercentOfCurrentDownload>=0 && aPercentOfCurrentDownload < KOneHundredPercent && iPodcastModel.PlayingPodcast() == iPodcastModel.FeedEngine().ShowDownloading())
 	{
 		if(!iProgressAdded)
 		{
@@ -253,7 +254,7 @@ void CPodcastClientPlayView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload
 		iProgressAdded = EFalse;
 	}
 
-	if(aPercentOfCurrentDownload == KOneHundredPercent)
+	if(aPercentOfCurrentDownload == KOneHundredPercent && iPodcastModel.PlayingPodcast() == iPodcastModel.FeedEngine().ShowDownloading())
 	{
 		// To update icon list status and commands
 		UpdateViewL();
