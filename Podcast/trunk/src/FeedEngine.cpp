@@ -217,6 +217,9 @@ void CFeedEngine::DisconnectedCallback(CHttpClient* aClient)
 void CFeedEngine::DownloadInfoCallback(CHttpClient* aClient, int aSize)
 	{
 	RDebug::Print(_L("About to download %d bytes"), aSize);
+	if(aClient == iShowClient && iShowDownloading != NULL) {
+		iShowDownloading->iShowSize = aSize;
+		}
 	}
 
 void CFeedEngine::LoadSettings()

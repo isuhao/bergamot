@@ -193,6 +193,7 @@ void CPodcastClientShowsView::UpdateShowItemL(TShowInfo* aShowInfo)
 		// Informs that the update of the list box model has ended
 		if(aShowInfo->iDownloadState == EDownloaded)
 		{
+			
 		}
 		else
 		{

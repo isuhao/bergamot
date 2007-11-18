@@ -40,6 +40,7 @@ public:
 	TPlayState iPlayState;
 	TDownloadState iDownloadState;
 	TInt iUid;
+	TUint32 iShowSize;
 };
 
 
