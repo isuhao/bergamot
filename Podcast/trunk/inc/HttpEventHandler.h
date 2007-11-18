@@ -32,8 +32,8 @@ class CHttpEventHandler : public CBase,
   {
   public:
 	virtual ~CHttpEventHandler();
-	static CHttpEventHandler* NewLC(MHttpEventHandlerCallbacks &aCallbacks);
-	static CHttpEventHandler* NewL(MHttpEventHandlerCallbacks &aCallbacks);
+	static CHttpEventHandler* NewLC(CHttpClient* aClient, MHttpEventHandlerCallbacks &aCallbacks);
+	static CHttpEventHandler* NewL(CHttpClient* aClient, MHttpEventHandlerCallbacks &aCallbacks);
 	void SetVerbose(TBool aVerbose);
 	void SetSaveFileName(TDesC &fName);
 	TBool Verbose() const;
@@ -44,7 +44,7 @@ class CHttpEventHandler : public CBase,
 	virtual TInt MHFRunError(TInt aError, RHTTPTransaction aTransaction, const THTTPEvent& aEvent);
 
 protected:
-	CHttpEventHandler(MHttpEventHandlerCallbacks &aCallbacks);
+	CHttpEventHandler(CHttpClient* aClient, MHttpEventHandlerCallbacks &aCallbacks);
 	void ConstructL();
 private:
 	void DumpRespHeadersL(RHTTPTransaction& aTrans);
@@ -61,6 +61,9 @@ private:
 	MHttpEventHandlerCallbacks& iCallbacks;
 	TInt iBytesDownloaded;
 	TInt iBytesTotal;
+
+	/** Http client which owns this event handler */
+	CHttpClient* iHttpClient;
 };
 
 #endif

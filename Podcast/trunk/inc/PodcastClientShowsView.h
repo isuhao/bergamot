@@ -18,6 +18,8 @@ protected:
 	void ConstructL();
 	void ShowListUpdated();
     void FeedInfoUpdated(const TFeedInfo& aFeedInfo);
+	void FeedDownloadUpdatedL(TInt aPercentOfCurrentDownload){};
+	void ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload);
 
 	void HandleCommandL(CQikCommand& aCommand);
 	// from MQikCommandModelOwner	
@@ -26,6 +28,7 @@ protected:
 
 private:
 	TPodcastClientShowCategory iCurrentCategory;
+	TBool iProgressAdded;
 };
 
 

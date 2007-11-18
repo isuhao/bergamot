@@ -155,7 +155,7 @@ void CFeedEngine::ParsingCompleteCallback(TFeedInfo *item)
 	}
 	}
 
-void CFeedEngine::ConnectedCallback()
+void CFeedEngine::ConnectedCallback(CHttpClient* aClient)
 	{
 	
 	}
@@ -165,17 +165,19 @@ void CFeedEngine::AddObserver(MFeedEngineObserver *observer)
 	iObservers.Append(observer);
 	}
 
-void CFeedEngine::ProgressCallback(int percent)
-	{
-	TBuf<100> printBuffer;
-	if (percent == -1) {
-		printBuffer.Format(_L("Downloading..."));
-	
-	} else {
-		printBuffer.Format(_L("Downloading... %d%%"), percent);
+void CFeedEngine::ProgressCallback(CHttpClient* aClient, int aPercent)
+{	
+	for (int i=0;i<iObservers.Count();i++) {
+		if(aClient == iFeedClient)
+		{
+			iObservers[i]->FeedDownloadUpdatedL(aPercent);
+		}
+		else if(aClient == iShowClient)
+		{
+			iObservers[i]->ShowDownloadUpdatedL(aPercent);
+		}
 	}
-	User::InfoPrint(printBuffer);
-	}
+}
 
 void CFeedEngine::ShowCompleteCallback(TShowInfo *info)
 	{
@@ -195,14 +197,14 @@ void CFeedEngine::FeedCompleteCallback(TFeedInfo * aInfo)
 
 	}
 
-void CFeedEngine::DisconnectedCallback()
+void CFeedEngine::DisconnectedCallback(CHttpClient* aClient)
 	{
 	
 	}
 
-void CFeedEngine::DownloadInfoCallback(int size)
+void CFeedEngine::DownloadInfoCallback(CHttpClient* aClient, int aSize)
 	{
-	RDebug::Print(_L("About to download %d bytes"), size);
+	RDebug::Print(_L("About to download %d bytes"), aSize);
 	}
 
 void CFeedEngine::LoadSettings()

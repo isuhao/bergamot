@@ -146,11 +146,18 @@ void CPodcastClientView::ViewConstructL()
 
 void CPodcastClientView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage)
 	{
+		CQikViewBase::ViewActivatedL(aPrevViewId, aCustomMessageId, aCustomMessage);
+		MakeVisible(ETrue);
 		SelectCategoryL(EShowAllShows);
 		SetAppTitleNameL(KNullDesC());
 		UpdateListboxItemsL();
 	}
 
+void CPodcastClientView::ViewDeactivated()
+{
+	CQikViewBase::ViewDeactivated();
+	MakeVisible(EFalse);
+}
 
 void CPodcastClientView::HandleControlEventL(CCoeControl */*aControl*/, TCoeEvent aEventType)
 	{

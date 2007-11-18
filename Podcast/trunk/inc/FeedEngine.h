@@ -53,10 +53,10 @@ private:
 	void ListDir(RFs &rfs, TDesC &folder, TShowInfoArray &files);
 
 	// callbacks from HttpClient
-	void ConnectedCallback();
-	void DisconnectedCallback();
-	void ProgressCallback(int percent);
-	void DownloadInfoCallback(int size);
+	void ConnectedCallback(CHttpClient* aClient);
+	void DisconnectedCallback(CHttpClient* aClient);
+	void ProgressCallback(CHttpClient* aClient, int aPercent);
+	void DownloadInfoCallback(CHttpClient* aClient, int aSize);
 
 	void ShowCompleteCallback(TShowInfo *info);
 	void FeedCompleteCallback(TFeedInfo *info);

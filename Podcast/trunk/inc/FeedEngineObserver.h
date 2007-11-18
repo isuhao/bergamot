@@ -4,5 +4,7 @@ class MFeedEngineObserver {
 public:
 	virtual void ShowListUpdated() = 0;
 	virtual void FeedInfoUpdated(const TFeedInfo& aFeedInfo) = 0;
+	virtual void FeedDownloadUpdatedL(TInt aPercentOfCurrentDownload) = 0;
+	virtual void ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload) = 0;
 };
 #endif /*FEEDENGINEOBSERVER_H_*/

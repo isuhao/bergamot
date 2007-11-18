@@ -30,7 +30,7 @@ public:
 protected: 
 	void ViewConstructL();
 	void ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage);
-	
+	void ViewDeactivated();
 protected:
 	CPodcastClientView(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel);
 	virtual void ConstructL();

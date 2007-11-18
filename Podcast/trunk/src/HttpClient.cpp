@@ -94,7 +94,7 @@ void CHttpClient::Get(TDesC& url, TDesC& fileName) {
 	uri.Parse(url8);
 	CHttpEventHandler* eHandler;
 	RDebug::Print(_L("Getting %S to %S"), &url, &fileName);
-	eHandler = CHttpEventHandler::NewL(iCallbacks);
+	eHandler = CHttpEventHandler::NewL(this, iCallbacks);
 	eHandler->SetSaveFileName(fileName);
 	RHTTPTransaction trans = iSession.OpenTransactionL(uri, *eHandler, method);
 	  

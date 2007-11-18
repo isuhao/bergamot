@@ -23,7 +23,7 @@ void CHttpEventHandler::ConstructL()
 	}
 
 
-CHttpEventHandler::CHttpEventHandler(MHttpEventHandlerCallbacks &aCallbacks): iCallbacks(aCallbacks) 
+CHttpEventHandler::CHttpEventHandler(CHttpClient* aClient, MHttpEventHandlerCallbacks &aCallbacks): iHttpClient(aClient), iCallbacks(aCallbacks) 
 	{
 	}
 
@@ -34,18 +34,18 @@ CHttpEventHandler::~CHttpEventHandler()
 	}
 
 
-CHttpEventHandler* CHttpEventHandler::NewLC(MHttpEventHandlerCallbacks &aCallbacks)
+CHttpEventHandler* CHttpEventHandler::NewLC(CHttpClient* aClient, MHttpEventHandlerCallbacks &aCallbacks)
 	{
-	CHttpEventHandler* me = new(ELeave)CHttpEventHandler(aCallbacks);
+	CHttpEventHandler* me = new(ELeave)CHttpEventHandler(aClient, aCallbacks);
 	CleanupStack::PushL(me);
 	me->ConstructL();
 	return me;
 	}
 
 
-CHttpEventHandler* CHttpEventHandler::NewL(MHttpEventHandlerCallbacks &aCallbacks)
+CHttpEventHandler* CHttpEventHandler::NewL(CHttpClient* aClient, MHttpEventHandlerCallbacks &aCallbacks)
 	{
-	CHttpEventHandler* me = NewLC(aCallbacks);
+	CHttpEventHandler* me = NewLC(aClient, aCallbacks);
 	CleanupStack::Pop(me);
 	return me;
 	}
@@ -94,7 +94,7 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 					RDebug::Print(_L("Response body size is unknown"));
 					iBytesTotal = -1;
 				}
-				iCallbacks.DownloadInfoCallback(dataSize);
+				iCallbacks.DownloadInfoCallback(iHttpClient, dataSize);
 
 				cancelling = EFalse;
 				}
@@ -148,9 +148,9 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 					iBytesDownloaded += bodyData.Length();
 					int percent = (int) ((float)iBytesDownloaded * 100.0 / (float)iBytesTotal) ;
 					//				RDebug::Print(_L("Downloading: %d, %d total"), iBytesDownloaded, iBytesTotal);
-					iCallbacks.ProgressCallback(percent);
+					iCallbacks.ProgressCallback(iHttpClient, percent);
 				} else {
-					iCallbacks.ProgressCallback(-1);
+					iCallbacks.ProgressCallback(iHttpClient, -1);
 				}
 				iRespBodyFile.Write(bodyData);
 				}
