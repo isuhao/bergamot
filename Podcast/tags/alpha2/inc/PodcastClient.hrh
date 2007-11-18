@@ -1,0 +1,70 @@
+#ifndef __PODCASTCLIENT_HRH__
+#define __PODCASTCLIENT_HRH__
+
+enum TPodcatClientPages
+    {
+    EPodcastClientBaseViewPage = 1
+    };
+
+enum TPodcatClientCommands
+	{
+	EPodcastView = 0x1000,
+	EPodcastViewMain,
+	EPodcastViewAllShows,
+	EPodcastViewNewShows,
+	EPodcastViewDownloadedShows,
+	EPodcastViewPendingShows,
+    EPodcastViewFeeds,
+	EPodcastViewPlayer,
+	EPodcastPlay,
+	EPodcastStop,
+	EPodcastPause,
+	EPodcastSettings,
+	EPodcastAddFeed,
+	EPodcastUpdateFeed
+	};
+
+    enum TPodcastControl
+	{
+	EPodcastListViewListCtrl= 0x1000,
+	EPodcastListViewPage,
+	EPodcastListViewContextLabel,
+	EPodcastPlayViewTitleCtrl,
+	EPodcastPlayViewProgressCtrl,
+	EPodcastPlayViewVolumeCtrl,
+	EPodcastPlayViewProgressTime,
+	EPodcastPlayViewInformation,
+	EPodcastPlayViewProgressInfo,
+	EFeedEditor
+	};
+	
+    
+enum TPodcastClientDefines
+	{
+	EMyViewBuildingBlockBase,
+	EMyViewCommandButton = 1000,
+	EMyViewChoiceListBase = 2000,
+	EMyWebCommand = 3000
+	};
+
+	enum TMyViewControls
+    {
+    EMyViewScrollBar,
+    EMyViewScrollableContainer,
+    EMyViewBuildingBlock,
+    EMyViewNumberOfControls
+    };
+
+enum TPodcastClientShowCategory
+{
+	EShowAllShows = 0x4000,
+	EShowNewShows,
+	EShowFeedShows,
+	EShowDownloadedShows,
+	EShowPendingShows
+};
+
+    
+#endif
+
+

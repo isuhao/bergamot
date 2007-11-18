@@ -1,0 +1,51 @@
+// ListBox.rls
+//
+// © Symbian Software Ltd 2005. All rights reserved.
+//
+
+// Defines localisable strings, for inclusion in the resource source file
+// Used to localise an application by simply changing the resource file text.
+// Since changes to the text do not change the symbol information in the 
+// generated header file, it is not necessary to recompile the application
+// to use the new file.
+
+// list view commands
+rls_string STRING_r_listbox_listview_cmd_close_debug "Close (debug)"
+rls_string STRING_r_listbox_listview_cmd_close_debug_shorttext "Close"
+
+// the name used for each list box item, max 32 chars long
+rls_string STRING_r_view_cmd "View"
+rls_string STRING_r_view_main_cmd "Main"
+rls_string STRING_r_view_shows_cmd "Shows"
+rls_string STRING_r_view_all_shows_cmd "All Shows"
+rls_string STRING_r_view_new_shows_cmd "New Shows"
+rls_string STRING_r_view_dl_shows_cmd "Downloaded Shows"
+rls_string STRING_r_view_dling_shows_cmd "Pending Shows"
+
+rls_string STRING_r_view_feeds_cmd "Feeds"
+rls_string STRING_r_view_player_cmd "Player"
+
+rls_string STRING_r_update_feeds_cmd "Update"
+rls_string STRING_r_update_all_feeds_cmd "Update All"
+
+rls_string STRING_r_view_feeds_title "Feeds"
+rls_string STRING_r_view_shows_title "Shows"
+
+rls_string STRING_r_play_cmd "Play"
+rls_string STRING_r_stop_cmd "Stop"
+rls_string STRING_r_pause_cmd "Pause"
+
+rls_string STRING_r_view_download_cmd "Download"
+rls_string STRING_r_view_download_short_cmd "Get"
+rls_string STRING_r_view_show_cmd "Show"
+
+rls_string STRING_r_view_play_cmd "Play"
+
+rls_string STRING_r_category_all "All shows"
+rls_string STRING_r_category_new "New shows"
+rls_string STRING_r_category_dled "Downloaded shows"
+rls_string STRING_r_category_pending "Pending shows"
+
+rls_string STRING_r_caption "Podcast Player"
+rls_string STRING_r_short_caption "Podcast"
+

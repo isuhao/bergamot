@@ -1,0 +1,116 @@
+// PodcastClient.mmp
+
+TARGET            PodcastClient.exe
+TARGETTYPE        exe
+TARGETPATH        \sys\bin
+UID               0x100039CE 0xA00046AE
+ 
+VENDORID          0
+
+SOURCEPATH        ..\group
+DOCUMENT		  PodcastClientMainView.ra
+DOCUMENT		  PodcastClientPlayView.ra
+START RESOURCE    PodcastClient.rss
+TARGETPATH        \resource\apps
+HEADER
+END
+
+
+START RESOURCE    PodcastClient_reg.rss
+TARGETPATH        \private\10003A3F\apps
+END
+
+START RESOURCE    PodcastClient_loc.rss
+TARGETPATH        \resource\apps
+LANG              SC
+HEADER
+END
+
+SYSTEMINCLUDE   \epoc32\include\ecom
+SYSTEMINCLUDE   \epoc32\include
+
+
+SOURCEPATH      ..\src
+USERINCLUDE     ..\inc
+
+
+SOURCE          PodcastClientAppUi.cpp
+SOURCE          PodcastClientDocument.cpp
+SOURCE          PodcastClientApplication.cpp
+// This is a generic view which all listviews inherits from
+SOURCE		PodcastClientView.cpp
+// The three different listviews, baseview, feedview and 
+SOURCE		PodcastClientBaseView.cpp
+SOURCE		PodcastClientShowsView.cpp
+SOURCE		PodcastClientFeedView.cpp
+// This is the playview
+SOURCE		PodcastClientPlayView.cpp
+
+SOURCE 			RPodcastServerSession.cpp
+SOURCE			PodcastData.cpp 
+SOURCE			HttpClient.cpp
+SOURCE			HttpEventHandler.cpp 
+SOURCE			FeedParser.cpp 
+SOURCE			FeedEngine.cpp 
+SOURCE			ShowInfo.cpp
+SOURCE			SoundEngine.cpp
+SOURCE			PodCastModel.cpp 
+SOURCE			FeedInfo.cpp
+
+LIBRARY         euser.lib
+LIBRARY         apparc.lib
+LIBRARY         cone.lib
+LIBRARY         eikcore.lib
+LIBRARY         eikcoctl.lib
+LIBRARY         qikcore.lib
+LIBRARY         apgrfx.lib
+LIBRARY         ws32.lib
+LIBRARY         fbscli.lib
+LIBRARY         bafl.lib
+LIBRARY         gdi.lib
+LIBRARY         quiconfigclient.lib
+LIBRARY			qikctl.lib
+LIBRARY			eikctl.lib
+LIBRARY			qikdlg.lib
+LIBRARY			qikallocdll.lib 
+LIBRARY			estor.lib efsrv.lib
+LIBRARY			mediaclientaudio.lib
+LIBRARY			mediaclient.lib
+LIBRARY			mmcommon.lib 
+LIBRARY			http.lib 
+LIBRARY			inetprotutil.lib
+LIBRARY			charconv.lib
+LIBRARY			xmlframework.lib
+LIBRARY			qiklbx.lib 
+LIBRARY			eikdlg.lib
+LIBRARY			mmfcontrollerframework.lib 
+LIBRARY		    qikutils.lib
+
+START BITMAP    PodcastClient.mbm
+TARGETPATH      \resource\apps
+HEADER
+SOURCEPATH      ..\images
+SOURCE			c16 PodcastClient_64x64.bmp
+SOURCE          8   PodcastClient_64x64_mask.bmp
+SOURCE          c16 PodcastClient_40x40.bmp
+SOURCE          8   PodcastClient_40x40_mask.bmp
+SOURCE          c16 PodcastClient_18x18.bmp
+SOURCE          8   PodcastClient_18x18_mask.bmp
+
+SOURCE          c16 feeds_40x40.bmp
+SOURCE          8   feeds_40x40m.bmp
+SOURCE			c16	feeds_18x18.bmp
+SOURCE			8	feeds_18x18m.bmp
+
+SOURCE			c16 play_40x40.bmp
+SOURCE			8   play_40x40m.bmp
+
+SOURCE          c16 shows_40x40.bmp
+SOURCE          8   shows_40x40m.bmp
+END
+
+CAPABILITY NetworkServices UserEnvironment
+
+EPOCSTACKSIZE 81920
+
+EPOCHEAPSIZE 1024000 32768000
