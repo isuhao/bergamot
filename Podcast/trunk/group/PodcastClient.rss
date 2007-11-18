@@ -9,6 +9,7 @@
 #include <qiklistbox.rh>
 #include <qiklistboxstandardlayouts.hrh>
 #include <PodcastClient.mbg>
+#include <QikCategory.hrh>
 #include "PodcastClient.hrh"
 #include "PodcastClient.rls"
 
@@ -110,13 +111,36 @@ RESOURCE QIK_COMMAND_LIST r_podcast_listview_commands
 			text = STRING_r_view_main_cmd;
 			namedGroupId = 1;
 			},
+
 			QIK_COMMAND
 			{
-			id = EPodcastViewShows;
+			id = EPodcastViewAllShows;
 			type = EQikCommandTypeScreen;
-			text = STRING_r_view_shows_cmd;
+			text = STRING_r_view_all_shows_cmd;
 			namedGroupId = 1;
-			},
+			},	
+			QIK_COMMAND
+			{
+			id = EPodcastViewNewShows;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_view_new_shows_cmd;
+			namedGroupId = 1;
+			},		
+			QIK_COMMAND
+			{
+			id = EPodcastViewDownloadedShows;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_view_dl_shows_cmd;
+			namedGroupId = 1;
+			},		
+
+			QIK_COMMAND
+			{
+			id = EPodcastViewPendingShows;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_view_dling_shows_cmd;
+			namedGroupId = 1;
+			},					
 			QIK_COMMAND
 			{
 			id = EPodcastViewFeeds;
@@ -325,3 +349,40 @@ RESOURCE TBUF r_podcast_shows_title
 {
 	buf = STRING_r_view_shows_title;
 }
+
+RESOURCE ARRAY r_podcast_shows_categories
+	{
+	items=
+		{
+		QIK_CATEGORY
+			{
+			name = STRING_r_category_all;
+			flags = EQikCategoryCantBeRenamed | EQikCategoryCantBeDeleted;
+			handle = EShowAllShows;			
+			},
+		QIK_CATEGORY
+			{
+			name = STRING_r_category_new;
+			flags = EQikCategoryCantBeRenamed | EQikCategoryCantBeDeleted ;
+			handle = EShowNewShows;
+			},
+		QIK_CATEGORY
+			{
+			name = STRING_r_category_dled;
+			flags = EQikCategoryCantBeRenamed | EQikCategoryCantBeDeleted;
+			handle = EShowDownloadedShows;
+			},
+		QIK_CATEGORY
+			{
+			name = STRING_r_category_pending;
+			flags = EQikCategoryCantBeRenamed | EQikCategoryCantBeDeleted;
+			handle = EShowPendingShows;
+			},
+		QIK_CATEGORY
+			{
+			name = "";
+			flags = EQikCategoryHiddenInList;
+			handle = EShowFeedShows;
+			}
+		};
+	}

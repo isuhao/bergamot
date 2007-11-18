@@ -78,13 +78,6 @@ RESOURCE QIK_COMMAND_LIST r_podcast_playview_commands
 			},
 			QIK_COMMAND
 			{
-			id = EPodcastViewShows;
-			type = EQikCommandTypeScreen;
-			text = STRING_r_view_shows_cmd;
-			namedGroupId = 1;
-			},
-			QIK_COMMAND
-			{
 			id = EPodcastViewFeeds;
 			type = EQikCommandTypeScreen;
 			text = STRING_r_view_feeds_cmd;

@@ -2,6 +2,8 @@
 #define PODCASTCLIENTPODCASTSVIEW_H
 #include "PodcastClientView.h"
 class CQikCategoryModel;
+
+
 class CPodcastClientShowsView : public CPodcastClientView, public MFeedEngineObserver
 {
 public:
@@ -20,10 +22,12 @@ protected:
 	void HandleCommandL(CQikCommand& aCommand);
 	// from MQikCommandModelOwner	
 	CQikCommand* DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& aControlAddingCommands);
+	void ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage);
 
 private:
 	// Use this to change feeds
-	CQikCategoryModel* iFeedsCategories;
+	CQikCategoryModel* iCategories;
+	TPodcastClientShowCategory iCurrentCategory;
 };
 
 

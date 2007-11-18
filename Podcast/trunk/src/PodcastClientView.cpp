@@ -6,7 +6,7 @@
 #include <qikcommand.h>
 #include <PodcastClient.rsg>
 #include <qikgridlayoutmanager.h>
-
+#include "PodcastClientShowsView.h"
 #include "HttpClient.h"
 #include "PodcastModel.h"
 #include "PodcastClient.hrh"
@@ -72,10 +72,25 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 			iQikAppUi.ActivateViewL(playView);
 		}
 		break;		
-	case EPodcastViewShows:
+	case EPodcastViewAllShows:
 		{
 			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID);
-			iQikAppUi.ActivateViewL(podcastsView);
+			iQikAppUi.ActivateViewL(podcastsView, TUid::Uid(EShowAllShows), KNullDesC8());
+		}break;
+	case EPodcastViewNewShows:
+		{
+			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID);
+			iQikAppUi.ActivateViewL(podcastsView, TUid::Uid(EShowNewShows), KNullDesC8());
+		}break;
+	case EPodcastViewDownloadedShows:
+		{
+			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID);
+			iQikAppUi.ActivateViewL(podcastsView, TUid::Uid(EShowDownloadedShows), KNullDesC8());
+		}break;
+	case EPodcastViewPendingShows:
+		{
+			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID);
+			iQikAppUi.ActivateViewL(podcastsView, TUid::Uid(EShowPendingShows), KNullDesC8());
 		}break;
 	case EPodcastViewFeeds:
 		{
@@ -124,11 +139,12 @@ void CPodcastClientView::ViewConstructL()
 	// Get the list box and the list box model
 	iListbox = LocateControlByUniqueHandle<CQikListBox>(EPodcastListViewListCtrl);
 	iListbox->SetListBoxObserver(this);
-    UpdateListboxItemsL();
 }
 
 void CPodcastClientView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage)
 	{
+		SetAppTitleNameL(KNullDesC());
+
 		UpdateListboxItemsL();
 	}
 

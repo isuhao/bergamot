@@ -10,7 +10,10 @@ enum TPodcatClientCommands
 	{
 	EPodcastView = 0x1000,
 	EPodcastViewMain,
-	EPodcastViewShows,
+	EPodcastViewAllShows,
+	EPodcastViewNewShows,
+	EPodcastViewDownloadedShows,
+	EPodcastViewPendingShows,
     EPodcastViewFeeds,
 	EPodcastViewPlayer,
 	EPodcastPlay,
@@ -51,6 +54,15 @@ enum TPodcastClientDefines
     EMyViewBuildingBlock,
     EMyViewNumberOfControls
     };
+
+enum TPodcastClientShowCategory
+{
+	EShowAllShows = 0x4000,
+	EShowNewShows,
+	EShowFeedShows,
+	EShowDownloadedShows,
+	EShowPendingShows
+};
 
     
 #endif

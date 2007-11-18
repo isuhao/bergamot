@@ -1,5 +1,5 @@
 #include <PodcastClient.rsg>
-#include <qikcategorymodel.h>
+#include <QikCategoryModel.h>
 #include <qikcommand.h>
 #include <QikListBoxLayoutPair.h>
 #include <QikListBoxLayoutElement.h>
@@ -26,14 +26,12 @@ CPodcastClientShowsView* CPodcastClientShowsView::NewLC(CQikAppUi& aAppUi, CPodc
 
 CPodcastClientShowsView::CPodcastClientShowsView(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel):CPodcastClientView(aAppUi, aPodcastModel)
 {
+	iCurrentCategory = EShowAllShows;
 }
 
 void CPodcastClientShowsView::ConstructL()
 {
 	CPodcastClientView::ConstructL();
-	iFeedsCategories = CQikCategoryModel::NewL();
-	SetCategoryModel(iFeedsCategories);
-	SetCategoryModelAsCommandsL();
 }
 
 CPodcastClientShowsView::~CPodcastClientShowsView()
@@ -53,31 +51,38 @@ void CPodcastClientShowsView::ViewConstructL()
 {
 	iViewLabel = iEikonEnv->AllocReadResourceL(R_PODCAST_SHOWS_TITLE);
 	CPodcastClientView::ViewConstructL();
-	
+	iCategories = QikCategoryUtils::ConstructCategoriesLC(R_PODCAST_SHOWS_CATEGORIES);
+	SetCategoryModel(iCategories);
+	CleanupStack::Pop(iCategories);
+	SetCategoryModelAsCommandsL();
 	//ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *iViewLabel);
 }
+
+void CPodcastClientShowsView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage)
+{
+	switch(aCustomMessageId.iUid)
+	{
+	case EShowNewShows:
+	case EShowAllShows:
+	case EShowDownloadedShows:
+	case EShowPendingShows:
+		iCurrentCategory = (TPodcastClientShowCategory) aCustomMessageId.iUid;
+		break;
+	default:
+		iCurrentCategory = EShowFeedShows;
+		break;
+	}	
+
+	CPodcastClientView::ViewActivatedL(aPrevViewId, aCustomMessageId, aCustomMessage);
+}
+
 
 void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 {
 	if(aCommand.Type() == EQikCommandTypeCategory)
 	{
-		TFeedInfoArray feeds;
-		CleanupClosePushL(feeds);
-		iPodcastModel.FeedEngine().GetFeeds(feeds);
-		TInt len = feeds.Count();
-		for (TInt i=0;i<len;i++) {
-			if(feeds[i]->iUid == CategoryHandleForCommandId(aCommand.Id()))
-			{
-				iPodcastModel.SetActiveFeedInfo(*feeds[i]);
-				TShowInfoArray shows;
-				CleanupClosePushL(shows);
-				iPodcastModel.FeedEngine().SelectShowsByFeed(feeds[i]->iUid);
-				iPodcastModel.SetActiveShowList(iPodcastModel.FeedEngine().GetSelectedShows());
-				CleanupStack::PopAndDestroy();// close shows
-				UpdateListboxItemsL();				
-			}
-		}
-		CleanupStack::PopAndDestroy();// close feeds
+		iCurrentCategory = (TPodcastClientShowCategory) CategoryHandleForCommandId(aCommand.Id());
+		UpdateListboxItemsL();
 	}
 	else
 	{	
@@ -108,15 +113,16 @@ void CPodcastClientShowsView::FeedInfoUpdated(const TFeedInfo& aFeedInfo)
 
 CQikCommand* CPodcastClientShowsView::DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& /*aControlAddingCommands*/)
 {
+	if(aCommand->Type() == EQikCommandTypeCategory && CategoryHandleForCommandId(aCommand->Id()) == EShowFeedShows)
+		 return NULL;
+
 	switch(aCommand->Id())
 	{
-	case EPodcastViewShows:
+	case EPodcastViewPendingShows:
+	case EPodcastViewDownloadedShows:
+	case EPodcastViewNewShows:
+	case EPodcastViewAllShows:
 		aCommand = NULL;
-		break;
-	case EQikSoftkeyCmdSelectCategory:
-		{	
-			aCommand->SetTextL(R_PODCAST_FEEDS_CATEGORY);
-		}
 		break;
 	case EQikListBoxCmdSelect:
 		{
@@ -134,6 +140,7 @@ CQikCommand* CPodcastClientShowsView::DynInitOrDeleteCommandL(CQikCommand* aComm
 		break;
 	}
 
+
 	return aCommand;
 }
 
@@ -146,12 +153,10 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 
 	TInt len = 0;
 	TUint unplayed = 0;
+	SetAppTitleNameL(KNullDesC());
 	if (iListbox != NULL)
 	{
 		iListbox->RemoveAllItemsL();
-			
-		SetAppTitleNameL(iPodcastModel.ActiveFeedInfo().iTitle);
-
 		
 		MQikListBoxModel& model(iListbox->Model());
 		
@@ -163,11 +168,41 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 		// When you act directly on the model you always need to encapsulate 
 		// the calls between ModelBeginUpdateLC and ModelEndUpdateL.
 		model.ModelBeginUpdateLC();
-		
-		if (iPodcastModel.ActiveShowList().Count() == 0) {
+				
+		switch(iCurrentCategory)
+		{
+		case EShowAllShows:
+			SelectCategoryL(EShowAllShows);
+			SetAppTitleNameL(iCategories->CategoryNameByHandle(iCurrentCategory));
+			
+			iPodcastModel.FeedEngine().SelectAllShows();
+			break;
+		case EShowNewShows:
+			SelectCategoryL(EShowNewShows);
+			SetAppTitleNameL(iCategories->CategoryNameByHandle(iCurrentCategory));
+			break;		
+		case EShowDownloadedShows:
+			SelectCategoryL(EShowDownloadedShows);
+			SetAppTitleNameL(iCategories->CategoryNameByHandle(iCurrentCategory));
+			iPodcastModel.FeedEngine().SelectShowsByDownloadState(EDownloaded);
+			break;
+		case EShowPendingShows:
+			SelectCategoryL(EShowPendingShows);
+			SetAppTitleNameL(iCategories->CategoryNameByHandle(iCurrentCategory));
+			iPodcastModel.FeedEngine().SelectShowsByDownloadState(EDownloading);
+			break;
+		default:
+
+			iCategories->RenameCategoryL(EShowFeedShows, iPodcastModel.ActiveFeedInfo().iTitle);
+			SetAppTitleNameL(iPodcastModel.ActiveFeedInfo().iTitle);
+			
 			iPodcastModel.FeedEngine().SelectShowsByFeed(iPodcastModel.ActiveFeedInfo().iUid);
-			iPodcastModel.SetActiveShowList(iPodcastModel.FeedEngine().GetSelectedShows());
+			SelectCategoryL(EShowFeedShows);
+			break;
 		}
+		
+		iPodcastModel.SetActiveShowList(iPodcastModel.FeedEngine().GetSelectedShows());
+
 		TShowInfoArray &fItems = iPodcastModel.ActiveShowList();
 		len = fItems.Count();
 
@@ -209,25 +244,9 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 		CleanupStack::PopAndDestroy(titleBuffer);
 
 	}
-	TFeedInfoArray feeds;
-	CleanupClosePushL(feeds);
-	iPodcastModel.FeedEngine().GetFeeds(feeds);
-	len = feeds.Count();
 
-	for (TInt i=0;i<len;i++) {
-		TFeedInfo* feedInfo = feeds[i];
-		if(iFeedsCategories->CategoryIndex(feedInfo->iUid) == KErrNotFound)
-		{
-			TInt& categoryValue = iFeedsCategories->AddCategoryL(feedInfo->iTitle);
-			categoryValue = feedInfo->iUid;
-			iFeedsCategories->SetCategoryRenameable(feedInfo->iUid, ETrue);
-		}
-		else
-		{
-			iFeedsCategories->RenameCategoryL(feedInfo->iUid, feedInfo->iTitle);
-		}
-	}
-	CleanupStack::PopAndDestroy(); // close feeds
+	comMan.SetInvisible(*this, EPodcastUpdateFeed, iCurrentCategory != EShowFeedShows);
+
 	// Clean out old category commands and get new names
 	SetCategoryModelAsCommandsL();
 }

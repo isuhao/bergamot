@@ -141,11 +141,10 @@ void CPodcastClientFeedView::HandleListBoxEventL(CQikListBox *aListBox, TQikList
 			TFeedInfoArray feeds;
 			CleanupClosePushL(feeds);
 			iPodcastModel.FeedEngine().GetFeeds(feeds);
-			iPodcastModel.FeedEngine().SelectShowsByFeed(feeds[aItemIndex]->iUid);
-			iPodcastModel.SetActiveShowList(iPodcastModel.FeedEngine().GetSelectedShows());
+			iPodcastModel.ActiveShowList().Reset();
 			iPodcastModel.SetActiveFeedInfo(*feeds[aItemIndex]);
-			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID);
-			iQikAppUi.ActivateViewL(podcastsView);
+			TVwsViewId showsView = TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID);
+			iQikAppUi.ActivateViewL(showsView);
 			CleanupStack::PopAndDestroy();// close feeds
 		}
 		break;

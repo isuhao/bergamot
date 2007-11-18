@@ -5,7 +5,8 @@
 enum TBaseViewSelections
 {
 	EBaseViewPlayer, 
-	EBaseViewShows,
+	EBaseViewNewShows,
+	EBaseViewDownloadedShows,
 	EBaseViewFeeds
 };
 

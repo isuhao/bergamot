@@ -2,7 +2,7 @@
 #include <qikcommand.h>
 #include <PodcastClient.mbg>
 #include <PodcastClient.rsg>
-
+#include "PodcastClientShowsView.h"
 #include "PodcastClientBaseView.h"
 #include "PodcastModel.h"
 
@@ -58,6 +58,8 @@ CQikCommand* CPodcastClientBaseView::DynInitOrDeleteCommandL(CQikCommand* aComma
 	{
 	case EPodcastViewMain:
 	case EPodcastUpdateFeed:
+	case EPodcastViewNewShows:
+	case EPodcastViewDownloadedShows:
 		aCommand = NULL;
 		break;
 	default:
@@ -78,7 +80,7 @@ void CPodcastClientBaseView::UpdateListboxItemsL()
 void CPodcastClientBaseView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQikListBoxEvent aEventType, TInt aItemIndex, TInt aSlotId)
 {
 	RDebug::Print(_L("HandleListBoxEvent, itemIndex=%d, slotId=%d, aEventType=%d"), aItemIndex, aSlotId, aEventType);
-	
+
 	switch (aEventType)
 	{
 	default:
@@ -89,15 +91,23 @@ void CPodcastClientBaseView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQi
 	case EEventItemTapped:
 		{
 			TUid newview = TUid::Uid(0);
+			TUid messageUid = TUid::Uid(0);
 			switch(aItemIndex)
 			{
 			case EBaseViewPlayer:
 				{
 					newview = KUidPodcastPlayViewID;
+				
 				}break;
-			case EBaseViewShows:
+			case EBaseViewNewShows:
 				{
 					newview = KUidPodcastShowsViewID;
+					messageUid = TUid::Uid(EShowNewShows);
+				}break;
+			case EBaseViewDownloadedShows:
+				{
+					newview = KUidPodcastShowsViewID;
+					messageUid = TUid::Uid(EShowDownloadedShows);
 				}break;
 			case EBaseViewFeeds:
 				{
@@ -109,7 +119,7 @@ void CPodcastClientBaseView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQi
 			if(newview.iUid != 0)
 			{
 				TVwsViewId viewId = TVwsViewId(KUidPodcastClientID, newview);
-				iQikAppUi.ActivateViewL(viewId);
+				iQikAppUi.ActivateViewL(viewId,  messageUid, KNullDesC8());
 			}
 			
 		}break;
