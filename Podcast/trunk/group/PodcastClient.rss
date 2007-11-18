@@ -304,51 +304,26 @@ RESOURCE QIK_ROW_LAYOUT_DATA r_podcast_row_layout_data_fill
 	}
 
 // Common string resources
-RESOURCE TBUF r_podcast_feeds_title
-{
-	buf = STRING_r_view_feeds_title;
-}
+RESOURCE TBUF r_podcast_feeds_title{buf = STRING_r_view_feeds_title;}
 
-RESOURCE TBUF r_podcast_feeds_category
-{
-	buf = STRING_r_view_feeds_cmd;
-}
+RESOURCE TBUF r_podcast_feeds_category{	buf = STRING_r_view_feeds_cmd;}
 
-RESOURCE TBUF r_podcast_feeds_download_cmd
-{
-	buf = STRING_r_view_download_cmd;
-}
+RESOURCE TBUF r_podcast_feeds_download_cmd{	buf = STRING_r_view_download_cmd;}
 
-RESOURCE TBUF r_podcast_feeds_download_short_cmd
-{
-	buf = STRING_r_view_download_short_cmd;
-}
+RESOURCE TBUF r_podcast_feeds_download_short_cmd{	buf = STRING_r_view_download_short_cmd;}
 
+RESOURCE TBUF r_podcast_feeds_play_cmd{buf = STRING_r_view_play_cmd;}
 
-RESOURCE TBUF r_podcast_feeds_play_cmd
-{
-	buf = STRING_r_view_play_cmd;
-}
+RESOURCE TBUF r_podcast_player_pause_cmd{buf = STRING_r_pause_cmd;}
 
-RESOURCE TBUF r_podcast_player_pause_cmd
-{
-	buf = STRING_r_pause_cmd;
-}
+RESOURCE TBUF r_podcast_player_play_cmd{buf = STRING_r_play_cmd;}
 
-RESOURCE TBUF r_podcast_player_play_cmd
-{
-	buf = STRING_r_play_cmd;
-}
+RESOURCE TBUF r_podcast_show_cmd{buf = STRING_r_view_show_cmd;}
 
-RESOURCE TBUF r_podcast_show_cmd
-{
-	buf = STRING_r_view_show_cmd;
-}
+RESOURCE TBUF r_podcast_update_cmd{buf = STRING_r_update_feeds_cmd;}
 
-RESOURCE TBUF r_podcast_shows_title
-{
-	buf = STRING_r_view_shows_title;
-}
+RESOURCE TBUF r_podcast_update_all_cmd{buf = STRING_r_update_all_feeds_cmd;}
+
 
 RESOURCE ARRAY r_podcast_shows_categories
 	{
@@ -399,4 +374,5 @@ RESOURCE ARRAY r_podcast_category
 			}
 		};
 	}
+
 

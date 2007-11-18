@@ -49,7 +49,7 @@ TVwsViewId CPodcastClientShowsView::ViewId()const
 
 void CPodcastClientShowsView::ViewConstructL()
 {
-	iViewLabel = iEikonEnv->AllocReadResourceL(R_PODCAST_SHOWS_TITLE);
+	iViewLabel = HBufC::NewL(1);
 	CPodcastClientView::ViewConstructL();
 	SetCategoryModel(NULL);
 	delete iCategories; 
@@ -239,7 +239,7 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 	}
 	else
 	{
-		HBufC* titleBuffer = HBufC::NewLC(iViewLabel->Length()+KShowsTitleFormat().Length()+8);
+		HBufC* titleBuffer = HBufC::NewLC(KShowsTitleFormat().Length()+8);
 		titleBuffer->Des().Format(KShowsTitleFormat, unplayed, len);
 		ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *titleBuffer);
 		CleanupStack::PopAndDestroy(titleBuffer);
