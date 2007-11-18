@@ -185,6 +185,11 @@ void CFeedEngine::ShowCompleteCallback(TShowInfo *info)
 	info->iDownloadState = EDownloaded;
 	SaveShows();
 	DownloadNextShow();
+
+	for (int i=0;i<iObservers.Count();i++) {
+			iObservers[i]->ShowDownloadUpdatedL(100);		
+		}
+	
 	}
 
 void CFeedEngine::FeedCompleteCallback(TFeedInfo * aInfo)

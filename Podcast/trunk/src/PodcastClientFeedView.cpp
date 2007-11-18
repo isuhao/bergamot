@@ -86,6 +86,7 @@ void CPodcastClientFeedView::FeedInfoUpdated(const TFeedInfo& aFeedInfo)
 		ViewContext()->RemoveAndDestroyProgressInfo();
 		iProgressAdded = EFalse;
 	}
+
 	UpdateListboxItemsL();
 }
 
@@ -105,6 +106,7 @@ void CPodcastClientFeedView::FeedDownloadUpdatedL(TInt aPercentOfCurrentDownload
 	else if(iProgressAdded)
 	{
 		ViewContext()->RemoveAndDestroyProgressInfo();
+		ViewContext()->DrawNow();
 		iProgressAdded = EFalse;
 	}
 }

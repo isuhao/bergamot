@@ -1,6 +1,8 @@
 #ifndef __PODCASTCLIENT_HRH__
 #define __PODCASTCLIENT_HRH__
 
+#define KOneHundredPercent 100
+
 enum TPodcatClientPages
     {
     EPodcastClientBaseViewPage = 1

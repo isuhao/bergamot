@@ -116,11 +116,11 @@ void CPodcastClientShowsView::FeedInfoUpdated(const TFeedInfo& aFeedInfo)
 
 void CPodcastClientShowsView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload)
 {
-	if(aPercentOfCurrentDownload>=0 && aPercentOfCurrentDownload<100)
+	if(aPercentOfCurrentDownload>=0 && aPercentOfCurrentDownload < KOneHundredPercent)
 	{
 		if(!iProgressAdded)
 		{
-			ViewContext()->AddProgressInfoL(EEikProgressTextPercentage, 100);
+			ViewContext()->AddProgressInfoL(EEikProgressTextPercentage, KOneHundredPercent);
 
 			iProgressAdded = ETrue;
 		}
@@ -130,7 +130,14 @@ void CPodcastClientShowsView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownloa
 	else if(iProgressAdded)
 	{
 		ViewContext()->RemoveAndDestroyProgressInfo();
+		ViewContext()->DrawNow();
 		iProgressAdded = EFalse;
+	}
+
+	if(aPercentOfCurrentDownload == KOneHundredPercent)
+	{
+		// To update icon list status and commands
+		UpdateListboxItemsL();
 	}
 }
 
