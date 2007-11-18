@@ -1,6 +1,6 @@
 = Podcast Player =
 
-The Podcast Player aims to be a fully featured podcatcher for UIQ. It is still in early development, but there is working [http://bergamot.googlecode.com/svn/Podcast/trunk code] in Subversion, as well as the latest "trunk" [http://bergamot.googlecode.com/svn/Podcast/trunk/group/Podcast_udeb_signed.sis debug build]. For more stable versions, see Releases below.
+The Podcast Player aims to be a fully featured podcatcher for UIQ. It is still under development, but the latest alpha version is very usable.
 
 The intention is to release one alpha version every week, and hopefully a beta in December.
 
