@@ -10,7 +10,7 @@
 #include "PodcastClientGlobals.h"
 #include "FeedEngineObserver.h"
 
-class CFeedEngine : public MHttpEventHandlerCallbacks, public MFeedParserCallbacks
+class CFeedEngine : public CBase, public MHttpEventHandlerCallbacks, public MFeedParserCallbacks
 {
 public:
 	static CFeedEngine* NewL();
@@ -21,6 +21,8 @@ public:
 	
 	void AddDownload(TShowInfo *info);
 	void StopDownloads();
+
+	TShowInfo* ShowDownloading();
 
 	void GetFeeds(TFeedInfoArray& array);
 	TFeedInfo* GetFeedInfoByUid(int aFeedUid);
@@ -101,6 +103,9 @@ private:
 	
 	// observers that will receive callbacks
     RArray<MFeedEngineObserver*> iObservers;
+
+	// The show we are currently downloading
+	TShowInfo* iShowDownloading;
 };
 
 #endif /*FEEDENGINE_H_*/

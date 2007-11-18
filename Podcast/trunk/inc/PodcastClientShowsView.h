@@ -22,6 +22,7 @@ protected:
 	void ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload);
 
 	void HandleCommandL(CQikCommand& aCommand);
+	void UpdateShowItemL(TShowInfo* aShowInfo);
 	// from MQikCommandModelOwner	
 	CQikCommand* DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& aControlAddingCommands);
 	void ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage);

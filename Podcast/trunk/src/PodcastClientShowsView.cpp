@@ -5,6 +5,7 @@
 #include <QikListBoxLayoutElement.h>
 #include <QikListBoxLayout.h>
 #include <QikListBoxLayoutProperties.h>
+
 #include "PodcastClientShowsView.h"
 #include "PodcastModel.h"
 
@@ -124,7 +125,7 @@ void CPodcastClientShowsView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownloa
 
 			iProgressAdded = ETrue;
 		}
-
+		
 		ViewContext()->SetAndDrawProgressInfo(aPercentOfCurrentDownload);
 	}
 	else if(iProgressAdded)
@@ -138,6 +139,11 @@ void CPodcastClientShowsView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownloa
 	{
 		// To update icon list status and commands
 		UpdateListboxItemsL();
+	}
+
+	if(iPodcastModel.FeedEngine().ShowDownloading() != NULL)
+	{
+		UpdateShowItemL(iPodcastModel.FeedEngine().ShowDownloading());
 	}
 }
 
@@ -174,7 +180,42 @@ CQikCommand* CPodcastClientShowsView::DynInitOrDeleteCommandL(CQikCommand* aComm
 	return aCommand;
 }
 
+void CPodcastClientShowsView::UpdateShowItemL(TShowInfo* aShowInfo)
+{
+	// First find the item
+	TInt index = iPodcastModel.ActiveShowList().Find(aShowInfo);
 
+	if(index != KErrNotFound)
+	{
+		MQikListBoxModel& model(iListbox->Model());
+		model.ModelBeginUpdateLC();
+		MQikListBoxData* data = model.RetrieveDataL(index);	
+		// Informs that the update of the list box model has ended
+		if(aShowInfo->iDownloadState == EDownloaded)
+		{
+		}
+		else
+		{
+			switch(aShowInfo->iDownloadState)
+			{
+			case ENotDownloaded:
+				{
+				}
+				break;
+			case EQueued:
+				{
+				}break;
+			case EDownloading:
+				{
+				}break;
+			default:
+				break;
+			}
+		}
+		model.ModelEndUpdateL();
+		
+	}
+}
 
 _LIT(KShowsTitleFormat, "%d / %d");
 void CPodcastClientShowsView::UpdateListboxItemsL()
@@ -337,7 +378,7 @@ void CPodcastClientShowsView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQ
 
 					model.ModelBeginUpdateLC();
 					MQikListBoxData* data = model.RetrieveDataL(aItemIndex);	
-					data->SetEmphasis(EFalse);
+					data->SetEmphasis(EFalse);				
 					// Informs that the update of the list box model has ended
 					model.ModelEndUpdateL();
 				}

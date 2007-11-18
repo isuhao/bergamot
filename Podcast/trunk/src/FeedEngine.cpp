@@ -9,7 +9,7 @@ CFeedEngine* CFeedEngine::NewL()
 	CFeedEngine* self = new (ELeave) CFeedEngine;
 	CleanupStack::PushL(self);
 	self->ConstructL();
-	CleanupStack::Pop(self);
+	CleanupStack::Pop();
 	return self;
 	}
 
@@ -17,6 +17,8 @@ void CFeedEngine::ConstructL()
 	{
 	iParser = new (ELeave) CFeedParser(*this);
 	iFs.Connect();
+	iShowClient = CHttpClient::NewL(*this);
+	iFeedClient = CHttpClient::NewL(*this);
 	LoadSettings();
     LoadFeeds();
     LoadUserFeeds();
@@ -25,8 +27,6 @@ void CFeedEngine::ConstructL()
 
 CFeedEngine::CFeedEngine()
 	{
-	iShowClient = CHttpClient::NewL(*this);
-	iFeedClient = CHttpClient::NewL(*this);
 	iFeedListFile.Copy(KFeedsFileName);
 	}
 
@@ -47,6 +47,12 @@ void CFeedEngine::StopDownloads()
 	{
 	RDebug::Print(_L("StopDownloads"));
 	}
+
+
+TShowInfo* CFeedEngine::ShowDownloading()
+{
+	return iShowDownloading;
+}
 
 void CFeedEngine::UpdateFeed(TInt aFeedUid)
 	{
@@ -183,13 +189,14 @@ void CFeedEngine::ShowCompleteCallback(TShowInfo *info)
 	{
 	RDebug::Print(_L("File %S complete"), &info->iFileName);
 	info->iDownloadState = EDownloaded;
+
 	SaveShows();
-	DownloadNextShow();
 
 	for (int i=0;i<iObservers.Count();i++) {
 			iObservers[i]->ShowDownloadUpdatedL(100);		
 		}
 	
+	DownloadNextShow();
 	}
 
 void CFeedEngine::FeedCompleteCallback(TFeedInfo * aInfo)
@@ -636,7 +643,11 @@ void CFeedEngine::DownloadNextShow()
 		iShowsDownloading.Remove(0);
 		RDebug::Print(_L("Downloading %S"), &(info->iTitle));
 		info->iDownloadState = EDownloading;
+		iShowDownloading = info;
 		GetShow(info);
+	}
+	else {
+		iShowDownloading = NULL;
 	}
 }
 
