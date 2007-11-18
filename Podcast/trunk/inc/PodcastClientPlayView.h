@@ -20,7 +20,7 @@ class CEikEdwin;
 class CPodcastModel;
 class CQikSlider;
 
-class CPodcastClientPlayView : public CQikViewBase, public MSoundEngineObserver
+class CPodcastClientPlayView : public CQikViewBase, public MSoundEngineObserver, public MFeedEngineObserver
 	{
 public:
 	static CPodcastClientPlayView* NewLC(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel);
@@ -35,6 +35,12 @@ public:
 	void PlaybackStoppedL(); 
 	static TInt PlayingUpdateStaticCallbackL(TAny* aPlayView);
 	void UpdatePlayStatusL();
+
+	void ShowListUpdated(){};
+    void FeedInfoUpdated(const TFeedInfo& aFeedInfo){}
+	void FeedDownloadUpdatedL(TInt aPercentOfCurrentDownload){};
+	void ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload);
+
 private:
 	void HandleControlEventL(CCoeControl* aControl,TCoeEvent aEventType);
 	CPodcastClientPlayView(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel);
@@ -48,5 +54,6 @@ private:
 	CPeriodic* iPlaybackTicker;
 	// Use this to change feeds
 	CQikCategoryModel* iCategories;
+	TBool iProgressAdded;
 	};
 #endif // PODCASTPLAYVIEW_H

@@ -233,6 +233,34 @@ void CPodcastClientPlayView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid 
 	UpdateViewL();
 }
 
+void CPodcastClientPlayView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload)
+{
+	if(aPercentOfCurrentDownload>=0 && aPercentOfCurrentDownload < KOneHundredPercent)
+	{
+		if(!iProgressAdded)
+		{
+			ViewContext()->AddProgressInfoL(EEikProgressTextPercentage, KOneHundredPercent);
+
+			iProgressAdded = ETrue;
+		}
+		
+		ViewContext()->SetAndDrawProgressInfo(aPercentOfCurrentDownload);
+	}
+	else if(iProgressAdded)
+	{
+		ViewContext()->RemoveAndDestroyProgressInfo();
+		ViewContext()->DrawNow();
+		iProgressAdded = EFalse;
+	}
+
+	if(aPercentOfCurrentDownload == KOneHundredPercent)
+	{
+		// To update icon list status and commands
+		UpdateViewL();
+	}
+
+}
+
 void CPodcastClientPlayView::UpdateViewL()
 {
 		CQikCommandManager& comMan = CQikCommandManager::Static();
