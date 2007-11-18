@@ -54,12 +54,10 @@ void CPodcastModel::PlayPausePodcastL(TShowInfo* aPodcast)
 	// special treatment if this podcast is already active
 	if (iPlayingPodcast == aPodcast && SoundEngine().State() > ESoundEngineNotInitialized ) {
 		if (aPodcast->iPlayState == EPlaying) {
-			User::InfoPrint(_L("Pausing"));
 			SoundEngine().Pause();
 			aPodcast->iPosition = iSoundEngine->Position();
 			aPodcast->iPlayState = EPlayed;
 		} else {
-			User::InfoPrint(_L("Resuming"));
 			iSoundEngine->Play();
 		}
 	} else {
@@ -72,7 +70,6 @@ void CPodcastModel::PlayPausePodcastL(TShowInfo* aPodcast)
 		
 		iSoundEngine->Stop();
 
-		User::InfoPrint(_L("Playing"));
 		RDebug::Print(_L("Starting: %S"), &(aPodcast->iFileName));
 		TRAPD(error, iSoundEngine->OpenFileL(aPodcast->iFileName));
 	    if (error != KErrNone) {
