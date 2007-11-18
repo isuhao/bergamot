@@ -26,7 +26,7 @@ protected:
 	// from MQikCommandModelOwner	
 	CQikCommand* DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& aControlAddingCommands);
 	void ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage);
-
+	void UpdateCommandsL();
 private:
 	TPodcastClientShowCategory iCurrentCategory;
 	TBool iProgressAdded;

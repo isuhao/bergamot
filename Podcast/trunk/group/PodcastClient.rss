@@ -228,6 +228,7 @@ RESOURCE QIK_LISTBOX_LAYOUT_PAIR r_podcast_listview_normal_layout_pair
 	{
 	//standard_normal_layout = EQikListBoxIconTwoLines; //EQikListBoxLine;
 	custom_normal_layout = r_podcast_listview_listbox_layout;
+	custom_highlight_layout= r_podcast_listview_listbox_layout;
 	}
 
 RESOURCE QIK_LISTBOX_LAYOUT r_podcast_listview_listbox_layout
@@ -268,16 +269,21 @@ RESOURCE QIK_LISTBOX_LAYOUT r_podcast_listview_listbox_layout
 				type = QIK_LISTBOX_TEXT_TYPE
 				{
 					emphasis_font_style = EQikListBoxFontBold;
+					font_size = EQikListBoxFontMedium;
+					emphasis_font_size = EQikListBoxFontMedium;
 				};
 			}
 			};					
 			},
 			QIK_LISTBOX_ROW
 			{
-			slot_id = EQikListBoxSlotText2;
-			type = QIK_LISTBOX_TEXT_TYPE
-			{
-			};
+				slot_id = EQikListBoxSlotText2;
+				type = QIK_LISTBOX_TEXT_TYPE
+				{
+					font_size = EQikListBoxFontExtraSmall;
+					emphasis_font_size = EQikListBoxFontExtraSmall;
+					
+				};
 			}
 
 		};

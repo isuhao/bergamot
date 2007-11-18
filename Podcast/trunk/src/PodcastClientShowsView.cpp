@@ -138,7 +138,7 @@ void CPodcastClientShowsView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownloa
 	if(aPercentOfCurrentDownload == KOneHundredPercent)
 	{
 		// To update icon list status and commands
-		UpdateListboxItemsL();
+		UpdateCommandsL();
 	}
 
 	if(iPodcastModel.FeedEngine().ShowDownloading() != NULL)
@@ -223,8 +223,6 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 {
 	if(IsVisible())
 	{
-		CQikCommandManager& comMan = CQikCommandManager::Static();
-
 		TInt len = 0;
 		TUint unplayed = 0;
 		SetAppTitleNameL(KNullDesC());
@@ -280,7 +278,6 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 			len = fItems.Count();
 
 			if (len > 0) {
-				comMan.SetType(*this, EPodcastUpdateFeed, EQikCommandTypeScreen);
 				for (TInt i=0;i<len;i++) {
 					MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
 					CleanupClosePushL(*listBoxData);
@@ -306,7 +303,6 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 
 		if(len == 0)
 		{
-			comMan.SetType(*this, EPodcastUpdateFeed, EQikCommandTypeItem);
 			ViewContext()->ChangeTextL(EPodcastListViewContextLabel, KNullDesC());
 		}
 		else
@@ -318,30 +314,29 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 
 		}
 
-		comMan.SetInvisible(*this, EPodcastUpdateFeed, iCurrentCategory != EShowFeedShows);
+		UpdateCommandsL();
+
 	}
 }
 
-
-void CPodcastClientShowsView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQikListBoxEvent aEventType, TInt aItemIndex, TInt aSlotId)
+void CPodcastClientShowsView::UpdateCommandsL()
 {
-	RDebug::Print(_L("HandleListBoxEvent, itemIndex=%d, slotId=%d, aEventType=%d"), aItemIndex, aSlotId, aEventType);
 	CQikCommandManager& comMan = CQikCommandManager::Static();
-	
-	switch (aEventType)
+	TShowInfoArray &fItems = iPodcastModel.ActiveShowList();
+
+	if(iListbox != NULL)
 	{
-	case EEventHighlightMoved:
+		TInt index = iListbox->CurrentItemIndex();
+
+		if(index>= 0 && index < fItems.Count())
 		{
-		TShowInfoArray &fItems = iPodcastModel.ActiveShowList();
-		if(aItemIndex>= 0 && aItemIndex < fItems.Count())
-		{
-			if(fItems[aItemIndex]->iDownloadState == EDownloaded)
+			if(fItems[index]->iDownloadState == EDownloaded)
 			{
 				comMan.SetInvisible(*this, EQikListBoxCmdSelect, EFalse);
 				comMan.SetTextL(*this, EQikListBoxCmdSelect, R_PODCAST_FEEDS_PLAY_CMD);
 				comMan.SetShortTextL(*this, EQikListBoxCmdSelect, R_PODCAST_FEEDS_PLAY_CMD);
 			}
-			else if(fItems[aItemIndex]->iDownloadState == ENotDownloaded)
+			else if(fItems[index]->iDownloadState == ENotDownloaded)
 			{
 				comMan.SetInvisible(*this, EQikListBoxCmdSelect, EFalse);
 				comMan.SetTextL(*this, EQikListBoxCmdSelect, R_PODCAST_FEEDS_DOWNLOAD_CMD);
@@ -356,6 +351,34 @@ void CPodcastClientShowsView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQ
 		{
 			comMan.SetInvisible(*this, EQikListBoxCmdSelect, ETrue);
 		}
+	}
+	else
+	{
+		comMan.SetInvisible(*this, EQikListBoxCmdSelect, ETrue);
+	}
+	
+	if(fItems.Count() > 0)
+	{
+		comMan.SetType(*this, EPodcastUpdateFeed, EQikCommandTypeScreen);
+	}
+	else
+	{
+		comMan.SetType(*this, EPodcastUpdateFeed, EQikCommandTypeItem);
+	}
+
+	comMan.SetInvisible(*this, EPodcastUpdateFeed, iCurrentCategory != EShowFeedShows);
+}
+
+
+void CPodcastClientShowsView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQikListBoxEvent aEventType, TInt aItemIndex, TInt aSlotId)
+{
+	RDebug::Print(_L("HandleListBoxEvent, itemIndex=%d, slotId=%d, aEventType=%d"), aItemIndex, aSlotId, aEventType);
+	
+	switch (aEventType)
+	{
+	case EEventHighlightMoved:
+		{
+			UpdateCommandsL();
 		}
 		break;
 	case EEventItemConfirmed:
@@ -383,6 +406,8 @@ void CPodcastClientShowsView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQ
 					// Informs that the update of the list box model has ended
 					model.ModelEndUpdateL();
 				}
+
+				UpdateCommandsL();
 			}
 		}
 		break;
