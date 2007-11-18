@@ -388,7 +388,7 @@ void CPodcastClientShowsView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQ
 			if(aItemIndex>=0 && aItemIndex< fItems.Count())
 			{
 				RDebug::Print(_L("Handle event for podcast %S, downloadState is %d"), &(fItems[aItemIndex]->iTitle), fItems[aItemIndex]->iDownloadState);
-				iPodcastModel.SetPlayingPodcast(fItems[aItemIndex]);
+				iPodcastModel.PlayPausePodcastL(fItems[aItemIndex]);
 				TVwsViewId viewId = TVwsViewId(KUidPodcastClientID, KUidPodcastPlayViewID);
 				iQikAppUi.ActivateViewL(viewId);
 				// add to downloads if not already downloading

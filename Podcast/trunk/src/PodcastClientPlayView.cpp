@@ -231,10 +231,6 @@ void CPodcastClientPlayView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid 
 	CQikViewBase::ViewActivatedL(aPrevViewId, aCustomMessageId, aCustomMessage);
 	SelectCategoryL(EShowAllShows);
 	UpdateViewL();
-	if(iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.PlayingPodcast()->iDownloadState == EDownloaded)
-	{
-		iPodcastModel.PlayPausePodcastL(iPodcastModel.PlayingPodcast());	
-	}
 }
 
 void CPodcastClientPlayView::UpdateViewL()
