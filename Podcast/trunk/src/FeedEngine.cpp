@@ -570,11 +570,21 @@ void CFeedEngine::SelectShowsByDownloadState(TInt aDownloadState)
 	iSelectedShows.Reset();
 	for (int i=0;i<iShows.Count();i++)
 		{
-		if (iShows[i]->iDownloadState == aDownloadState)
-			{
-			iSelectedShows.Append(iShows[i]);
-			}
-		}	
+		// TODO: remove ugly alpha 1 hack
+		if (aDownloadState == EDownloading) {
+			if (iShows[i]->iDownloadState == EDownloading ||
+					iShows[i]->iDownloadState == EQueued	)
+				{
+				iSelectedShows.Append(iShows[i]);
+				}
+			
+		} else {
+			if (iShows[i]->iDownloadState == aDownloadState)
+				{
+				iSelectedShows.Append(iShows[i]);
+				}
+			}	
+		}
 	}
 
 TShowInfoArray& CFeedEngine::GetSelectedShows()

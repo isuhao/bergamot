@@ -1,6 +1,6 @@
 %{"Podcast Player"}
 :"AVendor"
-#{"Podcast Player"}, (0xA00046BD), 0, 1, 0, TYPE=SA
+#{"Podcast Player"}, (0xA00046BD), 0, 2, 0, TYPE=SA
 
 (0x101F6300), 3, 0, 0, {"UIQ30ProductID"}
 
@@ -13,7 +13,7 @@
 "../../epoc32/data/z/resource/apps/PodcastClient.mbm"-"!:\resource\apps\PodcastClient.mbm"
 "../../epoc32/data/z/resource/apps/PodcastClient_loc.rsc"-"!:\resource\apps\PodcastClient_loc.rsc"
 "../../epoc32/data/z/private/10003A3F/apps/PodcastClient_reg.rsc"-"!:\private\10003a3f\import\apps\PodcastClient_reg.rsc"
-"./feeds.cfg"-"!:\podcasts\feeds.cfg"
+"./feeds.cfg"-"d:\podcasts\feeds.cfg"
 "./config.cfg"-"c:\private\A00046ae\config.cfg"
 ; Install autostart file
 ;"./PodcastServerAutostart.ast"-"!:\private\10274b9f\import\PodcastServerAutostart.ast"
