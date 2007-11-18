@@ -52,7 +52,7 @@ void CPodcastModel::PlayPausePodcastL(TShowInfo* aPodcast)
 	{
 	
 	// special treatment if this podcast is already active
-	if (iPlayingPodcast == aPodcast) {
+	if (iPlayingPodcast == aPodcast && SoundEngine().State() > ESoundEngineNotInitialized ) {
 		if (aPodcast->iPlayState == EPlaying) {
 			User::InfoPrint(_L("Pausing"));
 			SoundEngine().Pause();

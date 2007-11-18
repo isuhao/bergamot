@@ -141,6 +141,7 @@ void CPodcastClientPlayView::PlaybackStartedL()
 {
 	iPlaybackTicker->Cancel();
 	iPlaybackTicker->Start(KAudioTickerPeriod, KAudioTickerPeriod, TCallBack(PlayingUpdateStaticCallbackL, this));
+	UpdatePlayStatusL();
 }
 
 void CPodcastClientPlayView::PlaybackStoppedL()
@@ -184,6 +185,10 @@ void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 
 			iPodcastModel.SoundEngine().Stop();	
 		}break;
+	case EPodcastDownloadShow:
+		{
+			iPodcastModel.FeedEngine().AddDownload(iPodcastModel.PlayingPodcast());
+		}break;
 	case EPodcastViewMain:
 		{			
 			TVwsViewId playView = TVwsViewId(KUidPodcastClientID, KUidPodcastBaseViewID);
@@ -222,17 +227,22 @@ void CPodcastClientPlayView::ViewConstructL()
     }
 
 void CPodcastClientPlayView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage)
-	{
+{
 	CQikViewBase::ViewActivatedL(aPrevViewId, aCustomMessageId, aCustomMessage);
 	SelectCategoryL(EShowAllShows);
 	UpdateViewL();
+	if(iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.PlayingPodcast()->iDownloadState == EDownloaded)
+	{
+		iPodcastModel.PlayPausePodcastL(iPodcastModel.PlayingPodcast());	
 	}
+}
 
 void CPodcastClientPlayView::UpdateViewL()
 {
+		CQikCommandManager& comMan = CQikCommandManager::Static();
+
 		if(iPodcastModel.PlayingPodcast() != NULL)
 		{
-			CQikCommandManager& comMan = CQikCommandManager::Static();
 
 			TShowInfo showInfo = *iPodcastModel.PlayingPodcast();
 			ViewContext()->ChangeTextL(EPodcastPlayViewTitleCtrl, showInfo.iTitle);
@@ -248,7 +258,26 @@ void CPodcastClientPlayView::UpdateViewL()
 			iInformationEdwin->SetTextL(&showInfo.iDescription);
 
 			iInformationEdwin->HandleTextChangedL();
+			if(showInfo.iDownloadState == ENotDownloaded)
+			{
+				comMan.SetInvisible(*this, EPodcastDownloadShow, EFalse);
+				comMan.SetInvisible(*this, EPodcastPlay, ETrue);
+			}
+			else if(showInfo.iDownloadState != EDownloaded)
+			{
+				comMan.SetInvisible(*this, EPodcastPlay, ETrue);
+				comMan.SetInvisible(*this, EPodcastDownloadShow, ETrue);
+			}
+			else
+			{
+				comMan.SetInvisible(*this, EPodcastPlay, EFalse);
+				comMan.SetInvisible(*this, EPodcastDownloadShow, ETrue);
+			}
 			RequestRelayout(this);
+		}
+		else
+		{	
+			comMan.SetInvisible(*this, EPodcastDownloadShow, ETrue);
 		}
 
 		UpdatePlayStatusL();

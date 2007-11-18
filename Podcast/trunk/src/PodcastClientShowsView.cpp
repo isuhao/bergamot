@@ -388,8 +388,11 @@ void CPodcastClientShowsView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQ
 			if(aItemIndex>=0 && aItemIndex< fItems.Count())
 			{
 				RDebug::Print(_L("Handle event for podcast %S, downloadState is %d"), &(fItems[aItemIndex]->iTitle), fItems[aItemIndex]->iDownloadState);
+				iPodcastModel.SetPlayingPodcast(fItems[aItemIndex]);
+				TVwsViewId viewId = TVwsViewId(KUidPodcastClientID, KUidPodcastPlayViewID);
+				iQikAppUi.ActivateViewL(viewId);
 				// add to downloads if not already downloading
-				if(fItems[aItemIndex]->iDownloadState == ENotDownloaded)
+			/*	if(fItems[aItemIndex]->iDownloadState == ENotDownloaded)
 				{
 					iPodcastModel.FeedEngine().AddDownload(fItems[aItemIndex]);
 				}
@@ -405,7 +408,7 @@ void CPodcastClientShowsView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQ
 					data->SetEmphasis(EFalse);				
 					// Informs that the update of the list box model has ended
 					model.ModelEndUpdateL();
-				}
+				}*/
 
 				UpdateCommandsL();
 			}
