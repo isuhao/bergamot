@@ -8,6 +8,7 @@
 #include <s32file.h>
 #include <e32debug.h>
 #include <e32cmn.h>
+#include <QikImageConverter.h>
 
 #include "PodcastClient.hrh"
 #include "PodcastClientGlobals.h"
@@ -19,8 +20,9 @@ class CEikLabel;
 class CEikEdwin;
 class CPodcastModel;
 class CQikSlider;
+class CEikImage;
 
-class CPodcastClientPlayView : public CQikViewBase, public MSoundEngineObserver, public MFeedEngineObserver
+class CPodcastClientPlayView : public CQikViewBase, public MSoundEngineObserver, public MFeedEngineObserver, public MQikImageConverterObserver
 	{
 public:
 	static CPodcastClientPlayView* NewLC(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel);
@@ -38,9 +40,10 @@ public:
 
 	void ShowListUpdated(){};
     void FeedInfoUpdated(const TFeedInfo& aFeedInfo){}
-	void FeedDownloadUpdatedL(TInt aPercentOfCurrentDownload){};
-	void ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload);
+	void FeedDownloadUpdatedL(TInt /*aPercentOfCurrentDownload*/){};
+	void ShowDownloadUpdatedL(TInt /*aPercentOfCurrentDownload*/);
 
+	void ImageConverterEventL(TQikImageConverterEvent aMessage, TInt aErrCode);
 private:
 	void HandleControlEventL(CCoeControl* aControl,TCoeEvent aEventType);
 	CPodcastClientPlayView(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel);
@@ -50,6 +53,9 @@ private:
 	CQikSlider* iProgress;
 	CEikLabel* iTimeLabel;
 	CEikEdwin* iInformationEdwin;
+	CQikImageConverter* iBitmapConverter;
+	CEikImage* iCoverImageCtrl;
+	CFbsBitmap* iCurrentCoverImage;
 	CQikSlider* iVolumeSlider;
 	CPeriodic* iPlaybackTicker;
 	// Use this to change feeds

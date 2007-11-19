@@ -7,6 +7,7 @@
 #include <qikslider.h>
 #include <coecobs.h>
 #include <qikappui.h>
+#include <eikimage.h>
 
 #include "HttpClient.h"
 #include "PodcastModel.h"
@@ -16,6 +17,8 @@
 #include "SoundEngine.h"
 
 const TInt KAudioTickerPeriod = 1000000;
+const TInt KMaxCoverImageHeight = 96;
+
 /**
 Creates and constructs the view.
 
@@ -53,6 +56,8 @@ Destructor for the view
 CPodcastClientPlayView::~CPodcastClientPlayView()
 	{
 	delete iPlaybackTicker;
+	delete iCurrentCoverImage;
+	delete iBitmapConverter;
 	}
 
 /**
@@ -66,6 +71,7 @@ void CPodcastClientPlayView::ConstructL()
 	iPlaybackTicker = CPeriodic::NewL(CActive::EPriorityStandard);
 	iPodcastModel.SoundEngine().SetObserver(this);
 	iPodcastModel.FeedEngine().AddObserver(this);
+	iBitmapConverter = CQikImageConverter::NewL(iEikonEnv->FsSession(), *this);
 	}
 
 /**
@@ -221,6 +227,13 @@ void CPodcastClientPlayView::ViewConstructL()
 	iInformationEdwin->ScrollBarFrame()->SetScrollBarVisibilityL(CEikScrollBarFrame::EOff,
 	CEikScrollBarFrame::EAuto);
 	iVolumeSlider = LocateControlByUniqueHandle<CQikSlider>(EPodcastPlayViewVolumeCtrl);
+
+	iCoverImageCtrl = LocateControlByUniqueHandle<CEikImage>(EPodcastPlayViewCoverImage);
+	//iCoverImage->SetStretchMaintainAspectRatio(EFalse);
+	//iCoverImage->SetStretched(ETrue);
+//	iCoverImage->SetContentL(iCurrentCover);
+	iCoverImageCtrl->SetPictureOwnedExternally(ETrue);
+
 	ViewContext()->AddTextL(EPodcastPlayViewTitleCtrl, KNullDesC(), EHCenterVCenter);
 	iCategories = QikCategoryUtils::ConstructCategoriesLC(R_PODCAST_CATEGORY);
 	SetCategoryModel(iCategories);
@@ -262,6 +275,31 @@ void CPodcastClientPlayView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload
 
 }
 
+void CPodcastClientPlayView::ImageConverterEventL(TQikImageConverterEvent aMessage, TInt aErrCode)
+{
+	if(aErrCode == KErrNone && aMessage == MQikImageConverterObserver::EImageConvertComplete)
+	{
+		if(iCurrentCoverImage->SizeInPixels().iHeight<=KMaxCoverImageHeight)
+		{
+			iCoverImageCtrl->SetBitmap(iCurrentCoverImage);
+			RequestRelayout(this);
+		}
+		else
+		{
+			iBitmapConverter->RescaleImage(*iCurrentCoverImage, TSize(iCurrentCoverImage->SizeInPixels().iWidth, KMaxCoverImageHeight));
+		}
+	}
+	else if(aErrCode == KErrNone && aMessage == MQikImageConverterObserver::EBitmapRescaleComplete)
+	{
+		iCoverImageCtrl->SetBitmap(iCurrentCoverImage);
+		RequestRelayout(this);
+	}
+	/*else if (aErrCode == KErrNone && aMessage == MQikImageConverterObserver::EBitmapOpen)
+	{
+		iBitmapConverter->ConvertToBitmapL(iCurrentCover);
+	}*/
+}
+
 void CPodcastClientPlayView::UpdateViewL()
 {
 		CQikCommandManager& comMan = CQikCommandManager::Static();
@@ -298,13 +336,22 @@ void CPodcastClientPlayView::UpdateViewL()
 				comMan.SetInvisible(*this, EPodcastPlay, EFalse);
 				comMan.SetInvisible(*this, EPodcastDownloadShow, ETrue);
 			}
-			RequestRelayout(this);
+		
+		
 		}
 		else
 		{	
 			comMan.SetInvisible(*this, EPodcastDownloadShow, ETrue);
 		}
 
+		TRAPD(err, iBitmapConverter->LoadImageDataL(_L("C:\\logs\\2.jpg")));
+		if(err == KErrNone)
+		{
+			iBitmapConverter->ConvertToBitmapL(iCurrentCoverImage, 0);
+		}
+	
 		UpdatePlayStatusL();
+
+		RequestRelayout(this);
 }
 

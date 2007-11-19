@@ -38,7 +38,7 @@ enum TPodcatClientCommands
 	EPodcastPlayViewProgressTime,
 	EPodcastPlayViewInformation,
 	EPodcastPlayViewProgressInfo,
-	EFeedEditor
+	EPodcastPlayViewCoverImage
 	};
 	
     

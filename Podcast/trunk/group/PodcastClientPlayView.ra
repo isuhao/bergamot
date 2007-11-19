@@ -134,6 +134,14 @@ RESOURCE QIK_ROW_LAYOUT_DATA r_podcast_row_layout_data_nofill
 	minimum_width = EQikLayoutUseControlMinimum;
 	}
 
+RESOURCE QIK_ROW_LAYOUT_DATA r_podcast_row_layout_data_fillhigher
+	{
+	vertical_alignment = EQikLayoutVAlignFill;
+	horizontal_alignment = EQikLayoutHAlignFill;
+	vertical_excess_grab_weight = 3;
+	minimum_width = EQikLayoutUseControlMinimum;
+	}
+
 RESOURCE LABEL r_podcast_playview_time
 {
 txt = "00:00";
@@ -143,7 +151,7 @@ horiz_align=EEikLabelAlignHRight;
 RESOURCE EDWIN r_podcast_playview_info
 {
 flags = EEikEdwinDisplayOnly|EEikEdwinDisableAutoCurEnd|EEikEdwinNoHorizScrolling;
-lines = 1;
+lines = 3;
 }
 
 RESOURCE QIK_SLIDER r_podcast_playview_progress
@@ -160,6 +168,13 @@ RESOURCE QIK_SLIDER r_podcast_playview_volume
 	num_markers = 16;
 }
 
+RESOURCE QIK_IMAGE r_podcast_playview_coverimage
+{
+	content = QIK_CONTENT_MBM
+	{
+	};
+}
+
 // The page contains a list box that fills the whole application space.
 RESOURCE QIK_CONTAINER_SETTINGS r_podcast_playview_page_control
 	{
@@ -170,13 +185,14 @@ RESOURCE QIK_CONTAINER_SETTINGS r_podcast_playview_page_control
 		
 		QIK_CONTAINER_ITEM_CI_LI
 			{ 
-			unique_handle = EPodcastPlayViewProgressTime;
-			type = EEikCtLabel; 
-			control = r_podcast_playview_time;
+			unique_handle = EPodcastPlayViewCoverImage;
+			type = EEikCtImage; 
+			control = r_podcast_playview_coverimage;
 			// This will make it so that the list box fills the whole 
 			// application space.
-			layout_data = r_podcast_row_layout_data_nofill;
+			layout_data = r_podcast_row_layout_data_fill;
 			},
+	
 		QIK_CONTAINER_ITEM_CI_LI
 			{ 
 			itemflags = EQikCtrlFlagIsEditInPlace;
@@ -185,7 +201,7 @@ RESOURCE QIK_CONTAINER_SETTINGS r_podcast_playview_page_control
 			control = r_podcast_playview_info;
 			// This will make it so that the list box fills the whole 
 			// application space.
-			layout_data = r_podcast_row_layout_data_fill;
+			layout_data = r_podcast_row_layout_data_fillhigher;
 			},
 		QIK_CONTAINER_ITEM_CI_LI
 			{ 
