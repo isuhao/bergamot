@@ -19,7 +19,7 @@ protected:
 	void ShowListUpdated();
     void FeedInfoUpdated(const TFeedInfo& aFeedInfo);
 	void FeedDownloadUpdatedL(TInt aPercentOfCurrentDownload){};
-	void ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload);
+	void ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt aBytesTotal);
 
 	void HandleCommandL(CQikCommand& aCommand);
 	void UpdateShowItemL(TShowInfo* aShowInfo);

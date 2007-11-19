@@ -107,10 +107,14 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 				RAttribute attr = aAttributes[i];
 				TBuf<100> attr16;
 				attr16.Copy(attr.Attribute().LocalName().DesC());
-				if (attr16.Compare(_L("url")) == 0) {
+				if (attr16.Compare(KTagUrl) == 0) {
 					TBuf<100> val16;
 					val16.Copy(attr.Value().DesC());
 					activeItem->iUrl.Copy(val16);
+				} else if (attr16.Compare(KTagLength) == 0) {
+					TLex8 lex(attr.Value().DesC());
+					lex.Val(activeItem->iShowSize, EDecimal);
+					//RDebug::Print(_L("Setting length to %d"), activeItem->iShowSize);
 				}
 			}
 		} else if (str.CompareF(KTagDescription) == 0) {

@@ -15,6 +15,7 @@ _LIT(KTagImage, "image");
 _LIT(KTagLink, "link");
 _LIT(KTagDescription, "description");
 _LIT(KTagUrl, "url");
+_LIT(KTagLength, "length");
 _LIT(KTagChannel, "channel");
 _LIT(KTagEnclosure, "enclosure");
 

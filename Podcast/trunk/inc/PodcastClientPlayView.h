@@ -41,7 +41,7 @@ public:
 	void ShowListUpdated(){};
     void FeedInfoUpdated(const TFeedInfo& aFeedInfo){}
 	void FeedDownloadUpdatedL(TInt /*aPercentOfCurrentDownload*/){};
-	void ShowDownloadUpdatedL(TInt /*aPercentOfCurrentDownload*/);
+	void ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt aBytesTotal);
 
 	void ImageConverterEventL(TQikImageConverterEvent aMessage, TInt aErrCode);
 private:

@@ -144,15 +144,9 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 				{
 				TPtrC8 bodyData;
 				iRespBody->GetNextDataPart(bodyData);
-				if (iBytesTotal != -1) {
-					iBytesDownloaded += bodyData.Length();
-					int percent = (int) ((float)iBytesDownloaded * 100.0 / (float)iBytesTotal) ;
-					//				RDebug::Print(_L("Downloading: %d, %d total"), iBytesDownloaded, iBytesTotal);
-					iCallbacks.ProgressCallback(iHttpClient, percent);
-				} else {
-					iCallbacks.ProgressCallback(iHttpClient, -1);
-				}
+				iBytesDownloaded += bodyData.Length();
 				iRespBodyFile.Write(bodyData);
+				iCallbacks.ProgressCallback(iHttpClient, iBytesDownloaded, iBytesTotal);
 				}
 
 			// Done with that bit of body data

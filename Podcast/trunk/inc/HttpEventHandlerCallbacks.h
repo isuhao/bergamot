@@ -15,8 +15,8 @@ public:
   virtual void ShowCompleteCallback(TShowInfo *info) = 0;
   virtual void FeedCompleteCallback(TFeedInfo *info) = 0;
   
-  virtual void ProgressCallback(CHttpClient* aHttpClient, int percent) = 0;
-  virtual void DownloadInfoCallback(CHttpClient* aHttpClient, int size) = 0;
+  virtual void ProgressCallback(CHttpClient* aHttpClient, int aBytes, int aTotalBytes) = 0;
+  virtual void DownloadInfoCallback(CHttpClient* aHttpClient, int aTotalBytes) = 0;
 };
 
 #endif

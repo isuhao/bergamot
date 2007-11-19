@@ -107,10 +107,7 @@ void CFeedEngine::MakeFileNameFromUrl(TDesC &aUrl, TFileName &fileName)
 	if (pos != KErrNotFound) {	
 		TPtrC str = aUrl.Mid(pos+1);
 		pos = str.Locate('?');
-		if (pos != KErrNotFound) {
-			RDebug::Print(_L("Found at %d"), pos);
-			RDebug::Print(_L("Found %S"), &(str.Left(pos)));
-			
+		if (pos != KErrNotFound) {			
 			fileName.Copy(str.Left(pos));
 			RDebug::Print(_L("fileName %S"), &(fileName));
 		} else {
@@ -202,7 +199,7 @@ void CFeedEngine::ParsingCompleteCallback(TFeedInfo *item)
 	}
 	}
 
-void CFeedEngine::ConnectedCallback(CHttpClient* aClient)
+void CFeedEngine::ConnectedCallback(CHttpClient* /*aClient*/)
 	{
 	
 	}
@@ -212,16 +209,21 @@ void CFeedEngine::AddObserver(MFeedEngineObserver *observer)
 	iObservers.Append(observer);
 	}
 
-void CFeedEngine::ProgressCallback(CHttpClient* aClient, int aPercent)
+void CFeedEngine::ProgressCallback(CHttpClient* aHttpClient, int aBytes, int aTotalBytes)
 {	
+	int percent = -1;
+	if (aTotalBytes != -1) {
+		percent = (int) ((float)aBytes * 100.0 / (float)aTotalBytes) ;
+	}
+
 	for (int i=0;i<iObservers.Count();i++) {
-		if(aClient == iFeedClient)
+		if(aHttpClient == iFeedClient)
 		{
-			iObservers[i]->FeedDownloadUpdatedL(aPercent);
+			iObservers[i]->FeedDownloadUpdatedL(percent);
 		}
-		else if(aClient == iShowClient)
+		else if(aHttpClient == iShowClient)
 		{
-			iObservers[i]->ShowDownloadUpdatedL(aPercent);
+			iObservers[i]->ShowDownloadUpdatedL(percent, aBytes, aTotalBytes);
 		}
 	}
 }
@@ -234,7 +236,7 @@ void CFeedEngine::ShowCompleteCallback(TShowInfo *info)
 	SaveShows();
 
 	for (int i=0;i<iObservers.Count();i++) {
-			iObservers[i]->ShowDownloadUpdatedL(100);		
+			iObservers[i]->ShowDownloadUpdatedL(100,0,1);		
 		}
 	
 	DownloadNextShow();
@@ -260,11 +262,11 @@ void CFeedEngine::DisconnectedCallback(CHttpClient* aClient)
 	
 	}
 
-void CFeedEngine::DownloadInfoCallback(CHttpClient* aClient, int aSize)
+void CFeedEngine::DownloadInfoCallback(CHttpClient* aHttpClient, int aTotalBytes)
 	{
-	RDebug::Print(_L("About to download %d bytes"), aSize);
-	if(aClient == iShowClient && iShowDownloading != NULL) {
-		iShowDownloading->iShowSize = aSize;
+	RDebug::Print(_L("About to download %d bytes"), aTotalBytes);
+	if(aHttpClient == iShowClient && iShowDownloading != NULL && aTotalBytes != -1) {
+		iShowDownloading->iShowSize = aTotalBytes;
 		}
 	}
 

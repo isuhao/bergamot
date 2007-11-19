@@ -116,7 +116,7 @@ void CPodcastClientShowsView::FeedInfoUpdated(const TFeedInfo& aFeedInfo)
 	}
 }
 
-void CPodcastClientShowsView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload)
+void CPodcastClientShowsView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt aBytesTotal)
 {
 	if(aPercentOfCurrentDownload>=0 && aPercentOfCurrentDownload < KOneHundredPercent)
 	{

@@ -243,7 +243,8 @@ void CPodcastClientPlayView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid 
 	UpdateViewL();
 }
 
-void CPodcastClientPlayView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload)
+void CPodcastClientPlayView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt aBytesTotal)
+
 {
 	if(aPercentOfCurrentDownload>=0 && aPercentOfCurrentDownload < KOneHundredPercent && iPodcastModel.PlayingPodcast() == iPodcastModel.FeedEngine().ShowDownloading())
 	{

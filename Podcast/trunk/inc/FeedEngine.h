@@ -58,7 +58,7 @@ private:
 	// callbacks from HttpClient
 	void ConnectedCallback(CHttpClient* aClient);
 	void DisconnectedCallback(CHttpClient* aClient);
-	void ProgressCallback(CHttpClient* aClient, int aPercent);
+	void ProgressCallback(CHttpClient* aHttpClient, int aBytes, int aTotalBytes);
 	void DownloadInfoCallback(CHttpClient* aClient, int aSize);
 
 	void ShowCompleteCallback(TShowInfo *info);

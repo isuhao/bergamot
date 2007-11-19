@@ -40,6 +40,7 @@ void TShowInfo::ExternalizeL(RWriteStream& aStream) const {
 	aStream.WriteInt32L(iDownloadState);
 	aStream.WriteInt32L(iPlayState);
 	aStream.WriteInt32L(iUid);
+	aStream.WriteInt32L(iShowSize);
 	}
 
 void TShowInfo::InternalizeL(RReadStream& aStream) {
@@ -124,4 +125,8 @@ void TShowInfo::InternalizeL(RReadStream& aStream) {
 		return;
 	}
 	
+	TRAP(error,iShowSize = aStream.ReadInt32L());
+	if (error != KErrNone) {
+		return;
+	}
 }

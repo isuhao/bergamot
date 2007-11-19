@@ -5,7 +5,7 @@
 #include <f32file.h>
 #include <s32strm.h>
 
-const int KShowInfoVersion = 3;
+const int KShowInfoVersion = 4;
 const int KTitleLength=256;
 const int KUrlLength=1024;
 const int KDescriptionLength=2048;
