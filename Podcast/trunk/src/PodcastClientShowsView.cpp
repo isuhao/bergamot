@@ -265,22 +265,18 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 			{
 			case EShowAllShows:
 				SelectCategoryL(EShowAllShows);
-			//	SetAppTitleNameL(iCategories->CategoryNameByHandle(iCurrentCategory));
-				
 				iPodcastModel.FeedEngine().SelectAllShows();
 				break;
 			case EShowNewShows:
 				SelectCategoryL(EShowNewShows);
-			//	SetAppTitleNameL(iCategories->CategoryNameByHandle(iCurrentCategory));
+				iPodcastModel.FeedEngine().SelectNewShows();
 				break;		
 			case EShowDownloadedShows:
 				SelectCategoryL(EShowDownloadedShows);
-			//	SetAppTitleNameL(iCategories->CategoryNameByHandle(iCurrentCategory));
 				iPodcastModel.FeedEngine().SelectShowsByDownloadState(EDownloaded);
 				break;
 			case EShowPendingShows:
 				SelectCategoryL(EShowPendingShows);
-			//	SetAppTitleNameL(iCategories->CategoryNameByHandle(iCurrentCategory));
 				iPodcastModel.FeedEngine().SelectShowsByDownloadState(EDownloading);
 				break;
 			default:

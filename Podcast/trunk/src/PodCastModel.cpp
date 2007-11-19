@@ -1,3 +1,5 @@
+#include <qikon.hrh>
+
 #include "PodcastModel.h"
 #include "FeedEngine.h"
 #include "SoundEngine.h"
@@ -20,6 +22,7 @@ CPodcastModel::~CPodcastModel()
 
 CPodcastModel::CPodcastModel()
 {
+	 iZoomState =  EQikCmdZoomLevel2;
 }
 
 void CPodcastModel::ConstructL()
@@ -104,4 +107,20 @@ void CPodcastModel::SetActiveShowList(TShowInfoArray& aShowArray)
 	{
 		iActiveShowList.Append(aShowArray[loop]);
 	}
+}
+
+TBool CPodcastModel::SetZoomState(TInt aZoomState)
+{
+	if(iZoomState != aZoomState)
+	{
+		iZoomState = aZoomState;
+		return ETrue;
+	}
+
+	return EFalse;
+}
+
+TInt CPodcastModel::ZoomState()
+{
+	return iZoomState;
 }

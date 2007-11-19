@@ -25,6 +25,9 @@ public:
 
 	TShowInfoArray& ActiveShowList();
 	void SetActiveShowList(TShowInfoArray& aShowArray);
+
+	TBool SetZoomState(TInt aZoomState);
+	TInt ZoomState();
 protected:
 	CPodcastModel();
 	void ConstructL();
@@ -34,6 +37,7 @@ private:
    CSoundEngine* iSoundEngine;
    TShowInfoArray iActiveShowList;
    TFeedInfo iActiveFeed;
+   TInt iZoomState;
 
 };
 

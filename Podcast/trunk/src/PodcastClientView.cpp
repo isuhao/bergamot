@@ -4,6 +4,7 @@
 #include <qikgridlayoutmanager.h>
 #include <qikbuildingblock.h>
 #include <qikcommand.h>
+#include <QikZoomDlg.h>
 #include <PodcastClient.rsg>
 #include <qikgridlayoutmanager.h>
 #include "PodcastClientShowsView.h"
@@ -117,6 +118,21 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 					
 				}
 				CleanupStack::PopAndDestroy();//close array
+			}
+		}
+		break;
+		
+	case EPodcastZoomSetting:
+		{
+			// Launch the zoom dialog
+			const TInt zoomFactor = CQikZoomDialog::RunDlgLD(iPodcastModel.ZoomState());
+			
+			// If zoom state have changed it will be stored to persistent
+			// storage and a relayout will be performed
+			if(iPodcastModel.SetZoomState(zoomFactor))
+			{
+				// Sets the zoom factor for the view
+				SetZoomFactorL(zoomFactor);
 			}
 		}
 		break;

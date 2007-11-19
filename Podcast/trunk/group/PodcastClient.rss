@@ -154,7 +154,13 @@ RESOURCE QIK_COMMAND_LIST r_podcast_listview_commands
 			type = EQikCommandTypeItem;
 			text = STRING_r_update_feeds_cmd;
 			},
-			
+		QIK_COMMAND
+			{
+			id = EPodcastZoomSetting;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_zoom_cmd;
+			},
+				
 		QIK_COMMAND
 			{
 			id = EEikCmdExit;
