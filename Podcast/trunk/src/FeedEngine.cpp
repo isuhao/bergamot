@@ -668,6 +668,29 @@ void CFeedEngine::SelectShowsByDownloadState(TInt aDownloadState)
 		}
 	}
 
+
+void CFeedEngine::SelectShowsDownloading()
+	{
+	iSelectedShows.Reset();
+	
+	for (int i=0;i<iShows.Count();i++)
+		{
+		if (iShows[i]->iDownloadState == EDownloading)
+				{
+				iSelectedShows.Append(iShows[i]);
+				}
+		}
+
+	for (int i=0;i<iShows.Count();i++)
+		{
+		if (iShows[i]->iDownloadState == EQueued)
+				{
+				iSelectedShows.Append(iShows[i]);
+				}
+		}
+
+	}
+
 TShowInfoArray& CFeedEngine::GetSelectedShows()
 	{
 	return iSelectedShows;

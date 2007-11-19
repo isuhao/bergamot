@@ -32,6 +32,7 @@ public:
 	void SelectShowsByFeed(TInt aFeedUid);
 	void SelectShowsByDownloadState(TInt aDownloadState);
 	void SelectNewShows();
+	void SelectShowsDownloading();
 	
 	TShowInfoArray& GetSelectedShows();
 	
