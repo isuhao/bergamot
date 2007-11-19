@@ -103,51 +103,50 @@ RESOURCE QIK_COMMAND_LIST r_podcast_listview_commands
 			text = STRING_r_view_cmd;
 			namedGroupLinkId= 1;
 			},
-		
-			QIK_COMMAND
-			{
-			id = EPodcastViewMain;
-			type = EQikCommandTypeScreen;
-			text = STRING_r_view_main_cmd;
-			namedGroupId = 1;
-			},
+				QIK_COMMAND
+				{
+				id = EPodcastViewMain;
+				type = EQikCommandTypeScreen;
+				text = STRING_r_view_main_cmd;
+				namedGroupId = 1;
+				},
 
-			QIK_COMMAND
-			{
-			id = EPodcastViewAllShows;
-			type = EQikCommandTypeScreen;
-			text = STRING_r_view_all_shows_cmd;
-			namedGroupId = 1;
-			},	
-			QIK_COMMAND
-			{
-			id = EPodcastViewNewShows;
-			type = EQikCommandTypeScreen;
-			text = STRING_r_view_new_shows_cmd;
-			namedGroupId = 1;
-			},		
-			QIK_COMMAND
-			{
-			id = EPodcastViewDownloadedShows;
-			type = EQikCommandTypeScreen;
-			text = STRING_r_view_dl_shows_cmd;
-			namedGroupId = 1;
-			},		
+				QIK_COMMAND
+				{
+				id = EPodcastViewAllShows;
+				type = EQikCommandTypeScreen;
+				text = STRING_r_view_all_shows_cmd;
+				namedGroupId = 1;
+				},	
+				QIK_COMMAND
+				{
+				id = EPodcastViewNewShows;
+				type = EQikCommandTypeScreen;
+				text = STRING_r_view_new_shows_cmd;
+				namedGroupId = 1;
+				},		
+				QIK_COMMAND
+				{
+				id = EPodcastViewDownloadedShows;
+				type = EQikCommandTypeScreen;
+				text = STRING_r_view_dl_shows_cmd;
+				namedGroupId = 1;
+				},		
 
-			QIK_COMMAND
-			{
-			id = EPodcastViewPendingShows;
-			type = EQikCommandTypeScreen;
-			text = STRING_r_view_dling_shows_cmd;
-			namedGroupId = 1;
-			},					
-			QIK_COMMAND
-			{
-			id = EPodcastViewFeeds;
-			type = EQikCommandTypeScreen;
-			text = STRING_r_view_feeds_cmd;
-			namedGroupId = 1;
-			},
+				QIK_COMMAND
+				{
+				id = EPodcastViewPendingShows;
+				type = EQikCommandTypeScreen;
+				text = STRING_r_view_dling_shows_cmd;
+				namedGroupId = 1;
+				},					
+				QIK_COMMAND
+				{
+				id = EPodcastViewFeeds;
+				type = EQikCommandTypeScreen;
+				text = STRING_r_view_feeds_cmd;
+				namedGroupId = 1;
+				},
 			QIK_COMMAND
 			{
 			id = EPodcastUpdateFeed;

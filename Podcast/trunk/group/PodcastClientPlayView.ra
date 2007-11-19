@@ -150,7 +150,7 @@ horiz_align=EEikLabelAlignHRight;
 
 RESOURCE EDWIN r_podcast_playview_info
 {
-flags = EEikEdwinDisplayOnly|EEikEdwinDisableAutoCurEnd|EEikEdwinNoHorizScrolling;
+flags = EEikEdwinReadOnly|EEikEdwinDisableAutoCurEnd|EEikEdwinNoHorizScrolling;
 lines = 3;
 }
 

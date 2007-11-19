@@ -304,16 +304,32 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 					listBoxData->SetEmphasis(si->iPlayState == ENeverPlayed);					
 					unplayed+=(si->iPlayState == ENeverPlayed);
 					CleanupStack::PopAndDestroy();	
+					
+					TInt bitmap = EMbmPodcastclientShow_40x40;
+					TInt mask = EMbmPodcastclientShow_40x40m;
+
 					if(si->iPlayState == EPlaying)
 					{
-						CQikContent* content = CQikContent::NewL(this, _L("*"), EMbmPodcastclientShow_playing_40x40, EMbmPodcastclientShow_playing_40x40m);
-						CleanupStack::PushL(content);
-						listBoxData->AddIconL(content,EQikListBoxSlotLeftMediumIcon1);
-						CleanupStack::Pop(content);
+						bitmap = EMbmPodcastclientShow_playing_40x40;
+						mask = EMbmPodcastclientShow_playing_40x40m;
 					}
 					else
 					{
+						switch(si->iDownloadState)
+						{
+						case ENotDownloaded:
+							break;
+						case EQueued:
+							break;
+						case EDownloading:
+							break;
+						}
 					}
+					
+					CQikContent* content = CQikContent::NewL(this, _L("*"), bitmap, mask);
+					CleanupStack::PushL(content);
+					listBoxData->AddIconL(content,EQikListBoxSlotLeftMediumIcon1);
+					CleanupStack::Pop(content);
 				}
 			} else {		
 				MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
