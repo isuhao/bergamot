@@ -14,6 +14,12 @@ void TFeedInfo::ExternalizeL(RWriteStream& aStream) const {
 	aStream.WriteL(iUrl);
 //	RDebug::Print(_L("wrote url: %S"), &url);
 	
+	aStream.WriteInt32L(iImageFileName.Length());
+	//	RDebug::Print(_L("wrote len: %d"), iImageFileName.Length());
+
+	aStream.WriteL(iImageFileName);
+	//	RDebug::Print(_L("wrote iImageFileName: %S"), &iImageFileName);
+
 	aStream.WriteInt32L(iDescription.Length());
 //	RDebug::Print(_L("wrote len: %d"), description.Length());
 
@@ -51,6 +57,18 @@ void TFeedInfo::InternalizeL(RReadStream& aStream) {
 	//RDebug::Print(_L("len: %d"), len);
 
 	TRAP(error,aStream.ReadL(iUrl, len));
+	if (error != KErrNone) {
+		return;
+	}
+	//RDebug::Print(_L("read url: %S"), &url);
+	
+	TRAP(error,len = aStream.ReadInt32L());
+	if (error != KErrNone) {
+		return;
+	}
+	//RDebug::Print(_L("len: %d"), len);
+
+	TRAP(error,aStream.ReadL(iImageFileName, len));
 	if (error != KErrNone) {
 		return;
 	}

@@ -59,8 +59,6 @@ private:
 	TFeedState iFeedState;
 	TShowInfo* activeItem;
 	TDes* activeString;
-	TBuf<1024> iChannelTitle;
-	TBuf<2048> iChannelDescription;
 	TFeedInfo *iActiveFeed;
 };
 

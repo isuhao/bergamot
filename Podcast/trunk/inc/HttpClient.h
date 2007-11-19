@@ -29,6 +29,7 @@ class CHttpClient : public CBase
 public:
   virtual ~CHttpClient();
   static CHttpClient* NewL(MHttpEventHandlerCallbacks& aResObs);
+  void Get(TDesC& url, TDesC& fileName);
   void GetFeed(TFeedInfo *info);
   void GetShow(TShowInfo *info);
   TBool IsActive();
@@ -39,7 +40,6 @@ private:
   static CHttpClient* NewLC(MHttpEventHandlerCallbacks& aResObs);
   void ConstructL();
   void SetHeaderL(RHTTPHeaders aHeaders, TInt aHdrField, const TDesC8& aHdrValue);
-  void Get(TDesC& url, TDesC& fileName);
 private:
   RHTTPSession iSession;
   MHttpEventHandlerCallbacks& iCallbacks;

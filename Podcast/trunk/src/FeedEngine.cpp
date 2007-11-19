@@ -56,39 +56,38 @@ TShowInfo* CFeedEngine::ShowDownloading()
 
 void CFeedEngine::UpdateFeed(TInt aFeedUid)
 	{
-	TBuf<100> privatePath;
-	iFs.PrivatePath(privatePath);
-	RDebug::Print(_L("PrivatePath: %S"), &privatePath);
-	BaflUtils::EnsurePathExistsL(iFs, privatePath);
 	TFeedInfo *feedInfo = GetFeedInfoByUid(aFeedUid);
+	TFileName filePath;
+	GetFeedDir(feedInfo, filePath);
+
+	BaflUtils::EnsurePathExistsL(iFs, filePath);
+	
 	int pos = feedInfo->iUrl.LocateReverse('/');
 	
 	if (pos != KErrNotFound) {
 		TPtrC str = feedInfo->iUrl.Mid(pos+1);
 		RDebug::Print(_L("Separated filename: %S"), &str);
-		privatePath.Append(str);
+		filePath.Append(str);
 	} else {
-		privatePath.Append(_L("unknown"));
+		filePath.Append(_L("unknown"));
 	}
 
-	feedInfo->iFileName.Copy(privatePath);
+	feedInfo->iFileName.Copy(filePath);
 	RDebug::Print(_L("URL: %S, fileName: %S"), &feedInfo->iUrl, &feedInfo->iFileName);
 	iFeedClient->GetFeed(feedInfo);
 	RDebug::Print(_L("UpdateFeed END"));
 	}
 
-void CFeedEngine::GetShow(TShowInfo *info)
+void CFeedEngine::GetFeedDir(TFeedInfo *aFeedInfo, TFileName &aDir)
 	{
 	TBuf<100> filePath;
 	filePath.Copy(iShowDir);
 	if (filePath[filePath.Length()-1] != '\\') {
-		RDebug::Print(_L("%S has no terminating backslash"), &iShowDir);
 		filePath.Append(_L("\\"));
 	}
 	// fix filename
 	TBuf<1024> buf;
-	TFeedInfo *feedInfo = GetFeedInfoByUid(info->iFeedUid);
-	buf.Copy(feedInfo->iUrl);
+	buf.Copy(aFeedInfo->iUrl);
 	ReplaceString(buf, _L("/"), _L("_"));
 	ReplaceString(buf, _L(":"), _L("_"));
 	ReplaceString(buf, _L("?"), _L("_"));
@@ -97,16 +96,57 @@ void CFeedEngine::GetShow(TShowInfo *info)
 	filePath.Append(_L("\\"));
 	RDebug::Print(_L("directory to store in: %S"), &filePath);
 	BaflUtils::EnsurePathExistsL(iFs, filePath);
-
-	int pos = info->iUrl.LocateReverse('/');
+	aDir.Copy(filePath);
 	
-	if (pos != KErrNotFound) {
-		TPtrC str = info->iUrl.Mid(pos+1);
-		RDebug::Print(_L("Separated filename: %S"), &str);
-		filePath.Append(str);
-	} else {
-		filePath.Append(_L("unknown.mp3"));
 	}
+
+void CFeedEngine::MakeFileNameFromUrl(TDesC &aUrl, TFileName &fileName)
+	{
+	int pos = aUrl.LocateReverse('/');
+	
+	if (pos != KErrNotFound) {	
+		TPtrC str = aUrl.Mid(pos+1);
+		pos = str.Locate('?');
+		if (pos != KErrNotFound) {
+			RDebug::Print(_L("Found at %d"), pos);
+			RDebug::Print(_L("Found %S"), &(str.Left(pos)));
+			
+			fileName.Copy(str.Left(pos));
+			RDebug::Print(_L("fileName %S"), &(fileName));
+		} else {
+			RDebug::Print(_L("Not Found"));
+			fileName.Copy(str);
+		}
+		
+		} 
+		
+	}
+
+void CFeedEngine::GetFeedImage(TFeedInfo *aFeedInfo)
+	{
+	TFileName filePath;
+	GetFeedDir(aFeedInfo, filePath);
+	
+	TFileName fileName;
+	MakeFileNameFromUrl(aFeedInfo->iImageUrl, fileName);
+	filePath.Append(fileName);
+	aFeedInfo->iImageFileName.Copy(filePath);
+	RDebug::Print(_L("image file: %S"), &(aFeedInfo->iImageFileName));
+	
+	iFeedClient->Get(aFeedInfo->iImageUrl, aFeedInfo->iImageFileName);
+	}
+
+void CFeedEngine::GetShow(TShowInfo *info)
+	{
+	TFeedInfo *feedInfo = GetFeedInfoByUid(info->iFeedUid);
+
+	TFileName filePath;
+	GetFeedDir(feedInfo, filePath);
+	TFileName fileName;
+	MakeFileNameFromUrl(info->iUrl, fileName);
+	
+	filePath.Append(fileName);
+
 	RDebug::Print(_L("filePath: %S"), &filePath);
 	info->iFileName.Copy(filePath);
 	iShowClient->GetShow(info);
@@ -205,6 +245,11 @@ void CFeedEngine::FeedCompleteCallback(TFeedInfo * aInfo)
 	RDebug::Print(_L("File to parse: %S"), &aInfo->iFileName);
 	iParser->ParseFeedL(aInfo->iFileName, aInfo);
 	aInfo->iUid = DefaultHash::Des16(aInfo->iUrl);
+	aInfo->iImageUrl.Trim();
+	if (aInfo->iImageUrl.Length() > 0) {
+		GetFeedImage(aInfo);
+	}
+	
 	SaveFeeds();
 	SaveShows();
 

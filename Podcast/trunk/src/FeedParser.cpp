@@ -35,7 +35,6 @@ void CFeedParser::OnStartDocumentL(const RDocumentParameters& aDocParam, TInt aE
 //	RDebug::Print(_L("OnStartDocumentL()"));
 	iFeedState = EStateRoot;
 	activeString = NULL;
-	iChannelTitle.Copy(_L(""));
 	activeItem=new TShowInfo;
 	}
 
@@ -68,12 +67,13 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 		// <channel> <title>
 		} else if (str.CompareF(KTagTitle) == 0) {
 			iActiveFeed->iTitle.Copy(_L(""));
-			RDebug::Print(_L("***Feed title!"));
-			activeString = &iChannelTitle;
+			activeString = &(iActiveFeed->iTitle);
+			//activeString = &iChannelTitle;
 			iFeedState=EStateChannelTitle;
 		// <channel> <description>
 		} else if (str.CompareF(KTagDescription) == 0) {
-			activeString = &iChannelDescription;
+			iActiveFeed->iDescription.Copy(_L(""));
+			activeString = &(iActiveFeed->iDescription);
 			iFeedState=EStateChannelTitle;
 		// <channel> <image>
 		} else if (str.CompareF(KTagImage) == 0) {
@@ -84,6 +84,7 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 	case EStateChannelImage:
 		if (str.CompareF(KTagUrl) == 0) {
 			RDebug::Print(_L("Image url"));
+			iActiveFeed->iImageUrl.Copy(_L(""));
 			activeString = &iActiveFeed->iImageUrl;
 		}
 		break;
@@ -98,7 +99,6 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 			iFeedState=EStateItemLink;
 		// <channel> <item> <enclosure url=...>
 		} else if (str.CompareF(KTagEnclosure) == 0) {
-			//RDebug::Print(_L("Enclosure"));
 			for (int i=0;i<aAttributes.Count();i++) {
 				RAttribute attr = aAttributes[i];
 				TBuf<100> attr16;
@@ -107,7 +107,6 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 					TBuf<100> val16;
 					val16.Copy(attr.Value().DesC());
 					activeItem->iUrl.Copy(val16);
-//					RDebug::Print(_L("Attr %S=%S"), &attr16, &val16);
 				}
 			}
 		} else if (str.CompareF(KTagDescription) == 0) {
@@ -132,8 +131,6 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 
 	switch (iFeedState) {
 		case EStateChannelTitle:
-			RDebug::Print(_L("Feed title: %S"), &iChannelTitle);
-			iActiveFeed->iTitle.Copy(iChannelTitle);
 		case EStateChannelDescription:
 			iFeedState = EStateChannel;
 			break;
@@ -157,7 +154,7 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 		default:
 			// fall back to channel level when in doubt
 			iFeedState = EStateChannel;
-			RDebug::Print(_L("Don't know how to handle end tag %S when in state %d"), &str, iFeedState);
+			//RDebug::Print(_L("Don't know how to handle end tag %S when in state %d"), &str, iFeedState);
 			break;
 	}
 	activeString = NULL;

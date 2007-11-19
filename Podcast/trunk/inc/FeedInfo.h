@@ -10,7 +10,7 @@ const int KFeedTitleLength=256;
 const int KFeedUrlLength=1024;
 const int KFeedDescriptionLength=2048;
 
-const int KFeedInfoVersion = 1;
+const int KFeedInfoVersion = 2;
 
 class TFeedInfo
 {

@@ -6,7 +6,6 @@
 #include <s32strm.h>
 
 const int KShowInfoVersion = 3;
-
 const int KTitleLength=256;
 const int KUrlLength=1024;
 const int KDescriptionLength=2048;
@@ -26,9 +25,9 @@ enum TDownloadState {
 
 class TShowInfo {
 public:
-TShowInfo();
-void ExternalizeL(RWriteStream& aStream) const;
-void InternalizeL(RReadStream& aStream);
+	TShowInfo();
+	void ExternalizeL(RWriteStream& aStream) const;
+	void InternalizeL(RReadStream& aStream);
 
 public:
 	TBuf<KTitleLength> iTitle;
@@ -43,7 +42,5 @@ public:
 	TUint32 iShowSize;
 };
 
-
 typedef RPointerArray<TShowInfo> TShowInfoArray;
-
 #endif

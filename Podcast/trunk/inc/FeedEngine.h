@@ -71,6 +71,10 @@ private:
 	void AddShow(TShowInfo *item);
 	void AddFeed(TFeedInfo *item);
 
+	void GetFeedDir(TFeedInfo *aFeedInfo, TFileName &aDir);
+	void GetFeedImage(TFeedInfo *aFeedInfo);
+	void MakeFileNameFromUrl(TDesC &aUrl, TFileName &fileName);
+
 	void DownloadNextShow();
 	
 	void ReplaceString(TDes & aString, const TDesC& aStringToReplace,const TDesC& aReplacement);
@@ -108,5 +112,4 @@ private:
 	// The show we are currently downloading
 	TShowInfo* iShowDownloading;
 };
-
 #endif /*FEEDENGINE_H_*/
