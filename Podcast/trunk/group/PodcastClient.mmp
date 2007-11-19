@@ -55,7 +55,7 @@ SOURCE			FeedEngine.cpp
 SOURCE			ShowInfo.cpp
 SOURCE			SoundEngine.cpp
 SOURCE			PodCastModel.cpp 
-SOURCE			FeedInfo.cpp
+SOURCE			FeedInfo.cpp FeedTimer.cpp
 
 LIBRARY         euser.lib
 LIBRARY         apparc.lib
