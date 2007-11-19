@@ -4,6 +4,7 @@
 #include <s32file.h>
 #include <charconv.h>
 #include <xml/stringdictionarycollection.h>
+#include <utf.h>
 
 CFeedParser::CFeedParser(MFeedParserCallbacks& aCallbacks) : 	iCallbacks(aCallbacks)
 {
@@ -33,6 +34,9 @@ void CFeedParser::ParseFeedL(TFileName &feedFileName, TFeedInfo *info)
 void CFeedParser::OnStartDocumentL(const RDocumentParameters& aDocParam, TInt aErrorCode)
 	{
 //	RDebug::Print(_L("OnStartDocumentL()"));
+	TBuf<1024> charset;
+	charset.Copy(aDocParam.CharacterSetName().DesC());
+	RDebug::Print(_L("charset: %S"), &charset);
 	iFeedState = EStateRoot;
 	activeString = NULL;
 	activeItem=new TShowInfo;
@@ -166,7 +170,8 @@ void CFeedParser::OnContentL(const TDesC8& aBytes, TInt aErrorCode)
 	{
 	if (activeString != NULL) {
 		TBuf<2048> str;
-		str.Copy(aBytes);
+		CnvUtfConverter::ConvertToUnicodeFromUtf8(str, aBytes);
+		//str.Copy(aBytes);
 		//RDebug::Print(_L("OnContentL: %S, state: %d"), &str, iFeedState);
 		if (activeString->Length() + str.Length() < KUrlLength) {
 			activeString->Append(str);

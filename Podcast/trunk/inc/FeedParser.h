@@ -5,6 +5,7 @@
 #include "FeedInfo.h"
 #include <xml/parser.h> // for CParser
 #include <xml/contenthandler.h>	// for Xml::MContentHandler
+#include <xml/documentparameters.h>
 
 using namespace Xml;
 

@@ -494,6 +494,10 @@ void CFeedEngine::LoadShows()
 		TRAPD(error, instream  >> *readData);
 		//RDebug::Print(_L("error: %d"), error);
 		AddShow(readData);
+		
+		if (!BaflUtils::FileExists(iFs, readData->iFileName)) {
+			readData->iDownloadState = ENotDownloaded;
+		}
 	}
 	exit_point:
 	CleanupStack::PopAndDestroy(); // instream
