@@ -751,6 +751,12 @@ void CFeedEngine::CleanHtml(TDes &str)
 	while (startPos != KErrNotFound && endPos != KErrNotFound && endPos > startPos) {
 		//RDebug::Print(_L("Cleaning out %S"), &str.Mid(startPos, endPos-startPos+1));
 		tmp.Copy(str.Left(startPos));
+		TPtrC ptr=str.Mid(startPos, endPos-startPos+1);
+		if (ptr.CompareF(_L("<br>"))) {
+			//RDebug::Print(_L("byter ut %S mot \\n"), &ptr);
+			tmp.Append(_L("\n"));
+		}
+		
 		if (str.Length() > endPos+1) {
 			tmp.Append(str.Mid(endPos+1));
 		}
