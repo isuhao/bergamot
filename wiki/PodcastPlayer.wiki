@@ -28,6 +28,7 @@ http://bergamot.googlecode.com/svn/wiki/pp4.jpg
 = How to use =
 *WARNING! Downloading large files  such as podcasts over mobile phone networks can be extremely expensive. Please make sure you have a flat rate data plan or use a wireless LAN before you use this program!*
 
+  # Download SIS file
   # Install on your phone
   # Run the program
   # Choose Feeds
@@ -47,16 +48,22 @@ I stumbled upon the [http://uiqopen.uiq.com/ UIQ Open] contest. Hopefully the po
 This is how I plan to implement features. Please [http://groups.google.com/group/bergamot help me find out what's important!]
 
   * Alpha 3 (November 25th)
+    * UI improvements
+    * Configuration dialog
+    * Automatic feed update
     * Proper feed handling, i.e. know what's new
-    * New podcast notification
-    * Automatic background downloading
-    * Check connection type, option to download only on WLAN
+    * Automatic downloading
     * ID3 parsing if necessary
     * Volume control
+
+  * Alpha 4 (December 2nd)
+    * Video support?
+    * Check connection type, option to download only on WLAN
     * Support for other feeds (Atom, RSS 0.9, any more?)
 
-  * Alpha 4
-    * Video support
+  * Beta 1 (December 9th)
+     * No new features
+     * Memory consumption improvements
 
 = Name =
 
@@ -69,6 +76,8 @@ Some ideas
   * Ingot
   * Foundry (in which you produce casts)
   * Mint
+  * Repo Pod
+  * Hyland
 
 = Help! =
 
