@@ -359,12 +359,14 @@ void CPodcastClientPlayView::UpdateViewL()
 						}
 						else
 						{
+							iLastImageFileName = KNullDesC();
 						}
 					}
 				}
 			}
 			else
 			{
+				iLastImageFileName = KNullDesC();
 			}
 		}
 		else
