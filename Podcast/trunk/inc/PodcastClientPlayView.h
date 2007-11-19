@@ -61,5 +61,6 @@ private:
 	// Use this to change feeds
 	CQikCategoryModel* iCategories;
 	TBool iProgressAdded;
+	TFileName iLastImageFileName;
 	};
 #endif // PODCASTPLAYVIEW_H

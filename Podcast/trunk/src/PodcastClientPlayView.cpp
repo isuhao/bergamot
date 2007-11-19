@@ -346,14 +346,21 @@ void CPodcastClientPlayView::UpdateViewL()
 			
 			if(feedInfo != NULL && feedInfo->iImageFileName.Length()>0)
 			{
-				TRAPD(err, iBitmapConverter->LoadImageDataL(feedInfo->iImageFileName));
-				if(err == KErrNone)
+				if(feedInfo->iImageFileName != iLastImageFileName)
 				{
-					iBitmapConverter->ConvertToBitmapL(iCurrentCoverImage, 0);
-					iCoverImageCtrl->MakeVisible(ETrue);				
-				}
-				else
-				{
+					iLastImageFileName = feedInfo->iImageFileName;
+					if(!iBitmapConverter->IsActive())
+					{
+						TRAPD(err, iBitmapConverter->LoadImageDataL(feedInfo->iImageFileName));
+						if(err == KErrNone)
+						{
+							iBitmapConverter->ConvertToBitmapL(iCurrentCoverImage, 0);
+							iCoverImageCtrl->MakeVisible(ETrue);				
+						}
+						else
+						{
+						}
+					}
 				}
 			}
 			else
