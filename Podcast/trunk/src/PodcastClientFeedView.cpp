@@ -57,10 +57,8 @@ void CPodcastClientFeedView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid 
 {
 	CPodcastClientView::ViewActivatedL(aPrevViewId, aCustomMessageId, aCustomMessage);
 
-	if(aPrevViewId == TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID)  )
-	{
-		SetParentView( TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID));
-	}
+
+	SetParentView( aPrevViewId );
 }
 
 
