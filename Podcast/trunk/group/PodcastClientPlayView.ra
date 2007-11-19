@@ -190,7 +190,7 @@ RESOURCE QIK_CONTAINER_SETTINGS r_podcast_playview_page_control
 			control = r_podcast_playview_coverimage;
 			// This will make it so that the list box fills the whole 
 			// application space.
-			layout_data = r_podcast_row_layout_data_fill;
+			layout_data = r_podcast_row_layout_data_nofill;
 			},
 	
 		QIK_CONTAINER_ITEM_CI_LI

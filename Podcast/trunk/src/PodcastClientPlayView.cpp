@@ -229,10 +229,6 @@ void CPodcastClientPlayView::ViewConstructL()
 	iVolumeSlider = LocateControlByUniqueHandle<CQikSlider>(EPodcastPlayViewVolumeCtrl);
 
 	iCoverImageCtrl = LocateControlByUniqueHandle<CEikImage>(EPodcastPlayViewCoverImage);
-	//iCoverImage->SetStretchMaintainAspectRatio(EFalse);
-	//iCoverImage->SetStretched(ETrue);
-//	iCoverImage->SetContentL(iCurrentCover);
-	iCoverImageCtrl->SetPictureOwnedExternally(ETrue);
 
 	ViewContext()->AddTextL(EPodcastPlayViewTitleCtrl, KNullDesC(), EHCenterVCenter);
 	iCategories = QikCategoryUtils::ConstructCategoriesLC(R_PODCAST_CATEGORY);
@@ -282,6 +278,7 @@ void CPodcastClientPlayView::ImageConverterEventL(TQikImageConverterEvent aMessa
 		if(iCurrentCoverImage->SizeInPixels().iHeight<=KMaxCoverImageHeight)
 		{
 			iCoverImageCtrl->SetBitmap(iCurrentCoverImage);
+			iCurrentCoverImage = NULL;
 			RequestRelayout(this);
 		}
 		else
@@ -292,12 +289,15 @@ void CPodcastClientPlayView::ImageConverterEventL(TQikImageConverterEvent aMessa
 	else if(aErrCode == KErrNone && aMessage == MQikImageConverterObserver::EBitmapRescaleComplete)
 	{
 		iCoverImageCtrl->SetBitmap(iCurrentCoverImage);
+		iCurrentCoverImage = NULL;
 		RequestRelayout(this);
 	}
-	/*else if (aErrCode == KErrNone && aMessage == MQikImageConverterObserver::EBitmapOpen)
+	else if(aErrCode != KErrNone)
 	{
-		iBitmapConverter->ConvertToBitmapL(iCurrentCover);
-	}*/
+		delete iCurrentCoverImage;
+		iCurrentCoverImage = NULL;
+	}
+	
 }
 
 void CPodcastClientPlayView::UpdateViewL()
@@ -340,19 +340,28 @@ void CPodcastClientPlayView::UpdateViewL()
 				comMan.SetInvisible(*this, EPodcastPlay, EFalse);
 				comMan.SetInvisible(*this, EPodcastDownloadShow, ETrue);
 			}
-		
-		
+
+			if(showInfo.iCoverFileName.Length()>0)
+			{
+				TRAPD(err, iBitmapConverter->LoadImageDataL(showInfo.iCoverFileName));
+				if(err == KErrNone)
+				{
+					iBitmapConverter->ConvertToBitmapL(iCurrentCoverImage, 0);
+					iCoverImageCtrl->MakeVisible(ETrue);				
+				}
+				else
+				{
+				}
+			}
+			else
+			{
+			}
 		}
 		else
 		{	
 			comMan.SetInvisible(*this, EPodcastDownloadShow, ETrue);
 		}
 
-		TRAPD(err, iBitmapConverter->LoadImageDataL(_L("C:\\logs\\2.jpg")));
-		if(err == KErrNone)
-		{
-			iBitmapConverter->ConvertToBitmapL(iCurrentCoverImage, 0);
-		}
 	
 		UpdatePlayStatusL();
 
