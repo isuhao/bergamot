@@ -315,8 +315,12 @@ void CPodcastClientPlayView::UpdateViewL()
 			{
 				time.Format(_L("%02d:%02d"), (playtime/60), (playtime%60));
 			}
-			iTimeLabel->SetText(time);
-			iTimeLabel->SetSize(iTimeLabel->MinimumSize());
+
+			if(iTimeLabel != NULL)
+			{
+				iTimeLabel->SetText(time);
+				iTimeLabel->SetSize(iTimeLabel->MinimumSize());
+			}
 
 			iInformationEdwin->SetTextL(&showInfo.iDescription);
 

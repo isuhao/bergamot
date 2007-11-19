@@ -168,8 +168,28 @@ CQikCommand* CPodcastClientShowsView::DynInitOrDeleteCommandL(CQikCommand* aComm
 			}
 			else
 			{
-				aCommand->SetInvisible(EFalse);
-			}
+				TInt index = iListbox->CurrentItemIndex();
+				
+				if(index>= 0 && index < iPodcastModel.ActiveShowList().Count())
+				{					
+					aCommand->SetInvisible(EFalse);
+
+					if(iPodcastModel.ActiveShowList()[index]->iDownloadState == EDownloaded)
+					{
+						aCommand->SetTextL(R_PODCAST_FEEDS_PLAY_CMD);
+						aCommand->SetShortTextL(R_PODCAST_FEEDS_PLAY_CMD);
+					}
+					else 
+					{
+						aCommand->SetTextL(R_PODCAST_VIEW_CMD);
+						aCommand->SetShortTextL(R_PODCAST_VIEW_CMD);
+					}			
+				}
+				else
+				{
+					aCommand->SetInvisible(ETrue);
+				}
+			}						
 		}
 		break;
 	default:
