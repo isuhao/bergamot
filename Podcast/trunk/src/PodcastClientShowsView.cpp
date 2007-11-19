@@ -1,11 +1,12 @@
 #include <PodcastClient.rsg>
 #include <QikCategoryModel.h>
 #include <qikcommand.h>
+#include <qikcontent.h>
 #include <QikListBoxLayoutPair.h>
 #include <QikListBoxLayoutElement.h>
 #include <QikListBoxLayout.h>
 #include <QikListBoxLayoutProperties.h>
-
+#include <podcastclient.mbg>
 #include "PodcastClientShowsView.h"
 #include "PodcastModel.h"
 
@@ -300,9 +301,19 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 					TShowInfo *si = fItems[i];
 					listBoxData->AddTextL(si->iTitle, EQikListBoxSlotText1);
 					listBoxData->AddTextL(si->iDescription, EQikListBoxSlotText2);
-					listBoxData->SetEmphasis(si->iPlayState == ENeverPlayed);
+					listBoxData->SetEmphasis(si->iPlayState == ENeverPlayed);					
 					unplayed+=(si->iPlayState == ENeverPlayed);
 					CleanupStack::PopAndDestroy();	
+					if(si->iPlayState == EPlaying)
+					{
+						CQikContent* content = CQikContent::NewL(this, _L("*"), EMbmPodcastclientShow_playing_40x40, EMbmPodcastclientShow_playing_40x40m);
+						CleanupStack::PushL(content);
+						listBoxData->AddIconL(content,EQikListBoxSlotLeftMediumIcon1);
+						CleanupStack::Pop(content);
+					}
+					else
+					{
+					}
 				}
 			} else {		
 				MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
