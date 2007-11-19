@@ -12,6 +12,8 @@ protected:
 	void HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxEvent aEventType, TInt aItemIndex, TInt aSlotId);
 	TVwsViewId ViewId()const;
 	void ViewConstructL();
+	void ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage);
+
 	void ConstructL();
 
 	void ShowListUpdated(){}

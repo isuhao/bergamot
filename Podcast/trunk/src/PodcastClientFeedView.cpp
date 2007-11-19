@@ -53,6 +53,17 @@ void CPodcastClientFeedView::ViewConstructL()
 }
 
 
+void CPodcastClientFeedView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage)
+{
+	CPodcastClientView::ViewActivatedL(aPrevViewId, aCustomMessageId, aCustomMessage);
+
+	if(aPrevViewId == TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID)  )
+	{
+		SetParentView( TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID));
+	}
+}
+
+
 CQikCommand* CPodcastClientFeedView::DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& aControlAddingCommands)
 {
 	switch(aCommand->Id())
@@ -99,8 +110,8 @@ void CPodcastClientFeedView::FeedInfoUpdated(const TFeedInfo& aFeedInfo)
 		MQikListBoxData* data = model.RetrieveDataL(index);	
 		if(data != NULL)
 		{
-			data->UpdateTextL(aFeedInfo.iTitle, EQikListBoxSlotText1);
-			data->AddTextL(aFeedInfo.iDescription, EQikListBoxSlotText2);
+			data->SetTextL(aFeedInfo.iTitle, EQikListBoxSlotText1);
+			data->SetTextL(aFeedInfo.iDescription, EQikListBoxSlotText2);
 			data->Close();
 		}
 		model.ModelEndUpdateL();
