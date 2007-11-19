@@ -132,7 +132,8 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 			if(iPodcastModel.SetZoomState(zoomFactor))
 			{
 				// Sets the zoom factor for the view
-				SetZoomFactorL(zoomFactor);
+				iLastZoomLevel = zoomFactor;
+				SetZoomFactorL(CQikAppUi::ZoomFactorL(zoomFactor , *iEikonEnv));
 			}
 		}
 		break;
@@ -166,6 +167,13 @@ void CPodcastClientView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCus
 		MakeVisible(ETrue);
 		SelectCategoryL(EShowAllShows);
 		SetAppTitleNameL(KNullDesC());
+
+		if(	iLastZoomLevel !=  iPodcastModel.ZoomState())
+		{
+			iLastZoomLevel = iPodcastModel.ZoomState();
+			SetZoomFactorL(CQikAppUi::ZoomFactorL(iLastZoomLevel , *iEikonEnv));
+		}
+
 		UpdateListboxItemsL();
 	}
 

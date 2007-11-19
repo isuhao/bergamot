@@ -74,6 +74,20 @@ CQikCommand* CPodcastClientBaseView::DynInitOrDeleteCommandL(CQikCommand* aComma
 void CPodcastClientBaseView::UpdateListboxItemsL()
 {
  // Update already existing items perhaps for special layout?
+	if(iListbox != NULL)
+	{
+		MQikListBoxModel& model(iListbox->Model());
+		model.ModelBeginUpdateLC();
+		// Retrieve player
+	/*	MQikListBoxData* data = model.RetrieveDataL(EBaseViewPlayer);	
+		if(data != NULL)
+		{
+			data->(iPodcastModel.PlayingPodcast() == NULL);
+		}*/
+	
+		model.ModelEndUpdateL();
+		
+	}
 }
 
 

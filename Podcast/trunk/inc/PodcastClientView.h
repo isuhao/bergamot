@@ -43,5 +43,6 @@ protected:
 
 	// Use this to change feeds
 	CQikCategoryModel* iCategories;
+	TInt iLastZoomLevel;
 	};
 #endif
