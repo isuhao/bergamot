@@ -35,7 +35,6 @@ public:
 	TBuf<KDescriptionLength> iDescription;
 	TInt iFeedUid;
 	TFileName iFileName;
-	TFileName iCoverFileName;
 	TTimeIntervalMicroSeconds iPosition;
 	TPlayState iPlayState;
 	TDownloadState iDownloadState;
