@@ -1,5 +1,6 @@
 Some good links I've come across
 
+  * [http://developer.sonyericsson.com/wiki/pages/viewpage.action?pageId=910 Sony Ericsson Wiki]
   * [http://www.symbianresources.com/ Symbian Resources] - mostly GUI stuff för UIQ and S60
   * [http://groups.google.com/group/carbidecpp-beta Carbide C++ beta] here at Google Code
   * [http://www.symbianer.com/ SymbianER]
