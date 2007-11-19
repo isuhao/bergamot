@@ -13,16 +13,17 @@ _LIT(KTagTitle, "title");
 _LIT(KTagImage, "image");
 _LIT(KTagLink, "link");
 _LIT(KTagDescription, "description");
+_LIT(KTagUrl, "url");
 _LIT(KTagChannel, "channel");
 _LIT(KTagEnclosure, "enclosure");
 
 enum TFeedState {
-	EStateNone,
 	EStateRoot,
 	EStateChannel,
 	EStateChannelTitle,
 	EStateChannelDescription,
 	EStateChannelImage,
+	EStateChannelImageUrl,
 	EStateItem,
 	EStateItemTitle,
 	EStateItemLink,

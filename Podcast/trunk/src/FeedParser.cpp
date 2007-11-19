@@ -81,6 +81,12 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 			iFeedState=EStateChannelImage;
 		}
 		break;
+	case EStateChannelImage:
+		if (str.CompareF(KTagUrl) == 0) {
+			RDebug::Print(_L("Image url"));
+			activeString = &iActiveFeed->iImageUrl;
+		}
+		break;
 	case EStateItem:
 		// <channel> <item> <title>
 		if (str.CompareF(KTagTitle) == 0) {
@@ -149,8 +155,9 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 			iFeedState = EStateItem;
 			break;
 		default:
+			// fall back to channel level when in doubt
 			iFeedState = EStateChannel;
-			//Debug::Print(_L("Don't know how to handle end tag %S when in state %d"), &str, iFeedState);
+			RDebug::Print(_L("Don't know how to handle end tag %S when in state %d"), &str, iFeedState);
 			break;
 	}
 	activeString = NULL;

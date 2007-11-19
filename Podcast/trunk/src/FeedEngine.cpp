@@ -155,6 +155,7 @@ void CFeedEngine::NewShowCallback(TShowInfo *item)
 void CFeedEngine::ParsingCompleteCallback(TFeedInfo *item)
 	{
 	RDebug::Print(_L("ParsingCompleteCallback"));
+	RDebug::Print(_L("feed image url: %S"), &item->iImageUrl);
 	for (int i=0;i<iObservers.Count();i++) {
 		iObservers[i]->FeedInfoUpdated(*item);
 		iObservers[i]->ShowListUpdated();
@@ -582,6 +583,18 @@ void CFeedEngine::SelectShowsByFeed(TInt aFeedUid)
 		}
 	}
 
+void CFeedEngine::SelectNewShows()
+	{
+	iSelectedShows.Reset();
+	for (int i=0;i<iShows.Count();i++)
+		{
+		if (iShows[i]->iPlayState == ENeverPlayed)
+			{
+			iSelectedShows.Append(iShows[i]);
+			}
+		}
+	}
+
 void CFeedEngine::SelectShowsByDownloadState(TInt aDownloadState)
 	{
 	iSelectedShows.Reset();
@@ -671,4 +684,6 @@ void CFeedEngine::CleanHtml(TDes &str)
 		startPos = str.Locate('<');
 		endPos = str.Locate('>');
 	}
+	
+	str.Trim();
 }
