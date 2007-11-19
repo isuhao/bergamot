@@ -89,13 +89,7 @@ RESOURCE QIK_COMMAND_LIST r_podcast_listview_commands
 	items=
 		{
 		// This command shall only be visible in debug mode because it is only
-		// used to find memory leaks during development of the application.
-		QIK_COMMAND
-			{
-			id = EPodcastViewPlayer;
-			type = EQikCommandTypeDone;
-			text = STRING_r_view_player_cmd;
-			},
+		// used to find memory leaks during development of the application.	
 		QIK_COMMAND
 			{
 			id = EPodcastView;
@@ -147,11 +141,18 @@ RESOURCE QIK_COMMAND_LIST r_podcast_listview_commands
 				text = STRING_r_view_feeds_cmd;
 				namedGroupId = 1;
 				},
-			QIK_COMMAND
+		QIK_COMMAND
 			{
+			priority = 2;
 			id = EPodcastUpdateFeed;
 			type = EQikCommandTypeItem;
 			text = STRING_r_update_feeds_cmd;
+			},
+		QIK_COMMAND
+			{
+			id = EPodcastUpdateAllFeeds;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_update_all_feeds_cmd;
 			},
 		QIK_COMMAND
 			{

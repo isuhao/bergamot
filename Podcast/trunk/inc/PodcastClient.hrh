@@ -24,6 +24,7 @@ enum TPodcatClientCommands
 	EPodcastSettings,
 	EPodcastAddFeed,
 	EPodcastUpdateFeed,
+	EPodcastUpdateAllFeeds,
 	EPodcastDownloadShow,
 	EPodcastZoomSetting
 	};

@@ -1,5 +1,8 @@
 #include <qikcommand.h>
+#include <qikcontent.h>
+#include <PodcastClient.mbg>
 #include <PodcastClient.rsg>
+
 #include "PodcastClientFeedView.h"
 #include "PodcastModel.h"
 
@@ -57,10 +60,6 @@ CQikCommand* CPodcastClientFeedView::DynInitOrDeleteCommandL(CQikCommand* aComma
 	case EPodcastViewFeeds:
 		aCommand = NULL;
 		break;
-	case EPodcastUpdateFeed:
-		{
-			aCommand->SetType(EQikCommandTypeScreen);
-		}break;
 	case EQikListBoxCmdSelect:
 		{
 			aCommand->SetTextL(R_PODCAST_SHOW_CMD);
@@ -87,7 +86,27 @@ void CPodcastClientFeedView::FeedInfoUpdated(const TFeedInfo& aFeedInfo)
 		iProgressAdded = EFalse;
 	}
 
-	UpdateListboxItemsL();
+	TFeedInfoArray feeds;
+	CleanupClosePushL(feeds);
+	iPodcastModel.FeedEngine().GetFeeds(feeds);
+
+	TInt index = feeds.Find(&aFeedInfo);
+
+	if(index != KErrNotFound)
+	{
+		MQikListBoxModel& model(iListbox->Model());
+		model.ModelBeginUpdateLC();
+		MQikListBoxData* data = model.RetrieveDataL(index);	
+		if(data != NULL)
+		{
+			data->UpdateTextL(aFeedInfo.iTitle, EQikListBoxSlotText1);
+			data->AddTextL(aFeedInfo.iDescription, EQikListBoxSlotText2);
+			data->Close();
+		}
+		model.ModelEndUpdateL();
+	}
+
+	CleanupStack::PopAndDestroy();// close feeds
 }
 
 void CPodcastClientFeedView::FeedDownloadUpdatedL(TInt aPercentOfCurrentDownload)
@@ -134,21 +153,24 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 		
 		iPodcastModel.FeedEngine().GetFeeds(feeds);
 		int len = feeds.Count();
-		MQikListBoxData* listBoxData;// = model.NewDataL(MQikListBoxModel::EDataNormal);
-		//CleanupClosePushL(*listBoxData);
-		
-		//itemName.Copy(_L("Add feed..."));
-		//listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
-		//CleanupStack::PopAndDestroy();
+		MQikListBoxData* listBoxData;
 		
 		if (len > 0) {
 			for (int i=0;i<len;i++) {
+				TInt bitmap = EMbmPodcastclientFeeds_40x40;
+				TInt mask = EMbmPodcastclientFeeds_40x40m;
+				
 				listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
 				CleanupClosePushL(*listBoxData);
 				TFeedInfo *fi = feeds[i];
 				listBoxData->AddTextL(fi->iTitle, EQikListBoxSlotText1);
 				listBoxData->AddTextL(fi->iDescription, EQikListBoxSlotText2);
-				CleanupStack::PopAndDestroy();	
+				CQikContent* content = CQikContent::NewL(this, _L("*"), bitmap, mask);
+				CleanupStack::PushL(content);
+				listBoxData->AddIconL(content,EQikListBoxSlotLeftMediumIcon1);
+				CleanupStack::Pop(content);
+				
+				CleanupStack::PopAndDestroy(); // close listbox data
 			}
 		} else {
 			{
@@ -190,6 +212,37 @@ void CPodcastClientFeedView::HandleListBoxEventL(CQikListBox *aListBox, TQikList
 		}
 		break;
 	default:
+		break;
+	}
+}
+
+void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
+{
+	switch(aCommand.Id())
+	{
+	case EPodcastUpdateFeed:
+		{
+			if(iListbox != NULL)
+			{
+				TInt index = iListbox->CurrentItemIndex();
+				TFeedInfoArray feeds;
+				CleanupClosePushL(feeds);
+				iPodcastModel.FeedEngine().GetFeeds(feeds);
+				if(index >= 0 && index <feeds.Count())
+				{
+					if (feeds[index]->iUrl.Length()>0) {
+						TBuf<256> buf;
+						buf.Format(_L("Getting %S"), &feeds[index]->iTitle);
+						User::InfoPrint(buf);
+						iPodcastModel.FeedEngine().UpdateFeed(feeds[index]->iUid);
+					} 
+				}
+				CleanupStack::PopAndDestroy();// close feeds
+			}
+		}
+		break;
+	default:
+		CPodcastClientView::HandleCommandL(aCommand);
 		break;
 	}
 }

@@ -98,27 +98,20 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastFeedViewID);
 			iQikAppUi.ActivateViewL(podcastsView);
 		}break;		
-	case EPodcastUpdateFeed:
+	case EPodcastUpdateAllFeeds:
 		{
-			if (iPodcastModel.ActiveFeedInfo().iUrl.Length()>0) {
-				User::InfoPrint(_L("Getting feed..."));
-				iPodcastModel.FeedEngine().UpdateFeed(iPodcastModel.ActiveFeedInfo().iUid);
-			} else 
+			TFeedInfoArray array;
+			CleanupClosePushL(array);
+			iPodcastModel.FeedEngine().GetFeeds(array);
+			
+			for (int i=0;i<array.Count();i++) 
 			{
-				TFeedInfoArray array;
-				CleanupClosePushL(array);
-				iPodcastModel.FeedEngine().GetFeeds(array);
-				
-				for (int i=0;i<array.Count();i++) 
-				{
-					TBuf<1024> buf;
-					buf.Format(_L("Getting %S"), &(array[i]->iTitle));
-					User::InfoPrint(buf);
-					iPodcastModel.FeedEngine().UpdateFeed(array[i]->iUid);
-					
-				}
-				CleanupStack::PopAndDestroy();//close array
+				TBuf<1024> buf;
+				buf.Format(_L("Getting %S"), &(array[i]->iTitle));
+				User::InfoPrint(buf);
+				iPodcastModel.FeedEngine().UpdateFeed(array[i]->iUid);				
 			}
+			CleanupStack::PopAndDestroy();//close array
 		}
 		break;
 		

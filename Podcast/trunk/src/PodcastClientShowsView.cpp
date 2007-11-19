@@ -92,6 +92,14 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 	{	
 		switch(aCommand.Id())
 		{
+		case EPodcastUpdateFeed:
+		{
+			if (iPodcastModel.ActiveFeedInfo().iUrl.Length()>0) {
+				User::InfoPrint(_L("Getting feed..."));
+				iPodcastModel.FeedEngine().UpdateFeed(iPodcastModel.ActiveFeedInfo().iUid);
+			} 
+		}
+		break;
 		default:
 			CPodcastClientView::HandleCommandL(aCommand);
 			break;
@@ -159,6 +167,7 @@ CQikCommand* CPodcastClientShowsView::DynInitOrDeleteCommandL(CQikCommand* aComm
 	case EPodcastViewDownloadedShows:
 	case EPodcastViewNewShows:
 	case EPodcastViewAllShows:
+	case EPodcastUpdateAllFeeds:
 		aCommand = NULL;
 		break;
 	case EQikListBoxCmdSelect:
@@ -234,6 +243,7 @@ void CPodcastClientShowsView::UpdateShowItemL(TShowInfo* aShowInfo)
 				break;
 			}
 		}
+		data->Close();
 		model.ModelEndUpdateL();
 		
 	}
@@ -395,15 +405,6 @@ void CPodcastClientShowsView::UpdateCommandsL()
 	{
 		comMan.SetInvisible(*this, EQikListBoxCmdSelect, ETrue);
 	}
-	
-	if(fItems.Count() > 0)
-	{
-		comMan.SetType(*this, EPodcastUpdateFeed, EQikCommandTypeScreen);
-	}
-	else
-	{
-		comMan.SetType(*this, EPodcastUpdateFeed, EQikCommandTypeItem);
-	}
 
 	comMan.SetInvisible(*this, EPodcastUpdateFeed, iCurrentCategory != EShowFeedShows);
 }
@@ -429,25 +430,7 @@ void CPodcastClientShowsView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQ
 				RDebug::Print(_L("Handle event for podcast %S, downloadState is %d"), &(fItems[aItemIndex]->iTitle), fItems[aItemIndex]->iDownloadState);
 				iPodcastModel.PlayPausePodcastL(fItems[aItemIndex]);
 				TVwsViewId viewId = TVwsViewId(KUidPodcastClientID, KUidPodcastPlayViewID);
-				iQikAppUi.ActivateViewL(viewId);
-				// add to downloads if not already downloading
-			/*	if(fItems[aItemIndex]->iDownloadState == ENotDownloaded)
-				{
-					iPodcastModel.FeedEngine().AddDownload(fItems[aItemIndex]);
-				}
-				// play the podcast if downloaded
-				else if(fItems[aItemIndex]->iDownloadState == EDownloaded)
-				{
-
-					iPodcastModel.PlayPausePodcastL(fItems[aItemIndex]);	
-					MQikListBoxModel& model(iListbox->Model());
-
-					model.ModelBeginUpdateLC();
-					MQikListBoxData* data = model.RetrieveDataL(aItemIndex);	
-					data->SetEmphasis(EFalse);				
-					// Informs that the update of the list box model has ended
-					model.ModelEndUpdateL();
-				}*/
+				iQikAppUi.ActivateViewL(viewId);		
 
 				UpdateCommandsL();
 			}

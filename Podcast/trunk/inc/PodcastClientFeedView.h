@@ -20,6 +20,8 @@ protected:
 	void ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt aBytesTotal) {};
 	// from MQikCommandModelOwner	
 	CQikCommand* DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& aControlAddingCommands);
+	void HandleCommandL(CQikCommand& aCommand);
+
 private:
     TBool iProgressAdded;
 };
