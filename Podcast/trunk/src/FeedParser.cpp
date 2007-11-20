@@ -120,6 +120,11 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 		} else if (str.CompareF(KTagDescription) == 0) {
 			activeString = &activeItem->iDescription;
 			iFeedState=EStateItemDescription;
+		} else if (str.CompareF(KTagPubDate) == 0) {
+			iFeedState = EStateItemPubDate;
+			iPubDateString.Zero();
+			activeString = &iPubDateString;
+			
 		}
 		break;
 	default:
@@ -154,6 +159,23 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 				iCallbacks.NewShow(activeItem);
 			}
 		break;
+		case EStateItemPubDate:
+			if (str.CompareF(KTagPubDate) == 0) {
+				//RDebug::Print(_L("Cut: %S"), &iPubDateString.Mid(5).Left(20));
+				if(activeItem->iPubDate.Parse(iPubDateString.Mid(5).Left(20)) >= 0) {
+					
+					RDebug::Print(_L("Successfully parsed pubdate %d/%d/%d %d:%d:%d"),
+							activeItem->iPubDate.DateTime().Year(),
+							activeItem->iPubDate.DateTime().Month(),
+							activeItem->iPubDate.DateTime().Day(),
+							activeItem->iPubDate.DateTime().Hour(),
+							activeItem->iPubDate.DateTime().Minute(),
+							activeItem->iPubDate.DateTime().Second());
+							
+				} else {
+					RDebug::Print(_L("Pubdate parse error: %S"), &iPubDateString);
+				}
+			}
 		case EStateItemTitle:
 		case EStateItemLink:
 		case EStateItemDescription:
@@ -176,7 +198,8 @@ void CFeedParser::OnContentL(const TDesC8& aBytes, TInt aErrorCode)
 		TBuf<2048> str;
 		CnvUtfConverter::ConvertToUnicodeFromUtf8(str, aBytes);
 		//str.Copy(aBytes);
-		//RDebug::Print(_L("OnContentL: %S, state: %d"), &str, iFeedState);
+		//	RDebug::Print(_L("OnContentL: %S, state: %d"), &str, iFeedState);
+
 		if (activeString->Length() + str.Length() < KUrlLength) {
 			activeString->Append(str);
 		}

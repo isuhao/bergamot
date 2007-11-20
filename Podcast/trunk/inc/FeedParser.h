@@ -18,6 +18,7 @@ _LIT(KTagUrl, "url");
 _LIT(KTagLength, "length");
 _LIT(KTagChannel, "channel");
 _LIT(KTagEnclosure, "enclosure");
+_LIT(KTagPubDate, "pubDate");
 
 enum TFeedState {
 	EStateRoot,
@@ -30,7 +31,8 @@ enum TFeedState {
 	EStateItemTitle,
 	EStateItemLink,
 	EStateItemEnclosure,
-	EStateItemDescription
+	EStateItemDescription,
+	EStateItemPubDate
 };
 
 class CFeedParser : public MContentHandler, public CBase
@@ -62,6 +64,7 @@ private:
 	TShowInfo* activeItem;
 	TDes* activeString;
 	TFeedInfo *iActiveFeed;
+	TBuf<128> iPubDateString;
 };
 
 #endif
