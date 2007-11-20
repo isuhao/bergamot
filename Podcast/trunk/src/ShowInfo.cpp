@@ -45,6 +45,8 @@ void TShowInfo::ExternalizeL(RWriteStream& aStream) const {
 	aStream.WriteInt32L(iUid);
 	aStream.WriteInt32L(iShowSize);
 
+	aStream.WriteInt32L(I64LOW(iPubDate.Int64()));
+	aStream.WriteInt32L(I64HIGH(iPubDate.Int64()));
 	}
 
 void TShowInfo::InternalizeL(RReadStream& aStream) {
@@ -133,4 +135,24 @@ void TShowInfo::InternalizeL(RReadStream& aStream) {
 	if (error != KErrNone) {
 		return;
 	}
+
+		TRAP(error,iShowSize = aStream.ReadInt32L());
+	if (error != KErrNone) {
+		return;
+	}
+
+	TInt low = 0;
+	TRAP(error,low = aStream.ReadInt32L());
+	if (error != KErrNone) {
+		return;
+	}
+	
+	TInt high = 0;
+
+	TRAP(error,high = aStream.ReadInt32L());
+	if (error != KErrNone) {
+		return;
+	}
+
+	iPubDate = MAKE_TINT64(high, low);
 }
