@@ -3,17 +3,21 @@
 
 #include <e32base.h>
 
+
+class CFeedEngine;
+
 class CFeedTimer : public CTimer {
 public:
-	CFeedTimer();
+	CFeedTimer(CFeedEngine *aFeedEngine);
 	~CFeedTimer();
 	void ConstructL();
 	void RunL();
 	void RunPeriodically();
-	void SetPeriod(int period);
+	void SetPeriod(int aPeriodMinutes);
 	
 private:
-	int thePeriod;
+	int iPeriodMinutes;
+	CFeedEngine *iFeedEngine;
 };
 #endif
 

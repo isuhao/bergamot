@@ -29,11 +29,13 @@ private:
 public:
 	TFileName& ShowDir();
 	TFileName& FeedListFile();
+	TInt& UpdateFeedInterval();
 	
 private:
 	// where we store our shows
 	TFileName iShowDir;
 	TFileName iFeedListFile;
+	TInt iUpdateFeedInterval;
 	// the file session used to read and write settings
 	RFs iFs;
 	

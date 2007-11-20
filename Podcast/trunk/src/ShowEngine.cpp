@@ -32,6 +32,7 @@ void CShowEngine::ConstructL()
 	iFs.Connect();
 	iShowClient = CHttpClient::NewL(*this);
 	LoadShows();
+	ListAllFiles();
 	}
 
 void CShowEngine::StopDownloads() 
@@ -43,7 +44,6 @@ void CShowEngine::Connected(CHttpClient* /*aClient*/)
 	{
 	
 	}
-
 
 void CShowEngine::Progress(CHttpClient* aHttpClient, int aBytes, int aTotalBytes)
 {	
@@ -84,7 +84,6 @@ void CShowEngine::GetShow(TShowInfo *info)
 	info->iFileName.Copy(filePath);
 	iShowClient->GetL(info->iUrl, info->iFileName);
 	}
-
 
 void CShowEngine::AddShow(TShowInfo *item) {
 	for (int i=0;i<iShows.Count();i++) {
@@ -136,7 +135,6 @@ TShowInfo* CShowEngine::ShowDownloading()
 	{
 		return iShowDownloading;
 	}
-
 
 void CShowEngine::LoadShows()
 	{
@@ -370,17 +368,22 @@ void CShowEngine::ListAllFiles()
 	{
 	TBuf<100> podcastDir;
 	podcastDir.Copy(KPodcastDir);
-	/*
+	TBool changed = EFalse;
+	RDebug::Print(_L("Checking if files still exist..."));
 	for (int i=0;i<iShows.Count();i++) {
 		if (iShows[i]->iDownloadState == EDownloaded) {
 			if(BaflUtils::FileExists(iFs, iShows[i]->iFileName) == EFalse) {
 				RDebug::Print(_L("%S was removed, marking"), &iShows[i]->iFileName);
-				iShows[i]->ifiles.Remove(i);
+				iShows[i]->iDownloadState == ENotDownloaded;
+				changed = ETrue;
 			}
-	}*/
-
-	ListDir(iFs, podcastDir, iShows);
-	SaveShows();
+		}
+	}
+	RDebug::Print(_L("Checking complete"));
+	//ListDir(iFs, podcastDir, iShows);
+	if (changed) {
+		SaveShows();
+	}
 }
 
 void CShowEngine::AddDownload(TShowInfo *info)

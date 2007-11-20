@@ -32,6 +32,7 @@ public:
 	void GetFeedDir(TFeedInfo *aFeedInfo, TFileName &aDir);
 	
 	void AddObserver(MFeedEngineObserver *observer);
+	void UpdateAllFeeds();
 	
 private:
 	void ConstructL();

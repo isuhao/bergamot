@@ -41,6 +41,7 @@ void TShowInfo::ExternalizeL(RWriteStream& aStream) const {
 	aStream.WriteInt32L(iPlayState);
 	aStream.WriteInt32L(iUid);
 	aStream.WriteInt32L(iShowSize);
+
 	}
 
 void TShowInfo::InternalizeL(RReadStream& aStream) {

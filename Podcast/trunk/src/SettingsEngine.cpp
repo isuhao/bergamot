@@ -22,6 +22,7 @@ CSettingsEngine* CSettingsEngine::NewL(CPodcastModel& aPodcastModel)
 void CSettingsEngine::ConstructL()
 	{
 	iFeedListFile.Copy(KFeedsFileName);
+	iUpdateFeedInterval = 60;
 	iFs.Connect();
 	LoadSettings();
 	}
@@ -63,6 +64,10 @@ void CSettingsEngine::LoadSettings()
 				iShowDir.Copy(value);
 			} else if (tag.CompareF(_L("FeedList")) == 0) {
 				iFeedListFile.Copy(value);
+			} else if (tag.CompareF(_L("UpdateFeedIntervalMinutes")) == 0) {
+				TLex lex(value);
+				lex.Val(iUpdateFeedInterval);
+				RDebug::Print(_L("Updating automatically every %d minutes"), iUpdateFeedInterval);
 			}
 		}
 		
@@ -80,5 +85,10 @@ TFileName& CSettingsEngine::ShowDir()
 TFileName& CSettingsEngine::FeedListFile() 
 	{
 	return iFeedListFile;
+	}
+
+TInt& CSettingsEngine::UpdateFeedInterval() 
+	{
+	return iUpdateFeedInterval;
 	}
 
