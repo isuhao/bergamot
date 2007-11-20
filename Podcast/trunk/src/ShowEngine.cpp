@@ -293,14 +293,14 @@ void CShowEngine::SelectAllShows()
 
 TInt CShowEngine::CompareShowsByDate(const TShowInfo &a, const TShowInfo &b)
 	{
-		if (a.iPubDate < b.iPubDate) {
-			RDebug::Print(_L("Sorting %S less than %S"), &a.iTitle, &b.iTitle);
+		if (a.iPubDate > b.iPubDate) {
+//			RDebug::Print(_L("Sorting %S less than %S"), &a.iTitle, &b.iTitle);
 			return -1;
 		} else if (a.iPubDate == b.iPubDate) {
-			RDebug::Print(_L("Sorting %S equal to %S"), &a.iTitle, &b.iTitle);
+//			RDebug::Print(_L("Sorting %S equal to %S"), &a.iTitle, &b.iTitle);
 			return 0;
 		} else {
-			RDebug::Print(_L("Sorting %S greater than %S"), &a.iTitle, &b.iTitle);
+//			RDebug::Print(_L("Sorting %S greater than %S"), &a.iTitle, &b.iTitle);
 			return 1;
 		}
 	}
