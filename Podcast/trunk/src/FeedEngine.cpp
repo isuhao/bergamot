@@ -376,6 +376,9 @@ void CFeedEngine::GetFeeds(TFeedInfoArray& array)
 	for (int i=0;i<iFeeds.Count();i++) {
 		array.Append(iFeeds[i]);
 	}
+	
+	TLinearOrder<TFeedInfo> order(CFeedEngine::CompareFeedsByTitle);
+	array.Sort(order);
 }
 
 
@@ -405,3 +408,10 @@ void CFeedEngine::CleanHtml(TDes &str)
 	
 	str.Trim();
 }
+
+TInt CFeedEngine::CompareFeedsByTitle(const TFeedInfo &a, const TFeedInfo &b)
+	{
+		RDebug::Print(_L("Comparing %S to %S"), &a.iTitle, &b.iTitle);
+		
+		return a.iTitle.CompareF(b.iTitle);
+	}

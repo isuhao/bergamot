@@ -61,6 +61,9 @@ private:
 	
 	void ReplaceString(TDes & aString, const TDesC& aStringToReplace,const TDesC& aReplacement);
 	void CleanHtml(TDes &str);
+	
+	static TInt CompareFeedsByTitle(const TFeedInfo &a, const TFeedInfo &b);
+
 private:
 	CHttpClient* iFeedClient;
 	TClientState iClientState;
