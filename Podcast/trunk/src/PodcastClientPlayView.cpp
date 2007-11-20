@@ -73,6 +73,7 @@ void CPodcastClientPlayView::ConstructL()
 	iPodcastModel.SoundEngine().SetObserver(this);
 	iPodcastModel.FeedEngine().AddObserver(this);
 	iBitmapConverter = CQikImageConverter::NewL(iEikonEnv->FsSession(), *this);
+	iPodcastModel.ShowEngine().AddObserver(this);
 	}
 
 /**
@@ -196,6 +197,7 @@ void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 	case EPodcastDownloadShow:
 		{
 			iPodcastModel.ShowEngine().AddDownload(iPodcastModel.PlayingPodcast());
+			UpdateViewL();
 		}break;
 	case EPodcastViewMain:
 		{			

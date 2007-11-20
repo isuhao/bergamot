@@ -142,8 +142,6 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 void CPodcastClientView::ViewConstructL()
 {
     //RDebug::Print(_L("ViewConstructL"));
-    ViewConstructFromResourceL(R_PODCAST_LISTVIEW_UI_CONFIGURATIONS);
-
 	ViewContext()->AddTextL(EPodcastListViewContextLabel, KNullDesC(), EHRightVCenter);
 
 	// Get the list box and the list box model

@@ -15,6 +15,7 @@
 #include "HttpClient.h"
 #include "FeedEngine.h"
 #include "SoundEngine.h"
+#include "ShowEngineObserver.h"
 
 class CEikLabel;
 class CEikEdwin;
@@ -22,7 +23,7 @@ class CPodcastModel;
 class CQikSlider;
 class CEikImage;
 
-class CPodcastClientPlayView : public CQikViewBase, public MSoundEngineObserver, public MFeedEngineObserver, public MQikImageConverterObserver
+class CPodcastClientPlayView : public CQikViewBase, public MSoundEngineObserver, public MFeedEngineObserver, public MQikImageConverterObserver, public MShowEngineObserver
 	{
 public:
 	static CPodcastClientPlayView* NewLC(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel);

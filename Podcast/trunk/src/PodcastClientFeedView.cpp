@@ -48,6 +48,8 @@ void CPodcastClientFeedView::ViewConstructL()
 {
 	iViewLabel = iEikonEnv->AllocReadResourceL(R_PODCAST_FEEDS_TITLE);
 
+    ViewConstructFromResourceL(R_PODCAST_FEEDVIEW_UI_CONFIGURATIONS);
+
 	CPodcastClientView::ViewConstructL();
 	ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *iViewLabel);
 }
@@ -58,7 +60,7 @@ void CPodcastClientFeedView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid 
 	CPodcastClientView::ViewActivatedL(aPrevViewId, aCustomMessageId, aCustomMessage);
 
 
-	SetParentView( aPrevViewId );
+	SetParentView( TVwsViewId(KUidPodcastClientID, KUidPodcastBaseViewID) );
 }
 
 

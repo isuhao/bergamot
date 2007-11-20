@@ -11,6 +11,16 @@
 #include "PodcastModel.h"
 #include "ShowEngine.h"
 
+
+_LIT(KShowsTitleFormat, "%d / %d");
+_LIT(KShowsSizeFormatKb,"%dkb");
+_LIT(KShowsSizeFormatMb,"%dMb");
+const TInt KSizeKb = 1024;
+const TInt KSizeMb = 1024000;
+
+const TInt KSizeBufLen = 16;
+const TInt KDateBufLen = 16;
+
 /**
 Creates and constructs the view.
 
@@ -35,6 +45,7 @@ void CPodcastClientShowsView::ConstructL()
 {
 	CPodcastClientView::ConstructL();
 	iPodcastModel.FeedEngine().AddObserver(this);
+	iPodcastModel.ShowEngine().AddObserver(this);
 }
 
 CPodcastClientShowsView::~CPodcastClientShowsView()
@@ -53,7 +64,11 @@ TVwsViewId CPodcastClientShowsView::ViewId()const
 void CPodcastClientShowsView::ViewConstructL()
 {
 	iViewLabel = HBufC::NewL(1);
+
+    ViewConstructFromResourceL(R_PODCAST_SHOWSVIEW_UI_CONFIGURATIONS);
+
 	CPodcastClientView::ViewConstructL();
+
 	SetCategoryModel(NULL);
 	delete iCategories; 
 	iCategories = NULL;
@@ -158,7 +173,7 @@ void CPodcastClientShowsView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownloa
 
 	if(iPodcastModel.ShowEngine().ShowDownloading() != NULL)
 	{
-		UpdateShowItemL(iPodcastModel.ShowEngine().ShowDownloading());
+		UpdateShowItemL(iPodcastModel.ShowEngine().ShowDownloading(), aBytesOfCurrentDownload);
 	}
 }
 
@@ -212,50 +227,121 @@ CQikCommand* CPodcastClientShowsView::DynInitOrDeleteCommandL(CQikCommand* aComm
 	return aCommand;
 }
 
-void CPodcastClientShowsView::UpdateShowItemL(TShowInfo* aShowInfo)
+void CPodcastClientShowsView::GetShowIcons(TShowInfo* aShowInfo, TInt& aImageId, TInt& aMaskId)
+{	
+	aImageId = EMbmPodcastclientShow_40x40;
+	aMaskId = EMbmPodcastclientShow_40x40m;
+
+	if(aShowInfo->iDownloadState == EDownloaded)
+	{
+		if(	aShowInfo->iPlayState == EPlaying)
+		{
+			aImageId = EMbmPodcastclientShow_playing_40x40;
+			aMaskId = EMbmPodcastclientShow_playing_40x40m;
+		}
+		else if(aShowInfo->iPlayState == ENeverPlayed)
+		{
+			aImageId = EMbmPodcastclientNew_40x40;
+			aMaskId = EMbmPodcastclientNew_40x40m;
+		}
+		
+	}
+	else
+	{
+		switch(aShowInfo->iDownloadState)
+		{
+		case ENotDownloaded:
+			aImageId = EMbmPodcastclientNew_40x40;
+			aMaskId = EMbmPodcastclientNew_40x40m;
+			break;
+		case EQueued:
+			aImageId = EMbmPodcastclientQueued_40x40;
+			aMaskId = EMbmPodcastclientQueued_40x40m;
+			break;
+		case EDownloading:
+			aImageId = EMbmPodcastclientDownloading_40x40;
+			aMaskId = EMbmPodcastclientDownloading_40x40m;
+			break;
+		}
+	}
+}
+
+_LIT(KSizeDownloadingOf, "%S/%S");
+void CPodcastClientShowsView::UpdateShowItemL(TShowInfo* aShowInfo, TInt aSizeDownloaded)
 {
 	// First find the item
 	TInt index = iPodcastModel.ActiveShowList().Find(aShowInfo);
 
 	if(index != KErrNotFound)
 	{
+		TBuf<32> infoSize;
+
 		MQikListBoxModel& model(iListbox->Model());
 		model.ModelBeginUpdateLC();
 		MQikListBoxData* data = model.RetrieveDataL(index);	
-		// Informs that the update of the list box model has ended
-		if(aShowInfo->iDownloadState == EDownloaded)
+
+		TInt bitmap = EMbmPodcastclientShow_40x40;
+		TInt mask = EMbmPodcastclientShow_40x40m;
+
+		GetShowIcons(aShowInfo, bitmap, mask);
+		CQikContent* content = CQikContent::NewL(this, _L("*"), bitmap, mask);
+		CleanupStack::PushL(content);
+		data->SetIconL(content, EQikListBoxSlotLeftMediumIcon1);
+		CleanupStack::Pop(content);
+
+		if(aSizeDownloaded != KErrNotFound)
 		{
-			
+			TBuf<KSizeBufLen> dlSize;
+			TBuf<KSizeBufLen> totSize;
+
+			if(aShowInfo->iShowSize < KSizeMb)
+			{
+				totSize.Format(KShowsSizeFormatKb(), aShowInfo->iShowSize / KSizeKb);
+			}
+			else
+			{
+				totSize.Format(KShowsSizeFormatMb(), aShowInfo->iShowSize / KSizeMb);
+			}
+
+			if(aSizeDownloaded < KSizeMb)
+			{
+				dlSize.Format(KShowsSizeFormatKb(), aSizeDownloaded / KSizeKb);
+			}
+			else
+			{
+				dlSize.Format(KShowsSizeFormatMb(), aSizeDownloaded / KSizeMb);
+			}
+			infoSize.Format(KSizeDownloadingOf(), &dlSize, &totSize);
+
 		}
 		else
 		{
-			switch(aShowInfo->iDownloadState)
+			if(aShowInfo->iShowSize < KSizeMb)
 			{
-			case ENotDownloaded:
-				{
-				}
-				break;
-			case EQueued:
-				{
-				}break;
-			case EDownloading:
-				{
-				}break;
-			default:
-				break;
+				infoSize.Format(KShowsSizeFormatKb(), aShowInfo->iShowSize / KSizeKb);
 			}
+			else
+			{
+				infoSize.Format(KShowsSizeFormatMb(), aShowInfo->iShowSize / KSizeMb);
+			}
+			
 		}
+
+		data->SetTextL(infoSize, EQikListBoxSlotText4);
+
 		data->Close();
 		model.ModelEndUpdateL();
 		
 	}
 }
 
-_LIT(KShowsTitleFormat, "%d / %d");
 void CPodcastClientShowsView::UpdateListboxItemsL()
 {
 	if(IsVisible())
 	{
+		TBuf<KSizeBufLen> showSize;
+		TBuf<KDateBufLen> showDate;
+
 		TInt len = 0;
 		TUint unplayed = 0;
 		SetAppTitleNameL(KNullDesC());
@@ -313,6 +399,16 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 					TShowInfo *si = fItems[i];
 					listBoxData->AddTextL(si->iTitle, EQikListBoxSlotText1);
 					listBoxData->AddTextL(si->iDescription, EQikListBoxSlotText2);
+					if(si->iShowSize < KSizeMb)
+					{
+						showSize.Format(KShowsSizeFormatKb(), si->iShowSize / KSizeKb);
+					}
+					else
+					{
+						showSize.Format(KShowsSizeFormatMb(), si->iShowSize / KSizeMb);
+					}
+					listBoxData->AddTextL(showSize, EQikListBoxSlotText4);
+
 					listBoxData->SetEmphasis(si->iPlayState == ENeverPlayed);					
 					unplayed+=(si->iPlayState == ENeverPlayed);
 					CleanupStack::PopAndDestroy();	
@@ -320,24 +416,8 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 					TInt bitmap = EMbmPodcastclientShow_40x40;
 					TInt mask = EMbmPodcastclientShow_40x40m;
 
-					if(si->iPlayState == EPlaying)
-					{
-						bitmap = EMbmPodcastclientShow_playing_40x40;
-						mask = EMbmPodcastclientShow_playing_40x40m;
-					}
-					else
-					{
-						switch(si->iDownloadState)
-						{
-						case ENotDownloaded:
-							break;
-						case EQueued:
-							break;
-						case EDownloading:
-							break;
-						}
-					}
-					
+					GetShowIcons(si, bitmap, mask);
+									
 					CQikContent* content = CQikContent::NewL(this, _L("*"), bitmap, mask);
 					CleanupStack::PushL(content);
 					listBoxData->AddIconL(content,EQikListBoxSlotLeftMediumIcon1);

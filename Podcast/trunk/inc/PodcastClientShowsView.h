@@ -1,10 +1,12 @@
 #ifndef PODCASTCLIENTPODCASTSVIEW_H
 #define PODCASTCLIENTPODCASTSVIEW_H
 #include "PodcastClientView.h"
+#include "ShowEngineObserver.h"
+
 class CQikCategoryModel;
 
 
-class CPodcastClientShowsView : public CPodcastClientView, public MFeedEngineObserver
+class CPodcastClientShowsView : public CPodcastClientView, public MFeedEngineObserver, public MShowEngineObserver
 {
 public:
 	static CPodcastClientShowsView* NewLC(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel);
@@ -22,12 +24,13 @@ protected:
 	void ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt aBytesTotal);
 
 	void HandleCommandL(CQikCommand& aCommand);
-	void UpdateShowItemL(TShowInfo* aShowInfo);
+	void UpdateShowItemL(TShowInfo* aShowInfo, TInt aSizeDownloaded = KErrNotFound);
 	// from MQikCommandModelOwner	
 	CQikCommand* DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& aControlAddingCommands);
 	void ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage);
 	void UpdateCommandsL();
 	void UpdateSelectCommandL();
+	void GetShowIcons(TShowInfo* aShowInfo, TInt& aImageId, TInt& aMaskId);
 private:
 	TPodcastClientShowCategory iCurrentCategory;
 	TBool iProgressAdded;

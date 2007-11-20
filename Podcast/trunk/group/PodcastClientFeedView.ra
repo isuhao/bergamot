@@ -1,0 +1,156 @@
+//----------------------------------------------------
+//------------ CONFIGURATION FOR THE FEED LISTVIEW ------------
+//----------------------------------------------------
+// The application supports the reference UI Configurations that are supported
+// in the UIQ 3 SDK. Use the UiqEnv tool, to change the UI Configuration in the
+// emulator in order to develop and test the application with varying phone styles.
+RESOURCE QIK_VIEW_CONFIGURATIONS r_podcast_feedview_ui_configurations
+	{
+	configurations = 
+		{
+		QIK_VIEW_CONFIGURATION
+			{
+			ui_config_mode = KQikPenStyleTouchPortrait;
+			command_list = r_podcast_listview_commands;
+			view = r_podcast_feedview_layout;
+			},
+		QIK_VIEW_CONFIGURATION
+			{
+			ui_config_mode = KQikPenStyleTouchLandscape;
+			command_list = r_podcast_listview_commands;
+			view = r_podcast_feedview_layout;
+			},
+		QIK_VIEW_CONFIGURATION
+			{
+			ui_config_mode = KQikSoftkeyStyleTouchPortrait;
+			command_list = r_podcast_listview_commands;
+			view = r_podcast_feedview_layout;
+			},
+		QIK_VIEW_CONFIGURATION
+			{
+			ui_config_mode = KQikSoftkeyStylePortrait;
+			command_list = r_podcast_listview_commands;
+			view = r_podcast_feedview_layout;
+			},
+		QIK_VIEW_CONFIGURATION
+			{
+			ui_config_mode = KQikSoftkeyStyleSmallPortrait;
+			command_list = r_podcast_listview_commands;
+			view = r_podcast_feedview_layout;
+			}
+		};
+	}
+
+//----------------------------------------------------
+//----------------- FEEDVIEW LAYOUT ------------------
+//----------------------------------------------------
+RESOURCE QIK_VIEW r_podcast_feedview_layout
+	{
+	pages = r_podcast_feedview_layout_pages;
+	}
+
+RESOURCE QIK_VIEW_PAGES r_podcast_feedview_layout_pages
+	{
+	pages = 
+		{
+		QIK_VIEW_PAGE
+			{
+			page_id = EPodcastListViewPage;
+			page_content = r_podcast_feedview_page_control;
+			}
+		};
+	}
+
+// The page contains a list box that fills the whole application space.
+RESOURCE QIK_CONTAINER_SETTINGS r_podcast_feedview_page_control
+	{
+	layout_manager_type = EQikRowLayoutManager;
+	layout_manager = r_podcast_row_layout_manager_default;
+	controls = 
+		{
+		QIK_CONTAINER_ITEM_CI_LI
+			{ 
+			unique_handle = EPodcastListViewListCtrl;
+			type = EQikCtListBox; 
+			control = r_podcast_feedview_listbox;
+			// This will make it so that the list box fills the whole 
+			// application space.
+			layout_data = r_podcast_row_layout_data_fill;
+			}
+		};
+	}
+	
+//----------------------------------------------------
+//----------- LISTVIEW CONTROL: FEEDVIEW ------------
+//----------------------------------------------------
+// The list box structs type property default to EQikRowListBox, so we need to 
+// redefine it. As we want default values for the QIK_LISTBOX_ROW_VIEW struct, 
+// we do not need to declare such a resource and link to it, since the default 
+// behavior is to load a resource for the row view which already has all 
+// properties set to default. All we really have to do is to define our layout 
+// pair and add them to the list box.
+RESOURCE QIK_LISTBOX r_podcast_feedview_listbox
+	{
+	layouts = { r_podcast_feedview_normal_layout_pair };
+	}
+
+// Layouts are always added in layout pair to the list box. A layout pair 
+// consists of one mandatory normal layout and an optional highlight layout.
+// Normal layout - The layout used when an item is not highlighted, or is 
+// highlighted but has no additional highlight layout.
+RESOURCE QIK_LISTBOX_LAYOUT_PAIR r_podcast_feedview_normal_layout_pair
+	{
+	//standard_normal_layout = EQikListBoxIconTwoLines; //EQikListBoxLine;
+	custom_normal_layout = r_podcast_feedview_listbox_layout;
+	custom_highlight_layout= r_podcast_feedview_listbox_layout;
+	}
+
+RESOURCE QIK_LISTBOX_LAYOUT r_podcast_feedview_listbox_layout
+{
+	columns = 
+	{
+
+	QIK_LISTBOX_COLUMN
+			{
+				width_type = EQikListBoxColWidthFromContentType;
+				slot_id = EQikListBoxSlotLeftMediumIcon1;
+				type = QIK_LISTBOX_ICON_TYPE
+				{
+					size = EQikListBoxSizeMediumIcon;
+				};
+			},
+	QIK_LISTBOX_COLUMN
+	{
+		width_type = EQikListBoxColWidthGrab;
+        width_value = 1;
+		slot_id = EQikListBoxSlotParent1;
+		type = QIK_LISTBOX_PARENT_TYPE;
+	
+		rows = 
+		{
+			QIK_LISTBOX_ROW
+			{					
+				slot_id = EQikListBoxSlotText1;
+				type = QIK_LISTBOX_TEXT_TYPE
+				{
+					emphasis_font_style = EQikListBoxFontBold;
+					font_size = EQikListBoxFontMedium;
+					emphasis_font_size = EQikListBoxFontMedium;
+				};				
+			},
+			QIK_LISTBOX_ROW
+			{
+				slot_id = EQikListBoxSlotText2;
+				type = QIK_LISTBOX_TEXT_TYPE
+				{
+					font_size = EQikListBoxFontExtraSmall;
+					emphasis_font_size = EQikListBoxFontExtraSmall;
+					
+				};
+			}
+
+		};
+	}
+	};
+}
+
