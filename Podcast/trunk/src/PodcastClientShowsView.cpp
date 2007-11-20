@@ -13,8 +13,8 @@
 
 
 _LIT(KShowsTitleFormat, "%d / %d");
-_LIT(KShowsSizeFormatKb,"%dkb");
-_LIT(KShowsSizeFormatMb,"%dMb");
+_LIT(KShowsSizeFormatKb,"%dkB");
+_LIT(KShowsSizeFormatMb,"%dMB");
 const TInt KSizeKb = 1024;
 const TInt KSizeMb = 1024000;
 

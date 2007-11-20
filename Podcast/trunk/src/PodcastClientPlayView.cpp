@@ -271,6 +271,11 @@ void CPodcastClientPlayView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload
 	if(aPercentOfCurrentDownload == KOneHundredPercent && iPodcastModel.PlayingPodcast() == iPodcastModel.ShowEngine().ShowDownloading())
 	{
 		// To update icon list status and commands
+		TShowInfo* playingPodcast = iPodcastModel.PlayingPodcast();
+		// Reset current podcast statsus
+		iPodcastModel.PlayPausePodcastL(NULL);
+		iPodcastModel.PlayPausePodcastL(playingPodcast);
+
 		UpdateViewL();
 	}
 

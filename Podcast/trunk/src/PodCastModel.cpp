@@ -88,11 +88,13 @@ void CPodcastModel::PlayPausePodcastL(TShowInfo* aPodcast)
 		
 		iSoundEngine->Stop();
 
-		RDebug::Print(_L("Starting: %S"), &(aPodcast->iFileName));
-		TRAPD(error, iSoundEngine->OpenFileL(aPodcast->iFileName));
-	    if (error != KErrNone) {
-	    	RDebug::Print(_L("Error: %d"), error);
-	    }
+		if(aPodcast != NULL) {
+			RDebug::Print(_L("Starting: %S"), &(aPodcast->iFileName));
+			TRAPD(error, iSoundEngine->OpenFileL(aPodcast->iFileName));
+			if (error != KErrNone) {
+				RDebug::Print(_L("Error: %d"), error);
+			}
+		}
 
 		iPlayingPodcast = aPodcast;
 	}
