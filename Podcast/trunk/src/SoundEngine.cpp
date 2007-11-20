@@ -49,10 +49,7 @@ void CSoundEngine::MapcPlayComplete(TInt aError) {
 
 void CSoundEngine::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds &/*aDuration */) {
 	if (aError != KErrNone) {
-		RDebug::Print(_L("MapcInitComplete error=%d"), aError);
-		/*if (iPodcastModel.PlayingPodcast() != NULL) {			
-			iPodcastModel.PlayingPodcast()->playState = EStateless;
-		}*/	
+		RDebug::Print(_L("MapcInitComplete error=%d"), aError);	
 
 		iState = ESoundEngineNotInitialized;
 

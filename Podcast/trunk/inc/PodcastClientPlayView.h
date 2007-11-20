@@ -33,6 +33,8 @@ public:
  protected: 
 	void ViewConstructL();
 	void ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage);
+	void ViewDeactivated();
+
 	void UpdateViewL();
 	void PlaybackInitializedL();
 	void PlaybackStartedL();
@@ -64,5 +66,6 @@ private:
 	CQikCategoryModel* iCategories;
 	TBool iProgressAdded;
 	TFileName iLastImageFileName;
+	TShowInfo* iLastShowInfo;
 	};
 #endif // PODCASTPLAYVIEW_H

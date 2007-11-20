@@ -136,11 +136,6 @@ void TShowInfo::InternalizeL(RReadStream& aStream) {
 		return;
 	}
 
-		TRAP(error,iShowSize = aStream.ReadInt32L());
-	if (error != KErrNone) {
-		return;
-	}
-
 	TInt low = 0;
 	TRAP(error,low = aStream.ReadInt32L());
 	if (error != KErrNone) {

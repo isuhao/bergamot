@@ -255,8 +255,28 @@ void CPodcastClientPlayView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid 
 {
 	CQikViewBase::ViewActivatedL(aPrevViewId, aCustomMessageId, aCustomMessage);
 	SelectCategoryL(EShowAllShows);
+	
+	if(iPodcastModel.PlayingPodcast() == NULL && aPrevViewId.iAppUid != KUidPodcastClientID)
+	{
+		iPodcastModel.SetPlayingPodcast(iLastShowInfo);
+	
+	}
+
+	iLastShowInfo = NULL;
+	
 	UpdateViewL();
 	SetParentView( aPrevViewId );
+}
+
+void CPodcastClientPlayView::ViewDeactivated()
+{
+	CQikViewBase::ViewDeactivated();
+
+	if(iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.SoundEngine().State() != ESoundEnginePlaying && iPodcastModel.SoundEngine().State() != ESoundEnginePaused)
+	{
+		iLastShowInfo = iPodcastModel.PlayingPodcast();
+		iPodcastModel.SetPlayingPodcast(NULL);
+	}
 }
 
 void CPodcastClientPlayView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt aBytesTotal)
