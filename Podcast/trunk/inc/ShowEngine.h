@@ -50,6 +50,7 @@ private:
 	void ListAllFiles();
 	void ListDir(RFs &rfs, TDesC &folder, TShowInfoArray &files);
 
+	static TInt CompareShowsByDate(const TShowInfo &a, const TShowInfo &b);
 
 	void DownloadNextShow();
 	void MakeFileNameFromUrl(TDesC &aUrl, TFileName &fileName);
@@ -75,6 +76,8 @@ private:
 
 	// observers that will receive callbacks
     RArray<MShowEngineObserver*> iObservers;
+
+    TLinearOrder<TShowInfo>* iLinearOrder;
 };
 
 #endif /*SHOWENGINE_H_*/

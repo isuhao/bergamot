@@ -32,6 +32,7 @@ void CShowEngine::ConstructL()
 	iFs.Connect();
 	iShowClient = CHttpClient::NewL(*this);
 	LoadShows();
+	iLinearOrder = new TLinearOrder<TShowInfo>(CShowEngine::CompareShowsByDate);
 	ListAllFiles();
 	}
 
@@ -290,6 +291,20 @@ void CShowEngine::SelectAllShows()
 		}
 	}
 
+TInt CShowEngine::CompareShowsByDate(const TShowInfo &a, const TShowInfo &b)
+	{
+		if (a.iPubDate < b.iPubDate) {
+			RDebug::Print(_L("Sorting %S less than %S"), &a.iTitle, &b.iTitle);
+			return -1;
+		} else if (a.iPubDate == b.iPubDate) {
+			RDebug::Print(_L("Sorting %S equal to %S"), &a.iTitle, &b.iTitle);
+			return 0;
+		} else {
+			RDebug::Print(_L("Sorting %S greater than %S"), &a.iTitle, &b.iTitle);
+			return 1;
+		}
+	}
+
 void CShowEngine::SelectShowsByFeed(TInt aFeedUid)
 	{
 	iSelectedShows.Reset();
@@ -300,6 +315,8 @@ void CShowEngine::SelectShowsByFeed(TInt aFeedUid)
 			iSelectedShows.Append(iShows[i]);
 			}
 		}
+	
+	iSelectedShows.Sort(*iLinearOrder);
 	}
 
 void CShowEngine::SelectNewShows()
@@ -312,6 +329,8 @@ void CShowEngine::SelectNewShows()
 			iSelectedShows.Append(iShows[i]);
 			}
 		}
+	
+	iSelectedShows.Sort(*iLinearOrder);
 	}
 
 void CShowEngine::SelectShowsByDownloadState(TInt aDownloadState)
@@ -319,20 +338,10 @@ void CShowEngine::SelectShowsByDownloadState(TInt aDownloadState)
 	iSelectedShows.Reset();
 	for (int i=0;i<iShows.Count();i++)
 		{
-		// TODO: remove ugly alpha 1 hack
-		if (aDownloadState == EDownloading) {
-			if (iShows[i]->iDownloadState == EDownloading ||
-					iShows[i]->iDownloadState == EQueued	)
-				{
-				iSelectedShows.Append(iShows[i]);
-				}
-			
-		} else {
-			if (iShows[i]->iDownloadState == aDownloadState)
-				{
-				iSelectedShows.Append(iShows[i]);
-				}
-			}	
+		if (iShows[i]->iDownloadState == aDownloadState)
+			{
+			iSelectedShows.Append(iShows[i]);
+			}
 		}
 	}
 
@@ -374,7 +383,7 @@ void CShowEngine::ListAllFiles()
 		if (iShows[i]->iDownloadState == EDownloaded) {
 			if(BaflUtils::FileExists(iFs, iShows[i]->iFileName) == EFalse) {
 				RDebug::Print(_L("%S was removed, marking"), &iShows[i]->iFileName);
-				iShows[i]->iDownloadState == ENotDownloaded;
+				iShows[i]->iDownloadState = ENotDownloaded;
 				changed = ETrue;
 			}
 		}
