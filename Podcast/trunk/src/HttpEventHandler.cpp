@@ -11,10 +11,11 @@ merchantability and/or non-infringement of the software provided herein.
 *****************************************************************************/
 
 // HttpEventHandler.cpp
+#include <e32debug.h>
 
 #include "HttpEventHandler.h"
-#include "e32debug.h"
 #include "bautils.h"
+#include "Httpclient.h"
 
 void CHttpEventHandler::ConstructL()
 	{
@@ -92,7 +93,7 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 				{
 				RDebug::Print(_L("Transaction Cancelled"));
 				aTransaction.Close();
-				CActiveScheduler::Stop();
+				iHttpClient->ClientRequestCompleteL();
 				}
 			else if (iSavingResponseBody) // If we're saving, then open a file handle for the new file
 				{
@@ -150,7 +151,7 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 		case THTTPEvent::ESucceeded:
 			{
 			aTransaction.Close();
-			CActiveScheduler::Stop();
+			iHttpClient->ClientRequestCompleteL();
 
 			RDebug::Print(_L("Transaction Successful"));
 
@@ -159,7 +160,7 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 			{
 			RDebug::Print(_L("Transaction Failed"));
 			aTransaction.Close();
-			CActiveScheduler::Stop();
+			iHttpClient->ClientRequestCompleteL();
 			} break;
 		case THTTPEvent::ERedirectedPermanently:
 			{
@@ -176,7 +177,7 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 			if (aEvent.iStatus < 0)
 				{
 				aTransaction.Close();
-				CActiveScheduler::Stop();
+				iHttpClient->ClientRequestCompleteL();
 				}
 			} break;
 		}

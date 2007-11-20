@@ -66,7 +66,7 @@ TBool CHttpClient::IsActive()
 	return iIsActive;
 	}
 
-void CHttpClient::Get(TDesC& url, TDesC& fileName) {
+void CHttpClient::GetL(TDesC& url, TDesC& fileName) {
 	RDebug::Print(_L("CHttpClient::Get START"));
 	iIsActive = ETrue;
 	TBuf8<256> url8;
@@ -90,10 +90,11 @@ void CHttpClient::Get(TDesC& url, TDesC& fileName) {
 	
 	// submit the transaction
 	trans.SubmitL();
-	// Start the scheduler, once the transaction completes or is cancelled on 
-	// an error the scheduler will be stopped in the event handler
-	CActiveScheduler::Start();
+}
+
+void CHttpClient::ClientRequestCompleteL() {
 	iIsActive = EFalse;
 	iObserver.Complete(this);
 	RDebug::Print(_L("CHttpClient::Get END"));
 }
+

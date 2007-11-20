@@ -328,8 +328,9 @@ void CPodcastClientShowsView::UpdateShowItemL(TShowInfo* aShowInfo, TInt aSizeDo
 		}
 
 		data->SetTextL(infoSize, EQikListBoxSlotText4);
-
+	
 		data->Close();
+		model.DataUpdatedL(index);
 		model.ModelEndUpdateL();
 		
 	}

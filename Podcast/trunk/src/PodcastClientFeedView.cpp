@@ -113,6 +113,7 @@ void CPodcastClientFeedView::FeedInfoUpdated(const TFeedInfo& aFeedInfo)
 			data->SetTextL(aFeedInfo.iTitle, EQikListBoxSlotText1);
 			data->SetTextL(aFeedInfo.iDescription, EQikListBoxSlotText2);
 			data->Close();
+			model.DataUpdatedL(index);
 		}
 		model.ModelEndUpdateL();
 	}

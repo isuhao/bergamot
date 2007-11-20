@@ -16,10 +16,8 @@ protected:
 
 	void ConstructL();
 
-	void ShowListUpdated(){}
     void FeedInfoUpdated(const TFeedInfo& aFeedInfo);
 	void FeedDownloadUpdatedL(TInt aPercentOfCurrentDownload);
-	void ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt aBytesTotal) {};
 	// from MQikCommandModelOwner	
 	CQikCommand* DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& aControlAddingCommands);
 	void HandleCommandL(CQikCommand& aCommand);

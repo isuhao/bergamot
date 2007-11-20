@@ -82,7 +82,7 @@ void CShowEngine::GetShow(TShowInfo *info)
 
 	RDebug::Print(_L("filePath: %S"), &filePath);
 	info->iFileName.Copy(filePath);
-	iShowClient->Get(info->iUrl, info->iFileName);
+	iShowClient->GetL(info->iUrl, info->iFileName);
 	}
 
 

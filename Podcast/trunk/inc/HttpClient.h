@@ -13,9 +13,9 @@ class CHttpClient : public CBase
 public:
 	virtual ~CHttpClient();
 	static CHttpClient* NewL(MHttpClientObserver& aResObs);
-	void Get(TDesC& url, TDesC& fileName);
+	void GetL(TDesC& url, TDesC& fileName);
   	TBool IsActive();
-
+	void ClientRequestCompleteL();
 private:
 	CHttpClient(MHttpClientObserver& aResObs);
 	static CHttpClient* NewLC(MHttpClientObserver& aResObs);

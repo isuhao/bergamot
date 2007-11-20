@@ -40,7 +40,7 @@ public:
 	void UpdatePlayStatusL();
 
 	void ShowListUpdated(){};
-    void FeedInfoUpdated(const TFeedInfo& aFeedInfo){}
+    void FeedInfoUpdated(const TFeedInfo& /*aFeedInfo*/){}
 	void FeedDownloadUpdatedL(TInt /*aPercentOfCurrentDownload*/){};
 	void ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt aBytesTotal);
 

@@ -60,7 +60,7 @@ void CFeedEngine::UpdateFeed(TInt aFeedUid)
 
 	feedInfo->iFileName.Copy(filePath);
 	RDebug::Print(_L("URL: %S, fileName: %S"), &feedInfo->iUrl, &feedInfo->iFileName);
-	iFeedClient->Get(feedInfo->iUrl, feedInfo->iFileName);
+	iFeedClient->GetL(feedInfo->iUrl, feedInfo->iFileName);
 	RDebug::Print(_L("UpdateFeed END"));
 	}
 
@@ -126,7 +126,7 @@ void CFeedEngine::GetFeedImage(TFeedInfo *aFeedInfo)
 	aFeedInfo->iImageFileName.Copy(filePath);
 	RDebug::Print(_L("image file: %S"), &(aFeedInfo->iImageFileName));
 	
-	iFeedClient->Get(aFeedInfo->iImageUrl, aFeedInfo->iImageFileName);
+	iFeedClient->GetL(aFeedInfo->iImageUrl, aFeedInfo->iImageFileName);
 	}
 
 void CFeedEngine::ReplaceString(TDes & aString, const TDesC& aStringToReplace,const TDesC& aReplacement )
