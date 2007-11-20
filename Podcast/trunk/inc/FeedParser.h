@@ -65,6 +65,7 @@ private:
 	TDes* activeString;
 	TFeedInfo *iActiveFeed;
 	TBuf<128> iPubDateString;
+
 };
 
 #endif

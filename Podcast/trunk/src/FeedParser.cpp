@@ -5,6 +5,7 @@
 #include <charconv.h>
 #include <xml/stringdictionarycollection.h>
 #include <utf.h>
+#include <tinternetdate.h>
 
 CFeedParser::CFeedParser(MFeedParserObserver& aCallbacks) : 	iCallbacks(aCallbacks)
 {
@@ -162,7 +163,13 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 		case EStateItemPubDate:
 			if (str.CompareF(KTagPubDate) == 0) {
 				//RDebug::Print(_L("Cut: %S"), &iPubDateString.Mid(5).Left(20));
-				if(activeItem->iPubDate.Parse(iPubDateString.Mid(5).Left(20)) >= 0) {
+				TBuf8<128> temp;
+				temp.Copy(iPubDateString);
+				TInternetDate internetDate;
+				TRAPD(parseError, internetDate.SetDateL(temp));
+				if(parseError == KErrNone) {				
+					activeItem->iPubDate = TTime(internetDate.DateTime());
+			
 					
 					RDebug::Print(_L("Successfully parsed pubdate %d/%d/%d %d:%d:%d"),
 							activeItem->iPubDate.DateTime().Year(),
