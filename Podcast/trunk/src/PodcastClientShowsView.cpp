@@ -59,7 +59,6 @@ void CPodcastClientShowsView::ViewConstructL()
 	iCategories = QikCategoryUtils::ConstructCategoriesLC(R_PODCAST_SHOWS_CATEGORIES);
 	SetCategoryModel(iCategories);
 	CleanupStack::Pop(iCategories);
-	SetCategoryModelAsCommandsL();
 }
 
 void CPodcastClientShowsView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage)
@@ -72,7 +71,7 @@ void CPodcastClientShowsView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid
 	case EShowPendingShows:
 		iCurrentCategory = (TPodcastClientShowCategory) aCustomMessageId.iUid;
 		break;
-	default:
+	case EShowFeedShows:
 		iCurrentCategory = EShowFeedShows;
 		break;
 	}	
@@ -169,10 +168,6 @@ CQikCommand* CPodcastClientShowsView::DynInitOrDeleteCommandL(CQikCommand* aComm
 
 	switch(aCommand->Id())
 	{
-	case EPodcastViewPendingShows:
-	case EPodcastViewDownloadedShows:
-	case EPodcastViewNewShows:
-	case EPodcastViewAllShows:
 	case EPodcastUpdateAllFeeds:
 		aCommand = NULL;
 		break;

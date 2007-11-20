@@ -216,7 +216,7 @@ void CPodcastClientFeedView::HandleListBoxEventL(CQikListBox *aListBox, TQikList
 			iPodcastModel.ActiveShowList().Reset();
 			iPodcastModel.SetActiveFeedInfo(*feeds[aItemIndex]);
 			TVwsViewId showsView = TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID);
-			iQikAppUi.ActivateViewL(showsView);
+			iQikAppUi.ActivateViewL(showsView,  TUid::Uid(EShowFeedShows), KNullDesC8());
 			CleanupStack::PopAndDestroy();// close feeds
 		}
 		break;
