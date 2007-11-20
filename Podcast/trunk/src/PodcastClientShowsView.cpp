@@ -289,7 +289,7 @@ void CPodcastClientShowsView::UpdateShowItemL(TShowInfo* aShowInfo, TInt aSizeDo
 		data->SetIconL(content, EQikListBoxSlotLeftMediumIcon1);
 		CleanupStack::Pop(content);
 
-		if(aSizeDownloaded != KErrNotFound)
+		if(aSizeDownloaded > 0)
 		{
 			TBuf<KSizeBufLen> dlSize;
 			TBuf<KSizeBufLen> totSize;
