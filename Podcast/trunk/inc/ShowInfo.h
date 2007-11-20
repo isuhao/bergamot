@@ -40,6 +40,7 @@ public:
 	TDownloadState iDownloadState;
 	TInt iUid;
 	TUint32 iShowSize;
+	TTime iPubDate;
 };
 
 typedef RPointerArray<TShowInfo> TShowInfoArray;
