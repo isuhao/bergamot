@@ -411,7 +411,6 @@ void CFeedEngine::CleanHtml(TDes &str)
 
 TInt CFeedEngine::CompareFeedsByTitle(const TFeedInfo &a, const TFeedInfo &b)
 	{
-		RDebug::Print(_L("Comparing %S to %S"), &a.iTitle, &b.iTitle);
-		
+		//RDebug::Print(_L("Comparing %S to %S"), &a.iTitle, &b.iTitle);
 		return a.iTitle.CompareF(b.iTitle);
 	}
