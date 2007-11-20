@@ -34,6 +34,7 @@ public:
 	void ViewConstructL();
 	void ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage);
 	void UpdateViewL();
+	void PlaybackInitializedL();
 	void PlaybackStartedL();
 	void PlaybackStoppedL(); 
 	static TInt PlayingUpdateStaticCallbackL(TAny* aPlayView);

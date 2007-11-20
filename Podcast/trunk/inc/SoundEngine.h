@@ -17,6 +17,8 @@ enum TSoundEngineState
 class MSoundEngineObserver
 {
 public:
+	virtual void PlaybackInitializedL() = 0;
+
 	virtual void PlaybackStartedL() = 0;
 	virtual void PlaybackStoppedL() = 0;
 };

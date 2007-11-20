@@ -5,6 +5,9 @@ TShowInfo::TShowInfo()
 	iDownloadState = ENotDownloaded;
 	iPlayState = ENeverPlayed;
 	iPosition = 0;
+	iPubDate = 0;
+	iShowSize = 0;
+	iFeedUid = 0;
 	}
 
 void TShowInfo::ExternalizeL(RWriteStream& aStream) const {

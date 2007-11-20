@@ -40,6 +40,20 @@ void CPodcastClientBaseView::ViewConstructL()
 	// Get the list box and the list box model
 	iListbox = LocateControlByUniqueHandle<CQikListBox>(EPodcastListViewListCtrl);
 	iListbox->SetListBoxObserver(this);
+	MQikListBoxModel& model(iListbox->Model());
+	model.ModelBeginUpdateLC();
+	
+	MQikListBoxData* data = model.RetrieveDataL(0);	
+	data->SetItemId(EBaseViewNewShows);
+	data->Close();
+	data = model.RetrieveDataL(1);	
+	data->SetItemId(EBaseViewDownloadedShows);
+	data->Close();
+	data = model.RetrieveDataL(2);	
+	data->SetItemId(EBaseViewFeeds);
+	data->Close();
+	model.ModelEndUpdateL();
+
     UpdateListboxItemsL();
 }
 
@@ -78,14 +92,66 @@ void CPodcastClientBaseView::UpdateListboxItemsL()
 	if(iListbox != NULL)
 	{
 		MQikListBoxModel& model(iListbox->Model());
+		TInt cnt = model.Count();
+
 		model.ModelBeginUpdateLC();
-		// Retrieve player
-	/*	MQikListBoxData* data = model.RetrieveDataL(EBaseViewPlayer);	
-		if(data != NULL)
+		if(iPodcastModel.PlayingPodcast() != NULL)
 		{
-			data->(iPodcastModel.PlayingPodcast() == NULL);
-		}*/
-	
+			TBool found = EFalse;
+			for(TInt loop = 0;loop <cnt;loop++)
+			{
+				MQikListBoxData* data = model.RetrieveDataL(loop);	
+				TInt itemId = data->ItemId();
+				
+				
+				if(itemId == EBaseViewPlayer)
+				{	
+					found = ETrue;
+					data->SetTextL(iPodcastModel.PlayingPodcast()->iTitle, EQikListBoxSlotText2);
+					data->Close();
+					model.DataUpdatedL(loop);
+					break;
+				}
+
+				data->Close();				
+			}	
+		
+			if(!found)
+			{
+				MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal, 0);
+				CleanupClosePushL(*listBoxData);
+				listBoxData->SetItemId(EBaseViewPlayer);
+				
+				HBufC* playerTxt = iEikonEnv->AllocReadResourceLC(R_PODCAST_MAIN_PLAYER_CMD);
+				listBoxData->AddTextL(playerTxt, EQikListBoxSlotText1);			
+				listBoxData->AddTextL(iPodcastModel.PlayingPodcast()->iTitle, EQikListBoxSlotText2);			
+				CleanupStack::Pop(playerTxt);
+				
+				CQikContent* content = CQikContent::NewL(this, _L("*"), EMbmPodcastclientPlay_40x40, EMbmPodcastclientPlay_40x40m);
+				
+				CleanupStack::PushL(content);
+				listBoxData->AddIconL(content,EQikListBoxSlotLeftMediumIcon1);
+				CleanupStack::Pop(content);
+				
+				CleanupStack::PopAndDestroy(); // close listbox data
+			}
+		}
+		else
+		{
+			for(TInt loop = 0;loop <cnt;loop++)
+			{
+				MQikListBoxData* data = model.RetrieveDataL(loop);	
+				TInt itemId = data->ItemId();
+				data->Close();
+
+				if(itemId == EBaseViewPlayer)
+				{
+					model.RemoveDataL(loop);
+					break;
+				}
+			
+			}	
+		}
 		model.ModelEndUpdateL();
 		
 	}
@@ -105,9 +171,12 @@ void CPodcastClientBaseView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQi
 	case EEventItemConfirmed:
 	case EEventItemTapped:
 		{
+			MQikListBoxModel& model(iListbox->Model());
+			MQikListBoxData* data = model.RetrieveDataL(aItemIndex);	
+			TInt itemId = data->ItemId();
 			TUid newview = TUid::Uid(0);
 			TUid messageUid = TUid::Uid(0);
-			switch(aItemIndex)
+			switch(itemId)
 			{
 			case EBaseViewPlayer:
 				{

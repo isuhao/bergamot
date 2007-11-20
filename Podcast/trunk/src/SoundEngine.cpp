@@ -58,6 +58,7 @@ void CSoundEngine::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds
 
 		return;
 	}
+
 	iState = ESoundEngineStopped;
 
 	if(iVolume == 0)
@@ -69,17 +70,12 @@ void CSoundEngine::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds
 
 	if (iPodcastModel.PlayingPodcast() != NULL) {
 		RDebug::Print(_L("Resuming from position: %ld"), iPodcastModel.PlayingPodcast()->iPosition.Int64());
-		iPlayer->SetPosition(iPodcastModel.PlayingPodcast()->iPosition);
-		
-		iPodcastModel.PlayingPodcast()->iPlayState = EPlaying;
+		iPlayer->SetPosition(iPodcastModel.PlayingPodcast()->iPosition);			
 	}
 
-	iState = ESoundEnginePlaying;
-
-	iPlayer->Play();
 	if(iObserver != NULL)
 	{
-		TRAPD(err, iObserver->PlaybackStartedL());
+		TRAPD(err, iObserver->PlaybackInitializedL());
 	}
 }
 

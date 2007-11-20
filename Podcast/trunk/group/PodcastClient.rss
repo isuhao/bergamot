@@ -176,6 +176,9 @@ RESOURCE TBUF r_podcast_player_pause_cmd{buf = STRING_r_pause_cmd;}
 
 RESOURCE TBUF r_podcast_player_play_cmd{buf = STRING_r_play_cmd;}
 
+RESOURCE TBUF r_podcast_main_player_cmd{buf = STRING_r_view_player_cmd;}
+
+
 RESOURCE TBUF r_podcast_show_cmd{buf = STRING_r_view_show_cmd;}
 
 RESOURCE TBUF r_podcast_update_cmd{buf = STRING_r_update_feeds_cmd;}

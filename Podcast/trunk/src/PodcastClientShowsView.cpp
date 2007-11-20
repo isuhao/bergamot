@@ -19,7 +19,6 @@ const TInt KSizeKb = 1024;
 const TInt KSizeMb = 1024000;
 
 const TInt KSizeBufLen = 16;
-const TInt KDateBufLen = 16;
 
 /**
 Creates and constructs the view.
@@ -145,7 +144,7 @@ void CPodcastClientShowsView::FeedInfoUpdated(const TFeedInfo& aFeedInfo)
 	}
 }
 
-void CPodcastClientShowsView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt aBytesTotal)
+void CPodcastClientShowsView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt /*aBytesTotal*/)
 {
 	if(aPercentOfCurrentDownload>=0 && aPercentOfCurrentDownload < KOneHundredPercent)
 	{
@@ -341,7 +340,7 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 	if(IsVisible())
 	{
 		TBuf<KSizeBufLen> showSize;
-		TBuf<KDateBufLen> showDate;
+		TBuf<KMaxShortDateFormatSpec*2> showDate;
 
 		TInt len = 0;
 		TUint unplayed = 0;
@@ -409,6 +408,9 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 						showSize.Format(KShowsSizeFormatMb(), si->iShowSize / KSizeMb);
 					}
 					listBoxData->AddTextL(showSize, EQikListBoxSlotText4);
+					
+					si->iPubDate.FormatL(showDate, TShortDateFormatSpec());
+					listBoxData->AddTextL(showDate, EQikListBoxSlotText3);
 
 					listBoxData->SetEmphasis(si->iPlayState == ENeverPlayed);					
 					unplayed+=(si->iPlayState == ENeverPlayed);

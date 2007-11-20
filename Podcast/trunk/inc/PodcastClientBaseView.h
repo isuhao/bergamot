@@ -4,10 +4,10 @@
 
 enum TBaseViewSelections
 {
-	EBaseViewPlayer, 
-	EBaseViewNewShows,
-	EBaseViewDownloadedShows,
-	EBaseViewFeeds
+	EBaseViewPlayer = 0x100, 
+	EBaseViewNewShows = 0x101,
+	EBaseViewDownloadedShows = 0x102,
+	EBaseViewFeeds = 0x103
 };
 
 class CPodcastClientBaseView : public CPodcastClientView
