@@ -1,7 +1,7 @@
 #ifndef FEEDPARSER_H_
 #define FEEDPARSER_H_
 
-#include "FeedParserCallbacks.h"
+#include "FeedParserObserver.h"
 #include "FeedInfo.h"
 #include <xml/parser.h> // for CParser
 #include <xml/contenthandler.h>	// for Xml::MContentHandler
@@ -36,7 +36,7 @@ enum TFeedState {
 class CFeedParser : public MContentHandler, public CBase
 {
 public:
-	CFeedParser(MFeedParserCallbacks& aCallbacks);
+	CFeedParser(MFeedParserObserver& aCallbacks);
 	virtual ~CFeedParser();
 	
 public:
@@ -57,7 +57,7 @@ public: // from MContentHandler
 	TAny* GetExtendedInterface(const TInt32 aUid);
 	TFeedInfo& ActiveFeed();
 private:
-	MFeedParserCallbacks& iCallbacks;
+	MFeedParserObserver& iCallbacks;
 	TFeedState iFeedState;
 	TShowInfo* activeItem;
 	TDes* activeString;

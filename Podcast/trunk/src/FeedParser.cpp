@@ -6,7 +6,7 @@
 #include <xml/stringdictionarycollection.h>
 #include <utf.h>
 
-CFeedParser::CFeedParser(MFeedParserCallbacks& aCallbacks) : 	iCallbacks(aCallbacks)
+CFeedParser::CFeedParser(MFeedParserObserver& aCallbacks) : 	iCallbacks(aCallbacks)
 {
 }
 
@@ -45,7 +45,7 @@ void CFeedParser::OnStartDocumentL(const RDocumentParameters& aDocParam, TInt aE
 void CFeedParser::OnEndDocumentL(TInt aErrorCode)
 	{
 	//RDebug::Print(_L("OnEndDocumentL()"));
-	iCallbacks.ParsingCompleteCallback(iActiveFeed);
+	iCallbacks.ParsingComplete(iActiveFeed);
 	}
 
 void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArray& aAttributes, TInt aErrorCode)
@@ -151,7 +151,7 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 			if (str.CompareF(KTagItem) == 0) {
 				iFeedState=EStateChannel;
 //				activeItem->iFeedUrl.Copy(iActiveFeed->url);
-				iCallbacks.NewShowCallback(activeItem);
+				iCallbacks.NewShow(activeItem);
 			}
 		break;
 		case EStateItemTitle:

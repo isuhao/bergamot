@@ -3,6 +3,8 @@
 #include "PodcastModel.h"
 #include "FeedEngine.h"
 #include "SoundEngine.h"
+#include "SettingsEngine.h"
+#include "ShowEngine.h"
 
 CPodcastModel* CPodcastModel::NewL()
 {
@@ -17,6 +19,7 @@ CPodcastModel::~CPodcastModel()
 {
 	delete iFeedEngine;
 	delete iSoundEngine;
+	delete iSettingsEngine;
 	iActiveShowList.Close();
 }
 
@@ -27,7 +30,9 @@ CPodcastModel::CPodcastModel()
 
 void CPodcastModel::ConstructL()
 {
-	iFeedEngine = CFeedEngine::NewL();
+	iSettingsEngine = CSettingsEngine::NewL(*this);
+	iFeedEngine = CFeedEngine::NewL(*this);
+	iShowEngine = CShowEngine::NewL(*this);
 	iSoundEngine = CSoundEngine::NewL(*this);
 }
 
@@ -46,9 +51,19 @@ CFeedEngine& CPodcastModel::FeedEngine()
 	return *iFeedEngine;
 }
 	
+CShowEngine& CPodcastModel::ShowEngine()
+{
+	return *iShowEngine;
+}
+
 CSoundEngine& CPodcastModel::SoundEngine()
 {
 	return *iSoundEngine;
+}
+
+CSettingsEngine& CPodcastModel::SettingsEngine()
+{
+	return *iSettingsEngine;
 }
 
 void CPodcastModel::PlayPausePodcastL(TShowInfo* aPodcast) 

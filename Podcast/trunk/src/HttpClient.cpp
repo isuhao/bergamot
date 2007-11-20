@@ -24,20 +24,20 @@ CHttpClient::~CHttpClient()
   iSession.Close();
   }
 
-CHttpClient* CHttpClient::NewL(MHttpEventHandlerCallbacks& aCallbacks)
+CHttpClient* CHttpClient::NewL(MHttpClientObserver& aObserver)
   {
-  CHttpClient* me = NewLC(aCallbacks);
+  CHttpClient* me = NewLC(aObserver);
   CleanupStack::Pop(me);
   return me;
   }
 
-CHttpClient::CHttpClient(MHttpEventHandlerCallbacks& aCallbacks) : iCallbacks(aCallbacks)
+CHttpClient::CHttpClient(MHttpClientObserver& aObserver) : iObserver(aObserver)
   {
   }
 
-CHttpClient* CHttpClient::NewLC(MHttpEventHandlerCallbacks& aCallbacks)
+CHttpClient* CHttpClient::NewLC(MHttpClientObserver& aObserver)
   {
-  CHttpClient* me = new (ELeave) CHttpClient(aCallbacks);
+  CHttpClient* me = new (ELeave) CHttpClient(aObserver);
   CleanupStack::PushL(me);
   me->ConstructL();
   return me;
@@ -66,23 +66,8 @@ TBool CHttpClient::IsActive()
 	return iIsActive;
 	}
 
-void CHttpClient::GetFeed(TFeedInfo *info)
-	{
-	RDebug::Print(_L("CHttpClient::GetFeed START"));
-	Get(info->iUrl, info->iFileName);
-	iCallbacks.FeedCompleteCallback(info);
-	RDebug::Print(_L("CHttpClient::GetFeed END"));
-	}
-
-void CHttpClient::GetShow(TShowInfo *info)
-	{
-	RDebug::Print(_L("CHttpClient::GetShow START"));
-	Get(info->iUrl, info->iFileName);
-	iCallbacks.ShowCompleteCallback(info);
-	RDebug::Print(_L("CHttpClient::GetShow END"));
-	}
-
 void CHttpClient::Get(TDesC& url, TDesC& fileName) {
+	RDebug::Print(_L("CHttpClient::Get START"));
 	iIsActive = ETrue;
 	TBuf8<256> url8;
 	url8.Copy(url);
@@ -94,7 +79,7 @@ void CHttpClient::Get(TDesC& url, TDesC& fileName) {
 	uri.Parse(url8);
 	CHttpEventHandler* eHandler;
 	RDebug::Print(_L("Getting %S to %S"), &url, &fileName);
-	eHandler = CHttpEventHandler::NewL(this, iCallbacks);
+	eHandler = CHttpEventHandler::NewL(this, iObserver);
 	eHandler->SetSaveFileName(fileName);
 	RHTTPTransaction trans = iSession.OpenTransactionL(uri, *eHandler, method);
 	  
@@ -109,4 +94,6 @@ void CHttpClient::Get(TDesC& url, TDesC& fileName) {
 	// an error the scheduler will be stopped in the event handler
 	CActiveScheduler::Start();
 	iIsActive = EFalse;
+	iObserver.Complete(this);
+	RDebug::Print(_L("CHttpClient::Get END"));
 }

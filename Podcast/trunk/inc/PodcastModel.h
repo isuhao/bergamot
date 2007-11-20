@@ -3,9 +3,11 @@
 #include <e32base.h>
 #include "FeedInfo.h"
 #include "ShowInfo.h"
+
 class CFeedEngine;
 class CSoundEngine;
-//class TShowInfo;
+class CShowEngine;
+class CSettingsEngine;
 
 /**
  * This class handles application storage needs and ownership of audioplayer, resource lists etc.
@@ -16,7 +18,9 @@ public:
 	static CPodcastModel* NewL();
 	~CPodcastModel();
 	CFeedEngine& FeedEngine();
+	CShowEngine& ShowEngine();
 	CSoundEngine& SoundEngine();
+	CSettingsEngine& SettingsEngine();
 	TShowInfo* PlayingPodcast();
 	void SetPlayingPodcast(TShowInfo* aPodcast);
 	void PlayPausePodcastL(TShowInfo * aPodcast);
@@ -33,8 +37,12 @@ protected:
 	void ConstructL();
 private:	
    TShowInfo* iPlayingPodcast;
+   
    CFeedEngine* iFeedEngine;
+   CShowEngine* iShowEngine;
    CSoundEngine* iSoundEngine;
+   CSettingsEngine *iSettingsEngine;
+   
    TShowInfoArray iActiveShowList;
    TFeedInfo iActiveFeed;
    TInt iZoomState;

@@ -9,6 +9,7 @@
 #include <podcastclient.mbg>
 #include "PodcastClientShowsView.h"
 #include "PodcastModel.h"
+#include "ShowEngine.h"
 
 /**
 Creates and constructs the view.
@@ -155,9 +156,9 @@ void CPodcastClientShowsView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownloa
 		UpdateCommandsL();
 	}
 
-	if(iPodcastModel.FeedEngine().ShowDownloading() != NULL)
+	if(iPodcastModel.ShowEngine().ShowDownloading() != NULL)
 	{
-		UpdateShowItemL(iPodcastModel.FeedEngine().ShowDownloading());
+		UpdateShowItemL(iPodcastModel.ShowEngine().ShowDownloading());
 	}
 }
 
@@ -277,30 +278,30 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 			{
 			case EShowAllShows:
 				SelectCategoryL(EShowAllShows);
-				iPodcastModel.FeedEngine().SelectAllShows();
+				iPodcastModel.ShowEngine().SelectAllShows();
 				break;
 			case EShowNewShows:
 				SelectCategoryL(EShowNewShows);
-				iPodcastModel.FeedEngine().SelectNewShows();
+				iPodcastModel.ShowEngine().SelectNewShows();
 				break;		
 			case EShowDownloadedShows:
 				SelectCategoryL(EShowDownloadedShows);
-				iPodcastModel.FeedEngine().SelectShowsByDownloadState(EDownloaded);
+				iPodcastModel.ShowEngine().SelectShowsByDownloadState(EDownloaded);
 				break;
 			case EShowPendingShows:
 				SelectCategoryL(EShowPendingShows);
-				iPodcastModel.FeedEngine().SelectShowsDownloading();
+				iPodcastModel.ShowEngine().SelectShowsDownloading();
 				break;
 			default:
 
 				iCategories->RenameCategoryL(EShowFeedShows, iPodcastModel.ActiveFeedInfo().iTitle);
 				
-				iPodcastModel.FeedEngine().SelectShowsByFeed(iPodcastModel.ActiveFeedInfo().iUid);
+				iPodcastModel.ShowEngine().SelectShowsByFeed(iPodcastModel.ActiveFeedInfo().iUid);
 				SelectCategoryL(EShowFeedShows);
 				break;
 			}
 			
-			iPodcastModel.SetActiveShowList(iPodcastModel.FeedEngine().GetSelectedShows());
+			iPodcastModel.SetActiveShowList(iPodcastModel.ShowEngine().GetSelectedShows());
 
 			TShowInfoArray &fItems = iPodcastModel.ActiveShowList();
 			len = fItems.Count();

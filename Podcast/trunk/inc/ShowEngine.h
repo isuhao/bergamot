@@ -1,0 +1,80 @@
+#ifndef SHOWENGINE_H_
+#define SHOWENGINE_H_
+
+#include <e32base.h>
+#include "ShowInfo.h"
+#include "PodcastModel.h"
+#include "HttpClient.h"
+#include "ShowEngineObserver.h"
+
+class CShowEngine : public CBase, public MHttpClientObserver
+{
+public:
+	static CShowEngine* NewL(CPodcastModel& aPodcastModel);
+	virtual ~CShowEngine();
+	
+public:
+	void AddDownload(TShowInfo *info);
+	void StopDownloads();
+	
+	TShowInfo* ShowDownloading();
+
+	// show selection methods
+	void SelectAllShows();
+	void SelectShowsByFeed(TInt aFeedUid);
+	void SelectShowsByDownloadState(TInt aDownloadState);
+	void SelectNewShows();
+	void SelectShowsDownloading();
+	
+	// from HttpClientObserver
+	void Connected(CHttpClient* aClient);
+	void Disconnected(CHttpClient* aClient);
+	void Progress(CHttpClient* aHttpClient, int aBytes, int aTotalBytes);
+	void DownloadInfo(CHttpClient* aClient, int aSize);
+	void Complete(CHttpClient* aClient);
+	void AddShow(TShowInfo *item);
+	void SaveShows();
+	
+	TShowInfoArray& GetSelectedShows();
+	
+	void AddObserver(MShowEngineObserver *observer);
+	
+private:
+	CShowEngine(CPodcastModel& aPodcastModel);
+	void ConstructL();
+
+	void GetShow(TShowInfo *info);
+	
+	void LoadShows();
+
+	void ListAllFiles();
+	void ListDir(RFs &rfs, TDesC &folder, TShowInfoArray &files);
+
+
+	void DownloadNextShow();
+	void MakeFileNameFromUrl(TDesC &aUrl, TFileName &fileName);
+private:
+	CHttpClient* iShowClient;
+
+	// the complete database of shows
+	TShowInfoArray iShows;
+
+	// the current selection of shows
+	TShowInfoArray iSelectedShows;
+	
+	// list of shows waiting to download
+	TShowInfoArray iShowsDownloading;
+	
+	// the file session used to read and write settings
+	RFs iFs;
+	
+	// The show we are currently downloading
+	TShowInfo* iShowDownloading;
+	
+	CPodcastModel& iPodcastModel;
+
+	// observers that will receive callbacks
+    RArray<MShowEngineObserver*> iObservers;
+};
+
+#endif /*SHOWENGINE_H_*/

@@ -22,7 +22,7 @@ private:
 	CPodcastClientFeedView* iFeedView;
 	CPodcastClientShowsView* iShowsView;
 	CPodcastClientPlayView* iPlayView;
-
+	
 	CPodcastModel* iPodcastModel;
 };
 

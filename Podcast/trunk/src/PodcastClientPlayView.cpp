@@ -15,6 +15,7 @@
 #include "PodcastClientPlayView.h"
 #include "PodcastClientGlobals.h"
 #include "SoundEngine.h"
+#include "ShowEngine.h"
 
 const TInt KAudioTickerPeriod = 1000000;
 const TInt KMaxCoverImageHeight = 96;
@@ -194,7 +195,7 @@ void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 		}break;
 	case EPodcastDownloadShow:
 		{
-			iPodcastModel.FeedEngine().AddDownload(iPodcastModel.PlayingPodcast());
+			iPodcastModel.ShowEngine().AddDownload(iPodcastModel.PlayingPodcast());
 		}break;
 	case EPodcastViewMain:
 		{			
@@ -247,7 +248,7 @@ void CPodcastClientPlayView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid 
 void CPodcastClientPlayView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt aBytesTotal)
 
 {
-	if(aPercentOfCurrentDownload>=0 && aPercentOfCurrentDownload < KOneHundredPercent && iPodcastModel.PlayingPodcast() == iPodcastModel.FeedEngine().ShowDownloading())
+	if(aPercentOfCurrentDownload>=0 && aPercentOfCurrentDownload < KOneHundredPercent && iPodcastModel.PlayingPodcast() == iPodcastModel.ShowEngine().ShowDownloading())
 	{
 		if(!iProgressAdded)
 		{
@@ -265,7 +266,7 @@ void CPodcastClientPlayView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload
 		iProgressAdded = EFalse;
 	}
 
-	if(aPercentOfCurrentDownload == KOneHundredPercent && iPodcastModel.PlayingPodcast() == iPodcastModel.FeedEngine().ShowDownloading())
+	if(aPercentOfCurrentDownload == KOneHundredPercent && iPodcastModel.PlayingPodcast() == iPodcastModel.ShowEngine().ShowDownloading())
 	{
 		// To update icon list status and commands
 		UpdateViewL();

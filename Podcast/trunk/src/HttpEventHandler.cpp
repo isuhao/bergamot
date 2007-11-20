@@ -23,7 +23,7 @@ void CHttpEventHandler::ConstructL()
 	}
 
 
-CHttpEventHandler::CHttpEventHandler(CHttpClient* aClient, MHttpEventHandlerCallbacks &aCallbacks): iHttpClient(aClient), iCallbacks(aCallbacks) 
+CHttpEventHandler::CHttpEventHandler(CHttpClient* aClient, MHttpClientObserver &aCallbacks): iHttpClient(aClient), iCallbacks(aCallbacks) 
 	{
 	}
 
@@ -34,7 +34,7 @@ CHttpEventHandler::~CHttpEventHandler()
 	}
 
 
-CHttpEventHandler* CHttpEventHandler::NewLC(CHttpClient* aClient, MHttpEventHandlerCallbacks &aCallbacks)
+CHttpEventHandler* CHttpEventHandler::NewLC(CHttpClient* aClient, MHttpClientObserver &aCallbacks)
 	{
 	CHttpEventHandler* me = new(ELeave)CHttpEventHandler(aClient, aCallbacks);
 	CleanupStack::PushL(me);
@@ -43,24 +43,12 @@ CHttpEventHandler* CHttpEventHandler::NewLC(CHttpClient* aClient, MHttpEventHand
 	}
 
 
-CHttpEventHandler* CHttpEventHandler::NewL(CHttpClient* aClient, MHttpEventHandlerCallbacks &aCallbacks)
+CHttpEventHandler* CHttpEventHandler::NewL(CHttpClient* aClient, MHttpClientObserver &aCallbacks)
 	{
 	CHttpEventHandler* me = NewLC(aClient, aCallbacks);
 	CleanupStack::Pop(me);
 	return me;
 	}
-
-
-void CHttpEventHandler::SetVerbose(TBool aVerbose)
-	{
-	iVerbose = aVerbose;
-	}
-
-TBool CHttpEventHandler::Verbose() const
-	{
-	return iVerbose;
-	}
-
 
 void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent& aEvent)
 	{
@@ -94,7 +82,7 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 					RDebug::Print(_L("Response body size is unknown"));
 					iBytesTotal = -1;
 				}
-				iCallbacks.DownloadInfoCallback(iHttpClient, dataSize);
+				iCallbacks.DownloadInfo(iHttpClient, dataSize);
 
 				cancelling = EFalse;
 				}
@@ -136,8 +124,7 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 			iRespBody = aTransaction.Response().Body();
 
 			// Some (more) body data has been received (in the HTTP response)
-			if (iVerbose)
-				DumpRespBody(aTransaction);
+			//DumpRespBody(aTransaction);
 			//RDebug::Print(_L("Saving: %d"), iSavingResponseBody);
 			// Append to the output file if we're saving responses
 			if (iSavingResponseBody)
@@ -146,7 +133,7 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 				iRespBody->GetNextDataPart(bodyData);
 				iBytesDownloaded += bodyData.Length();
 				iRespBodyFile.Write(bodyData);
-				iCallbacks.ProgressCallback(iHttpClient, iBytesDownloaded, iBytesTotal);
+				iCallbacks.Progress(iHttpClient, iBytesDownloaded, iBytesTotal);
 				}
 
 			// Done with that bit of body data
