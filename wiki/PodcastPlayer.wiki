@@ -48,7 +48,7 @@ I stumbled upon the [http://uiqopen.uiq.com/ UIQ Open] contest. Hopefully the po
 This is how I plan to implement features. Please [http://groups.google.com/group/bergamot help me find out what's important!]
 
   * Alpha 3 (November 25th)
-    * UI improvements
+    * UI improvements (cover art, icons...)
     * Configuration dialog
     * Automatic feed update
     * Proper feed handling, i.e. know what's new
