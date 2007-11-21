@@ -72,6 +72,9 @@ CQikCommand* CPodcastClientBaseView::DynInitOrDeleteCommandL(CQikCommand* aComma
 	switch(aCommand->Id())
 	{
 	case EPodcastViewMain:
+	case EPodcastAddFeed:
+	case EPodcastEditFeed:
+	case EPodcastDeleteFeed:
 	case EPodcastUpdateFeed:
 	case EPodcastViewNewShows:
 	case EPodcastViewDownloadedShows:

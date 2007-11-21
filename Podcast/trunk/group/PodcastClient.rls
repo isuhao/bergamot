@@ -45,6 +45,7 @@ rls_string STRING_r_view_play_cmd "Play"
 // Actions for feeds
 rls_string STRING_r_view_add_feed_cmd "Add feed"
 rls_string STRING_r_view_edit_feed_cmd "Edit feed"
+rls_string STRING_r_view_delete_feed_cmd "Delete feed"
 
 // Actions for shows
 rls_string STRING_r_view_delete_show_cmd "Delete show"

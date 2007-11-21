@@ -240,6 +240,16 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 {
 	switch(aCommand.Id())
 	{
+	case EPodcastAddFeed:
+		{
+		}break;		
+	case EPodcastEditFeed:
+		{
+		}break;
+
+	case EPodcastDeleteFeed:
+		{
+		}break;
 	case EPodcastUpdateFeed:
 		{
 			if(iListbox != NULL)

@@ -196,6 +196,9 @@ CQikCommand* CPodcastClientShowsView::DynInitOrDeleteCommandL(CQikCommand* aComm
 
 	switch(aCommand->Id())
 	{
+	case EPodcastAddFeed:
+	case EPodcastEditFeed:
+	case EPodcastDeleteFeed:
 	case EPodcastUpdateAllFeeds:
 		aCommand = NULL;
 		break;
