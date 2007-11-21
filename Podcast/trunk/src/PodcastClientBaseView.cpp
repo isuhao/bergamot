@@ -5,6 +5,7 @@
 #include "PodcastClientShowsView.h"
 #include "PodcastClientBaseView.h"
 #include "PodcastModel.h"
+#include "SoundEngine.h"
 
 /**
 Creates and constructs the view.
@@ -81,10 +82,8 @@ CQikCommand* CPodcastClientBaseView::DynInitOrDeleteCommandL(CQikCommand* aComma
 		break;
 	}
 	
-
 	return aCommand;
 }
-
 
 void CPodcastClientBaseView::UpdateListboxItemsL()
 {
@@ -95,7 +94,7 @@ void CPodcastClientBaseView::UpdateListboxItemsL()
 		TInt cnt = model.Count();
 
 		model.ModelBeginUpdateLC();
-		if(iPodcastModel.PlayingPodcast() != NULL)
+		if(iPodcastModel.PlayingPodcast() != NULL && (iPodcastModel.SoundEngine().State() == ESoundEnginePlaying || iPodcastModel.SoundEngine().State() == ESoundEnginePaused))
 		{
 			TBool found = EFalse;
 			for(TInt loop = 0;loop <cnt;loop++)

@@ -111,6 +111,12 @@ SOURCE		8   play_40x40m.bmp
 SOURCE          c16 shows_40x40.bmp
 SOURCE          8   shows_40x40m.bmp
 
+SOURCE		c16 new_view_40x40.bmp
+SOURCE		8   new_view_40x40m.bmp
+SOURCE		c16 downloaded_view_40x40.bmp
+SOURCE		8   downloaded_view_40x40m.bmp
+
+
 SOURCE		c16 show_40x40.bmp
 SOURCE		8   show_40x40m.bmp
 

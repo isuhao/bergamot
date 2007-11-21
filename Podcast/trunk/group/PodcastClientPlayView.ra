@@ -53,20 +53,20 @@ RESOURCE QIK_COMMAND_LIST r_podcast_playview_commands
 		QIK_COMMAND
 			{
 			id = EPodcastPlay;
-			type = EQikCommandTypeItem;
+			type = EQikCommandTypeDone;
 			text = STRING_r_play_cmd;
 			},
 	QIK_COMMAND
 			{
 			id = EPodcastDownloadShow;
-			type = EQikCommandTypeItem;
+			type = EQikCommandTypeDone;
 			text = STRING_r_view_download_cmd;
 			shortText = STRING_r_view_download_short_cmd;
 			},
 		QIK_COMMAND
 			{
 			id = EPodcastStop;
-			type = EQikCommandTypeItem;
+			type = EQikCommandTypeDone;
 			text = STRING_r_stop_cmd;
 			},
 		QIK_COMMAND

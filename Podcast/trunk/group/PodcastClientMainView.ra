@@ -128,8 +128,8 @@ RESOURCE QIK_LISTBOX r_podcast_mainview_listbox
 				{
 				content=QIK_CONTENT_MBM 
 				{
-					bmpid = EMbmPodcastclientShows_40x40;
-					bmpmask = EMbmPodcastclientShows_40x40m;
+					bmpid = EMbmPodcastclientNew_view_40x40;
+					bmpmask = EMbmPodcastclientNew_view_40x40m;
 				};
 				slot_id = EQikListBoxSlotLeftMediumIcon1;
 				}
@@ -148,8 +148,8 @@ RESOURCE QIK_LISTBOX r_podcast_mainview_listbox
 					{
 					content=QIK_CONTENT_MBM 
 					{
-						bmpid = EMbmPodcastclientShows_40x40;
-						bmpmask = EMbmPodcastclientShows_40x40m;
+						bmpid = EMbmPodcastclientDownloaded_view_40x40;
+						bmpmask = EMbmPodcastclientDownloaded_view_40x40m;
 					};
 					slot_id = EQikListBoxSlotLeftMediumIcon1;
 					}

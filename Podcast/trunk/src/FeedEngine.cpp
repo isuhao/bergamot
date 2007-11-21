@@ -182,7 +182,7 @@ void CFeedEngine::Connected(CHttpClient* /*aClient*/)
 	}
 
 
-void CFeedEngine::Progress(CHttpClient* aHttpClient, int aBytes, int aTotalBytes)
+void CFeedEngine::Progress(CHttpClient* /*aHttpClient*/, int aBytes, int aTotalBytes)
 {	
 	if (iClientState == EFeed) {
 		int percent = -1;
@@ -195,8 +195,8 @@ void CFeedEngine::Progress(CHttpClient* aHttpClient, int aBytes, int aTotalBytes
 	}
 }
 
-void CFeedEngine::Complete(CHttpClient* aClient, TBool aSuccessful)
-	{
+void CFeedEngine::Complete(CHttpClient* /*aClient*/, TBool aSuccessful)
+{
 	if (iClientState == EFeed) {
 		RDebug::Print(_L("File to parse: %S"), &iActiveFeed->iFileName);
 		iParser->ParseFeedL(iActiveFeed->iFileName, iActiveFeed);
@@ -209,7 +209,7 @@ void CFeedEngine::Complete(CHttpClient* aClient, TBool aSuccessful)
 		SaveFeeds();
 		iPodcastModel.ShowEngine().SaveShows();
 	}
-	}
+}
 
 void CFeedEngine::Disconnected(CHttpClient* aClient)
 	{

@@ -113,7 +113,7 @@ RESOURCE QIK_COMMAND_LIST r_podcast_listview_commands
 			{
 			priority = 2;
 			id = EPodcastUpdateFeed;
-			type = EQikCommandTypeItem;
+			type = EQikCommandTypeDone;
 			text = STRING_r_update_feeds_cmd;
 			},
 		QIK_COMMAND

@@ -15,6 +15,8 @@
 _LIT(KShowsTitleFormat, "%d / %d");
 _LIT(KShowsSizeFormatKb,"%dkB");
 _LIT(KShowsSizeFormatMb,"%dMB");
+_LIT(KSizeDownloadingOf, "%S/%S");
+
 const TInt KSizeKb = 1024;
 const TInt KSizeMb = 1024000;
 
@@ -168,6 +170,17 @@ void CPodcastClientShowsView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownloa
 	{
 		// To update icon list status and commands
 		UpdateCommandsL();
+		if(iCurrentCategory == EShowPendingShows && iPodcastModel.ShowEngine().ShowDownloading() != NULL)
+		{
+			// First find the item, to remove it if we are in the pending show list
+			TInt index = iPodcastModel.ActiveShowList().Find(iPodcastModel.ShowEngine().ShowDownloading());
+			
+			if(index != KErrNotFound)
+			{
+				iListbox->RemoveItemL(index);
+				iPodcastModel.ActiveShowList().Remove(index);
+			}
+		}
 	}
 
 	if(iPodcastModel.ShowEngine().ShowDownloading() != NULL)
@@ -265,7 +278,6 @@ void CPodcastClientShowsView::GetShowIcons(TShowInfo* aShowInfo, TInt& aImageId,
 	}
 }
 
-_LIT(KSizeDownloadingOf, "%S/%S");
 void CPodcastClientShowsView::UpdateShowItemL(TShowInfo* aShowInfo, TInt aSizeDownloaded)
 {
 	// First find the item
@@ -398,7 +410,7 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 					CleanupClosePushL(*listBoxData);
 					TShowInfo *si = fItems[i];
 					listBoxData->AddTextL(si->iTitle, EQikListBoxSlotText1);
-					listBoxData->AddTextL(si->iDescription, EQikListBoxSlotText2);
+					//listBoxData->AddTextL(si->iDescription, EQikListBoxSlotText2);
 					if(si->iShowSize < KSizeMb)
 					{
 						showSize.Format(KShowsSizeFormatKb(), si->iShowSize / KSizeKb);

@@ -26,11 +26,6 @@ public:
 	void SelectNewShows();
 	void SelectShowsDownloading();
 	
-	// from HttpClientObserver
-	void Connected(CHttpClient* aClient);
-	void Disconnected(CHttpClient* aClient);
-	void Progress(CHttpClient* aHttpClient, int aBytes, int aTotalBytes);
-	void DownloadInfo(CHttpClient* aClient, int aSize);
 	void Complete(CHttpClient* aClient, TBool aSuccessful);
 	void AddShow(TShowInfo *item);
 	void SaveShows();
@@ -38,7 +33,12 @@ public:
 	TShowInfoArray& GetSelectedShows();
 	
 	void AddObserver(MShowEngineObserver *observer);
-	
+protected:
+	// from HttpClientObserver, dont have to be public
+	void Connected(CHttpClient* aClient);
+	void Disconnected(CHttpClient* aClient);
+	void Progress(CHttpClient* aHttpClient, int aBytes, int aTotalBytes);
+	void DownloadInfo(CHttpClient* aClient, int aSize);
 private:
 	CShowEngine(CPodcastModel& aPodcastModel);
 	void ConstructL();
