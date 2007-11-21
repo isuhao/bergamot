@@ -6,7 +6,7 @@ void TFeedInfo::ExternalizeL(RWriteStream& aStream) const {
 //	RDebug::Print(_L("wrote len: %d"), title.Length());
 
 	aStream.WriteL(iTitle);
-	RDebug::Print(_L("wrote title: %S"), &iTitle);
+//	RDebug::Print(_L("wrote title: %S"), &iTitle);
 	
 	aStream.WriteInt32L(iUrl.Length());
 //	RDebug::Print(_L("wrote len: %d"), url.Length());
@@ -48,7 +48,7 @@ void TFeedInfo::InternalizeL(RReadStream& aStream) {
 	if (error != KErrNone) {
 		return;
 	}
-	RDebug::Print(_L("read title: %S"), &iTitle);
+//	RDebug::Print(_L("read title: %S"), &iTitle);
 	
 	TRAP(error,len = aStream.ReadInt32L());
 	if (error != KErrNone) {

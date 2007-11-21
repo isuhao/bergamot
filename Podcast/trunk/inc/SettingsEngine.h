@@ -29,13 +29,19 @@ private:
 public:
 	TFileName& ShowDir();
 	TFileName& FeedListFile();
-	TInt& UpdateFeedInterval();
+	TInt UpdateFeedInterval();
+	TInt MaxSimultaneousDownloads();
+	TBool DownloadAutomatically();	
+	TBool DownloadOnlyOnWLAN();		
 	
 private:
-	// where we store our shows
 	TFileName iShowDir;
 	TFileName iFeedListFile;
 	TInt iUpdateFeedInterval;
+	TBool iDownloadAutomatically;
+	TBool iDownloadOnlyOnWLAN;
+	TInt iMaxSimultaneousDownloads;
+	
 	// the file session used to read and write settings
 	RFs iFs;
 	
