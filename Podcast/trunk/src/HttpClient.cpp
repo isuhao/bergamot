@@ -92,9 +92,9 @@ void CHttpClient::GetL(TDesC& url, TDesC& fileName) {
 	trans.SubmitL();
 }
 
-void CHttpClient::ClientRequestCompleteL() {
+void CHttpClient::ClientRequestCompleteL(TBool aSuccessful) {
 	iIsActive = EFalse;
-	iObserver.Complete(this);
+	iObserver.Complete(this, aSuccessful);
 	RDebug::Print(_L("CHttpClient::Get END"));
 }
 

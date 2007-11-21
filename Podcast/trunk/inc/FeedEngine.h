@@ -48,7 +48,7 @@ private:
 	void Disconnected(CHttpClient* aClient);
 	void Progress(CHttpClient* aHttpClient, int aBytes, int aTotalBytes);
 	void DownloadInfo(CHttpClient* aClient, int aSize);
-	void Complete(CHttpClient* aClient);
+	void Complete(CHttpClient* aClient, TBool aSuccessful);
 
 	// callbacks from FeedParser
 	void NewShow(TShowInfo *item);
@@ -82,7 +82,7 @@ private:
 	
 	// the file session used to read and write settings
 	RFs iFs;
-	
+
 	// observers that will receive callbacks
     RArray<MFeedEngineObserver*> iObservers;
 };

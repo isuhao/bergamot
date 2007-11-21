@@ -93,7 +93,7 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 				{
 				RDebug::Print(_L("Transaction Cancelled"));
 				aTransaction.Close();
-				iHttpClient->ClientRequestCompleteL();
+				iHttpClient->ClientRequestCompleteL(EFalse);
 				}
 			else if (iSavingResponseBody) // If we're saving, then open a file handle for the new file
 				{
@@ -151,8 +151,7 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 		case THTTPEvent::ESucceeded:
 			{
 			aTransaction.Close();
-			iHttpClient->ClientRequestCompleteL();
-
+			iHttpClient->ClientRequestCompleteL(ETrue);
 			RDebug::Print(_L("Transaction Successful"));
 
 			} break;
@@ -160,7 +159,7 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 			{
 			RDebug::Print(_L("Transaction Failed"));
 			aTransaction.Close();
-			iHttpClient->ClientRequestCompleteL();
+			iHttpClient->ClientRequestCompleteL(EFalse);
 			} break;
 		case THTTPEvent::ERedirectedPermanently:
 			{
@@ -177,7 +176,7 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 			if (aEvent.iStatus < 0)
 				{
 				aTransaction.Close();
-				iHttpClient->ClientRequestCompleteL();
+				iHttpClient->ClientRequestCompleteL(EFalse);
 				}
 			} break;
 		}

@@ -15,7 +15,7 @@ public:
 	static CHttpClient* NewL(MHttpClientObserver& aResObs);
 	void GetL(TDesC& url, TDesC& fileName);
   	TBool IsActive();
-	void ClientRequestCompleteL();
+	void ClientRequestCompleteL(TBool aSuccessful);
 private:
 	CHttpClient(MHttpClientObserver& aResObs);
 	static CHttpClient* NewLC(MHttpClientObserver& aResObs);

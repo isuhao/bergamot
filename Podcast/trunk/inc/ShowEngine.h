@@ -31,7 +31,7 @@ public:
 	void Disconnected(CHttpClient* aClient);
 	void Progress(CHttpClient* aHttpClient, int aBytes, int aTotalBytes);
 	void DownloadInfo(CHttpClient* aClient, int aSize);
-	void Complete(CHttpClient* aClient);
+	void Complete(CHttpClient* aClient, TBool aSuccessful);
 	void AddShow(TShowInfo *item);
 	void SaveShows();
 	

@@ -195,7 +195,7 @@ void CFeedEngine::Progress(CHttpClient* aHttpClient, int aBytes, int aTotalBytes
 	}
 }
 
-void CFeedEngine::Complete(CHttpClient* aClient)
+void CFeedEngine::Complete(CHttpClient* aClient, TBool aSuccessful)
 	{
 	if (iClientState == EFeed) {
 		RDebug::Print(_L("File to parse: %S"), &iActiveFeed->iFileName);

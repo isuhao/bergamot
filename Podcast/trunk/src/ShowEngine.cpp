@@ -120,10 +120,13 @@ void CShowEngine::AddObserver(MShowEngineObserver *observer)
 	iObservers.Append(observer);
 	}
 
-void CShowEngine::Complete(CHttpClient *aHttpClient)
+void CShowEngine::Complete(CHttpClient *aHttpClient, TBool aSuccessful)
 	{
 	RDebug::Print(_L("File %S complete"), &iShowDownloading->iFileName);
-	iShowDownloading->iDownloadState = EDownloaded;
+	
+	if (aSuccessful) {
+		iShowDownloading->iDownloadState = EDownloaded;
+	}
 
 	SaveShows();
 	for (int i=0;i<iObservers.Count();i++) {

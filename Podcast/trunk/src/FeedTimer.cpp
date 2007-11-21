@@ -31,8 +31,8 @@ void CFeedTimer::RunPeriodically() {
 	TTime time;
 	time.UniversalTime();
 
-	TTimeIntervalMinutes tmi;
-	//TTimeIntervalSeconds tmi;
+	//TTimeIntervalMinutes tmi;
+	TTimeIntervalSeconds tmi;
 	tmi = iPeriodMinutes;
 	time = time + tmi;
 	RDebug::Print(_L("Running timer"));
