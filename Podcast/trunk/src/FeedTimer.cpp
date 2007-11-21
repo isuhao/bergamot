@@ -17,7 +17,7 @@ void CFeedTimer::ConstructL() {
 void CFeedTimer::RunL() {
 	RDebug::Print(_L("RunL"));
 	// run again
-	//iFeedEngine->UpdateAllFeeds();
+	iFeedEngine->UpdateAllFeeds();
 	RunPeriodically();
 }
 

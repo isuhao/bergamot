@@ -90,6 +90,11 @@ CQikCommand* CPodcastClientFeedView::DynInitOrDeleteCommandL(CQikCommand* aComma
 
 void CPodcastClientFeedView::FeedInfoUpdated(const TFeedInfo& aFeedInfo)
 {
+
+	if (ViewContext() == NULL) {
+		return;
+	}
+	
 	// Since a title might have been updated
 	if(iProgressAdded)
 	{
@@ -123,6 +128,9 @@ void CPodcastClientFeedView::FeedInfoUpdated(const TFeedInfo& aFeedInfo)
 
 void CPodcastClientFeedView::FeedDownloadUpdatedL(TInt aPercentOfCurrentDownload)
 {
+	if (ViewContext() == NULL) {
+		return;
+	}
 	if(aPercentOfCurrentDownload>=0 && aPercentOfCurrentDownload<100)
 	{
 		if(!iProgressAdded)
