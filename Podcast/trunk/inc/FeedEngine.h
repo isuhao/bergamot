@@ -25,6 +25,8 @@ public:
 	virtual ~CFeedEngine();
 	
 public:
+	void AddFeed(TFeedInfo *item);
+
 	void UpdateFeed(TInt aFeedUid);
 
 	void GetFeeds(TFeedInfoArray& array);
@@ -53,8 +55,6 @@ private:
 	// callbacks from FeedParser
 	void NewShow(TShowInfo *item);
 	void ParsingComplete(TFeedInfo *item);
-	
-	void AddFeed(TFeedInfo *item);
 
 	void GetFeedImage(TFeedInfo *aFeedInfo);
 	void MakeFileNameFromUrl(TDesC &aUrl, TFileName &fileName);

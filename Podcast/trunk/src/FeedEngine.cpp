@@ -152,11 +152,12 @@ void CFeedEngine::ReplaceString(TDes & aString, const TDesC& aStringToReplace,co
 
 void CFeedEngine::AddFeed(TFeedInfo *item) {
 	for (int i=0;i<iFeeds.Count();i++) {
-		if (iFeeds[i]->iUrl.Compare(item->iUrl) == 0) {
+		if (iFeeds[i]->iUid == item->iUid) {
 			RDebug::Print(_L("Already have feed %S, discarding"), &item->iUrl);
 			return;
 		}
 	}
+
 	iFeeds.Append(item);
 	}
 

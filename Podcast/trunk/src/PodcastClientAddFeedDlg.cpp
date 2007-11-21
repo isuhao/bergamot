@@ -2,6 +2,7 @@
 #include "PodcastClient.hrh"
 #include "PodcastClientAddFeedDlg.h"
 #include "PodcastModel.h"
+#include "FeedEngine.h"
 
 CPodcastClientAddFeedDlg::CPodcastClientAddFeedDlg(CPodcastModel& aPodcastModel):iPodcastModel(aPodcastModel)
 {
@@ -23,6 +24,10 @@ TBool CPodcastClientAddFeedDlg::OkToExitL(TInt aCommandId)
 	{
 		edwin->GetText(iFeedInfo.iUrl);
 	}
+	TFeedInfo* newFeedInfo = new (ELeave) TFeedInfo;
+	
+	*newFeedInfo = iFeedInfo;
 
-	return EFalse;
+	iPodcastModel.FeedEngine().AddFeed(newFeedInfo);
+	return ETrue;
 }
