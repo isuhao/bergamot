@@ -45,7 +45,7 @@ CHttpClient* CHttpClient::NewLC(MHttpClientObserver& aObserver)
 
 void CHttpClient::ConstructL()
   {
-  iSession.OpenL();
+
   }
 
 void CHttpClient::SetHeaderL(RHTTPHeaders aHeaders,
@@ -71,6 +71,11 @@ void CHttpClient::GetL(TDesC& url, TDesC& fileName) {
 	iIsActive = ETrue;
 	TBuf8<256> url8;
 	url8.Copy(url);
+	if (iTransactionCount == 0) {
+		RDebug::Print(_L("** Opening session"));
+		iSession.OpenL();
+	}
+	
 	RStringPool strP = iSession.StringPool();
 	RStringF method;
 	method = strP.StringF(HTTP::EGET, RHTTPSession::GetTable());
@@ -88,6 +93,7 @@ void CHttpClient::GetL(TDesC& url, TDesC& fileName) {
 	SetHeaderL(hdr, HTTP::EUserAgent, KUserAgent);
 	SetHeaderL(hdr, HTTP::EAccept, KAccept);
 	
+	iTransactionCount++;
 	// submit the transaction
 	trans.SubmitL();
 }
@@ -96,5 +102,11 @@ void CHttpClient::ClientRequestCompleteL(TBool aSuccessful) {
 	iIsActive = EFalse;
 	iObserver.Complete(this, aSuccessful);
 	RDebug::Print(_L("CHttpClient::Get END"));
+	iTransactionCount--;
+	
+	if(iTransactionCount == 0) {
+		RDebug::Print(_L("** Closing session"));
+		iSession.Close();
+	}
 }
 

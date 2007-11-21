@@ -26,5 +26,6 @@ private:
 	RHTTPSession iSession;
 	MHttpClientObserver& iObserver;
 	TBool iIsActive;
+	TInt iTransactionCount;
 };
 #endif
