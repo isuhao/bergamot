@@ -1,8 +1,10 @@
+#include <eikdialg.h>
 #include <qikcommand.h>
 #include <qikcontent.h>
 #include <PodcastClient.mbg>
 #include <PodcastClient.rsg>
 
+#include "PodcastClientAddFeedDlg.h"
 #include "PodcastClientFeedView.h"
 #include "PodcastModel.h"
 
@@ -242,6 +244,8 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 	{
 	case EPodcastAddFeed:
 		{
+			CPodcastClientAddFeedDlg* dlg = new (ELeave) CPodcastClientAddFeedDlg(iPodcastModel);
+			dlg->ExecuteLD(R_PODCAST_ADD_FEED_DLG);
 		}break;		
 	case EPodcastEditFeed:
 		{

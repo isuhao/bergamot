@@ -44,7 +44,8 @@ enum TPodcatClientCommands
 	EPodcastPlayViewProgressTime,
 	EPodcastPlayViewInformation,
 	EPodcastPlayViewProgressInfo,
-	EPodcastPlayViewCoverImage
+	EPodcastPlayViewCoverImage,
+	EPodcastAddEditFeedDlgUrl
 	};
 	
     

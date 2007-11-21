@@ -9,6 +9,7 @@
 #include <qiklistbox.rh>
 #include <qiklistboxstandardlayouts.hrh>
 #include <PodcastClient.mbg>
+#include <eikon.rsg>
 #include <QikCategory.hrh>
 #include "PodcastClient.hrh"
 #include "PodcastClient.rls"
@@ -124,13 +125,13 @@ RESOURCE QIK_COMMAND_LIST r_podcast_listview_commands
 			type = EQikCommandTypeScreen;
 			text = STRING_r_view_add_feed_cmd;
 			},
-	QIK_COMMAND
+	/*QIK_COMMAND
 			{
 			groupId = 5;
 			id = EPodcastEditFeed;
 			type = EQikCommandTypeScreen;
 			text = STRING_r_view_edit_feed_cmd;
-			},
+			},*/
 		QIK_COMMAND
 			{
 			groupId = 5;
@@ -261,4 +262,25 @@ RESOURCE ARRAY r_podcast_category
 		};
 	}
 
+RESOURCE DIALOG r_podcast_add_feed_dlg
+{
+	buttons = R_EIK_BUTTONS_CANCEL_DONE;
+
+	flags = EEikDialogFlagWait;
+	title = STRING_r_add_feed_title;
+	items = 
+	{
+	DLG_LINE
+	{
+	id = EPodcastAddEditFeedDlgUrl;
+	itemflags = EQikDlgItemCaptionAboveControl|EQikDlgItemCtlIsEditInPlace|EQikDlgItemHideHighlight;
+	prompt = STRING_r_add_feed_prompt;
+	type = EEikCtEdwin;
+	control = EDWIN
+	{
+	lines = 5;
+	};
+	}
+	};
+}
 

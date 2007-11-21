@@ -49,6 +49,11 @@ SOURCE		PodcastClientFeedView.cpp
 // This is the playview
 SOURCE		PodcastClientPlayView.cpp
 
+
+// Dialogs
+SOURCE			PodcastClientAddFeedDlg.cpp
+
+// Engine
 SOURCE 			RPodcastServerSession.cpp
 SOURCE			PodcastData.cpp 
 SOURCE			HttpClient.cpp
@@ -59,6 +64,7 @@ SOURCE			ShowInfo.cpp
 SOURCE			SoundEngine.cpp
 SOURCE			PodCastModel.cpp 
 SOURCE			FeedInfo.cpp FeedTimer.cpp ShowEngine.cpp SettingsEngine.cpp
+
 
 LIBRARY         euser.lib
 LIBRARY         apparc.lib
