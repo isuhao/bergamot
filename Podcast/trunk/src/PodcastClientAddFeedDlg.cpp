@@ -42,5 +42,7 @@ TBool CPodcastClientAddFeedDlg::OkToExitL(TInt aCommandId)
 	*newFeedInfo = iFeedInfo;
 
 	iPodcastModel.FeedEngine().AddFeed(newFeedInfo);
+	iPodcastModel.FeedEngine().UpdateFeed(newFeedInfo->iUid);
+
 	return ETrue;
 }
