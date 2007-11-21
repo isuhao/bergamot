@@ -245,7 +245,10 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 	case EPodcastAddFeed:
 		{
 			CPodcastClientAddFeedDlg* dlg = new (ELeave) CPodcastClientAddFeedDlg(iPodcastModel);
-			dlg->ExecuteLD(R_PODCAST_ADD_FEED_DLG);
+			if(dlg->ExecuteLD(R_PODCAST_ADD_FEED_DLG))
+			{
+				UpdateListboxItemsL();
+			}
 		}break;		
 	case EPodcastEditFeed:
 		{

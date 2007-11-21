@@ -1,4 +1,6 @@
 #include <eikedwin.h>
+#include <e32hashtab.h>
+
 #include "PodcastClient.hrh"
 #include "PodcastClientAddFeedDlg.h"
 #include "PodcastModel.h"
@@ -23,7 +25,18 @@ TBool CPodcastClientAddFeedDlg::OkToExitL(TInt aCommandId)
 	if(edwin != NULL)
 	{
 		edwin->GetText(iFeedInfo.iUrl);
+		if(iFeedInfo.iUrl.Length() <= iFeedInfo.iTitle.MaxLength())
+		{
+			iFeedInfo.iTitle = iFeedInfo.iUrl;
+		}
+		else
+		{
+			iFeedInfo.iTitle = iFeedInfo.iUrl.Left(iFeedInfo.iTitle.MaxLength());
+		}
+
+		iFeedInfo.iUid = DefaultHash::Des16(iFeedInfo.iUrl);
 	}
+
 	TFeedInfo* newFeedInfo = new (ELeave) TFeedInfo;
 	
 	*newFeedInfo = iFeedInfo;
