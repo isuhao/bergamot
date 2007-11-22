@@ -168,6 +168,13 @@ RESOURCE QIK_COMMAND_LIST r_podcast_listview_commands
 // Other commands
 		QIK_COMMAND
 			{
+			id = EPodcastSettings;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_settings_cmd;
+			groupId = 11;  
+			},
+		QIK_COMMAND
+			{
 			id = EPodcastZoomSetting;
 			type = EQikCommandTypeScreen;
 			text = STRING_r_zoom_cmd;
@@ -289,11 +296,12 @@ RESOURCE ARRAY r_podcast_category
 		};
 	}
 
+// DIALOGS
 RESOURCE DIALOG r_podcast_add_feed_dlg
 {
 	buttons = R_EIK_BUTTONS_CANCEL_DONE;
 
-	flags = EEikDialogFlagWait;
+	flags = EEikDialogFlagWait|EEikDialogFlagButtonsBelow;
 	title = STRING_r_add_feed_title;
 	items = 
 	{
@@ -310,5 +318,107 @@ RESOURCE DIALOG r_podcast_add_feed_dlg
 	}
 	};
 }
+
+RESOURCE ARRAY r_podcast_connection_selection_array
+{
+	items = 
+	{
+	 LBUF {txt = STRING_r_podcast_setting_default;},
+	 LBUF {txt = STRING_r_podcast_setting_wlanonly;},
+	 LBUF {txt = STRING_r_podcast_setting_usespecified;}
+	};
+
+}
+
+RESOURCE DLG_BUTTONS r_podcast_settings_buttons
+    {
+    buttons=
+        {
+        DLG_BUTTON { id=EEikBidCancel; button=CMBUT {txt=STRING_r_podcast_setting_cancel_cmd;}; hotkey=EEikBidCancel; flags=0; },
+		DLG_BUTTON { id=EPodcastSelectShowDir; button=CMBUT {txt=STRING_r_podcast_setting_showdir_cmd;};  flags=0; },     
+        DLG_BUTTON { id=EEikBidOk; button=CMBUT {txt=STRING_r_podcast_setting_done_cmd;}; hotkey=EEikBidOk; flags=EEikLabeledButtonIsDefault; }
+        };
+    }
+
+
+
+RESOURCE DIALOG r_podcast_settings_dlg
+{
+	buttons = r_podcast_settings_buttons;
+
+	flags = EEikDialogFlagButtonsBelow|EEikDialogFlagDensePacking|EEikDialogFlagWait;
+	title = STRING_r_podcast_settings_title;
+	items = 
+	{
+		DLG_LINE
+		{
+			id = EPodcastSettingShowDir;
+			itemflags = EQikDlgItemCaptionAboveControl;
+			prompt = STRING_r_podcast_setting_showdir;
+			type = EEikCtEdwin;
+			control = EDWIN
+			{
+				lines = 3;
+				maxlength = 256;
+			};
+		},
+		DLG_LINE
+		{
+			id = EPodcastSettingAutoDL;
+			itemflags = EQikDlgItemCaptionAboveControl;
+			prompt = STRING_r_podcast_setting_autodl;
+			type = EEikCtCheckBox;
+			control = CHECKBOX
+			{
+			};
+		},
+		DLG_LINE
+		{
+			id = EPodcastSettingUpdateInterval;
+			itemflags = EQikDlgItemCaptionAboveControl;
+			prompt = STRING_r_podcast_setting_updateinterval;
+			type = EQikCtNumberEditor;
+			control = QIK_NUMBER_EDITOR
+			{
+				min = 0;
+				max = 1440;
+			};
+		},
+		DLG_LINE
+		{
+			id = EPodcastSettingMaxsimdls;
+			itemflags = EQikDlgItemCaptionAboveControl;
+			prompt = STRING_r_podcast_setting_maxsimul;
+			type = EQikCtNumberEditor;
+			control = QIK_NUMBER_EDITOR
+			{
+				min = 1;
+				max = 16;
+			};
+		},
+		DLG_LINE
+		{
+			id = EPodcastSettingConnection;
+			itemflags = EQikDlgItemCaptionAboveControl;
+			prompt = STRING_r_podcast_setting_connection;
+			type = EEikCtChoiceList;
+			control = CHOICELIST
+			{
+				array_id = r_podcast_connection_selection_array;
+			};
+		},
+		DLG_LINE
+		{
+			id = EPodcastSettingIAPList;
+			itemflags = EQikDlgItemCaptionAboveControl;
+			prompt = STRING_r_podcast_setting_iaplist;
+			type = EEikCtChoiceList;
+			control = CHOICELIST
+			{
+			};
+		}
+	};
+}
+
 
 

@@ -21,7 +21,6 @@ enum TPodcatClientCommands
 	EPodcastPlay,
 	EPodcastStop,
 	EPodcastPause,
-	EPodcastSettings,
 	EPodcastAddFeed,
 	EPodcastEditFeed,
 	EPodcastDeleteFeed,
@@ -31,7 +30,9 @@ enum TPodcatClientCommands
 	EPodcastDownloadShow,
 	EPodcastDeleteShow,
 	EPodcastPurgeShow,
-	EPodcastZoomSetting
+	EPodcastZoomSetting,
+	EPodcastSettings,
+	EPodcastSelectShowDir
 	};
 
     enum TPodcastControl
@@ -46,7 +47,14 @@ enum TPodcatClientCommands
 	EPodcastPlayViewInformation,
 	EPodcastPlayViewProgressInfo,
 	EPodcastPlayViewCoverImage,
-	EPodcastAddEditFeedDlgUrl
+	EPodcastAddEditFeedDlgUrl,
+	// Settings DLG controls
+	EPodcastSettingShowDir,
+	EPodcastSettingAutoDL,
+	EPodcastSettingUpdateInterval,
+	EPodcastSettingMaxsimdls,
+	EPodcastSettingConnection,
+	EPodcastSettingIAPList
 	};
 	
     

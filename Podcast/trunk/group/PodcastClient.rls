@@ -54,6 +54,7 @@ rls_string STRING_r_view_purge_show_cmd "Purge show"
 
 // Common actions
 rls_string STRING_r_zoom_cmd "Zoom"
+rls_string STRING_r_settings_cmd "Settings"
 
 // Categories
 rls_string STRING_r_category_all "All shows"
@@ -82,3 +83,21 @@ rls_string STRING_r_purge_feed_prompt "Are you really sure you want to purge thi
 
 rls_string STRING_r_purge_show_title "Purge show"
 rls_string STRING_r_purge_show_prompt "Are you really sure you want to purge this show?"
+
+rls_string STRING_r_podcast_settings_title "Settings"
+rls_string STRING_r_podcast_setting_showdir "Basedir for shows:"
+rls_string STRING_r_podcast_setting_autodl "Automatic download:"
+rls_string STRING_r_podcast_setting_updateinterval "Update interval:"
+rls_string STRING_r_podcast_setting_maxsimul "Max simultaneous downloads:"
+rls_string STRING_r_podcast_setting_connection "Connection:"
+rls_string STRING_r_podcast_setting_default "Use Default"
+rls_string STRING_r_podcast_setting_wlanonly "Use WLAN only"
+rls_string STRING_r_podcast_setting_usespecified "Use specified"
+rls_string STRING_r_podcast_setting_iaplist "Internet accounts:"
+rls_string STRING_r_podcast_setting_cancel_cmd "Cancel" // Cancel command in settings dialog
+rls_string STRING_r_podcast_setting_done_cmd "Done" // Done command in settings dialog
+rls_string STRING_r_podcast_setting_showdir_cmd "Select" // Use to select show dir
+
+
+
+

@@ -124,3 +124,39 @@ TBool CSettingsEngine::DownloadOnlyOnWLAN()
 	{
 	return iDownloadOnlyOnWLAN;
 	}
+
+TInt CSettingsEngine::SpecificIAP()
+	{
+	return iIap;
+	}
+
+
+void CSettingsEngine::SetShowDir(TFileName& aFileName)
+	{
+	iShowDir = aFileName;
+	}
+
+void CSettingsEngine::SetUpdateFeedInterval(TInt aInterval)
+	{
+	iUpdateFeedInterval = aInterval;
+	}
+
+void CSettingsEngine::SetMaxSimultaneousDownloads(TInt aMaxDownloads)
+	{
+	iMaxSimultaneousDownloads = aMaxDownloads;
+	}
+
+void CSettingsEngine::SetDownloadAutomatically(TBool aAutoOn)
+	{
+	iDownloadAutomatically = aAutoOn;
+	}
+
+void CSettingsEngine::SetDownloadOnlyOnWLAN(TBool aOnlyOnWLAN)
+	{
+	iDownloadOnlyOnWLAN = aOnlyOnWLAN;
+	}
+
+void CSettingsEngine::SetSpecificIAP(TInt aIap)
+	{
+	iIap = aIap;
+	}

@@ -32,8 +32,14 @@ public:
 	TInt UpdateFeedInterval();
 	TInt MaxSimultaneousDownloads();
 	TBool DownloadAutomatically();	
-	TBool DownloadOnlyOnWLAN();		
-	
+	TBool DownloadOnlyOnWLAN();	
+	TInt SpecificIAP();
+	void SetShowDir(TFileName& aFileName);
+	void SetUpdateFeedInterval(TInt aInterval);
+	void SetMaxSimultaneousDownloads(TInt aMaxDownloads);
+	void SetDownloadAutomatically(TBool aAutoOn);
+	void SetDownloadOnlyOnWLAN(TBool aOnlyOnWLAN);
+	void SetSpecificIAP(TInt aIap);
 private:
 	TFileName iShowDir;
 	TFileName iFeedListFile;
@@ -41,6 +47,7 @@ private:
 	TBool iDownloadAutomatically;
 	TBool iDownloadOnlyOnWLAN;
 	TInt iMaxSimultaneousDownloads;
+	TInt iIap;
 	
 	// the file session used to read and write settings
 	RFs iFs;

@@ -52,7 +52,7 @@ SOURCE		PodcastClientPlayView.cpp
 
 // Dialogs
 SOURCE			PodcastClientAddFeedDlg.cpp
-
+SOURCE			PodcastClientSettingsDlg.cpp
 // Engine
 SOURCE 			RPodcastServerSession.cpp
 SOURCE			PodcastData.cpp 

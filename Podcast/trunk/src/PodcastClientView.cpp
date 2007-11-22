@@ -14,6 +14,7 @@
 #include "PodcastClientView.h"
 #include "PodcastClientGlobals.h"
 #include "SoundEngine.h"
+#include "PodcastClientSettingsDlg.h"
 
 /**
 Constructor for the view.
@@ -114,7 +115,12 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 			CleanupStack::PopAndDestroy();//close array
 		}
 		break;
-		
+	case EPodcastSettings:
+		{
+			CPodcastClientSettingsDlg* dlg = new (ELeave) CPodcastClientSettingsDlg(iPodcastModel);
+			dlg->ExecuteLD(R_PODCAST_SETTINGS_DLG);
+		}break;
+
 	case EPodcastZoomSetting:
 		{
 			// Launch the zoom dialog
