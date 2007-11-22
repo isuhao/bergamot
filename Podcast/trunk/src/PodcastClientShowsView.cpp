@@ -241,7 +241,9 @@ CQikCommand* CPodcastClientShowsView::DynInitOrDeleteCommandL(CQikCommand* aComm
 				
 				if(index>= 0 && index < iPodcastModel.ActiveShowList().Count())
 				{					
-					aCommand->SetInvisible(EFalse);						
+					aCommand->SetInvisible(EFalse);	
+					aCommand->SetTextL(R_PODCAST_VIEW_CMD);
+					aCommand->SetShortTextL(R_PODCAST_VIEW_CMD);
 				}
 				else
 				{
@@ -498,8 +500,10 @@ void CPodcastClientShowsView::UpdateCommandsL()
 		TInt index = iListbox->CurrentItemIndex();
 
 		if(index>= 0 && index < fItems.Count())
-		{
-			comMan.SetInvisible(*this, EQikListBoxCmdSelect, EFalse);		
+		{		
+			comMan.SetInvisible(*this, EQikListBoxCmdSelect, EFalse);
+			comMan.SetTextL(*this, EQikListBoxCmdSelect, R_PODCAST_VIEW_CMD);
+			comMan.SetShortTextL(*this, EQikListBoxCmdSelect, R_PODCAST_VIEW_CMD);
 		}
 		else
 		{

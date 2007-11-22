@@ -149,12 +149,6 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 void CPodcastClientPlayView::PlaybackInitializedL()
 {
 	UpdateViewL();
-
-	if(iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.PlayingPodcast()->iDownloadState == EDownloaded)
-	{
-		iPodcastModel.SoundEngine().Play();
-	}
-
 }
 
 
