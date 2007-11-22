@@ -14,6 +14,14 @@ CPodcastClientAddFeedDlg::~CPodcastClientAddFeedDlg()
 {
 }
 
+_LIT(KURLPrefix, "http://");
+void CPodcastClientAddFeedDlg::PreLayoutDynInitL()
+{
+		CEikEdwin* edwin = static_cast<CEikEdwin*>(ControlOrNull(EPodcastAddEditFeedDlgUrl));
+		edwin->SetTextL(&KURLPrefix());
+}
+
+
 TBool CPodcastClientAddFeedDlg::OkToExitL(TInt aCommandId)
 {
 	if(aCommandId == EEikBidYes)

@@ -14,6 +14,7 @@ public:
 	CPodcastClientAddFeedDlg(CPodcastModel& aPodcastModel);
 	~CPodcastClientAddFeedDlg();
 	TBool OkToExitL(TInt aCommandId);
+	 void PreLayoutDynInitL();
 private:
 	/** Reference to the podcast application model */
 	CPodcastModel& iPodcastModel;

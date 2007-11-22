@@ -114,27 +114,51 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 	{	
 		switch(aCommand.Id())
 		{
+			
+		case EPodcastPurgeShow:
+			{				
+				if(iEikonEnv->QueryWinL(R_PODCAST_PURGE_SHOW_TITLE, R_PODCAST_PURGE_SHOW_PROMPT))				
+				{
+					TInt index = iListbox->CurrentItemIndex();
+					if(index >= 0 && index < iPodcastModel.ActiveShowList().Count())
+					{
+						iPodcastModel.ShowEngine().PurgeShow(iPodcastModel.ActiveShowList()[index]->iUid);
+						UpdateShowItemL(iPodcastModel.ActiveShowList()[index]);
+					}
+				}
+			}break;
+				
+		case EPodcastPurgeFeed:
+			{
+				if(iEikonEnv->QueryWinL(R_PODCAST_PURGE_FEED_TITLE, R_PODCAST_PURGE_FEED_PROMPT))				
+				{
+					if (iPodcastModel.ActiveFeedInfo().iUrl.Length()>0) {
+						iPodcastModel.ShowEngine().PurgeShowsByFeed(iPodcastModel.ActiveFeedInfo().iUid);
+						UpdateListboxItemsL();
+					} 
+				}
+			}break;
 		case EPodcastUpdateFeed:
-		{
-			if (iPodcastModel.ActiveFeedInfo().iUrl.Length()>0) {
-				User::InfoPrint(_L("Getting feed..."));
-				iPodcastModel.FeedEngine().UpdateFeed(iPodcastModel.ActiveFeedInfo().iUid);
-			} 
-		}
-		break;
+			{
+				if (iPodcastModel.ActiveFeedInfo().iUrl.Length()>0) {
+					User::InfoPrint(_L("Getting feed..."));
+					iPodcastModel.FeedEngine().UpdateFeed(iPodcastModel.ActiveFeedInfo().iUid);
+				} 
+			}
+			break;
 		default:
 			CPodcastClientView::HandleCommandL(aCommand);
 			break;
 		}
 	}
-
+	
 }
 
 // Engine callback when new shows are available
 void CPodcastClientShowsView::ShowListUpdated()
-	{
+{
 	UpdateListboxItemsL();
-	}
+}
 
 void CPodcastClientShowsView::FeedInfoUpdated(const TFeedInfo& aFeedInfo)
 {
@@ -148,44 +172,47 @@ void CPodcastClientShowsView::FeedInfoUpdated(const TFeedInfo& aFeedInfo)
 
 void CPodcastClientShowsView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt /*aBytesTotal*/)
 {
-	if(aPercentOfCurrentDownload>=0 && aPercentOfCurrentDownload < KOneHundredPercent)
+	if(ViewContext() != NULL)
 	{
-		if(!iProgressAdded)
+		if(aPercentOfCurrentDownload>=0 && aPercentOfCurrentDownload < KOneHundredPercent)
 		{
-			ViewContext()->AddProgressInfoL(EEikProgressTextPercentage, KOneHundredPercent);
-
-			iProgressAdded = ETrue;
-		}
-		
-		ViewContext()->SetAndDrawProgressInfo(aPercentOfCurrentDownload);
-	}
-	else if(iProgressAdded)
-	{
-		ViewContext()->RemoveAndDestroyProgressInfo();
-		ViewContext()->DrawNow();
-		iProgressAdded = EFalse;
-	}
-
-	if(aPercentOfCurrentDownload == KOneHundredPercent)
-	{
-		// To update icon list status and commands
-		UpdateCommandsL();
-		if(iCurrentCategory == EShowPendingShows && iPodcastModel.ShowEngine().ShowDownloading() != NULL)
-		{
-			// First find the item, to remove it if we are in the pending show list
-			TInt index = iPodcastModel.ActiveShowList().Find(iPodcastModel.ShowEngine().ShowDownloading());
-			
-			if(index != KErrNotFound)
+			if(!iProgressAdded)
 			{
-				iListbox->RemoveItemL(index);
-				iPodcastModel.ActiveShowList().Remove(index);
+				ViewContext()->AddProgressInfoL(EEikProgressTextPercentage, KOneHundredPercent);
+
+				iProgressAdded = ETrue;
+			}
+			
+			ViewContext()->SetAndDrawProgressInfo(aPercentOfCurrentDownload);
+		}
+		else if(iProgressAdded)
+		{
+			ViewContext()->RemoveAndDestroyProgressInfo();
+			ViewContext()->DrawNow();
+			iProgressAdded = EFalse;
+		}
+
+		if(aPercentOfCurrentDownload == KOneHundredPercent)
+		{
+			// To update icon list status and commands
+			UpdateCommandsL();
+			if(iCurrentCategory == EShowPendingShows && iPodcastModel.ShowEngine().ShowDownloading() != NULL)
+			{
+				// First find the item, to remove it if we are in the pending show list
+				TInt index = iPodcastModel.ActiveShowList().Find(iPodcastModel.ShowEngine().ShowDownloading());
+				
+				if(index != KErrNotFound)
+				{
+					iListbox->RemoveItemL(index);
+					iPodcastModel.ActiveShowList().Remove(index);
+				}
 			}
 		}
-	}
 
-	if(iPodcastModel.ShowEngine().ShowDownloading() != NULL)
-	{
-		UpdateShowItemL(iPodcastModel.ShowEngine().ShowDownloading(), aBytesOfCurrentDownload);
+		if(iPodcastModel.ShowEngine().ShowDownloading() != NULL)
+		{
+			UpdateShowItemL(iPodcastModel.ShowEngine().ShowDownloading(), aBytesOfCurrentDownload);
+		}
 	}
 }
 
@@ -214,18 +241,7 @@ CQikCommand* CPodcastClientShowsView::DynInitOrDeleteCommandL(CQikCommand* aComm
 				
 				if(index>= 0 && index < iPodcastModel.ActiveShowList().Count())
 				{					
-					aCommand->SetInvisible(EFalse);
-
-					if(iPodcastModel.ActiveShowList()[index]->iDownloadState == EDownloaded)
-					{
-						aCommand->SetTextL(R_PODCAST_FEEDS_PLAY_CMD);
-						aCommand->SetShortTextL(R_PODCAST_FEEDS_PLAY_CMD);
-					}
-					else 
-					{
-						aCommand->SetTextL(R_PODCAST_VIEW_CMD);
-						aCommand->SetShortTextL(R_PODCAST_VIEW_CMD);
-					}			
+					aCommand->SetInvisible(EFalse);						
 				}
 				else
 				{
@@ -483,18 +499,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 
 		if(index>= 0 && index < fItems.Count())
 		{
-			if(fItems[index]->iDownloadState == EDownloaded)
-			{
-				comMan.SetInvisible(*this, EQikListBoxCmdSelect, EFalse);
-				comMan.SetTextL(*this, EQikListBoxCmdSelect, R_PODCAST_FEEDS_PLAY_CMD);
-				comMan.SetShortTextL(*this, EQikListBoxCmdSelect, R_PODCAST_FEEDS_PLAY_CMD);
-			}
-			else 
-			{
-				comMan.SetInvisible(*this, EQikListBoxCmdSelect, EFalse);
-				comMan.SetTextL(*this, EQikListBoxCmdSelect, R_PODCAST_VIEW_CMD);
-				comMan.SetShortTextL(*this, EQikListBoxCmdSelect, R_PODCAST_VIEW_CMD);
-			}			
+			comMan.SetInvisible(*this, EQikListBoxCmdSelect, EFalse);		
 		}
 		else
 		{

@@ -70,7 +70,10 @@ CQikCommand* CPodcastClientFeedView::DynInitOrDeleteCommandL(CQikCommand* aComma
 {
 	switch(aCommand->Id())
 	{
+	case EPodcastUpdateFeed:
 	case EPodcastViewFeeds:
+	case EPodcastPurgeFeed:
+	case EPodcastPurgeShow:
 		aCommand = NULL;
 		break;
 	case EQikListBoxCmdSelect:
@@ -185,6 +188,8 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 				listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
 				CleanupClosePushL(*listBoxData);
 				TFeedInfo *fi = feeds[i];
+
+				listBoxData->SetItemId(fi->iUid);
 				listBoxData->AddTextL(fi->iTitle, EQikListBoxSlotText1);
 				listBoxData->AddTextL(fi->iDescription, EQikListBoxSlotText2);
 				CQikContent* content = CQikContent::NewL(this, _L("*"), bitmap, mask);
@@ -252,32 +257,37 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 		}break;		
 	case EPodcastEditFeed:
 		{
+			if(iListbox != NULL)
+			{
+				TInt index = iListbox->CurrentItemIndex();
+			}
 		}break;
 
 	case EPodcastDeleteFeed:
 		{
+			if(iListbox != NULL)
+			{
+				TInt index = iListbox->CurrentItemIndex();
+				MQikListBoxModel& model(iListbox->Model());
+				MQikListBoxData* data = model.RetrieveDataL(index);	
+				if(data != NULL)
+				{
+					if(iEikonEnv->QueryWinL(R_PODCAST_REMOVE_FEED_TITLE, R_PODCAST_REMOVE_FEED_PROMPT))
+					{
+						iPodcastModel.FeedEngine().RemoveFeed(data->ItemId());
+						iListbox->RemoveItemL(index);
+					}
+					data->Close();
+				}	
+			}
 		}break;
-	case EPodcastUpdateFeed:
+	case EPodcastPurgeFeed:
 		{
 			if(iListbox != NULL)
 			{
 				TInt index = iListbox->CurrentItemIndex();
-				TFeedInfoArray feeds;
-				CleanupClosePushL(feeds);
-				iPodcastModel.FeedEngine().GetFeeds(feeds);
-				if(index >= 0 && index <feeds.Count())
-				{
-					if (feeds[index]->iUrl.Length()>0) {
-						TBuf<256> buf;
-						buf.Format(_L("Getting %S"), &feeds[index]->iTitle);
-						User::InfoPrint(buf);
-						iPodcastModel.FeedEngine().UpdateFeed(feeds[index]->iUid);
-					} 
-				}
-				CleanupStack::PopAndDestroy();// close feeds
 			}
-		}
-		break;
+		}break;
 	default:
 		CPodcastClientView::HandleCommandL(aCommand);
 		break;
