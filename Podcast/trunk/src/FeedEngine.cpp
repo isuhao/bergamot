@@ -161,6 +161,16 @@ void CFeedEngine::AddFeed(TFeedInfo *item) {
 	iFeeds.Append(item);
 	}
 
+void CFeedEngine::RemoveFeed(TInt aUid) {
+	for (int i=0;i<iFeeds.Count();i++) {
+		if (iFeeds[i]->iUid == aUid) {
+			iFeeds.Remove(i);
+			RDebug::Print(_L("Removed feed"));
+			return;
+		}
+	}
+}
+
 void CFeedEngine::ParsingComplete(TFeedInfo *item)
 	{
 	RDebug::Print(_L("ParsingCompleteCallback"));

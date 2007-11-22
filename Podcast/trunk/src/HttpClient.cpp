@@ -17,6 +17,7 @@ merchantability and/or non-infringement of the software provided herein.
 #include "HttpClient.h"
 #include <http/rhttpheaders.h>
 #include <http.h>
+#include <commdb.h>
 #include <eikenv.h>
 
 CHttpClient::~CHttpClient()
@@ -68,6 +69,25 @@ TBool CHttpClient::IsActive()
 
 void CHttpClient::GetL(TDesC& url, TDesC& fileName) {
 	RDebug::Print(_L("CHttpClient::Get START"));
+	
+	CCommsDatabase *cdb = CCommsDatabase::NewL();
+	
+	CCommsDbTableView *view = cdb->OpenIAPTableViewMatchingBearerSetLC(KCommDbBearerWLAN | KCommDbBearerLAN | KCommDbBearerPAN, ECommDbConnectionDirectionUnknown);
+	
+	int error =view->GotoFirstRecord();
+	while (error == KErrNone) {
+		TBuf<100> iapName;
+		view->ReadTextL(_L("Name"), iapName);
+		RDebug::Print(_L("iapName: %S"), &iapName);
+		view->ReadTextL(TPtrC(IAP_BEARER_TYPE), iapName);
+		RDebug::Print(_L("bearer type: %S"), &iapName);
+		
+		error = view->GotoNextRecord();
+	}
+	
+	CleanupStack::PopAndDestroy(view);
+	
+	
 	iIsActive = ETrue;
 	TBuf8<256> url8;
 	url8.Copy(url);

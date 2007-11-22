@@ -188,8 +188,12 @@ void CShowEngine::LoadShows()
 		//RDebug::Print(_L("error: %d"), error);
 		AddShow(readData);
 		
-		if (!BaflUtils::FileExists(iFs, readData->iFileName)) {
-			readData->iDownloadState = ENotDownloaded;
+		if (readData->iDownloadState == EQueued) {
+			iShowsDownloading.Append(readData);
+		} else if (readData->iDownloadState == EDownloaded) {
+			if (!BaflUtils::FileExists(iFs, readData->iFileName)) {
+				readData->iDownloadState = ENotDownloaded;
+			}
 		}
 	}
 	exit_point:
