@@ -34,7 +34,7 @@ public:
 	void PurgePlayedShows();
 	void PurgeOldShows();
 	void PurgeShow(TInt aShowUid);
-
+	
 	TShowInfoArray& GetSelectedShows();
 	
 	void AddObserver(MShowEngineObserver *observer);

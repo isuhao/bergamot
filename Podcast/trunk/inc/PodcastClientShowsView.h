@@ -22,7 +22,7 @@ protected:
     void FeedInfoUpdated(const TFeedInfo& aFeedInfo);
 	void FeedDownloadUpdatedL(TInt aPercentOfCurrentDownload){};
 	void ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt aBytesTotal);
-
+	void DownloadQueueUpdated(TInt aDownloadingShows, TInt aQueuedShows) {};
 	void HandleCommandL(CQikCommand& aCommand);
 	void UpdateShowItemL(TShowInfo* aShowInfo, TInt aSizeDownloaded = KErrNotFound);
 	// from MQikCommandModelOwner	

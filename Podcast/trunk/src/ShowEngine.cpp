@@ -189,7 +189,7 @@ void CShowEngine::LoadShows()
 		AddShow(readData);
 		
 		if (readData->iDownloadState == EQueued) {
-			iShowsDownloading.Append(readData);
+			AddDownload(readData);
 		} else if (readData->iDownloadState == EDownloaded) {
 			if (!BaflUtils::FileExists(iFs, readData->iFileName)) {
 				readData->iDownloadState = ENotDownloaded;
@@ -447,7 +447,6 @@ void CShowEngine::ListAllFiles()
 
 void CShowEngine::AddDownload(TShowInfo *info)
 	{
-	RDebug::Print(_L("AddDownload START"));
 	info->iDownloadState = EQueued;
 	iShowsDownloading.Append(info);
 	DownloadNextShow();
@@ -456,10 +455,15 @@ void CShowEngine::AddDownload(TShowInfo *info)
 
 void CShowEngine::DownloadNextShow()
 {
+	for (int i=0;i<iObservers.Count();i++) {
+		iObservers[i]->DownloadQueueUpdated(1, iShowsDownloading.Count() -1);
+	}
+	
 	if (iShowClient->IsActive()) {
 		RDebug::Print(_L("Show client busy..."));
 		return;
 	}
+	
 	if (iShowsDownloading.Count() > 0) {
 		TShowInfo *info = iShowsDownloading[0];
 		iShowsDownloading.Remove(0);

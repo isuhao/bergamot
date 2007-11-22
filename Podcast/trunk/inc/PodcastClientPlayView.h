@@ -46,7 +46,7 @@ public:
     void FeedInfoUpdated(const TFeedInfo& /*aFeedInfo*/){}
 	void FeedDownloadUpdatedL(TInt /*aPercentOfCurrentDownload*/){};
 	void ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt aBytesTotal);
-
+	void DownloadQueueUpdated(TInt aDownloadingShows, TInt aQueuedShows) {}
 	void ImageConverterEventL(TQikImageConverterEvent aMessage, TInt aErrCode);
 private:
 	void HandleControlEventL(CCoeControl* aControl,TCoeEvent aEventType);
