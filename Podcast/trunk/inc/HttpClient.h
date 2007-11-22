@@ -16,6 +16,7 @@ public:
 	void GetL(TDesC& url, TDesC& fileName);
   	TBool IsActive();
 	void ClientRequestCompleteL(TBool aSuccessful);
+	void ManageConnections(TBool aRequireWLAN);
 private:
 	CHttpClient(MHttpClientObserver& aResObs);
 	static CHttpClient* NewLC(MHttpClientObserver& aResObs);

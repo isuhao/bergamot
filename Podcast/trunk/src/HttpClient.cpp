@@ -19,6 +19,7 @@ merchantability and/or non-infringement of the software provided herein.
 #include <http.h>
 #include <commdb.h>
 #include <eikenv.h>
+#include <es_sock.h>
 
 CHttpClient::~CHttpClient()
   {
@@ -49,6 +50,57 @@ void CHttpClient::ConstructL()
 
   }
 
+void CHttpClient::ManageConnections(TBool aRequireWLAN)
+	{
+	// 0. If WLAN required-setting is off, take whatever connection we have, return
+	// 1. Test if default connection is WLAN, if so, use this
+	// 2. If we have a previously selected WLAN, try to connect to this one
+	//    if successful, use it
+	// 3. Let the user select a WLAN
+	
+	// WLAN som connectar men inte routar?
+	
+	CCommsDatabase *cdb = CCommsDatabase::NewL();
+	unsigned long defaultIap;
+	CCommsDbTableView* prefTableView = cdb->OpenTableLC( TPtrC( IAP ) );
+	prefTableView->ReadUintL( TPtrC( COMMDB_ID), defaultIap );
+	RDebug::Print(_L("default IAP: %d"), defaultIap);
+
+	CCommsDbTableView *view = cdb->OpenIAPTableViewMatchingBearerSetLC(KCommDbBearerWLAN | KCommDbBearerLAN | KCommDbBearerPAN, ECommDbConnectionDirectionUnknown);
+	unsigned long val = 0;
+	int error =view->GotoFirstRecord();
+	TBool isWLAN = EFalse;
+	while (error == KErrNone) {
+		TBuf<100> iapName;
+		view->ReadTextL(TPtrC(COMMDB_NAME), iapName);
+		RDebug::Print(_L("iapName: %S"), &iapName);
+		view->ReadTextL(TPtrC(IAP_BEARER_TYPE), iapName);
+		RDebug::Print(_L("bearer type: %S"), &iapName);
+		view->ReadTextL(TPtrC(IAP_SERVICE_TYPE), iapName);
+		RDebug::Print(_L("service type: %S"), &iapName);
+
+		view->ReadUintL(TPtrC(COMMDB_ID), val);
+		RDebug::Print(_L("IAP ID: %d, default=%d"), val, defaultIap);
+		if (val == defaultIap) {
+			isWLAN = ETrue;
+		}
+		
+		/*view->ReadUintL(TPtrC(IAP_NETWORK), val);
+		RDebug::Print(_L("Network ID: %d"), val);
+		
+	    view->ReadUintL(TPtrC(IAP_DIALOG_PREF), val);
+		RDebug::Print(_L("Dialog pref: %d"), val);*/
+		error = view->GotoNextRecord();
+	}
+	
+	if (isWLAN) {
+		User::InfoPrint(_L("On WLAN"));
+	} else {
+		User::InfoPrint(_L("No WLAN"));	
+	}
+	CleanupStack::PopAndDestroy(view);
+	}
+
 void CHttpClient::SetHeaderL(RHTTPHeaders aHeaders,
                              TInt aHdrField,
                              const TDesC8& aHdrValue)
@@ -69,31 +121,31 @@ TBool CHttpClient::IsActive()
 
 void CHttpClient::GetL(TDesC& url, TDesC& fileName) {
 	RDebug::Print(_L("CHttpClient::Get START"));
-	
-	CCommsDatabase *cdb = CCommsDatabase::NewL();
-	
-	CCommsDbTableView *view = cdb->OpenIAPTableViewMatchingBearerSetLC(KCommDbBearerWLAN | KCommDbBearerLAN | KCommDbBearerPAN, ECommDbConnectionDirectionUnknown);
-	
-	int error =view->GotoFirstRecord();
-	while (error == KErrNone) {
-		TBuf<100> iapName;
-		view->ReadTextL(_L("Name"), iapName);
-		RDebug::Print(_L("iapName: %S"), &iapName);
-		view->ReadTextL(TPtrC(IAP_BEARER_TYPE), iapName);
-		RDebug::Print(_L("bearer type: %S"), &iapName);
-		
-		error = view->GotoNextRecord();
-	}
-	
-	CleanupStack::PopAndDestroy(view);
-	
-	
+	//ManageConnections(ETrue);
+	//return;
 	iIsActive = ETrue;
 	TBuf8<256> url8;
 	url8.Copy(url);
 	if (iTransactionCount == 0) {
 		RDebug::Print(_L("** Opening session"));
 		iSession.OpenL();
+		RHTTPConnectionInfo connInfo = iSession.ConnectionInfo();
+		THTTPHdrVal val;
+		RStringPool pool = iSession.StringPool();
+
+		//TInt connPtr=REINTERPRET_CAST(TInt, &connection);
+		connInfo.Property(pool.StringF(HTTP::EHttpSocketConnection, 
+				RHTTPSession::GetTable()), val);
+		//
+		// TInt connPtr = REINTERPRET_CAST(TInt, &iConnection);
+		/*RConnection* connection=reinterpret_cast<RConnection*>(val.Int());
+		TBuf<200> bearer;
+		connection->GetDesSetting(TPtrC(IAP_BEARER_TYPE), bearer);
+		RDebug::Print(_L("Bearer: %S"), &bearer);*/
+			
+		/*connInfo.SetPropertyL(pool.StringF(HTTP::EHttpSocketConnection, 
+				RHTTPSession::GetTable()), THTTPHdrVal(connPtr));*/
+		
 	}
 	
 	RStringPool strP = iSession.StringPool();
