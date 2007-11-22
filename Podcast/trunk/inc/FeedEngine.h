@@ -26,7 +26,7 @@ public:
 	
 public:
 	void AddFeed(TFeedInfo *item);
-
+	void RemoveFeed(TInt aUid);
 	void UpdateFeed(TInt aFeedUid);
 
 	void GetFeeds(TFeedInfoArray& array);

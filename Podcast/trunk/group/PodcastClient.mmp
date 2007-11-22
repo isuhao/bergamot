@@ -94,6 +94,7 @@ LIBRARY			qiklbx.lib
 LIBRARY			eikdlg.lib
 LIBRARY			mmfcontrollerframework.lib 
 LIBRARY		    qikutils.lib
+LIBRARY			commdb.lib
 
 START BITMAP    PodcastClient.mbm
 TARGETPATH      \resource\apps

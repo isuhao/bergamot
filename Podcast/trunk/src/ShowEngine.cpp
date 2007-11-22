@@ -312,6 +312,49 @@ TInt CShowEngine::CompareShowsByDate(const TShowInfo &a, const TShowInfo &b)
 		}
 	}
 
+void CShowEngine::PurgeShowsByFeed(TInt aFeedUid)
+	{
+	for (int i=0;i<iShows.Count();i++)
+		{
+		if (iShows[i]->iFeedUid == aFeedUid)
+			{
+			if (iShows[i]->iDownloadState == EDownloaded) {
+				BaflUtils::DeleteFile(iFs, iShows[i]->iFileName);
+				iShows[i]->iDownloadState = ENotDownloaded;
+			}
+			}
+		}
+	}
+
+void CShowEngine::PurgePlayedShows()
+	{
+	for (int i=0;i<iShows.Count();i++)
+	{
+		if (iShows[i]->iPlayState == EPlayed) {
+			BaflUtils::DeleteFile(iFs, iShows[i]->iFileName);
+			iShows[i]->iDownloadState = ENotDownloaded;
+			// do we want this?
+			//iShows[i]->iPlayState = ENeverPlayed;
+		}
+	}
+}
+
+void CShowEngine::PurgeOldShows()
+	{
+	// TODO
+	}
+
+void CShowEngine::PurgeShow(TInt aShowUid)
+	{
+	for (int i=0;i<iShows.Count();i++)
+		{
+			if (iShows[i]->iUid == aShowUid) {
+				BaflUtils::DeleteFile(iFs, iShows[i]->iFileName);
+				iShows[i]->iDownloadState = ENotDownloaded;
+			}
+		}
+	}
+
 void CShowEngine::SelectShowsByFeed(TInt aFeedUid)
 	{
 	iSelectedShows.Reset();

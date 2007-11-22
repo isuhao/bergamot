@@ -29,7 +29,12 @@ public:
 	void Complete(CHttpClient* aClient, TBool aSuccessful);
 	void AddShow(TShowInfo *item);
 	void SaveShows();
-	
+
+	void PurgeShowsByFeed(TInt aFeedUid);
+	void PurgePlayedShows();
+	void PurgeOldShows();
+	void PurgeShow(TInt aShowUid);
+
 	TShowInfoArray& GetSelectedShows();
 	
 	void AddObserver(MShowEngineObserver *observer);
