@@ -14,6 +14,7 @@ _LIT(KConfigFile, "config.cfg");
 _LIT(KFeedsFileName, "feeds.cfg");
 _LIT(KShowDB, "metadata.db");
 _LIT(KFeedDB, "feeds.db");
+_LIT(KDefaultFeedsFile, "defaultfeeds.cfg");
 
 class CSettingsEngine : public CBase
 {
@@ -32,6 +33,7 @@ public:
 	TInt UpdateFeedInterval();
 	TInt MaxSimultaneousDownloads();
 	TBool DownloadAutomatically();	
+	TFileName& DefaultFeedsFileName();
 	TBool DownloadOnlyOnWLAN();	
 	TInt SpecificIAP();
 	void SetShowDir(TFileName& aFileName);
@@ -43,11 +45,14 @@ public:
 private:
 	TFileName iShowDir;
 	TFileName iFeedListFile;
+	TFileName iDefaultFeedsFile;
 	TInt iUpdateFeedInterval;
 	TBool iDownloadAutomatically;
 	TBool iDownloadOnlyOnWLAN;
 	TInt iMaxSimultaneousDownloads;
 	TInt iIap;
+	
+	TFileName PrivatePath();
 	
 	// the file session used to read and write settings
 	RFs iFs;

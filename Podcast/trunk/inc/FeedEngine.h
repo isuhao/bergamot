@@ -40,9 +40,9 @@ private:
 	void ConstructL();
 	CFeedEngine(CPodcastModel& aPodcastModel);
 
-	void LoadUserFeeds();
+	void ImportFeeds(TFileName &aFile);
 
-	void LoadFeeds();
+	TBool LoadFeeds();
 	void SaveFeeds();
 
 	// from HttpClientObserver
@@ -67,7 +67,8 @@ private:
 private:
 	CHttpClient* iFeedClient;
 	TClientState iClientState;
-	
+	CFeedTimer iFeedTimer;
+
 	CPodcastModel& iPodcastModel;
 	
 	// RSS parser
@@ -77,9 +78,7 @@ private:
 	TFeedInfoArray iFeeds;
 
 	TFeedInfo *iActiveFeed;
-	
-	CFeedTimer iFeedTimer;
-	
+		
 	// the file session used to read and write settings
 	RFs iFs;
 
