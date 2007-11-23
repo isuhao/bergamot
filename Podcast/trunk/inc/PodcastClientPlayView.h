@@ -69,5 +69,6 @@ private:
 	TBool iProgressAdded;
 	TFileName iLastImageFileName;
 	TShowInfo* iLastShowInfo;
+	TInt iLastZoomLevel;
 	};
 #endif // PODCASTPLAYVIEW_H

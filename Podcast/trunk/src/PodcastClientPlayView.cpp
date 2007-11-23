@@ -229,7 +229,7 @@ void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 			if(iPodcastModel.SetZoomState(zoomFactor))
 			{
 				// Sets the zoom factor for the view
-				//iLastZoomLevel = zoomFactor;
+				iLastZoomLevel = zoomFactor;
 				SetZoomFactorL(CQikAppUi::ZoomFactorL(zoomFactor , *iEikonEnv));
 			}
 		}
@@ -313,6 +313,12 @@ void CPodcastClientPlayView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid 
 
 	iLastShowInfo = NULL;
 	
+	if(	iLastZoomLevel !=  iPodcastModel.ZoomState())
+		{
+			iLastZoomLevel = iPodcastModel.ZoomState();
+			SetZoomFactorL(CQikAppUi::ZoomFactorL(iLastZoomLevel , *iEikonEnv));
+		}
+
 	UpdateViewL();
 	SetParentView( aPrevViewId );
 }
