@@ -9,4 +9,4 @@ WINSCW
 PRJ_EXPORTS
 
 .\config_emu.cfg \epoc32\winscw\c\private\A00046AE\config.cfg
-.\feeds.cfg \epoc32\winscw\c\logs
+.\defaultfeeds_emu.cfg \epoc32\winscw\c\private\A00046AE\defaultfeeds.cfg

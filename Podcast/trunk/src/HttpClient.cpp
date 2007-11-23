@@ -122,7 +122,6 @@ TBool CHttpClient::IsActive()
 void CHttpClient::GetL(TDesC& url, TDesC& fileName) {
 	RDebug::Print(_L("CHttpClient::Get START"));
 	//ManageConnections(ETrue);
-	//return;
 	iIsActive = ETrue;
 	TBuf8<256> url8;
 	url8.Copy(url);

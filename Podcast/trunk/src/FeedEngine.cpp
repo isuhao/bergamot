@@ -24,8 +24,9 @@ void CFeedEngine::ConstructL()
 	iFeedTimer.ConstructL();
 	iFeedTimer.SetPeriod(iPodcastModel.SettingsEngine().UpdateFeedInterval());
 	iFeedTimer.RunPeriodically();
-    LoadFeeds();
-    LoadUserFeeds();
+    if (!LoadFeeds()) {
+    	ImportFeeds(iPodcastModel.SettingsEngine().DefaultFeedsFileName());
+    }
 	}
 
 CFeedEngine::CFeedEngine(CPodcastModel& aPodcastModel) : iFeedTimer(this), iPodcastModel(aPodcastModel)
@@ -164,6 +165,7 @@ void CFeedEngine::AddFeed(TFeedInfo *item) {
 void CFeedEngine::RemoveFeed(TInt aUid) {
 	for (int i=0;i<iFeeds.Count();i++) {
 		if (iFeeds[i]->iUid == aUid) {
+			iPodcastModel.ShowEngine().PurgeShowsByFeed(aUid);
 			iFeeds.Remove(i);
 			RDebug::Print(_L("Removed feed"));
 			return;
@@ -235,11 +237,11 @@ void CFeedEngine::DownloadInfo(CHttpClient* aHttpClient, int aTotalBytes)
 		}*/
 	}
 
-void CFeedEngine::LoadUserFeeds()
+void CFeedEngine::ImportFeeds(TFileName &aFile)
 	{
 	
-	TBuf<100> configPath;
-	configPath.Copy(iPodcastModel.SettingsEngine().FeedListFile());
+	TFileName configPath;
+	configPath.Copy(aFile);
 	RDebug::Print(_L("Reading feeds from %S"), &configPath);
 	RFile rfile;
 	int error = rfile.Open(iFs, configPath,  EFileRead);
@@ -281,7 +283,7 @@ void CFeedEngine::LoadUserFeeds()
 		}
 	}
 	
-void CFeedEngine::LoadFeeds()
+TBool CFeedEngine::LoadFeeds()
 	{
 	RDebug::Print(_L("LoadFeeds"));
 	TFileName path;
@@ -295,7 +297,7 @@ void CFeedEngine::LoadFeeds()
 
 	if (!BaflUtils::FileExists(iFs, privatePath)) {
 		RDebug::Print(_L("No feed DB file"));	
-		return;
+		return EFalse;
 	}
 	
 	CFileStore* store;
@@ -305,7 +307,7 @@ void CFeedEngine::LoadFeeds()
 	if (error != KErrNone) {
 		RDebug::Print(_L("error=%d"), error);
 		CleanupStack::Pop(store);
-		return;
+		return EFalse;
 	}
 	
 	RStoreReadStream instream;
@@ -333,6 +335,7 @@ void CFeedEngine::LoadFeeds()
 	CleanupStack::PopAndDestroy(); // instream
 	
 	CleanupStack::PopAndDestroy(store);	
+	return ETrue;
 	}
 
 void CFeedEngine::SaveFeeds()

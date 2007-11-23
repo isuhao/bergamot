@@ -28,7 +28,8 @@ void CSettingsEngine::ConstructL()
 	iDownloadAutomatically = EFalse;
 	iDownloadOnlyOnWLAN = EFalse;
 	iShowDir.Copy(KPodcastDir);
-	
+	iDefaultFeedsFile.Copy(PrivatePath());
+	iDefaultFeedsFile.Append(KDefaultFeedsFile);
 	iFs.Connect();
 	LoadSettings();
 	}
@@ -124,6 +125,22 @@ TBool CSettingsEngine::DownloadOnlyOnWLAN()
 	{
 	return iDownloadOnlyOnWLAN;
 	}
+
+TFileName CSettingsEngine::PrivatePath()
+	{
+	TFileName privatePath;
+	RFs rfs;
+	rfs.Connect();
+	rfs.PrivatePath(privatePath);
+	BaflUtils::EnsurePathExistsL(rfs, privatePath);
+	rfs.Close();
+	return privatePath;
+	}
+
+TFileName& CSettingsEngine::DefaultFeedsFileName()
+{
+	return iDefaultFeedsFile;
+}
 
 TInt CSettingsEngine::SpecificIAP()
 	{
