@@ -8,6 +8,7 @@ class CEikEdwin;
 class CEikCheckBox;
 class CEikChoiceList;
 class CQikNumberEditor;
+class CQikSlider;
 
 /**
  * Dialog (old style) used to do settings
@@ -33,6 +34,7 @@ private:
 	CQikNumberEditor* iMaxSimDlsCtrl;
 	CEikChoiceList* iConnectionCtrl;
 	CEikChoiceList* iIAPListCtrl;
+	CQikSlider* iVolumeSlider;
 
 	TFileName iSelectedPathTemp;
 };

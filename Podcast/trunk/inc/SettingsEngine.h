@@ -16,6 +16,8 @@ _LIT(KShowDB, "metadata.db");
 _LIT(KFeedDB, "feeds.db");
 _LIT(KDefaultFeedsFile, "defaultfeeds.cfg");
 
+const TInt KMaxVolume = 100;
+
 class CSettingsEngine : public CBase
 {
 public:

@@ -3,7 +3,6 @@
 #include "SettingsEngine.h"
 #include "SoundEngine.h"
 
-const TInt KMaxVolume = 100;
 CSettingsEngine::CSettingsEngine(CPodcastModel& aPodcastModel) : iPodcastModel(aPodcastModel)
 {
 	iVolume = KMaxVolume;

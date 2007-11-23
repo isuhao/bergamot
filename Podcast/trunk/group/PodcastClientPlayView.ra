@@ -90,7 +90,20 @@ RESOURCE QIK_COMMAND_LIST r_podcast_playview_commands
 			text = STRING_r_view_feeds_cmd;
 			namedGroupId = 1;
 			},		
-			
+		QIK_COMMAND
+			{
+			id = EPodcastSettings;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_settings_cmd;
+			groupId = 11;  
+			},
+		QIK_COMMAND
+			{
+			id = EPodcastZoomSetting;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_zoom_cmd;
+			groupId = 11;  
+			},		
 		QIK_COMMAND
 			{
 			id = EEikCmdExit;
@@ -99,6 +112,7 @@ RESOURCE QIK_COMMAND_LIST r_podcast_playview_commands
 			stateFlags = EQikCmdFlagDebugOnly;
 			text = STRING_r_listbox_listview_cmd_close_debug;
 			shortText = STRING_r_listbox_listview_cmd_close_debug_shorttext;
+			groupId = 255;  
 			}
 		};
 	}

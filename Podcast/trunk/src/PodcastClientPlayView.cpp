@@ -8,7 +8,11 @@
 #include <coecobs.h>
 #include <qikappui.h>
 #include <eikimage.h>
+#include <QikZoomDlg.h>
+#include <devicekeys.h>
+#include <e32keys.h>
 
+#include "PodcastClientSettingsDlg.h"
 #include "HttpClient.h"
 #include "PodcastModel.h"
 #include "PodcastClient.hrh"
@@ -16,6 +20,7 @@
 #include "PodcastClientGlobals.h"
 #include "SoundEngine.h"
 #include "ShowEngine.h"
+#include "SettingsEngine.h"
 
 const TInt KAudioTickerPeriod = 1000000;
 const TInt KMaxCoverImageHeight = 96;
@@ -105,6 +110,34 @@ void CPodcastClientPlayView::HandleControlEventL(CCoeControl* aControl,TCoeEvent
 	}
 }
 
+TKeyResponse CPodcastClientPlayView::OfferKeyEventL(const TKeyEvent& aKeyEvent,TEventCode aType)
+{
+	CQikViewBase::OfferKeyEventL(aKeyEvent, aType);
+	if(aType == EEventKey)
+	{
+		switch(aKeyEvent.iCode)
+		{
+		case '*':
+		case '6':
+		case EDeviceKeyFourWayRight:
+			if(iPodcastModel.SettingsEngine().Volume() < KMaxVolume)
+			{
+				iPodcastModel.SettingsEngine().SetVolume(iPodcastModel.SettingsEngine().Volume()+1);
+			}
+			break;
+		case '4':
+		case '#':
+		case EDeviceKeyFourWayLeft:
+				if(iPodcastModel.SettingsEngine().Volume() > 0)
+			{
+				iPodcastModel.SettingsEngine().SetVolume(iPodcastModel.SettingsEngine().Volume()-1);
+			}
+			break;
+		}
+	}
+}
+
+
 TInt CPodcastClientPlayView::PlayingUpdateStaticCallbackL(TAny* aPlayView)
 {
 	static_cast<CPodcastClientPlayView*>(aPlayView)->UpdatePlayStatusL();
@@ -180,6 +213,28 @@ void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 
 	switch(aCommand.Id())
 	{
+	case EPodcastSettings:
+		{
+			CPodcastClientSettingsDlg* dlg = new (ELeave) CPodcastClientSettingsDlg(iPodcastModel);
+			dlg->ExecuteLD(R_PODCAST_SETTINGS_DLG);
+		}break;
+
+	case EPodcastZoomSetting:
+		{
+			// Launch the zoom dialog
+			const TInt zoomFactor = CQikZoomDialog::RunDlgLD(iPodcastModel.ZoomState());
+			
+			// If zoom state have changed it will be stored to persistent
+			// storage and a relayout will be performed
+			if(iPodcastModel.SetZoomState(zoomFactor))
+			{
+				// Sets the zoom factor for the view
+				//iLastZoomLevel = zoomFactor;
+				SetZoomFactorL(CQikAppUi::ZoomFactorL(zoomFactor , *iEikonEnv));
+			}
+		}
+		break;
+
 	case EPodcastPlay:
 		{
 
