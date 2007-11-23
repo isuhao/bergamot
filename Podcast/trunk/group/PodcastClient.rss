@@ -362,6 +362,22 @@ RESOURCE DIALOG r_podcast_settings_dlg
 				maxlength = 256;
 			};
 		},
+
+		DLG_LINE
+		{
+			id = EPodcastSettingsVolume;
+			itemflags = EQikDlgItemCaptionAboveControl;
+			prompt = STRING_r_podcast_setting_volume;
+			type = EQikCtSlider;
+			control = QIK_SLIDER 
+			{
+				min_value = 0;
+				max_value = 100;
+				num_markers = 10;
+			};
+		},
+
+
 		DLG_LINE
 		{
 			id = EPodcastSettingAutoDL;

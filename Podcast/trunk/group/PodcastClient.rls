@@ -97,6 +97,7 @@ rls_string STRING_r_podcast_setting_iaplist "Internet accounts:"
 rls_string STRING_r_podcast_setting_cancel_cmd "Cancel" // Cancel command in settings dialog
 rls_string STRING_r_podcast_setting_done_cmd "Done" // Done command in settings dialog
 rls_string STRING_r_podcast_setting_showdir_cmd "Select" // Use to select show dir
+rls_string STRING_r_podcast_setting_volume "Volume:" // Use to select show dir
 
 
 

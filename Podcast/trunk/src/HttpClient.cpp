@@ -60,13 +60,13 @@ void CHttpClient::ManageConnections(TBool aRequireWLAN)
 	
 	// WLAN som connectar men inte routar?
 	
-	CCommsDatabase *cdb = CCommsDatabase::NewL();
+	CCommsDatabase *cdb = CCommsDatabase::NewL(EDatabaseTypeIAP);
 	unsigned long defaultIap;
 	CCommsDbTableView* prefTableView = cdb->OpenTableLC( TPtrC( IAP ) );
 	prefTableView->ReadUintL( TPtrC( COMMDB_ID), defaultIap );
 	RDebug::Print(_L("default IAP: %d"), defaultIap);
 
-	CCommsDbTableView *view = cdb->OpenIAPTableViewMatchingBearerSetLC(KCommDbBearerWLAN | KCommDbBearerLAN | KCommDbBearerPAN, ECommDbConnectionDirectionUnknown);
+	CCommsDbTableView *view = cdb->OpenIAPTableViewMatchingBearerSetLC(KCommDbBearerWLAN | KCommDbBearerLAN | KCommDbBearerPAN, ECommDbConnectionDirectionOutgoing);
 	unsigned long val = 0;
 	int error =view->GotoFirstRecord();
 	TBool isWLAN = EFalse;

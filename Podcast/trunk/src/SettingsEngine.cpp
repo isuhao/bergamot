@@ -1,8 +1,12 @@
-#include "SettingsEngine.h"
 #include <bautils.h>
 
+#include "SettingsEngine.h"
+#include "SoundEngine.h"
+
+const TInt KMaxVolume = 100;
 CSettingsEngine::CSettingsEngine(CPodcastModel& aPodcastModel) : iPodcastModel(aPodcastModel)
 {
+	iVolume = KMaxVolume;
 }
 
 CSettingsEngine::~CSettingsEngine()
@@ -177,3 +181,18 @@ void CSettingsEngine::SetSpecificIAP(TInt aIap)
 	{
 	iIap = aIap;
 	}
+
+
+TUint CSettingsEngine::Volume()
+{
+	return iVolume;
+}
+
+void CSettingsEngine::SetVolume(TUint aVolume)
+{
+	iVolume = aVolume;
+	if(&iPodcastModel.SoundEngine() != NULL) {
+		iPodcastModel.SoundEngine().SetVolume(iVolume);
+	}
+}
+

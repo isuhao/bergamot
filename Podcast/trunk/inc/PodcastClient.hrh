@@ -54,7 +54,8 @@ enum TPodcatClientCommands
 	EPodcastSettingUpdateInterval,
 	EPodcastSettingMaxsimdls,
 	EPodcastSettingConnection,
-	EPodcastSettingIAPList
+	EPodcastSettingIAPList,
+	EPodcastSettingsVolume
 	};
 	
     

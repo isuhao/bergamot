@@ -1,5 +1,5 @@
 #include <e32std.h>
-
+#include "SettingsEngine.h"
 #include "SoundEngine.h"
 #include "PodcastModel.h"
 #include "PodcastData.h"
@@ -58,12 +58,7 @@ void CSoundEngine::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds
 
 	iState = ESoundEngineStopped;
 
-	if(iVolume == 0)
-	{
-		iVolume = iPlayer->MaxVolume();
-	}
-
-	iPlayer->SetVolume(iVolume);
+	iPlayer->SetVolume((iPodcastModel.SettingsEngine().Volume() * iPlayer->MaxVolume()) / 100);
 
 	if (iPodcastModel.PlayingPodcast() != NULL) {
 		RDebug::Print(_L("Resuming from position: %ld"), iPodcastModel.PlayingPodcast()->iPosition.Int64());
@@ -148,24 +143,15 @@ void CSoundEngine::Pause()
 	}
 }
 
-TUint CSoundEngine::Volume()
-{
-	return iVolume;
-}
-
-void CSoundEngine::SetVolume(TUint aVolume)
-{
-	iVolume = aVolume;
-
-	if(iState > ESoundEngineNotInitialized)
-	{
-		iPlayer->SetVolume(aVolume);
-	}
-}
-
 TSoundEngineState CSoundEngine::State()
 {
 	return iState;
 }
 
-
+void CSoundEngine::SetVolume(TUint aVolume)
+{
+	if(iState > ESoundEngineNotInitialized)
+		{
+			iPlayer->SetVolume((aVolume*iPlayer->MaxVolume()) / 100);
+		}
+}

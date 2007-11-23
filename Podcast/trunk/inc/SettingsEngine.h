@@ -42,6 +42,9 @@ public:
 	void SetDownloadAutomatically(TBool aAutoOn);
 	void SetDownloadOnlyOnWLAN(TBool aOnlyOnWLAN);
 	void SetSpecificIAP(TInt aIap);
+	
+	TUint Volume();
+	void SetVolume(TUint aVolume);
 private:
 	TFileName iShowDir;
 	TFileName iFeedListFile;
@@ -58,6 +61,8 @@ private:
 	RFs iFs;
 	
 	CPodcastModel &iPodcastModel;
+	TInt iVolume;
+
 	
 };
 

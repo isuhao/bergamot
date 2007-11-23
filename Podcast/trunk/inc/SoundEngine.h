@@ -44,11 +44,11 @@ public:
 	TUint PlayTime();
 	void Pause();
 
-	TUint Volume();
-	void SetVolume(TUint aVolume);
-
 	TSoundEngineState State();
 	void SetObserver(MSoundEngineObserver* aObserver);
+
+	void SetVolume(TUint aVolume);
+
 protected:
 	CSoundEngine(CPodcastModel& aPodcastModel);
 	void ConstructL();
@@ -57,7 +57,6 @@ protected:
 private:
     CMdaAudioPlayerUtility *iPlayer;
 	CPodcastModel& iPodcastModel;
-	TInt iVolume;
 	TSoundEngineState iState;
 	MSoundEngineObserver* iObserver;
 };
