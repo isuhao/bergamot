@@ -6,6 +6,7 @@ The intention is to release one alpha version every week, and hopefully beta and
 
 = Screenshots =
 These screenshots are from alpha 2.
+
 http://bergamot.googlecode.com/svn/wiki/pp3.jpg
 http://bergamot.googlecode.com/svn/wiki/pp4.jpg
 
