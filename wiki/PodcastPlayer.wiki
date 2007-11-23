@@ -2,14 +2,21 @@
 
 The Podcast Player aims to be a fully featured podcatcher for UIQ. It is still under development, but the latest alpha version is very usable.
 
-The intention is to release one alpha version every week, and hopefully a beta in December.
+The intention is to release one alpha version every week, and hopefully beta and release versions in December.
 
 = Screenshots =
-
+These screenshots are from alpha 2.
 http://bergamot.googlecode.com/svn/wiki/pp3.jpg
 http://bergamot.googlecode.com/svn/wiki/pp4.jpg
 
 = Releases = 
+
+  * Alpha 3 (November 25th)
+    * UI improvements (cover art, icons...)
+    * Basic configuration dialog
+    * Automatic feed update
+    * Proper feed handling, i.e. know what's new
+    * Automatic downloading
 
   * Alpha 2 (November 18th) |  [http://bergamot.googlecode.com/svn/Podcast/tags/alpha2 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha2/group/Podcast_udeb_signed.sis SIS]
     * New and improved UI thanks to Lars
@@ -45,25 +52,22 @@ I stumbled upon the [http://uiqopen.uiq.com/ UIQ Open] contest. Hopefully the po
 
 = Planning =
 
-This is how I plan to implement features. Please [http://groups.google.com/group/bergamot help me find out what's important!]
-
-  * Alpha 3 (November 25th)
-    * UI improvements (cover art, icons...)
-    * Configuration dialog
-    * Automatic feed update
-    * Proper feed handling, i.e. know what's new
-    * Automatic downloading
-    * ID3 parsing if necessary
-    * Volume control
+This is how we plan to implement features. Please [http://groups.google.com/group/bergamot help us find out what's important!]
 
   * Alpha 4 (December 2nd)
+    * Volume control
     * Video support?
     * Check connection type, option to download only on WLAN
+    * ID3 parsing if necessary
     * Support for other feeds (Atom, RSS 0.9, any more?)
+ 
+  * Alpha 5 (December 9th)
 
-  * Beta 1 (December 9th)
+  * Beta 1 (December 16th)
      * No new features
      * Memory consumption improvements
+
+  * Release 1 (Christmas?)
 
 = Name =
 
@@ -76,12 +80,13 @@ Some ideas
   * Ingot
   * Foundry (in which you produce casts)
   * Mint
-  * Repo Pod
+  * Repo Podcatcher
   * Hyland
+  * Alembic
 
 = Help! =
 
-Please [http://groups.google.com/group/bergamot help me out] with Podcast Player! If you don't think you can help, I think you're wrong. Most people can do at least one of the below:
+Please [http://groups.google.com/group/bergamot help us out] with Podcast Player! If you don't think you can help, we think you're wrong. Most people can do at least one of the below:
 
   * Feedback
   * Feature ideas
@@ -89,12 +94,4 @@ Please [http://groups.google.com/group/bergamot help me out] with Podcast Player
   * UI design
   * Coding
 
-Add any ideas as comments to this wiki page, or contact me at teknolog (at) gmail (dot) com, or write in the [http://groups.google.com/group/bergamot discussion group].
-
-= Links =
-These links might give us ideas
-
-  * [http://www.mobiedge.ca/index_files/page0002.htm Mobiedge Radio]
-  * [http://www.blogs.s60.com/nokiapodcasting/ Nokia Podcasting]
-  * [http://www.spodtronic.com/ Spodtronic]
-  * [PPDevel Development pages]
+Add any ideas as comments to this wiki page, or mail us at bergamot@googlegroups.com, or write directly in the [http://groups.google.com/group/bergamot discussion group].
