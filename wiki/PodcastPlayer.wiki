@@ -16,6 +16,7 @@ http://bergamot.googlecode.com/svn/wiki/pp4.jpg
     * UI improvements (cover art, icons...)
     * Basic configuration dialog
     * Adding and removal of feeds from the UI
+    * Feed encoding issues fixed
     * Automatic feed update
     * Proper feed handling, i.e. know what's new
     * Automatic downloading
