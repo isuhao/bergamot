@@ -1,4 +1,7 @@
 #include <bautils.h>
+#include <eikappui.h>
+#include <eikapp.h>
+#include <s32file.h>
 
 #include "SettingsEngine.h"
 #include "SoundEngine.h"
@@ -25,7 +28,7 @@ CSettingsEngine* CSettingsEngine::NewL(CPodcastModel& aPodcastModel)
 void CSettingsEngine::ConstructL()
 	{
 	// default values
-	iFeedListFile.Copy(KFeedsFileName);
+	iFeedListFile.Copy(KFeedsImportFileName);
 	iUpdateFeedInterval = 60;
 	iMaxSimultaneousDownloads = 1;
 	iDownloadAutomatically = EFalse;
@@ -34,14 +37,89 @@ void CSettingsEngine::ConstructL()
 	iDefaultFeedsFile.Copy(PrivatePath());
 	iDefaultFeedsFile.Append(KDefaultFeedsFile);
 	iFs.Connect();
-	LoadSettings();
+	TRAPD(error, LoadSettingsL());
+	if(error != KErrNone) {
+		RDebug::Print(_L("Importing settings"));
+		ImportSettings();
+		TRAP(error,SaveSettingsL());
+		if (error != KErrNone) {
+			RDebug::Print(_L("error saving: %d"), error);
+			}
+	}
 	}
 
-void CSettingsEngine::LoadSettings()
+void CSettingsEngine::LoadSettingsL()
 	{
-	TBuf<100> configPath;
-	iFs.PrivatePath(configPath);
+	RDebug::Print(_L("SaveSettingsL"));
+	//CDictionaryStore* iniFile = CEikonEnv::Static()->EikAppUi()->Application()->OpenIniFileLC(iFs);
+	//RDictionaryReadStream stream;
+	//stream.OpenLC(*iniFile, TUid::Uid(KSettingsUid));	
+	
+	TFileName configPath;
+	configPath.Copy(PrivatePath());
 	configPath.Append(KConfigFile);
+	
+	if (!BaflUtils::FileExists(iFs, configPath)) {
+		User::Leave(KErrNotFound);
+	}
+	
+	CFileStore* store;
+	store = CDirectFileStore::OpenL(iFs,configPath,EFileRead);
+	CleanupStack::PushL(store);
+	
+	RStoreReadStream stream;
+	stream.OpenLC(*store, store->Root());
+	
+	int len = stream.ReadInt32L();
+	stream.ReadL(iShowDir, len);
+	len = stream.ReadInt32L();
+	stream.ReadL(iFeedListFile, len);
+	iUpdateFeedInterval = stream.ReadInt32L();
+	iDownloadAutomatically = stream.ReadInt32L();
+	iDownloadOnlyOnWLAN = stream.ReadInt32L();
+	iMaxSimultaneousDownloads = stream.ReadInt32L();
+	iIap = stream.ReadInt32L();
+		
+	CleanupStack::PopAndDestroy(2); // readStream and iniFile
+	}
+
+void CSettingsEngine::SaveSettingsL()
+	{
+	RDebug::Print(_L("SaveSettingsL"));
+	//CDictionaryStore* iniFile = CEikonEnv::Static()->EikAppUi()->Application()->OpenIniFileLC(iFs);
+	//RDictionaryWriteStream stream;
+	//stream.AssignLC(*iniFile, TUid::Uid(KSettingsUid));
+	TFileName configPath;
+	configPath.Copy(PrivatePath());
+	configPath.Append(KConfigFile);
+	
+	CFileStore* store = CDirectFileStore::ReplaceLC(iFs, configPath, EFileWrite);
+	store->SetTypeL(KDirectFileStoreLayoutUid);
+
+	RStoreWriteStream stream;
+	TStreamId id = stream.CreateLC(*store);
+		
+	stream.WriteInt32L(iShowDir.Length());
+	stream.WriteL(iShowDir);
+	stream.WriteInt32L(iFeedListFile.Length());
+	stream.WriteL(iFeedListFile);
+	stream.WriteInt32L(iUpdateFeedInterval);
+	stream.WriteInt32L(iDownloadAutomatically);
+	stream.WriteInt32L(iDownloadOnlyOnWLAN);
+	stream.WriteInt32L(iMaxSimultaneousDownloads);
+	stream.WriteInt32L(iIap);
+	
+	stream.CommitL();
+	store->SetRootL(id);
+	store->CommitL();
+	CleanupStack::PopAndDestroy(2); // stream and store
+	}
+
+void CSettingsEngine::ImportSettings()
+	{
+	TFileName configPath;
+	configPath.Copy(PrivatePath());
+	configPath.Append(KConfigImportFile);
 	
 	BaflUtils::EnsurePathExistsL(iFs, configPath);
 	RDebug::Print(_L("Reading config from %S"), &configPath);
@@ -69,7 +147,7 @@ void CSettingsEngine::LoadSettings()
 		if (equalsPos != KErrNotFound) {
 			TPtrC tag = line.Left(equalsPos);
 			TPtrC value = line.Mid(equalsPos+1);
-			//RDebug::Print(_L("line: %S, tag: '%S', value: '%S'"), &line, &tag, &value);
+			RDebug::Print(_L("line: %S, tag: '%S', value: '%S'"), &line, &tag, &value);
 			if (tag.CompareF(_L("PodcastDir")) == 0) {
 				iShowDir.Copy(value);
 			} else if (tag.CompareF(_L("FeedList")) == 0) {

@@ -10,8 +10,11 @@
 	_LIT(KPodcastDir, "e:\\podcasts\\");	
 #endif
 
-_LIT(KConfigFile, "config.cfg");
-_LIT(KFeedsFileName, "feeds.cfg");
+const TInt KSettingsUid = 1000;
+
+_LIT(KConfigImportFile, "config.cfg");
+_LIT(KFeedsImportFileName, "feeds.cfg");
+_LIT(KConfigFile, "config.db");
 _LIT(KShowDB, "metadata.db");
 _LIT(KFeedDB, "feeds.db");
 _LIT(KDefaultFeedsFile, "defaultfeeds.cfg");
@@ -27,7 +30,9 @@ public:
 private:
 	void ConstructL();
 	CSettingsEngine(CPodcastModel& aPodcastModel);
-	void LoadSettings();
+	void ImportSettings();
+	void LoadSettingsL();
+	void SaveSettingsL();
 
 public:
 	TFileName& ShowDir();
@@ -48,24 +53,25 @@ public:
 	TUint Volume();
 	void SetVolume(TUint aVolume);
 private:
+	TFileName PrivatePath();
+
+private:
+	// the settings we serialize
 	TFileName iShowDir;
 	TFileName iFeedListFile;
-	TFileName iDefaultFeedsFile;
 	TInt iUpdateFeedInterval;
 	TBool iDownloadAutomatically;
 	TBool iDownloadOnlyOnWLAN;
 	TInt iMaxSimultaneousDownloads;
 	TInt iIap;
-	
-	TFileName PrivatePath();
+	TInt iVolume;
 	
 	// the file session used to read and write settings
 	RFs iFs;
-	
+	// reference to the model
 	CPodcastModel &iPodcastModel;
-	TInt iVolume;
+	TFileName iDefaultFeedsFile;
 
-	
 };
 
 #endif /*SETTINGSENGINE_H_*/

@@ -1,6 +1,7 @@
 #ifndef PODCASTMODEL_H
 #define PODCASTMODEL_H
 #include <e32base.h>
+#include <eikenv.h>
 #include "FeedInfo.h"
 #include "ShowInfo.h"
 
@@ -26,7 +27,7 @@ public:
 	void PlayPausePodcastL(TShowInfo * aPodcast);
 	TFeedInfo& ActiveFeedInfo();
 	void SetActiveFeedInfo(const TFeedInfo& aFeedInfo);
-
+	CEikonEnv* EikonEnv();
 	TShowInfoArray& ActiveShowList();
 	void SetActiveShowList(TShowInfoArray& aShowArray);
 
@@ -46,7 +47,8 @@ private:
    TShowInfoArray iActiveShowList;
    TFeedInfo iActiveFeed;
    TInt iZoomState;
-
+   
+   CEikonEnv* iEnv;
 };
 
 #endif // PODCASTMODEL_H

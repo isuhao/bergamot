@@ -30,10 +30,16 @@ CPodcastModel::CPodcastModel()
 
 void CPodcastModel::ConstructL()
 {
+	iEnv = CEikonEnv::Static();
 	iSettingsEngine = CSettingsEngine::NewL(*this);
 	iFeedEngine = CFeedEngine::NewL(*this);
 	iShowEngine = CShowEngine::NewL(*this);
 	iSoundEngine = CSoundEngine::NewL(*this);
+}
+
+CEikonEnv* CPodcastModel::EikonEnv()
+{
+	return iEnv;
 }
 
 void CPodcastModel::SetPlayingPodcast(TShowInfo* aPodcast)
