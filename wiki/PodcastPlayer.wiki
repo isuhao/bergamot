@@ -62,7 +62,7 @@ This is how we plan to implement features. Please [http://groups.google.com/grou
   * Alpha 4 (December 2nd)
     * Volume control
     * Configuration dialog
-    * Video support?
+    * ~~Video support?~~ (Bumped to 2.0)
     * Check connection type, option to download only on WLAN
     * Support for other feeds (Atom, RSS 0.9, any more?)
     * Automatic feed update
