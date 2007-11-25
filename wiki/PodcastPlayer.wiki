@@ -5,7 +5,7 @@ The Podcast Player aims to be a fully featured podcatcher for UIQ. It is still u
 The intention is to release one alpha version every week, and hopefully beta and release versions in December.
 
 = Screenshots =
-These screenshots are from alpha 2.
+These screenshots are from alpha 3.
 
 http://bergamot.googlecode.com/svn/wiki/pp5.jpg
 http://bergamot.googlecode.com/svn/wiki/pp6.jpg
