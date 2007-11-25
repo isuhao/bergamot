@@ -158,7 +158,6 @@ void CHttpClient::GetL(TDesC& url, TDesC& fileName) {
 	eHandler = CHttpEventHandler::NewL(this, iObserver);
 	eHandler->SetSaveFileName(fileName);
 	RHTTPTransaction trans = iSession.OpenTransactionL(uri, *eHandler, method);
-	  
 	RHTTPHeaders hdr = trans.Request().GetHeaderCollection();
 	// Add headers appropriate to all methods
 	SetHeaderL(hdr, HTTP::EUserAgent, KUserAgent);
@@ -168,6 +167,11 @@ void CHttpClient::GetL(TDesC& url, TDesC& fileName) {
 	// submit the transaction
 	trans.SubmitL();
 }
+
+void CHttpClient::Stop()
+	{
+	iSession.Close();
+	}
 
 void CHttpClient::ClientRequestCompleteL(TBool aSuccessful) {
 	iIsActive = EFalse;

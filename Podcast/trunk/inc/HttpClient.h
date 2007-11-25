@@ -14,6 +14,7 @@ public:
 	virtual ~CHttpClient();
 	static CHttpClient* NewL(MHttpClientObserver& aResObs);
 	void GetL(TDesC& url, TDesC& fileName);
+	void Stop();
   	TBool IsActive();
 	void ClientRequestCompleteL(TBool aSuccessful);
 	void ManageConnections(TBool aRequireWLAN);

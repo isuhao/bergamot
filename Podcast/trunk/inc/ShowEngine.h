@@ -15,7 +15,10 @@ public:
 	
 public:
 	void AddDownload(TShowInfo *info);
+	void RemoveDownload(TInt aUid);
+
 	void StopDownloads();
+	void ResumeDownloads();
 	
 	TShowInfo* ShowDownloading();
 
@@ -52,6 +55,7 @@ private:
 	
 	void LoadShows();
 
+	void AppendToSelection(TShowInfo *aInfo);
 	void ListAllFiles();
 	void ListDir(RFs &rfs, TDesC &folder, TShowInfoArray &files);
 

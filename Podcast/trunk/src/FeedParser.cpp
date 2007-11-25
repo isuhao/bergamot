@@ -37,7 +37,7 @@ void CFeedParser::OnStartDocumentL(const RDocumentParameters& aDocParam, TInt aE
 //	RDebug::Print(_L("OnStartDocumentL()"));
 	TBuf<1024> charset;
 	charset.Copy(aDocParam.CharacterSetName().DesC());
-	RDebug::Print(_L("charset: %S"), &charset);
+	//RDebug::Print(_L("charset: %S"), &charset);
 	iFeedState = EStateRoot;
 	activeString = NULL;
 	activeItem=new TShowInfo;
@@ -68,6 +68,10 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 			//RDebug::Print(_L("New item"));
 			iFeedState=EStateItem;
 			activeItem = new TShowInfo();
+			if (activeItem == NULL) {
+				RDebug::Print(_L("Out of memory!"));
+				return;
+			}
 			activeItem->iFeedUid = iActiveFeed->iUid;
 		// <channel> <title>
 		} else if (str.CompareF(KTagTitle) == 0) {
@@ -88,7 +92,7 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 		break;
 	case EStateChannelImage:
 		if (str.CompareF(KTagUrl) == 0) {
-			RDebug::Print(_L("Image url"));
+			//RDebug::Print(_L("Image url"));
 			iActiveFeed->iImageUrl.Copy(_L(""));
 			activeString = &iActiveFeed->iImageUrl;
 		}
@@ -171,13 +175,13 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 					activeItem->iPubDate = TTime(internetDate.DateTime());
 			
 					
-					RDebug::Print(_L("Successfully parsed pubdate %d/%d/%d %d:%d:%d"),
+					/*RDebug::Print(_L("Successfully parsed pubdate %d/%d/%d %d:%d:%d"),
 							activeItem->iPubDate.DateTime().Year(),
 							activeItem->iPubDate.DateTime().Month(),
 							activeItem->iPubDate.DateTime().Day(),
 							activeItem->iPubDate.DateTime().Hour(),
 							activeItem->iPubDate.DateTime().Minute(),
-							activeItem->iPubDate.DateTime().Second());
+							activeItem->iPubDate.DateTime().Second());*/
 							
 				} else {
 					RDebug::Print(_L("Pubdate parse error: %S"), &iPubDateString);

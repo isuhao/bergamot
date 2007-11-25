@@ -21,9 +21,9 @@ void CFeedEngine::ConstructL()
 	iParser = new (ELeave) CFeedParser(*this);
 	iFs.Connect();
 	iFeedClient = CHttpClient::NewL(*this);
-	/*iFeedTimer.ConstructL();
+	iFeedTimer.ConstructL();
 	iFeedTimer.SetPeriod(iPodcastModel.SettingsEngine().UpdateFeedInterval());
-	iFeedTimer.RunPeriodically();*/
+	iFeedTimer.RunPeriodically();
     if (!LoadFeeds()) {
     	ImportFeeds(iPodcastModel.SettingsEngine().DefaultFeedsFileName());
     }
@@ -44,8 +44,21 @@ CFeedEngine::~CFeedEngine()
 
 void CFeedEngine::UpdateAllFeeds()
 	{
+	iFeedsUpdating.Reset();
 	for (int i=0;i<iFeeds.Count();i++) {
-		UpdateFeed(iFeeds[i]->iUid);
+		iFeedsUpdating.Append(iFeeds[i]);
+	}
+	
+	UpdateNextFeed();
+	}
+
+void CFeedEngine::UpdateNextFeed()
+	{
+	if (iFeedsUpdating.Count() > 0) {
+		TFeedInfo *info = iFeedsUpdating[0];
+		iFeedsUpdating.Remove(0);
+		RDebug::Print(_L("** Updating %S"), &(info->iUrl));
+		UpdateFeed(info->iUid);
 	}
 	}
 
@@ -63,14 +76,14 @@ void CFeedEngine::UpdateFeed(TInt aFeedUid)
 	
 	if (pos != KErrNotFound) {
 		TPtrC str = feedInfo->iUrl.Mid(pos+1);
-		RDebug::Print(_L("Separated filename: %S"), &str);
+		//RDebug::Print(_L("Separated filename: %S"), &str);
 		filePath.Append(str);
 	} else {
 		filePath.Append(_L("unknown"));
 	}
 
 	feedInfo->iFileName.Copy(filePath);
-	RDebug::Print(_L("URL: %S, fileName: %S"), &feedInfo->iUrl, &feedInfo->iFileName);
+	//RDebug::Print(_L("URL: %S, fileName: %S"), &feedInfo->iUrl, &feedInfo->iFileName);
 	iFeedClient->GetL(feedInfo->iUrl, feedInfo->iFileName);
 	RDebug::Print(_L("UpdateFeed END"));
 	}
@@ -127,6 +140,7 @@ void CFeedEngine::NewShow(TShowInfo *item)
 
 void CFeedEngine::GetFeedImage(TFeedInfo *aFeedInfo)
 	{
+	RDebug::Print(_L("GetFeedImage"));
 	iClientState = EImage;
 	TFileName filePath;
 	GetFeedDir(aFeedInfo, filePath);
@@ -215,12 +229,18 @@ void CFeedEngine::Complete(CHttpClient* /*aClient*/, TBool aSuccessful)
 		iParser->ParseFeedL(iActiveFeed->iFileName, iActiveFeed);
 		iActiveFeed->iUid = DefaultHash::Des16(iActiveFeed->iUrl);
 		iActiveFeed->iImageUrl.Trim();
-		if (iActiveFeed->iImageUrl.Length() > 0) {
+		
+		TFileName fileName;
+		MakeFileNameFromUrl(iActiveFeed->iImageUrl, fileName);
+		
+		if (!BaflUtils::FileExists(iFs, fileName) && iActiveFeed->iImageUrl.Length() > 0) {
 			GetFeedImage(iActiveFeed);
 		}
 		
 		SaveFeeds();
 		iPodcastModel.ShowEngine().SaveShows();
+		
+		UpdateNextFeed();
 	}
 }
 

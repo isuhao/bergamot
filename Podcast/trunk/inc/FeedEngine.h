@@ -64,6 +64,7 @@ private:
 	
 	static TInt CompareFeedsByTitle(const TFeedInfo &a, const TFeedInfo &b);
 
+	void UpdateNextFeed();
 private:
 	CHttpClient* iFeedClient;
 	TClientState iClientState;
@@ -82,6 +83,7 @@ private:
 	// the file session used to read and write settings
 	RFs iFs;
 
+	TFeedInfoArray iFeedsUpdating;
 	// observers that will receive callbacks
     RArray<MFeedEngineObserver*> iObservers;
 };

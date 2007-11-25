@@ -36,6 +36,7 @@ void CSettingsEngine::ConstructL()
 	iShowDir.Copy(KPodcastDir);
 	iDefaultFeedsFile.Copy(PrivatePath());
 	iDefaultFeedsFile.Append(KDefaultFeedsFile);
+	iMaxListItems = 100;
 	iFs.Connect();
 	TRAPD(error, LoadSettingsL());
 	if(error != KErrNone) {
@@ -207,6 +208,10 @@ TBool CSettingsEngine::DownloadOnlyOnWLAN()
 	return iDownloadOnlyOnWLAN;
 	}
 
+TInt CSettingsEngine::MaxListItems() 
+	{
+	return iMaxListItems;
+	}
 TFileName CSettingsEngine::PrivatePath()
 	{
 	TFileName privatePath;

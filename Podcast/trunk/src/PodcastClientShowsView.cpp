@@ -141,7 +141,7 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 		case EPodcastUpdateFeed:
 			{
 				if (iPodcastModel.ActiveFeedInfo().iUrl.Length()>0) {
-					User::InfoPrint(_L("Getting feed..."));
+					User::InfoPrint(_L("Updating feed..."));
 					iPodcastModel.FeedEngine().UpdateFeed(iPodcastModel.ActiveFeedInfo().iUid);
 				} 
 			}
