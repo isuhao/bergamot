@@ -43,10 +43,12 @@ http://bergamot.googlecode.com/svn/wiki/pp8.jpg
   # Choose Feeds
   # Choose one of the pre-configured feeds
   # Choose Update
-  # Get a show by selecting it
-  # When the Download is complete, the show can be played from the feed list, or the Downloaded list in the main menu
+  # View show info for a show in the feed
+  # Download the show by pressing Get
+  # When the Download is complete, the show can be played
   # Go to Player to play, pause or jump inside the show
-  # Add your own feeds by editing d:\podcasts\feeds.cfg, the syntax is "title|URL" without the quotes.
+  # Add or remove feeds from the menu in the feed view
+  # Purge shows or entire feeds from the menu
 
 = The UIQ Open Contest =
 
