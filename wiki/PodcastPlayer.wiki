@@ -7,19 +7,18 @@ The intention is to release one alpha version every week, and hopefully beta and
 = Screenshots =
 These screenshots are from alpha 2.
 
-http://bergamot.googlecode.com/svn/wiki/pp3.jpg
-http://bergamot.googlecode.com/svn/wiki/pp4.jpg
+http://bergamot.googlecode.com/svn/wiki/pp5.jpg
+http://bergamot.googlecode.com/svn/wiki/pp6.jpg
+http://bergamot.googlecode.com/svn/wiki/pp7.jpg
+http://bergamot.googlecode.com/svn/wiki/pp8.jpg
 
 = Releases = 
 
-  * Alpha 3 (November 25th)
+  * Alpha 3 (November 25th) | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha3 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha3/group/Podcast_udeb_signed.sis SIS]
     * UI improvements (cover art, icons...)
     * Adding and removal of feeds from the UI
     * Feed encoding issues fixed
     * Purging (removal) of downloaded files and feeds
-    * Basic configuration dialog
-    * Automatic feed update
-    * Automatic downloading
 
   * Alpha 2 (November 18th) |  [http://bergamot.googlecode.com/svn/Podcast/tags/alpha2 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha2/group/Podcast_udeb_signed.sis SIS]
     * New and improved UI thanks to Lars
@@ -59,11 +58,13 @@ This is how we plan to implement features. Please [http://groups.google.com/grou
 
   * Alpha 4 (December 2nd)
     * Volume control
+    * Configuration dialog
     * Video support?
     * Check connection type, option to download only on WLAN
-    * ID3 parsing if necessary
     * Support for other feeds (Atom, RSS 0.9, any more?)
- 
+    * Automatic feed update
+    * Automatic downloading
+
   * Alpha 5 (December 9th)
 
   * Beta 1 (December 16th)
