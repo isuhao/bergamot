@@ -37,6 +37,7 @@ http://bergamot.googlecode.com/svn/wiki/pp8.jpg
 = How to use =
 *WARNING! Downloading large files  such as podcasts over mobile phone networks can be extremely expensive. Please make sure you have a flat rate data plan or use a wireless LAN before you use this program!*
 
+  # Uninstall any old versions of Podcast Player
   # Download SIS file
   # Install on your phone
   # Run the program
