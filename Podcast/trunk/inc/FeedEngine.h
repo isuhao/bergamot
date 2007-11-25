@@ -35,13 +35,13 @@ public:
 	
 	void AddObserver(MFeedEngineObserver *observer);
 	void UpdateAllFeeds();
+	void RunFeedTimer();
 	
 private:
 	void ConstructL();
 	CFeedEngine(CPodcastModel& aPodcastModel);
 
 	void ImportFeeds(TFileName &aFile);
-
 	TBool LoadFeeds();
 	void SaveFeeds();
 

@@ -114,7 +114,12 @@ void CShowEngine::AddShow(TShowInfo *item) {
 			return;
 		}
 	}
+	
 	iShows.Append(item);
+
+	if (!iSuppressAutoDownload && iPodcastModel.SettingsEngine().DownloadAutomatically()) {
+		AddDownload(item);
+	}
 	}
 
 void CShowEngine::MakeFileNameFromUrl(TDesC &aUrl, TFileName &fileName)
@@ -204,6 +209,7 @@ void CShowEngine::LoadShows()
 	RDebug::Print(_L("Read count: %d"), count);
 	TShowInfo *readData;
 	
+	iSuppressAutoDownload = ETrue;
 	for (int i=0;i<count;i++) {
 		readData = new TShowInfo;
 		TRAPD(error, instream  >> *readData);
@@ -219,6 +225,7 @@ void CShowEngine::LoadShows()
 		}
 	}
 	exit_point:
+	iSuppressAutoDownload = EFalse;
 	CleanupStack::PopAndDestroy(); // instream
 	
 	CleanupStack::PopAndDestroy(store);	
@@ -486,13 +493,13 @@ void CShowEngine::AddDownload(TShowInfo *info)
 
 void CShowEngine::DownloadNextShow()
 {
+	if (iShowClient->IsActive()) {
+		//RDebug::Print(_L("Show client busy..."));
+		return;
+	}
+
 	for (int i=0;i<iObservers.Count();i++) {
 		iObservers[i]->DownloadQueueUpdated(1, iShowsDownloading.Count() -1);
-	}
-	
-	if (iShowClient->IsActive()) {
-		RDebug::Print(_L("Show client busy..."));
-		return;
 	}
 	
 	if (iShowsDownloading.Count() > 0) {

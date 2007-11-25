@@ -22,8 +22,9 @@ void CFeedEngine::ConstructL()
 	iFs.Connect();
 	iFeedClient = CHttpClient::NewL(*this);
 	iFeedTimer.ConstructL();
-	iFeedTimer.SetPeriod(iPodcastModel.SettingsEngine().UpdateFeedInterval());
-	iFeedTimer.RunPeriodically();
+	
+	RunFeedTimer();
+	
     if (!LoadFeeds()) {
     	ImportFeeds(iPodcastModel.SettingsEngine().DefaultFeedsFileName());
     }
@@ -40,6 +41,17 @@ CFeedEngine::~CFeedEngine()
 	iFs.Close();
 	delete iParser;
 	delete iFeedClient;
+	}
+
+void CFeedEngine::RunFeedTimer()
+	{
+	int interval = iPodcastModel.SettingsEngine().UpdateFeedInterval();
+	iFeedTimer.Cancel();
+
+	if (interval != 0) {
+		iFeedTimer.SetPeriod(interval);
+		iFeedTimer.RunPeriodically();
+	}
 	}
 
 void CFeedEngine::UpdateAllFeeds()

@@ -5,6 +5,7 @@
 
 #include "SettingsEngine.h"
 #include "SoundEngine.h"
+#include "FeedEngine.h"
 
 CSettingsEngine::CSettingsEngine(CPodcastModel& aPodcastModel) : iPodcastModel(aPodcastModel)
 {
@@ -242,6 +243,7 @@ void CSettingsEngine::SetShowDir(TFileName& aFileName)
 void CSettingsEngine::SetUpdateFeedInterval(TInt aInterval)
 	{
 	iUpdateFeedInterval = aInterval;
+	iPodcastModel.FeedEngine().RunFeedTimer();
 	}
 
 void CSettingsEngine::SetMaxSimultaneousDownloads(TInt aMaxDownloads)

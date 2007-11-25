@@ -83,6 +83,9 @@ private:
 	
 	CPodcastModel& iPodcastModel;
 
+	// prevents auto download on files read from DB
+	TBool iSuppressAutoDownload;
+	
 	// observers that will receive callbacks
     RArray<MShowEngineObserver*> iObservers;
 
