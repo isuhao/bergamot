@@ -21,9 +21,9 @@ void CFeedEngine::ConstructL()
 	iParser = new (ELeave) CFeedParser(*this);
 	iFs.Connect();
 	iFeedClient = CHttpClient::NewL(*this);
-	iFeedTimer.ConstructL();
+	/*iFeedTimer.ConstructL();
 	iFeedTimer.SetPeriod(iPodcastModel.SettingsEngine().UpdateFeedInterval());
-	iFeedTimer.RunPeriodically();
+	iFeedTimer.RunPeriodically();*/
     if (!LoadFeeds()) {
     	ImportFeeds(iPodcastModel.SettingsEngine().DefaultFeedsFileName());
     }
