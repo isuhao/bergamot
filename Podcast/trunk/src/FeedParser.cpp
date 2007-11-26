@@ -80,7 +80,7 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 				RDebug::Print(_L("Out of memory!"));
 				return;
 			}
-			activeItem->iFeedUid = iActiveFeed->iUid;
+			activeItem->SetFeedUid(iActiveFeed->iUid);
 		// <channel> <lastBuildDate>
 		} else if (str.CompareF(KTagLastBuildDate) == 0) {
 			RDebug::Print(_L("Last build date!"));
@@ -138,7 +138,9 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 					activeItem->SetUrl(val16);
 				} else if (attr16.Compare(KTagLength) == 0) {
 					TLex8 lex(attr.Value().DesC());
-					lex.Val(activeItem->iShowSize, EDecimal);
+					TUint size = -1;
+					lex.Val(size, EDecimal);
+					activeItem->SetShowSize(size);
 					//RDebug::Print(_L("Setting length to %d"), activeItem->iShowSize);
 				}
 			}
@@ -218,7 +220,7 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 				TInternetDate internetDate;
 				TRAPD(parseError, internetDate.SetDateL(temp));
 				if(parseError == KErrNone) {				
-					activeItem->iPubDate = TTime(internetDate.DateTime());
+					activeItem->SetPubDate(TTime(internetDate.DateTime()));
 			
 					
 					/*RDebug::Print(_L("Successfully parsed pubdate %d/%d/%d %d:%d:%d"),
@@ -264,7 +266,7 @@ void CFeedParser::OnContentL(const TDesC8& aBytes, TInt aErrorCode)
 		//str.Copy(aBytes);
 		//	RDebug::Print(_L("OnContentL: %S, state: %d"), &str, iFeedState);
 
-		if (activeString->Length() + str.Length() < KUrlLength) {
+		if (activeString->Length() + str.Length() < KBufferLength) {
 			activeString->Append(str);
 		}
 		//RDebug::Print(_L("activeString: %S"), activeString);

@@ -77,10 +77,10 @@ void CPodcastModel::PlayPausePodcastL(CShowInfo* aPodcast)
 	
 	// special treatment if this podcast is already active
 	if (iPlayingPodcast == aPodcast && SoundEngine().State() > ESoundEngineNotInitialized ) {
-		if (aPodcast->iPlayState == EPlaying) {
+		if (aPodcast->PlayState() == EPlaying) {
 			SoundEngine().Pause();
-			aPodcast->iPosition = iSoundEngine->Position();
-			aPodcast->iPlayState = EPlayed;
+			aPodcast->SetPosition(iSoundEngine->Position());
+			aPodcast->SetPlayState(EPlayed);
 		} else {
 			iSoundEngine->Play();
 		}
@@ -88,15 +88,15 @@ void CPodcastModel::PlayPausePodcastL(CShowInfo* aPodcast)
 		// switching file, so save position
 		iSoundEngine->Pause();
 		if (iPlayingPodcast != NULL) {
-			iPlayingPodcast->iPosition = iSoundEngine->Position();
-			iPlayingPodcast->iPlayState  = EPlayed;
+			iPlayingPodcast->SetPosition(iSoundEngine->Position());
+			iPlayingPodcast->SetPlayState(EPlayed);
 		}
 		
 		iSoundEngine->Stop();
 
 		if(aPodcast != NULL) {
-			RDebug::Print(_L("Starting: %S"), &(aPodcast->iFileName));
-			TRAPD(error, iSoundEngine->OpenFileL(aPodcast->iFileName));
+			RDebug::Print(_L("Starting: %S"), &(aPodcast->FileName()));
+			TRAPD(error, iSoundEngine->OpenFileL(aPodcast->FileName()));
 			if (error != KErrNone) {
 				RDebug::Print(_L("Error: %d"), error);
 			}

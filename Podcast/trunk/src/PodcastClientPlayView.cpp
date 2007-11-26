@@ -422,12 +422,12 @@ void CPodcastClientPlayView::UpdateViewL()
 			iInformationEdwin->SetTextL(&showInfo->Description());
 
 			iInformationEdwin->HandleTextChangedL();
-			if(showInfo->iDownloadState == ENotDownloaded)
+			if(showInfo->DownloadState() == ENotDownloaded)
 			{
 				comMan.SetInvisible(*this, EPodcastDownloadShow, EFalse);
 				comMan.SetInvisible(*this, EPodcastPlay, ETrue);
 			}
-			else if(showInfo->iDownloadState != EDownloaded)
+			else if(showInfo->DownloadState() != EDownloaded)
 			{
 				comMan.SetInvisible(*this, EPodcastPlay, ETrue);
 				comMan.SetInvisible(*this, EPodcastDownloadShow, ETrue);
@@ -438,7 +438,7 @@ void CPodcastClientPlayView::UpdateViewL()
 				comMan.SetInvisible(*this, EPodcastDownloadShow, ETrue);
 			}
 
-			TFeedInfo* feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(showInfo->iFeedUid);
+			TFeedInfo* feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(showInfo->FeedUid());
 			
 			if(feedInfo != NULL && feedInfo->iImageFileName.Length()>0)
 			{

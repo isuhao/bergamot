@@ -56,9 +56,6 @@ private:
 	void LoadShows();
 
 	void AppendToSelection(CShowInfo *aInfo);
-	void ListAllFiles();
-	void ListDir(RFs &rfs, TDesC &folder, CShowInfoArray &files);
-
 	static TInt CompareShowsByDate(const CShowInfo &a, const CShowInfo &b);
 
 	void DownloadNextShow();

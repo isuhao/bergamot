@@ -38,6 +38,8 @@ enum TFeedState {
 	EStateItemPubDate
 };
 
+const int KBufferLength = 1024;
+
 class CFeedParser : public MContentHandler, public CBase
 {
 public:
@@ -64,10 +66,12 @@ public: // from MContentHandler
 private:
 	MFeedParserObserver& iCallbacks;
 	TFeedState iFeedState;
+
 	CShowInfo* activeItem;
-	TDes* activeString;
 	TFeedInfo *iActiveFeed;
-	TBuf<2048> iBuffer;
+
+	TDes* activeString;
+	TBuf<KBufferLength> iBuffer;
 	
 	TUint iMaxItems;
 	TUint iItemsParsed;

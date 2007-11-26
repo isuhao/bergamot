@@ -434,7 +434,7 @@ void CFeedEngine::CleanHtml(TDes &str)
 	int startPos = str.Locate('<');
 	int endPos = str.Locate('>');
 	//RDebug::Print(_L("length: %d, startPos: %d, endPos: %d"), str.Length(), startPos, endPos);
-	TBuf<KDescriptionLength> tmp;
+	TBuf<2048> tmp;
 	while (startPos != KErrNotFound && endPos != KErrNotFound && endPos > startPos) {
 		//RDebug::Print(_L("Cleaning out %S"), &str.Mid(startPos, endPos-startPos+1));
 		tmp.Copy(str.Left(startPos));

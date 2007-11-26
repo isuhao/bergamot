@@ -6,10 +6,7 @@
 #include <f32file.h>
 #include <s32strm.h>
 
-const int KShowInfoVersion = 4;
-const int KTitleLength=256;
-const int KUrlLength=1024;
-const int KDescriptionLength=2048;
+const int KShowInfoVersion = 5;
 
 enum TPlayState {
 	ENeverPlayed,
@@ -30,27 +27,52 @@ public:
 	~CShowInfo();
 	void ExternalizeL(RWriteStream& aStream) const;
 	void InternalizeL(RReadStream& aStream);
+
+public:
 	TDesC& Title();
 	void SetTitle(TDesC &aTitle);
+
 	TDesC& Url();
 	void SetUrl(TDesC &aUrl);
+	
 	TDesC& Description();
 	void SetDescription(TDesC &aDescription);
 	
-public:
-	TInt iFeedUid;
-	TFileName iFileName;
+	TDesC& FileName();
+	void SetFileName(TDesC &aFileName);
+	
+	TTimeIntervalMicroSeconds& Position();
+	void SetPosition(TTimeIntervalMicroSeconds aPosition);
+
+	TPlayState PlayState();
+	void SetPlayState(TPlayState aPlayState);
+
+	TDownloadState DownloadState();
+	void SetDownloadState(TDownloadState aDownloadState);
+
+	TUint FeedUid();
+	void SetFeedUid(TUint aFeedUid);
+	
+	TUint Uid();
+	
+	TUint ShowSize();
+	void SetShowSize(TUint aShowSize);
+	
+	const TTime PubDate();
+	void SetPubDate(TTime aPubDate);
+	
+private:
+	HBufC* iTitle;
+	HBufC* iUrl;
+	HBufC* iDescription;
+	HBufC* iFileName;
 	TTimeIntervalMicroSeconds iPosition;
 	TPlayState iPlayState;
 	TDownloadState iDownloadState;
-	TInt iUid;
-	TUint32 iShowSize;
+	TUint iFeedUid;
+	TUint iUid;
+	TUint iShowSize;
 	TTime iPubDate;
-	
-private:
-	HBufC *iTitle;
-	HBufC *iUrl;
-	HBufC *iDescription;
 
 };
 

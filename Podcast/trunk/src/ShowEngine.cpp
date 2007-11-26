@@ -33,7 +33,6 @@ void CShowEngine::ConstructL()
 	iShowClient = CHttpClient::NewL(*this);
 	LoadShows();
 	iLinearOrder = new TLinearOrder<CShowInfo>(CShowEngine::CompareShowsByDate);
-	ListAllFiles();
 	}
 
 void CShowEngine::StopDownloads() 
@@ -52,7 +51,7 @@ void CShowEngine::RemoveDownload(TInt aUid)
 	{
 	RDebug::Print(_L("RemoveFromDownloadQueue"));
 	for (int i=0;iShowsDownloading.Count();i++) {
-		if (iShowsDownloading[i]->iUid == aUid) {
+		if (iShowsDownloading[i]->Uid() == aUid) {
 			iShowsDownloading.Remove(i);
 			for (int j=0;j<iObservers.Count();j++) {
 				iObservers[j]->DownloadQueueUpdated(1, iShowsDownloading.Count()-1);
@@ -88,14 +87,14 @@ void CShowEngine::DownloadInfo(CHttpClient* aHttpClient, int aTotalBytes)
 	{
 	RDebug::Print(_L("About to download %d bytes"), aTotalBytes);
 	if(aHttpClient == iShowClient && iShowDownloading != NULL && aTotalBytes != -1) {
-		iShowDownloading->iShowSize = aTotalBytes;
+		iShowDownloading->SetShowSize(aTotalBytes);
 		}
 	}
 
 
 void CShowEngine::GetShow(CShowInfo *info)
 	{
-	TFeedInfo *feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(info->iFeedUid);
+	TFeedInfo *feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(info->FeedUid());
 	if (feedInfo == NULL) {
 		RDebug::Print(_L("Feed not found!"));
 		return;
@@ -109,8 +108,8 @@ void CShowEngine::GetShow(CShowInfo *info)
 	filePath.Append(fileName);
 
 	RDebug::Print(_L("filePath: %S"), &filePath);
-	info->iFileName.Copy(filePath);
-	iShowClient->GetL(info->Url(), info->iFileName);
+	info->SetFileName(filePath);
+	iShowClient->GetL(info->Url(), info->FileName());
 	}
 
 void CShowEngine::AddShow(CShowInfo *item) {
@@ -154,10 +153,10 @@ void CShowEngine::AddObserver(MShowEngineObserver *observer)
 
 void CShowEngine::Complete(CHttpClient *aHttpClient, TBool aSuccessful)
 	{
-	RDebug::Print(_L("File %S complete"), &iShowDownloading->iFileName);
+	RDebug::Print(_L("File %S complete"), &iShowDownloading->FileName());
 	
 	if (aSuccessful) {
-		iShowDownloading->iDownloadState = EDownloaded;
+		iShowDownloading->SetDownloadState(EDownloaded);
 	}
 
 	SaveShows();
@@ -221,9 +220,9 @@ void CShowEngine::LoadShows()
 		readData = new CShowInfo;
 		TRAPD(error, instream  >> *readData);
 		
-		if (readData->iUid != lastUid) {
-			lastUid = readData->iUid;
-			feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(readData->iUid);
+		if (readData->Uid() != lastUid) {
+			lastUid = readData->Uid();
+			feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(readData->Uid());
 		}
 		
 		// if this show does not have a valid feed, we don't bother
@@ -233,11 +232,11 @@ void CShowEngine::LoadShows()
 		//RDebug::Print(_L("error: %d"), error);
 		AddShow(readData);
 		
-		if (readData->iDownloadState == EQueued) {
+		if (readData->DownloadState() == EQueued) {
 			AddDownload(readData);
-		} else if (readData->iDownloadState == EDownloaded) {
-			if (!BaflUtils::FileExists(iFs, readData->iFileName)) {
-				readData->iDownloadState = ENotDownloaded;
+		} else if (readData->DownloadState() == EDownloaded) {
+			if (!BaflUtils::FileExists(iFs, readData->FileName())) {
+				readData->SetDownloadState(ENotDownloaded);
 			}
 		}
 	}
@@ -281,59 +280,6 @@ void CShowEngine::SaveShows()
 	CleanupStack::PopAndDestroy(store);	
 	}
 
-void CShowEngine::ListDir(RFs &rfs, TDesC &folder, CShowInfoArray &files) {
-	CDirScan *dirScan = CDirScan::NewLC(rfs);
-	RDebug::Print(_L("Listing dir: %S"), &folder);
-	dirScan ->SetScanDataL(folder, KEntryAttDir, ESortByName);
-	
-	CDir *dirPtr;
-	dirScan->NextL(dirPtr);
-	for (int i=0;i<dirPtr->Count();i++) {
-		const TEntry &entry = (TEntry) (*dirPtr)[i];
-		if (entry.IsDir())  {
-			TBuf<100> subFolder;
-			subFolder.Copy(folder);
-			subFolder.Append(entry.iName);
-			subFolder.Append(_L("\\"));
-			ListDir(iFs, subFolder, iShows);
-		} else {
-		if (entry.iName.Right(3).CompareF(_L("mp3")) == 0 ||
-			entry.iName.Right(3).CompareF(_L("aac")) == 0 ||
-			entry.iName.Right(3).CompareF(_L("wav")) == 0) {
-			TBool exists = EFalse;
-			TFileName fileName;
-			fileName.Copy(folder);
-			fileName.Append(entry.iName);
-
-			for (int i=0;i<iShows.Count();i++) {
-				if (iShows[i]->iFileName.Compare(fileName) == 0) {
-					RDebug::Print(_L("Already listed %S"), &fileName);
-					exists = ETrue;
-					break;
-				}
-			}
-			
-			if (exists) {
-				continue;
-			}
-			
-			RDebug::Print(entry.iName);
-			CShowInfo *pID = new CShowInfo;
-			pID->iFileName.Copy(fileName);
-			//pID->iTitle.Copy(entry.iName);		
-			pID->iPosition = 0;
-			pID->iDownloadState = EDownloaded;
-			RDebug::Print(_L("Adding!"));
-			AddShow(pID);
-		}
-		}
-	}
-	delete dirPtr;
-	CleanupStack::Pop(dirScan);
-
-}
-
-
 void CShowEngine::SelectAllShows()
 	{
 	iSelectedShows.Reset();
@@ -346,28 +292,29 @@ void CShowEngine::SelectAllShows()
 
 TInt CShowEngine::CompareShowsByDate(const CShowInfo &a, const CShowInfo &b)
 	{
-		if (a.iPubDate > b.iPubDate) {
+		/*if (a.PubDate() > b.PubDate()) {
 //			RDebug::Print(_L("Sorting %S less than %S"), &a.iTitle, &b.iTitle);
 			return -1;
-		} else if (a.iPubDate == b.iPubDate) {
+		} else if (((CShowInfo)a).PubDate() == ((CShowInfo)b).PubDate()) {
 //			RDebug::Print(_L("Sorting %S equal to %S"), &a.iTitle, &b.iTitle);
 			return 0;
 		} else {
 //			RDebug::Print(_L("Sorting %S greater than %S"), &a.iTitle, &b.iTitle);
 			return 1;
-		}
+		}*/
+	return 0;
 	}
 
 void CShowEngine::PurgeShowsByFeed(TInt aFeedUid)
 	{
 	for (int i=0;i<iShows.Count();i++)
 		{
-		if (iShows[i]->iFeedUid == aFeedUid)
+		if (iShows[i]->FeedUid() == aFeedUid)
 			{
-			//if (iShows[i]->iDownloadState == EDownloaded) {
-			if (iShows[i]->iFileName.Length() > 0) {
-				BaflUtils::DeleteFile(iFs, iShows[i]->iFileName);
-				iShows[i]->iDownloadState = ENotDownloaded;
+			//if (iShows[i]->DownloadState() == EDownloaded) {
+			if (iShows[i]->FileName().Length() > 0) {
+				BaflUtils::DeleteFile(iFs, iShows[i]->FileName());
+				iShows[i]->SetDownloadState(ENotDownloaded);
 			}
 			}
 		}
@@ -377,9 +324,9 @@ void CShowEngine::PurgePlayedShows()
 	{
 	for (int i=0;i<iShows.Count();i++)
 	{
-		if (iShows[i]->iPlayState == EPlayed) {
-			BaflUtils::DeleteFile(iFs, iShows[i]->iFileName);
-			iShows[i]->iDownloadState = ENotDownloaded;
+		if (iShows[i]->PlayState() == EPlayed) {
+			BaflUtils::DeleteFile(iFs, iShows[i]->FileName());
+			iShows[i]->SetDownloadState(ENotDownloaded);
 			// do we want this?
 			//iShows[i]->iPlayState = ENeverPlayed;
 		}
@@ -395,9 +342,9 @@ void CShowEngine::PurgeShow(TInt aShowUid)
 	{
 	for (int i=0;i<iShows.Count();i++)
 		{
-			if (iShows[i]->iUid == aShowUid) {
-				BaflUtils::DeleteFile(iFs, iShows[i]->iFileName);
-				iShows[i]->iDownloadState = ENotDownloaded;
+			if (iShows[i]->Uid() == aShowUid) {
+				BaflUtils::DeleteFile(iFs, iShows[i]->FileName());
+				iShows[i]->SetDownloadState(ENotDownloaded);
 			}
 		}
 	}
@@ -407,7 +354,7 @@ void CShowEngine::SelectShowsByFeed(TInt aFeedUid)
 	iSelectedShows.Reset();
 	for (int i=0;i<iShows.Count();i++)
 		{
-		if (iShows[i]->iFeedUid == aFeedUid)
+		if (iShows[i]->FeedUid() == aFeedUid)
 			{
 			AppendToSelection(iShows[i]);
 			}
@@ -421,7 +368,7 @@ void CShowEngine::SelectNewShows()
 	iSelectedShows.Reset();
 	for (int i=0;i<iShows.Count();i++)
 		{
-		if (iShows[i]->iPlayState == ENeverPlayed)
+		if (iShows[i]->PlayState() == ENeverPlayed)
 			{
 			AppendToSelection(iShows[i]);
 			}
@@ -435,7 +382,7 @@ void CShowEngine::SelectShowsByDownloadState(TInt aDownloadState)
 	iSelectedShows.Reset();
 	for (int i=0;i<iShows.Count();i++)
 		{
-		if (iShows[i]->iDownloadState == aDownloadState)
+		if (iShows[i]->DownloadState() == aDownloadState)
 			{
 			AppendToSelection(iShows[i]);
 			}
@@ -449,7 +396,7 @@ void CShowEngine::SelectShowsDownloading()
 	
 	for (int i=0;i<iShows.Count();i++)
 		{
-		if (iShows[i]->iDownloadState == EDownloading)
+		if (iShows[i]->DownloadState() == EDownloading)
 				{
 				AppendToSelection(iShows[i]);
 				}
@@ -457,7 +404,7 @@ void CShowEngine::SelectShowsDownloading()
 
 	for (int i=0;i<iShows.Count();i++)
 		{
-		if (iShows[i]->iDownloadState == EQueued)
+		if (iShows[i]->DownloadState() == EQueued)
 				{
 				AppendToSelection(iShows[i]);
 				}
@@ -479,31 +426,9 @@ CShowInfoArray& CShowEngine::GetSelectedShows()
 	return iSelectedShows;
 	}
 
-void CShowEngine::ListAllFiles()
-	{
-	TBuf<100> podcastDir;
-	podcastDir.Copy(KPodcastDir);
-	TBool changed = EFalse;
-	RDebug::Print(_L("Checking if files still exist..."));
-	for (int i=0;i<iShows.Count();i++) {
-		if (iShows[i]->iDownloadState == EDownloaded) {
-			if(BaflUtils::FileExists(iFs, iShows[i]->iFileName) == EFalse) {
-				RDebug::Print(_L("%S was removed, marking"), &iShows[i]->iFileName);
-				iShows[i]->iDownloadState = ENotDownloaded;
-				changed = ETrue;
-			}
-		}
-	}
-	RDebug::Print(_L("Checking complete"));
-	//ListDir(iFs, podcastDir, iShows);
-	if (changed) {
-		SaveShows();
-	}
-}
-
 void CShowEngine::AddDownload(CShowInfo *info)
 	{
-	info->iDownloadState = EQueued;
+	info->SetDownloadState(EQueued);
 	iShowsDownloading.Append(info);
 	DownloadNextShow();
 	}
@@ -524,7 +449,7 @@ void CShowEngine::DownloadNextShow()
 		CShowInfo *info = iShowsDownloading[0];
 		iShowsDownloading.Remove(0);
 		RDebug::Print(_L("Downloading %S"), &(info->Title()));
-		info->iDownloadState = EDownloading;
+		info->SetDownloadState(EDownloading);
 		iShowDownloading = info;
 		GetShow(info);
 	}

@@ -122,7 +122,7 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 					TInt index = iListbox->CurrentItemIndex();
 					if(index >= 0 && index < iPodcastModel.ActiveShowList().Count())
 					{
-						iPodcastModel.ShowEngine().PurgeShow(iPodcastModel.ActiveShowList()[index]->iUid);
+						iPodcastModel.ShowEngine().PurgeShow(iPodcastModel.ActiveShowList()[index]->Uid());
 						UpdateShowItemL(iPodcastModel.ActiveShowList()[index]);
 					}
 				}
@@ -265,14 +265,14 @@ void CPodcastClientShowsView::GetShowIcons(CShowInfo* aShowInfo, TInt& aImageId,
 	aImageId = EMbmPodcastclientShow_40x40;
 	aMaskId = EMbmPodcastclientShow_40x40m;
 
-	if(aShowInfo->iDownloadState == EDownloaded)
+	if(aShowInfo->DownloadState() == EDownloaded)
 	{
-		if(	aShowInfo->iPlayState == EPlaying)
+		if(	aShowInfo->PlayState() == EPlaying)
 		{
 			aImageId = EMbmPodcastclientShow_playing_40x40;
 			aMaskId = EMbmPodcastclientShow_playing_40x40m;
 		}
-		else if(aShowInfo->iPlayState == ENeverPlayed)
+		else if(aShowInfo->PlayState() == ENeverPlayed)
 		{
 			aImageId = EMbmPodcastclientNew_40x40;
 			aMaskId = EMbmPodcastclientNew_40x40m;
@@ -281,7 +281,7 @@ void CPodcastClientShowsView::GetShowIcons(CShowInfo* aShowInfo, TInt& aImageId,
 	}
 	else
 	{
-		switch(aShowInfo->iDownloadState)
+		switch(aShowInfo->DownloadState())
 		{
 		case ENotDownloaded:
 			aImageId = EMbmPodcastclientNew_40x40;
@@ -326,13 +326,13 @@ void CPodcastClientShowsView::UpdateShowItemL(CShowInfo* aShowInfo, TInt aSizeDo
 			TBuf<KSizeBufLen> dlSize;
 			TBuf<KSizeBufLen> totSize;
 
-			if(aShowInfo->iShowSize < KSizeMb)
+			if(aShowInfo->ShowSize() < KSizeMb)
 			{
-				totSize.Format(KShowsSizeFormatKb(), aShowInfo->iShowSize / KSizeKb);
+				totSize.Format(KShowsSizeFormatKb(), aShowInfo->ShowSize() / KSizeKb);
 			}
 			else
 			{
-				totSize.Format(KShowsSizeFormatMb(), aShowInfo->iShowSize / KSizeMb);
+				totSize.Format(KShowsSizeFormatMb(), aShowInfo->ShowSize() / KSizeMb);
 			}
 
 			if(aSizeDownloaded < KSizeMb)
@@ -348,13 +348,13 @@ void CPodcastClientShowsView::UpdateShowItemL(CShowInfo* aShowInfo, TInt aSizeDo
 		}
 		else
 		{
-			if(aShowInfo->iShowSize < KSizeMb)
+			if(aShowInfo->ShowSize() < KSizeMb)
 			{
-				infoSize.Format(KShowsSizeFormatKb(), aShowInfo->iShowSize / KSizeKb);
+				infoSize.Format(KShowsSizeFormatKb(), aShowInfo->ShowSize() / KSizeKb);
 			}
 			else
 			{
-				infoSize.Format(KShowsSizeFormatMb(), aShowInfo->iShowSize / KSizeMb);
+				infoSize.Format(KShowsSizeFormatMb(), aShowInfo->ShowSize() / KSizeMb);
 			}
 			
 		}
@@ -432,21 +432,21 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 					CShowInfo *si = fItems[i];
 					listBoxData->AddTextL(si->Title(), EQikListBoxSlotText1);
 					//listBoxData->AddTextL(si->iDescription, EQikListBoxSlotText2);
-					if(si->iShowSize < KSizeMb)
+					if(si->ShowSize() < KSizeMb)
 					{
-						showSize.Format(KShowsSizeFormatKb(), si->iShowSize / KSizeKb);
+						showSize.Format(KShowsSizeFormatKb(), si->ShowSize() / KSizeKb);
 					}
 					else
 					{
-						showSize.Format(KShowsSizeFormatMb(), si->iShowSize / KSizeMb);
+						showSize.Format(KShowsSizeFormatMb(), si->ShowSize() / KSizeMb);
 					}
 					listBoxData->AddTextL(showSize, EQikListBoxSlotText4);
 					
-					si->iPubDate.FormatL(showDate, TShortDateFormatSpec());
+					si->PubDate().FormatL(showDate, TShortDateFormatSpec());
 					listBoxData->AddTextL(showDate, EQikListBoxSlotText3);
 
-					listBoxData->SetEmphasis(si->iPlayState == ENeverPlayed);					
-					unplayed+=(si->iPlayState == ENeverPlayed);
+					listBoxData->SetEmphasis(si->PlayState() == ENeverPlayed);					
+					unplayed+=(si->PlayState() == ENeverPlayed);
 					CleanupStack::PopAndDestroy();	
 					
 					TInt bitmap = EMbmPodcastclientShow_40x40;
@@ -536,7 +536,7 @@ void CPodcastClientShowsView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQ
 			CShowInfoArray &fItems = iPodcastModel.ActiveShowList();
 			if(aItemIndex>=0 && aItemIndex< fItems.Count())
 			{
-				RDebug::Print(_L("Handle event for podcast %S, downloadState is %d"), &(fItems[aItemIndex]->Title()), fItems[aItemIndex]->iDownloadState);
+				RDebug::Print(_L("Handle event for podcast %S, downloadState is %d"), &(fItems[aItemIndex]->Title()), fItems[aItemIndex]->DownloadState());
 				iPodcastModel.PlayPausePodcastL(fItems[aItemIndex]);
 				TVwsViewId viewId = TVwsViewId(KUidPodcastClientID, KUidPodcastPlayViewID);
 				iQikAppUi.ActivateViewL(viewId);		

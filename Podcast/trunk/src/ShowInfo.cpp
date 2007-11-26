@@ -20,146 +20,84 @@ CShowInfo::~CShowInfo()
 
 void CShowInfo::ExternalizeL(RWriteStream& aStream) const {
 
-	aStream.WriteInt32L(iTitle->Length());
-//	RDebug::Print(_L("wrote len: %d"), title.Length());
+	if (iTitle == NULL) {
+		aStream.WriteInt32L(0);
+	} else {
+		aStream.WriteInt32L(iTitle->Length());
+		aStream.WriteL(*iTitle);
+	}
+	
+	if (iUrl == NULL) {
+		aStream.WriteInt32L(0);
+	} else {
+		aStream.WriteInt32L(iUrl->Length());
+		aStream.WriteL(*iUrl);
+	}
 
-	aStream.WriteL(*iTitle);
-//	RDebug::Print(_L("wrote title: %S"), &title);
+	if (iDescription == NULL) {
+		aStream.WriteInt32L(0);
+	} else {
+		aStream.WriteInt32L(iDescription->Length());
+		aStream.WriteL(*iDescription);
+	}
 	
-	aStream.WriteInt32L(iUrl->Length());
-//	RDebug::Print(_L("wrote len: %d"), url.Length());
-	
-	aStream.WriteL(*iUrl);
-//	RDebug::Print(_L("wrote url: %S"), &url);
-	
-	aStream.WriteInt32L(iDescription->Length());
-//	RDebug::Print(_L("wrote len: %d"), description.Length());
-
-	aStream.WriteL(*iDescription);
-//	RDebug::Print(_L("wrote description: %S"), &description);
-	
-	aStream.WriteInt32L(iFileName.Length());
-//	RDebug::Print(_L("wrote len: %d"), fileName.Length());
-
-	aStream.WriteL(iFileName);
-//	RDebug::Print(_L("wrote fileName: %S"), &fileName);
+	if (iFileName == NULL) {
+		aStream.WriteInt32L(0);
+	} else {
+		aStream.WriteInt32L(iFileName->Length());
+		aStream.WriteL(*iFileName);
+	}
 
 	aStream.WriteInt32L(iFeedUid);
-//	RDebug::Print(_L("wrote feedUrl: %S"), &feedUrl);
-
-	aStream.WriteInt32L(iPosition.Int64());
 	aStream.WriteInt32L(iDownloadState);
-	aStream.WriteInt32L(iPlayState);
+	aStream.WriteInt32L(iPlayState == ENeverPlayed ? ENeverPlayed : EPlayed);
 	aStream.WriteInt32L(iUid);
 	aStream.WriteInt32L(iShowSize);
-
+	aStream.WriteInt32L(I64LOW(iPosition.Int64()));
+	aStream.WriteInt32L(I64HIGH(iPosition.Int64()));
 	aStream.WriteInt32L(I64LOW(iPubDate.Int64()));
 	aStream.WriteInt32L(I64HIGH(iPubDate.Int64()));
 	}
 
 void CShowInfo::InternalizeL(RReadStream& aStream) {
-	int len;
-	TBuf<2045> buffer;
-	TRAPD(error, len = aStream.ReadInt32L()); 
-	if (error != KErrNone) {
-		return;
-	}
-	//RDebug::Print(_L("len: %d"), len);
-
-	TRAP(error, aStream.ReadL(buffer, len));
-	if (error != KErrNone) {
-		return;
-	}
-	SetTitle(buffer);
-	//RDebug::Print(_L("read title: %S"), &title);
-	
-	TRAP(error,len = aStream.ReadInt32L());
-	if (error != KErrNone) {
-		return;
-	}
-	//RDebug::Print(_L("len: %d"), len);
-
-	TRAP(error,aStream.ReadL(buffer, len));
-	if (error != KErrNone) {
-		return;
-	}
-	//RDebug::Print(_L("read url: %S"), &url);
-	SetUrl(buffer);
-	
-	TRAP(error,len = aStream.ReadInt32L()) 
-	if (error != KErrNone) {
-		return;
-	}
-	//RDebug::Print(_L("len: %d"), len);
-	
-	TRAP(error,aStream.ReadL(buffer, len));
-	if (error != KErrNone) {
-		return;
-	}
-	SetDescription(buffer);
-	//RDebug::Print(_L("read description: %S"), &description);
-
-	TRAP(error,len = aStream.ReadInt32L()); 
-	if (error != KErrNone) {
-		return;
-	}
-	//RDebug::Print(_L("len: %d"), len);
-
-	TRAP(error,aStream.ReadL(iFileName, len));
-	if (error != KErrNone) {
-		return;
-	}
-	//RDebug::Print(_L("read fileName: %S"), &fileName);
-
-	TRAP(error,iFeedUid = aStream.ReadInt32L());
-	if (error != KErrNone) {
-		return;
-	}
-	//RDebug::Print(_L("read feedUid: %d"), iFeedUid);
-	
-	TRAP(error,iPosition = aStream.ReadInt32L();) 
-	if (error != KErrNone) {
-		return;
-	}
-
-	TRAP(error,iDownloadState = (TDownloadState) aStream.ReadInt32L());
-	if (error != KErrNone) {
-		return;
-	}
-
-	TRAP(error,iPlayState = (TPlayState) aStream.ReadInt32L());
-	if (error != KErrNone) {
-		return;
-	}
-
-	// no point in setting playing directly
-	if (iPlayState != ENeverPlayed) {
-		iPlayState = EPlayed;
+	TBuf<2048> buffer;
+	int len = aStream.ReadInt32L();
+	if (len > 0) {
+		aStream.ReadL(buffer, len);
+		SetTitle(buffer);
 	}
 	
-	TRAP(error,iUid = aStream.ReadInt32L());
-	if (error != KErrNone) {
-		return;
+	len = aStream.ReadInt32L();
+	if (len > 0) {
+		aStream.ReadL(buffer, len);
+		SetUrl(buffer);
 	}
 	
-	TRAP(error,iShowSize = aStream.ReadInt32L());
-	if (error != KErrNone) {
-		return;
+	len = aStream.ReadInt32L();
+	if (len > 0) {
+		aStream.ReadL(buffer, len);
+		SetDescription(buffer);
 	}
 
-	TInt low = 0;
-	TRAP(error,low = aStream.ReadInt32L());
-	if (error != KErrNone) {
-		return;
+	len = aStream.ReadInt32L();
+	if (len > 0) {
+		aStream.ReadL(buffer, len);
+		SetFileName(buffer);
 	}
+
+	iFeedUid = aStream.ReadInt32L();
 	
-	TInt high = 0;
+	iDownloadState = (TDownloadState) aStream.ReadInt32L();
+	iPlayState = (TPlayState) aStream.ReadInt32L();
+	iUid = aStream.ReadInt32L();
+	iShowSize = aStream.ReadInt32L();
 
-	TRAP(error,high = aStream.ReadInt32L());
-	if (error != KErrNone) {
-		return;
-	}
+	TInt low = aStream.ReadInt32L();
+	TInt high = aStream.ReadInt32L();
+	iPosition = MAKE_TINT64(high, low);
 
+	low = aStream.ReadInt32L();
+	high = aStream.ReadInt32L();
 	iPubDate = MAKE_TINT64(high, low);
 }
 
@@ -192,4 +130,80 @@ TDesC& CShowInfo::Description()
 void CShowInfo::SetDescription(TDesC &aDescription)
 	{
 	iDescription = aDescription.Alloc();
+	}
+
+
+TDesC& CShowInfo::FileName()
+	{
+	return *iFileName;
+	}
+
+void CShowInfo::SetFileName(TDesC &aFileName)
+	{
+	iFileName = aFileName.Alloc();
+	}
+
+TTimeIntervalMicroSeconds& CShowInfo::Position()
+	{
+	return iPosition;
+	}
+
+void CShowInfo::SetPosition(TTimeIntervalMicroSeconds aPosition)
+	{
+	iPosition = aPosition;
+	}
+
+TPlayState CShowInfo::PlayState()
+	{
+	return iPlayState;
+	}
+
+void CShowInfo::SetPlayState(TPlayState aPlayState)
+	{
+	iPlayState = aPlayState;
+	}
+
+TDownloadState CShowInfo::DownloadState()
+	{
+	return iDownloadState;
+	}
+
+void CShowInfo::SetDownloadState(TDownloadState aDownloadState)
+	{
+	iDownloadState = aDownloadState;
+	}
+
+TUint CShowInfo::FeedUid()
+	{
+	return iFeedUid;
+	}
+
+void CShowInfo::SetFeedUid(TUint aFeedUid)
+	{
+	iFeedUid = aFeedUid;
+	}
+
+TUint CShowInfo::Uid()
+	{
+	return iUid;
+	}
+
+TUint CShowInfo::ShowSize()
+	{
+	return iShowSize;
+	}
+
+void CShowInfo::SetShowSize(TUint aShowSize)
+	{
+	iShowSize = aShowSize;
+	}
+
+const TTime CShowInfo::PubDate()
+	{
+	return iPubDate;
+	}
+
+void CShowInfo::SetPubDate(TTime aPubDate)
+	{
+	iPubDate = aPubDate;
 	}

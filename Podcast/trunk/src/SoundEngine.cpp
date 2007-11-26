@@ -37,7 +37,7 @@ void CSoundEngine::MapcPlayComplete(TInt aError) {
 //	RDebug::Print(_L("Play Complete: %d"), aError);
 //	User::InfoPrint(_L("Done!"));
 	if (iPodcastModel.PlayingPodcast() != NULL) {
-		iPodcastModel.PlayingPodcast()->iPlayState = EPlayed;
+		iPodcastModel.PlayingPodcast()->SetPlayState(EPlayed);
 	}
 
 	iState = ESoundEngineStopped;
@@ -61,8 +61,8 @@ void CSoundEngine::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds
 	iPlayer->SetVolume((iPodcastModel.SettingsEngine().Volume() * iPlayer->MaxVolume()) / 100);
 
 	if (iPodcastModel.PlayingPodcast() != NULL) {
-		RDebug::Print(_L("Resuming from position: %ld"), iPodcastModel.PlayingPodcast()->iPosition.Int64());
-		iPlayer->SetPosition(iPodcastModel.PlayingPodcast()->iPosition);			
+		RDebug::Print(_L("Resuming from position: %ld"), iPodcastModel.PlayingPodcast()->Position().Int64());
+		iPlayer->SetPosition(iPodcastModel.PlayingPodcast()->Position());			
 	}
 
 	if(iObserver != NULL)
