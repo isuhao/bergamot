@@ -1,8 +1,8 @@
 = Podcast Player =
 
-The Podcast Player aims to be a fully featured podcatcher for UIQ. It is still under development, but the latest alpha versions are very usable.
+Podcast Player aims to be a fully featured podcatcher for UIQ. It is still under development, but the latest alpha versions are very usable.
 
-The intention is to release one alpha version every week, and hopefully beta and release versions in December.
+There is a new alpha release every week, so update regularly. Beta and release versions are due in December according to plan.
 
 = Screenshots =
 
