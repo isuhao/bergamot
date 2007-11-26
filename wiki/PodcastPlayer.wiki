@@ -5,6 +5,7 @@ The Podcast Player aims to be a fully featured podcatcher for UIQ. It is still u
 The intention is to release one alpha version every week, and hopefully beta and release versions in December.
 
 = Screenshots =
+
 These screenshots are from alpha 3.
 
 http://bergamot.googlecode.com/svn/wiki/pp5.jpg
@@ -14,6 +15,18 @@ http://bergamot.googlecode.com/svn/wiki/pp8.jpg
 
 = Releases = 
 
+This is how we plan to implement features. Please [http://groups.google.com/group/bergamot help us find out what's important!]
+
+  * Release 1 (Christmas?)
+
+  * Beta 2?
+
+  * Beta 1 (December 16th)
+     * No new features
+     * Memory consumption improvements
+
+  * Alpha 5 (December 9th)
+
   * Alpha 4 (December 2nd)
     * Volume control
     * Configuration dialog
@@ -22,6 +35,7 @@ http://bergamot.googlecode.com/svn/wiki/pp8.jpg
     * ~~Support for other feeds (Atom, RSS 0.9, any more?)~~ I can't find any podcasts that don't use RSS 2.0, so this is on hold.
     * Automatic feed update
     * Automatic downloading
+    * Automatic purging
 
   * Alpha 3 (November 25th) | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha3 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha3/group/Podcast_udeb_signed.sis SIS]
     * UI improvements (cover art, icons...)
@@ -64,32 +78,9 @@ http://bergamot.googlecode.com/svn/wiki/pp8.jpg
 
 I stumbled upon the [http://uiqopen.uiq.com/ UIQ Open] contest. Hopefully the podcast player will be good enough to submit before December 31st.
 
-= Planning =
-
-This is how we plan to implement features. Please [http://groups.google.com/group/bergamot help us find out what's important!]
-
-  * Alpha 5 (December 9th)
-
-  * Beta 1 (December 16th)
-     * No new features
-     * Memory consumption improvements
-
-  * Release 1 (Christmas?)
-
 = Name =
 
 Podcast Player is just a placeholder name. [http://groups.google.com/group/bergamot Come up with something better!]
-
-Some ideas
-  * Tedesco (means German in Italian, and TDesC is a string in Symbian)
-  * Some kind of play on casting (injection molding, CNC, forging)
-  * Solid
-  * Ingot
-  * Foundry (in which you produce casts)
-  * Mint
-  * Repo Podcatcher
-  * Hyland
-  * Alembic
 
 = Help! =
 
