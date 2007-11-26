@@ -24,13 +24,13 @@ protected:
 	void ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt aBytesTotal);
 	void DownloadQueueUpdated(TInt aDownloadingShows, TInt aQueuedShows) {};
 	void HandleCommandL(CQikCommand& aCommand);
-	void UpdateShowItemL(TShowInfo* aShowInfo, TInt aSizeDownloaded = KErrNotFound);
+	void UpdateShowItemL(CShowInfo* aShowInfo, TInt aSizeDownloaded = KErrNotFound);
 	// from MQikCommandModelOwner	
 	CQikCommand* DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& aControlAddingCommands);
 	void ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage);
 	void UpdateCommandsL();
 	void UpdateSelectCommandL();
-	void GetShowIcons(TShowInfo* aShowInfo, TInt& aImageId, TInt& aMaskId);
+	void GetShowIcons(CShowInfo* aShowInfo, TInt& aImageId, TInt& aMaskId);
 private:
 	TPodcastClientShowCategory iCurrentCategory;
 	TBool iProgressAdded;

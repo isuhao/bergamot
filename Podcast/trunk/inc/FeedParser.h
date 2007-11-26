@@ -19,12 +19,14 @@ _LIT(KTagLength, "length");
 _LIT(KTagChannel, "channel");
 _LIT(KTagEnclosure, "enclosure");
 _LIT(KTagPubDate, "pubDate");
+_LIT(KTagLastBuildDate, "lastBuildDate");
 
 enum TFeedState {
 	EStateRoot,
 	EStateChannel,
 	EStateChannelTitle,
 	EStateChannelLink,
+	EStateChannelLastBuildDate,
 	EStateChannelDescription,
 	EStateChannelImage,
 	EStateChannelImageUrl,
@@ -62,13 +64,14 @@ public: // from MContentHandler
 private:
 	MFeedParserObserver& iCallbacks;
 	TFeedState iFeedState;
-	TShowInfo* activeItem;
+	CShowInfo* activeItem;
 	TDes* activeString;
 	TFeedInfo *iActiveFeed;
-	TBuf<128> iPubDateString;
+	TBuf<2048> iBuffer;
 	
 	TUint iMaxItems;
 	TUint iItemsParsed;
+	TBool iAbortParsing;
 
 };
 

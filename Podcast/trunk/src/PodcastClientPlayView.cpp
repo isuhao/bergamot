@@ -358,7 +358,7 @@ void CPodcastClientPlayView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload
 	if(aPercentOfCurrentDownload == KOneHundredPercent && iPodcastModel.PlayingPodcast() == iPodcastModel.ShowEngine().ShowDownloading())
 	{
 		// To update icon list status and commands
-		TShowInfo* playingPodcast = iPodcastModel.PlayingPodcast();
+		CShowInfo* playingPodcast = iPodcastModel.PlayingPodcast();
 		// Reset current podcast statsus
 		iPodcastModel.PlayPausePodcastL(NULL);
 		iPodcastModel.PlayPausePodcastL(playingPodcast);
@@ -404,8 +404,8 @@ void CPodcastClientPlayView::UpdateViewL()
 		if(iPodcastModel.PlayingPodcast() != NULL)
 		{
 
-			TShowInfo showInfo = *iPodcastModel.PlayingPodcast();
-			ViewContext()->ChangeTextL(EPodcastPlayViewTitleCtrl, showInfo.iTitle);
+			CShowInfo *showInfo = iPodcastModel.PlayingPodcast();
+			ViewContext()->ChangeTextL(EPodcastPlayViewTitleCtrl, showInfo->Title());
 			TBuf<32> time = _L("00:00");
 			TUint playtime = iPodcastModel.SoundEngine().PlayTime();
 			if(playtime > 0)
@@ -419,15 +419,15 @@ void CPodcastClientPlayView::UpdateViewL()
 				iTimeLabel->SetSize(iTimeLabel->MinimumSize());
 			}
 
-			iInformationEdwin->SetTextL(&showInfo.iDescription);
+			iInformationEdwin->SetTextL(&showInfo->Description());
 
 			iInformationEdwin->HandleTextChangedL();
-			if(showInfo.iDownloadState == ENotDownloaded)
+			if(showInfo->iDownloadState == ENotDownloaded)
 			{
 				comMan.SetInvisible(*this, EPodcastDownloadShow, EFalse);
 				comMan.SetInvisible(*this, EPodcastPlay, ETrue);
 			}
-			else if(showInfo.iDownloadState != EDownloaded)
+			else if(showInfo->iDownloadState != EDownloaded)
 			{
 				comMan.SetInvisible(*this, EPodcastPlay, ETrue);
 				comMan.SetInvisible(*this, EPodcastDownloadShow, ETrue);
@@ -438,7 +438,7 @@ void CPodcastClientPlayView::UpdateViewL()
 				comMan.SetInvisible(*this, EPodcastDownloadShow, ETrue);
 			}
 
-			TFeedInfo* feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(showInfo.iFeedUid);
+			TFeedInfo* feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(showInfo->iFeedUid);
 			
 			if(feedInfo != NULL && feedInfo->iImageFileName.Length()>0)
 			{

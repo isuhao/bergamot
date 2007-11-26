@@ -14,13 +14,13 @@ public:
 	virtual ~CShowEngine();
 	
 public:
-	void AddDownload(TShowInfo *info);
+	void AddDownload(CShowInfo *info);
 	void RemoveDownload(TInt aUid);
 
 	void StopDownloads();
 	void ResumeDownloads();
 	
-	TShowInfo* ShowDownloading();
+	CShowInfo* ShowDownloading();
 
 	// show selection methods
 	void SelectAllShows();
@@ -30,7 +30,7 @@ public:
 	void SelectShowsDownloading();
 	
 	void Complete(CHttpClient* aClient, TBool aSuccessful);
-	void AddShow(TShowInfo *item);
+	void AddShow(CShowInfo *item);
 	void SaveShows();
 
 	void PurgeShowsByFeed(TInt aFeedUid);
@@ -38,7 +38,7 @@ public:
 	void PurgeOldShows();
 	void PurgeShow(TInt aShowUid);
 	
-	TShowInfoArray& GetSelectedShows();
+	CShowInfoArray& GetSelectedShows();
 	
 	void AddObserver(MShowEngineObserver *observer);
 protected:
@@ -51,15 +51,15 @@ private:
 	CShowEngine(CPodcastModel& aPodcastModel);
 	void ConstructL();
 
-	void GetShow(TShowInfo *info);
+	void GetShow(CShowInfo *info);
 	
 	void LoadShows();
 
-	void AppendToSelection(TShowInfo *aInfo);
+	void AppendToSelection(CShowInfo *aInfo);
 	void ListAllFiles();
-	void ListDir(RFs &rfs, TDesC &folder, TShowInfoArray &files);
+	void ListDir(RFs &rfs, TDesC &folder, CShowInfoArray &files);
 
-	static TInt CompareShowsByDate(const TShowInfo &a, const TShowInfo &b);
+	static TInt CompareShowsByDate(const CShowInfo &a, const CShowInfo &b);
 
 	void DownloadNextShow();
 	void MakeFileNameFromUrl(TDesC &aUrl, TFileName &fileName);
@@ -67,19 +67,19 @@ private:
 	CHttpClient* iShowClient;
 
 	// the complete database of shows
-	TShowInfoArray iShows;
+	CShowInfoArray iShows;
 
 	// the current selection of shows
-	TShowInfoArray iSelectedShows;
+	CShowInfoArray iSelectedShows;
 	
 	// list of shows waiting to download
-	TShowInfoArray iShowsDownloading;
+	CShowInfoArray iShowsDownloading;
 	
 	// the file session used to read and write settings
 	RFs iFs;
 	
 	// The show we are currently downloading
-	TShowInfo* iShowDownloading;
+	CShowInfo* iShowDownloading;
 	
 	CPodcastModel& iPodcastModel;
 
@@ -89,7 +89,7 @@ private:
 	// observers that will receive callbacks
     RArray<MShowEngineObserver*> iObservers;
 
-    TLinearOrder<TShowInfo>* iLinearOrder;
+    TLinearOrder<CShowInfo>* iLinearOrder;
 };
 
 #endif /*SHOWENGINE_H_*/

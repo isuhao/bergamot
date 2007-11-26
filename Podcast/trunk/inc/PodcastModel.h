@@ -22,14 +22,14 @@ public:
 	CShowEngine& ShowEngine();
 	CSoundEngine& SoundEngine();
 	CSettingsEngine& SettingsEngine();
-	TShowInfo* PlayingPodcast();
-	void SetPlayingPodcast(TShowInfo* aPodcast);
-	void PlayPausePodcastL(TShowInfo * aPodcast);
+	CShowInfo* PlayingPodcast();
+	void SetPlayingPodcast(CShowInfo* aPodcast);
+	void PlayPausePodcastL(CShowInfo * aPodcast);
 	TFeedInfo& ActiveFeedInfo();
 	void SetActiveFeedInfo(const TFeedInfo& aFeedInfo);
 	CEikonEnv* EikonEnv();
-	TShowInfoArray& ActiveShowList();
-	void SetActiveShowList(TShowInfoArray& aShowArray);
+	CShowInfoArray& ActiveShowList();
+	void SetActiveShowList(CShowInfoArray& aShowArray);
 
 	TBool SetZoomState(TInt aZoomState);
 	TInt ZoomState();
@@ -37,14 +37,14 @@ protected:
 	CPodcastModel();
 	void ConstructL();
 private:	
-   TShowInfo* iPlayingPodcast;
+   CShowInfo* iPlayingPodcast;
    
    CFeedEngine* iFeedEngine;
    CShowEngine* iShowEngine;
    CSoundEngine* iSoundEngine;
    CSettingsEngine *iSettingsEngine;
    
-   TShowInfoArray iActiveShowList;
+   CShowInfoArray iActiveShowList;
    TFeedInfo iActiveFeed;
    TInt iZoomState;
    

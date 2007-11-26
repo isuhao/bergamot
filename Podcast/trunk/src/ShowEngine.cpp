@@ -32,7 +32,7 @@ void CShowEngine::ConstructL()
 	iFs.Connect();
 	iShowClient = CHttpClient::NewL(*this);
 	LoadShows();
-	iLinearOrder = new TLinearOrder<TShowInfo>(CShowEngine::CompareShowsByDate);
+	iLinearOrder = new TLinearOrder<CShowInfo>(CShowEngine::CompareShowsByDate);
 	ListAllFiles();
 	}
 
@@ -93,7 +93,7 @@ void CShowEngine::DownloadInfo(CHttpClient* aHttpClient, int aTotalBytes)
 	}
 
 
-void CShowEngine::GetShow(TShowInfo *info)
+void CShowEngine::GetShow(CShowInfo *info)
 	{
 	TFeedInfo *feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(info->iFeedUid);
 	if (feedInfo == NULL) {
@@ -104,18 +104,18 @@ void CShowEngine::GetShow(TShowInfo *info)
 	TFileName filePath;
 	iPodcastModel.FeedEngine().GetFeedDir(feedInfo, filePath);
 	TFileName fileName;
-	MakeFileNameFromUrl(info->iUrl, fileName);
+	MakeFileNameFromUrl(info->Url(), fileName);
 	
 	filePath.Append(fileName);
 
 	RDebug::Print(_L("filePath: %S"), &filePath);
 	info->iFileName.Copy(filePath);
-	iShowClient->GetL(info->iUrl, info->iFileName);
+	iShowClient->GetL(info->Url(), info->iFileName);
 	}
 
-void CShowEngine::AddShow(TShowInfo *item) {
+void CShowEngine::AddShow(CShowInfo *item) {
 	for (int i=0;i<iShows.Count();i++) {
-		if (iShows[i]->iUrl.Compare(item->iUrl) == 0) {
+		if (iShows[i]->Url().Compare(item->Url()) == 0) {
 			return;
 		}
 	}
@@ -167,7 +167,7 @@ void CShowEngine::Complete(CHttpClient *aHttpClient, TBool aSuccessful)
 	DownloadNextShow();
 	}
 
-TShowInfo* CShowEngine::ShowDownloading()
+CShowInfo* CShowEngine::ShowDownloading()
 	{
 		return iShowDownloading;
 	}
@@ -212,13 +212,13 @@ void CShowEngine::LoadShows()
 	
 	int count = instream.ReadInt32L();
 	RDebug::Print(_L("Read count: %d"), count);
-	TShowInfo *readData;
+	CShowInfo *readData;
 	
 	iSuppressAutoDownload = ETrue;
 	TFeedInfo *feedInfo = NULL;
 	int lastUid = -1;
 	for (int i=0;i<count;i++) {
-		readData = new TShowInfo;
+		readData = new CShowInfo;
 		TRAPD(error, instream  >> *readData);
 		
 		if (readData->iUid != lastUid) {
@@ -281,7 +281,7 @@ void CShowEngine::SaveShows()
 	CleanupStack::PopAndDestroy(store);	
 	}
 
-void CShowEngine::ListDir(RFs &rfs, TDesC &folder, TShowInfoArray &files) {
+void CShowEngine::ListDir(RFs &rfs, TDesC &folder, CShowInfoArray &files) {
 	CDirScan *dirScan = CDirScan::NewLC(rfs);
 	RDebug::Print(_L("Listing dir: %S"), &folder);
 	dirScan ->SetScanDataL(folder, KEntryAttDir, ESortByName);
@@ -318,9 +318,9 @@ void CShowEngine::ListDir(RFs &rfs, TDesC &folder, TShowInfoArray &files) {
 			}
 			
 			RDebug::Print(entry.iName);
-			TShowInfo *pID = new TShowInfo;
+			CShowInfo *pID = new CShowInfo;
 			pID->iFileName.Copy(fileName);
-			pID->iTitle.Copy(entry.iName);		
+			//pID->iTitle.Copy(entry.iName);		
 			pID->iPosition = 0;
 			pID->iDownloadState = EDownloaded;
 			RDebug::Print(_L("Adding!"));
@@ -344,7 +344,7 @@ void CShowEngine::SelectAllShows()
 		}
 	}
 
-TInt CShowEngine::CompareShowsByDate(const TShowInfo &a, const TShowInfo &b)
+TInt CShowEngine::CompareShowsByDate(const CShowInfo &a, const CShowInfo &b)
 	{
 		if (a.iPubDate > b.iPubDate) {
 //			RDebug::Print(_L("Sorting %S less than %S"), &a.iTitle, &b.iTitle);
@@ -465,7 +465,7 @@ void CShowEngine::SelectShowsDownloading()
 
 	}
 
-void CShowEngine::AppendToSelection(TShowInfo *aInfo)
+void CShowEngine::AppendToSelection(CShowInfo *aInfo)
 	{
 	if (iSelectedShows.Count() > iPodcastModel.SettingsEngine().MaxListItems()) {
 		return;
@@ -474,7 +474,7 @@ void CShowEngine::AppendToSelection(TShowInfo *aInfo)
 	iSelectedShows.Append(aInfo);
 	}
 
-TShowInfoArray& CShowEngine::GetSelectedShows()
+CShowInfoArray& CShowEngine::GetSelectedShows()
 	{
 	return iSelectedShows;
 	}
@@ -501,7 +501,7 @@ void CShowEngine::ListAllFiles()
 	}
 }
 
-void CShowEngine::AddDownload(TShowInfo *info)
+void CShowEngine::AddDownload(CShowInfo *info)
 	{
 	info->iDownloadState = EQueued;
 	iShowsDownloading.Append(info);
@@ -521,9 +521,9 @@ void CShowEngine::DownloadNextShow()
 	}
 	
 	if (iShowsDownloading.Count() > 0) {
-		TShowInfo *info = iShowsDownloading[0];
+		CShowInfo *info = iShowsDownloading[0];
 		iShowsDownloading.Remove(0);
-		RDebug::Print(_L("Downloading %S"), &(info->iTitle));
+		RDebug::Print(_L("Downloading %S"), &(info->Title()));
 		info->iDownloadState = EDownloading;
 		iShowDownloading = info;
 		GetShow(info);

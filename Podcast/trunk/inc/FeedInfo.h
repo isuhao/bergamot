@@ -24,6 +24,7 @@ public:
 	TFileName iFileName;
 	TBuf<KFeedUrlLength> iImageUrl;
 	TBuf<KFeedUrlLength> iLink;
+	TTime iPubDate;
 	TFileName iImageFileName;
 	TDateTime iLastChecked;
 	TInt iUid;

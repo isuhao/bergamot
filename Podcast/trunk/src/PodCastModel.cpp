@@ -42,12 +42,12 @@ CEikonEnv* CPodcastModel::EikonEnv()
 	return iEnv;
 }
 
-void CPodcastModel::SetPlayingPodcast(TShowInfo* aPodcast)
+void CPodcastModel::SetPlayingPodcast(CShowInfo* aPodcast)
 {
 	iPlayingPodcast = aPodcast;
 }
 
-TShowInfo* CPodcastModel::PlayingPodcast()
+CShowInfo* CPodcastModel::PlayingPodcast()
 {
 	return iPlayingPodcast;
 }
@@ -72,7 +72,7 @@ CSettingsEngine& CPodcastModel::SettingsEngine()
 	return *iSettingsEngine;
 }
 
-void CPodcastModel::PlayPausePodcastL(TShowInfo* aPodcast) 
+void CPodcastModel::PlayPausePodcastL(CShowInfo* aPodcast) 
 	{
 	
 	// special treatment if this podcast is already active
@@ -116,12 +116,12 @@ void CPodcastModel::SetActiveFeedInfo(const TFeedInfo& aFeedInfo)
 	iActiveFeed = aFeedInfo;
 }
 
-TShowInfoArray& CPodcastModel::ActiveShowList()
+CShowInfoArray& CPodcastModel::ActiveShowList()
 {
 	return iActiveShowList;
 }
 
-void CPodcastModel::SetActiveShowList(TShowInfoArray& aShowArray)
+void CPodcastModel::SetActiveShowList(CShowInfoArray& aShowArray)
 {
 	iActiveShowList.Reset();
 	TInt cnt = aShowArray.Count();

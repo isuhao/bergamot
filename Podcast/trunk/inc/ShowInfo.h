@@ -1,5 +1,6 @@
 #ifndef SHOWINFO_H_
 #define SHOWINFO_H_
+#include <e32base.h>
 #include <e32cmn.h>
 #include <e32std.h>
 #include <f32file.h>
@@ -23,16 +24,20 @@ enum TDownloadState {
 	EDownloaded
 };
 
-class TShowInfo {
+class CShowInfo: public CBase {
 public:
-	TShowInfo();
+	CShowInfo();
+	~CShowInfo();
 	void ExternalizeL(RWriteStream& aStream) const;
 	void InternalizeL(RReadStream& aStream);
+	TDesC& Title();
+	void SetTitle(TDesC &aTitle);
+	TDesC& Url();
+	void SetUrl(TDesC &aUrl);
+	TDesC& Description();
+	void SetDescription(TDesC &aDescription);
 	
 public:
-	TBuf<KTitleLength> iTitle;
-	TBuf<KUrlLength> iUrl;
-	TBuf<KDescriptionLength> iDescription;
 	TInt iFeedUid;
 	TFileName iFileName;
 	TTimeIntervalMicroSeconds iPosition;
@@ -41,7 +46,13 @@ public:
 	TInt iUid;
 	TUint32 iShowSize;
 	TTime iPubDate;
+	
+private:
+	HBufC *iTitle;
+	HBufC *iUrl;
+	HBufC *iDescription;
+
 };
 
-typedef RPointerArray<TShowInfo> TShowInfoArray;
+typedef RPointerArray<CShowInfo> CShowInfoArray;
 #endif

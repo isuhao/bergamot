@@ -53,7 +53,7 @@ private:
 	void Complete(CHttpClient* aClient, TBool aSuccessful);
 
 	// callbacks from FeedParser
-	void NewShow(TShowInfo *item);
+	void NewShow(CShowInfo *item);
 	void ParsingComplete(TFeedInfo *item);
 
 	void GetFeedImage(TFeedInfo *aFeedInfo);

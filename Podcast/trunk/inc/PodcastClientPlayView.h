@@ -68,7 +68,7 @@ private:
 	CQikCategoryModel* iCategories;
 	TBool iProgressAdded;
 	TFileName iLastImageFileName;
-	TShowInfo* iLastShowInfo;
+	CShowInfo* iLastShowInfo;
 	TInt iLastZoomLevel;
 	};
 #endif // PODCASTPLAYVIEW_H

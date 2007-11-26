@@ -1,6 +1,7 @@
 #include "ShowInfo.h"
+#include <e32hashtab.h>
 
-TShowInfo::TShowInfo()
+CShowInfo::CShowInfo()
 	{
 	iDownloadState = ENotDownloaded;
 	iPlayState = ENeverPlayed;
@@ -10,24 +11,31 @@ TShowInfo::TShowInfo()
 	iFeedUid = 0;
 	}
 
-void TShowInfo::ExternalizeL(RWriteStream& aStream) const {
+CShowInfo::~CShowInfo()
+{
+	delete iTitle;
+	delete iUrl;
+	delete iDescription;
+}
 
-	aStream.WriteInt32L(iTitle.Length());
+void CShowInfo::ExternalizeL(RWriteStream& aStream) const {
+
+	aStream.WriteInt32L(iTitle->Length());
 //	RDebug::Print(_L("wrote len: %d"), title.Length());
 
-	aStream.WriteL(iTitle);
+	aStream.WriteL(*iTitle);
 //	RDebug::Print(_L("wrote title: %S"), &title);
 	
-	aStream.WriteInt32L(iUrl.Length());
+	aStream.WriteInt32L(iUrl->Length());
 //	RDebug::Print(_L("wrote len: %d"), url.Length());
 	
-	aStream.WriteL(iUrl);
+	aStream.WriteL(*iUrl);
 //	RDebug::Print(_L("wrote url: %S"), &url);
 	
-	aStream.WriteInt32L(iDescription.Length());
+	aStream.WriteInt32L(iDescription->Length());
 //	RDebug::Print(_L("wrote len: %d"), description.Length());
 
-	aStream.WriteL(iDescription);
+	aStream.WriteL(*iDescription);
 //	RDebug::Print(_L("wrote description: %S"), &description);
 	
 	aStream.WriteInt32L(iFileName.Length());
@@ -49,19 +57,20 @@ void TShowInfo::ExternalizeL(RWriteStream& aStream) const {
 	aStream.WriteInt32L(I64HIGH(iPubDate.Int64()));
 	}
 
-void TShowInfo::InternalizeL(RReadStream& aStream) {
+void CShowInfo::InternalizeL(RReadStream& aStream) {
 	int len;
-
+	TBuf<2045> buffer;
 	TRAPD(error, len = aStream.ReadInt32L()); 
 	if (error != KErrNone) {
 		return;
 	}
 	//RDebug::Print(_L("len: %d"), len);
 
-	TRAP(error, aStream.ReadL(iTitle, len));
+	TRAP(error, aStream.ReadL(buffer, len));
 	if (error != KErrNone) {
 		return;
 	}
+	SetTitle(buffer);
 	//RDebug::Print(_L("read title: %S"), &title);
 	
 	TRAP(error,len = aStream.ReadInt32L());
@@ -70,11 +79,12 @@ void TShowInfo::InternalizeL(RReadStream& aStream) {
 	}
 	//RDebug::Print(_L("len: %d"), len);
 
-	TRAP(error,aStream.ReadL(iUrl, len));
+	TRAP(error,aStream.ReadL(buffer, len));
 	if (error != KErrNone) {
 		return;
 	}
 	//RDebug::Print(_L("read url: %S"), &url);
+	SetUrl(buffer);
 	
 	TRAP(error,len = aStream.ReadInt32L()) 
 	if (error != KErrNone) {
@@ -82,10 +92,11 @@ void TShowInfo::InternalizeL(RReadStream& aStream) {
 	}
 	//RDebug::Print(_L("len: %d"), len);
 	
-	TRAP(error,aStream.ReadL(iDescription, len));
+	TRAP(error,aStream.ReadL(buffer, len));
 	if (error != KErrNone) {
 		return;
 	}
+	SetDescription(buffer);
 	//RDebug::Print(_L("read description: %S"), &description);
 
 	TRAP(error,len = aStream.ReadInt32L()); 
@@ -151,3 +162,34 @@ void TShowInfo::InternalizeL(RReadStream& aStream) {
 
 	iPubDate = MAKE_TINT64(high, low);
 }
+
+TDesC& CShowInfo::Title()
+	{
+	return *iTitle;
+	}
+
+void CShowInfo::SetTitle(TDesC &aTitle)
+	{
+	iTitle = aTitle.Alloc();
+	}
+
+TDesC& CShowInfo::Url()
+	{
+	return *iUrl;
+	}
+
+void CShowInfo::SetUrl(TDesC &aUrl)
+	{
+	iUrl = aUrl.Alloc();
+	iUid = DefaultHash::Des16(Url());
+	}
+
+TDesC& CShowInfo::Description()
+	{
+	return *iDescription;
+	}
+
+void CShowInfo::SetDescription(TDesC &aDescription)
+	{
+	iDescription = aDescription.Alloc();
+	}

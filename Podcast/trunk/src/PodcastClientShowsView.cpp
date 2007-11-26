@@ -260,7 +260,7 @@ CQikCommand* CPodcastClientShowsView::DynInitOrDeleteCommandL(CQikCommand* aComm
 	return aCommand;
 }
 
-void CPodcastClientShowsView::GetShowIcons(TShowInfo* aShowInfo, TInt& aImageId, TInt& aMaskId)
+void CPodcastClientShowsView::GetShowIcons(CShowInfo* aShowInfo, TInt& aImageId, TInt& aMaskId)
 {	
 	aImageId = EMbmPodcastclientShow_40x40;
 	aMaskId = EMbmPodcastclientShow_40x40m;
@@ -299,7 +299,7 @@ void CPodcastClientShowsView::GetShowIcons(TShowInfo* aShowInfo, TInt& aImageId,
 	}
 }
 
-void CPodcastClientShowsView::UpdateShowItemL(TShowInfo* aShowInfo, TInt aSizeDownloaded)
+void CPodcastClientShowsView::UpdateShowItemL(CShowInfo* aShowInfo, TInt aSizeDownloaded)
 {
 	// First find the item
 	TInt index = iPodcastModel.ActiveShowList().Find(aShowInfo);
@@ -422,15 +422,15 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 			
 			iPodcastModel.SetActiveShowList(iPodcastModel.ShowEngine().GetSelectedShows());
 
-			TShowInfoArray &fItems = iPodcastModel.ActiveShowList();
+			CShowInfoArray &fItems = iPodcastModel.ActiveShowList();
 			len = fItems.Count();
 
 			if (len > 0) {
 				for (TInt i=0;i<len;i++) {
 					MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
 					CleanupClosePushL(*listBoxData);
-					TShowInfo *si = fItems[i];
-					listBoxData->AddTextL(si->iTitle, EQikListBoxSlotText1);
+					CShowInfo *si = fItems[i];
+					listBoxData->AddTextL(si->Title(), EQikListBoxSlotText1);
 					//listBoxData->AddTextL(si->iDescription, EQikListBoxSlotText2);
 					if(si->iShowSize < KSizeMb)
 					{
@@ -493,7 +493,7 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 void CPodcastClientShowsView::UpdateCommandsL()
 {
 	CQikCommandManager& comMan = CQikCommandManager::Static();
-	TShowInfoArray &fItems = iPodcastModel.ActiveShowList();
+	CShowInfoArray &fItems = iPodcastModel.ActiveShowList();
 
 	if(iListbox != NULL)
 	{
@@ -533,10 +533,10 @@ void CPodcastClientShowsView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQ
 	case EEventItemConfirmed:
 	case EEventItemTapped:
 		{
-			TShowInfoArray &fItems = iPodcastModel.ActiveShowList();
+			CShowInfoArray &fItems = iPodcastModel.ActiveShowList();
 			if(aItemIndex>=0 && aItemIndex< fItems.Count())
 			{
-				RDebug::Print(_L("Handle event for podcast %S, downloadState is %d"), &(fItems[aItemIndex]->iTitle), fItems[aItemIndex]->iDownloadState);
+				RDebug::Print(_L("Handle event for podcast %S, downloadState is %d"), &(fItems[aItemIndex]->Title()), fItems[aItemIndex]->iDownloadState);
 				iPodcastModel.PlayPausePodcastL(fItems[aItemIndex]);
 				TVwsViewId viewId = TVwsViewId(KUidPodcastClientID, KUidPodcastPlayViewID);
 				iQikAppUi.ActivateViewL(viewId);		

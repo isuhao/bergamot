@@ -111,7 +111,7 @@ void CPodcastClientBaseView::UpdateListboxItemsL()
 				if(itemId == EBaseViewPlayer)
 				{	
 					found = ETrue;
-					data->SetTextL(iPodcastModel.PlayingPodcast()->iTitle, EQikListBoxSlotText2);
+					data->SetTextL(iPodcastModel.PlayingPodcast()->Title(), EQikListBoxSlotText2);
 					data->Close();
 					model.DataUpdatedL(loop);
 					break;
@@ -128,7 +128,7 @@ void CPodcastClientBaseView::UpdateListboxItemsL()
 				
 				HBufC* playerTxt = iEikonEnv->AllocReadResourceLC(R_PODCAST_MAIN_PLAYER_CMD);
 				listBoxData->AddTextL(playerTxt, EQikListBoxSlotText1);			
-				listBoxData->AddTextL(iPodcastModel.PlayingPodcast()->iTitle, EQikListBoxSlotText2);			
+				listBoxData->AddTextL(iPodcastModel.PlayingPodcast()->Title(), EQikListBoxSlotText2);			
 				CleanupStack::Pop(playerTxt);
 				
 				CQikContent* content = CQikContent::NewL(this, _L("*"), EMbmPodcastclientPlay_40x40, EMbmPodcastclientPlay_40x40m);

@@ -2,10 +2,10 @@
 #include <f32file.h>
 #include <bautils.h>
 #include <s32file.h>
-#include <e32hashtab.h>
 #include "PodcastModel.h"
 #include "SettingsEngine.h"
 #include "ShowEngine.h"
+#include <e32hashtab.h>
 
 CFeedEngine* CFeedEngine::NewL(CPodcastModel& aPodcastModel)
 	{
@@ -141,11 +141,11 @@ void CFeedEngine::MakeFileNameFromUrl(TDesC &aUrl, TFileName &fileName)
 		
 	}
 
-void CFeedEngine::NewShow(TShowInfo *item)
+void CFeedEngine::NewShow(CShowInfo *item)
 	{
 	//RDebug::Print(_L("\nTitle: %S\nURL: %S\nDescription length: %d\nFeed: %S"), &(item->iTitle), &(item->iUrl), item->description.Length(), &(item->feedUrl));
-	CleanHtml(item->iDescription);
-	item->iUid = DefaultHash::Des16(item->iUrl);
+	//CleanHtml(item->iDescription);
+	
 	//RDebug::Print(_L("Setting UID to %d"), item->uid);
 	iPodcastModel.ShowEngine().AddShow(item);
 	}
