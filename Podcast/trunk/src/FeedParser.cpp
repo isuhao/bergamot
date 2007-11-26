@@ -41,6 +41,8 @@ void CFeedParser::OnStartDocumentL(const RDocumentParameters& aDocParam, TInt aE
 	iFeedState = EStateRoot;
 	activeString = NULL;
 	activeItem=new TShowInfo;
+	iItemsParsed = 0;
+	iMaxItems = 200;
 	}
 
 void CFeedParser::OnEndDocumentL(TInt aErrorCode)
@@ -54,7 +56,7 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 	TBuf<100> str;
 	str.Copy(aElement.LocalName().DesC());
 	//RDebug::Print(_L("OnStartElementL START state=%d, element=%S"), iFeedState, &str);
-	
+		
 	switch (iFeedState) {
 	case EStateRoot:
 		// <channel>
@@ -66,6 +68,11 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 		// <channel> <item>
 		if(str.CompareF(KTagItem) == 0) {
 			//RDebug::Print(_L("New item"));
+			if (iItemsParsed > iMaxItems) {
+				RDebug::Print(_L("Too many items, discarding"));
+				activeItem = NULL;
+				return;
+			}
 			iFeedState=EStateItem;
 			activeItem = new TShowInfo();
 			if (activeItem == NULL) {
@@ -75,13 +82,18 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 			activeItem->iFeedUid = iActiveFeed->iUid;
 		// <channel> <title>
 		} else if (str.CompareF(KTagTitle) == 0) {
-			iActiveFeed->iTitle.Copy(_L(""));
+			iActiveFeed->iTitle.Zero();
 			activeString = &(iActiveFeed->iTitle);
 			//activeString = &iChannelTitle;
 			iFeedState=EStateChannelTitle;
+		// <channel> <link>
+		} else if (str.CompareF(KTagLink) == 0) {
+			iActiveFeed->iLink.Zero();
+			activeString = &(iActiveFeed->iLink);
+			iFeedState = EStateChannelLink;
 		// <channel> <description>
 		} else if (str.CompareF(KTagDescription) == 0) {
-			iActiveFeed->iDescription.Copy(_L(""));
+			iActiveFeed->iDescription.Zero();
 			activeString = &(iActiveFeed->iDescription);
 			iFeedState=EStateChannelTitle;
 		// <channel> <image>
@@ -93,7 +105,7 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 	case EStateChannelImage:
 		if (str.CompareF(KTagUrl) == 0) {
 			//RDebug::Print(_L("Image url"));
-			iActiveFeed->iImageUrl.Copy(_L(""));
+			iActiveFeed->iImageUrl.Zero();
 			activeString = &iActiveFeed->iImageUrl;
 		}
 		break;
@@ -149,6 +161,7 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 
 	switch (iFeedState) {
 		case EStateChannelTitle:
+		case EStateChannelLink:
 		case EStateChannelDescription:
 			iFeedState = EStateChannel;
 			break;
@@ -162,6 +175,7 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 				iFeedState=EStateChannel;
 //				activeItem->iFeedUrl.Copy(iActiveFeed->url);
 				iCallbacks.NewShow(activeItem);
+				iItemsParsed++;
 			}
 		break;
 		case EStateItemPubDate:

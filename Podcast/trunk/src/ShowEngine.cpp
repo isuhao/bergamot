@@ -96,6 +96,11 @@ void CShowEngine::DownloadInfo(CHttpClient* aHttpClient, int aTotalBytes)
 void CShowEngine::GetShow(TShowInfo *info)
 	{
 	TFeedInfo *feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(info->iFeedUid);
+	if (feedInfo == NULL) {
+		RDebug::Print(_L("Feed not found!"));
+		return;
+	}
+	
 	TFileName filePath;
 	iPodcastModel.FeedEngine().GetFeedDir(feedInfo, filePath);
 	TFileName fileName;
@@ -210,9 +215,21 @@ void CShowEngine::LoadShows()
 	TShowInfo *readData;
 	
 	iSuppressAutoDownload = ETrue;
+	TFeedInfo *feedInfo = NULL;
+	int lastUid = -1;
 	for (int i=0;i<count;i++) {
 		readData = new TShowInfo;
 		TRAPD(error, instream  >> *readData);
+		
+		if (readData->iUid != lastUid) {
+			lastUid = readData->iUid;
+			feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(readData->iUid);
+		}
+		
+		// if this show does not have a valid feed, we don't bother
+		if (feedInfo == NULL) {
+			continue;
+		}
 		//RDebug::Print(_L("error: %d"), error);
 		AddShow(readData);
 		
@@ -347,7 +364,8 @@ void CShowEngine::PurgeShowsByFeed(TInt aFeedUid)
 		{
 		if (iShows[i]->iFeedUid == aFeedUid)
 			{
-			if (iShows[i]->iDownloadState == EDownloaded) {
+			//if (iShows[i]->iDownloadState == EDownloaded) {
+			if (iShows[i]->iFileName.Length() > 0) {
 				BaflUtils::DeleteFile(iFs, iShows[i]->iFileName);
 				iShows[i]->iDownloadState = ENotDownloaded;
 			}

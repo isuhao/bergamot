@@ -24,6 +24,7 @@ enum TFeedState {
 	EStateRoot,
 	EStateChannel,
 	EStateChannelTitle,
+	EStateChannelLink,
 	EStateChannelDescription,
 	EStateChannelImage,
 	EStateChannelImageUrl,
@@ -65,6 +66,9 @@ private:
 	TDes* activeString;
 	TFeedInfo *iActiveFeed;
 	TBuf<128> iPubDateString;
+	
+	TUint iMaxItems;
+	TUint iItemsParsed;
 
 };
 

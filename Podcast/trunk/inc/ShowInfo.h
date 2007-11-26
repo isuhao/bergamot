@@ -28,7 +28,7 @@ public:
 	TShowInfo();
 	void ExternalizeL(RWriteStream& aStream) const;
 	void InternalizeL(RReadStream& aStream);
-
+	
 public:
 	TBuf<KTitleLength> iTitle;
 	TBuf<KUrlLength> iUrl;

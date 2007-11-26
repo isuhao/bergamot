@@ -128,13 +128,13 @@ void CHttpClient::GetL(TDesC& url, TDesC& fileName) {
 	if (iTransactionCount == 0) {
 		RDebug::Print(_L("** Opening session"));
 		iSession.OpenL();
-		RHTTPConnectionInfo connInfo = iSession.ConnectionInfo();
+		/*RHTTPConnectionInfo connInfo = iSession.ConnectionInfo();
 		THTTPHdrVal val;
 		RStringPool pool = iSession.StringPool();
 
 		//TInt connPtr=REINTERPRET_CAST(TInt, &connection);
 		connInfo.Property(pool.StringF(HTTP::EHttpSocketConnection, 
-				RHTTPSession::GetTable()), val);
+				RHTTPSession::GetTable()), val);*/
 		//
 		// TInt connPtr = REINTERPRET_CAST(TInt, &iConnection);
 		/*RConnection* connection=reinterpret_cast<RConnection*>(val.Int());

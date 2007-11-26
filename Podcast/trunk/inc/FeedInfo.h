@@ -23,6 +23,7 @@ public:
 	TBuf<KFeedDescriptionLength> iDescription;
 	TFileName iFileName;
 	TBuf<KFeedUrlLength> iImageUrl;
+	TBuf<KFeedUrlLength> iLink;
 	TFileName iImageFileName;
 	TDateTime iLastChecked;
 	TInt iUid;
