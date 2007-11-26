@@ -17,15 +17,20 @@ http://bergamot.googlecode.com/svn/wiki/pp8.jpg
 
 This is how we plan to implement features. Please [http://groups.google.com/group/bergamot help us find out what's important!]
 
-  * Release 1 (Christmas?)
+  * Release 1 (New Year)
 
-  * Beta 2?
+  * Beta 2 (Christmas)
+     * Translations
 
   * Beta 1 (December 16th)
      * No new features
      * Memory consumption improvements
 
   * Alpha 5 (December 9th)
+    * Improved icons
+    * UI refinements
+    * Resume downloads
+    * Setup on install (choose flash drive etc)
 
   * Alpha 4 (December 2nd)
     * Volume control
@@ -73,6 +78,13 @@ This is how we plan to implement features. Please [http://groups.google.com/grou
   # Go to Player to play, pause or jump inside the show
   # Add or remove feeds from the menu in the feed view
   # Purge shows or entire feeds from the menu
+
+= Phones =
+
+Podcast Player has been tested on the following phones:
+
+  * Sony Ericsson P1
+  * Motorola Z8
 
 = The UIQ Open Contest =
 
