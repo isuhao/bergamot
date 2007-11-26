@@ -18,13 +18,16 @@ http://bergamot.googlecode.com/svn/wiki/pp8.jpg
 This is how we plan to implement features. Please [http://groups.google.com/group/bergamot help us find out what's important!]
 
   * Release 1 (New Year)
+    * Bug fixes
+    * Symbian signed?
 
   * Beta 2 (Christmas)
-     * Translations
+    * Translations
 
   * Beta 1 (December 16th)
-     * No new features
-     * Memory consumption improvements
+    * No new features
+    * Memory consumption improvements
+    * Speed improvements
 
   * Alpha 5 (December 9th)
     * Improved icons
