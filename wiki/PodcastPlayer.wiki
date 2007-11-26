@@ -1,6 +1,6 @@
 = Podcast Player =
 
-The Podcast Player aims to be a fully featured podcatcher for UIQ. It is still under development, but the latest alpha version is very usable.
+The Podcast Player aims to be a fully featured podcatcher for UIQ. It is still under development, but the latest alpha versions are very usable.
 
 The intention is to release one alpha version every week, and hopefully beta and release versions in December.
 
@@ -13,6 +13,15 @@ http://bergamot.googlecode.com/svn/wiki/pp7.jpg
 http://bergamot.googlecode.com/svn/wiki/pp8.jpg
 
 = Releases = 
+
+  * Alpha 4 (December 2nd)
+    * Volume control
+    * Configuration dialog
+    * ~~Video support?~~ (Bumped to 2.0)
+    * Check connection type, option to download only on WLAN
+    * ~~Support for other feeds (Atom, RSS 0.9, any more?)~~ I can't find any podcasts that don't use RSS 2.0, so this is on hold.
+    * Automatic feed update
+    * Automatic downloading
 
   * Alpha 3 (November 25th) | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha3 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha3/group/Podcast_udeb_signed.sis SIS]
     * UI improvements (cover art, icons...)
@@ -58,15 +67,6 @@ I stumbled upon the [http://uiqopen.uiq.com/ UIQ Open] contest. Hopefully the po
 = Planning =
 
 This is how we plan to implement features. Please [http://groups.google.com/group/bergamot help us find out what's important!]
-
-  * Alpha 4 (December 2nd)
-    * Volume control
-    * Configuration dialog
-    * ~~Video support?~~ (Bumped to 2.0)
-    * Check connection type, option to download only on WLAN
-    * Support for other feeds (Atom, RSS 0.9, any more?)
-    * Automatic feed update
-    * Automatic downloading
 
   * Alpha 5 (December 9th)
 
