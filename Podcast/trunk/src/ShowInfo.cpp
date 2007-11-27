@@ -15,10 +15,12 @@ void CShowInfo::ConstructL()
 	iTitle = HBufC::NewL(1);
 	iUrl = HBufC::NewL(1);
 	iDescription = HBufC::NewL(1);
+	iFileName = HBufC::NewL(1);
 }
 
 CShowInfo::CShowInfo()
 	{
+	iDownloadState = ENotDownloaded;
 	}
 
 CShowInfo::~CShowInfo()
