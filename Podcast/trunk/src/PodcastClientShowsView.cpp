@@ -511,7 +511,8 @@ void CPodcastClientShowsView::UpdateCommandsL()
 {
 	CQikCommandManager& comMan = CQikCommandManager::Static();
 	CShowInfoArray &fItems = iPodcastModel.ActiveShowList();
-
+	TBool removeDownloadCmd = EFalse;
+	TBool removePurgeShowCmd = ETrue;
 	if(iListbox != NULL)
 	{
 		TInt index = iListbox->CurrentItemIndex();
@@ -521,28 +522,33 @@ void CPodcastClientShowsView::UpdateCommandsL()
 			comMan.SetInvisible(*this, EQikListBoxCmdSelect, EFalse);
 			comMan.SetTextL(*this, EQikListBoxCmdSelect, R_PODCAST_VIEW_CMD);
 			comMan.SetShortTextL(*this, EQikListBoxCmdSelect, R_PODCAST_VIEW_CMD);
-			if(fItems[index]->DownloadState() == EQueued ||  fItems[index]->DownloadState() == EDownloading)
-			{
-				comMan.SetInvisible(*this, EPodcastRemoveDownload, EFalse);
+			if(fItems[index]->DownloadState() != EQueued &&  fItems[index]->DownloadState() != EDownloading)
+			{			
+				removeDownloadCmd = ETrue;
 			}
-			else
-			{
-				comMan.SetInvisible(*this, EPodcastRemoveDownload, ETrue);
-			}
+			removePurgeShowCmd = fItems[index]->DownloadState() != EDownloaded;
+		
 		}
 		else
 		{
 			comMan.SetInvisible(*this, EQikListBoxCmdSelect, ETrue);		
-			comMan.SetInvisible(*this, EPodcastRemoveDownload, ETrue);
+			removeDownloadCmd = ETrue; 		
 		}
 	}
 	else
 	{
 		comMan.SetInvisible(*this, EQikListBoxCmdSelect, ETrue);
-		comMan.SetInvisible(*this, EPodcastRemoveDownload, ETrue);
+		removeDownloadCmd = ETrue;
 	}
 
 	comMan.SetInvisible(*this, EPodcastUpdateFeed, iCurrentCategory != EShowFeedShows);
+
+	TBool notshowDownloadCommands = (iCurrentCategory != EShowPendingShows);
+	comMan.SetInvisible(*this, EPodcastRemoveDownload, (notshowDownloadCommands||removeDownloadCmd));
+	comMan.SetInvisible(*this, EPodcastStopDownloads, notshowDownloadCommands);
+	comMan.SetInvisible(*this, EPodcastResumeDownloads, notshowDownloadCommands);
+	comMan.SetInvisible(*this, EPodcastPurgeShow, removePurgeShowCmd);
+
 }
 
 
