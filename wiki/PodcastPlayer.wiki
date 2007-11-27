@@ -26,7 +26,6 @@ This is how we plan to implement features. Please [http://groups.google.com/grou
 
   * Beta 1 (December 16th)
     * No new features
-    * Memory consumption improvements
     * Speed improvements
 
   * Alpha 5 (December 9th)
@@ -44,6 +43,7 @@ This is how we plan to implement features. Please [http://groups.google.com/grou
     * Automatic feed update
     * Automatic downloading
     * Automatic purging
+    * Memory consumption improvements
 
   * Alpha 3 (November 25th) | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha3 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha3/group/Podcast_udeb_signed.sis SIS]
     * UI improvements (cover art, icons...)
