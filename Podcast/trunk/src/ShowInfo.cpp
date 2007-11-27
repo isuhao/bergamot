@@ -136,6 +136,23 @@ void CShowInfo::SetUrl(TDesC &aUrl)
 	iUrl = NULL;
 	iUrl = aUrl.Alloc();
 	iUid = DefaultHash::Des16(Url());
+	
+	// set filename from url
+	int pos = aUrl.LocateReverse('/');
+	TFileName fileName;
+	if (pos != KErrNotFound) {	
+		TPtrC str = aUrl.Mid(pos+1);
+		pos = str.Locate('?');
+		if (pos != KErrNotFound) {			
+			fileName.Copy(str.Left(pos));
+			RDebug::Print(_L("fileName %S"), &(fileName));
+		} else {
+			RDebug::Print(_L("Not Found"));
+			fileName.Copy(str);
+		}
+		SetFileName(fileName);
+	} 
+	
 	}
 
 TDesC& CShowInfo::Description() const
@@ -149,7 +166,6 @@ void CShowInfo::SetDescription(TDesC &aDescription)
 	iDescription = NULL;
 	iDescription = aDescription.Alloc();
 	}
-
 
 TDesC& CShowInfo::FileName() const
 	{

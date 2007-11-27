@@ -26,8 +26,8 @@ public:
 	void SetTitle(TDesC &aTitle);
 	TDesC& Description() const;
 	void SetDescription(TDesC &aDescription);
+	TDesC& FeedDirectory() const;
 	TDesC& FeedFileName() const;
-	void SetFeedFileName(TDesC &aFeedFileName);
 	TDesC& ImageUrl() const;
 	void SetImageUrl(TDesC &aImageUrl);
 	TDesC& Link() const;
@@ -39,10 +39,14 @@ public:
 	TUint Uid();
 	
 private:
+	void ReplaceString(TDes & aString, const TDesC& aStringToReplace,const TDesC& aReplacement );
+	void SetFeedFileName(TDesC &aFeedFileName);
+private:
 	HBufC* iUrl;
 	HBufC* iTitle;
 	HBufC* iDescription;
 	HBufC* iFeedFileName;
+	HBufC* iFeedDirectory;
 	HBufC* iImageUrl;
 	HBufC* iLink;
 	HBufC* iImageFileName;

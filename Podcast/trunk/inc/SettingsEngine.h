@@ -35,7 +35,7 @@ private:
 	void SaveSettingsL();
 
 public:
-	TFileName& ShowDir();
+	TFileName& BaseDir();
 	TFileName& FeedListFile();
 	TInt UpdateFeedInterval();
 	TInt MaxSimultaneousDownloads();
@@ -44,7 +44,7 @@ public:
 	TBool DownloadOnlyOnWLAN();	
 	TInt SpecificIAP();
 	TInt MaxListItems();
-	void SetShowDir(TFileName& aFileName);
+	void SetBaseDir(TFileName& aFileName);
 	void SetUpdateFeedInterval(TInt aInterval);
 	void SetMaxSimultaneousDownloads(TInt aMaxDownloads);
 	void SetDownloadAutomatically(TBool aAutoOn);

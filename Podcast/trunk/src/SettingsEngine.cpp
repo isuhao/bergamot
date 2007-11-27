@@ -179,7 +179,7 @@ void CSettingsEngine::ImportSettings()
 	rfile.Close();
 	}
 
-TFileName& CSettingsEngine::ShowDir()
+TFileName& CSettingsEngine::BaseDir()
 	{
 	return iShowDir;
 	}
@@ -235,7 +235,7 @@ TInt CSettingsEngine::SpecificIAP()
 	}
 
 
-void CSettingsEngine::SetShowDir(TFileName& aFileName)
+void CSettingsEngine::SetBaseDir(TFileName& aFileName)
 	{
 	iShowDir = aFileName;
 	}

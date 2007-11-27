@@ -111,7 +111,45 @@ void CFeedInfo::SetUrl(TDesC &aUrl)
 	{
 	iUrl = aUrl.Alloc();
 	iUid = DefaultHash::Des16(Url());
+	
+	// set directory name
+	TFileName buf;
+	int domainStart = aUrl.FindF(_L("://"));
+	
+	if (domainStart != KErrNotFound) {
+		buf.Copy(aUrl.Mid(domainStart+3));
+	} else {
+		RDebug::Print(_L("Strange URL: %S"), &aUrl);
+		buf.Copy(aUrl);
 	}
+	ReplaceString(buf, _L("/"), _L("\\"));
+	ReplaceString(buf, _L(":"), _L("_"));
+	ReplaceString(buf, _L("?"), _L("_"));
+	buf.Trim();
+	//buf.Append(_L("\\"));
+	RDebug::Print(_L("directory to store in: %S"), &buf);
+	iFeedDirectory = buf.Alloc();	
+	
+	int pos = aUrl.LocateReverse('/');
+	
+	if (pos != KErrNotFound) {	
+		TPtrC str = aUrl.Mid(pos+1);
+		pos = str.Locate('?');
+		if (pos != KErrNotFound) {			
+			buf.Copy(str.Left(pos));
+		} else {
+			buf.Copy(str);
+		}
+		
+		} 
+
+	SetFeedFileName(buf);
+	}
+
+TDesC& CFeedInfo::FeedDirectory() const
+{
+	return *iFeedDirectory;
+}
 
 TDesC& CFeedInfo::Title() const
 	{
@@ -151,6 +189,22 @@ TDesC& CFeedInfo::ImageUrl() const
 void CFeedInfo::SetImageUrl(TDesC &aImageUrl)
 	{
 	iImageUrl = aImageUrl.Alloc();
+	
+	int pos = aImageUrl.LocateReverse('/');
+	TFileName buf;
+	if (pos != KErrNotFound) {	
+		TPtrC str = aImageUrl.Mid(pos+1);
+		pos = str.Locate('?');
+		if (pos != KErrNotFound) {			
+			buf.Copy(str.Left(pos));
+		} else {
+			buf.Copy(str);
+		}
+		
+		} 
+
+	SetImageFileName(buf);
+	
 	}
 
 TDesC& CFeedInfo::Link() const
@@ -187,3 +241,15 @@ TUint CFeedInfo::Uid()
 	{
 	return iUid;
 	}
+
+void CFeedInfo::ReplaceString(TDes & aString, const TDesC& aStringToReplace,const TDesC& aReplacement )
+	{
+		TInt pos=aString.Find(aStringToReplace);
+		while (pos>=0)
+		{
+			aString.Replace(pos,aStringToReplace.Length(),aReplacement);
+			pos=aString.Find(aStringToReplace);
+		}
+		
+	}
+

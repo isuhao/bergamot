@@ -40,7 +40,7 @@ void CPodcastClientSettingsDlg::PreLayoutDynInitL()
 	iVolumeSlider =	 static_cast<CQikSlider*> (ControlOrNull(EPodcastSettingsVolume));
 
 	// Populate data
-	iSelectedPathTemp = iPodcastModel.SettingsEngine().ShowDir();
+	iSelectedPathTemp = iPodcastModel.SettingsEngine().BaseDir();
 	iShowBaseDirCtrl->SetTextL(&iSelectedPathTemp);
 
 	iAutoDLCtrl->SetState(iPodcastModel.SettingsEngine().DownloadAutomatically() ? CEikButtonBase::ESet : CEikButtonBase::EClear);
@@ -73,7 +73,7 @@ TBool CPodcastClientSettingsDlg::OkToExitL(TInt aCommandId)
 	case EEikBidOk:
 		{
 			iShowBaseDirCtrl->GetText(iSelectedPathTemp);
-			iPodcastModel.SettingsEngine().SetShowDir(iSelectedPathTemp);
+			iPodcastModel.SettingsEngine().SetBaseDir(iSelectedPathTemp);
 			iPodcastModel.SettingsEngine().SetDownloadAutomatically(iAutoDLCtrl->State() == CEikButtonBase::ESet ? ETrue : EFalse);
 			iPodcastModel.SettingsEngine().SetUpdateFeedInterval(iUpdateIntervalCtrl->Value());
 			iPodcastModel.SettingsEngine().SetMaxSimultaneousDownloads(iMaxSimDlsCtrl->Value());

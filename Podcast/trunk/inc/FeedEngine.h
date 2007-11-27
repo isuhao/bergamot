@@ -31,7 +31,6 @@ public:
 
 	void GetFeeds(CFeedInfoArray& array);
 	CFeedInfo* GetFeedInfoByUid(int aFeedUid);
-	void GetFeedDir(CFeedInfo *aFeedInfo, TFileName &aDir);
 	
 	void AddObserver(MFeedEngineObserver *observer);
 	void UpdateAllFeeds();
@@ -57,7 +56,6 @@ private:
 	void ParsingComplete(CFeedInfo *item);
 
 	void GetFeedImage(CFeedInfo *aFeedInfo);
-	void MakeFileNameFromUrl(TDesC &aUrl, TFileName &fileName);
 	
 	void ReplaceString(TDes & aString, const TDesC& aStringToReplace,const TDesC& aReplacement);
 	void CleanHtml(TDes &str);

@@ -39,7 +39,6 @@ public:
 	void SetDescription(TDesC &aDescription);
 	
 	TDesC& FileName() const;
-	void SetFileName(TDesC &aFileName);
 	
 	TTimeIntervalMicroSeconds& Position();
 	void SetPosition(TTimeIntervalMicroSeconds aPosition);
@@ -60,10 +59,12 @@ public:
 	
 	const TTime PubDate() const;
 	void SetPubDate(TTime aPubDate);
-	
+
 private:
-	CShowInfo();
-	void ConstructL();
+CShowInfo();
+void ConstructL();
+	void SetFileName(TDesC &aFileName);
+
 private:
 	HBufC* iTitle;
 	HBufC* iUrl;

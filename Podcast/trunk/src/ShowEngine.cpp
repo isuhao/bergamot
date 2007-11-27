@@ -101,15 +101,13 @@ void CShowEngine::GetShow(CShowInfo *info)
 	}
 	
 	TFileName filePath;
-	iPodcastModel.FeedEngine().GetFeedDir(feedInfo, filePath);
-	TFileName fileName;
-	MakeFileNameFromUrl(info->Url(), fileName);
-	
-	filePath.Append(fileName);
+	filePath.Copy(iPodcastModel.SettingsEngine().BaseDir());
+	filePath.Append(feedInfo->FeedDirectory());
+	filePath.Append(_L("\\"));
+	filePath.Append(info->FileName());
 
 	RDebug::Print(_L("filePath: %S"), &filePath);
-	info->SetFileName(filePath);
-	iShowClient->GetL(info->Url(), info->FileName());
+	iShowClient->GetL(info->Url(), filePath);
 	}
 
 void CShowEngine::AddShow(CShowInfo *item) {
@@ -125,26 +123,6 @@ void CShowEngine::AddShow(CShowInfo *item) {
 		AddDownload(item);
 	}
 	}
-
-void CShowEngine::MakeFileNameFromUrl(TDesC &aUrl, TFileName &fileName)
-	{
-	int pos = aUrl.LocateReverse('/');
-	
-	if (pos != KErrNotFound) {	
-		TPtrC str = aUrl.Mid(pos+1);
-		pos = str.Locate('?');
-		if (pos != KErrNotFound) {			
-			fileName.Copy(str.Left(pos));
-			RDebug::Print(_L("fileName %S"), &(fileName));
-		} else {
-			RDebug::Print(_L("Not Found"));
-			fileName.Copy(str);
-		}
-		
-		} 
-		
-	}
-
 
 void CShowEngine::AddObserver(MShowEngineObserver *observer)
 	{

@@ -59,7 +59,6 @@ private:
 	static TInt CompareShowsByDate(const CShowInfo &a, const CShowInfo &b);
 
 	void DownloadNextShow();
-	void MakeFileNameFromUrl(TDesC &aUrl, TFileName &fileName);
 private:
 	CHttpClient* iShowClient;
 
