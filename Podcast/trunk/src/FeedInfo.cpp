@@ -1,106 +1,189 @@
 #import "FeedInfo.h"
+#include <e32hashtab.h>
 
-void TFeedInfo::ExternalizeL(RWriteStream& aStream) const {
+CFeedInfo::CFeedInfo()
+	{
+	iUrl = HBufC::NewL(0);
+	iTitle = HBufC::NewL(0);
+	iDescription = HBufC::NewL(0);
+	iFeedFileName = HBufC::NewL(0);
+	iImageUrl = HBufC::NewL(0);
+	iLink = HBufC::NewL(0);
+	iImageFileName = HBufC::NewL(0);
+	}
 
-	aStream.WriteInt32L(iTitle.Length());
-//	RDebug::Print(_L("wrote len: %d"), title.Length());
+CFeedInfo::~CFeedInfo()
+	{
+	delete iUrl;
+	delete iTitle;
+	delete iDescription;
+	delete iFeedFileName;
+	delete iImageUrl;
+	delete iLink;
+	delete iImageFileName;
+	}
 
-	aStream.WriteL(iTitle);
-//	RDebug::Print(_L("wrote title: %S"), &iTitle);
-	
-	aStream.WriteInt32L(iUrl.Length());
-//	RDebug::Print(_L("wrote len: %d"), url.Length());
-	
-	aStream.WriteL(iUrl);
-//	RDebug::Print(_L("wrote url: %S"), &url);
-	
-	aStream.WriteInt32L(iImageFileName.Length());
-	//	RDebug::Print(_L("wrote len: %d"), iImageFileName.Length());
+void CFeedInfo::ExternalizeL(RWriteStream& aStream) const 
+	{
 
-	aStream.WriteL(iImageFileName);
-	//	RDebug::Print(_L("wrote iImageFileName: %S"), &iImageFileName);
+	if (iTitle == NULL) {
+		aStream.WriteInt32L(0);		
+	} else {
+		aStream.WriteInt32L(iTitle->Length());
+		aStream.WriteL(*iTitle);
+	}
 
-	aStream.WriteInt32L(iDescription.Length());
-//	RDebug::Print(_L("wrote len: %d"), description.Length());
+	if (iUrl == NULL) {
+		aStream.WriteInt32L(0);		
+	} else {
+		aStream.WriteInt32L(iUrl->Length());
+		aStream.WriteL(*iUrl);
+	}
 
-	aStream.WriteL(iDescription);
-//	RDebug::Print(_L("wrote description: %S"), &description);
-	
-	aStream.WriteInt32L(iFileName.Length());
-//	RDebug::Print(_L("wrote len: %d"), fileName.Length());
+	if (iImageFileName == NULL) {
+		aStream.WriteInt32L(0);		
+	} else {
+		aStream.WriteInt32L(iImageFileName->Length());
+		aStream.WriteL(*iImageFileName);
+	}
 
-	aStream.WriteL(iFileName);
-//	RDebug::Print(_L("wrote fileName: %S"), &fileName);
+	if (iDescription == NULL) {
+		aStream.WriteInt32L(0);		
+	} else {
+		aStream.WriteInt32L(iDescription->Length());
+		aStream.WriteL(*iDescription);
+	}
+
+	if (iFeedFileName == NULL) {
+		aStream.WriteInt32L(0);		
+	} else {
+		aStream.WriteInt32L(iFeedFileName->Length());
+		aStream.WriteL(*iFeedFileName);
+	}
 
 	aStream.WriteInt32L(iUid);
 	}
 
-void TFeedInfo::InternalizeL(RReadStream& aStream) {
-	int len;
-
-	TRAPD(error, len = aStream.ReadInt32L()); 
-	if (error != KErrNone) {
-		return;
-	}
-	//RDebug::Print(_L("len: %d"), len);
-
-	TRAP(error, aStream.ReadL(iTitle, len));
-	if (error != KErrNone) {
-		return;
-	}
-//	RDebug::Print(_L("read title: %S"), &iTitle);
+void CFeedInfo::InternalizeL(RReadStream& aStream) 
+	{
+	int len = aStream.ReadInt32L(); 
+	TBuf<2048> buffer;
 	
-	TRAP(error,len = aStream.ReadInt32L());
-	if (error != KErrNone) {
-		return;
-	}
-	//RDebug::Print(_L("len: %d"), len);
-
-	TRAP(error,aStream.ReadL(iUrl, len));
-	if (error != KErrNone) {
-		return;
-	}
-	//RDebug::Print(_L("read url: %S"), &url);
-	
-	TRAP(error,len = aStream.ReadInt32L());
-	if (error != KErrNone) {
-		return;
-	}
-	//RDebug::Print(_L("len: %d"), len);
-
-	TRAP(error,aStream.ReadL(iImageFileName, len));
-	if (error != KErrNone) {
-		return;
-	}
-	//RDebug::Print(_L("read url: %S"), &url);
-	
-	TRAP(error,len = aStream.ReadInt32L()) 
-	if (error != KErrNone) {
-		return;
-	}
-	//RDebug::Print(_L("len: %d"), len);
-	
-	TRAP(error,aStream.ReadL(iDescription, len));
-	if (error != KErrNone) {
-		return;
-	}
-	//RDebug::Print(_L("read description: %S"), &description);
-
-	TRAP(error,len = aStream.ReadInt32L()); 
-	if (error != KErrNone) {
-		return;
-	}
-	//RDebug::Print(_L("len: %d"), len);
-
-	TRAP(error,aStream.ReadL(iFileName, len));
-	if (error != KErrNone) {
-		return;
-	}
-	//RDebug::Print(_L("read fileName: %S"), &fileName);
-		
-	TRAP(error,iUid = aStream.ReadInt32L());
-	if (error != KErrNone) {
-		return;
+	if (len > 0) {
+		aStream.ReadL(buffer, len);
+		SetTitle(buffer);
 	}
 	
-}
+	len = aStream.ReadInt32L();
+	if (len > 0) {
+		aStream.ReadL(buffer, len);
+		SetUrl(buffer);
+	}
+
+	len = aStream.ReadInt32L();
+	if (len > 0) {
+		aStream.ReadL(buffer, len);
+		SetImageFileName(buffer);
+	}
+	
+
+	len = aStream.ReadInt32L();
+	if (len > 0) {
+		aStream.ReadL(buffer, len);
+		SetDescription(buffer);
+	}
+	
+	len = aStream.ReadInt32L();
+	if (len > 0) {
+		aStream.ReadL(buffer, len);
+		SetFeedFileName(buffer);
+	}
+	
+	iUid = aStream.ReadInt32L();
+	}
+
+TDesC& CFeedInfo::Url() const
+	{
+	return *iUrl;
+	}
+
+void CFeedInfo::SetUrl(TDesC &aUrl) 
+	{
+	iUrl = aUrl.Alloc();
+	iUid = DefaultHash::Des16(Url());
+	}
+
+TDesC& CFeedInfo::Title() const
+	{
+	return *iTitle;
+	}
+
+void CFeedInfo::SetTitle(TDesC &aTitle)
+	{
+	iTitle = aTitle.Alloc();
+	}
+
+TDesC& CFeedInfo::Description() const
+	{
+	return *iDescription;
+	}
+
+void CFeedInfo::SetDescription(TDesC &aDescription)
+	{
+	iDescription = aDescription.Alloc();
+	}
+
+TDesC& CFeedInfo::FeedFileName() const
+	{
+	return *iFeedFileName;
+	}
+
+void CFeedInfo::SetFeedFileName(TDesC &aFeedFileName)
+	{
+	iFeedFileName = aFeedFileName.Alloc();
+	}
+
+TDesC& CFeedInfo::ImageUrl() const
+	{
+	return *iImageUrl;
+	}
+
+void CFeedInfo::SetImageUrl(TDesC &aImageUrl)
+	{
+	iImageUrl = aImageUrl.Alloc();
+	}
+
+TDesC& CFeedInfo::Link() const
+	{
+	return *iLink;
+	}
+
+void CFeedInfo::SetLink(TDesC &aLink)
+	{
+	iLink = aLink.Alloc();
+	}
+
+TDesC& CFeedInfo::ImageFileName() const
+	{
+	return *iImageFileName;
+	}
+
+void CFeedInfo::SetImageFileName(TDesC &aImageFileName)
+	{
+	iImageFileName = aImageFileName.Alloc();
+	}
+
+TTime CFeedInfo::PubDate()
+	{
+	return iPubDate;
+	}
+
+void CFeedInfo::SetPubDate(TTime aPubDate)
+	{
+	iPubDate = aPubDate;
+	}
+
+TUint CFeedInfo::Uid()
+	{
+	return iUid;
+	}

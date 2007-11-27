@@ -18,7 +18,7 @@ public:
 private:
 	/** Reference to the podcast application model */
 	CPodcastModel& iPodcastModel;
-	TFeedInfo iFeedInfo;
+	CFeedInfo iFeedInfo;
 };
 
 #endif

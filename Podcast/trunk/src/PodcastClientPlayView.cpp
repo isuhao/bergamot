@@ -438,16 +438,16 @@ void CPodcastClientPlayView::UpdateViewL()
 				comMan.SetInvisible(*this, EPodcastDownloadShow, ETrue);
 			}
 
-			TFeedInfo* feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(showInfo->FeedUid());
+			CFeedInfo* feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(showInfo->FeedUid());
 			
-			if(feedInfo != NULL && feedInfo->iImageFileName.Length()>0)
+			if(feedInfo != NULL && feedInfo->ImageFileName().Length()>0)
 			{
-				if(feedInfo->iImageFileName != iLastImageFileName)
+				if(feedInfo->ImageFileName() != iLastImageFileName)
 				{
-					iLastImageFileName = feedInfo->iImageFileName;
+					iLastImageFileName = feedInfo->ImageFileName();
 					if(!iBitmapConverter->IsActive())
 					{
-						TRAPD(err, iBitmapConverter->LoadImageDataL(feedInfo->iImageFileName));
+						TRAPD(err, iBitmapConverter->LoadImageDataL(feedInfo->ImageFileName()));
 						if(err == KErrNone)
 						{
 							iBitmapConverter->ConvertToBitmapL(iCurrentCoverImage, 0);

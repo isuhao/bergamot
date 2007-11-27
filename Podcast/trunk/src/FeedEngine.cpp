@@ -67,40 +67,40 @@ void CFeedEngine::UpdateAllFeeds()
 void CFeedEngine::UpdateNextFeed()
 	{
 	if (iFeedsUpdating.Count() > 0) {
-		TFeedInfo *info = iFeedsUpdating[0];
+		CFeedInfo *info = iFeedsUpdating[0];
 		iFeedsUpdating.Remove(0);
-		RDebug::Print(_L("** Updating %S"), &(info->iUrl));
-		UpdateFeed(info->iUid);
+		RDebug::Print(_L("** Updating %S"), &(info->Url()));
+		UpdateFeed(info->Uid());
 	}
 	}
 
 void CFeedEngine::UpdateFeed(TInt aFeedUid)
 	{
 	iClientState = EFeed;
-	TFeedInfo *feedInfo = GetFeedInfoByUid(aFeedUid);
+	CFeedInfo *feedInfo = GetFeedInfoByUid(aFeedUid);
 	iActiveFeed = feedInfo;
 	TFileName filePath;
 	GetFeedDir(feedInfo, filePath);
 
 	BaflUtils::EnsurePathExistsL(iFs, filePath);
 	
-	int pos = feedInfo->iUrl.LocateReverse('/');
+	int pos = feedInfo->Url().LocateReverse('/');
 	
 	if (pos != KErrNotFound) {
-		TPtrC str = feedInfo->iUrl.Mid(pos+1);
+		TPtrC str = feedInfo->Url().Mid(pos+1);
 		//RDebug::Print(_L("Separated filename: %S"), &str);
 		filePath.Append(str);
 	} else {
 		filePath.Append(_L("unknown"));
 	}
 
-	feedInfo->iFileName.Copy(filePath);
-	//RDebug::Print(_L("URL: %S, fileName: %S"), &feedInfo->iUrl, &feedInfo->iFileName);
-	iFeedClient->GetL(feedInfo->iUrl, feedInfo->iFileName);
+	feedInfo->SetFeedFileName(filePath);
+	//RDebug::Print(_L("URL: %S, fileName: %S"), &feedInfo->Url(), &feedInfo->FileName());
+	iFeedClient->GetL(feedInfo->Url(), feedInfo->FeedFileName());
 	RDebug::Print(_L("UpdateFeed END"));
 	}
 
-void CFeedEngine::GetFeedDir(TFeedInfo *aFeedInfo, TFileName &aDir)
+void CFeedEngine::GetFeedDir(CFeedInfo *aFeedInfo, TFileName &aDir)
 	{
 	TBuf<100> filePath;
 	filePath.Copy(iPodcastModel.SettingsEngine().ShowDir());
@@ -109,7 +109,7 @@ void CFeedEngine::GetFeedDir(TFeedInfo *aFeedInfo, TFileName &aDir)
 	}
 	// fix filename
 	TBuf<1024> buf;
-	buf.Copy(aFeedInfo->iUrl);
+	buf.Copy(aFeedInfo->Url());
 	ReplaceString(buf, _L("/"), _L("_"));
 	ReplaceString(buf, _L(":"), _L("_"));
 	ReplaceString(buf, _L("?"), _L("_"));
@@ -143,14 +143,14 @@ void CFeedEngine::MakeFileNameFromUrl(TDesC &aUrl, TFileName &fileName)
 
 void CFeedEngine::NewShow(CShowInfo *item)
 	{
-	//RDebug::Print(_L("\nTitle: %S\nURL: %S\nDescription length: %d\nFeed: %S"), &(item->iTitle), &(item->iUrl), item->description.Length(), &(item->feedUrl));
+	RDebug::Print(_L("\nTitle: %S\nURL: %S\nDescription length: %d\nFeed: %d"), &(item->Title()), &(item->Url()), item->Description().Length(), item->FeedUid());
 	//CleanHtml(item->iDescription);
 	
 	//RDebug::Print(_L("Setting UID to %d"), item->uid);
 	iPodcastModel.ShowEngine().AddShow(item);
 	}
 
-void CFeedEngine::GetFeedImage(TFeedInfo *aFeedInfo)
+void CFeedEngine::GetFeedImage(CFeedInfo *aFeedInfo)
 	{
 	RDebug::Print(_L("GetFeedImage"));
 	iClientState = EImage;
@@ -158,12 +158,12 @@ void CFeedEngine::GetFeedImage(TFeedInfo *aFeedInfo)
 	GetFeedDir(aFeedInfo, filePath);
 	
 	TFileName fileName;
-	MakeFileNameFromUrl(aFeedInfo->iImageUrl, fileName);
+	MakeFileNameFromUrl(aFeedInfo->ImageUrl(), fileName);
 	filePath.Append(fileName);
-	aFeedInfo->iImageFileName.Copy(filePath);
-	RDebug::Print(_L("image file: %S"), &(aFeedInfo->iImageFileName));
+	aFeedInfo->SetImageFileName(filePath);
+	RDebug::Print(_L("image file: %S"), &(aFeedInfo->ImageFileName()));
 	
-	iFeedClient->GetL(aFeedInfo->iImageUrl, aFeedInfo->iImageFileName);
+	iFeedClient->GetL(aFeedInfo->ImageUrl(), aFeedInfo->ImageFileName());
 	}
 
 void CFeedEngine::ReplaceString(TDes & aString, const TDesC& aStringToReplace,const TDesC& aReplacement )
@@ -177,10 +177,10 @@ void CFeedEngine::ReplaceString(TDes & aString, const TDesC& aStringToReplace,co
 		
 	}
 
-void CFeedEngine::AddFeed(TFeedInfo *item) {
+void CFeedEngine::AddFeed(CFeedInfo *item) {
 	for (int i=0;i<iFeeds.Count();i++) {
-		if (iFeeds[i]->iUid == item->iUid) {
-			RDebug::Print(_L("Already have feed %S, discarding"), &item->iUrl);
+		if (iFeeds[i]->Uid() == item->Uid()) {
+			RDebug::Print(_L("Already have feed %S, discarding"), &item->Url());
 			return;
 		}
 	}
@@ -190,7 +190,7 @@ void CFeedEngine::AddFeed(TFeedInfo *item) {
 
 void CFeedEngine::RemoveFeed(TInt aUid) {
 	for (int i=0;i<iFeeds.Count();i++) {
-		if (iFeeds[i]->iUid == aUid) {
+		if (iFeeds[i]->Uid() == aUid) {
 			iPodcastModel.ShowEngine().PurgeShowsByFeed(aUid);
 			iFeeds.Remove(i);
 			RDebug::Print(_L("Removed feed"));
@@ -199,12 +199,12 @@ void CFeedEngine::RemoveFeed(TInt aUid) {
 	}
 }
 
-void CFeedEngine::ParsingComplete(TFeedInfo *item)
+void CFeedEngine::ParsingComplete(CFeedInfo *item)
 	{
 	RDebug::Print(_L("ParsingCompleteCallback"));
-	RDebug::Print(_L("feed image url: %S"), &item->iImageUrl);
+	RDebug::Print(_L("feed image url: %S"), &item->ImageUrl());
 	for (int i=0;i<iObservers.Count();i++) {
-		iObservers[i]->FeedInfoUpdated(*item);
+		iObservers[i]->FeedInfoUpdated(item);
 //		iObservers[i]->ShowListUpdated();
 	}
 	}
@@ -237,15 +237,13 @@ void CFeedEngine::Progress(CHttpClient* /*aHttpClient*/, int aBytes, int aTotalB
 void CFeedEngine::Complete(CHttpClient* /*aClient*/, TBool aSuccessful)
 {
 	if (iClientState == EFeed) {
-		RDebug::Print(_L("File to parse: %S"), &iActiveFeed->iFileName);
-		iParser->ParseFeedL(iActiveFeed->iFileName, iActiveFeed);
-		iActiveFeed->iUid = DefaultHash::Des16(iActiveFeed->iUrl);
-		iActiveFeed->iImageUrl.Trim();
+		RDebug::Print(_L("File to parse: %S"), &iActiveFeed->FeedFileName());
+		iParser->ParseFeedL(iActiveFeed->FeedFileName(), iActiveFeed);
 		
 		TFileName fileName;
-		MakeFileNameFromUrl(iActiveFeed->iImageUrl, fileName);
+		MakeFileNameFromUrl(iActiveFeed->ImageUrl(), fileName);
 		
-		if (!BaflUtils::FileExists(iFs, fileName) && iActiveFeed->iImageUrl.Length() > 0) {
+		if (!BaflUtils::FileExists(iFs, fileName) && iActiveFeed->ImageUrl().Length() > 0) {
 			GetFeedImage(iActiveFeed);
 		}
 		
@@ -283,7 +281,6 @@ void CFeedEngine::ImportFeeds(TFileName &aFile)
 		return;
 	}
 
-	
 	TFileText tft;
 	tft.Set(rfile);
 	
@@ -292,24 +289,11 @@ void CFeedEngine::ImportFeeds(TFileName &aFile)
 	
 	while (error == KErrNone) {
 		RDebug::Print(_L("Line: %S"), &line);
-		TFeedInfo *fi = new TFeedInfo;
+		CFeedInfo *fi = new CFeedInfo;
 		line.Trim();
-		fi->iUid = KErrNotFound;
-		fi->iUrl.Copy(line);
-		int pos = line.Locate('|');
-		if (pos == KErrNotFound) {
-			fi->iTitle.Copy(line);
-			fi->iUrl.Copy(line);
-		}else {
-			fi->iTitle.Copy(line.Left(pos));
-			fi->iUrl.Copy(line.Mid(pos+1));
-			RDebug::Print(_L("Read title: '%S', url: '%S'"), &fi->iTitle, &fi->iUrl);
-		}
+		fi->SetUrl(line);
+		fi->SetTitle(line);
 		
-		fi->iTitle.Trim();
-		fi->iUrl.Trim();
-		fi->iUid = DefaultHash::Des16(fi->iUrl);
-
 		AddFeed(fi);
 		error = tft.Read(line);
 		}
@@ -355,10 +339,10 @@ TBool CFeedEngine::LoadFeeds()
 	
 	int count = instream.ReadInt32L();
 	RDebug::Print(_L("Read count: %d"), count);
-	TFeedInfo *readData;
+	CFeedInfo *readData;
 	
 	for (int i=0;i<count;i++) {
-		readData = new TFeedInfo;
+		readData = new CFeedInfo;
 		TRAP(error, instream  >> *readData);
 		//RDebug::Print(_L("error: %d"), error);
 		iFeeds.Append(readData);
@@ -404,11 +388,11 @@ void CFeedEngine::SaveFeeds()
 	}
 
 
-TFeedInfo* CFeedEngine::GetFeedInfoByUid(TInt aFeedUid)
+CFeedInfo* CFeedEngine::GetFeedInfoByUid(TInt aFeedUid)
 	{
 	for (int i=0;i<iFeeds.Count();i++)
 		{
-		if (iFeeds[i]->iUid == aFeedUid)
+		if (iFeeds[i]->Uid() == aFeedUid)
 			{
 			return iFeeds[i];
 			}
@@ -417,13 +401,13 @@ TFeedInfo* CFeedEngine::GetFeedInfoByUid(TInt aFeedUid)
 	return NULL;
 	}
 
-void CFeedEngine::GetFeeds(TFeedInfoArray& array) 
+void CFeedEngine::GetFeeds(CFeedInfoArray& array) 
 {
 	for (int i=0;i<iFeeds.Count();i++) {
 		array.Append(iFeeds[i]);
 	}
 	
-	TLinearOrder<TFeedInfo> order(CFeedEngine::CompareFeedsByTitle);
+	TLinearOrder<CFeedInfo> order(CFeedEngine::CompareFeedsByTitle);
 	array.Sort(order);
 }
 
@@ -455,8 +439,8 @@ void CFeedEngine::CleanHtml(TDes &str)
 	str.Trim();
 }
 
-TInt CFeedEngine::CompareFeedsByTitle(const TFeedInfo &a, const TFeedInfo &b)
+TInt CFeedEngine::CompareFeedsByTitle(const CFeedInfo &a, const CFeedInfo &b)
 	{
-		//RDebug::Print(_L("Comparing %S to %S"), &a.iTitle, &b.iTitle);
-		return a.iTitle.CompareF(b.iTitle);
+		//RDebug::Print(_L("Comparing %S to %S"), &a.Title(), &b.Title());
+		return a.Title().CompareF(b.Title());
 	}

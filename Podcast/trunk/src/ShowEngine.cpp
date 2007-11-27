@@ -94,7 +94,7 @@ void CShowEngine::DownloadInfo(CHttpClient* aHttpClient, int aTotalBytes)
 
 void CShowEngine::GetShow(CShowInfo *info)
 	{
-	TFeedInfo *feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(info->FeedUid());
+	CFeedInfo *feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(info->FeedUid());
 	if (feedInfo == NULL) {
 		RDebug::Print(_L("Feed not found!"));
 		return;
@@ -214,7 +214,7 @@ void CShowEngine::LoadShows()
 	CShowInfo *readData;
 	
 	iSuppressAutoDownload = ETrue;
-	TFeedInfo *feedInfo = NULL;
+	CFeedInfo *feedInfo = NULL;
 	int lastUid = -1;
 	for (int i=0;i<count;i++) {
 		readData = new CShowInfo;
@@ -292,17 +292,16 @@ void CShowEngine::SelectAllShows()
 
 TInt CShowEngine::CompareShowsByDate(const CShowInfo &a, const CShowInfo &b)
 	{
-		/*if (a.PubDate() > b.PubDate()) {
+		if (a.PubDate() > b.PubDate()) {
 //			RDebug::Print(_L("Sorting %S less than %S"), &a.iTitle, &b.iTitle);
 			return -1;
-		} else if (((CShowInfo)a).PubDate() == ((CShowInfo)b).PubDate()) {
+		} else if (a.PubDate() == b.PubDate()) {
 //			RDebug::Print(_L("Sorting %S equal to %S"), &a.iTitle, &b.iTitle);
 			return 0;
 		} else {
 //			RDebug::Print(_L("Sorting %S greater than %S"), &a.iTitle, &b.iTitle);
 			return 1;
-		}*/
-	return 0;
+		}
 	}
 
 void CShowEngine::PurgeShowsByFeed(TInt aFeedUid)
@@ -351,6 +350,7 @@ void CShowEngine::PurgeShow(TInt aShowUid)
 
 void CShowEngine::SelectShowsByFeed(TInt aFeedUid)
 	{
+	RDebug::Print(_L("SelectShowsByFeed: %d"), aFeedUid);
 	iSelectedShows.Reset();
 	for (int i=0;i<iShows.Count();i++)
 		{

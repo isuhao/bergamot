@@ -15,8 +15,7 @@ CFeedParser::~CFeedParser()
 {
 }
 
-
-void CFeedParser::ParseFeedL(TFileName &feedFileName, TFeedInfo *info)
+void CFeedParser::ParseFeedL(const TFileName &feedFileName, CFeedInfo *info)
 	{
 	RDebug::Print(_L("ParseFeedL BEGIN: %S"), &feedFileName);
 	RFs rfs;
@@ -26,7 +25,7 @@ void CFeedParser::ParseFeedL(TFileName &feedFileName, TFeedInfo *info)
 	CParser* parser = CParser::NewLC(KXmlMimeType, *this);
 	iActiveFeed = info;
 	ParseL(*parser, rfs, feedFileName);
-	
+	rfs.Close();
 	// Destroy the parser when done.
 	CleanupStack::PopAndDestroy();
 }
@@ -37,13 +36,12 @@ void CFeedParser::OnStartDocumentL(const RDocumentParameters& aDocParam, TInt aE
 //	RDebug::Print(_L("OnStartDocumentL()"));
 	TBuf<1024> charset;
 	charset.Copy(aDocParam.CharacterSetName().DesC());
-	//RDebug::Print(_L("charset: %S"), &charset);
+	RDebug::Print(_L("charset: %S"), &charset);
 	iFeedState = EStateRoot;
-	activeString = NULL;
-	activeItem=new CShowInfo;
+	iActiveShow = new CShowInfo;
 	iItemsParsed = 0;
 	iMaxItems = 200;
-	iAbortParsing = EFalse;
+	iStoppedParsing = EFalse;
 	}
 
 void CFeedParser::OnEndDocumentL(TInt aErrorCode)
@@ -56,12 +54,13 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 	{
 	TBuf<100> str;
 	str.Copy(aElement.LocalName().DesC());
-	//RDebug::Print(_L("OnStartElementL START state=%d, element=%S"), iFeedState, &str);
-		
+	RDebug::Print(_L("OnStartElementL START state=%d, element=%S"), iFeedState, &str);
+	iBuffer.Zero();
 	switch (iFeedState) {
 	case EStateRoot:
 		// <channel>
 		if (str.CompareF(KTagChannel) == 0) {
+			RDebug::Print(_L("CHANNEL"));
 			iFeedState = EStateChannel;
 		}
 		break;
@@ -69,94 +68,80 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 		// <channel> <item>
 		if(str.CompareF(KTagItem) == 0) {
 			//RDebug::Print(_L("New item"));
-			if (iAbortParsing) {
+			if (iStoppedParsing) {
 				RDebug::Print(_L("Too many items, discarding"));
-				activeItem = NULL;
+				iActiveShow = NULL;
 				return;
+			} else {
+				iFeedState=EStateItem;
+				iActiveShow = new CShowInfo();
+				if (iActiveShow == NULL) {
+					RDebug::Print(_L("Out of memory!"));
+					iStoppedParsing = ETrue;
+					return;
+				}
+				iActiveShow->SetFeedUid(iActiveFeed->Uid());
 			}
-			iFeedState=EStateItem;
-			activeItem = new CShowInfo();
-			if (activeItem == NULL) {
-				RDebug::Print(_L("Out of memory!"));
-				return;
-			}
-			activeItem->SetFeedUid(iActiveFeed->iUid);
 		// <channel> <lastBuildDate>
 		} else if (str.CompareF(KTagLastBuildDate) == 0) {
-			RDebug::Print(_L("Last build date!"));
-			iBuffer.Zero();
-			activeString = &(iBuffer);
 			iFeedState=EStateChannelLastBuildDate;
 		// <channel> <link>
 		}else if (str.CompareF(KTagTitle) == 0) {
-			iActiveFeed->iTitle.Zero();
-			activeString = &(iActiveFeed->iTitle);
-			//activeString = &iChannelTitle;
 			iFeedState=EStateChannelTitle;
 		// <channel> <link>
 		} else if (str.CompareF(KTagLink) == 0) {
-			iActiveFeed->iLink.Zero();
-			activeString = &(iActiveFeed->iLink);
 			iFeedState = EStateChannelLink;
 		// <channel> <description>
 		} else if (str.CompareF(KTagDescription) == 0) {
-			iActiveFeed->iDescription.Zero();
-			activeString = &(iActiveFeed->iDescription);
-			iFeedState=EStateChannelTitle;
+			iFeedState=EStateChannelDescription;
 		// <channel> <image>
 		} else if (str.CompareF(KTagImage) == 0) {
-			activeString = NULL;
 			iFeedState=EStateChannelImage;
+			RDebug::Print(_L("IMAGE"));
 		}
 		break;
 	case EStateChannelImage:
+		// <channel> <image> <url>
 		if (str.CompareF(KTagUrl) == 0) {
-			//RDebug::Print(_L("Image url"));
-			iActiveFeed->iImageUrl.Zero();
-			activeString = &iActiveFeed->iImageUrl;
+			iFeedState=EStateChannelImageUrl;
+			RDebug::Print(_L("IMAGE URL"));
 		}
 		break;
 	case EStateItem:
 		// <channel> <item> <title>
 		if (str.CompareF(KTagTitle) == 0) {
-			iBuffer.Zero();
-			activeString = &iBuffer;
 			iFeedState=EStateItemTitle;
 		// <channel> <item> <link>
 		} else if (str.CompareF(KTagLink) == 0) {
-			//activeString = &activeItem->url;
 			iFeedState=EStateItemLink;
-		// <channel> <item> <enclosure url=...>
+		// <channel> <item> <enclosure ...>
 		} else if (str.CompareF(KTagEnclosure) == 0) {
 			for (int i=0;i<aAttributes.Count();i++) {
 				RAttribute attr = aAttributes[i];
 				TBuf<100> attr16;
 				attr16.Copy(attr.Attribute().LocalName().DesC());
+				// url=...
 				if (attr16.Compare(KTagUrl) == 0) {
 					TBuf<100> val16;
 					val16.Copy(attr.Value().DesC());
-					activeItem->SetUrl(val16);
+					iActiveShow->SetUrl(val16);
+				// length=...
 				} else if (attr16.Compare(KTagLength) == 0) {
 					TLex8 lex(attr.Value().DesC());
 					TUint size = -1;
 					lex.Val(size, EDecimal);
-					activeItem->SetShowSize(size);
-					//RDebug::Print(_L("Setting length to %d"), activeItem->iShowSize);
+					iActiveShow->SetShowSize(size);
 				}
 			}
+		// <channel> <item> <description>
 		} else if (str.CompareF(KTagDescription) == 0) {
-			iBuffer.Zero();
-			activeString = &iBuffer;
 			iFeedState=EStateItemDescription;
+		// <channel> <item> <pubdate>
 		} else if (str.CompareF(KTagPubDate) == 0) {
 			iFeedState = EStateItemPubDate;
-			iBuffer.Zero();
-			activeString = &iBuffer;
-			
 		}
 		break;
-	default:
-		activeString = NULL;
+	//default:
 		//RDebug::Print(_L("Ignoring tag %S when in state %d"), &str, iFeedState);
 	}
 //	RDebug::Print(_L("OnStartElementL END state=%d"), iFeedState);
@@ -168,12 +153,19 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 	TBuf<100> str;
 	str.Copy(aElement.LocalName().DesC());
 
-	//RDebug::Print(_L("OnEndElementL START state=%d, element=%S"), iFeedState, &str);
+	RDebug::Print(_L("OnEndElementL START state=%d, element=%S"), iFeedState, &str);
 
 	switch (iFeedState) {
 		case EStateChannelTitle:
+			iActiveFeed->SetTitle(iBuffer);
+			iFeedState = EStateChannel;
+			break;
 		case EStateChannelLink:
+			iActiveFeed->SetLink(iBuffer);
+			iFeedState = EStateChannel;
+			break;
 		case EStateChannelDescription:
+			iActiveFeed->SetDescription(iBuffer);
 			iFeedState = EStateChannel;
 			break;
 		case EStateChannelLastBuildDate:
@@ -183,12 +175,12 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 			temp.Copy(iBuffer);
 			TRAPD(parseError, internetDate.SetDateL(temp));
 			if(parseError == KErrNone) {				
-				if (TTime(internetDate.DateTime()) > iActiveFeed->iPubDate) {
+				if (TTime(internetDate.DateTime()) > iActiveFeed->PubDate()) {
 					RDebug::Print(_L("Successfully parsed build date"));
-					iActiveFeed->iPubDate = TTime(internetDate.DateTime());
+					iActiveFeed->SetPubDate(TTime(internetDate.DateTime()));
 				} else {
 					RDebug::Print(_L("*** Nothing new, aborting parsing"));
-					iAbortParsing = ETrue;
+					iStoppedParsing = ETrue;
 				}
 			} else {
 				RDebug::Print(_L("Failed to parse last build date"));
@@ -196,22 +188,22 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 			iFeedState = EStateChannel;
 			}
 			break;
+		case EStateChannelImageUrl:
+			iActiveFeed->SetImageUrl(iBuffer);
+			iFeedState = EStateChannelImage;
+			break;
 		case EStateChannelImage:
-			if (str.CompareF(KTagImage) == 0) {
-				iFeedState = EStateChannel;
-			}
+			iFeedState = EStateChannel;
 			break;
 		case EStateItem:
-			if (str.CompareF(KTagItem) == 0) {
-				iFeedState=EStateChannel;
-				iCallbacks.NewShow(activeItem);
-				iItemsParsed++;
-				if (iItemsParsed > iMaxItems) {
-					iAbortParsing = ETrue;
-					RDebug::Print(_L("*** Too many items, aborting parsing"));
-				}
+			iCallbacks.NewShow(iActiveShow);
+			iItemsParsed++;
+			if (iItemsParsed > iMaxItems) {
+				iStoppedParsing = ETrue;
+				RDebug::Print(_L("*** Too many items, aborting parsing"));
 			}
-		break;
+			iFeedState=EStateChannel;
+			break;
 		case EStateItemPubDate:
 			if (str.CompareF(KTagPubDate) == 0) {
 				//RDebug::Print(_L("Cut: %S"), &iPubDateString.Mid(5).Left(20));
@@ -220,31 +212,33 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 				TInternetDate internetDate;
 				TRAPD(parseError, internetDate.SetDateL(temp));
 				if(parseError == KErrNone) {				
-					activeItem->SetPubDate(TTime(internetDate.DateTime()));
+					iActiveShow->SetPubDate(TTime(internetDate.DateTime()));
 			
 					
 					/*RDebug::Print(_L("Successfully parsed pubdate %d/%d/%d %d:%d:%d"),
-							activeItem->iPubDate.DateTime().Year(),
-							activeItem->iPubDate.DateTime().Month(),
-							activeItem->iPubDate.DateTime().Day(),
-							activeItem->iPubDate.DateTime().Hour(),
-							activeItem->iPubDate.DateTime().Minute(),
-							activeItem->iPubDate.DateTime().Second());*/
+							iActiveShow->iPubDate.DateTime().Year(),
+							iActiveShow->iPubDate.DateTime().Month(),
+							iActiveShow->iPubDate.DateTime().Day(),
+							iActiveShow->iPubDate.DateTime().Hour(),
+							iActiveShow->iPubDate.DateTime().Minute(),
+							iActiveShow->iPubDate.DateTime().Second());*/
 							
 				} else {
 					RDebug::Print(_L("Pubdate parse error: %S"), &iBuffer);
 				}
 			}
+			iFeedState=EStateItem;
+			break;
 		case EStateItemTitle:
-			activeItem->SetTitle(iBuffer);
+			iActiveShow->SetTitle(iBuffer);
 			iFeedState = EStateItem;
 			break;
 		case EStateItemLink:
-			activeItem->SetUrl(iBuffer);
+			iActiveShow->SetUrl(iBuffer);
 			iFeedState = EStateItem;
 			break;
 		case EStateItemDescription:
-			activeItem->SetDescription(iBuffer);
+			iActiveShow->SetDescription(iBuffer);
 			iFeedState = EStateItem;
 			break;
 		default:
@@ -253,23 +247,16 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 			//RDebug::Print(_L("Don't know how to handle end tag %S when in state %d"), &str, iFeedState);
 			break;
 	}
-	activeString = NULL;
 
 	//RDebug::Print(_L("OnEndElementL END state=%d"), iFeedState);	
 	}
 
 void CFeedParser::OnContentL(const TDesC8& aBytes, TInt aErrorCode)
 	{
-	if (activeString != NULL) {
-		TBuf<2048> str;
-		CnvUtfConverter::ConvertToUnicodeFromUtf8(str, aBytes);
-		//str.Copy(aBytes);
-		//	RDebug::Print(_L("OnContentL: %S, state: %d"), &str, iFeedState);
-
-		if (activeString->Length() + str.Length() < KBufferLength) {
-			activeString->Append(str);
-		}
-		//RDebug::Print(_L("activeString: %S"), activeString);
+	TBuf<KBufferLength> temp;
+	CnvUtfConverter::ConvertToUnicodeFromUtf8(temp, aBytes);
+	if(temp.Length() + iBuffer.Length() < KBufferLength) {
+		iBuffer.Append(temp);
 	}
 	}
 
@@ -309,7 +296,7 @@ TAny* CFeedParser::GetExtendedInterface(const TInt32 aUid)
 	return NULL;
 	}
 
-TFeedInfo& CFeedParser::ActiveFeed()
+CFeedInfo& CFeedParser::ActiveFeed()
 	{
 		return *iActiveFeed;
 	}

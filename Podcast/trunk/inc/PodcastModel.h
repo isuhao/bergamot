@@ -25,8 +25,8 @@ public:
 	CShowInfo* PlayingPodcast();
 	void SetPlayingPodcast(CShowInfo* aPodcast);
 	void PlayPausePodcastL(CShowInfo * aPodcast);
-	TFeedInfo& ActiveFeedInfo();
-	void SetActiveFeedInfo(const TFeedInfo& aFeedInfo);
+	CFeedInfo* ActiveFeedInfo();
+	void SetActiveFeedInfo(CFeedInfo* aFeedInfo);
 	CEikonEnv* EikonEnv();
 	CShowInfoArray& ActiveShowList();
 	void SetActiveShowList(CShowInfoArray& aShowArray);
@@ -45,7 +45,7 @@ private:
    CSettingsEngine *iSettingsEngine;
    
    CShowInfoArray iActiveShowList;
-   TFeedInfo iActiveFeed;
+   CFeedInfo *iActiveFeed;
    TInt iZoomState;
    
    CEikonEnv* iEnv;

@@ -132,17 +132,17 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 			{
 				if(iEikonEnv->QueryWinL(R_PODCAST_PURGE_FEED_TITLE, R_PODCAST_PURGE_FEED_PROMPT))				
 				{
-					if (iPodcastModel.ActiveFeedInfo().iUrl.Length()>0) {
-						iPodcastModel.ShowEngine().PurgeShowsByFeed(iPodcastModel.ActiveFeedInfo().iUid);
+					if (iPodcastModel.ActiveFeedInfo()->Url().Length()>0) {
+						iPodcastModel.ShowEngine().PurgeShowsByFeed(iPodcastModel.ActiveFeedInfo()->Uid());
 						UpdateListboxItemsL();
 					} 
 				}
 			}break;
 		case EPodcastUpdateFeed:
 			{
-				if (iPodcastModel.ActiveFeedInfo().iUrl.Length()>0) {
+				if (iPodcastModel.ActiveFeedInfo()->Url().Length()>0) {
 					User::InfoPrint(_L("Updating feed..."));
-					iPodcastModel.FeedEngine().UpdateFeed(iPodcastModel.ActiveFeedInfo().iUid);
+					iPodcastModel.FeedEngine().UpdateFeed(iPodcastModel.ActiveFeedInfo()->Uid());
 				} 
 			}
 			break;
@@ -160,9 +160,9 @@ void CPodcastClientShowsView::ShowListUpdated()
 	UpdateListboxItemsL();
 }
 
-void CPodcastClientShowsView::FeedInfoUpdated(const TFeedInfo& aFeedInfo)
+void CPodcastClientShowsView::FeedInfoUpdated(CFeedInfo* aFeedInfo)
 {
-	if(aFeedInfo.iUid == iPodcastModel.ActiveFeedInfo().iUid)
+	if(aFeedInfo->Uid() == iPodcastModel.ActiveFeedInfo()->Uid())
 	{
 		iPodcastModel.SetActiveFeedInfo(aFeedInfo);
 		// Title might have changed
@@ -413,9 +413,9 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 				break;
 			default:
 
-				iCategories->RenameCategoryL(EShowFeedShows, iPodcastModel.ActiveFeedInfo().iTitle);
+				iCategories->RenameCategoryL(EShowFeedShows, iPodcastModel.ActiveFeedInfo()->Title());
 				
-				iPodcastModel.ShowEngine().SelectShowsByFeed(iPodcastModel.ActiveFeedInfo().iUid);
+				iPodcastModel.ShowEngine().SelectShowsByFeed(iPodcastModel.ActiveFeedInfo()->Uid());
 				SelectCategoryL(EShowFeedShows);
 				break;
 			}

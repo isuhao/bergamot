@@ -106,12 +106,12 @@ void CPodcastModel::PlayPausePodcastL(CShowInfo* aPodcast)
 	}
 }
 
-TFeedInfo& CPodcastModel::ActiveFeedInfo()
+CFeedInfo* CPodcastModel::ActiveFeedInfo()
 {
 	return iActiveFeed;
 }
 
-void CPodcastModel::SetActiveFeedInfo(const TFeedInfo& aFeedInfo)
+void CPodcastModel::SetActiveFeedInfo(CFeedInfo* aFeedInfo)
 {
 	iActiveFeed = aFeedInfo;
 }

@@ -32,25 +32,14 @@ TBool CPodcastClientAddFeedDlg::OkToExitL(TInt aCommandId)
 
 	if(edwin != NULL)
 	{
-		edwin->GetText(iFeedInfo.iUrl);
-		if(iFeedInfo.iUrl.Length() <= iFeedInfo.iTitle.MaxLength())
-		{
-			iFeedInfo.iTitle = iFeedInfo.iUrl;
-		}
-		else
-		{
-			iFeedInfo.iTitle = iFeedInfo.iUrl.Left(iFeedInfo.iTitle.MaxLength());
-		}
-
-		iFeedInfo.iUid = DefaultHash::Des16(iFeedInfo.iUrl);
+		TBuf<1024> buffer;
+		edwin->GetText(buffer);
+		CFeedInfo* newFeedInfo = new (ELeave) CFeedInfo;
+		newFeedInfo->SetUrl(buffer);
+		newFeedInfo->SetTitle(iFeedInfo.Url());
+		iPodcastModel.FeedEngine().AddFeed(newFeedInfo);
+		iPodcastModel.FeedEngine().UpdateFeed(newFeedInfo->Uid());
 	}
-
-	TFeedInfo* newFeedInfo = new (ELeave) TFeedInfo;
-	
-	*newFeedInfo = iFeedInfo;
-
-	iPodcastModel.FeedEngine().AddFeed(newFeedInfo);
-	iPodcastModel.FeedEngine().UpdateFeed(newFeedInfo->iUid);
 
 	return ETrue;
 }

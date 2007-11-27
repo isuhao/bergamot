@@ -93,7 +93,7 @@ CQikCommand* CPodcastClientFeedView::DynInitOrDeleteCommandL(CQikCommand* aComma
 	return aCommand;
 }
 
-void CPodcastClientFeedView::FeedInfoUpdated(const TFeedInfo& aFeedInfo)
+void CPodcastClientFeedView::FeedInfoUpdated(CFeedInfo* aFeedInfo)
 {
 
 	if (ViewContext() == NULL) {
@@ -107,11 +107,11 @@ void CPodcastClientFeedView::FeedInfoUpdated(const TFeedInfo& aFeedInfo)
 		iProgressAdded = EFalse;
 	}
 
-	TFeedInfoArray feeds;
+	CFeedInfoArray feeds;
 	CleanupClosePushL(feeds);
 	iPodcastModel.FeedEngine().GetFeeds(feeds);
 
-	TInt index = feeds.Find(&aFeedInfo);
+	TInt index = feeds.Find(aFeedInfo);
 
 	if(index != KErrNotFound)
 	{
@@ -120,8 +120,8 @@ void CPodcastClientFeedView::FeedInfoUpdated(const TFeedInfo& aFeedInfo)
 		MQikListBoxData* data = model.RetrieveDataL(index);	
 		if(data != NULL)
 		{
-			data->SetTextL(aFeedInfo.iTitle, EQikListBoxSlotText1);
-			data->SetTextL(aFeedInfo.iDescription, EQikListBoxSlotText2);
+			data->SetTextL(aFeedInfo->Title(), EQikListBoxSlotText1);
+			data->SetTextL(aFeedInfo->Description(), EQikListBoxSlotText2);
 			data->Close();
 			model.DataUpdatedL(index);
 		}
@@ -159,7 +159,7 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 {
 	if(IsVisible())
 	{		
-		TFeedInfoArray feeds;
+		CFeedInfoArray feeds;
 		CleanupClosePushL(feeds);
 		
 		iListbox->RemoveAllItemsL();
@@ -187,11 +187,11 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 				
 				listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
 				CleanupClosePushL(*listBoxData);
-				TFeedInfo *fi = feeds[i];
+				CFeedInfo *fi = feeds[i];
 
-				listBoxData->SetItemId(fi->iUid);
-				listBoxData->AddTextL(fi->iTitle, EQikListBoxSlotText1);
-				listBoxData->AddTextL(fi->iDescription, EQikListBoxSlotText2);
+				listBoxData->SetItemId(fi->Uid());
+				listBoxData->AddTextL(fi->Title(), EQikListBoxSlotText1);
+				listBoxData->AddTextL(fi->Description(), EQikListBoxSlotText2);
 				CQikContent* content = CQikContent::NewL(this, _L("*"), bitmap, mask);
 				CleanupStack::PushL(content);
 				listBoxData->AddIconL(content,EQikListBoxSlotLeftMediumIcon1);
@@ -228,11 +228,11 @@ void CPodcastClientFeedView::HandleListBoxEventL(CQikListBox *aListBox, TQikList
 	case EEventItemConfirmed:
 	case EEventItemTapped:
 		{
-			TFeedInfoArray feeds;
+			CFeedInfoArray feeds;
 			CleanupClosePushL(feeds);
 			iPodcastModel.FeedEngine().GetFeeds(feeds);
 			iPodcastModel.ActiveShowList().Reset();
-			iPodcastModel.SetActiveFeedInfo(*feeds[aItemIndex]);
+			iPodcastModel.SetActiveFeedInfo(feeds[aItemIndex]);
 			TVwsViewId showsView = TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID);
 			iQikAppUi.ActivateViewL(showsView,  TUid::Uid(EShowFeedShows), KNullDesC8());
 			CleanupStack::PopAndDestroy();// close feeds

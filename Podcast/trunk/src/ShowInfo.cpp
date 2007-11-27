@@ -3,12 +3,6 @@
 
 CShowInfo::CShowInfo()
 	{
-	iDownloadState = ENotDownloaded;
-	iPlayState = ENeverPlayed;
-	iPosition = 0;
-	iPubDate = 0;
-	iShowSize = 0;
-	iFeedUid = 0;
 	}
 
 CShowInfo::~CShowInfo()
@@ -101,7 +95,7 @@ void CShowInfo::InternalizeL(RReadStream& aStream) {
 	iPubDate = MAKE_TINT64(high, low);
 }
 
-TDesC& CShowInfo::Title()
+TDesC& CShowInfo::Title() const
 	{
 	return *iTitle;
 	}
@@ -111,7 +105,7 @@ void CShowInfo::SetTitle(TDesC &aTitle)
 	iTitle = aTitle.Alloc();
 	}
 
-TDesC& CShowInfo::Url()
+TDesC& CShowInfo::Url() const
 	{
 	return *iUrl;
 	}
@@ -122,7 +116,7 @@ void CShowInfo::SetUrl(TDesC &aUrl)
 	iUid = DefaultHash::Des16(Url());
 	}
 
-TDesC& CShowInfo::Description()
+TDesC& CShowInfo::Description() const
 	{
 	return *iDescription;
 	}
@@ -133,7 +127,7 @@ void CShowInfo::SetDescription(TDesC &aDescription)
 	}
 
 
-TDesC& CShowInfo::FileName()
+TDesC& CShowInfo::FileName() const
 	{
 	return *iFileName;
 	}
@@ -198,7 +192,7 @@ void CShowInfo::SetShowSize(TUint aShowSize)
 	iShowSize = aShowSize;
 	}
 
-const TTime CShowInfo::PubDate()
+const TTime CShowInfo::PubDate() const
 	{
 	return iPubDate;
 	}

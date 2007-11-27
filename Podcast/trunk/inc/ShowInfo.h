@@ -29,16 +29,16 @@ public:
 	void InternalizeL(RReadStream& aStream);
 
 public:
-	TDesC& Title();
+	TDesC& Title() const;
 	void SetTitle(TDesC &aTitle);
 
-	TDesC& Url();
+	TDesC& Url() const;
 	void SetUrl(TDesC &aUrl);
 	
-	TDesC& Description();
+	TDesC& Description() const;
 	void SetDescription(TDesC &aDescription);
 	
-	TDesC& FileName();
+	TDesC& FileName() const;
 	void SetFileName(TDesC &aFileName);
 	
 	TTimeIntervalMicroSeconds& Position();
@@ -58,7 +58,7 @@ public:
 	TUint ShowSize();
 	void SetShowSize(TUint aShowSize);
 	
-	const TTime PubDate();
+	const TTime PubDate() const;
 	void SetPubDate(TTime aPubDate);
 	
 private:

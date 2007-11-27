@@ -25,13 +25,13 @@ public:
 	virtual ~CFeedEngine();
 	
 public:
-	void AddFeed(TFeedInfo *item);
+	void AddFeed(CFeedInfo *item);
 	void RemoveFeed(TInt aUid);
 	void UpdateFeed(TInt aFeedUid);
 
-	void GetFeeds(TFeedInfoArray& array);
-	TFeedInfo* GetFeedInfoByUid(int aFeedUid);
-	void GetFeedDir(TFeedInfo *aFeedInfo, TFileName &aDir);
+	void GetFeeds(CFeedInfoArray& array);
+	CFeedInfo* GetFeedInfoByUid(int aFeedUid);
+	void GetFeedDir(CFeedInfo *aFeedInfo, TFileName &aDir);
 	
 	void AddObserver(MFeedEngineObserver *observer);
 	void UpdateAllFeeds();
@@ -54,15 +54,15 @@ private:
 
 	// callbacks from FeedParser
 	void NewShow(CShowInfo *item);
-	void ParsingComplete(TFeedInfo *item);
+	void ParsingComplete(CFeedInfo *item);
 
-	void GetFeedImage(TFeedInfo *aFeedInfo);
+	void GetFeedImage(CFeedInfo *aFeedInfo);
 	void MakeFileNameFromUrl(TDesC &aUrl, TFileName &fileName);
 	
 	void ReplaceString(TDes & aString, const TDesC& aStringToReplace,const TDesC& aReplacement);
 	void CleanHtml(TDes &str);
 	
-	static TInt CompareFeedsByTitle(const TFeedInfo &a, const TFeedInfo &b);
+	static TInt CompareFeedsByTitle(const CFeedInfo &a, const CFeedInfo &b);
 
 	void UpdateNextFeed();
 private:
@@ -76,14 +76,14 @@ private:
 	CFeedParser* iParser;
 	
 	// the list of feeds
-	TFeedInfoArray iFeeds;
+	CFeedInfoArray iFeeds;
 
-	TFeedInfo *iActiveFeed;
+	CFeedInfo *iActiveFeed;
 		
 	// the file session used to read and write settings
 	RFs iFs;
 
-	TFeedInfoArray iFeedsUpdating;
+	CFeedInfoArray iFeedsUpdating;
 	// observers that will receive callbacks
     RArray<MFeedEngineObserver*> iObservers;
 };

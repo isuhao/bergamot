@@ -12,24 +12,45 @@ const int KFeedDescriptionLength=2048;
 
 const int KFeedInfoVersion = 2;
 
-class TFeedInfo
+class CFeedInfo : public CBase
 {
 public:
+	CFeedInfo();
+	~CFeedInfo();
 	void ExternalizeL(RWriteStream& aStream) const;
 	void InternalizeL(RReadStream& aStream);
-public:
-	TBuf<KFeedUrlLength> iUrl;
-	TBuf<KFeedTitleLength> iTitle;
-	TBuf<KFeedDescriptionLength> iDescription;
-	TFileName iFileName;
-	TBuf<KFeedUrlLength> iImageUrl;
-	TBuf<KFeedUrlLength> iLink;
+	
+	TDesC& Url() const;
+	void SetUrl(TDesC &aUrl);
+	TDesC& Title() const;
+	void SetTitle(TDesC &aTitle);
+	TDesC& Description() const;
+	void SetDescription(TDesC &aDescription);
+	TDesC& FeedFileName() const;
+	void SetFeedFileName(TDesC &aFeedFileName);
+	TDesC& ImageUrl() const;
+	void SetImageUrl(TDesC &aImageUrl);
+	TDesC& Link() const;
+	void SetLink(TDesC &aLink);
+	TDesC& ImageFileName() const;
+	void SetImageFileName(TDesC &aImageFileName);
+	TTime PubDate();
+	void SetPubDate(TTime aPubDate);
+	TUint Uid();
+	
+private:
+	HBufC* iUrl;
+	HBufC* iTitle;
+	HBufC* iDescription;
+	HBufC* iFeedFileName;
+	HBufC* iImageUrl;
+	HBufC* iLink;
+	HBufC* iImageFileName;
 	TTime iPubDate;
-	TFileName iImageFileName;
-	TDateTime iLastChecked;
-	TInt iUid;
+	//TDateTime iLastChecked;
+	TUint iUid;
 };
 
-typedef RPointerArray<TFeedInfo> TFeedInfoArray;
+typedef RPointerArray<CFeedInfo> CFeedInfoArray;
 
 #endif

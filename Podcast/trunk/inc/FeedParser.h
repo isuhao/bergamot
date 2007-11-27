@@ -47,7 +47,7 @@ public:
 	virtual ~CFeedParser();
 	
 public:
-	void ParseFeedL(TFileName &feedFileName, TFeedInfo *item);
+	void ParseFeedL(const TFileName &feedFileName, CFeedInfo *item);
 	
 public: // from MContentHandler
 	void OnStartDocumentL(const RDocumentParameters& aDocParam, TInt aErrorCode);
@@ -62,20 +62,19 @@ public: // from MContentHandler
 	void OnProcessingInstructionL(const TDesC8& aTarget, const TDesC8& aData, TInt aErrorCode);
 	void OnError(TInt aErrorCode);
 	TAny* GetExtendedInterface(const TInt32 aUid);
-	TFeedInfo& ActiveFeed();
+	CFeedInfo& ActiveFeed();
 private:
 	MFeedParserObserver& iCallbacks;
 	TFeedState iFeedState;
 
-	CShowInfo* activeItem;
-	TFeedInfo *iActiveFeed;
+	CShowInfo* iActiveShow;
+	CFeedInfo *iActiveFeed;
 
-	TDes* activeString;
 	TBuf<KBufferLength> iBuffer;
 	
 	TUint iMaxItems;
 	TUint iItemsParsed;
-	TBool iAbortParsing;
+	TBool iStoppedParsing;
 
 };
 
