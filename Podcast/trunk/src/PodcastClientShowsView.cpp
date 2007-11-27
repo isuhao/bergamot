@@ -146,6 +146,23 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 				} 
 			}
 			break;
+		case EPodcastRemoveDownload:
+			{
+				TInt index = iListbox->CurrentItemIndex();
+				if(index >= 0 && index < iPodcastModel.ActiveShowList().Count())
+				{
+					iPodcastModel.ShowEngine().RemoveDownload(iPodcastModel.ActiveShowList()[index]->Uid());
+					UpdateShowItemL(iPodcastModel.ActiveShowList()[index]);
+				}
+			}break;
+		case EPodcastStopDownloads:
+			{
+				iPodcastModel.ShowEngine().StopDownloads();
+			}break;
+		case EPodcastResumeDownloads:
+			{
+				iPodcastModel.ShowEngine().ResumeDownloads();
+			}break;
 		default:
 			CPodcastClientView::HandleCommandL(aCommand);
 			break;
@@ -504,15 +521,25 @@ void CPodcastClientShowsView::UpdateCommandsL()
 			comMan.SetInvisible(*this, EQikListBoxCmdSelect, EFalse);
 			comMan.SetTextL(*this, EQikListBoxCmdSelect, R_PODCAST_VIEW_CMD);
 			comMan.SetShortTextL(*this, EQikListBoxCmdSelect, R_PODCAST_VIEW_CMD);
+			if(fItems[index]->DownloadState() == EQueued ||  fItems[index]->DownloadState() == EDownloading)
+			{
+				comMan.SetInvisible(*this, EPodcastRemoveDownload, EFalse);
+			}
+			else
+			{
+				comMan.SetInvisible(*this, EPodcastRemoveDownload, ETrue);
+			}
 		}
 		else
 		{
-			comMan.SetInvisible(*this, EQikListBoxCmdSelect, ETrue);
+			comMan.SetInvisible(*this, EQikListBoxCmdSelect, ETrue);		
+			comMan.SetInvisible(*this, EPodcastRemoveDownload, ETrue);
 		}
 	}
 	else
 	{
 		comMan.SetInvisible(*this, EQikListBoxCmdSelect, ETrue);
+		comMan.SetInvisible(*this, EPodcastRemoveDownload, ETrue);
 	}
 
 	comMan.SetInvisible(*this, EPodcastUpdateFeed, iCurrentCategory != EShowFeedShows);

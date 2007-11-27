@@ -164,7 +164,27 @@ RESOURCE QIK_COMMAND_LIST r_podcast_listview_commands
 			type = EQikCommandTypeScreen;
 			text = STRING_r_view_purge_show_cmd;
 			},
-
+	QIK_COMMAND
+			{
+			groupId = 6;
+			id = EPodcastRemoveDownload;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_view_remove_download_cmd;
+			},
+	QIK_COMMAND
+			{
+			groupId = 6;
+			id = EPodcastStopDownloads;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_view_stop_downloads_cmd;
+			},
+		QIK_COMMAND
+			{
+			groupId = 6;
+			id = EPodcastResumeDownloads;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_view_resume_downloads_cmd;
+			},
 // Other commands
 		QIK_COMMAND
 			{

@@ -30,6 +30,9 @@ enum TPodcatClientCommands
 	EPodcastDownloadShow,
 	EPodcastDeleteShow,
 	EPodcastPurgeShow,
+	EPodcastRemoveDownload,
+	EPodcastStopDownloads,
+	EPodcastResumeDownloads,
 	EPodcastZoomSetting,
 	EPodcastSettings,
 	EPodcastSelectShowDir

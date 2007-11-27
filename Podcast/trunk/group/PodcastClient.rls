@@ -51,7 +51,9 @@ rls_string STRING_r_update_all_feeds_short_cmd "Upd. All"
 // Actions for shows
 rls_string STRING_r_view_delete_show_cmd "Delete show"
 rls_string STRING_r_view_purge_show_cmd "Purge show"
-
+rls_string STRING_r_view_remove_download_cmd "Remove download"
+rls_string STRING_r_view_stop_downloads_cmd "Stop downloads"
+rls_string STRING_r_view_resume_downloads_cmd "Resume downloads"
 // Common actions
 rls_string STRING_r_zoom_cmd "Zoom"
 rls_string STRING_r_settings_cmd "Settings"
