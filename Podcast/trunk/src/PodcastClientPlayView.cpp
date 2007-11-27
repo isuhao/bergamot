@@ -423,8 +423,14 @@ void CPodcastClientPlayView::UpdateViewL()
 			}
 
 			iInformationEdwin->SetTextL(&showInfo->Description());
-
 			iInformationEdwin->HandleTextChangedL();
+
+			if(iTitleEdwin != NULL)
+			{
+				iTitleEdwin->SetTextL(&showInfo->Title());
+				iTitleEdwin->HandleTextChangedL();
+			}
+
 			if(showInfo->DownloadState() == ENotDownloaded)
 			{
 				comMan.SetInvisible(*this, EPodcastDownloadShow, EFalse);

@@ -164,14 +164,14 @@ horiz_align=EEikLabelAlignHRight;
 
 RESOURCE EDWIN r_podcast_playview_title
 {
-flags = EEikEdwinReadOnly|EEikEdwinDisableAutoCurEnd|EEikEdwinNoHorizScrolling;
+flags = EEikEdwinReadOnly|EEikEdwinDisableAutoCurEnd|EEikEdwinNoHorizScrolling|EEikEdwinResizable;
 lines = 0; // was 3
 }
 
 
 RESOURCE EDWIN r_podcast_playview_info
 {
-flags = EEikEdwinReadOnly|EEikEdwinDisableAutoCurEnd|EEikEdwinNoHorizScrolling;
+flags = EEikEdwinReadOnly|EEikEdwinDisableAutoCurEnd|EEikEdwinNoHorizScrolling|EEikEdwinResizable;
 lines = 0; // was 3
 }
 
@@ -196,14 +196,15 @@ RESOURCE QIK_IMAGE r_podcast_playview_coverimage
 	};
 }
 
+
 // The page contains a list box that fills the whole application space.
-RESOURCE QIK_CONTAINER_SETTINGS r_podcast_playview_page_control
-	{
+RESOURCE QIK_SCROLLABLE_CONTAINER_SETTINGS r_podcast_playview_info_container
+{
 	layout_manager_type = EQikRowLayoutManager;
 	layout_manager = r_podcast_row_layout_manager_default;
 	controls = 
-		{
-		QIK_CONTAINER_ITEM_CI_LI
+	{
+	QIK_CONTAINER_ITEM_CI_LI
 			{ 
 			itemflags = EQikCtrlFlagIsEditInPlace;
 			unique_handle = EPodcastPlayViewTitleCtrl;
@@ -232,7 +233,62 @@ RESOURCE QIK_CONTAINER_SETTINGS r_podcast_playview_page_control
 			// This will make it so that the list box fills the whole 
 			// application space.
 			layout_data = r_podcast_row_layout_data_fillhigher;
+			}
+	};
+}
+
+RESOURCE QIK_SCROLLABLE_CONTAINER r_podcast_playview_scroll_container
+{
+}
+
+// The page contains a list box that fills the whole application space.
+RESOURCE QIK_CONTAINER_SETTINGS r_podcast_playview_page_control
+	{
+	layout_manager_type = EQikRowLayoutManager;
+	layout_manager = r_podcast_row_layout_manager_default;
+	controls = 
+		{
+		QIK_CONTAINER_ITEM_NESTED_CONTAINER_CI_LI
+			{ 
+			itemflags = EQikCtrlFlagIsEditInPlace;
+			unique_handle = EPodcastPlayViewScrollContainer;
+			type = EQikCtScrollableContainer; 
+			control = r_podcast_playview_scroll_container;
+			// This will make it so that the list box fills the whole 
+			// application space.
+			layout_data = r_podcast_row_layout_data_fillhigher;
+			container = r_podcast_playview_info_container;
 			},
+		/*QIK_CONTAINER_ITEM_CI_LI
+			{ 
+			itemflags = EQikCtrlFlagIsEditInPlace;
+			unique_handle = EPodcastPlayViewTitleCtrl;
+			type = EEikCtEdwin; 
+			control = r_podcast_playview_title;
+			// This will make it so that the list box fills the whole 
+			// application space.
+			layout_data = r_podcast_row_layout_data_fill;
+			},
+		QIK_CONTAINER_ITEM_CI_LI
+			{ 
+			unique_handle = EPodcastPlayViewCoverImage;
+			type = EEikCtImage; 
+			control = r_podcast_playview_coverimage;
+			// This will make it so that the list box fills the whole 
+			// application space.
+			layout_data = r_podcast_row_layout_data_nofill;
+			},
+	
+		QIK_CONTAINER_ITEM_CI_LI
+			{ 
+			itemflags = EQikCtrlFlagIsEditInPlace;
+			unique_handle = EPodcastPlayViewInformation;
+			type = EEikCtEdwin; 
+			control = r_podcast_playview_info;
+			// This will make it so that the list box fills the whole 
+			// application space.
+			layout_data = r_podcast_row_layout_data_fillhigher;
+			},*/
 		QIK_CONTAINER_ITEM_CI_LI
 			{ 
 			itemflags = EQikCtrlFlagIsEditInPlace;

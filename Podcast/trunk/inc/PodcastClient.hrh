@@ -50,6 +50,7 @@ enum TPodcatClientCommands
 	EPodcastPlayViewInformation,
 	EPodcastPlayViewProgressInfo,
 	EPodcastPlayViewCoverImage,
+	EPodcastPlayViewScrollContainer,
 	EPodcastAddEditFeedDlgUrl,
 	// Settings DLG controls
 	EPodcastSettingShowDir,
