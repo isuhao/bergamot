@@ -1,6 +1,22 @@
 #include "ShowInfo.h"
 #include <e32hashtab.h>
 
+CShowInfo* CShowInfo::NewL()
+{
+	CShowInfo* self = new (ELeave) CShowInfo;
+	CleanupStack::PushL(self);
+	self->ConstructL();
+	CleanupStack::Pop(self);
+	return self;
+}
+
+void CShowInfo::ConstructL()
+{
+	iTitle = HBufC::NewL(1);
+	iUrl = HBufC::NewL(1);
+	iDescription = HBufC::NewL(1);
+}
+
 CShowInfo::CShowInfo()
 	{
 	}
@@ -102,6 +118,8 @@ TDesC& CShowInfo::Title() const
 
 void CShowInfo::SetTitle(TDesC &aTitle)
 	{
+	delete iTitle;
+	iTitle = NULL;
 	iTitle = aTitle.Alloc();
 	}
 
@@ -112,6 +130,8 @@ TDesC& CShowInfo::Url() const
 
 void CShowInfo::SetUrl(TDesC &aUrl)
 	{
+	delete iUrl;
+	iUrl = NULL;
 	iUrl = aUrl.Alloc();
 	iUid = DefaultHash::Des16(Url());
 	}
@@ -123,6 +143,8 @@ TDesC& CShowInfo::Description() const
 
 void CShowInfo::SetDescription(TDesC &aDescription)
 	{
+	delete iDescription;
+	iDescription = NULL;
 	iDescription = aDescription.Alloc();
 	}
 
@@ -134,6 +156,8 @@ TDesC& CShowInfo::FileName() const
 
 void CShowInfo::SetFileName(TDesC &aFileName)
 	{
+	delete iFileName;
+	iFileName = NULL;
 	iFileName = aFileName.Alloc();
 	}
 

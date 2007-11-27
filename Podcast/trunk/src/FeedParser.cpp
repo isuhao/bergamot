@@ -38,7 +38,7 @@ void CFeedParser::OnStartDocumentL(const RDocumentParameters& aDocParam, TInt aE
 	charset.Copy(aDocParam.CharacterSetName().DesC());
 	RDebug::Print(_L("charset: %S"), &charset);
 	iFeedState = EStateRoot;
-	iActiveShow = new CShowInfo;
+	iActiveShow = CShowInfo::NewL();
 	iItemsParsed = 0;
 	iMaxItems = 200;
 	iStoppedParsing = EFalse;
@@ -74,7 +74,7 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 				return;
 			} else {
 				iFeedState=EStateItem;
-				iActiveShow = new CShowInfo();
+				iActiveShow = CShowInfo::NewL();
 				if (iActiveShow == NULL) {
 					RDebug::Print(_L("Out of memory!"));
 					iStoppedParsing = ETrue;

@@ -23,7 +23,7 @@ enum TDownloadState {
 
 class CShowInfo: public CBase {
 public:
-	CShowInfo();
+	static CShowInfo* NewL();
 	~CShowInfo();
 	void ExternalizeL(RWriteStream& aStream) const;
 	void InternalizeL(RReadStream& aStream);
@@ -61,6 +61,9 @@ public:
 	const TTime PubDate() const;
 	void SetPubDate(TTime aPubDate);
 	
+private:
+	CShowInfo();
+	void ConstructL();
 private:
 	HBufC* iTitle;
 	HBufC* iUrl;

@@ -217,7 +217,7 @@ void CShowEngine::LoadShows()
 	CFeedInfo *feedInfo = NULL;
 	int lastUid = -1;
 	for (int i=0;i<count;i++) {
-		readData = new CShowInfo;
+		readData = CShowInfo::NewL();
 		TRAPD(error, instream  >> *readData);
 		
 		if (readData->Uid() != lastUid) {
