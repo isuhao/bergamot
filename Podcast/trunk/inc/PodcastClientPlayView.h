@@ -59,6 +59,7 @@ private:
 	CQikSlider* iProgress;
 	CEikLabel* iTimeLabel;
 	CEikEdwin* iInformationEdwin;
+	CEikEdwin* iTitleEdwin;
 	CQikImageConverter* iBitmapConverter;
 	CEikImage* iCoverImageCtrl;
 	CFbsBitmap* iCurrentCoverImage;

@@ -287,9 +287,12 @@ void CPodcastClientPlayView::ViewConstructL()
 	iProgress =LocateControlByUniqueHandle<CQikSlider>(EPodcastPlayViewProgressCtrl);
 	iTimeLabel = LocateControlByUniqueHandle<CEikLabel>(EPodcastPlayViewProgressTime);
 	iInformationEdwin = LocateControlByUniqueHandle<CEikEdwin>(EPodcastPlayViewInformation);
-	iInformationEdwin->CreateScrollBarFrameL();
-	iInformationEdwin->ScrollBarFrame()->SetScrollBarVisibilityL(CEikScrollBarFrame::EOff,
-	CEikScrollBarFrame::EAuto);
+//	iInformationEdwin->CreateScrollBarFrameL();
+//	iInformationEdwin->ScrollBarFrame()->SetScrollBarVisibilityL(CEikScrollBarFrame::EOff,
+//	CEikScrollBarFrame::EOff);
+
+	iTitleEdwin = LocateControlByUniqueHandle<CEikEdwin>(EPodcastPlayViewTitleCtrl);
+
 	iVolumeSlider = LocateControlByUniqueHandle<CQikSlider>(EPodcastPlayViewVolumeCtrl);
 
 	iCoverImageCtrl = LocateControlByUniqueHandle<CEikImage>(EPodcastPlayViewCoverImage);
