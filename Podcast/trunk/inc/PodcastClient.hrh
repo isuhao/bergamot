@@ -88,6 +88,9 @@ enum TPodcastClientShowCategory
 	EShowPendingShows
 };
 
+#define EMyQikScrollableContainerDefaultFlags (EQikContainerHandleRelayoutRequests | EQikContainerPersistsAfterRelayout\
+		| EQikContainerScrollHorizontalOff | EQikContainerScrollHorizontalNormal\
+		| EQikContainerScrollVerticalAuto | EQikContainerScrollVerticalNormal)
     
 #endif
 

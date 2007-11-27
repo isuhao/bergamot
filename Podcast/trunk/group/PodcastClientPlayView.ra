@@ -206,7 +206,7 @@ RESOURCE QIK_SCROLLABLE_CONTAINER_SETTINGS r_podcast_playview_info_container
 	{
 	QIK_CONTAINER_ITEM_CI_LI
 			{ 
-			itemflags = EQikCtrlFlagIsEditInPlace;
+			itemflags = 6;//(EQikCtrlFlagIsEditInPlace|EQikCtrlFlagIsNonFocusing);
 			unique_handle = EPodcastPlayViewTitleCtrl;
 			type = EEikCtEdwin; 
 			control = r_podcast_playview_title;
@@ -226,7 +226,7 @@ RESOURCE QIK_SCROLLABLE_CONTAINER_SETTINGS r_podcast_playview_info_container
 	
 		QIK_CONTAINER_ITEM_CI_LI
 			{ 
-			itemflags = EQikCtrlFlagIsEditInPlace;
+			itemflags =6;//(EQikCtrlFlagIsEditInPlace|EQikCtrlFlagIsNonFocusing);
 			unique_handle = EPodcastPlayViewInformation;
 			type = EEikCtEdwin; 
 			control = r_podcast_playview_info;
@@ -239,6 +239,7 @@ RESOURCE QIK_SCROLLABLE_CONTAINER_SETTINGS r_podcast_playview_info_container
 
 RESOURCE QIK_SCROLLABLE_CONTAINER r_podcast_playview_scroll_container
 {
+	flags = EMyQikScrollableContainerDefaultFlags;
 }
 
 // The page contains a list box that fills the whole application space.
