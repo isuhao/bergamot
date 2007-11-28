@@ -137,6 +137,7 @@ RESOURCE QIK_LISTBOX_LAYOUT r_podcast_showsview_listbox_layout
 					emphasis_font_style = EQikListBoxFontBold;
 					font_size = EQikListBoxFontMedium;
 					emphasis_font_size = EQikListBoxFontMedium;
+					scroll = EQikListBoxTextScrollWhenHighlighted;
 				};				
 			},
 			QIK_LISTBOX_ROW
