@@ -448,7 +448,6 @@ void CPodcastClientPlayView::UpdateViewL()
 			}
 
 			CFeedInfo* feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(showInfo->FeedUid());
-			
 			if(feedInfo != NULL && feedInfo->ImageFileName().Length()>0)
 			{
 				if(feedInfo->ImageFileName() != iLastImageFileName)

@@ -20,6 +20,7 @@ merchantability and/or non-infringement of the software provided herein.
 #include <commdb.h>
 #include <eikenv.h>
 #include <es_sock.h>
+#include <bautils.h>
 
 CHttpClient::~CHttpClient()
   {
@@ -123,6 +124,11 @@ void CHttpClient::GetL(TDesC& url, TDesC& fileName) {
 	RDebug::Print(_L("CHttpClient::Get START"));
 	//ManageConnections(ETrue);
 	iIsActive = ETrue;
+	
+	RFs rfs;
+	rfs.Connect();
+	BaflUtils::EnsurePathExistsL(rfs,fileName);
+	rfs.Close();
 	TBuf8<256> url8;
 	url8.Copy(url);
 	if (iTransactionCount == 0) {

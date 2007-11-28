@@ -91,22 +91,30 @@ void CShowEngine::DownloadInfo(CHttpClient* aHttpClient, int aTotalBytes)
 		}
 	}
 
-
 void CShowEngine::GetShow(CShowInfo *info)
 	{
 	CFeedInfo *feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(info->FeedUid());
 	if (feedInfo == NULL) {
-		RDebug::Print(_L("Feed not found!"));
+		RDebug::Print(_L("Feed not found for this show!"));
 		return;
 	}
 	
 	TFileName filePath;
 	filePath.Copy(iPodcastModel.SettingsEngine().BaseDir());
-	filePath.Append(feedInfo->FeedDirectory());
-	filePath.Append(_L("\\"));
-	filePath.Append(info->FileName());
+	
+	// create relative file name
+	TFileName relPath;
+	relPath.Copy(feedInfo->Title());
+	relPath.Append(_L("\\"));
 
-	RDebug::Print(_L("filePath: %S"), &filePath);
+	TFileName fileName;
+	iPodcastModel.FeedEngine().FileNameFromUrl(info->Url(), fileName);
+	relPath.Append(fileName);
+	iPodcastModel.FeedEngine().EnsureProperPathName(relPath);
+	
+	// complete file path is base dir + rel path
+	filePath.Append(relPath);
+	info->SetFileName(filePath);
 	iShowClient->GetL(info->Url(), filePath);
 	}
 
@@ -312,7 +320,7 @@ void CShowEngine::PurgePlayedShows()
 
 void CShowEngine::PurgeOldShows()
 	{
-	// TODO
+	// TODO: implement
 	}
 
 void CShowEngine::PurgeShow(TInt aShowUid)

@@ -6,10 +6,9 @@ CFeedInfo::CFeedInfo()
 	iUrl = HBufC::NewL(0);
 	iTitle = HBufC::NewL(0);
 	iDescription = HBufC::NewL(0);
-	iFeedFileName = HBufC::NewL(0);
 	iImageUrl = HBufC::NewL(0);
-	iLink = HBufC::NewL(0);
 	iImageFileName = HBufC::NewL(0);
+	iLink = HBufC::NewL(0);
 	}
 
 CFeedInfo::~CFeedInfo()
@@ -17,10 +16,9 @@ CFeedInfo::~CFeedInfo()
 	delete iUrl;
 	delete iTitle;
 	delete iDescription;
-	delete iFeedFileName;
 	delete iImageUrl;
-	delete iLink;
 	delete iImageFileName;
+	delete iLink;
 	}
 
 void CFeedInfo::ExternalizeL(RWriteStream& aStream) const 
@@ -40,13 +38,6 @@ void CFeedInfo::ExternalizeL(RWriteStream& aStream) const
 		aStream.WriteL(*iUrl);
 	}
 
-	if (iImageFileName == NULL) {
-		aStream.WriteInt32L(0);		
-	} else {
-		aStream.WriteInt32L(iImageFileName->Length());
-		aStream.WriteL(*iImageFileName);
-	}
-
 	if (iDescription == NULL) {
 		aStream.WriteInt32L(0);		
 	} else {
@@ -54,11 +45,11 @@ void CFeedInfo::ExternalizeL(RWriteStream& aStream) const
 		aStream.WriteL(*iDescription);
 	}
 
-	if (iFeedFileName == NULL) {
+	if (iImageFileName == NULL) {
 		aStream.WriteInt32L(0);		
 	} else {
-		aStream.WriteInt32L(iFeedFileName->Length());
-		aStream.WriteL(*iFeedFileName);
+		aStream.WriteInt32L(iImageFileName->Length());
+		aStream.WriteL(*iImageFileName);
 	}
 
 	aStream.WriteInt32L(iUid);
@@ -83,20 +74,13 @@ void CFeedInfo::InternalizeL(RReadStream& aStream)
 	len = aStream.ReadInt32L();
 	if (len > 0) {
 		aStream.ReadL(buffer, len);
-		SetImageFileName(buffer);
-	}
-	
-
-	len = aStream.ReadInt32L();
-	if (len > 0) {
-		aStream.ReadL(buffer, len);
 		SetDescription(buffer);
 	}
-	
+		
 	len = aStream.ReadInt32L();
 	if (len > 0) {
 		aStream.ReadL(buffer, len);
-		SetFeedFileName(buffer);
+		SetImageFileName(buffer);
 	}
 	
 	iUid = aStream.ReadInt32L();
@@ -111,45 +95,7 @@ void CFeedInfo::SetUrl(TDesC &aUrl)
 	{
 	iUrl = aUrl.Alloc();
 	iUid = DefaultHash::Des16(Url());
-	
-	// set directory name
-	TFileName buf;
-	int domainStart = aUrl.FindF(_L("://"));
-	
-	if (domainStart != KErrNotFound) {
-		buf.Copy(aUrl.Mid(domainStart+3));
-	} else {
-		RDebug::Print(_L("Strange URL: %S"), &aUrl);
-		buf.Copy(aUrl);
 	}
-	ReplaceString(buf, _L("/"), _L("\\"));
-	ReplaceString(buf, _L(":"), _L("_"));
-	ReplaceString(buf, _L("?"), _L("_"));
-	buf.Trim();
-	//buf.Append(_L("\\"));
-	RDebug::Print(_L("directory to store in: %S"), &buf);
-	iFeedDirectory = buf.Alloc();	
-	
-	int pos = aUrl.LocateReverse('/');
-	
-	if (pos != KErrNotFound) {	
-		TPtrC str = aUrl.Mid(pos+1);
-		pos = str.Locate('?');
-		if (pos != KErrNotFound) {			
-			buf.Copy(str.Left(pos));
-		} else {
-			buf.Copy(str);
-		}
-		
-		} 
-
-	SetFeedFileName(buf);
-	}
-
-TDesC& CFeedInfo::FeedDirectory() const
-{
-	return *iFeedDirectory;
-}
 
 TDesC& CFeedInfo::Title() const
 	{
@@ -171,16 +117,6 @@ void CFeedInfo::SetDescription(TDesC &aDescription)
 	iDescription = aDescription.Alloc();
 	}
 
-TDesC& CFeedInfo::FeedFileName() const
-	{
-	return *iFeedFileName;
-	}
-
-void CFeedInfo::SetFeedFileName(TDesC &aFeedFileName)
-	{
-	iFeedFileName = aFeedFileName.Alloc();
-	}
-
 TDesC& CFeedInfo::ImageUrl() const
 	{
 	return *iImageUrl;
@@ -188,23 +124,8 @@ TDesC& CFeedInfo::ImageUrl() const
 
 void CFeedInfo::SetImageUrl(TDesC &aImageUrl)
 	{
+	delete iImageUrl;
 	iImageUrl = aImageUrl.Alloc();
-	
-	int pos = aImageUrl.LocateReverse('/');
-	TFileName buf;
-	if (pos != KErrNotFound) {	
-		TPtrC str = aImageUrl.Mid(pos+1);
-		pos = str.Locate('?');
-		if (pos != KErrNotFound) {			
-			buf.Copy(str.Left(pos));
-		} else {
-			buf.Copy(str);
-		}
-		
-		} 
-
-	SetImageFileName(buf);
-	
 	}
 
 TDesC& CFeedInfo::Link() const
@@ -214,17 +135,8 @@ TDesC& CFeedInfo::Link() const
 
 void CFeedInfo::SetLink(TDesC &aLink)
 	{
+	delete iLink;
 	iLink = aLink.Alloc();
-	}
-
-TDesC& CFeedInfo::ImageFileName() const
-	{
-	return *iImageFileName;
-	}
-
-void CFeedInfo::SetImageFileName(TDesC &aImageFileName)
-	{
-	iImageFileName = aImageFileName.Alloc();
 	}
 
 TTime CFeedInfo::PubDate()
@@ -242,14 +154,13 @@ TUint CFeedInfo::Uid()
 	return iUid;
 	}
 
-void CFeedInfo::ReplaceString(TDes & aString, const TDesC& aStringToReplace,const TDesC& aReplacement )
+TDesC& CFeedInfo::ImageFileName()
 	{
-		TInt pos=aString.Find(aStringToReplace);
-		while (pos>=0)
-		{
-			aString.Replace(pos,aStringToReplace.Length(),aReplacement);
-			pos=aString.Find(aStringToReplace);
-		}
-		
+	return *iImageFileName;
 	}
 
+void CFeedInfo::SetImageFileName(TDesC &aFileName)
+	{
+	delete iImageFileName;
+	iImageFileName = aFileName.Alloc();
+	}

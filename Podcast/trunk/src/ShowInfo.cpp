@@ -59,7 +59,7 @@ void CShowInfo::ExternalizeL(RWriteStream& aStream) const {
 		aStream.WriteInt32L(iFileName->Length());
 		aStream.WriteL(*iFileName);
 	}
-
+	
 	aStream.WriteInt32L(iFeedUid);
 	aStream.WriteInt32L(iDownloadState);
 	aStream.WriteInt32L(iPlayState == ENeverPlayed ? ENeverPlayed : EPlayed);
@@ -96,9 +96,8 @@ void CShowInfo::InternalizeL(RReadStream& aStream) {
 		aStream.ReadL(buffer, len);
 		SetFileName(buffer);
 	}
-
-	iFeedUid = aStream.ReadInt32L();
 	
+	iFeedUid = aStream.ReadInt32L();
 	iDownloadState = (TDownloadState) aStream.ReadInt32L();
 	iPlayState = (TPlayState) aStream.ReadInt32L();
 	iUid = aStream.ReadInt32L();
@@ -136,23 +135,6 @@ void CShowInfo::SetUrl(TDesC &aUrl)
 	iUrl = NULL;
 	iUrl = aUrl.Alloc();
 	iUid = DefaultHash::Des16(Url());
-	
-	// set filename from url
-	int pos = aUrl.LocateReverse('/');
-	TFileName fileName;
-	if (pos != KErrNotFound) {	
-		TPtrC str = aUrl.Mid(pos+1);
-		pos = str.Locate('?');
-		if (pos != KErrNotFound) {			
-			fileName.Copy(str.Left(pos));
-			RDebug::Print(_L("fileName %S"), &(fileName));
-		} else {
-			RDebug::Print(_L("Not Found"));
-			fileName.Copy(str);
-		}
-		SetFileName(fileName);
-	} 
-	
 	}
 
 TDesC& CShowInfo::Description() const
@@ -165,18 +147,6 @@ void CShowInfo::SetDescription(TDesC &aDescription)
 	delete iDescription;
 	iDescription = NULL;
 	iDescription = aDescription.Alloc();
-	}
-
-TDesC& CShowInfo::FileName() const
-	{
-	return *iFileName;
-	}
-
-void CShowInfo::SetFileName(TDesC &aFileName)
-	{
-	delete iFileName;
-	iFileName = NULL;
-	iFileName = aFileName.Alloc();
 	}
 
 TTimeIntervalMicroSeconds& CShowInfo::Position()
@@ -242,4 +212,15 @@ const TTime CShowInfo::PubDate() const
 void CShowInfo::SetPubDate(TTime aPubDate)
 	{
 	iPubDate = aPubDate;
+	}
+
+TDesC& CShowInfo::FileName()
+	{
+	return *iFileName;
+	}
+
+void CShowInfo::SetFileName(TDesC &aFileName)
+	{
+	delete iFileName;
+	iFileName = aFileName.Alloc();
 	}

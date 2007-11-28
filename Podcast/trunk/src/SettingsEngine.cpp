@@ -34,7 +34,7 @@ void CSettingsEngine::ConstructL()
 	iMaxSimultaneousDownloads = 1;
 	iDownloadAutomatically = EFalse;
 	iDownloadOnlyOnWLAN = EFalse;
-	iShowDir.Copy(KPodcastDir);
+	iBaseDir.Copy(KPodcastDir);
 	iDefaultFeedsFile.Copy(PrivatePath());
 	iDefaultFeedsFile.Append(KDefaultFeedsFile);
 	iMaxListItems = 100;
@@ -48,6 +48,8 @@ void CSettingsEngine::ConstructL()
 			RDebug::Print(_L("error saving: %d"), error);
 			}
 	}
+	
+	BaflUtils::EnsurePathExistsL(iFs, iBaseDir);
 	}
 
 void CSettingsEngine::LoadSettingsL()
@@ -73,7 +75,7 @@ void CSettingsEngine::LoadSettingsL()
 	stream.OpenLC(*store, store->Root());
 	
 	int len = stream.ReadInt32L();
-	stream.ReadL(iShowDir, len);
+	stream.ReadL(iBaseDir, len);
 	len = stream.ReadInt32L();
 	stream.ReadL(iFeedListFile, len);
 	iUpdateFeedInterval = stream.ReadInt32L();
@@ -101,8 +103,8 @@ void CSettingsEngine::SaveSettingsL()
 	RStoreWriteStream stream;
 	TStreamId id = stream.CreateLC(*store);
 		
-	stream.WriteInt32L(iShowDir.Length());
-	stream.WriteL(iShowDir);
+	stream.WriteInt32L(iBaseDir.Length());
+	stream.WriteL(iBaseDir);
 	stream.WriteInt32L(iFeedListFile.Length());
 	stream.WriteL(iFeedListFile);
 	stream.WriteInt32L(iUpdateFeedInterval);
@@ -151,7 +153,7 @@ void CSettingsEngine::ImportSettings()
 			TPtrC value = line.Mid(equalsPos+1);
 			RDebug::Print(_L("line: %S, tag: '%S', value: '%S'"), &line, &tag, &value);
 			if (tag.CompareF(_L("PodcastDir")) == 0) {
-				iShowDir.Copy(value);
+				iBaseDir.Copy(value);
 			} else if (tag.CompareF(_L("FeedList")) == 0) {
 				iFeedListFile.Copy(value);
 			} else if (tag.CompareF(_L("UpdateFeedIntervalMinutes")) == 0) {
@@ -181,7 +183,7 @@ void CSettingsEngine::ImportSettings()
 
 TFileName& CSettingsEngine::BaseDir()
 	{
-	return iShowDir;
+	return iBaseDir;
 	}
 
 TFileName& CSettingsEngine::FeedListFile() 
@@ -237,7 +239,7 @@ TInt CSettingsEngine::SpecificIAP()
 
 void CSettingsEngine::SetBaseDir(TFileName& aFileName)
 	{
-	iShowDir = aFileName;
+	iBaseDir = aFileName;
 	}
 
 void CSettingsEngine::SetUpdateFeedInterval(TInt aInterval)

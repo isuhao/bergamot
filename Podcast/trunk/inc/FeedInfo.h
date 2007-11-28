@@ -10,7 +10,7 @@ const int KFeedTitleLength=256;
 const int KFeedUrlLength=1024;
 const int KFeedDescriptionLength=2048;
 
-const int KFeedInfoVersion = 2;
+const int KFeedInfoVersion = 3;
 
 class CFeedInfo : public CBase
 {
@@ -26,30 +26,24 @@ public:
 	void SetTitle(TDesC &aTitle);
 	TDesC& Description() const;
 	void SetDescription(TDesC &aDescription);
-	TDesC& FeedDirectory() const;
-	TDesC& FeedFileName() const;
 	TDesC& ImageUrl() const;
 	void SetImageUrl(TDesC &aImageUrl);
 	TDesC& Link() const;
 	void SetLink(TDesC &aLink);
-	TDesC& ImageFileName() const;
-	void SetImageFileName(TDesC &aImageFileName);
 	TTime PubDate();
 	void SetPubDate(TTime aPubDate);
 	TUint Uid();
 	
-private:
-	void ReplaceString(TDes & aString, const TDesC& aStringToReplace,const TDesC& aReplacement );
-	void SetFeedFileName(TDesC &aFeedFileName);
+	TDesC &ImageFileName();
+	void SetImageFileName(TDesC &aFileName);
+
 private:
 	HBufC* iUrl;
 	HBufC* iTitle;
 	HBufC* iDescription;
-	HBufC* iFeedFileName;
-	HBufC* iFeedDirectory;
 	HBufC* iImageUrl;
-	HBufC* iLink;
 	HBufC* iImageFileName;
+	HBufC* iLink;
 	TTime iPubDate;
 	//TDateTime iLastChecked;
 	TUint iUid;

@@ -5,9 +5,9 @@
 #include "PodcastModel.h"
 
 #ifdef __WINS__
-	_LIT(KPodcastDir, "c:\\logs\\");
+	_LIT(KPodcastDir, "c:\\Media files\\Podcasts\\");
 #else
-	_LIT(KPodcastDir, "e:\\podcasts\\");	
+	_LIT(KPodcastDir, "e:\\Media files\\Podcasts\\");
 #endif
 
 const TInt KSettingsUid = 1000;
@@ -15,8 +15,9 @@ const TInt KSettingsUid = 1000;
 _LIT(KConfigImportFile, "config.cfg");
 _LIT(KFeedsImportFileName, "feeds.cfg");
 _LIT(KConfigFile, "config.db");
-_LIT(KShowDB, "metadata.db");
+_LIT(KShowDB, "shows.db");
 _LIT(KFeedDB, "feeds.db");
+_LIT(KFeedDir, "feeds\\");
 _LIT(KDefaultFeedsFile, "defaultfeeds.cfg");
 
 const TInt KMaxVolume = 100;
@@ -50,15 +51,14 @@ public:
 	void SetDownloadAutomatically(TBool aAutoOn);
 	void SetDownloadOnlyOnWLAN(TBool aOnlyOnWLAN);
 	void SetSpecificIAP(TInt aIap);
+	TFileName PrivatePath();
 	
 	TUint Volume();
 	void SetVolume(TUint aVolume);
-private:
-	TFileName PrivatePath();
 
 private:
 	// the settings we serialize
-	TFileName iShowDir;
+	TFileName iBaseDir;
 	TFileName iFeedListFile;
 	TInt iUpdateFeedInterval;
 	TBool iDownloadAutomatically;

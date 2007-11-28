@@ -6,7 +6,7 @@
 #include <f32file.h>
 #include <s32strm.h>
 
-const int KShowInfoVersion = 5;
+const int KShowInfoVersion = 6;
 
 enum TPlayState {
 	ENeverPlayed,
@@ -37,9 +37,7 @@ public:
 	
 	TDesC& Description() const;
 	void SetDescription(TDesC &aDescription);
-	
-	TDesC& FileName() const;
-	
+		
 	TTimeIntervalMicroSeconds& Position();
 	void SetPosition(TTimeIntervalMicroSeconds aPosition);
 
@@ -59,11 +57,13 @@ public:
 	
 	const TTime PubDate() const;
 	void SetPubDate(TTime aPubDate);
+	
+	TDesC &FileName();
+	void SetFileName(TDesC &aFileName);
 
 private:
-CShowInfo();
-void ConstructL();
-	void SetFileName(TDesC &aFileName);
+	CShowInfo();
+	void ConstructL();
 
 private:
 	HBufC* iTitle;
@@ -77,7 +77,6 @@ private:
 	TUint iUid;
 	TUint iShowSize;
 	TTime iPubDate;
-
 };
 
 typedef RPointerArray<CShowInfo> CShowInfoArray;

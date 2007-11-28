@@ -79,15 +79,17 @@ void CFeedEngine::UpdateFeed(TInt aFeedUid)
 	iClientState = EFeed;
 	CFeedInfo *feedInfo = GetFeedInfoByUid(aFeedUid);
 	iActiveFeed = feedInfo;
+
 	TFileName filePath;
-	filePath.Copy(iPodcastModel.SettingsEngine().BaseDir());
-	filePath.Append(feedInfo->FeedDirectory());
-	filePath.Append(_L("\\"));
-	filePath.Append(feedInfo->FeedFileName());
-	BaflUtils::EnsurePathExistsL(iFs, filePath);
+	TFileName fileName;
+	filePath.Copy(iPodcastModel.SettingsEngine().PrivatePath());
+	filePath.Append(KFeedDir);
+	FileNameFromUrl(feedInfo->Url(), fileName);
+	filePath.Append(fileName);
+	iUpdatingFeedFileName.Copy(filePath);
 	
 	//RDebug::Print(_L("URL: %S, fileName: %S"), &feedInfo->Url(), &feedInfo->FileName());
-	iFeedClient->GetL(feedInfo->Url(), filePath);
+	iFeedClient->GetL(feedInfo->Url(), iUpdatingFeedFileName);
 	RDebug::Print(_L("UpdateFeed END"));
 	}
 
@@ -96,7 +98,6 @@ void CFeedEngine::NewShow(CShowInfo *item)
 	//RDebug::Print(_L("\nTitle: %S\nURL: %S\nDescription length: %d\nFeed: %d"), &(item->Title()), &(item->Url()), item->Description().Length(), item->FeedUid());
 	//CleanHtml(item->iDescription);
 	
-	//RDebug::Print(_L("Setting UID to %d"), item->uid);
 	iPodcastModel.ShowEngine().AddShow(item);
 	}
 
@@ -106,12 +107,45 @@ void CFeedEngine::GetFeedImage(CFeedInfo *aFeedInfo)
 	iClientState = EImage;
 	TFileName filePath;
 	filePath.Copy(iPodcastModel.SettingsEngine().BaseDir());
-	filePath.Append(aFeedInfo->FeedDirectory());
-	filePath.Append(_L("\\"));
-	filePath.Append(aFeedInfo->ImageFileName());
-	RDebug::Print(_L("image file: %S"), &(aFeedInfo->ImageFileName()));
 	
+	// create relative file name
+	TFileName relPath;
+	relPath.Copy(aFeedInfo->Title());
+	relPath.Append(_L("\\"));
+
+	TFileName fileName;
+	FileNameFromUrl(aFeedInfo->ImageUrl(), fileName);
+	relPath.Append(fileName);
+	EnsureProperPathName(relPath);
+	
+	// complete file path is base dir + rel path
+	filePath.Append(relPath);
+	aFeedInfo->SetImageFileName(filePath);
 	iFeedClient->GetL(aFeedInfo->ImageUrl(), filePath);
+	}
+
+void CFeedEngine::FileNameFromUrl(TDesC &aUrl, TFileName &aFileName)
+	{
+	int pos = aUrl.LocateReverse('/');
+	
+	if (pos != KErrNotFound) {	
+		TPtrC str = aUrl.Mid(pos+1);
+		pos = str.Locate('?');
+		if (pos != KErrNotFound) {			
+			aFileName.Copy(str.Left(pos));
+		} else {
+			aFileName.Copy(str);
+		}
+	}
+	RDebug::Print(_L("FileNameFromUrl in: %S, out: %S"), &aUrl, &aFileName);
+	}
+
+void CFeedEngine::EnsureProperPathName(TFileName &aPath)
+	{
+	ReplaceString(aPath, _L("/"), _L("\\"));
+	ReplaceString(aPath, _L(":"), _L("_"));
+	ReplaceString(aPath, _L("?"), _L("_"));
+	//buf.Append(_L("\\"));
 	}
 
 void CFeedEngine::ReplaceString(TDes & aString, const TDesC& aStringToReplace,const TDesC& aReplacement )
@@ -168,7 +202,6 @@ void CFeedEngine::Connected(CHttpClient* /*aClient*/)
 	
 	}
 
-
 void CFeedEngine::Progress(CHttpClient* /*aHttpClient*/, int aBytes, int aTotalBytes)
 {	
 	if (iClientState == EFeed) {
@@ -186,12 +219,7 @@ void CFeedEngine::Complete(CHttpClient* /*aClient*/, TBool aSuccessful)
 {
 	if (iClientState == EFeed) {
 		TFileName filePath;
-		filePath.Copy(iPodcastModel.SettingsEngine().BaseDir());
-		filePath.Append(iActiveFeed->FeedDirectory());
-		filePath.Append(_L("\\"));
-		filePath.Append(iActiveFeed->FeedFileName());
-		RDebug::Print(_L("File to parse: %S"), &filePath);
-		iParser->ParseFeedL(filePath, iActiveFeed);
+		iParser->ParseFeedL(iUpdatingFeedFileName, iActiveFeed);
 		
 		GetFeedImage(iActiveFeed);
 		
@@ -217,7 +245,7 @@ void CFeedEngine::DownloadInfo(CHttpClient* aHttpClient, int aTotalBytes)
 
 void CFeedEngine::ImportFeeds(TFileName &aFile)
 	{
-	
+	RDebug::Print(_L("Importing default feeds from %S"), &aFile);
 	TFileName configPath;
 	configPath.Copy(aFile);
 	RDebug::Print(_L("Reading feeds from %S"), &configPath);
@@ -282,7 +310,8 @@ TBool CFeedEngine::LoadFeeds()
 
 	if (version != KFeedInfoVersion) {
 		RDebug::Print(_L("Wrong version, discarding"));
-		goto exit_point;
+		CleanupStack::PopAndDestroy(2); // instream and store
+		return EFalse;
 	}
 	
 	int count = instream.ReadInt32L();
@@ -295,10 +324,7 @@ TBool CFeedEngine::LoadFeeds()
 		//RDebug::Print(_L("error: %d"), error);
 		iFeeds.Append(readData);
 	}
-	exit_point:
-	CleanupStack::PopAndDestroy(); // instream
-	
-	CleanupStack::PopAndDestroy(store);	
+	CleanupStack::PopAndDestroy(2); // instream and store
 	return ETrue;
 	}
 
