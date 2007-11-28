@@ -23,7 +23,7 @@
 #include "SettingsEngine.h"
 
 const TInt KAudioTickerPeriod = 1000000;
-const TInt KMaxCoverImageHeight = 96;
+const TInt KMaxCoverImageWidth = 220;
 
 /**
 Creates and constructs the view.
@@ -375,7 +375,7 @@ void CPodcastClientPlayView::ImageConverterEventL(TQikImageConverterEvent aMessa
 {
 	if(aErrCode == KErrNone && aMessage == MQikImageConverterObserver::EImageConvertComplete)
 	{
-		if(iCurrentCoverImage->SizeInPixels().iHeight<=KMaxCoverImageHeight)
+		if(iCurrentCoverImage->SizeInPixels().iWidth<=KMaxCoverImageWidth)
 		{
 			iCoverImageCtrl->SetBitmap(iCurrentCoverImage);
 			iCurrentCoverImage = NULL;
@@ -383,7 +383,7 @@ void CPodcastClientPlayView::ImageConverterEventL(TQikImageConverterEvent aMessa
 		}
 		else
 		{
-			iBitmapConverter->RescaleImage(*iCurrentCoverImage, TSize(iCurrentCoverImage->SizeInPixels().iWidth, KMaxCoverImageHeight));
+			iBitmapConverter->RescaleImage(*iCurrentCoverImage, TSize(KMaxCoverImageWidth, iCurrentCoverImage->SizeInPixels().iHeight));
 		}
 	}
 	else if(aErrCode == KErrNone && aMessage == MQikImageConverterObserver::EBitmapRescaleComplete)
