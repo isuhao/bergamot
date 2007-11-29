@@ -174,6 +174,7 @@ void CFeedEngine::RemoveFeed(TInt aUid) {
 			iPodcastModel.ShowEngine().PurgeShowsByFeed(aUid);
 			iFeeds.Remove(i);
 			RDebug::Print(_L("Removed feed"));
+			SaveFeeds();
 			return;
 		}
 	}
@@ -409,11 +410,9 @@ void CFeedEngine::CleanHtml(TDes &str)
 		tmp.Copy(str.Left(startPos));
 		TPtrC ptr=str.Mid(startPos, endPos-startPos+1);
 		if (ptr.CompareF(_L("<br>"))== 0) {
-			RDebug::Print(_L("byter ut %S mot \\n"), &ptr);
 			tmp.Append('\r');
 			tmp.Append('\n');
 		} else if (ptr.CompareF(_L("<p>")) == 0) {
-			RDebug::Print(_L("byter ut %S mot \\n\\n"), &ptr);
 			tmp.Append('\r');
 			tmp.Append('\n');
 			tmp.Append('\r');
@@ -430,6 +429,13 @@ void CFeedEngine::CleanHtml(TDes &str)
 	}
 	
 	str.Trim();
+	if(str.Locate('&') != KErrNotFound) {
+		ReplaceString(str, _L("&amp;"), _L(""));
+		ReplaceString(str, _L("&quot;"), _L(""));
+		ReplaceString(str, _L("&nbsp;"), _L(""));
+		ReplaceString(str, _L("&copy;"), _L("(c)"));
+	}
+
 }
 
 TInt CFeedEngine::CompareFeedsByTitle(const CFeedInfo &a, const CFeedInfo &b)

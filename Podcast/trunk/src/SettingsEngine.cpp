@@ -29,7 +29,6 @@ CSettingsEngine* CSettingsEngine::NewL(CPodcastModel& aPodcastModel)
 void CSettingsEngine::ConstructL()
 	{
 	// default values
-	iFeedListFile.Copy(KFeedsImportFileName);
 	iUpdateFeedInterval = 60;
 	iMaxSimultaneousDownloads = 1;
 	iDownloadAutomatically = EFalse;
@@ -39,22 +38,30 @@ void CSettingsEngine::ConstructL()
 	iDefaultFeedsFile.Append(KDefaultFeedsFile);
 	iMaxListItems = 100;
 	iFs.Connect();
-	TRAPD(error, LoadSettingsL());
-	if(error != KErrNone) {
+	
+	TFileName configPath;
+	configPath.Copy(PrivatePath());
+	configPath.Append(KConfigFile);
+	RDebug::Print(_L("Checking settings file: %S"), &configPath);
+	if (BaflUtils::FileExists(iFs, configPath)) {
+		TRAPD(error, LoadSettingsL());
+		RDebug::Print(_L("LoadSettingsL returned error=%d"), error);
+	} else {
 		RDebug::Print(_L("Importing settings"));
 		ImportSettings();
-		TRAP(error,SaveSettingsL());
+		TRAPD(error,SaveSettingsL());
 		if (error != KErrNone) {
 			RDebug::Print(_L("error saving: %d"), error);
-			}
-	}
+		}
 	
+	}
+
 	BaflUtils::EnsurePathExistsL(iFs, iBaseDir);
 	}
 
 void CSettingsEngine::LoadSettingsL()
 	{
-	RDebug::Print(_L("SaveSettingsL"));
+	RDebug::Print(_L("LoadSettingsL"));
 	//CDictionaryStore* iniFile = CEikonEnv::Static()->EikAppUi()->Application()->OpenIniFileLC(iFs);
 	//RDictionaryReadStream stream;
 	//stream.OpenLC(*iniFile, TUid::Uid(KSettingsUid));	
@@ -62,13 +69,12 @@ void CSettingsEngine::LoadSettingsL()
 	TFileName configPath;
 	configPath.Copy(PrivatePath());
 	configPath.Append(KConfigFile);
-	
+	RDebug::Print(_L("Checking settings file: %S"), &configPath);
 	if (!BaflUtils::FileExists(iFs, configPath)) {
 		User::Leave(KErrNotFound);
 	}
 	
-	CFileStore* store;
-	store = CDirectFileStore::OpenL(iFs,configPath,EFileRead);
+	CFileStore* store = CDirectFileStore::OpenL(iFs,configPath,EFileRead);
 	CleanupStack::PushL(store);
 	
 	RStoreReadStream stream;
@@ -76,8 +82,6 @@ void CSettingsEngine::LoadSettingsL()
 	
 	int len = stream.ReadInt32L();
 	stream.ReadL(iBaseDir, len);
-	len = stream.ReadInt32L();
-	stream.ReadL(iFeedListFile, len);
 	iUpdateFeedInterval = stream.ReadInt32L();
 	iDownloadAutomatically = stream.ReadInt32L();
 	iDownloadOnlyOnWLAN = stream.ReadInt32L();
@@ -105,8 +109,6 @@ void CSettingsEngine::SaveSettingsL()
 		
 	stream.WriteInt32L(iBaseDir.Length());
 	stream.WriteL(iBaseDir);
-	stream.WriteInt32L(iFeedListFile.Length());
-	stream.WriteL(iFeedListFile);
 	stream.WriteInt32L(iUpdateFeedInterval);
 	stream.WriteInt32L(iDownloadAutomatically);
 	stream.WriteInt32L(iDownloadOnlyOnWLAN);
@@ -121,12 +123,13 @@ void CSettingsEngine::SaveSettingsL()
 
 void CSettingsEngine::ImportSettings()
 	{
+	RDebug::Print(_L("ImportSettings"));
 	TFileName configPath;
 	configPath.Copy(PrivatePath());
 	configPath.Append(KConfigImportFile);
 	
 	BaflUtils::EnsurePathExistsL(iFs, configPath);
-	RDebug::Print(_L("Reading config from %S"), &configPath);
+	RDebug::Print(_L("Importing settings from %S"), &configPath);
 	RFile rfile;
 	int error = rfile.Open(iFs, configPath,  EFileRead);
 	
@@ -182,11 +185,6 @@ void CSettingsEngine::ImportSettings()
 TFileName& CSettingsEngine::BaseDir()
 	{
 	return iBaseDir;
-	}
-
-TFileName& CSettingsEngine::FeedListFile() 
-	{
-	return iFeedListFile;
 	}
 
 TInt CSettingsEngine::UpdateFeedInterval() 
