@@ -12,6 +12,6 @@ These feeds have at some point been reported as not working. The parser has been
   * ~~http://www2.rozhlas.cz/podcast/radio_cesko.rss ~~ Works! (no dates in feed)
   * ~~http://www.evropa2.cz/script/podcast.rss?path=/download_e2/ranni_show ~~ (very broken feed)
   * ~~http://www.hrej.cz/podcasty/podcast.xml ~~ Works!
-  * ~~http://virginworlds10.libsyn.com/rss.xml~~ Works!
-  * ~~http://vgmfusion.com/?feed=podcast~~ Works!
-  * ~~http://www.gamespot.com/misc/podcast/podcast.xml~~ Works!
+  * ~~http://virginworlds10.libsyn.com/rss.xml ~~ Works!
+  * ~~http://vgmfusion.com/?feed=podcast ~~ Works!
+  * ~~http://www.gamespot.com/misc/podcast/podcast.xml ~~ Works!
