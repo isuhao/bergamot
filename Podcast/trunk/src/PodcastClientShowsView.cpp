@@ -152,7 +152,7 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 				if(index >= 0 && index < iPodcastModel.ActiveShowList().Count())
 				{
 					iPodcastModel.ShowEngine().RemoveDownload(iPodcastModel.ActiveShowList()[index]->Uid());
-					UpdateShowItemL(iPodcastModel.ActiveShowList()[index]);
+					iListbox->Model().RemoveDataL(index);
 				}
 			}break;
 		case EPodcastStopDownloads:

@@ -213,6 +213,11 @@ void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 
 	switch(aCommand.Id())
 	{
+	case EPodcastSetVolume:
+		{
+			CPodcastClientVolumeDlg* dlg = new (ELeave) CPodcastClientVolumeDlg(iPodcastModel);
+			dlg->ExecuteLD(R_PODCAST_VOLUME_DLG);
+		}break;
 	case EPodcastSettings:
 		{
 			CPodcastClientSettingsDlg* dlg = new (ELeave) CPodcastClientSettingsDlg(iPodcastModel);

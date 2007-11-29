@@ -68,13 +68,23 @@ RESOURCE QIK_COMMAND_LIST r_podcast_playview_commands
 			id = EPodcastStop;
 			type = EQikCommandTypeDone;
 			text = STRING_r_stop_cmd;
+
 			},
+		QIK_COMMAND
+			{
+			id = EPodcastSetVolume;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_volume_cmd;
+			groupId = 1;
+			},
+
 		QIK_COMMAND
 			{
 			id = EPodcastView;
 			type = EQikCommandTypeScreen;
 			text = STRING_r_view_cmd;
 			namedGroupLinkId= 1;
+			groupId = 2;
 			},
 			QIK_COMMAND
 			{

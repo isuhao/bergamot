@@ -339,6 +339,31 @@ RESOURCE DIALOG r_podcast_add_feed_dlg
 	};
 }
 
+RESOURCE DIALOG r_podcast_volume_dlg
+{
+	buttons = r_podcast_settings_buttons;
+
+	flags = EEikDialogFlagButtonsBelow|EEikDialogFlagDensePacking|EEikDialogFlagWait;
+	title = STRING_r_podcast_setting_volume;
+	items = 
+	{	
+		DLG_LINE
+		{
+			id = EPodcastSettingsVolume;
+			itemflags = EQikDlgItemCaptionAboveControl|EQikDlgItemCtlIsEditInPlace|EQikDlgItemHideHighlight;
+			prompt = "";
+			type = EQikCtSlider;
+			control = QIK_SLIDER 
+			{
+				min_value = 0;
+				max_value = 100;
+				num_markers = 10;
+			};
+		}
+	};
+}
+
+
 RESOURCE ARRAY r_podcast_connection_selection_array
 {
 	items = 
@@ -359,6 +384,8 @@ RESOURCE DLG_BUTTONS r_podcast_settings_buttons
         DLG_BUTTON { id=EEikBidOk; button=CMBUT {txt=STRING_r_podcast_setting_done_cmd;}; hotkey=EEikBidOk; flags=EEikLabeledButtonIsDefault; }
         };
     }
+
+
 
 
 

@@ -29,9 +29,11 @@ rls_string STRING_r_view_feeds_cmd "Feeds"
 // Navigation to the player
 rls_string STRING_r_view_player_cmd "Player"
 
+// Actions for the player
 rls_string STRING_r_play_cmd "Play"
 rls_string STRING_r_stop_cmd "Stop"
 rls_string STRING_r_pause_cmd "Pause"
+rls_string STRING_r_volume_cmd "Volume"
 
 rls_string STRING_r_view_download_cmd "Download"
 rls_string STRING_r_view_download_short_cmd "Get"

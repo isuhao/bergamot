@@ -10,6 +10,27 @@ class CEikChoiceList;
 class CQikNumberEditor;
 class CQikSlider;
 
+
+/**
+ * Dialog (old style) used to do volumd
+ */
+class CPodcastClientVolumeDlg: public CEikDialog
+{
+public:
+	CPodcastClientVolumeDlg(CPodcastModel& aPodcastModel);
+	~CPodcastClientVolumeDlg();
+protected:
+	TBool OkToExitL(TInt aCommandId);
+	void PreLayoutDynInitL();
+	
+	void HandleControlStateChangeL(TInt aControlId);
+private:
+	/** Reference to the podcast application model */
+	CPodcastModel& iPodcastModel;
+	CQikSlider* iVolumeSlider;
+};
+
+
 /**
  * Dialog (old style) used to do settings
  */

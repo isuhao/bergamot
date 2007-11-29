@@ -13,6 +13,38 @@
 #include "FeedEngine.h"
 #include "SettingsEngine.h"
 
+
+CPodcastClientVolumeDlg::CPodcastClientVolumeDlg(CPodcastModel& aPodcastModel):iPodcastModel(aPodcastModel)
+{
+}
+
+CPodcastClientVolumeDlg::~CPodcastClientVolumeDlg()
+{
+}
+
+void CPodcastClientVolumeDlg::PreLayoutDynInitL()
+{
+	iVolumeSlider =	 static_cast<CQikSlider*> (ControlOrNull(EPodcastSettingsVolume));
+	iVolumeSlider->SetValue(iPodcastModel.SettingsEngine().Volume());
+}
+
+TBool CPodcastClientVolumeDlg::OkToExitL(TInt aCommandId)
+{
+	iPodcastModel.SettingsEngine().SetVolume(iVolumeSlider->CurrentValue());
+
+	return ETrue;
+}
+
+void CPodcastClientVolumeDlg::HandleControlStateChangeL(TInt aControlId)
+{
+	CEikDialog::HandleControlStateChangeL(aControlId);
+
+	if(EPodcastSettingsVolume == aControlId)
+	{
+		iPodcastModel.SettingsEngine().SetVolume(iVolumeSlider->CurrentValue());
+	}
+}
+
 enum
 {
 	EUseDefaultAccount,
