@@ -139,6 +139,9 @@ SOURCE		8   queued_40x40m.bmp
 
 SOURCE		C16 new_40x40.bmp
 SOURCE		8   new_40x40m.bmp
+
+SOURCE		8   emptyimage.bmp
+
 END
 
 CAPABILITY NetworkServices UserEnvironment

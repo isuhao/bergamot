@@ -95,7 +95,17 @@ void CSoundEngine::SetPosition(TUint aPos)
 	if(iState > ESoundEngineNotInitialized)
 	{
 		TTimeIntervalMicroSeconds pos = aPos*1000000;
+		if(iState == ESoundEnginePlaying)
+		{
+			iPlayer->Pause();
+		}
+
 		iPlayer->SetPosition(pos);
+		
+		if(iState == ESoundEnginePlaying)
+		{
+			iPlayer->Play();
+		}
 	}
 }
 

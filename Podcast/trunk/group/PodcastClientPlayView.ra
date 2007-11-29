@@ -203,6 +203,8 @@ RESOURCE QIK_IMAGE r_podcast_playview_coverimage
 {
 	content = QIK_CONTENT_MBM
 	{
+		bmpid = EMbmPodcastclientEmptyimage;
+		bmpmask = EMbmPodcastclientEmptyimage;
 	};
 }
 

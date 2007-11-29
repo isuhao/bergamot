@@ -11,6 +11,7 @@
 #include <QikZoomDlg.h>
 #include <devicekeys.h>
 #include <e32keys.h>
+#include <podcastclient.mbg>
 
 #include "PodcastClientSettingsDlg.h"
 #include "HttpClient.h"
@@ -23,7 +24,7 @@
 #include "SettingsEngine.h"
 
 const TInt KAudioTickerPeriod = 1000000;
-const TInt KMaxCoverImageWidth = 220;
+const TInt KMaxCoverImageWidth = 200;
 
 /**
 Creates and constructs the view.
@@ -292,9 +293,6 @@ void CPodcastClientPlayView::ViewConstructL()
 	iProgress =LocateControlByUniqueHandle<CQikSlider>(EPodcastPlayViewProgressCtrl);
 	iTimeLabel = LocateControlByUniqueHandle<CEikLabel>(EPodcastPlayViewProgressTime);
 	iInformationEdwin = LocateControlByUniqueHandle<CEikLabel>(EPodcastPlayViewInformation);
-//	iInformationEdwin->CreateScrollBarFrameL();
-//	iInformationEdwin->ScrollBarFrame()->SetScrollBarVisibilityL(CEikScrollBarFrame::EOff,
-//	CEikScrollBarFrame::EOff);
 	iScrollableContainer = LocateControlByUniqueHandle<CQikScrollableContainer>(EPodcastPlayViewScrollContainer);
 	iTitleEdwin = LocateControlByUniqueHandle<CEikLabel>(EPodcastPlayViewTitleCtrl);
 
@@ -384,6 +382,7 @@ void CPodcastClientPlayView::ImageConverterEventL(TQikImageConverterEvent aMessa
 		if(iCurrentCoverImage->SizeInPixels().iWidth<=KMaxCoverImageWidth)
 		{
 			iCoverImageCtrl->SetBitmap(iCurrentCoverImage);
+			iCoverImageCtrl->SetMask(NULL);
 			iCurrentCoverImage = NULL;
 			RequestRelayout(this);
 		}
@@ -429,12 +428,10 @@ void CPodcastClientPlayView::UpdateViewL()
 			}
 
 			iInformationEdwin->SetTextL(showInfo->Description());
-			//iInformationEdwin->HandleTextChangedL();
 
 			if(iTitleEdwin != NULL)
 			{
 				iTitleEdwin->SetTextL(showInfo->Title());
-				//iTitleEdwin->HandleTextChangedL();
 			}
 
 			if(showInfo->DownloadState() == ENotDownloaded)
@@ -454,30 +451,38 @@ void CPodcastClientPlayView::UpdateViewL()
 			}
 
 			CFeedInfo* feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(showInfo->FeedUid());
-			if(feedInfo != NULL && feedInfo->ImageFileName().Length()>0)
+			if(feedInfo != NULL )
 			{
-				if(feedInfo->ImageFileName() != iLastImageFileName)
+				TParsePtrC parser(feedInfo->ImageFileName());
+
+				if(parser.NameAndExt().Length() > 0)
 				{
-					iLastImageFileName = feedInfo->ImageFileName();
-					if(!iBitmapConverter->IsActive())
+					if(feedInfo->ImageFileName() != iLastImageFileName)
 					{
-						TRAPD(err, iBitmapConverter->LoadImageDataL(feedInfo->ImageFileName()));
-						if(err == KErrNone)
+						iLastImageFileName = feedInfo->ImageFileName();
+						if(!iBitmapConverter->IsActive())
 						{
-							iBitmapConverter->ConvertToBitmapL(iCurrentCoverImage, 0);
-							iCoverImageCtrl->MakeVisible(ETrue);				
-						}
-						else
-						{
-							iLastImageFileName = KNullDesC();
+							TRAPD(err, iBitmapConverter->LoadImageDataL(feedInfo->ImageFileName()));
+							if(err == KErrNone)
+							{
+								iBitmapConverter->ConvertToBitmapL(iCurrentCoverImage, 0);
+								iCoverImageCtrl->MakeVisible(ETrue);				
+							}
+							else
+							{
+								iLastImageFileName = KNullDesC();
+								iCoverImageCtrl->CreatePictureFromFileL(_L("*"), EMbmPodcastclientEmptyimage, EMbmPodcastclientEmptyimage);								
+							}
 						}
 					}
 				}
-			}
-			else
-			{
-				iLastImageFileName = KNullDesC();
-			}
+				else
+				{
+					iLastImageFileName = KNullDesC();
+					iCoverImageCtrl->CreatePictureFromFileL(_L("*"), EMbmPodcastclientEmptyimage, EMbmPodcastclientEmptyimage);
+				}
+				
+			}			
 		}
 		else
 		{	
