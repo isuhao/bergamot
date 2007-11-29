@@ -121,10 +121,16 @@ void CPodcastClientFeedView::FeedInfoUpdated(CFeedInfo* aFeedInfo)
 		MQikListBoxModel& model(iListbox->Model());
 		model.ModelBeginUpdateLC();
 		MQikListBoxData* data = model.RetrieveDataL(index);	
+		TBuf<KMaxShortDateFormatSpec*2> updatedDate;
+
 		if(data != NULL)
 		{
 			data->SetTextL(aFeedInfo->Title(), EQikListBoxSlotText1);
 			data->SetTextL(aFeedInfo->Description(), EQikListBoxSlotText2);
+			
+			aFeedInfo->LastUpdated().FormatL(updatedDate, TShortDateFormatSpec());
+			data->SetTextL(updatedDate, EQikListBoxSlotText3);
+
 			data->Close();
 			model.DataUpdatedL(index);
 		}
@@ -182,7 +188,8 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 		iPodcastModel.FeedEngine().GetFeeds(feeds);
 		int len = feeds.Count();
 		MQikListBoxData* listBoxData;
-		
+		TBuf<KMaxShortDateFormatSpec*2> updatedDate;
+
 		if (len > 0) {
 			for (int i=0;i<len;i++) {
 				TInt bitmap = EMbmPodcastclientFeeds_40x40;
@@ -195,6 +202,10 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 				listBoxData->SetItemId(fi->Uid());
 				listBoxData->AddTextL(fi->Title(), EQikListBoxSlotText1);
 				listBoxData->AddTextL(fi->Description(), EQikListBoxSlotText2);
+
+				fi->LastUpdated().FormatL(updatedDate, TShortDateFormatSpec());
+				listBoxData->AddTextL(updatedDate, EQikListBoxSlotText3);
+
 				CQikContent* content = CQikContent::NewL(this, _L("*"), bitmap, mask);
 				CleanupStack::PushL(content);
 				listBoxData->AddIconL(content,EQikListBoxSlotLeftMediumIcon1);

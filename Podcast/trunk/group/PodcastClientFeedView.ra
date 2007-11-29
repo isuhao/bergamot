@@ -141,11 +141,33 @@ RESOURCE QIK_LISTBOX_LAYOUT r_podcast_feedview_listbox_layout
 			},
 			QIK_LISTBOX_ROW
 			{
-				slot_id = EQikListBoxSlotText2;
-				type = QIK_LISTBOX_TEXT_TYPE
+
+				type = QIK_LISTBOX_PARENT_TYPE;
+				slot_id = EQikListBoxSlotParent2;
+				columns = 
 				{
-					font_size = EQikListBoxFontExtraSmall;
-					emphasis_font_size = EQikListBoxFontExtraSmall;					
+					QIK_LISTBOX_COLUMN
+					{
+
+						slot_id = EQikListBoxSlotText3;
+						width_type = EQikListBoxColWidthFromContentType;
+						type = QIK_LISTBOX_TEXT_TYPE
+						{
+							font_size = EQikListBoxFontExtraSmall;
+							emphasis_font_size = EQikListBoxFontExtraSmall;
+							alignment = EQikListBoxTextAlignLeft;
+							
+						};
+					},
+					QIK_LISTBOX_COLUMN
+					{
+						slot_id = EQikListBoxSlotText2;
+						type = QIK_LISTBOX_TEXT_TYPE
+						{
+							font_size = EQikListBoxFontExtraSmall;
+							emphasis_font_size = EQikListBoxFontExtraSmall;					
+						};
+					}
 				};
 			}
 
