@@ -10,7 +10,7 @@ const int KFeedTitleLength=256;
 const int KFeedUrlLength=1024;
 const int KFeedDescriptionLength=2048;
 
-const int KFeedInfoVersion = 3;
+const int KFeedInfoVersion = 4;
 
 class CFeedInfo : public CBase
 {
@@ -30,11 +30,12 @@ public:
 	void SetImageUrl(TDesC &aImageUrl);
 	TDesC& Link() const;
 	void SetLink(TDesC &aLink);
-	TTime PubDate();
-	void SetPubDate(TTime aPubDate);
+	TTime BuildDate();
+	void SetBuildDate(TTime aBuildDate);
+	TTime LastUpdated();
+	void SetLastUpdated(TTime aUpdated);
 	TUint Uid();
-	
-	TDesC &ImageFileName();
+	TDesC& ImageFileName();
 	void SetImageFileName(TDesC &aFileName);
 
 private:
@@ -44,8 +45,8 @@ private:
 	HBufC* iImageUrl;
 	HBufC* iImageFileName;
 	HBufC* iLink;
-	TTime iPubDate;
-	//TDateTime iLastChecked;
+	TTime iBuildDate;
+	TTime iLastUpdated;
 	TUint iUid;
 };
 

@@ -227,9 +227,18 @@ void CFeedEngine::Complete(CHttpClient* /*aClient*/, TBool aSuccessful)
 		TFileName filePath;
 		iParser->ParseFeedL(iUpdatingFeedFileName, iActiveFeed);
 		
-		GetFeedImage(iActiveFeed);
-		
+		RDebug::Print(_L("Checking if image file '%S' alredy exists"), &iActiveFeed->ImageFileName());
+		if (iActiveFeed->ImageFileName().Length() == 0) {
+			GetFeedImage(iActiveFeed);
+		} else if (!BaflUtils::FileExists(iFs,iActiveFeed->ImageFileName())) {
+			GetFeedImage(iActiveFeed);
+		}
+
+		TTime time;
+		time.UniversalTime();
+		iActiveFeed->SetLastUpdated(time);
 		SaveFeeds();
+		
 		iPodcastModel.ShowEngine().SaveShows();
 		
 		UpdateNextFeed();

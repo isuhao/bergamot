@@ -52,6 +52,12 @@ void CFeedInfo::ExternalizeL(RWriteStream& aStream) const
 		aStream.WriteL(*iImageFileName);
 	}
 
+	aStream.WriteInt32L(I64LOW(iBuildDate.Int64()));
+	aStream.WriteInt32L(I64HIGH(iBuildDate.Int64()));
+	
+	aStream.WriteInt32L(I64LOW(iLastUpdated.Int64()));
+	aStream.WriteInt32L(I64HIGH(iLastUpdated.Int64()));
+	
 	aStream.WriteInt32L(iUid);
 	}
 
@@ -82,6 +88,14 @@ void CFeedInfo::InternalizeL(RReadStream& aStream)
 		aStream.ReadL(buffer, len);
 		SetImageFileName(buffer);
 	}
+	
+	TInt low = aStream.ReadInt32L();
+	TInt high = aStream.ReadInt32L();
+	iBuildDate = MAKE_TINT64(high, low);
+	
+	low = aStream.ReadInt32L();
+	high = aStream.ReadInt32L();
+	iLastUpdated = MAKE_TINT64(high, low);
 	
 	iUid = aStream.ReadInt32L();
 	}
@@ -139,15 +153,26 @@ void CFeedInfo::SetLink(TDesC &aLink)
 	iLink = aLink.Alloc();
 	}
 
-TTime CFeedInfo::PubDate()
+TTime CFeedInfo::BuildDate()
 	{
-	return iPubDate;
+	return iBuildDate;
 	}
 
-void CFeedInfo::SetPubDate(TTime aPubDate)
+void CFeedInfo::SetBuildDate(TTime aBuildDate)
 	{
-	iPubDate = aPubDate;
+	iBuildDate = aBuildDate;
 	}
+
+TTime CFeedInfo::LastUpdated()
+	{
+	return iLastUpdated;
+	}
+
+void CFeedInfo::SetLastUpdated(TTime aUpdated)
+	{
+	iLastUpdated = aUpdated;
+	}
+
 
 TUint CFeedInfo::Uid()
 	{

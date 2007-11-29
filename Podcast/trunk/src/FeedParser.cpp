@@ -186,9 +186,9 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 			temp.Copy(iBuffer);
 			TRAPD(parseError, internetDate.SetDateL(temp));
 			if(parseError == KErrNone) {				
-				if (TTime(internetDate.DateTime()) > iActiveFeed->PubDate()) {
+				if (TTime(internetDate.DateTime()) > iActiveFeed->BuildDate()) {
 					RDebug::Print(_L("Successfully parsed build date"));
-					iActiveFeed->SetPubDate(TTime(internetDate.DateTime()));
+					iActiveFeed->SetBuildDate(TTime(internetDate.DateTime()));
 				} else {
 					RDebug::Print(_L("*** Nothing new, aborting parsing"));
 					iStoppedParsing = ETrue;
