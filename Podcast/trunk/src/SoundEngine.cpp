@@ -4,6 +4,7 @@
 #include "PodcastModel.h"
 #include "PodcastData.h"
 #include "ShowInfo.h"
+#include "ShowEngine.h"
 
 CSoundEngine* CSoundEngine::NewL(CPodcastModel& aPodcastModel)
 {
@@ -150,6 +151,8 @@ void CSoundEngine::Pause()
 	{
 		iState = ESoundEnginePaused;
 		iPlayer->Pause();
+		// really wasteful saving EVERYTHING every time
+		iPodcastModel.ShowEngine().SaveShows();
 	}
 }
 

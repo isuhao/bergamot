@@ -397,6 +397,8 @@ void CFeedEngine::GetFeeds(CFeedInfoArray& array)
 
 void CFeedEngine::CleanHtml(TDes &str)
 {
+	ReplaceString(str, _L("\n"), _L(""));
+
 //	RDebug::Print(_L("CleanHtml %d, %S"), str.Length(), &str);
 	int startPos = str.Locate('<');
 	int endPos = str.Locate('>');
@@ -406,14 +408,22 @@ void CFeedEngine::CleanHtml(TDes &str)
 		//RDebug::Print(_L("Cleaning out %S"), &str.Mid(startPos, endPos-startPos+1));
 		tmp.Copy(str.Left(startPos));
 		TPtrC ptr=str.Mid(startPos, endPos-startPos+1);
-		if (ptr.CompareF(_L("<br>"))) {
-			//RDebug::Print(_L("byter ut %S mot \\n"), &ptr);
-			tmp.Append(_L("\n"));
+		if (ptr.CompareF(_L("<br>"))== 0) {
+			RDebug::Print(_L("byter ut %S mot \\n"), &ptr);
+			tmp.Append('\r');
+			tmp.Append('\n');
+		} else if (ptr.CompareF(_L("<p>")) == 0) {
+			RDebug::Print(_L("byter ut %S mot \\n\\n"), &ptr);
+			tmp.Append('\r');
+			tmp.Append('\n');
+			tmp.Append('\r');
+			tmp.Append('\n');
 		}
 		
 		if (str.Length() > endPos+1) {
 			tmp.Append(str.Mid(endPos+1));
 		}
+		
 		str.Copy(tmp);
 		startPos = str.Locate('<');
 		endPos = str.Locate('>');

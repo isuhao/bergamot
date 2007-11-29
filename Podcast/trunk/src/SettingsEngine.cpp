@@ -152,10 +152,8 @@ void CSettingsEngine::ImportSettings()
 			TPtrC tag = line.Left(equalsPos);
 			TPtrC value = line.Mid(equalsPos+1);
 			RDebug::Print(_L("line: %S, tag: '%S', value: '%S'"), &line, &tag, &value);
-			if (tag.CompareF(_L("PodcastDir")) == 0) {
+			if (tag.CompareF(_L("BaseDir")) == 0) {
 				iBaseDir.Copy(value);
-			} else if (tag.CompareF(_L("FeedList")) == 0) {
-				iFeedListFile.Copy(value);
 			} else if (tag.CompareF(_L("UpdateFeedIntervalMinutes")) == 0) {
 				TLex lex(value);
 				lex.Val(iUpdateFeedInterval);
