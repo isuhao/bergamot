@@ -24,6 +24,12 @@ void CFeedParser::ParseFeedL(const TFileName &feedFileName, CFeedInfo *info)
 	// Contruct the parser object
 	CParser* parser = CParser::NewLC(KXmlMimeType, *this);
 	iActiveFeed = info;
+	iFeedState = EStateRoot;
+	iActiveShow = CShowInfo::NewL();
+	iItemsParsed = 0;
+	iMaxItems = 200;
+	iStoppedParsing = EFalse;
+
 	ParseL(*parser, rfs, feedFileName);
 	rfs.Close(); // this makes sure the file was closed
 	
@@ -38,15 +44,10 @@ void CFeedParser::ParseFeedL(const TFileName &feedFileName, CFeedInfo *info)
 // from MContentHandler
 void CFeedParser::OnStartDocumentL(const RDocumentParameters& aDocParam, TInt aErrorCode)
 	{
-//	RDebug::Print(_L("OnStartDocumentL()"));
+	RDebug::Print(_L("OnStartDocumentL()"));
 	TBuf<1024> charset;
 	charset.Copy(aDocParam.CharacterSetName().DesC());
 	RDebug::Print(_L("charset: %S"), &charset);
-	iFeedState = EStateRoot;
-	iActiveShow = CShowInfo::NewL();
-	iItemsParsed = 0;
-	iMaxItems = 200;
-	iStoppedParsing = EFalse;
 	}
 
 void CFeedParser::OnEndDocumentL(TInt aErrorCode)
@@ -64,7 +65,7 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 	
 	TBuf<100> str;
 	str.Copy(aElement.LocalName().DesC());
-	//RDebug::Print(_L("OnStartElementL START state=%d, element=%S"), iFeedState, &str);
+	RDebug::Print(_L("OnStartElementL START state=%d, element=%S"), iFeedState, &str);
 	iBuffer.Zero();
 	switch (iFeedState) {
 	case EStateRoot:
@@ -129,7 +130,7 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 				attr16.Copy(attr.Attribute().LocalName().DesC());
 				// url=...
 				if (attr16.Compare(KTagUrl) == 0) {
-					TBuf<100> val16;
+					TBuf<1024> val16;
 					val16.Copy(attr.Value().DesC());
 					iActiveShow->SetUrl(val16);
 				// length=...
@@ -217,6 +218,7 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 		case EStateItem:
 			iCallbacks.NewShow(iActiveShow);
 			iItemsParsed++;
+			RDebug::Print(_L("iItemsParsed: %d, iMaxItems: %d"), iItemsParsed, iMaxItems);
 			if (iItemsParsed > iMaxItems) {
 				iStoppedParsing = ETrue;
 				RDebug::Print(_L("*** Too many items, aborting parsing"));
