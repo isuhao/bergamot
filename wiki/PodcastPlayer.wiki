@@ -45,6 +45,7 @@ This is how we plan to implement features. Please [http://groups.google.com/grou
     * Automatic purging
     * Memory consumption improvements
     * Scrolling list items show entire show title
+    * Files manually added to podcast folder playable
 
   * Alpha 3 (November 25th) | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha3 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha3/group/Podcast_udeb_signed.sis SIS]
     * UI improvements (cover art, icons...)
