@@ -179,7 +179,7 @@ void CPodcastClientShowsView::ShowListUpdated()
 
 void CPodcastClientShowsView::FeedInfoUpdated(CFeedInfo* aFeedInfo)
 {
-	if(aFeedInfo->Uid() == iPodcastModel.ActiveFeedInfo()->Uid())
+	if(iPodcastModel.ActiveFeedInfo() != NULL && aFeedInfo->Uid() == iPodcastModel.ActiveFeedInfo()->Uid())
 	{
 		iPodcastModel.SetActiveFeedInfo(aFeedInfo);
 		// Title might have changed

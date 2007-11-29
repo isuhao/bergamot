@@ -66,10 +66,11 @@ void CFeedEngine::UpdateAllFeeds()
 
 void CFeedEngine::UpdateNextFeed()
 	{
+	RDebug::Print(_L("UpdateNextFeed"));
 	if (iFeedsUpdating.Count() > 0) {
 		CFeedInfo *info = iFeedsUpdating[0];
 		iFeedsUpdating.Remove(0);
-		RDebug::Print(_L("** Updating %S"), &(info->Url()));
+		//RDebug::Print(_L("** UpdateNextFeed: %S, ID: %u"), &(info->Url()), info->Uid());
 		UpdateFeed(info->Uid());
 	}
 	}
@@ -83,7 +84,6 @@ void CFeedEngine::UpdateFeed(TInt aFeedUid)
 	TFileName filePath;
 	TFileName fileName;
 	filePath.Copy(iPodcastModel.SettingsEngine().PrivatePath());
-	filePath.Append(KFeedDir);
 	//FileNameFromUrl(feedInfo->Url(), fileName);
 	//filePath.Append(fileName);
 	filePath.Append(_L("feed.xml"));
@@ -91,7 +91,6 @@ void CFeedEngine::UpdateFeed(TInt aFeedUid)
 	
 	//RDebug::Print(_L("URL: %S, fileName: %S"), &feedInfo->Url(), &feedInfo->FileName());
 	iFeedClient->GetL(feedInfo->Url(), iUpdatingFeedFileName);
-	RDebug::Print(_L("UpdateFeed END"));
 	}
 
 void CFeedEngine::NewShow(CShowInfo *item)
@@ -100,7 +99,7 @@ void CFeedEngine::NewShow(CShowInfo *item)
 	TBuf<2048> description;
 	description.Copy(item->Description());
 	CleanHtml(description);
-	RDebug::Print(_L("New show has feed ID: %u"), item->FeedUid());
+	//RDebug::Print(_L("New show has feed ID: %u"), item->FeedUid());
 	item->SetDescription(description);
 	//RDebug::Print(_L("Description: %S"), &description);
 	
@@ -189,13 +188,11 @@ void CFeedEngine::RemoveFeed(TInt aUid) {
 
 void CFeedEngine::ParsingComplete(CFeedInfo *item)
 	{
-	RDebug::Print(_L("ParsingCompleteCallback"));
-	RDebug::Print(_L("feed image url: %S"), &item->ImageUrl());
+	//RDebug::Print(_L("feed image url: %S"), &item->ImageUrl());
 	for (int i=0;i<iObservers.Count();i++) {
 		iObservers[i]->FeedInfoUpdated(item);
 //		iObservers[i]->ShowListUpdated();
 	}
-	BaflUtils::DeleteFile(iFs, iUpdatingFeedFileName);
 	}
 
 
@@ -228,7 +225,6 @@ void CFeedEngine::Complete(CHttpClient* /*aClient*/, TBool aSuccessful)
 		TFileName filePath;
 		iParser->ParseFeedL(iUpdatingFeedFileName, iActiveFeed);
 		
-		RDebug::Print(_L("Checking if image file '%S' alredy exists"), &iActiveFeed->ImageFileName());
 		if (iActiveFeed->ImageFileName().Length() == 0) {
 			GetFeedImage(iActiveFeed);
 		} else if (!BaflUtils::FileExists(iFs,iActiveFeed->ImageFileName())) {
@@ -281,6 +277,10 @@ void CFeedEngine::ImportFeeds(TFileName &aFile)
 	
 	while (error == KErrNone) {
 		RDebug::Print(_L("Line: %S"), &line);
+		if (line.Locate('#') == 0) {
+			error = tft.Read(line);
+			continue;
+		}
 		CFeedInfo *fi = new CFeedInfo;
 		line.Trim();
 		fi->SetUrl(line);
