@@ -2,6 +2,7 @@
 
 == To test ==
   * Other themes
+  * Install on flash card
 
 == Broken feeds ==
 
