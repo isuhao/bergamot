@@ -65,7 +65,7 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 	
 	TBuf<100> str;
 	str.Copy(aElement.LocalName().DesC());
-	RDebug::Print(_L("OnStartElementL START state=%d, element=%S"), iFeedState, &str);
+	//RDebug::Print(_L("OnStartElementL START state=%d, element=%S"), iFeedState, &str);
 	iBuffer.Zero();
 	switch (iFeedState) {
 	case EStateRoot:
@@ -190,6 +190,7 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 			TInternetDate internetDate;
 			TBuf8<128> temp;
 			temp.Copy(iBuffer);
+					
 			TRAPD(parseError, internetDate.SetDateL(temp));
 			if(parseError == KErrNone) {				
 				if (TTime(internetDate.DateTime()) > iActiveFeed->BuildDate()) {
@@ -217,26 +218,40 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 			break;
 		case EStateItem:
 			iCallbacks.NewShow(iActiveShow);
-			iItemsParsed++;
-			RDebug::Print(_L("iItemsParsed: %d, iMaxItems: %d"), iItemsParsed, iMaxItems);
-			if (iItemsParsed > iMaxItems) {
-				iStoppedParsing = ETrue;
-				RDebug::Print(_L("*** Too many items, aborting parsing"));
-			}
-			
 			if (str.CompareF(KTagItem) == 0) {
+				iItemsParsed++;
+				//RDebug::Print(_L("iItemsParsed: %d, iMaxItems: %d"), iItemsParsed, iMaxItems);
+				if (iItemsParsed > iMaxItems) {
+					iStoppedParsing = ETrue;
+					RDebug::Print(_L("*** Too many items, aborting parsing"));
+				}
+				
 				iFeedState=EStateChannel;
 			}
 			break;
 		case EStateItemPubDate:
 			//RDebug::Print(_L("PubDate END"));
 			if (str.CompareF(KTagPubDate) == 0) {
-				//RDebug::Print(_L("Cut: %S"), &iPubDateString.Mid(5).Left(20));
+				// hack for feeds that don't always write day as two digits
+				TChar five(iBuffer[5]);
+				TChar six(iBuffer[6]);
+				
+				if (five.IsDigit() && !six.IsDigit()) {
+					TBuf<100> fix;
+					fix.Copy(iBuffer.Left(4));
+					fix.Append(_L(" 0"));
+					fix.Append(iBuffer.Mid(5));
+					iBuffer.Copy(fix);
+				}
+				// end hack
+				
 				TBuf8<128> temp;
 				temp.Copy(iBuffer);
+
 				TInternetDate internetDate;
 				TRAPD(parseError, internetDate.SetDateL(temp));
 				if(parseError == KErrNone) {				
+					RDebug::Print(_L("PubDate parse success: '%S'"), &iBuffer);
 					iActiveShow->SetPubDate(TTime(internetDate.DateTime()));
 			
 					
@@ -249,12 +264,13 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 							iActiveShow->iPubDate.DateTime().Second());*/
 							
 				} else {
-					RDebug::Print(_L("Pubdate parse error: %S"), &iBuffer);
+					RDebug::Print(_L("Pubdate parse error: '%S', error=%d"), &iBuffer, parseError);
 				}
 			}
 			iFeedState=EStateItem;
 			break;
 		case EStateItemTitle:
+			RDebug::Print(_L("title: %S"), &iBuffer);
 			iActiveShow->SetTitle(iBuffer);
 			iFeedState = EStateItem;
 			break;
