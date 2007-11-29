@@ -97,7 +97,11 @@ void CFeedEngine::UpdateFeed(TInt aFeedUid)
 void CFeedEngine::NewShow(CShowInfo *item)
 	{
 	//RDebug::Print(_L("\nTitle: %S\nURL: %S\nDescription length: %d\nFeed: %d"), &(item->Title()), &(item->Url()), item->Description().Length(), item->FeedUid());
-	//CleanHtml(item->iDescription);
+	TBuf<2048> description;
+	description.Copy(item->Description());
+	CleanHtml(description);
+	item->SetDescription(description);
+	//RDebug::Print(_L("Description: %S"), &description);
 	
 	iPodcastModel.ShowEngine().AddShow(item);
 	}

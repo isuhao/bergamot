@@ -286,12 +286,12 @@ void CPodcastClientPlayView::ViewConstructL()
 
 	iProgress =LocateControlByUniqueHandle<CQikSlider>(EPodcastPlayViewProgressCtrl);
 	iTimeLabel = LocateControlByUniqueHandle<CEikLabel>(EPodcastPlayViewProgressTime);
-	iInformationEdwin = LocateControlByUniqueHandle<CEikEdwin>(EPodcastPlayViewInformation);
+	iInformationEdwin = LocateControlByUniqueHandle<CEikLabel>(EPodcastPlayViewInformation);
 //	iInformationEdwin->CreateScrollBarFrameL();
 //	iInformationEdwin->ScrollBarFrame()->SetScrollBarVisibilityL(CEikScrollBarFrame::EOff,
 //	CEikScrollBarFrame::EOff);
-
-	iTitleEdwin = LocateControlByUniqueHandle<CEikEdwin>(EPodcastPlayViewTitleCtrl);
+	iScrollableContainer = LocateControlByUniqueHandle<CQikScrollableContainer>(EPodcastPlayViewScrollContainer);
+	iTitleEdwin = LocateControlByUniqueHandle<CEikLabel>(EPodcastPlayViewTitleCtrl);
 
 	iVolumeSlider = LocateControlByUniqueHandle<CQikSlider>(EPodcastPlayViewVolumeCtrl);
 
@@ -324,6 +324,7 @@ void CPodcastClientPlayView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid 
 
 	UpdateViewL();
 	SetParentView( aPrevViewId );
+	iScrollableContainer->ScrollToMakeVisible(iTitleEdwin);
 }
 
 void CPodcastClientPlayView::ViewDeactivated()
@@ -422,13 +423,13 @@ void CPodcastClientPlayView::UpdateViewL()
 				iTimeLabel->SetSize(iTimeLabel->MinimumSize());
 			}
 
-			iInformationEdwin->SetTextL(&showInfo->Description());
-			iInformationEdwin->HandleTextChangedL();
+			iInformationEdwin->SetTextL(showInfo->Description());
+			//iInformationEdwin->HandleTextChangedL();
 
 			if(iTitleEdwin != NULL)
 			{
-				iTitleEdwin->SetTextL(&showInfo->Title());
-				iTitleEdwin->HandleTextChangedL();
+				iTitleEdwin->SetTextL(showInfo->Title());
+				//iTitleEdwin->HandleTextChangedL();
 			}
 
 			if(showInfo->DownloadState() == ENotDownloaded)

@@ -58,13 +58,14 @@ private:
 	CPodcastModel& iPodcastModel;
 	CQikSlider* iProgress;
 	CEikLabel* iTimeLabel;
-	CEikEdwin* iInformationEdwin;
-	CEikEdwin* iTitleEdwin;
+	CEikLabel* iInformationEdwin;
+	CEikLabel* iTitleEdwin;
 	CQikImageConverter* iBitmapConverter;
 	CEikImage* iCoverImageCtrl;
 	CFbsBitmap* iCurrentCoverImage;
 	CQikSlider* iVolumeSlider;
 	CPeriodic* iPlaybackTicker;
+	CQikScrollableContainer* iScrollableContainer;
 	// Use this to change feeds
 	CQikCategoryModel* iCategories;
 	TBool iProgressAdded;

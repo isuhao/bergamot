@@ -162,17 +162,17 @@ txt = "00:00";
 horiz_align=EEikLabelAlignHRight;
 }
 
-RESOURCE EDWIN r_podcast_playview_title
+RESOURCE LABEL r_podcast_playview_title
 {
-flags = EEikEdwinReadOnly|EEikEdwinDisableAutoCurEnd|EEikEdwinNoHorizScrolling|EEikEdwinResizable;
-lines = 0; // was 3
+horiz_align=EEikLabelAlignHLeft;
+standard_font=EEikLabelFontLegend;
+
 }
 
 
-RESOURCE EDWIN r_podcast_playview_info
+RESOURCE LABEL r_podcast_playview_info
 {
-flags = EEikEdwinReadOnly|EEikEdwinDisableAutoCurEnd|EEikEdwinNoHorizScrolling|EEikEdwinResizable;
-lines = 0; // was 3
+horiz_align=EEikLabelAlignHLeft;
 }
 
 RESOURCE QIK_SLIDER r_podcast_playview_progress
@@ -208,7 +208,7 @@ RESOURCE QIK_SCROLLABLE_CONTAINER_SETTINGS r_podcast_playview_info_container
 			{ 
 			itemflags = 6;//(EQikCtrlFlagIsEditInPlace|EQikCtrlFlagIsNonFocusing);
 			unique_handle = EPodcastPlayViewTitleCtrl;
-			type = EEikCtEdwin; 
+			type = EEikCtLabel; 
 			control = r_podcast_playview_title;
 			// This will make it so that the list box fills the whole 
 			// application space.
@@ -228,7 +228,7 @@ RESOURCE QIK_SCROLLABLE_CONTAINER_SETTINGS r_podcast_playview_info_container
 			{ 
 			itemflags =6;//(EQikCtrlFlagIsEditInPlace|EQikCtrlFlagIsNonFocusing);
 			unique_handle = EPodcastPlayViewInformation;
-			type = EEikCtEdwin; 
+			type = EEikCtLabel; 
 			control = r_podcast_playview_info;
 			// This will make it so that the list box fills the whole 
 			// application space.
@@ -260,36 +260,6 @@ RESOURCE QIK_CONTAINER_SETTINGS r_podcast_playview_page_control
 			layout_data = r_podcast_row_layout_data_fillhigher;
 			container = r_podcast_playview_info_container;
 			},
-		/*QIK_CONTAINER_ITEM_CI_LI
-			{ 
-			itemflags = EQikCtrlFlagIsEditInPlace;
-			unique_handle = EPodcastPlayViewTitleCtrl;
-			type = EEikCtEdwin; 
-			control = r_podcast_playview_title;
-			// This will make it so that the list box fills the whole 
-			// application space.
-			layout_data = r_podcast_row_layout_data_fill;
-			},
-		QIK_CONTAINER_ITEM_CI_LI
-			{ 
-			unique_handle = EPodcastPlayViewCoverImage;
-			type = EEikCtImage; 
-			control = r_podcast_playview_coverimage;
-			// This will make it so that the list box fills the whole 
-			// application space.
-			layout_data = r_podcast_row_layout_data_nofill;
-			},
-	
-		QIK_CONTAINER_ITEM_CI_LI
-			{ 
-			itemflags = EQikCtrlFlagIsEditInPlace;
-			unique_handle = EPodcastPlayViewInformation;
-			type = EEikCtEdwin; 
-			control = r_podcast_playview_info;
-			// This will make it so that the list box fills the whole 
-			// application space.
-			layout_data = r_podcast_row_layout_data_fillhigher;
-			},*/
 		QIK_CONTAINER_ITEM_CI_LI
 			{ 
 			itemflags = EQikCtrlFlagIsEditInPlace;
