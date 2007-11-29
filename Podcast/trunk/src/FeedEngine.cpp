@@ -56,7 +56,6 @@ void CFeedEngine::RunFeedTimer()
 
 void CFeedEngine::UpdateAllFeeds()
 	{
-	iFeedsUpdating.Reset();
 	for (int i=0;i<iFeeds.Count();i++) {
 		iFeedsUpdating.Append(iFeeds[i]);
 	}
@@ -78,19 +77,13 @@ void CFeedEngine::UpdateNextFeed()
 void CFeedEngine::UpdateFeed(TInt aFeedUid)
 	{
 	iClientState = EFeed;
-	CFeedInfo *feedInfo = GetFeedInfoByUid(aFeedUid);
-	iActiveFeed = feedInfo;
-
+	iActiveFeed = GetFeedInfoByUid(aFeedUid);
 	TFileName filePath;
-	TFileName fileName;
 	filePath.Copy(iPodcastModel.SettingsEngine().PrivatePath());
-	//FileNameFromUrl(feedInfo->Url(), fileName);
-	//filePath.Append(fileName);
 	filePath.Append(_L("feed.xml"));
 	iUpdatingFeedFileName.Copy(filePath);
 	
-	//RDebug::Print(_L("URL: %S, fileName: %S"), &feedInfo->Url(), &feedInfo->FileName());
-	iFeedClient->GetL(feedInfo->Url(), iUpdatingFeedFileName);
+	iFeedClient->GetL(iActiveFeed->Url(), iUpdatingFeedFileName);
 	}
 
 void CFeedEngine::NewShow(CShowInfo *item)
@@ -223,7 +216,7 @@ void CFeedEngine::Complete(CHttpClient* /*aClient*/, TBool aSuccessful)
 {
 	if (iClientState == EFeed) {
 		TFileName filePath;
-		iParser->ParseFeedL(iUpdatingFeedFileName, iActiveFeed);
+		iParser->ParseFeedL(iUpdatingFeedFileName, iActiveFeed, iPodcastModel.SettingsEngine().MaxListItems());
 		
 		if (iActiveFeed->ImageFileName().Length() == 0) {
 			GetFeedImage(iActiveFeed);

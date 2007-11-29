@@ -176,6 +176,7 @@ void CHttpClient::GetL(TDesC& url, TDesC& fileName) {
 
 void CHttpClient::Stop()
 	{
+	iIsActive = EFalse;
 	iSession.Close();
 	}
 

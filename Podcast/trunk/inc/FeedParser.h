@@ -47,7 +47,7 @@ public:
 	virtual ~CFeedParser();
 	
 public:
-	void ParseFeedL(const TFileName &feedFileName, CFeedInfo *item);
+	void ParseFeedL(const TFileName &feedFileName, CFeedInfo *item, TUint aMaxItems);
 	
 public: // from MContentHandler
 	void OnStartDocumentL(const RDocumentParameters& aDocParam, TInt aErrorCode);

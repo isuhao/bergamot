@@ -15,7 +15,7 @@ CFeedParser::~CFeedParser()
 {
 }
 
-void CFeedParser::ParseFeedL(const TFileName &feedFileName, CFeedInfo *info)
+void CFeedParser::ParseFeedL(const TFileName &feedFileName, CFeedInfo *info, TUint aMaxItems)
 	{
 	//RDebug::Print(_L("ParseFeedL BEGIN: %S"), &feedFileName);
 	RFs rfs;
@@ -27,7 +27,7 @@ void CFeedParser::ParseFeedL(const TFileName &feedFileName, CFeedInfo *info)
 	iFeedState = EStateRoot;
 	iActiveShow = CShowInfo::NewL();
 	iItemsParsed = 0;
-	iMaxItems = 200;
+	iMaxItems = aMaxItems;
 	iStoppedParsing = EFalse;
 
 	ParseL(*parser, rfs, feedFileName);
@@ -251,7 +251,7 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 				TInternetDate internetDate;
 				TRAPD(parseError, internetDate.SetDateL(temp));
 				if(parseError == KErrNone) {				
-					RDebug::Print(_L("PubDate parse success: '%S'"), &iBuffer);
+					//RDebug::Print(_L("PubDate parse success: '%S'"), &iBuffer);
 					iActiveShow->SetPubDate(TTime(internetDate.DateTime()));
 			
 					
@@ -270,7 +270,7 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 			iFeedState=EStateItem;
 			break;
 		case EStateItemTitle:
-			RDebug::Print(_L("title: %S"), &iBuffer);
+			//RDebug::Print(_L("title: %S"), &iBuffer);
 			iActiveShow->SetTitle(iBuffer);
 			iFeedState = EStateItem;
 			break;
