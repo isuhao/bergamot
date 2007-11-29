@@ -1,6 +1,6 @@
 %{"Podcast Player"}
 :"AVendor"
-#{"Podcast Player"}, (0xA00046BD), 0, 3, 0, TYPE=SA
+#{"Podcast Player"}, (0xA00046BD), 0, 4, 0, TYPE=SA
 
 (0x101F6300), 3, 0, 0, {"UIQ30ProductID"}
 

@@ -192,7 +192,8 @@ void CShowEngine::LoadShows()
 
 	if (version != KShowInfoVersion) {
 		RDebug::Print(_L("Wrong version, discarding"));
-		goto exit_point;
+		CleanupStack::PopAndDestroy(2); // instream and store
+		return;
 	}
 	
 	int count = instream.ReadInt32L();
@@ -226,11 +227,9 @@ void CShowEngine::LoadShows()
 			}
 		}
 	}
-	exit_point:
+
 	iSuppressAutoDownload = EFalse;
-	CleanupStack::PopAndDestroy(); // instream
-	
-	CleanupStack::PopAndDestroy(store);	
+	CleanupStack::PopAndDestroy(2); // instream and store
 	}
 
 void CShowEngine::SaveShows()
