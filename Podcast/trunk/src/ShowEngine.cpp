@@ -207,13 +207,14 @@ void CShowEngine::LoadShows()
 		readData = CShowInfo::NewL();
 		TRAPD(error, instream  >> *readData);
 		
-		if (readData->Uid() != lastUid) {
-			lastUid = readData->Uid();
-			feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(readData->Uid());
+		if (readData->FeedUid() != lastUid) {
+			lastUid = readData->FeedUid();
+			feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(readData->FeedUid());
 		}
 		
 		// if this show does not have a valid feed, we don't bother
 		if (feedInfo == NULL) {
+			RDebug::Print(_L("Discarding show since it has no feed!"));
 			continue;
 		}
 		//RDebug::Print(_L("error: %d"), error);
@@ -333,9 +334,9 @@ void CShowEngine::PurgeShow(TInt aShowUid)
 		}
 	}
 
-void CShowEngine::SelectShowsByFeed(TInt aFeedUid)
+void CShowEngine::SelectShowsByFeed(TUint aFeedUid)
 	{
-	RDebug::Print(_L("SelectShowsByFeed: %d"), aFeedUid);
+	RDebug::Print(_L("SelectShowsByFeed: %u"), aFeedUid);
 	iSelectedShows.Reset();
 	for (int i=0;i<iShows.Count();i++)
 		{

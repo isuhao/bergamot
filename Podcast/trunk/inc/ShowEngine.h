@@ -24,7 +24,7 @@ public:
 
 	// show selection methods
 	void SelectAllShows();
-	void SelectShowsByFeed(TInt aFeedUid);
+	void SelectShowsByFeed(TUint aFeedUid);
 	void SelectShowsByDownloadState(TInt aDownloadState);
 	void SelectNewShows();
 	void SelectShowsDownloading();

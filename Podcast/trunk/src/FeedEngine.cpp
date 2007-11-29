@@ -100,6 +100,7 @@ void CFeedEngine::NewShow(CShowInfo *item)
 	TBuf<2048> description;
 	description.Copy(item->Description());
 	CleanHtml(description);
+	RDebug::Print(_L("New show has feed ID: %u"), item->FeedUid());
 	item->SetDescription(description);
 	//RDebug::Print(_L("Description: %S"), &description);
 	
