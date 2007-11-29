@@ -59,7 +59,7 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 	
 	TBuf<100> str;
 	str.Copy(aElement.LocalName().DesC());
-	RDebug::Print(_L("OnStartElementL START state=%d, element=%S"), iFeedState, &str);
+	//RDebug::Print(_L("OnStartElementL START state=%d, element=%S"), iFeedState, &str);
 	iBuffer.Zero();
 	switch (iFeedState) {
 	case EStateRoot:

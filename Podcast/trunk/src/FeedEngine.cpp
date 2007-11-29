@@ -84,8 +84,9 @@ void CFeedEngine::UpdateFeed(TInt aFeedUid)
 	TFileName fileName;
 	filePath.Copy(iPodcastModel.SettingsEngine().PrivatePath());
 	filePath.Append(KFeedDir);
-	FileNameFromUrl(feedInfo->Url(), fileName);
-	filePath.Append(fileName);
+	//FileNameFromUrl(feedInfo->Url(), fileName);
+	//filePath.Append(fileName);
+	filePath.Append(_L("feed.xml"));
 	iUpdatingFeedFileName.Copy(filePath);
 	
 	//RDebug::Print(_L("URL: %S, fileName: %S"), &feedInfo->Url(), &feedInfo->FileName());
@@ -189,6 +190,7 @@ void CFeedEngine::ParsingComplete(CFeedInfo *item)
 		iObservers[i]->FeedInfoUpdated(item);
 //		iObservers[i]->ShowListUpdated();
 	}
+	BaflUtils::DeleteFile(iFs, iUpdatingFeedFileName);
 	}
 
 
