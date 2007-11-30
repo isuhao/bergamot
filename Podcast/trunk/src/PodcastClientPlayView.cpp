@@ -12,6 +12,7 @@
 #include <devicekeys.h>
 #include <e32keys.h>
 #include <podcastclient.mbg>
+#include <qikgenericbuildingblock.h>
 
 #include "PodcastClientSettingsDlg.h"
 #include "HttpClient.h"
@@ -25,7 +26,9 @@
 
 const TInt KAudioTickerPeriod = 1000000;
 const TInt KMaxCoverImageWidth = 200;
+const TInt KMaxProgressValue = 320;
 
+_LIT(KZeroTime,"0:00:00");
 /**
 Creates and constructs the view.
 
@@ -99,13 +102,13 @@ void CPodcastClientPlayView::HandleControlEventL(CCoeControl* aControl,TCoeEvent
 	if(aEventType == MCoeControlObserver::EEventStateChanged)
 	{
 		// Set position in current playback
-		if(aControl == iProgress)
+		if(aControl == iPlayProgressbar)
 		{
-			TInt value = iProgress->CurrentValue();
+			TInt value = iPlayProgressbar->CurrentValue();
 			TUint ptime = iPodcastModel.SoundEngine().PlayTime();
 			if(ptime > 0)
 			{
-				iPodcastModel.SoundEngine().SetPosition((value*ptime)/100);
+				iPodcastModel.SoundEngine().SetPosition((value*ptime)/KMaxProgressValue);
 			}
 		}
 	}
@@ -148,6 +151,7 @@ TInt CPodcastClientPlayView::PlayingUpdateStaticCallbackL(TAny* aPlayView)
 void CPodcastClientPlayView::UpdatePlayStatusL()
 {
 	CQikCommandManager& comMan = CQikCommandManager::Static();
+	TBuf<32> time = _L("0:00:00");
 
 	if(iPodcastModel.SoundEngine().State() == ESoundEnginePlaying)
 	{
@@ -161,21 +165,40 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 
 	comMan.SetDimmed(*this, EPodcastPlay, iPodcastModel.SoundEngine().State() == ESoundEngineNotInitialized);
 	comMan.SetDimmed(*this, EPodcastStop, (iPodcastModel.SoundEngine().State() == ESoundEngineNotInitialized || iPodcastModel.SoundEngine().State() == ESoundEngineStopped));
-	if(iProgress != NULL)
+	if(iPlayProgressbar != NULL)
 	{
-		iProgress->SetDimmed(iPodcastModel.SoundEngine().State() == ESoundEngineNotInitialized );
+		iPlayProgressbar->SetDimmed(iPodcastModel.SoundEngine().State() == ESoundEngineNotInitialized );
 		
 		if(iPodcastModel.SoundEngine().PlayTime()>0)
 		{
 			TUint duration = iPodcastModel.SoundEngine().PlayTime();
 			TUint pos = iPodcastModel.SoundEngine().Position().Int64()/1000000;
-			iProgress->SetValue((100*pos)/duration);
-			iProgress->DrawDeferred();
+			iPlayProgressbar->SetValue((KMaxProgressValue*pos)/duration);
+			iPlayProgressbar->DrawDeferred();
+
+			if(pos > 0)
+			{
+				TInt sec = (pos%60);
+				TInt min = (pos/60);
+				TInt hour = min%60;
+				min = min-(hour*60);
+				time.Format(_L("%01d:%02d:%02d"), hour, min, sec);
+			}
+
+			if(iTimeLabel != NULL)
+			{
+				iTimeLabel->SetText(time);
+				iTimeLabel->SetSize(iTimeLabel->MinimumSize());
+				iTimeLabel->DrawDeferred();
+			}
 		}
 		else
 		{
-			iProgress->SetValue(0);
-			iProgress->DrawDeferred();
+			iPlayProgressbar->SetValue(0);
+			iPlayProgressbar->DrawDeferred();		
+			iTimeLabel->SetText(KZeroTime());
+			iTimeLabel->SetSize(iTimeLabel->MinimumSize());
+			iTimeLabel->DrawDeferred();
 		}
 	}
 }
@@ -290,11 +313,14 @@ void CPodcastClientPlayView::ViewConstructL()
     //RDebug::Print(_L("ViewConstructL"));
     ViewConstructFromResourceL(R_PODCAST_PLAYVIEW_UI_CONFIGURATIONS);
 
-	iProgress =LocateControlByUniqueHandle<CQikSlider>(EPodcastPlayViewProgressCtrl);
+	iPlayProgressbar =LocateControlByUniqueHandle<CQikSlider>(EPodcastPlayViewProgressCtrl);
 	iTimeLabel = LocateControlByUniqueHandle<CEikLabel>(EPodcastPlayViewProgressTime);
+	iTotTimeLabel = LocateControlByUniqueHandle<CEikLabel>(EPodcastPlayViewProgressTotTime);
+
 	iInformationEdwin = LocateControlByUniqueHandle<CEikLabel>(EPodcastPlayViewInformation);
 	iScrollableContainer = LocateControlByUniqueHandle<CQikScrollableContainer>(EPodcastPlayViewScrollContainer);
 	iTitleEdwin = LocateControlByUniqueHandle<CEikLabel>(EPodcastPlayViewTitleCtrl);
+	iProgressBB = LocateControlByUniqueHandle<CQikGenericBuildingBlock>(EPodcastPlayViewBottomLineBB);
 
 	iVolumeSlider = LocateControlByUniqueHandle<CQikSlider>(EPodcastPlayViewVolumeCtrl);
 
@@ -394,11 +420,16 @@ void CPodcastClientPlayView::ImageConverterEventL(TQikImageConverterEvent aMessa
 	else if(aErrCode == KErrNone && aMessage == MQikImageConverterObserver::EBitmapRescaleComplete)
 	{
 		iCoverImageCtrl->SetBitmap(iCurrentCoverImage);
+		iCoverImageCtrl->SetMask(NULL);
 		iCurrentCoverImage = NULL;
 		RequestRelayout(this);
 	}
 	else if(aErrCode != KErrNone)
 	{
+		iCoverImageCtrl->SetBitmap(NULL);
+		iCoverImageCtrl->SetMask(NULL);
+		RequestRelayout(this);
+
 		delete iCurrentCoverImage;
 		iCurrentCoverImage = NULL;
 	}
@@ -416,15 +447,23 @@ void CPodcastClientPlayView::UpdateViewL()
 			ViewContext()->ChangeTextL(EPodcastPlayViewTitleCtrl, showInfo->Title());
 			TBuf<32> time = _L("00:00");
 			TUint playtime = iPodcastModel.SoundEngine().PlayTime();
-			if(playtime > 0)
+			if(playtime >= 0)
 			{
-				time.Format(_L("%02d:%02d"), (playtime/60), (playtime%60));
+				TInt sec = (playtime%60);
+				TInt min = (playtime/60);
+				TInt hour = min%60;
+				min = min-(hour*60);
+				time.Format(_L("%01d:%02d:%02d"), hour, min, sec);
+			}
+			else
+			{
+				time = KZeroTime();
 			}
 
-			if(iTimeLabel != NULL)
+			if(iTotTimeLabel != NULL)
 			{
-				iTimeLabel->SetText(time);
-				iTimeLabel->SetSize(iTimeLabel->MinimumSize());
+				iTotTimeLabel->SetText(time);
+				iTotTimeLabel->SetSize(iTotTimeLabel->MinimumSize());
 			}
 
 			iInformationEdwin->SetTextL(showInfo->Description());
@@ -491,6 +530,8 @@ void CPodcastClientPlayView::UpdateViewL()
 
 	
 		UpdatePlayStatusL();
+		
+		iProgressBB->RequestRelayout(iProgressBB);
 
 		RequestRelayout(this);
 }

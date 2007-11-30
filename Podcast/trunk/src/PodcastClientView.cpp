@@ -74,11 +74,11 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 			iQikAppUi.ActivateViewL(playView);
 		}
 		break;		
-	case EPodcastViewAllShows:
+/*	case EPodcastViewAllShows:
 		{
 			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID);
 			iQikAppUi.ActivateViewL(podcastsView, TUid::Uid(EShowAllShows), KNullDesC8());
-		}break;
+		}break;*/
 	case EPodcastViewNewShows:
 		{
 			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID);

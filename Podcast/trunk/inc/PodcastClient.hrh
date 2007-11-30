@@ -12,7 +12,7 @@ enum TPodcatClientCommands
 	{
 	EPodcastView = 0x1000,
 	EPodcastViewMain,
-	EPodcastViewAllShows,
+	//EPodcastViewAllShows,
 	EPodcastViewNewShows,
 	EPodcastViewDownloadedShows,
 	EPodcastViewPendingShows,
@@ -44,11 +44,15 @@ enum TPodcatClientCommands
 	EPodcastListViewListCtrl= 0x1000,
 	EPodcastListViewPage,
 	EPodcastListViewContextLabel,
+	// Controls for view context
 	EPodcastPlayViewTitleCtrl,
 	EPodcastPlayViewProgressCtrl,
 	EPodcastPlayViewVolumeCtrl,
+	// Playview controls
 	EPodcastPlayViewProgressTime,
+	EPodcastPlayViewProgressTotTime,
 	EPodcastPlayViewInformation,
+	EPodcastPlayViewBottomLineBB,
 	EPodcastPlayViewProgressInfo,
 	EPodcastPlayViewCoverImage,
 	EPodcastPlayViewScrollContainer,

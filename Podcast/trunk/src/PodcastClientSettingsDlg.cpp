@@ -66,7 +66,7 @@ void CPodcastClientSettingsDlg::PreLayoutDynInitL()
 	iShowBaseDirCtrl = static_cast<CEikEdwin*> (ControlOrNull(EPodcastSettingShowDir));
 	iAutoDLCtrl = static_cast<CEikCheckBox*> (ControlOrNull(EPodcastSettingAutoDL));
 	iUpdateIntervalCtrl = static_cast<CQikNumberEditor*> (ControlOrNull(EPodcastSettingUpdateInterval));
-	iMaxSimDlsCtrl = static_cast<CQikNumberEditor*> (ControlOrNull(EPodcastSettingMaxsimdls));
+//	iMaxSimDlsCtrl = static_cast<CQikNumberEditor*> (ControlOrNull(EPodcastSettingMaxsimdls));
 	iConnectionCtrl = static_cast<CEikChoiceList*> (ControlOrNull(EPodcastSettingConnection));
 	iIAPListCtrl = static_cast<CEikChoiceList*> (ControlOrNull(EPodcastSettingIAPList));
 	iVolumeSlider =	 static_cast<CQikSlider*> (ControlOrNull(EPodcastSettingsVolume));
@@ -77,7 +77,7 @@ void CPodcastClientSettingsDlg::PreLayoutDynInitL()
 
 	iAutoDLCtrl->SetState(iPodcastModel.SettingsEngine().DownloadAutomatically() ? CEikButtonBase::ESet : CEikButtonBase::EClear);
 	iUpdateIntervalCtrl->SetValueL(iPodcastModel.SettingsEngine().UpdateFeedInterval());
-	iMaxSimDlsCtrl->SetValueL(iPodcastModel.SettingsEngine().MaxSimultaneousDownloads());
+//	iMaxSimDlsCtrl->SetValueL(iPodcastModel.SettingsEngine().MaxSimultaneousDownloads());
 	iVolumeSlider->SetValue(iPodcastModel.SettingsEngine().Volume());
 
 	if(iPodcastModel.SettingsEngine().DownloadOnlyOnWLAN())
@@ -108,7 +108,7 @@ TBool CPodcastClientSettingsDlg::OkToExitL(TInt aCommandId)
 			iPodcastModel.SettingsEngine().SetBaseDir(iSelectedPathTemp);
 			iPodcastModel.SettingsEngine().SetDownloadAutomatically(iAutoDLCtrl->State() == CEikButtonBase::ESet ? ETrue : EFalse);
 			iPodcastModel.SettingsEngine().SetUpdateFeedInterval(iUpdateIntervalCtrl->Value());
-			iPodcastModel.SettingsEngine().SetMaxSimultaneousDownloads(iMaxSimDlsCtrl->Value());
+//			iPodcastModel.SettingsEngine().SetMaxSimultaneousDownloads(iMaxSimDlsCtrl->Value());
 			iPodcastModel.SettingsEngine().SetVolume(iVolumeSlider->CurrentValue());
 
 			switch(iConnectionCtrl->CurrentItem())

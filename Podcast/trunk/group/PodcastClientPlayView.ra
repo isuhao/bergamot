@@ -188,8 +188,9 @@ horiz_align=EEikLabelAlignHLeft;
 RESOURCE QIK_SLIDER r_podcast_playview_progress
 {
 	min_value = 0;
-	max_value = 100;
-	num_markers = 10;
+	max_value = 320;
+	num_markers = 32;
+	flags = EQikSliderSnapToMarker;
 }
 
 RESOURCE QIK_SLIDER r_podcast_playview_volume
@@ -214,6 +215,7 @@ RESOURCE QIK_SCROLLABLE_CONTAINER_SETTINGS r_podcast_playview_info_container
 {
 	layout_manager_type = EQikRowLayoutManager;
 	layout_manager = r_podcast_row_layout_manager_default;
+	flags = EMyQikScrollableContainerDefaultFlags;
 	controls = 
 	{
 	QIK_CONTAINER_ITEM_CI_LI
@@ -275,12 +277,81 @@ RESOURCE QIK_CONTAINER_SETTINGS r_podcast_playview_page_control
 		QIK_CONTAINER_ITEM_CI_LI
 			{ 
 			itemflags = EQikCtrlFlagIsEditInPlace;
-			unique_handle = EPodcastPlayViewProgressCtrl;
-			type = EQikCtSlider; 
-			control = r_podcast_playview_progress;
+			unique_handle = EPodcastPlayViewBottomLineBB;
+			type = EQikCtGenericBuildingBlock; 
+			control = r_podcast_playview_bottom_bb;
 			// This will make it so that the list box fills the whole 
 			// application space.
 			layout_data = r_podcast_row_layout_data_nofill;
 			}
 		};
 	}
+
+RESOURCE QIK_GENERIC_BUILDING_BLOCK r_podcast_playview_bottom_bb
+{
+	columns = 
+	{
+		QIK_GENERIC_BUILDING_BLOCK_COLUMN
+		{
+			slot_id = EQikItemSlot1; 
+			horizontal_alignment = EQikLayoutHAlignRight;
+			number_of_visible_lines = 1;
+			control_internal_alignment = EQikAlignHRightVCenter;
+			grabweight = 0;
+			fixed_width = EQikLayoutUseControlMinimum;
+		},
+		QIK_GENERIC_BUILDING_BLOCK_COLUMN
+		{
+			slot_id = EQikItemSlot2; 
+			grabweight = 1;
+			horizontal_alignment = EQikLayoutHAlignCenter;
+			control_internal_alignment = EQikAlignHCenterVCenter;
+			fixed_width = 100;
+			auto_wrapping = 0;
+			max_num = 2;
+		},
+		QIK_GENERIC_BUILDING_BLOCK_COLUMN
+		{
+			slot_id = EQikItemSlot7; 
+			horizontal_alignment = EQikLayoutHAlignLeft;
+			number_of_visible_lines = 1;
+			control_internal_alignment = EQikAlignHLeftVCenter;
+			grabweight = 0;
+			fixed_width = EQikLayoutUseControlMinimum;
+		}
+	};
+
+	content = 
+	{
+		QIK_SLOT_CONTENT_DIRECT
+		{
+			unique_handle = EPodcastPlayViewProgressTime;
+			type = EEikCtLabel; 
+			slot_id = EQikItemSlot1; 
+			control = LABEL
+			{
+			horiz_align = EEikLabelAlignHLeft;
+			txt ="0:00:00";
+			};
+		},
+		QIK_SLOT_CONTENT_INDIRECT
+		{
+			itemflags = EQikCtrlFlagIsEditInPlace;
+			unique_handle = EPodcastPlayViewProgressCtrl;
+			type = EQikCtSlider; 
+			control = r_podcast_playview_progress;
+			slot_id = EQikItemSlot2; 
+		},
+		QIK_SLOT_CONTENT_DIRECT
+		{		
+			unique_handle = EPodcastPlayViewProgressTotTime;
+			type = EEikCtLabel; 
+			slot_id = EQikItemSlot7; 
+			control = LABEL
+			{
+			horiz_align = EEikLabelAlignHRight;
+			txt ="0:00:00";
+			};
+		}
+	};
+}

@@ -22,6 +22,7 @@ class CEikEdwin;
 class CPodcastModel;
 class CQikSlider;
 class CEikImage;
+class CQikGenericBuildingBlock;
 
 class CPodcastClientPlayView : public CQikViewBase, public MSoundEngineObserver, public MFeedEngineObserver, public MQikImageConverterObserver, public MShowEngineObserver
 	{
@@ -55,9 +56,11 @@ private:
 	CPodcastClientPlayView(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel);
 	void ConstructL();
 private:
+	CQikGenericBuildingBlock* iProgressBB;
 	CPodcastModel& iPodcastModel;
-	CQikSlider* iProgress;
+	CQikSlider* iPlayProgressbar;
 	CEikLabel* iTimeLabel;
+	CEikLabel* iTotTimeLabel;
 	CEikLabel* iInformationEdwin;
 	CEikLabel* iTitleEdwin;
 	CQikImageConverter* iBitmapConverter;

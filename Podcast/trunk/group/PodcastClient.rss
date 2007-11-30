@@ -69,14 +69,14 @@ RESOURCE QIK_COMMAND_LIST r_podcast_listview_commands
 				groupId = 1;
 				},
 
-				QIK_COMMAND
+			/*	QIK_COMMAND
 				{
 				id = EPodcastViewAllShows;
 				type = EQikCommandTypeScreen;
 				text = STRING_r_view_all_shows_cmd;
 				namedGroupId = 1;
 				groupId = 2;
-				},	
+				},	*/
 				QIK_COMMAND
 				{
 				id = EPodcastViewNewShows;
@@ -447,7 +447,7 @@ RESOURCE DIALOG r_podcast_settings_dlg
 				max = 1440;
 			};
 		},
-		DLG_LINE
+		/*DLG_LINE
 		{
 			id = EPodcastSettingMaxsimdls;
 			itemflags = EQikDlgItemCaptionAboveControl;
@@ -458,7 +458,7 @@ RESOURCE DIALOG r_podcast_settings_dlg
 				min = 1;
 				max = 16;
 			};
-		},
+		},*/
 		DLG_LINE
 		{
 			id = EPodcastSettingConnection;

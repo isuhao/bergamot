@@ -47,10 +47,16 @@ void CPodcastClientBaseView::ViewConstructL()
 	MQikListBoxData* data = model.RetrieveDataL(0);	
 	data->SetItemId(EBaseViewNewShows);
 	data->Close();
+	
 	data = model.RetrieveDataL(1);	
 	data->SetItemId(EBaseViewDownloadedShows);
 	data->Close();
+	
 	data = model.RetrieveDataL(2);	
+	data->SetItemId(EBaseViewPendingShows);
+	data->Close();
+
+	data = model.RetrieveDataL(3);	
 	data->SetItemId(EBaseViewFeeds);
 	data->Close();
 	model.ModelEndUpdateL();
@@ -199,6 +205,11 @@ void CPodcastClientBaseView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQi
 				{
 					newview = KUidPodcastShowsViewID;
 					messageUid = TUid::Uid(EShowDownloadedShows);
+				}break;
+			case EBaseViewPendingShows:
+				{
+					newview = KUidPodcastShowsViewID;
+					messageUid = TUid::Uid(EShowPendingShows);
 				}break;
 			case EBaseViewFeeds:
 				{

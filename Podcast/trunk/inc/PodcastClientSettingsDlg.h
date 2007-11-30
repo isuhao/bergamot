@@ -52,7 +52,7 @@ private:
 	CEikEdwin* iShowBaseDirCtrl;
 	CEikCheckBox* iAutoDLCtrl;
 	CQikNumberEditor* iUpdateIntervalCtrl;
-	CQikNumberEditor* iMaxSimDlsCtrl;
+//	CQikNumberEditor* iMaxSimDlsCtrl;
 	CEikChoiceList* iConnectionCtrl;
 	CEikChoiceList* iIAPListCtrl;
 	CQikSlider* iVolumeSlider;

@@ -155,6 +155,26 @@ RESOURCE QIK_LISTBOX r_podcast_mainview_listbox
 					}
 				};
 			},
+		QIK_LISTBOX_DATA
+			{
+				data = 
+				{
+					QIK_LISTBOX_TEXT
+					{
+					txt = STRING_r_view_dling_shows_cmd;
+					slot_id = EQikListBoxSlotText1;
+					},
+					QIK_LISTBOX_ICON_2
+					{
+					content=QIK_CONTENT_MBM 
+					{
+						bmpid = EMbmPodcastclientPending_view_40x40;
+						bmpmask = EMbmPodcastclientPending_view_40x40m;
+					};
+					slot_id = EQikListBoxSlotLeftMediumIcon1;
+					}
+				};
+			},
 
 		QIK_LISTBOX_DATA
 		{
