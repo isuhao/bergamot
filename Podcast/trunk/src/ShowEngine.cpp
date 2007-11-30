@@ -50,7 +50,7 @@ void CShowEngine::ResumeDownloads()
 void CShowEngine::RemoveDownload(TInt aUid) 
 	{
 	RDebug::Print(_L("RemoveFromDownloadQueue"));
-	for (int i=0;iShowsDownloading.Count();i++) {
+	for (int i=0;i<iShowsDownloading.Count();i++) {
 		if (iShowsDownloading[i]->Uid() == aUid) {
 			iShowsDownloading.Remove(i);
 			for (int j=0;j<iObservers.Count();j++) {
