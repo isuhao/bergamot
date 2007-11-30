@@ -13,12 +13,7 @@
 
 
 _LIT(KShowsTitleFormat, "%d / %d");
-_LIT(KShowsSizeFormatKb,"%dkB");
-_LIT(KShowsSizeFormatMb,"%dMB");
 _LIT(KSizeDownloadingOf, "%S/%S");
-
-const TInt KSizeKb = 1024;
-const TInt KSizeMb = 1024000;
 
 const TInt KSizeBufLen = 16;
 
@@ -381,7 +376,7 @@ void CPodcastClientShowsView::UpdateShowItemL(CShowInfo* aShowInfo, TInt aSizeDo
 		model.ModelBeginUpdateLC();
 		MQikListBoxData* data = model.RetrieveDataL(index);	
 		CleanupClosePushL(*data);
-		UpdateShowItemDataL(aShowInfo, data);
+		UpdateShowItemDataL(aShowInfo, data, aSizeDownloaded);
 		CleanupStack::PopAndDestroy();// close data
 		model.DataUpdatedL(index);
 		model.ModelEndUpdateL();

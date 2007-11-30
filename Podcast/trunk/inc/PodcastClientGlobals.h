@@ -7,4 +7,10 @@ const TUid KUidPodcastFeedViewID = {0x00000002};
 const TUid KUidPodcastShowsViewID = {0x00000003};
 const TUid KUidPodcastPlayViewID = {0x00000004};
 
+const TInt KSizeKb = 1024;
+const TInt KSizeMb = 1024000;
+
+_LIT(KShowsSizeFormatKb,"%dkB");
+_LIT(KShowsSizeFormatMb,"%dMB");
+
 #endif

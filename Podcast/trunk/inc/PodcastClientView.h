@@ -2,7 +2,6 @@
 #define PODCASTCLIENTVIEW_H
 
 #include <qikviewbase.h>
-#include "PodcastClient.hrh"
 #include "s32file.h"
 #include <e32cmn.h>
 #include <coecobs.h>
@@ -17,6 +16,7 @@
 #include "PodcastClientGlobals.h"
 #include "HttpClient.h"
 #include "FeedEngine.h"
+#include "PodcastClient.hrh"
 
 class CPodcastModel;
 
