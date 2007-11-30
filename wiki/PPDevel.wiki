@@ -1,4 +1,9 @@
 == Todo ==
+  * Read manually added files from disk
+
+== Issues ==
+  * Discarding shows on startup, seems wrong
+  * Close file on aborted download, otherwise we can't re-download
 
 == To test ==
   * Other themes
