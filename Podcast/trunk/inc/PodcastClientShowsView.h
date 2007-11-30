@@ -25,6 +25,7 @@ protected:
 	void DownloadQueueUpdated(TInt aDownloadingShows, TInt aQueuedShows) {};
 	void HandleCommandL(CQikCommand& aCommand);
 	void UpdateShowItemL(CShowInfo* aShowInfo, TInt aSizeDownloaded = KErrNotFound);
+	void UpdateShowItemDataL(CShowInfo* aShowInfo, MQikListBoxData* aListboxData, TInt aSizeDownloaded = KErrNotFound);
 	// from MQikCommandModelOwner	
 	CQikCommand* DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& aControlAddingCommands);
 	void ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage);

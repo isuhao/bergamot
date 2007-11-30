@@ -354,6 +354,7 @@ void CPodcastClientPlayView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid 
 	UpdateViewL();
 	SetParentView( aPrevViewId );
 	iScrollableContainer->ScrollToMakeVisible(iTitleEdwin);
+	RequestFocusL(iScrollableContainer);
 }
 
 void CPodcastClientPlayView::ViewDeactivated()

@@ -146,6 +146,8 @@ void CPodcastClientView::ViewConstructL()
 	iCategories = QikCategoryUtils::ConstructCategoriesLC(R_PODCAST_CATEGORY);
 	SetCategoryModel(iCategories);
 	CleanupStack::Pop(iCategories);
+
+	RequestFocusL(iListbox);
 }
 
 void CPodcastClientView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage)

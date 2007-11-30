@@ -7,7 +7,7 @@
 #include "PodcastClientAddFeedDlg.h"
 #include "PodcastClientFeedView.h"
 #include "PodcastModel.h"
-
+const TInt KMaxFeedNameLength = 100;
 /**
 Creates and constructs the view.
 
@@ -61,7 +61,6 @@ void CPodcastClientFeedView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid 
 {
 	CPodcastClientView::ViewActivatedL(aPrevViewId, aCustomMessageId, aCustomMessage);
 
-
 	SetParentView( TVwsViewId(KUidPodcastClientID, KUidPodcastBaseViewID) );
 }
 
@@ -96,6 +95,16 @@ CQikCommand* CPodcastClientFeedView::DynInitOrDeleteCommandL(CQikCommand* aComma
 	return aCommand;
 }
 
+void CPodcastClientFeedView::UpdateFeedInfoDataL(CFeedInfo* aFeedInfo,  MQikListBoxData* aListboxData)
+{
+	TBuf<KMaxShortDateFormatSpec*2> updatedDate;
+	aListboxData->SetTextL(aFeedInfo->Title(), EQikListBoxSlotText1);
+	aListboxData->SetTextL(aFeedInfo->Description(), EQikListBoxSlotText2);
+			
+	aFeedInfo->LastUpdated().FormatL(updatedDate, TShortDateFormatSpec());
+	aListboxData->SetTextL(updatedDate, EQikListBoxSlotText3);
+}
+
 void CPodcastClientFeedView::FeedInfoUpdated(CFeedInfo* aFeedInfo)
 {
 
@@ -121,17 +130,12 @@ void CPodcastClientFeedView::FeedInfoUpdated(CFeedInfo* aFeedInfo)
 		MQikListBoxModel& model(iListbox->Model());
 		model.ModelBeginUpdateLC();
 		MQikListBoxData* data = model.RetrieveDataL(index);	
-		TBuf<KMaxShortDateFormatSpec*2> updatedDate;
 
 		if(data != NULL)
 		{
-			data->SetTextL(aFeedInfo->Title(), EQikListBoxSlotText1);
-			data->SetTextL(aFeedInfo->Description(), EQikListBoxSlotText2);
-			
-			aFeedInfo->LastUpdated().FormatL(updatedDate, TShortDateFormatSpec());
-			data->SetTextL(updatedDate, EQikListBoxSlotText3);
-
-			data->Close();
+			CleanupClosePushL(*data);
+			UpdateFeedInfoDataL(aFeedInfo, data);
+			CleanupStack::PopAndDestroy(); // close data
 			model.DataUpdatedL(index);
 		}
 		model.ModelEndUpdateL();
@@ -170,62 +174,98 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 	{		
 		CFeedInfoArray feeds;
 		CleanupClosePushL(feeds);
-		
-		iListbox->RemoveAllItemsL();
-		
-		MQikListBoxModel& model(iListbox->Model());
-		// Informs the list box model that there will be an update of the data.
-		// Notify the list box model that changes will be made after this point.
-		// Observe that a cleanupitem has been put on the cleanupstack and 
-		// will be removed by ModelEndUpdateL. This means that you have to 
-		// balance the cleanupstack.
-		// When you act directly on the model you always need to encapsulate 
-		// the calls between ModelBeginUpdateLC and ModelEndUpdateL.
-		model.ModelBeginUpdateLC();
-		
-		TBuf<100> itemName;
-		
 		iPodcastModel.FeedEngine().GetFeeds(feeds);
 		int len = feeds.Count();
-		MQikListBoxData* listBoxData;
-		TBuf<KMaxShortDateFormatSpec*2> updatedDate;
+		TBool allUidsMatch = EFalse;
+		MQikListBoxModel& model(iListbox->Model());
 
-		if (len > 0) {
-			for (int i=0;i<len;i++) {
-				TInt bitmap = EMbmPodcastclientFeeds_40x40;
-				TInt mask = EMbmPodcastclientFeeds_40x40m;
-				
-				listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
-				CleanupClosePushL(*listBoxData);
-				CFeedInfo *fi = feeds[i];
-
-				listBoxData->SetItemId(fi->Uid());
-				listBoxData->AddTextL(fi->Title(), EQikListBoxSlotText1);
-				listBoxData->AddTextL(fi->Description(), EQikListBoxSlotText2);
-
-				fi->LastUpdated().FormatL(updatedDate, TShortDateFormatSpec());
-				listBoxData->AddTextL(updatedDate, EQikListBoxSlotText3);
-
-				CQikContent* content = CQikContent::NewL(this, _L("*"), bitmap, mask);
-				CleanupStack::PushL(content);
-				listBoxData->AddIconL(content,EQikListBoxSlotLeftMediumIcon1);
-				CleanupStack::Pop(content);
-				
-				CleanupStack::PopAndDestroy(); // close listbox data
-			}
-		} else {
+		if(len == iListbox->Model().Count())
+		{
+			TInt itemId = 0;
+			for(TInt loop = 0;loop< len ;loop++)
 			{
-				listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
-				CleanupClosePushL(*listBoxData);
+				MQikListBoxData* data = model.RetrieveDataL(loop);	
+				itemId = data->ItemId();
+				data->Close();
+				if(feeds[loop]->Uid() != itemId)
+				{						
+					break;
+				}
 				
-				itemName.Copy(_L("No feeds"));
-				listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
-				CleanupStack::PopAndDestroy();
+				allUidsMatch = ETrue;
 			}
 		}
-		
-		// Informs that the update of the list box model has ended
-		model.ModelEndUpdateL();
+
+		if(allUidsMatch)
+		{
+			model.ModelBeginUpdateLC();
+
+			for(TInt loop = 0;loop< len ;loop++)
+			{
+				MQikListBoxData* data = model.RetrieveDataL(loop);	
+				CleanupClosePushL(*data);
+				UpdateFeedInfoDataL(feeds[loop], data);
+				CleanupStack::PopAndDestroy();// close data;
+				model.DataUpdatedL(loop);
+			}
+
+			// Informs that the update of the list box model has ended
+			model.ModelEndUpdateL();
+		}
+		else
+		{
+			iListbox->RemoveAllItemsL();
+			
+			// Informs the list box model that there will be an update of the data.
+			// Notify the list box model that changes will be made after this point.
+			// Observe that a cleanupitem has been put on the cleanupstack and 
+			// will be removed by ModelEndUpdateL. This means that you have to 
+			// balance the cleanupstack.
+			// When you act directly on the model you always need to encapsulate 
+			// the calls between ModelBeginUpdateLC and ModelEndUpdateL.
+			model.ModelBeginUpdateLC();
+			
+			TBuf<KMaxFeedNameLength> itemName;
+			
+			MQikListBoxData* listBoxData;
+			TBuf<KMaxShortDateFormatSpec*2> updatedDate;
+			
+			if (len > 0) {
+				for (int i=0;i<len;i++) {
+					TInt bitmap = EMbmPodcastclientFeeds_40x40;
+					TInt mask = EMbmPodcastclientFeeds_40x40m;
+					
+					listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
+					CleanupClosePushL(*listBoxData);
+					CFeedInfo *fi = feeds[i];
+					listBoxData->SetItemId(fi->Uid());
+					listBoxData->AddTextL(fi->Title(), EQikListBoxSlotText1);
+					listBoxData->AddTextL(fi->Description(), EQikListBoxSlotText2);
+					
+					fi->LastUpdated().FormatL(updatedDate, TShortDateFormatSpec());
+					listBoxData->AddTextL(updatedDate, EQikListBoxSlotText3);
+					
+					CQikContent* content = CQikContent::NewL(this, _L("*"), bitmap, mask);
+					CleanupStack::PushL(content);
+					listBoxData->AddIconL(content,EQikListBoxSlotLeftMediumIcon1);
+					CleanupStack::Pop(content);
+					
+					CleanupStack::PopAndDestroy(); // close listbox data
+				}
+			} else {
+				{
+					listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
+					CleanupClosePushL(*listBoxData);
+					
+					itemName.Copy(_L("No feeds"));
+					listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
+					CleanupStack::PopAndDestroy();
+				}
+			}
+			
+			// Informs that the update of the list box model has ended
+			model.ModelEndUpdateL();
+		}
 		CleanupStack::PopAndDestroy();// close feeds
 	}
 }

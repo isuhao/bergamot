@@ -316,6 +316,59 @@ void CPodcastClientShowsView::GetShowIcons(CShowInfo* aShowInfo, TInt& aImageId,
 	}
 }
 
+void CPodcastClientShowsView::UpdateShowItemDataL(CShowInfo* aShowInfo, MQikListBoxData* aListboxData, TInt aSizeDownloaded)
+{
+	TBuf<32> infoSize;
+	TInt bitmap = EMbmPodcastclientShow_40x40;
+	TInt mask = EMbmPodcastclientShow_40x40m;
+	
+	GetShowIcons(aShowInfo, bitmap, mask);
+	CQikContent* content = CQikContent::NewL(this, _L("*"), bitmap, mask);
+	CleanupStack::PushL(content);
+	aListboxData->SetIconL(content, EQikListBoxSlotLeftMediumIcon1);
+	CleanupStack::Pop(content);
+	
+	if(aSizeDownloaded > 0)
+	{
+		TBuf<KSizeBufLen> dlSize;
+		TBuf<KSizeBufLen> totSize;
+		
+		if(aShowInfo->ShowSize() < KSizeMb)
+		{
+			totSize.Format(KShowsSizeFormatKb(), aShowInfo->ShowSize() / KSizeKb);
+		}
+		else
+		{
+			totSize.Format(KShowsSizeFormatMb(), aShowInfo->ShowSize() / KSizeMb);
+		}
+		
+		if(aSizeDownloaded < KSizeMb)
+		{
+			dlSize.Format(KShowsSizeFormatKb(), aSizeDownloaded / KSizeKb);
+		}
+		else
+		{
+			dlSize.Format(KShowsSizeFormatMb(), aSizeDownloaded / KSizeMb);
+		}
+		infoSize.Format(KSizeDownloadingOf(), &dlSize, &totSize);
+		
+	}
+	else
+	{
+		if(aShowInfo->ShowSize() < KSizeMb)
+		{
+			infoSize.Format(KShowsSizeFormatKb(), aShowInfo->ShowSize() / KSizeKb);
+		}
+		else
+		{
+			infoSize.Format(KShowsSizeFormatMb(), aShowInfo->ShowSize() / KSizeMb);
+		}
+		
+	}
+	
+	aListboxData->SetTextL(infoSize, EQikListBoxSlotText4);
+}
+
 void CPodcastClientShowsView::UpdateShowItemL(CShowInfo* aShowInfo, TInt aSizeDownloaded)
 {
 	// First find the item
@@ -323,62 +376,13 @@ void CPodcastClientShowsView::UpdateShowItemL(CShowInfo* aShowInfo, TInt aSizeDo
 
 	if(index != KErrNotFound)
 	{
-		TBuf<32> infoSize;
 
 		MQikListBoxModel& model(iListbox->Model());
 		model.ModelBeginUpdateLC();
 		MQikListBoxData* data = model.RetrieveDataL(index);	
-
-		TInt bitmap = EMbmPodcastclientShow_40x40;
-		TInt mask = EMbmPodcastclientShow_40x40m;
-
-		GetShowIcons(aShowInfo, bitmap, mask);
-		CQikContent* content = CQikContent::NewL(this, _L("*"), bitmap, mask);
-		CleanupStack::PushL(content);
-		data->SetIconL(content, EQikListBoxSlotLeftMediumIcon1);
-		CleanupStack::Pop(content);
-
-		if(aSizeDownloaded > 0)
-		{
-			TBuf<KSizeBufLen> dlSize;
-			TBuf<KSizeBufLen> totSize;
-
-			if(aShowInfo->ShowSize() < KSizeMb)
-			{
-				totSize.Format(KShowsSizeFormatKb(), aShowInfo->ShowSize() / KSizeKb);
-			}
-			else
-			{
-				totSize.Format(KShowsSizeFormatMb(), aShowInfo->ShowSize() / KSizeMb);
-			}
-
-			if(aSizeDownloaded < KSizeMb)
-			{
-				dlSize.Format(KShowsSizeFormatKb(), aSizeDownloaded / KSizeKb);
-			}
-			else
-			{
-				dlSize.Format(KShowsSizeFormatMb(), aSizeDownloaded / KSizeMb);
-			}
-			infoSize.Format(KSizeDownloadingOf(), &dlSize, &totSize);
-
-		}
-		else
-		{
-			if(aShowInfo->ShowSize() < KSizeMb)
-			{
-				infoSize.Format(KShowsSizeFormatKb(), aShowInfo->ShowSize() / KSizeKb);
-			}
-			else
-			{
-				infoSize.Format(KShowsSizeFormatMb(), aShowInfo->ShowSize() / KSizeMb);
-			}
-			
-		}
-
-		data->SetTextL(infoSize, EQikListBoxSlotText4);
-	
-		data->Close();
+		CleanupClosePushL(*data);
+		UpdateShowItemDataL(aShowInfo, data);
+		CleanupStack::PopAndDestroy();// close data
 		model.DataUpdatedL(index);
 		model.ModelEndUpdateL();
 		
@@ -395,97 +399,135 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 		TInt len = 0;
 		TUint unplayed = 0;
 		SetAppTitleNameL(KNullDesC());
+
+		switch(iCurrentCategory)
+		{
+		case EShowAllShows:
+			SelectCategoryL(EShowAllShows);
+			iPodcastModel.ShowEngine().SelectAllShows();
+			break;
+		case EShowNewShows:
+			SelectCategoryL(EShowNewShows);
+			iPodcastModel.ShowEngine().SelectNewShows();
+			break;		
+		case EShowDownloadedShows:
+			SelectCategoryL(EShowDownloadedShows);
+			iPodcastModel.ShowEngine().SelectShowsByDownloadState(EDownloaded);
+			break;
+		case EShowPendingShows:
+			SelectCategoryL(EShowPendingShows);
+			iPodcastModel.ShowEngine().SelectShowsDownloading();
+			break;
+		default:
+			
+			iCategories->RenameCategoryL(EShowFeedShows, iPodcastModel.ActiveFeedInfo()->Title());
+			
+			iPodcastModel.ShowEngine().SelectShowsByFeed(iPodcastModel.ActiveFeedInfo()->Uid());
+			SelectCategoryL(EShowFeedShows);
+			break;
+		}
+		
+		iPodcastModel.SetActiveShowList(iPodcastModel.ShowEngine().GetSelectedShows());
+		CShowInfoArray &fItems = iPodcastModel.ActiveShowList();
+		len = fItems.Count();
+		
 		if (iListbox != NULL)
 		{
-			iListbox->RemoveAllItemsL();
-			
 			MQikListBoxModel& model(iListbox->Model());
-			
-			// Informs the list box model that there will be an update of the data.
-			// Notify the list box model that changes will be made after this point.
-			// Observe that a cleanupitem has been put on the cleanupstack and 
-			// will be removed by ModelEndUpdateL. This means that you have to 
-			// balance the cleanupstack.
-			// When you act directly on the model you always need to encapsulate 
-			// the calls between ModelBeginUpdateLC and ModelEndUpdateL.
-			model.ModelBeginUpdateLC();
-					
-			switch(iCurrentCategory)
-			{
-			case EShowAllShows:
-				SelectCategoryL(EShowAllShows);
-				iPodcastModel.ShowEngine().SelectAllShows();
-				break;
-			case EShowNewShows:
-				SelectCategoryL(EShowNewShows);
-				iPodcastModel.ShowEngine().SelectNewShows();
-				break;		
-			case EShowDownloadedShows:
-				SelectCategoryL(EShowDownloadedShows);
-				iPodcastModel.ShowEngine().SelectShowsByDownloadState(EDownloaded);
-				break;
-			case EShowPendingShows:
-				SelectCategoryL(EShowPendingShows);
-				iPodcastModel.ShowEngine().SelectShowsDownloading();
-				break;
-			default:
+			TBool allUidsMatch = EFalse;
 
-				iCategories->RenameCategoryL(EShowFeedShows, iPodcastModel.ActiveFeedInfo()->Title());
-				
-				iPodcastModel.ShowEngine().SelectShowsByFeed(iPodcastModel.ActiveFeedInfo()->Uid());
-				SelectCategoryL(EShowFeedShows);
-				break;
+			if(len == iListbox->Model().Count())
+			{		
+				TInt itemId = 0;
+				for(TInt loop = 0;loop< len ;loop++)
+				{
+					MQikListBoxData* data = model.RetrieveDataL(loop);	
+					itemId = data->ItemId();
+					data->Close();
+					if(fItems[loop]->Uid() != itemId)
+					{						
+						break;
+					}
+
+					allUidsMatch = ETrue;
+				}
 			}
-			
-			iPodcastModel.SetActiveShowList(iPodcastModel.ShowEngine().GetSelectedShows());
 
-			CShowInfoArray &fItems = iPodcastModel.ActiveShowList();
-			len = fItems.Count();
+			if(allUidsMatch)
+			{
+				model.ModelBeginUpdateLC();
+				for(TInt loop = 0;loop< len ;loop++)
+				{											
+					MQikListBoxData* data = model.RetrieveDataL(loop);	
+					CleanupClosePushL(*data);
+					UpdateShowItemDataL(fItems[loop], data);									
+					CleanupStack::PopAndDestroy();//close data
+					model.DataUpdatedL(loop);
+				}
 
-			if (len > 0) {
-				for (TInt i=0;i<len;i++) {
+				model.ModelEndUpdateL();
+
+			}
+			else
+			{
+				iListbox->RemoveAllItemsL();			
+				
+				// Informs the list box model that there will be an update of the data.
+				// Notify the list box model that changes will be made after this point.
+				// Observe that a cleanupitem has been put on the cleanupstack and 
+				// will be removed by ModelEndUpdateL. This means that you have to 
+				// balance the cleanupstack.
+				// When you act directly on the model you always need to encapsulate 
+				// the calls between ModelBeginUpdateLC and ModelEndUpdateL.
+				model.ModelBeginUpdateLC();
+				
+				if (len > 0) {
+					for (TInt i=0;i<len;i++) {
+						MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
+						CleanupClosePushL(*listBoxData);
+						CShowInfo *si = fItems[i];
+						listBoxData->SetItemId(si->Uid());
+						listBoxData->AddTextL(si->Title(), EQikListBoxSlotText1);
+						//listBoxData->AddTextL(si->iDescription, EQikListBoxSlotText2);
+						if(si->ShowSize() < KSizeMb)
+						{
+							showSize.Format(KShowsSizeFormatKb(), si->ShowSize() / KSizeKb);
+						}
+						else
+						{
+							showSize.Format(KShowsSizeFormatMb(), si->ShowSize() / KSizeMb);
+						}
+						listBoxData->AddTextL(showSize, EQikListBoxSlotText4);
+						
+						si->PubDate().FormatL(showDate, TShortDateFormatSpec());
+						listBoxData->AddTextL(showDate, EQikListBoxSlotText3);
+						
+						listBoxData->SetEmphasis(si->PlayState() == ENeverPlayed);					
+						unplayed+=(si->PlayState() == ENeverPlayed);
+						CleanupStack::PopAndDestroy();	
+						
+						TInt bitmap = EMbmPodcastclientShow_40x40;
+						TInt mask = EMbmPodcastclientShow_40x40m;
+						
+						GetShowIcons(si, bitmap, mask);
+						
+						CQikContent* content = CQikContent::NewL(this, _L("*"), bitmap, mask);
+						CleanupStack::PushL(content);
+						listBoxData->AddIconL(content,EQikListBoxSlotLeftMediumIcon1);
+						CleanupStack::Pop(content);
+					}
+				} else {		
 					MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
 					CleanupClosePushL(*listBoxData);
-					CShowInfo *si = fItems[i];
-					listBoxData->AddTextL(si->Title(), EQikListBoxSlotText1);
-					//listBoxData->AddTextL(si->iDescription, EQikListBoxSlotText2);
-					if(si->ShowSize() < KSizeMb)
-					{
-						showSize.Format(KShowsSizeFormatKb(), si->ShowSize() / KSizeKb);
-					}
-					else
-					{
-						showSize.Format(KShowsSizeFormatMb(), si->ShowSize() / KSizeMb);
-					}
-					listBoxData->AddTextL(showSize, EQikListBoxSlotText4);
 					
-					si->PubDate().FormatL(showDate, TShortDateFormatSpec());
-					listBoxData->AddTextL(showDate, EQikListBoxSlotText3);
-
-					listBoxData->SetEmphasis(si->PlayState() == ENeverPlayed);					
-					unplayed+=(si->PlayState() == ENeverPlayed);
-					CleanupStack::PopAndDestroy();	
-					
-					TInt bitmap = EMbmPodcastclientShow_40x40;
-					TInt mask = EMbmPodcastclientShow_40x40m;
-
-					GetShowIcons(si, bitmap, mask);
-									
-					CQikContent* content = CQikContent::NewL(this, _L("*"), bitmap, mask);
-					CleanupStack::PushL(content);
-					listBoxData->AddIconL(content,EQikListBoxSlotLeftMediumIcon1);
-					CleanupStack::Pop(content);
+					listBoxData->AddTextL(_L("No items"), EQikListBoxSlotText1);
+					CleanupStack::PopAndDestroy();
 				}
-			} else {		
-				MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
-				CleanupClosePushL(*listBoxData);
 				
-				listBoxData->AddTextL(_L("No items"), EQikListBoxSlotText1);
-				CleanupStack::PopAndDestroy();
+				// Informs that the update of the list box model has ended
+				model.ModelEndUpdateL();
 			}
 			
-			// Informs that the update of the list box model has ended
-			model.ModelEndUpdateL();
 			
 		}
 
