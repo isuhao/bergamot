@@ -1,0 +1,102 @@
+#ifndef __PODCASTCLIENT_HRH__
+#define __PODCASTCLIENT_HRH__
+
+#define KOneHundredPercent 100
+
+enum TPodcatClientPages
+    {
+    EPodcastClientBaseViewPage = 1
+    };
+
+enum TPodcatClientCommands
+	{
+	EPodcastView = 0x1000,
+	EPodcastViewMain,
+	//EPodcastViewAllShows,
+	EPodcastViewNewShows,
+	EPodcastViewDownloadedShows,
+	EPodcastViewPendingShows,
+    EPodcastViewFeeds,
+	EPodcastViewPlayer,
+	EPodcastPlay,
+	EPodcastStop,
+	EPodcastPause,
+	EPodcastAddFeed,
+	EPodcastEditFeed,
+	EPodcastDeleteFeed,
+	EPodcastPurgeFeed,
+	EPodcastUpdateFeed,
+	EPodcastUpdateAllFeeds,
+	EPodcastDownloadShow,
+	EPodcastDeleteShow,
+	EPodcastPurgeShow,
+	EPodcastRemoveDownload,
+	EPodcastStopDownloads,
+	EPodcastResumeDownloads,
+	EPodcastZoomSetting,
+	EPodcastSettings,
+	EPodcastSelectShowDir,
+	EPodcastSetVolume
+	};
+
+    enum TPodcastControl
+	{
+	EPodcastListViewListCtrl= 0x1000,
+	EPodcastListViewPage,
+	EPodcastListViewContextLabel,
+	// Controls for view context
+	EPodcastPlayViewTitleCtrl,
+	EPodcastPlayViewProgressCtrl,
+	EPodcastPlayViewVolumeCtrl,
+	// Playview controls
+	EPodcastPlayViewProgressTime,
+	EPodcastPlayViewProgressTotTime,
+	EPodcastPlayViewInformation,
+	EPodcastPlayViewBottomLineBB,
+	EPodcastPlayViewProgressInfo,
+	EPodcastPlayViewCoverImage,
+	EPodcastPlayViewScrollContainer,
+	EPodcastAddEditFeedDlgUrl,
+	// Settings DLG controls
+	EPodcastSettingShowDir,
+	EPodcastSettingAutoDL,
+	EPodcastSettingUpdateInterval,
+	EPodcastSettingMaxsimdls,
+	EPodcastSettingConnection,
+	EPodcastSettingIAPList,
+	EPodcastSettingsVolume
+	};
+	
+    
+enum TPodcastClientDefines
+	{
+	EMyViewBuildingBlockBase,
+	EMyViewCommandButton = 1000,
+	EMyViewChoiceListBase = 2000,
+	EMyWebCommand = 3000
+	};
+
+	enum TMyViewControls
+    {
+    EMyViewScrollBar,
+    EMyViewScrollableContainer,
+    EMyViewBuildingBlock,
+    EMyViewNumberOfControls
+    };
+
+enum TPodcastClientShowCategory
+{
+	EShowAllShows = 0x4000,
+	EShowNewShows,
+	EShowFeedShows,
+	EShowDownloadedShows,
+	EShowPendingShows
+};
+
+#define EMyQikScrollableContainerDefaultFlags (EQikContainerHandleRelayoutRequests | EQikContainerPersistsAfterRelayout\
+		| EQikContainerScrollHorizontalOff | EQikContainerScrollHorizontalNormal\
+		| EQikContainerScrollVerticalAuto | EQikContainerScrollVerticalNormal)
+    
+#endif
+
+
