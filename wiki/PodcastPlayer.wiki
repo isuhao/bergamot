@@ -33,19 +33,19 @@ This is how we plan to implement features. Please [http://groups.google.com/grou
     * UI refinements
     * Resume downloads
     * Setup on install (choose flash drive etc)
+    * Files manually added to podcast folder playable
+    * Check connection type, option to download only on WLAN
+    * Automatic downloading 
+    * Automatic purging
 
   * Alpha 4 (December 2nd)
     * Volume control
     * Configuration dialog
     * ~~Video support?~~ (Bumped to 2.0)
-    * Check connection type, option to download only on WLAN
-    * ~~Support for other feeds (Atom, RSS 0.9, any more?)~~ I can't find any podcasts that don't use RSS 2.0, so this is on hold.
+    * ~~Support for other feeds (Atom, RSS 0.9, any more?)~~ I can't find any podcasts that don't use RSS 2.0, so this is on hold, possibly 2.0 for Atom.
     * Automatic feed update
-    * Automatic downloading
-    * Automatic purging
     * Memory consumption improvements
     * Scrolling list items show entire show title
-    * Files manually added to podcast folder playable
 
   * Alpha 3 (November 25th) | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha3 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha3/group/Podcast_udeb_signed.sis SIS]
     * UI improvements (cover art, icons...)
