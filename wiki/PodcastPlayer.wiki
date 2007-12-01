@@ -38,7 +38,8 @@ This is how we plan to implement features. Please [http://groups.google.com/grou
     * Automatic downloading 
     * Automatic purging
 
-  * Alpha 4 (December 2nd)
+  * Alpha 4 (December 2nd) | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha4 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha4/group/Podcast_udeb_signed.sis SIS]
+    * UI refinements, mainly improved and experimental player dialog
     * Volume control
     * Configuration dialog
     * ~~Video support?~~ (Bumped to 2.0)
