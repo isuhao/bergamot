@@ -7,18 +7,18 @@
 #ifdef __WINS__
 	_LIT(KPodcastDir, "c:\\Media files\\Podcasts\\");
 #else
-	_LIT(KPodcastDir, "e:\\Media files\\Podcasts\\");
+	_LIT(KPodcastDir, "d:\\podcasts\\");
 #endif
 
 const TInt KSettingsUid = 1000;
 
 _LIT(KConfigImportFile, "config.cfg");
-_LIT(KFeedsImportFileName, "feeds.cfg");
+_LIT(KDefaultFeedsFile, "defaultfeeds.cfg");
+
 _LIT(KConfigFile, "config.db");
 _LIT(KShowDB, "shows.db");
 _LIT(KFeedDB, "feeds.db");
-_LIT(KFeedDir, "feeds\\");
-_LIT(KDefaultFeedsFile, "defaultfeeds.cfg");
+
 
 const TInt KMaxVolume = 100;
 
@@ -59,7 +59,7 @@ public:
 private:
 	// the settings we serialize
 	TFileName iBaseDir;
-	TFileName iFeedListFile;
+	TFileName iDefaultFeedsFile;
 	TInt iUpdateFeedInterval;
 	TBool iDownloadAutomatically;
 	TBool iDownloadOnlyOnWLAN;
@@ -70,9 +70,9 @@ private:
 	
 	// the file session used to read and write settings
 	RFs iFs;
+	
 	// reference to the model
 	CPodcastModel &iPodcastModel;
-	TFileName iDefaultFeedsFile;
 
 };
 
