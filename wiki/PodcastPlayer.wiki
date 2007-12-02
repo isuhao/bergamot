@@ -6,12 +6,14 @@ There is a new alpha release every week, so update regularly. Beta and release v
 
 = Screenshots =
 
-These screenshots are from alpha 3.
+These screenshots are from alpha 4.
 
 http://bergamot.googlecode.com/svn/wiki/pp5.jpg
 http://bergamot.googlecode.com/svn/wiki/pp6.jpg
 http://bergamot.googlecode.com/svn/wiki/pp7.jpg
 http://bergamot.googlecode.com/svn/wiki/pp8.jpg
+http://bergamot.googlecode.com/svn/wiki/pp9.jpg
+http://bergamot.googlecode.com/svn/wiki/pp10.jpg
 
 = Releases = 
 
