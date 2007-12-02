@@ -69,6 +69,7 @@ private:
 	CQikSlider* iVolumeSlider;
 	CPeriodic* iPlaybackTicker;
 	CQikScrollableContainer* iScrollableContainer;
+	CEikProgressInfo* iDownloadProgressInfo;
 	// Use this to change feeds
 	CQikCategoryModel* iCategories;
 	TBool iProgressAdded;

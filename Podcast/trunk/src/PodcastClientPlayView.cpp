@@ -29,7 +29,7 @@ const TInt KMaxCoverImageWidth = 200;
 const TInt KMaxProgressValue = 320;
 const TInt KTimeLabelSize = 32;
 
-_LIT(KZeroTime,"0:00:00");
+_LIT(KZeroTime,"00:00");
 /**
 Creates and constructs the view.
 
@@ -166,6 +166,7 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 
 	comMan.SetDimmed(*this, EPodcastPlay, iPodcastModel.SoundEngine().State() == ESoundEngineNotInitialized);
 	comMan.SetDimmed(*this, EPodcastStop, (iPodcastModel.SoundEngine().State() == ESoundEngineNotInitialized || iPodcastModel.SoundEngine().State() == ESoundEngineStopped));
+	TUint pos = 0;
 	if(iPlayProgressbar != NULL)
 	{
 		iPlayProgressbar->SetDimmed(iPodcastModel.SoundEngine().State() == ESoundEngineNotInitialized );
@@ -173,36 +174,75 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 		if(iPodcastModel.SoundEngine().PlayTime()>0)
 		{
 			TUint duration = iPodcastModel.SoundEngine().PlayTime();
-			TUint pos = iPodcastModel.SoundEngine().Position().Int64()/1000000;
+			pos = iPodcastModel.SoundEngine().Position().Int64()/1000000;
 			iPlayProgressbar->SetValue((KMaxProgressValue*pos)/duration);
-			iPlayProgressbar->DrawDeferred();
-
-			if(pos > 0)
-			{
-				TInt sec = (pos%60);
-				TInt min = (pos/60);
-				TInt hour = min%60;
-				min = min-(hour*60);
-				time.Format(_L("%01d:%02d:%02d"), hour, min, sec);
-			}
-
-			if(iTimeLabel != NULL)
-			{
-				iTimeLabel->SetText(time);
-				iTimeLabel->SetSize(iTimeLabel->MinimumSize());
-				iTimeLabel->DrawDeferred();
-			}
+			iPlayProgressbar->DrawDeferred();		
 		}
 		else
 		{
 			iPlayProgressbar->SetValue(0);
 			iPlayProgressbar->DrawDeferred();		
-			iTimeLabel->SetText(KNullDesC());
+		/*	iTimeLabel->SetText(KNullDesC());
 			iTimeLabel->SetSize(iTimeLabel->MinimumSize());
-			iTimeLabel->DrawDeferred();
+			iTimeLabel->DrawDeferred();*/
 		}
 	}
+	CShowInfo* showInfo = iPodcastModel.PlayingPodcast();
+
+	if(showInfo->DownloadState() != EDownloaded)
+	{
+		if(showInfo->ShowSize() < KSizeMb)
+		{
+			time.Format(KShowsSizeFormatKb(), showInfo->ShowSize() / KSizeKb);
+		}
+		else
+		{
+			time.Format(KShowsSizeFormatMb(), showInfo->ShowSize() / KSizeMb);
+		}
+	}
+	else
+	{
+		TUint playtime = iPodcastModel.SoundEngine().PlayTime();
+		TBuf<KTimeLabelSize> totTime = _L("00:00");
+
+		if(playtime >= 0)
+		{
+			TInt sec = (playtime%60);
+			TInt min = (playtime/60);
+			totTime.Format(_L("%02d:%02d"), min, sec);
+		}
+		else
+		{
+			totTime = KZeroTime();
+		}
+
+		if(pos >= 0)
+		{
+			TInt sec = (pos%60);
+			TInt min = (pos/60);
+			time.Format(_L("%02d:%02d"), min, sec);
+		}
+		time.Append(_L("/"));
+		time.Append(totTime);
+	}
+
+	ViewContext()->ChangeTextL(EPodcastPlayViewTitleCtrl, time);
+
+	if(iTimeLabel != NULL)
+	{
+		iTimeLabel->SetText(time);
+		iTimeLabel->SetSize(iTimeLabel->MinimumSize());
+		iTimeLabel->DrawDeferred();
+	}
+	if(iTotTimeLabel != NULL)
+	{
+		iTotTimeLabel->SetText(time);
+		iTotTimeLabel->SetSize(iTotTimeLabel->MinimumSize());
+	}
+
 }
+
+
 
 void CPodcastClientPlayView::PlaybackInitializedL()
 {
@@ -327,7 +367,9 @@ void CPodcastClientPlayView::ViewConstructL()
 
 	iCoverImageCtrl = LocateControlByUniqueHandle<CEikImage>(EPodcastPlayViewCoverImage);
 
-	ViewContext()->AddTextL(EPodcastPlayViewTitleCtrl, KNullDesC(), EHCenterVCenter);
+	iDownloadProgressInfo = LocateControlByUniqueHandle<CEikProgressInfo>(EPodcastPlayViewProgressInfo);
+
+	ViewContext()->AddTextL(EPodcastPlayViewTitleCtrl, KNullDesC(), EHRightVCenter);
 	iCategories = QikCategoryUtils::ConstructCategoriesLC(R_PODCAST_CATEGORY);
 	SetCategoryModel(iCategories);
 	CleanupStack::Pop(iCategories);
@@ -390,6 +432,12 @@ void CPodcastClientPlayView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload
 		iProgressAdded = EFalse;
 	}
 
+	if(iDownloadProgressInfo != NULL)
+	{
+		iDownloadProgressInfo->SetFinalValue(aBytesTotal);
+		iDownloadProgressInfo->SetAndDraw(aBytesOfCurrentDownload);
+	}
+
 	if(aPercentOfCurrentDownload == KOneHundredPercent && iPodcastModel.PlayingPodcast() == iPodcastModel.ShowEngine().ShowDownloading())
 	{
 		// To update icon list status and commands
@@ -446,39 +494,6 @@ void CPodcastClientPlayView::UpdateViewL()
 		{
 
 			CShowInfo *showInfo = iPodcastModel.PlayingPodcast();
-			ViewContext()->ChangeTextL(EPodcastPlayViewTitleCtrl, showInfo->Title());
-			TBuf<KTimeLabelSize> time = _L("00:00");
-			TUint playtime = iPodcastModel.SoundEngine().PlayTime();
-			if(playtime >= 0)
-			{
-				TInt sec = (playtime%60);
-				TInt min = (playtime/60);
-				TInt hour = min%60;
-				min = min-(hour*60);
-				time.Format(_L("%01d:%02d:%02d"), hour, min, sec);
-			}
-			else
-			{
-				time = KZeroTime();
-			}
-
-			if(showInfo->DownloadState() != EDownloaded)
-			{
-				if(showInfo->ShowSize() < KSizeMb)
-				{
-					time.Format(KShowsSizeFormatKb(), showInfo->ShowSize() / KSizeKb);
-				}
-				else
-				{
-					time.Format(KShowsSizeFormatMb(), showInfo->ShowSize() / KSizeMb);
-				}
-			}
-
-			if(iTotTimeLabel != NULL)
-			{
-				iTotTimeLabel->SetText(time);
-				iTotTimeLabel->SetSize(iTotTimeLabel->MinimumSize());
-			}
 			
 			iInformationEdwin->SetTextL(showInfo->Description());
 
@@ -491,16 +506,22 @@ void CPodcastClientPlayView::UpdateViewL()
 			{
 				comMan.SetInvisible(*this, EPodcastDownloadShow, EFalse);
 				comMan.SetInvisible(*this, EPodcastPlay, ETrue);
+				iDownloadProgressInfo->MakeVisible(EFalse);
+				iPlayProgressbar->MakeVisible(EFalse);
 			}
 			else if(showInfo->DownloadState() != EDownloaded)
 			{
 				comMan.SetInvisible(*this, EPodcastPlay, ETrue);
 				comMan.SetInvisible(*this, EPodcastDownloadShow, ETrue);
+				iDownloadProgressInfo->MakeVisible(showInfo->DownloadState() == EDownloading);
+				iPlayProgressbar->MakeVisible(EFalse);
 			}
 			else
 			{
 				comMan.SetInvisible(*this, EPodcastPlay, EFalse);
 				comMan.SetInvisible(*this, EPodcastDownloadShow, ETrue);
+				iDownloadProgressInfo->MakeVisible(EFalse);
+				iPlayProgressbar->MakeVisible(ETrue);
 			}
 
 			CFeedInfo* feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(showInfo->FeedUid());
@@ -545,7 +566,10 @@ void CPodcastClientPlayView::UpdateViewL()
 	
 		UpdatePlayStatusL();
 		
-		iProgressBB->RequestRelayout(iProgressBB);
+		if(iProgressBB != NULL)
+		{
+			iProgressBB->RequestRelayout(iProgressBB);
+		}
 
 		RequestRelayout(this);
 }
