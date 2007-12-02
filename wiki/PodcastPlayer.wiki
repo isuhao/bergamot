@@ -10,10 +10,8 @@ These screenshots are from alpha 4.
 
 http://bergamot.googlecode.com/svn/wiki/pp5.jpg
 http://bergamot.googlecode.com/svn/wiki/pp6.jpg
-http://bergamot.googlecode.com/svn/wiki/pp7.jpg
-http://bergamot.googlecode.com/svn/wiki/pp8.jpg
-http://bergamot.googlecode.com/svn/wiki/pp9.jpg
 http://bergamot.googlecode.com/svn/wiki/pp10.jpg
+http://bergamot.googlecode.com/svn/wiki/pp8.jpg
 
 = Releases = 
 
