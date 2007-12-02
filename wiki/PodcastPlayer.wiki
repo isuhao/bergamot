@@ -28,8 +28,10 @@ This is how we plan to implement features. Please [http://groups.google.com/grou
     * No new features
     * Speed improvements
 
-  * Alpha 5 (December 9th)
+  * Alpha 6
     * Improved icons
+
+  * Alpha 5 (December 9th)
     * UI refinements
     * Resume downloads
     * Setup on install (choose flash drive etc)
