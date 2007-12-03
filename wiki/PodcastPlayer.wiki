@@ -32,12 +32,12 @@ This is how we plan to implement features. Please [http://groups.google.com/grou
     * Improved icons
 
   * Alpha 5 (December 9th)
+    * Automatic downloading 
     * UI refinements
     * Resume downloads
-    * Setup on install (choose flash drive etc)
     * Files manually added to podcast folder playable
     * Check connection type, option to download only on WLAN
-    * Automatic downloading 
+    * Setup on install (choose flash drive etc)
     * Automatic purging
 
   * Alpha 4 (December 1st) | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha4 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha4/group/Podcast_udeb_signed.sis SIS]
