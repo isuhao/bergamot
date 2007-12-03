@@ -20,10 +20,10 @@ rls_string STRING_r_view_main_cmd "Main"
 rls_string STRING_r_view_shows_cmd "Shows"
 rls_string STRING_r_view_all_shows_cmd "All Shows"
 rls_string STRING_r_view_new_shows_cmd "New Shows"
-rls_string STRING_r_view_dl_shows_cmd "Downloaded Shows"
-rls_string STRING_r_view_dling_shows_cmd "Pending Shows"
+rls_string STRING_r_view_dl_shows_cmd "Library"
+rls_string STRING_r_view_dling_shows_cmd "Downloads"
 
-// Navigtiaon to feeds
+// Navigation to feeds
 rls_string STRING_r_view_feeds_cmd "Feeds"
 
 // Navigation to the player
@@ -52,7 +52,7 @@ rls_string STRING_r_update_all_feeds_short_cmd "Upd. All"
 
 // Actions for shows
 rls_string STRING_r_view_delete_show_cmd "Delete show"
-rls_string STRING_r_view_purge_show_cmd "Purge show"
+rls_string STRING_r_view_purge_show_cmd "Delete show"
 rls_string STRING_r_view_remove_download_cmd "Remove download"
 rls_string STRING_r_view_stop_downloads_cmd "Stop downloads"
 rls_string STRING_r_view_resume_downloads_cmd "Resume downloads"
@@ -63,8 +63,8 @@ rls_string STRING_r_settings_cmd "Settings"
 // Categories
 rls_string STRING_r_category_all "All shows"
 rls_string STRING_r_category_new "New shows"
-rls_string STRING_r_category_dled "Downloaded shows"
-rls_string STRING_r_category_pending "Pending shows"
+rls_string STRING_r_category_dled "Library"
+rls_string STRING_r_category_pending "Downloads"
 
 // Application caption
 rls_string STRING_r_caption "Podcast Player"
@@ -86,11 +86,11 @@ rls_string STRING_r_purge_feed_title "Purge feed"
 rls_string STRING_r_purge_feed_prompt "Are you really sure you want to purge this feed, and remove all downloaded shows?"
 
 rls_string STRING_r_purge_show_title "Purge show"
-rls_string STRING_r_purge_show_prompt "Are you really sure you want to purge this show?"
+rls_string STRING_r_purge_show_prompt "Are you really sure you want to delete this show?"
 
 rls_string STRING_r_podcast_settings_title "Settings"
-rls_string STRING_r_podcast_setting_showdir "Basedir for shows:"
-rls_string STRING_r_podcast_setting_autodl "Automatic download:"
+rls_string STRING_r_podcast_setting_showdir "Show directory:"
+rls_string STRING_r_podcast_setting_autodl "Download new shows automatically"
 rls_string STRING_r_podcast_setting_updateinterval "Update interval:"
 rls_string STRING_r_podcast_setting_maxsimul "Max simultaneous downloads:"
 rls_string STRING_r_podcast_setting_connection "Connection:"
@@ -101,7 +101,7 @@ rls_string STRING_r_podcast_setting_iaplist "Internet accounts:"
 rls_string STRING_r_podcast_setting_cancel_cmd "Cancel" // Cancel command in settings dialog
 rls_string STRING_r_podcast_setting_done_cmd "Done" // Done command in settings dialog
 rls_string STRING_r_podcast_setting_showdir_cmd "Select" // Use to select show dir
-rls_string STRING_r_podcast_setting_volume "Volume:" // Use to select show dir
+rls_string STRING_r_podcast_setting_volume "Volume:" 
 
 
 

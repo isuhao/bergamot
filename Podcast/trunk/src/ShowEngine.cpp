@@ -462,3 +462,13 @@ void CShowEngine::DownloadNextShow()
 		iShowDownloading = NULL;
 	}
 }
+
+void CShowEngine::SetPlayedByFeed(TUint aFeedUid)
+	{
+	for (int i=0;i<iShows.Count();i++)
+		{
+			if (iShows[i]->FeedUid() == aFeedUid) {
+				iShows[i]->SetPlayState(EPlayed);
+			}
+		}
+	}

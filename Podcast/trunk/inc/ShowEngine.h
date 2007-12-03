@@ -39,6 +39,7 @@ public:
 	void PurgeShow(TInt aShowUid);
 	
 	CShowInfoArray& GetSelectedShows();
+	void SetPlayedByFeed(TUint aFeedUid);
 	
 	void AddObserver(MShowEngineObserver *observer);
 protected:
