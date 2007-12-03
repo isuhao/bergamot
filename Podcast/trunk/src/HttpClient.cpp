@@ -120,7 +120,7 @@ TBool CHttpClient::IsActive()
 	return iIsActive;
 	}
 
-void CHttpClient::GetL(TDesC& url, TDesC& fileName) {
+void CHttpClient::GetL(TDesC& url, TDesC& fileName, TBool aSilent) {
 	RDebug::Print(_L("CHttpClient::Get START"));
 	//ManageConnections(ETrue);
 	iIsActive = ETrue;
@@ -159,25 +159,28 @@ void CHttpClient::GetL(TDesC& url, TDesC& fileName) {
 	
 	TUriParser8 uri; 
 	uri.Parse(url8);
-	CHttpEventHandler* eHandler;
 	RDebug::Print(_L("Getting %S to %S"), &url, &fileName);
-	eHandler = CHttpEventHandler::NewL(this, iObserver);
-	eHandler->SetSaveFileName(fileName);
-	RHTTPTransaction trans = iSession.OpenTransactionL(uri, *eHandler, method);
-	RHTTPHeaders hdr = trans.Request().GetHeaderCollection();
+	iHandler = CHttpEventHandler::NewL(this, iObserver);
+	iHandler->SetSaveFileName(fileName);
+	iHandler->SetSilent(aSilent);
+	iTrans = iSession.OpenTransactionL(uri, *iHandler, method);
+	RHTTPHeaders hdr = iTrans.Request().GetHeaderCollection();
 	// Add headers appropriate to all methods
 	SetHeaderL(hdr, HTTP::EUserAgent, KUserAgent);
 	SetHeaderL(hdr, HTTP::EAccept, KAccept);
 	
 	iTransactionCount++;
 	// submit the transaction
-	trans.SubmitL();
+	iTrans.SubmitL();
+	RDebug::Print(_L("CHttpClient::Get END"));
 }
 
 void CHttpClient::Stop()
 	{
 	iIsActive = EFalse;
-	iSession.Close();
+	iHandler->CloseSaveFile();
+	iTrans.Cancel();
+	//iSession.Close();
 	}
 
 void CHttpClient::ClientRequestCompleteL(TBool aSuccessful) {

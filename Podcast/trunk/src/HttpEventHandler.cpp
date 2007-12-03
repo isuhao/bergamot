@@ -134,7 +134,9 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 				iRespBody->GetNextDataPart(bodyData);
 				iBytesDownloaded += bodyData.Length();
 				iRespBodyFile.Write(bodyData);
-				iCallbacks.Progress(iHttpClient, iBytesDownloaded, iBytesTotal);
+				if (!iSilent) {
+					iCallbacks.Progress(iHttpClient, iBytesDownloaded, iBytesTotal);
+				}
 				}
 
 			// Done with that bit of body data
@@ -341,4 +343,14 @@ void CHttpEventHandler::DumpIt(const TDesC8& aData)
 		// Advance to next  byte segment (1 seg= cols)
 		pos += cols;
 		}
+	}
+
+void CHttpEventHandler::SetSilent(TBool aSilent)
+	{
+	iSilent = aSilent;
+	}
+
+void CHttpEventHandler::CloseSaveFile()
+	{
+	iRespBodyFile.Close();
 	}

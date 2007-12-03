@@ -7,6 +7,7 @@
 
 CShowEngine::CShowEngine(CPodcastModel& aPodcastModel) : iPodcastModel(aPodcastModel)
 {
+	iDownloadsSuspended = EFalse;
 }
 
 CShowEngine::~CShowEngine()
@@ -38,12 +39,15 @@ void CShowEngine::ConstructL()
 void CShowEngine::StopDownloads() 
 	{
 	RDebug::Print(_L("StopDownloads"));
+	iDownloadsSuspended = ETrue;
 	iShowClient->Stop();
 	}
 
 void CShowEngine::ResumeDownloads() 
 	{
 	RDebug::Print(_L("ResumeDownloads"));
+	iDownloadsSuspended = EFalse;
+	iDownloadErrors = 0;
 	DownloadNextShow();
 	}
 
@@ -52,10 +56,17 @@ void CShowEngine::RemoveDownload(TInt aUid)
 	RDebug::Print(_L("RemoveFromDownloadQueue"));
 	for (int i=0;i<iShowsDownloading.Count();i++) {
 		if (iShowsDownloading[i]->Uid() == aUid) {
+			if (iShowsDownloading[i]->DownloadState() == EDownloading) {
+				iShowClient->Stop();
+			}
+			
+			iShowsDownloading[i]->SetDownloadState(ENotDownloaded);
 			iShowsDownloading.Remove(i);
 			for (int j=0;j<iObservers.Count();j++) {
 				iObservers[j]->DownloadQueueUpdated(1, iShowsDownloading.Count()-1);
 			}
+			
+			DownloadNextShow();
 			return;
 		}
 	}
@@ -143,12 +154,20 @@ void CShowEngine::Complete(CHttpClient *aHttpClient, TBool aSuccessful)
 	
 	if (aSuccessful) {
 		iShowDownloading->SetDownloadState(EDownloaded);
-	}
+		iShowsDownloading.Remove(0);
 
-	SaveShows();
-	for (int i=0;i<iObservers.Count();i++) {
-			iObservers[i]->ShowDownloadUpdatedL(100,0,1);		
+		SaveShows();
+		for (int i=0;i<iObservers.Count();i++) {
+				iObservers[i]->ShowDownloadUpdatedL(100,0,1);		
+			}
+	} else {
+		iDownloadErrors++;
+		if (iDownloadErrors > 3) {
+			RDebug::Print(_L("Too many downloading errors, suspending downloads"));
+			iDownloadsSuspended = ETrue;
 		}
+	}
+	
 	DownloadNextShow();
 	}
 
@@ -422,8 +441,9 @@ void CShowEngine::AddDownload(CShowInfo *info)
 
 void CShowEngine::DownloadNextShow()
 {
-	if (iShowClient->IsActive()) {
-		//RDebug::Print(_L("Show client busy..."));
+	RDebug::Print(_L("DownloadNextShow, queue length %d"), iShowsDownloading.Count());
+	if (iDownloadsSuspended || iShowClient->IsActive()) {
+		RDebug::Print(_L("Not downloading"));
 		return;
 	}
 
@@ -433,7 +453,6 @@ void CShowEngine::DownloadNextShow()
 	
 	if (iShowsDownloading.Count() > 0) {
 		CShowInfo *info = iShowsDownloading[0];
-		iShowsDownloading.Remove(0);
 		RDebug::Print(_L("Downloading %S"), &(info->Title()));
 		info->SetDownloadState(EDownloading);
 		iShowDownloading = info;

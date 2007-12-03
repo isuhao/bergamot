@@ -235,7 +235,14 @@ TInt CSettingsEngine::SpecificIAP()
 
 void CSettingsEngine::SetBaseDir(TFileName& aFileName)
 	{
+	int len = aFileName.Length();
+	if (len > 0) {
+		if (aFileName[len-1] != '\\') {
+			aFileName.Append(_L("\\"));
+		}
+	}
 	iBaseDir = aFileName;
+
 	}
 
 void CSettingsEngine::SetUpdateFeedInterval(TInt aInterval)

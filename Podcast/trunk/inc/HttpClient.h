@@ -13,7 +13,7 @@ class CHttpClient : public CBase
 public:
 	virtual ~CHttpClient();
 	static CHttpClient* NewL(MHttpClientObserver& aResObs);
-	void GetL(TDesC& url, TDesC& fileName);
+	void GetL(TDesC& url, TDesC& fileName, TBool aSilent = EFalse);
 	void Stop();
   	TBool IsActive();
 	void ClientRequestCompleteL(TBool aSuccessful);
@@ -29,5 +29,7 @@ private:
 	MHttpClientObserver& iObserver;
 	TBool iIsActive;
 	TInt iTransactionCount;
+	RHTTPTransaction iTrans;
+	CHttpEventHandler* iHandler;
 };
 #endif

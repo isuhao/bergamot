@@ -119,7 +119,7 @@ void CFeedEngine::GetFeedImage(CFeedInfo *aFeedInfo)
 	// complete file path is base dir + rel path
 	filePath.Append(relPath);
 	aFeedInfo->SetImageFileName(filePath);
-	iFeedClient->GetL(aFeedInfo->ImageUrl(), filePath);
+	iFeedClient->GetL(aFeedInfo->ImageUrl(), filePath, ETrue);
 	}
 
 void CFeedEngine::FileNameFromUrl(TDesC &aUrl, TFileName &aFileName)

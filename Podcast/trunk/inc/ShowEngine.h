@@ -85,6 +85,9 @@ private:
 	// observers that will receive callbacks
     RArray<MShowEngineObserver*> iObservers;
 
+    TBool iDownloadsSuspended;
+    	
+    TUint iDownloadErrors;
     TLinearOrder<CShowInfo>* iLinearOrder;
 };
 
