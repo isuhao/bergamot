@@ -20,7 +20,7 @@ class CHttpEventHandler : public CBase,
 	virtual ~CHttpEventHandler();
 	static CHttpEventHandler* NewLC(CHttpClient* aClient, MHttpClientObserver &aCallbacks);
 	static CHttpEventHandler* NewL(CHttpClient* aClient, MHttpClientObserver &aCallbacks);
-	void SetSaveFileName(TDesC &fName);
+	void SetSaveFileName(TDesC &fName,TBool aContinue=EFalse);
 	void CloseSaveFile();	
 	// from MHTTPTransactionCallback
 	virtual void MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent& aEvent);
@@ -50,6 +50,7 @@ private:
 	TInt iBytesTotal;
 	CHttpClient* iHttpClient;
 	TBool iSilent;
+	TBool iContinue;
 };
 
 #endif

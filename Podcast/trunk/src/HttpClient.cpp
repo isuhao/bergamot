@@ -124,11 +124,7 @@ void CHttpClient::GetL(TDesC& url, TDesC& fileName, TBool aSilent) {
 	RDebug::Print(_L("CHttpClient::Get START"));
 	//ManageConnections(ETrue);
 	iIsActive = ETrue;
-	
-	RFs rfs;
-	rfs.Connect();
-	BaflUtils::EnsurePathExistsL(rfs,fileName);
-	rfs.Close();
+		
 	TBuf8<256> url8;
 	url8.Copy(url);
 	if (iTransactionCount == 0) {
@@ -160,15 +156,37 @@ void CHttpClient::GetL(TDesC& url, TDesC& fileName, TBool aSilent) {
 	TUriParser8 uri; 
 	uri.Parse(url8);
 	RDebug::Print(_L("Getting %S to %S"), &url, &fileName);
+
 	iHandler = CHttpEventHandler::NewL(this, iObserver);
-	iHandler->SetSaveFileName(fileName);
 	iHandler->SetSilent(aSilent);
+
+	RFs rfs;
+	rfs.Connect();
+	TEntry entry;
+	TBuf8<100> rangeText;
+	if (rfs.Entry(fileName, entry) == KErrNone) {
+		RDebug::Print(_L("Found file, with size=%d"), entry.iSize);
+		// file exists, so we should probably resume
+		rangeText.Format(_L8("bytes=%d-"), entry.iSize-4096+1);
+		iHandler->SetSaveFileName(fileName, ETrue);
+	} else {
+		// otherwise just make sure the directory exists
+		BaflUtils::EnsurePathExistsL(rfs,fileName);
+		iHandler->SetSaveFileName(fileName);
+	}
+	rfs.Close();
+
+	
+	
 	iTrans = iSession.OpenTransactionL(uri, *iHandler, method);
 	RHTTPHeaders hdr = iTrans.Request().GetHeaderCollection();
 	// Add headers appropriate to all methods
 	SetHeaderL(hdr, HTTP::EUserAgent, KUserAgent);
 	SetHeaderL(hdr, HTTP::EAccept, KAccept);
-	
+	TBuf<100> range16;
+	range16.Copy(rangeText);
+	RDebug::Print(_L("range text: %S"), &range16);
+	SetHeaderL(hdr, HTTP::ERange, rangeText);
 	iTransactionCount++;
 	// submit the transaction
 	iTrans.SubmitL();

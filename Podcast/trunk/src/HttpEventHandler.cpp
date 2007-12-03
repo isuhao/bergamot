@@ -106,14 +106,29 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 					}
 				else
 					{
-					TInt err = iRespBodyFile.Replace(iFileServ,
-													 iParsedFileName.FullName(),
-													 EFileWrite);
-					if (err)
-						{
-						RDebug::Print(_L("There was an error replacing file"));
-						iSavingResponseBody = EFalse;
-						User::Leave(err);
+					if (iContinue) {
+						TInt err = iRespBodyFile.Open(iFileServ, iParsedFileName.FullName(),EFileWrite);
+						if (err)
+							{
+							RDebug::Print(_L("There was an error opening file"));
+							iSavingResponseBody = EFalse;
+							User::Leave(err);
+							} else {
+							int pos = -4096;
+							int size = iRespBodyFile.Seek(ESeekEnd, pos);
+							iBytesDownloaded = size;
+							RDebug::Print(_L("Seeking end: %d"), size);
+							}
+					} else {
+						TInt err = iRespBodyFile.Replace(iFileServ,
+														 iParsedFileName.FullName(),
+														 EFileWrite);
+						if (err)
+							{
+							RDebug::Print(_L("There was an error replacing file"));
+							iSavingResponseBody = EFalse;
+							User::Leave(err);
+							}
 						}
 					}
 				}
@@ -191,9 +206,10 @@ TInt CHttpEventHandler::MHFRunError(TInt aError, RHTTPTransaction /*aTransaction
 	return KErrNone;
 	}
 
-void CHttpEventHandler::SetSaveFileName(TDesC &fName)
+void CHttpEventHandler::SetSaveFileName(TDesC &fName, TBool aContinue)
 	{
 	iFileName.Copy(fName);
+	iContinue = aContinue;
 	}
 
 void CHttpEventHandler::DumpRespHeadersL(RHTTPTransaction& aTrans)
@@ -352,5 +368,8 @@ void CHttpEventHandler::SetSilent(TBool aSilent)
 
 void CHttpEventHandler::CloseSaveFile()
 	{
+	int size;
+	iRespBodyFile.Size(size);
+	RDebug::Print(_L("Closing file at size %d"), size);
 	iRespBodyFile.Close();
 	}
