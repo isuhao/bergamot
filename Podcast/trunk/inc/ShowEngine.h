@@ -60,6 +60,9 @@ private:
 	static TInt CompareShowsByDate(const CShowInfo &a, const CShowInfo &b);
 
 	void DownloadNextShow();
+	
+	void CheckFiles();
+	void ListDir(TFileName &folder);
 private:
 	CHttpClient* iShowClient;
 

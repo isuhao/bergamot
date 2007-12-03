@@ -32,8 +32,10 @@ void CShowEngine::ConstructL()
 	{
 	iFs.Connect();
 	iShowClient = CHttpClient::NewL(*this);
-	LoadShows();
 	iLinearOrder = new TLinearOrder<CShowInfo>(CShowEngine::CompareShowsByDate);
+
+	LoadShows();
+	CheckFiles();
 	}
 
 void CShowEngine::StopDownloads() 
@@ -472,3 +474,73 @@ void CShowEngine::SetPlayedByFeed(TUint aFeedUid)
 			}
 		}
 	}
+
+
+void CShowEngine::ListDir(TFileName &folder) {
+	CDirScan *dirScan = CDirScan::NewLC(iFs);
+	//RDebug::Print(_L("Listing dir: %S"), &folder);
+	dirScan ->SetScanDataL(folder, KEntryAttDir, ESortByName);
+	
+	CDir *dirPtr;
+	dirScan->NextL(dirPtr);
+	for (int i=0;i<dirPtr->Count();i++) {
+		const TEntry &entry = (TEntry) (*dirPtr)[i];
+		if (entry.IsDir())  {
+			TFileName subFolder;
+			subFolder.Copy(folder);
+			subFolder.Append(entry.iName);
+			subFolder.Append(_L("\\"));
+			ListDir(subFolder);
+		} else {
+		if (entry.iName.Right(3).CompareF(_L("mp3")) == 0 ||
+			entry.iName.Right(3).CompareF(_L("aac")) == 0 ||
+			entry.iName.Right(3).CompareF(_L("wav")) == 0) {
+			TFileName fileName;
+			fileName.Copy(entry.iName);
+			TFileName pathName;
+			pathName.Copy(folder);
+			pathName.Append(entry.iName);
+
+			TBool exists = EFalse;
+			for (int i=0;i<iShows.Count();i++) {
+				if (iShows[i]->FileName().Compare(pathName) == 0) {
+					RDebug::Print(_L("Already listed %S"), &pathName);
+					exists = ETrue;
+					break;
+				}
+			}
+			
+			if (exists) {
+				continue;
+			}
+			
+			RDebug::Print(_L("We found a new file: %S"), &fileName);
+			
+			CShowInfo *info = CShowInfo::NewL();
+			info->SetFileName(pathName);
+			info->SetTitle(fileName);
+			info->SetDownloadState(EDownloaded);
+			iShows.Append(info);
+		}
+		}
+	}
+	delete dirPtr;
+	CleanupStack::Pop(dirScan);
+
+}
+void CShowEngine::CheckFiles()
+	{
+
+	// check to see if any files were removed
+	for (int i=0;i<iShows.Count();i++) {
+		if(iShows[i]->DownloadState() == EDownloaded) {
+			if(!BaflUtils::FileExists(iFs, iShows[i]->FileName())) {
+				RDebug::Print(_L("%S was removed, delisting"), &iShows[i]->FileName());
+				iShows[i]->SetDownloadState(ENotDownloaded);
+			}
+		}
+	}
+
+	// check if any new files were added
+	ListDir(iPodcastModel.SettingsEngine().BaseDir());	
+}
