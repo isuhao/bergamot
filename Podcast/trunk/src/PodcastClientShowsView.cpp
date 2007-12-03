@@ -487,7 +487,9 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 						listBoxData->SetItemId(si->Uid());
 						listBoxData->AddTextL(si->Title(), EQikListBoxSlotText1);
 						//listBoxData->AddTextL(si->iDescription, EQikListBoxSlotText2);
-						if(si->ShowSize() < KSizeMb)
+						if(si->ShowSize() == 0) {
+							showSize.Format(_L("Unknown"));
+						} else if(si->ShowSize() < KSizeMb)
 						{
 							showSize.Format(KShowsSizeFormatKb(), si->ShowSize() / KSizeKb);
 						}
@@ -497,7 +499,11 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 						}
 						listBoxData->AddTextL(showSize, EQikListBoxSlotText4);
 						
-						si->PubDate().FormatL(showDate, TShortDateFormatSpec());
+						if(si->PubDate().Int64() == 0) {
+							showDate.Format(_L("Unknown"));
+						} else {
+							si->PubDate().FormatL(showDate, TShortDateFormatSpec());
+						}
 						listBoxData->AddTextL(showDate, EQikListBoxSlotText3);
 						
 						listBoxData->SetEmphasis(si->PlayState() == ENeverPlayed);					
