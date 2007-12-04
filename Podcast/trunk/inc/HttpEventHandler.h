@@ -12,6 +12,7 @@
 const TInt KMaxSubmitSize = 1024;
 const TInt KMaxHeaderNameLen = 32;
 const TInt KMaxHeaderValueLen = 128;
+const TInt KByteOverlap = 4096;
 
 class CHttpEventHandler : public CBase,
                           public MHTTPTransactionCallback

@@ -19,6 +19,7 @@ public:
 
 	void StopDownloads();
 	void ResumeDownloads();
+	TBool DownloadsStopped();
 	
 	CShowInfo* ShowDownloading();
 

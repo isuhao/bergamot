@@ -167,7 +167,7 @@ void CHttpClient::GetL(TDesC& url, TDesC& fileName, TBool aSilent) {
 	if (rfs.Entry(fileName, entry) == KErrNone) {
 		RDebug::Print(_L("Found file, with size=%d"), entry.iSize);
 		// file exists, so we should probably resume
-		rangeText.Format(_L8("bytes=%d-"), entry.iSize-4096);
+		rangeText.Format(_L8("bytes=%d-"), entry.iSize-KByteOverlap);
 		iHandler->SetSaveFileName(fileName, ETrue);
 	} else {
 		// otherwise just make sure the directory exists

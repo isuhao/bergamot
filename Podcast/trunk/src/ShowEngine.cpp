@@ -53,9 +53,14 @@ void CShowEngine::ResumeDownloads()
 	DownloadNextShow();
 	}
 
+TBool CShowEngine::DownloadsStopped()
+	{
+	return iDownloadsSuspended;
+	}
+
 void CShowEngine::RemoveDownload(TInt aUid) 
 	{
-	RDebug::Print(_L("RemoveFromDownloadQueue"));
+	RDebug::Print(_L("RemoveDownload"));
 	for (int i=0;i<iShowsDownloading.Count();i++) {
 		if (iShowsDownloading[i]->Uid() == aUid) {
 			if (iShowsDownloading[i]->DownloadState() == EDownloading) {
@@ -63,6 +68,7 @@ void CShowEngine::RemoveDownload(TInt aUid)
 			}
 			
 			iShowsDownloading[i]->SetDownloadState(ENotDownloaded);
+			BaflUtils::DeleteFile(iFs, iShowsDownloading[i]->FileName());
 			iShowsDownloading.Remove(i);
 			for (int j=0;j<iObservers.Count();j++) {
 				iObservers[j]->DownloadQueueUpdated(1, iShowsDownloading.Count()-1);
@@ -243,11 +249,7 @@ void CShowEngine::LoadShows()
 		
 		if (readData->DownloadState() == EQueued) {
 			AddDownload(readData);
-		} else if (readData->DownloadState() == EDownloaded) {
-			if (!BaflUtils::FileExists(iFs, readData->FileName())) {
-				readData->SetDownloadState(ENotDownloaded);
-			}
-		}
+		} 
 	}
 
 	iSuppressAutoDownload = EFalse;
@@ -520,6 +522,10 @@ void CShowEngine::ListDir(TFileName &folder) {
 			info->SetFileName(pathName);
 			info->SetTitle(fileName);
 			info->SetDownloadState(EDownloaded);
+			TEntry entry;
+			iFs.Entry(pathName, entry);
+			info->SetShowSize(entry.iSize);
+			info->SetPubDate(entry.iModified);
 			iShows.Append(info);
 		}
 		}
