@@ -49,8 +49,9 @@ public:
 
 	TUint FeedUid();
 	void SetFeedUid(TUint aFeedUid);
-	
-	TUint Uid();
+
+	void SetUid(TUint aUid);
+	TUint Uid() const;
 	
 	TUint ShowSize();
 	void SetShowSize(TUint aShowSize);
@@ -79,5 +80,5 @@ private:
 	TTime iPubDate;
 };
 
-typedef RPointerArray<CShowInfo> CShowInfoArray;
+typedef RPointerArray<CShowInfo> RShowInfoArray;
 #endif

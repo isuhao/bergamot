@@ -119,7 +119,7 @@ void CPodcastClientFeedView::FeedInfoUpdated(CFeedInfo* aFeedInfo)
 		iProgressAdded = EFalse;
 	}
 
-	CFeedInfoArray feeds;
+	RFeedInfoArray feeds;
 	CleanupClosePushL(feeds);
 	iPodcastModel.FeedEngine().GetFeeds(feeds);
 
@@ -172,7 +172,7 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 {
 	if(IsVisible())
 	{		
-		CFeedInfoArray feeds;
+		RFeedInfoArray feeds;
 		CleanupClosePushL(feeds);
 		iPodcastModel.FeedEngine().GetFeeds(feeds);
 		int len = feeds.Count();
@@ -282,7 +282,7 @@ void CPodcastClientFeedView::HandleListBoxEventL(CQikListBox *aListBox, TQikList
 	case EEventItemConfirmed:
 	case EEventItemTapped:
 		{
-			CFeedInfoArray feeds;
+			RFeedInfoArray feeds;
 			CleanupClosePushL(feeds);
 			iPodcastModel.FeedEngine().GetFeeds(feeds);
 			iPodcastModel.ActiveShowList().Reset();

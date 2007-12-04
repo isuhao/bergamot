@@ -385,7 +385,7 @@ CFeedInfo* CFeedEngine::GetFeedInfoByUid(TInt aFeedUid)
 	return NULL;
 	}
 
-void CFeedEngine::GetFeeds(CFeedInfoArray& array) 
+void CFeedEngine::GetFeeds(RFeedInfoArray& array) 
 {
 	for (int i=0;i<iFeeds.Count();i++) {
 		array.Append(iFeeds[i]);

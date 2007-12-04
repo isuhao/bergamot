@@ -22,6 +22,7 @@ public:
 	TBool DownloadsStopped();
 	
 	CShowInfo* ShowDownloading();
+	CShowInfo* GetShowByUidL(TUint aShowUid);
 
 	// show selection methods
 	void SelectAllShows();
@@ -39,7 +40,7 @@ public:
 	void PurgeOldShows();
 	void PurgeShow(TInt aShowUid);
 	
-	CShowInfoArray& GetSelectedShows();
+	RShowInfoArray& GetSelectedShows();
 	void SetPlayedByFeed(TUint aFeedUid);
 	
 	void AddObserver(MShowEngineObserver *observer);
@@ -64,17 +65,19 @@ private:
 	
 	void CheckFiles();
 	void ListDir(TFileName &folder);
+
+	static TBool CompareShowsByUid(const CShowInfo &a, const CShowInfo &b);
 private:
 	CHttpClient* iShowClient;
 
 	// the complete database of shows
-	CShowInfoArray iShows;
+	RShowInfoArray iShows;
 
 	// the current selection of shows
-	CShowInfoArray iSelectedShows;
+	RShowInfoArray iSelectedShows;
 	
 	// list of shows waiting to download
-	CShowInfoArray iShowsDownloading;
+	RShowInfoArray iShowsDownloading;
 	
 	// the file session used to read and write settings
 	RFs iFs;

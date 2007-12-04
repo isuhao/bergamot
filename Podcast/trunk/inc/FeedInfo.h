@@ -50,6 +50,6 @@ private:
 	TUint iUid;
 };
 
-typedef RPointerArray<CFeedInfo> CFeedInfoArray;
+typedef RPointerArray<CFeedInfo> RFeedInfoArray;
 
 #endif

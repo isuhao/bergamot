@@ -108,7 +108,7 @@ RESOURCE QIK_COMMAND_LIST r_podcast_listview_commands
 				type = EQikCommandTypeScreen;
 				text = STRING_r_view_feeds_cmd;
 				namedGroupId = 1;
-				groupId = 3;
+				groupId = 2;
 				},
 // Feed handling
 		QIK_COMMAND

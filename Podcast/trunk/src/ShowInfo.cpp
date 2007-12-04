@@ -189,7 +189,12 @@ void CShowInfo::SetFeedUid(TUint aFeedUid)
 	iFeedUid = aFeedUid;
 	}
 
-TUint CShowInfo::Uid()
+void CShowInfo::SetUid(TUint aUid)
+	{
+	iUid = aUid;
+	}
+		
+TUint CShowInfo::Uid() const
 	{
 	return iUid;
 	}

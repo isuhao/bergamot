@@ -184,6 +184,28 @@ CShowInfo* CShowEngine::ShowDownloading()
 		return iShowDownloading;
 	}
 
+
+CShowInfo* CShowEngine::GetShowByUidL(TUint aShowUid)
+	{
+	CShowInfo* infoToFind = CShowInfo::NewL();
+	CleanupStack::PushL(infoToFind);
+	infoToFind->SetUid(aShowUid);
+	TIdentityRelation<CShowInfo> comparison(CompareShowsByUid);
+	TInt index = iShows.Find(infoToFind, comparison);
+	CleanupStack::PopAndDestroy(infoToFind);
+	if(index != KErrNotFound)
+		{
+		return iShows[index];
+		}
+
+	return NULL;
+	}
+
+TBool CShowEngine::CompareShowsByUid(const CShowInfo &a, const CShowInfo &b)
+{
+	return a.Uid() == b.Uid();
+}
+
 void CShowEngine::LoadShows()
 	{
 	RDebug::Print(_L("LoadShows"));
@@ -430,7 +452,7 @@ void CShowEngine::AppendToSelection(CShowInfo *aInfo)
 	iSelectedShows.Append(aInfo);
 	}
 
-CShowInfoArray& CShowEngine::GetSelectedShows()
+RShowInfoArray& CShowEngine::GetSelectedShows()
 	{
 	return iSelectedShows;
 	}

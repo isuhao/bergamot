@@ -28,8 +28,8 @@ public:
 	CFeedInfo* ActiveFeedInfo();
 	void SetActiveFeedInfo(CFeedInfo* aFeedInfo);
 	CEikonEnv* EikonEnv();
-	CShowInfoArray& ActiveShowList();
-	void SetActiveShowList(CShowInfoArray& aShowArray);
+	RShowInfoArray& ActiveShowList();
+	void SetActiveShowList(RShowInfoArray& aShowArray);
 
 	TBool SetZoomState(TInt aZoomState);
 	TInt ZoomState();
@@ -44,7 +44,7 @@ private:
    CSoundEngine* iSoundEngine;
    CSettingsEngine *iSettingsEngine;
    
-   CShowInfoArray iActiveShowList;
+   RShowInfoArray iActiveShowList;
    CFeedInfo *iActiveFeed;
    TInt iZoomState;
    

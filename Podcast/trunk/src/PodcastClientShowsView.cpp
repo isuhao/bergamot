@@ -8,6 +8,7 @@
 #include <QikListBoxLayoutProperties.h>
 #include <podcastclient.mbg>
 #include "PodcastClientShowsView.h"
+#include "PodcastClientPlayView.h"
 #include "PodcastModel.h"
 #include "ShowEngine.h"
 
@@ -426,7 +427,7 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 		}
 		
 		iPodcastModel.SetActiveShowList(iPodcastModel.ShowEngine().GetSelectedShows());
-		CShowInfoArray &fItems = iPodcastModel.ActiveShowList();
+		RShowInfoArray &fItems = iPodcastModel.ActiveShowList();
 		len = fItems.Count();
 		
 		if (iListbox != NULL)
@@ -556,7 +557,7 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 void CPodcastClientShowsView::UpdateCommandsL()
 {
 	CQikCommandManager& comMan = CQikCommandManager::Static();
-	CShowInfoArray &fItems = iPodcastModel.ActiveShowList();
+	RShowInfoArray &fItems = iPodcastModel.ActiveShowList();
 	TBool removeDownloadCmd = EFalse;
 	TBool removePurgeShowCmd = ETrue;
 	if(iListbox != NULL)
@@ -612,13 +613,15 @@ void CPodcastClientShowsView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQ
 	case EEventItemConfirmed:
 	case EEventItemTapped:
 		{
-			CShowInfoArray &fItems = iPodcastModel.ActiveShowList();
+			RShowInfoArray &fItems = iPodcastModel.ActiveShowList();
 			if(aItemIndex>=0 && aItemIndex< fItems.Count())
 			{
 				RDebug::Print(_L("Handle event for podcast %S, downloadState is %d"), &(fItems[aItemIndex]->Title()), fItems[aItemIndex]->DownloadState());
-				iPodcastModel.PlayPausePodcastL(fItems[aItemIndex]);
+				//iPodcastModel.PlayPausePodcastL(fItems[aItemIndex]);
+				TPckgBuf<TInt> showUid;
+				showUid() = fItems[aItemIndex]->Uid();
 				TVwsViewId viewId = TVwsViewId(KUidPodcastClientID, KUidPodcastPlayViewID);
-				iQikAppUi.ActivateViewL(viewId);		
+				iQikAppUi.ActivateViewL(viewId, TUid::Uid(KActiveShowUIDCmd), showUid);		
 
 				UpdateCommandsL();
 			}

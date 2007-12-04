@@ -30,7 +30,7 @@ public:
 	void UpdateFeed(TInt aFeedUid);
 	void UpdateAllFeeds();
 
-	void GetFeeds(CFeedInfoArray& array);
+	void GetFeeds(RFeedInfoArray& array);
 	CFeedInfo* GetFeedInfoByUid(int aFeedUid);	
 
 	void AddObserver(MFeedEngineObserver *observer);
@@ -76,14 +76,14 @@ private:
 	CFeedParser* iParser;
 	
 	// the list of feeds
-	CFeedInfoArray iFeeds;
+	RFeedInfoArray iFeeds;
 
 	CFeedInfo *iActiveFeed;
 	TFileName iUpdatingFeedFileName;
 	// the file session used to read and write settings
 	RFs iFs;
 
-	CFeedInfoArray iFeedsUpdating;
+	RFeedInfoArray iFeedsUpdating;
 	
 	// observers that will receive callbacks
     RArray<MFeedEngineObserver*> iObservers;

@@ -140,6 +140,7 @@ TKeyResponse CPodcastClientPlayView::OfferKeyEventL(const TKeyEvent& aKeyEvent,T
 			break;
 		}
 	}
+	return EKeyWasNotConsumed;
 }
 
 
@@ -182,48 +183,56 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 		{
 			iPlayProgressbar->SetValue(0);
 			iPlayProgressbar->DrawDeferred();		
-		/*	iTimeLabel->SetText(KNullDesC());
-			iTimeLabel->SetSize(iTimeLabel->MinimumSize());
-			iTimeLabel->DrawDeferred();*/
 		}
 	}
-	CShowInfo* showInfo = iPodcastModel.PlayingPodcast();
 
-	if(showInfo->DownloadState() != EDownloaded)
+	if(iShowInfo != NULL)
 	{
-		if(showInfo->ShowSize() < KSizeMb)
+		if(iShowInfo->DownloadState() != EDownloaded)
 		{
-			time.Format(KShowsSizeFormatKb(), showInfo->ShowSize() / KSizeKb);
+			if(iShowInfo->ShowSize() < KSizeMb)
+			{
+				time.Format(KShowsSizeFormatKb(), iShowInfo->ShowSize() / KSizeKb);
+			}
+			else
+			{
+				time.Format(KShowsSizeFormatMb(), iShowInfo->ShowSize() / KSizeMb);
+			}
 		}
 		else
 		{
-			time.Format(KShowsSizeFormatMb(), showInfo->ShowSize() / KSizeMb);
-		}
-	}
-	else
-	{
-		TUint playtime = iPodcastModel.SoundEngine().PlayTime();
-		TBuf<KTimeLabelSize> totTime = _L("00:00");
+			CShowInfo* showInfo = iPodcastModel.PlayingPodcast();
 
-		if(playtime >= 0)
-		{
-			TInt sec = (playtime%60);
-			TInt min = (playtime/60);
-			totTime.Format(_L("%02d:%02d"), min, sec);
+			if(showInfo != NULL && showInfo->Uid() == iShowInfo->Uid())
+			{
+				TUint playtime = iPodcastModel.SoundEngine().PlayTime();
+				TBuf<KTimeLabelSize> totTime = _L("00:00");
+				
+				if(playtime >= 0)
+				{
+					TInt sec = (playtime%60);
+					TInt min = (playtime/60);
+					totTime.Format(_L("%02d:%02d"), min, sec);
+				}
+				else
+				{
+					totTime = KZeroTime();
+				}
+				
+				if(pos >= 0)
+				{
+					TInt sec = (pos%60);
+					TInt min = (pos/60);
+					time.Format(_L("%02d:%02d"), min, sec);
+				}
+				time.Append(_L("/"));
+				time.Append(totTime);
+			}
+			else if (showInfo == NULL) // No other show playing start to init this one
+			{
+				iPodcastModel.PlayPausePodcastL(iShowInfo);
+			}
 		}
-		else
-		{
-			totTime = KZeroTime();
-		}
-
-		if(pos >= 0)
-		{
-			TInt sec = (pos%60);
-			TInt min = (pos/60);
-			time.Format(_L("%02d:%02d"), min, sec);
-		}
-		time.Append(_L("/"));
-		time.Append(totTime);
 	}
 
 	ViewContext()->ChangeTextL(EPodcastPlayViewTitleCtrl, time);
@@ -307,16 +316,22 @@ void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 
 	case EPodcastPlay:
 		{
-
-			if(iPodcastModel.SoundEngine().State() == ESoundEnginePlaying)
+			if(iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.PlayingPodcast()->Uid() == iShowInfo->Uid())
 			{
-				iPodcastModel.SoundEngine().Pause();
-				comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PLAY_CMD);
+				if(iPodcastModel.SoundEngine().State() == ESoundEnginePlaying)
+				{
+					iPodcastModel.SoundEngine().Pause();
+					comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PLAY_CMD);
+				}
+				else
+				{
+					iPodcastModel.SoundEngine().Play();
+					comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PAUSE_CMD);
+				}
 			}
 			else
 			{
-				iPodcastModel.SoundEngine().Play();
-				comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PAUSE_CMD);
+				iPodcastModel.PlayPausePodcastL(iShowInfo);
 			}
 		}break;
 	case EPodcastStop:
@@ -380,19 +395,32 @@ void CPodcastClientPlayView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid 
 	CQikViewBase::ViewActivatedL(aPrevViewId, aCustomMessageId, aCustomMessage);
 	SelectCategoryL(EShowAllShows);
 	
-	if(iPodcastModel.PlayingPodcast() == NULL && aPrevViewId.iAppUid != KUidPodcastClientID)
+/*	if(iPodcastModel.PlayingPodcast() == NULL && aPrevViewId.iAppUid != KUidPodcastClientID)
 	{
 		iPodcastModel.SetPlayingPodcast(iLastShowInfo);
 	
 	}
 
 	iLastShowInfo = NULL;
-	
+*/
+	switch(aCustomMessageId.iUid)
+	{
+	case KActiveShowUIDCmd:
+		{
+			TPckg<TInt> showUidPkg(iCurrentViewShowUid);
+			showUidPkg.Copy(aCustomMessage);
+		}break;
+	default:
+		break;
+	}
+
 	if(	iLastZoomLevel !=  iPodcastModel.ZoomState())
 		{
 			iLastZoomLevel = iPodcastModel.ZoomState();
 			SetZoomFactorL(CQikAppUi::ZoomFactorL(iLastZoomLevel , *iEikonEnv));
 		}
+
+	iShowInfo = iPodcastModel.ShowEngine().GetShowByUidL(iCurrentViewShowUid);
 
 	UpdateViewL();
 	SetParentView( aPrevViewId );
@@ -404,11 +432,11 @@ void CPodcastClientPlayView::ViewDeactivated()
 {
 	CQikViewBase::ViewDeactivated();
 
-	if(iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.SoundEngine().State() != ESoundEnginePlaying && iPodcastModel.SoundEngine().State() != ESoundEnginePaused)
+/*	if(iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.SoundEngine().State() != ESoundEnginePlaying && iPodcastModel.SoundEngine().State() != ESoundEnginePaused)
 	{
 		iLastShowInfo = iPodcastModel.PlayingPodcast();
 		iPodcastModel.SetPlayingPodcast(NULL);
-	}
+	}*/
 }
 
 void CPodcastClientPlayView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt aBytesTotal)
@@ -490,30 +518,28 @@ void CPodcastClientPlayView::UpdateViewL()
 {
 		CQikCommandManager& comMan = CQikCommandManager::Static();
 
-		if(iPodcastModel.PlayingPodcast() != NULL)
-		{
-
-			CShowInfo *showInfo = iPodcastModel.PlayingPodcast();
+		if(iShowInfo != NULL)
+		{		
 			
-			iInformationEdwin->SetTextL(showInfo->Description());
+			iInformationEdwin->SetTextL(iShowInfo->Description());
 
 			if(iTitleEdwin != NULL)
 			{
-				iTitleEdwin->SetTextL(showInfo->Title());
+				iTitleEdwin->SetTextL(iShowInfo->Title());
 			}
 
-			if(showInfo->DownloadState() == ENotDownloaded)
+			if(iShowInfo->DownloadState() == ENotDownloaded)
 			{
 				comMan.SetInvisible(*this, EPodcastDownloadShow, EFalse);
 				comMan.SetInvisible(*this, EPodcastPlay, ETrue);
 				iDownloadProgressInfo->MakeVisible(EFalse);
 				iPlayProgressbar->MakeVisible(EFalse);
 			}
-			else if(showInfo->DownloadState() != EDownloaded)
+			else if(iShowInfo->DownloadState() != EDownloaded)
 			{
 				comMan.SetInvisible(*this, EPodcastPlay, ETrue);
 				comMan.SetInvisible(*this, EPodcastDownloadShow, ETrue);
-				iDownloadProgressInfo->MakeVisible(showInfo->DownloadState() == EDownloading);
+				iDownloadProgressInfo->MakeVisible(iShowInfo->DownloadState() == EDownloading);
 				iPlayProgressbar->MakeVisible(EFalse);
 			}
 			else
@@ -524,7 +550,7 @@ void CPodcastClientPlayView::UpdateViewL()
 				iPlayProgressbar->MakeVisible(ETrue);
 			}
 
-			CFeedInfo* feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(showInfo->FeedUid());
+			CFeedInfo* feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(iShowInfo->FeedUid());
 			if(feedInfo != NULL )
 			{
 				TParsePtrC parser(feedInfo->ImageFileName());

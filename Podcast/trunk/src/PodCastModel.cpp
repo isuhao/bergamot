@@ -116,12 +116,12 @@ void CPodcastModel::SetActiveFeedInfo(CFeedInfo* aFeedInfo)
 	iActiveFeed = aFeedInfo;
 }
 
-CShowInfoArray& CPodcastModel::ActiveShowList()
+RShowInfoArray& CPodcastModel::ActiveShowList()
 {
 	return iActiveShowList;
 }
 
-void CPodcastModel::SetActiveShowList(CShowInfoArray& aShowArray)
+void CPodcastModel::SetActiveShowList(RShowInfoArray& aShowArray)
 {
 	iActiveShowList.Reset();
 	TInt cnt = aShowArray.Count();

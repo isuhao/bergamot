@@ -23,6 +23,7 @@ class CPodcastModel;
 class CQikSlider;
 class CEikImage;
 class CQikGenericBuildingBlock;
+const TInt KActiveShowUIDCmd = 0x1000;
 
 class CPodcastClientPlayView : public CQikViewBase, public MSoundEngineObserver, public MFeedEngineObserver, public MQikImageConverterObserver, public MShowEngineObserver
 	{
@@ -74,7 +75,8 @@ private:
 	CQikCategoryModel* iCategories;
 	TBool iProgressAdded;
 	TFileName iLastImageFileName;
-	CShowInfo* iLastShowInfo;
+	CShowInfo* iShowInfo;
 	TInt iLastZoomLevel;
+	TInt iCurrentViewShowUid;
 	};
 #endif // PODCASTPLAYVIEW_H
