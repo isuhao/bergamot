@@ -150,112 +150,16 @@ TInt CPodcastClientPlayView::PlayingUpdateStaticCallbackL(TAny* aPlayView)
 	return KErrNone;
 }
 
-void CPodcastClientPlayView::UpdatePlayStatusL()
-{
-	CQikCommandManager& comMan = CQikCommandManager::Static();
-	TBuf<KTimeLabelSize> time = _L("0:00:00");
-
-	if(iPodcastModel.SoundEngine().State() == ESoundEnginePlaying)
-	{
-		comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PAUSE_CMD);
-	}
-	else
-	{
-		comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PLAY_CMD);
-	}
-
-
-	comMan.SetDimmed(*this, EPodcastPlay, iPodcastModel.SoundEngine().State() == ESoundEngineNotInitialized);
-	comMan.SetDimmed(*this, EPodcastStop, (iPodcastModel.SoundEngine().State() == ESoundEngineNotInitialized || iPodcastModel.SoundEngine().State() == ESoundEngineStopped));
-	TUint pos = 0;
-	if(iPlayProgressbar != NULL)
-	{
-		iPlayProgressbar->SetDimmed(iPodcastModel.SoundEngine().State() == ESoundEngineNotInitialized );
-		
-		if(iPodcastModel.SoundEngine().PlayTime()>0)
-		{
-			TUint duration = iPodcastModel.SoundEngine().PlayTime();
-			pos = iPodcastModel.SoundEngine().Position().Int64()/1000000;
-			iPlayProgressbar->SetValue((KMaxProgressValue*pos)/duration);
-			iPlayProgressbar->DrawDeferred();		
-		}
-		else
-		{
-			iPlayProgressbar->SetValue(0);
-			iPlayProgressbar->DrawDeferred();		
-		}
-	}
-
-	if(iShowInfo != NULL)
-	{
-		if(iShowInfo->DownloadState() != EDownloaded)
-		{
-			if(iShowInfo->ShowSize() < KSizeMb)
-			{
-				time.Format(KShowsSizeFormatKb(), iShowInfo->ShowSize() / KSizeKb);
-			}
-			else
-			{
-				time.Format(KShowsSizeFormatMb(), iShowInfo->ShowSize() / KSizeMb);
-			}
-		}
-		else
-		{
-			CShowInfo* showInfo = iPodcastModel.PlayingPodcast();
-
-			if(showInfo != NULL && showInfo->Uid() == iShowInfo->Uid())
-			{
-				TUint playtime = iPodcastModel.SoundEngine().PlayTime();
-				TBuf<KTimeLabelSize> totTime = _L("00:00");
-				
-				if(playtime >= 0)
-				{
-					TInt sec = (playtime%60);
-					TInt min = (playtime/60);
-					totTime.Format(_L("%02d:%02d"), min, sec);
-				}
-				else
-				{
-					totTime = KZeroTime();
-				}
-				
-				if(pos >= 0)
-				{
-					TInt sec = (pos%60);
-					TInt min = (pos/60);
-					time.Format(_L("%02d:%02d"), min, sec);
-				}
-				time.Append(_L("/"));
-				time.Append(totTime);
-			}
-			else if (showInfo == NULL) // No other show playing start to init this one
-			{
-				iPodcastModel.PlayPausePodcastL(iShowInfo);
-			}
-		}
-	}
-
-	ViewContext()->ChangeTextL(EPodcastPlayViewTitleCtrl, time);
-
-	if(iTimeLabel != NULL)
-	{
-		iTimeLabel->SetText(time);
-		iTimeLabel->SetSize(iTimeLabel->MinimumSize());
-		iTimeLabel->DrawDeferred();
-	}
-	if(iTotTimeLabel != NULL)
-	{
-		iTotTimeLabel->SetText(time);
-		iTotTimeLabel->SetSize(iTotTimeLabel->MinimumSize());
-	}
-
-}
-
-
 
 void CPodcastClientPlayView::PlaybackInitializedL()
 {
 	UpdateViewL();
+
+	if(iPlayOnInit)
+	{
+		iPlayOnInit = EFalse;
+		iPodcastModel.SoundEngine().Play();
+	}
 }
 
 
@@ -332,6 +236,7 @@ void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 			else
 			{
 				iPodcastModel.PlayPausePodcastL(iShowInfo);
+				iPlayOnInit = ETrue;
 			}
 		}break;
 	case EPodcastStop:
@@ -354,7 +259,24 @@ void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 		{
 			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastFeedViewID);
 			iQikAppUi.ActivateViewL(podcastsView);
-		}break;		
+		}break;	
+		
+	case EPodcastViewNewShows:
+		{
+			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID);
+			iQikAppUi.ActivateViewL(podcastsView, TUid::Uid(EShowNewShows), KNullDesC8());
+		}break;
+	case EPodcastViewDownloadedShows:
+		{
+			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID);
+			iQikAppUi.ActivateViewL(podcastsView, TUid::Uid(EShowDownloadedShows), KNullDesC8());
+		}break;
+	case EPodcastViewPendingShows:
+		{
+			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID);
+			iQikAppUi.ActivateViewL(podcastsView, TUid::Uid(EShowPendingShows), KNullDesC8());
+		}break;
+
 		// Just issue simple info messages to show that
 		// the commands have been selected
 	default:
@@ -403,6 +325,9 @@ void CPodcastClientPlayView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid 
 
 	iLastShowInfo = NULL;
 */
+	
+	iPlayOnInit = EFalse;
+
 	switch(aCustomMessageId.iUid)
 	{
 	case KActiveShowUIDCmd:
@@ -442,7 +367,7 @@ void CPodcastClientPlayView::ViewDeactivated()
 void CPodcastClientPlayView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt aBytesTotal)
 
 {
-	if(aPercentOfCurrentDownload>=0 && aPercentOfCurrentDownload < KOneHundredPercent && iPodcastModel.PlayingPodcast() == iPodcastModel.ShowEngine().ShowDownloading())
+/*	if(aPercentOfCurrentDownload>=0 && aPercentOfCurrentDownload < KOneHundredPercent && iPodcastModel.PlayingPodcast() == iPodcastModel.ShowEngine().ShowDownloading())
 	{
 		if(!iProgressAdded)
 		{
@@ -458,7 +383,7 @@ void CPodcastClientPlayView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload
 		ViewContext()->RemoveAndDestroyProgressInfo();
 		ViewContext()->DrawNow();
 		iProgressAdded = EFalse;
-	}
+	}*/
 
 	if(iDownloadProgressInfo != NULL)
 	{
@@ -598,5 +523,121 @@ void CPodcastClientPlayView::UpdateViewL()
 		}
 
 		RequestRelayout(this);
+}
+
+void CPodcastClientPlayView::UpdatePlayStatusL()
+{
+	CQikCommandManager& comMan = CQikCommandManager::Static();
+	TBuf<KTimeLabelSize> time = _L("0:00:00");
+	TUint pos = 0;
+
+	if(iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.PlayingPodcast()->Uid() == iShowInfo->Uid())
+	{
+		
+		if(iPodcastModel.SoundEngine().State() == ESoundEnginePlaying)
+		{
+			comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PAUSE_CMD);
+		}
+		else
+		{
+			comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PLAY_CMD);
+		}
+		
+		
+		comMan.SetDimmed(*this, EPodcastPlay, iPodcastModel.SoundEngine().State() == ESoundEngineNotInitialized);
+		comMan.SetDimmed(*this, EPodcastStop, (iPodcastModel.SoundEngine().State() == ESoundEngineNotInitialized || iPodcastModel.SoundEngine().State() == ESoundEngineStopped));
+		if(iPlayProgressbar != NULL)
+		{
+			iPlayProgressbar->SetDimmed(iPodcastModel.SoundEngine().State() == ESoundEngineNotInitialized );
+			
+			if(iPodcastModel.SoundEngine().PlayTime()>0)
+			{
+				TUint duration = iPodcastModel.SoundEngine().PlayTime();
+				pos = iPodcastModel.SoundEngine().Position().Int64()/1000000;
+				iPlayProgressbar->SetValue((KMaxProgressValue*pos)/duration);
+				iPlayProgressbar->DrawDeferred();		
+			}
+			else
+			{
+				iPlayProgressbar->SetValue(0);
+				iPlayProgressbar->DrawDeferred();		
+			}
+		}
+	}
+	else
+	{
+			comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PLAY_CMD);
+			comMan.SetDimmed(*this, EPodcastPlay, EFalse);
+			comMan.SetDimmed(*this, EPodcastStop, ETrue);
+			iPlayProgressbar->SetDimmed(ETrue);
+			iPlayProgressbar->SetValue(0);
+			iPlayProgressbar->DrawDeferred();
+	}
+	
+	
+	if(iShowInfo != NULL)
+	{
+		if(iShowInfo->DownloadState() != EDownloaded)
+		{
+			if(iShowInfo->ShowSize() < KSizeMb)
+			{
+				time.Format(KShowsSizeFormatKb(), iShowInfo->ShowSize() / KSizeKb);
+			}
+			else
+			{
+				time.Format(KShowsSizeFormatMb(), iShowInfo->ShowSize() / KSizeMb);
+			}
+		}
+		else
+		{
+			CShowInfo* showInfo = iPodcastModel.PlayingPodcast();
+
+			if(showInfo != NULL && showInfo->Uid() == iShowInfo->Uid())
+			{
+				TUint playtime = iPodcastModel.SoundEngine().PlayTime();
+				TBuf<KTimeLabelSize> totTime = _L("00:00");
+				
+				if(playtime >= 0)
+				{
+					TInt sec = (playtime%60);
+					TInt min = (playtime/60);
+					totTime.Format(_L("%02d:%02d"), min, sec);
+				}
+				else
+				{
+					totTime = KZeroTime();
+				}
+				
+				if(pos >= 0)
+				{
+					TInt sec = (pos%60);
+					TInt min = (pos/60);
+					time.Format(_L("%02d:%02d"), min, sec);
+				}
+				time.Append(_L("/"));
+				time.Append(totTime);
+			}
+			else if (showInfo == NULL) // No other show playing start to init this one
+			{
+				iPodcastModel.PlayPausePodcastL(iShowInfo);
+			}
+		}
+	}
+
+	ViewContext()->ChangeTextL(EPodcastPlayViewTitleCtrl, time);
+
+	if(iTimeLabel != NULL)
+	{
+		iTimeLabel->SetText(time);
+		iTimeLabel->SetSize(iTimeLabel->MinimumSize());
+		iTimeLabel->DrawDeferred();
+	}
+
+	if(iTotTimeLabel != NULL)
+	{
+		iTotTimeLabel->SetText(time);
+		iTotTimeLabel->SetSize(iTotTimeLabel->MinimumSize());
+	}
+
 }
 

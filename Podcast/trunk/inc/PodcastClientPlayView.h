@@ -78,5 +78,6 @@ private:
 	CShowInfo* iShowInfo;
 	TInt iLastZoomLevel;
 	TInt iCurrentViewShowUid;
+	TBool iPlayOnInit;
 	};
 #endif // PODCASTPLAYVIEW_H

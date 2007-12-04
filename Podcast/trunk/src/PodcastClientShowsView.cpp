@@ -91,9 +91,13 @@ void CPodcastClientShowsView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid
 
 	CPodcastClientView::ViewActivatedL(aPrevViewId, aCustomMessageId, aCustomMessage);
 
-	if(aPrevViewId == TVwsViewId(KUidPodcastClientID, KUidPodcastFeedViewID))
+	if(aPrevViewId == TVwsViewId(KUidPodcastClientID, KUidPodcastFeedViewID) && iCurrentCategory == EShowFeedShows)
 	{
 		SetParentView( TVwsViewId(KUidPodcastClientID, KUidPodcastFeedViewID));
+	}
+	else
+	{
+		SetParentView( KNullViewId);
 	}
 
 }
