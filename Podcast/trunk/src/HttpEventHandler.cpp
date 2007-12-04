@@ -115,9 +115,12 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 							User::Leave(err);
 							} else {
 							int pos = -4096;
-							int size = iRespBodyFile.Seek(ESeekEnd, pos);
-							iBytesDownloaded = size;
-							RDebug::Print(_L("Seeking end: %d"), size);
+							if(err=iRespBodyFile.Seek(ESeekEnd, pos) != KErrNone) {
+								RDebug::Print(_L("Failed to set position!"));
+								User::Leave(err);
+							}
+							iBytesDownloaded = pos;
+							RDebug::Print(_L("Seeking end: %d"), pos);
 							}
 					} else {
 						TInt err = iRespBodyFile.Replace(iFileServ,
@@ -370,6 +373,6 @@ void CHttpEventHandler::CloseSaveFile()
 	{
 	int size;
 	iRespBodyFile.Size(size);
-	RDebug::Print(_L("Closing file at size %d"), size);
+	RDebug::Print(_L("Closing file at size %d, bytes downloaded %d"), size, iBytesDownloaded);
 	iRespBodyFile.Close();
 	}
