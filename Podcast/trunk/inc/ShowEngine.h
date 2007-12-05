@@ -42,6 +42,7 @@ public:
 	
 	RShowInfoArray& GetSelectedShows();
 	void SetPlayedByFeed(TUint aFeedUid);
+	void CheckFiles();
 	
 	void AddObserver(MShowEngineObserver *observer);
 protected:
@@ -63,7 +64,7 @@ private:
 
 	void DownloadNextShow();
 	
-	void CheckFiles();
+
 	void ListDir(TFileName &folder);
 
 	static TBool CompareShowsByUid(const CShowInfo &a, const CShowInfo &b);
