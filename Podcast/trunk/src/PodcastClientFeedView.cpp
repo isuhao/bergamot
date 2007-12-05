@@ -101,8 +101,17 @@ void CPodcastClientFeedView::UpdateFeedInfoDataL(CFeedInfo* aFeedInfo,  MQikList
 {
 	TBuf<KMaxShortDateFormatSpec*2> updatedDate;
 	aListboxData->SetTextL(aFeedInfo->Title(), EQikListBoxSlotText1);
-	aListboxData->SetTextL(aFeedInfo->Description(), EQikListBoxSlotText2);
-			
+	//aListboxData->SetTextL(aFeedInfo->Description(), EQikListBoxSlotText2);
+	
+	TUint unplayedCount = 0;
+	TUint showCount = 0;
+	TBuf<100> unplayedShows;
+
+	iPodcastModel.ShowEngine().GetStatsByFeed(aFeedInfo->Uid(), showCount, unplayedCount);
+	unplayedShows.Format(_L("%d/%d shows"), unplayedCount, showCount);
+	aListboxData->SetEmphasis(unplayedCount > 0);					
+	aListboxData->SetTextL(unplayedShows, EQikListBoxSlotText2);
+	
 	aFeedInfo->LastUpdated().FormatL(updatedDate, KDateFormat());
 	aListboxData->SetTextL(updatedDate, EQikListBoxSlotText3);
 }
@@ -250,7 +259,7 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 					unplayedShows.Format(_L("%d/%d shows"), unplayedCount, showCount);
 					listBoxData->SetEmphasis(unplayedCount > 0);					
 					
-					//listBoxData->AddTextL(unplayedShows, EQikListBoxSlotText2);
+					listBoxData->AddTextL(unplayedShows, EQikListBoxSlotText2);
 
 					if (fi->LastUpdated().Int64() == 0) {
 						updatedDate.Zero();
