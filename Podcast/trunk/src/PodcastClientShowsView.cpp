@@ -15,6 +15,7 @@
 
 _LIT(KShowsTitleFormat, "%d / %d");
 _LIT(KSizeDownloadingOf, "%S/%S");
+_LIT(KDateFormat,"%D%M%Y%/0%1%/1%2%/2%3%/3");
 
 const TInt KSizeBufLen = 16;
 
@@ -511,7 +512,7 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 						if(si->PubDate().Int64() == 0) {
 							showDate.Format(_L("Unknown"));
 						} else {
-							si->PubDate().FormatL(showDate, TShortDateFormatSpec());
+							si->PubDate().FormatL(showDate, KDateFormat());
 						}
 						listBoxData->AddTextL(showDate, EQikListBoxSlotText3);
 						
