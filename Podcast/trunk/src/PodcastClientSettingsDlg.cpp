@@ -30,7 +30,7 @@ void CPodcastClientVolumeDlg::PreLayoutDynInitL()
 
 TBool CPodcastClientVolumeDlg::OkToExitL(TInt aCommandId)
 {
-	iPodcastModel.SettingsEngine().SetVolume(iVolumeSlider->CurrentValue());
+	iPodcastModel.SettingsEngine().SetVolume(iVolumeSlider->CurrentValue()*KVolumeDelta);
 
 	return ETrue;
 }
@@ -41,7 +41,7 @@ void CPodcastClientVolumeDlg::HandleControlStateChangeL(TInt aControlId)
 
 	if(EPodcastSettingsVolume == aControlId)
 	{
-		iPodcastModel.SettingsEngine().SetVolume(iVolumeSlider->CurrentValue());
+		iPodcastModel.SettingsEngine().SetVolume(iVolumeSlider->CurrentValue()*KVolumeDelta);
 	}
 }
 
