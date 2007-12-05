@@ -225,11 +225,13 @@ void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 				if(iPodcastModel.SoundEngine().State() == ESoundEnginePlaying)
 				{
 					iPodcastModel.SoundEngine().Pause();
+					iPlayProgressbar->SetFocusing(ETrue);
 					comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PLAY_CMD);
 				}
 				else
 				{
 					iPodcastModel.SoundEngine().Play();
+					iPlayProgressbar->SetFocusing(EFalse);
 					comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PAUSE_CMD);
 				}
 			}
@@ -242,7 +244,7 @@ void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 	case EPodcastStop:
 		{
 			comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PLAY_CMD);
-
+			iPlayProgressbar->SetFocusing(ETrue);
 			iPodcastModel.SoundEngine().Stop();	
 		}break;
 	case EPodcastDownloadShow:
@@ -537,10 +539,12 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 		if(iPodcastModel.SoundEngine().State() == ESoundEnginePlaying)
 		{
 			comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PAUSE_CMD);
+			iPlayProgressbar->SetFocusing(EFalse);
 		}
 		else
 		{
 			comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PLAY_CMD);
+			iPlayProgressbar->SetFocusing(ETrue);
 		}
 		
 		
