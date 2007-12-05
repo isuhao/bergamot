@@ -127,7 +127,7 @@ TKeyResponse CPodcastClientPlayView::OfferKeyEventL(const TKeyEvent& aKeyEvent,T
 		case EDeviceKeyFourWayRight:
 			if(iPodcastModel.SettingsEngine().Volume() < KMaxVolume)
 			{
-				iPodcastModel.SettingsEngine().SetVolume(iPodcastModel.SettingsEngine().Volume()+1);
+				iPodcastModel.SettingsEngine().SetVolume(iPodcastModel.SettingsEngine().Volume()+KVolumeDelta);
 			}
 			break;
 		case '4':
@@ -135,7 +135,7 @@ TKeyResponse CPodcastClientPlayView::OfferKeyEventL(const TKeyEvent& aKeyEvent,T
 		case EDeviceKeyFourWayLeft:
 				if(iPodcastModel.SettingsEngine().Volume() > 0)
 			{
-				iPodcastModel.SettingsEngine().SetVolume(iPodcastModel.SettingsEngine().Volume()-1);
+				iPodcastModel.SettingsEngine().SetVolume(iPodcastModel.SettingsEngine().Volume()-KVolumeDelta);
 			}
 			break;
 		}

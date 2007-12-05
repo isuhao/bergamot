@@ -528,7 +528,7 @@ void CShowEngine::ListDir(TFileName &folder) {
 			TBool exists = EFalse;
 			for (int i=0;i<iShows.Count();i++) {
 				if (iShows[i]->FileName().Compare(pathName) == 0) {
-					RDebug::Print(_L("Already listed %S"), &pathName);
+					//RDebug::Print(_L("Already listed %S"), &pathName);
 					exists = ETrue;
 					break;
 				}
@@ -538,7 +538,7 @@ void CShowEngine::ListDir(TFileName &folder) {
 				continue;
 			}
 			
-			RDebug::Print(_L("We found a new file: %S"), &fileName);
+			//RDebug::Print(_L("We found a new file: %S"), &fileName);
 			
 			CShowInfo *info = CShowInfo::NewL();
 			info->SetFileName(pathName);
@@ -556,6 +556,7 @@ void CShowEngine::ListDir(TFileName &folder) {
 	CleanupStack::Pop(dirScan);
 
 }
+
 void CShowEngine::CheckFiles()
 	{
 

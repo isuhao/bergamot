@@ -21,6 +21,7 @@ _LIT(KFeedDB, "feeds.db");
 
 
 const TInt KMaxVolume = 100;
+const TInt KVolumeDelta = 10;
 
 class CSettingsEngine : public CBase
 {
