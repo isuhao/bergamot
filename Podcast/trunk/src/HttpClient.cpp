@@ -36,6 +36,7 @@ CHttpClient* CHttpClient::NewL(MHttpClientObserver& aObserver)
 
 CHttpClient::CHttpClient(MHttpClientObserver& aObserver) : iObserver(aObserver)
   {
+  iResumeEnabled = EFalse;
   }
 
 CHttpClient* CHttpClient::NewLC(MHttpClientObserver& aObserver)
@@ -120,6 +121,11 @@ TBool CHttpClient::IsActive()
 	return iIsActive;
 	}
 
+void CHttpClient::SetResumeEnabled(TBool aEnabled)
+	{
+	iResumeEnabled = aEnabled;
+	}
+
 void CHttpClient::GetL(TDesC& url, TDesC& fileName, TBool aSilent) {
 	RDebug::Print(_L("CHttpClient::Get START"));
 	//ManageConnections(ETrue);
@@ -164,7 +170,7 @@ void CHttpClient::GetL(TDesC& url, TDesC& fileName, TBool aSilent) {
 	rfs.Connect();
 	TEntry entry;
 	TBuf8<100> rangeText;
-	if (rfs.Entry(fileName, entry) == KErrNone) {
+	if (iResumeEnabled && rfs.Entry(fileName, entry) == KErrNone) {
 		RDebug::Print(_L("Found file, with size=%d"), entry.iSize);
 		// file exists, so we should probably resume
 		rangeText.Format(_L8("bytes=%d-"), entry.iSize-KByteOverlap);

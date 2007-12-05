@@ -127,7 +127,10 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 					}
 				}
 			}break;
-				
+		case EPodcastMarkAllPlayed:
+			iPodcastModel.ShowEngine().SetPlayedByFeed(iPodcastModel.ActiveFeedInfo()->Uid());
+			UpdateListboxItemsL();
+			break;
 		case EPodcastPurgeFeed:
 			{
 				if(iEikonEnv->QueryWinL(R_PODCAST_PURGE_FEED_TITLE, R_PODCAST_PURGE_FEED_PROMPT))				

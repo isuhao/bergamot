@@ -82,7 +82,6 @@ void CFeedEngine::UpdateFeed(TInt aFeedUid)
 	filePath.Copy(iPodcastModel.SettingsEngine().PrivatePath());
 	filePath.Append(_L("feed.xml"));
 	iUpdatingFeedFileName.Copy(filePath);
-	
 	iFeedClient->GetL(iActiveFeed->Url(), iUpdatingFeedFileName);
 	}
 

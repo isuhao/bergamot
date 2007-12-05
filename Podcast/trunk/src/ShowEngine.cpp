@@ -32,6 +32,7 @@ void CShowEngine::ConstructL()
 	{
 	iFs.Connect();
 	iShowClient = CHttpClient::NewL(*this);
+	iShowClient->SetResumeEnabled(ETrue);
 	iLinearOrder = new TLinearOrder<CShowInfo>(CShowEngine::CompareShowsByDate);
 
 	LoadShows();
@@ -491,12 +492,16 @@ void CShowEngine::DownloadNextShow()
 
 void CShowEngine::SetPlayedByFeed(TUint aFeedUid)
 	{
+	RDebug::Print(_L("SetPlayedByFeed %d"), aFeedUid);
 	for (int i=0;i<iShows.Count();i++)
 		{
 			if (iShows[i]->FeedUid() == aFeedUid) {
+				RDebug::Print(_L("Setting %d played"), iShows[i]->Uid());
 				iShows[i]->SetPlayState(EPlayed);
 			}
 		}
+	
+	SaveShows();
 	}
 
 

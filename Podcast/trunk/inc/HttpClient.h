@@ -18,6 +18,8 @@ public:
   	TBool IsActive();
 	void ClientRequestCompleteL(TBool aSuccessful);
 	void ManageConnections(TBool aRequireWLAN);
+	void SetResumeEnabled(TBool aEnabled);
+
 private:
 	CHttpClient(MHttpClientObserver& aResObs);
 	static CHttpClient* NewLC(MHttpClientObserver& aResObs);
@@ -31,5 +33,6 @@ private:
 	TInt iTransactionCount;
 	RHTTPTransaction iTrans;
 	CHttpEventHandler* iHandler;
+	TBool iResumeEnabled;
 };
 #endif
