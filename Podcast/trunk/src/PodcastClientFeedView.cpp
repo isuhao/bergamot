@@ -9,6 +9,7 @@
 #include "PodcastModel.h"
 #include "ShowEngine.h"
 const TInt KMaxFeedNameLength = 100;
+const TInt KADayInHours = 24;
 /**
 Creates and constructs the view.
 
@@ -112,7 +113,20 @@ void CPodcastClientFeedView::UpdateFeedInfoDataL(CFeedInfo* aFeedInfo,  MQikList
 	aListboxData->SetEmphasis(unplayedCount > 0);					
 	aListboxData->SetTextL(unplayedShows, EQikListBoxSlotText2);
 	
-	aFeedInfo->LastUpdated().FormatL(updatedDate, KDateFormat());
+	if (aFeedInfo->LastUpdated().Int64() == 0) {
+		updatedDate.Zero();
+	}else {
+		TTime now;
+		TTimeIntervalHours interval;
+		now.UniversalTime();
+		now.HoursFrom(aFeedInfo->LastUpdated(), interval);
+		if (interval.Int() < KADayInHours) {
+			aFeedInfo->LastUpdated().FormatL(updatedDate, KTimeFormat());
+		}else {
+			aFeedInfo->LastUpdated().FormatL(updatedDate, KDateFormat());
+		}
+	}
+
 	aListboxData->SetTextL(updatedDate, EQikListBoxSlotText3);
 }
 
