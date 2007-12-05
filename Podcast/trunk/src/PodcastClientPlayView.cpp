@@ -250,7 +250,7 @@ void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 		}break;
 	case EPodcastDownloadShow:
 		{
-			iPodcastModel.ShowEngine().AddDownload(iPodcastModel.PlayingPodcast());
+			iPodcastModel.ShowEngine().AddDownload(iShowInfo);
 			UpdateViewL();
 		}break;
 	case EPodcastViewMain:
