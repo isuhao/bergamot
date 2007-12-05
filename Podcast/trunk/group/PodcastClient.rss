@@ -147,13 +147,6 @@ RESOURCE QIK_COMMAND_LIST r_podcast_listview_commands
 			id = EPodcastPurgeFeed;
 			type = EQikCommandTypeScreen;
 			text = STRING_r_view_purge_feed_cmd;
-			},
-		QIK_COMMAND
-			{
-			groupId = 5;
-			id = EPodcastMarkAllPlayed;
-			type = EQikCommandTypeScreen;
-			text = STRING_r_view_mark_all_played_cmd;
 			},	
 		QIK_COMMAND
 			{
@@ -199,6 +192,22 @@ RESOURCE QIK_COMMAND_LIST r_podcast_listview_commands
 			type = EQikCommandTypeScreen;
 			text = STRING_r_view_resume_downloads_cmd;
 			},
+// Show filter handling and item marking for this
+	QIK_COMMAND
+			{
+			groupId = 7;
+			id = EPodcastShowUnplayedOnly;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_view_show_unplayed_cmd;
+			stateFlags = EQikCmdFlagCheckBox;
+			},	
+		QIK_COMMAND
+			{
+			groupId = 7;
+			id = EPodcastMarkAllPlayed;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_view_mark_all_played_cmd;
+			},	
 // Other commands
 		QIK_COMMAND
 			{
