@@ -157,6 +157,13 @@ RESOURCE QIK_COMMAND_LIST r_podcast_listview_commands
 			shortText = STRING_r_update_all_feeds_short_cmd;
 			},
 // Show handling		
+	QIK_COMMAND
+			{
+			groupId = 5;
+			id = EPodcastDeleteAllShows;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_view_delete_shows_cmd;
+			},
 		QIK_COMMAND
 			{
 			groupId = 5;

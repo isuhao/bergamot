@@ -373,6 +373,7 @@ void CPodcastClientShowsView::UpdateShowItemDataL(CShowInfo* aShowInfo, MQikList
 	}
 	
 	aListboxData->SetTextL(infoSize, EQikListBoxSlotText4);
+	aListboxData->SetEmphasis(aShowInfo->PlayState() == ENeverPlayed);					
 }
 
 void CPodcastClientShowsView::UpdateShowItemL(CShowInfo* aShowInfo, TInt aSizeDownloaded)
