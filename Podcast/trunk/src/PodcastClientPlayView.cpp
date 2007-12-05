@@ -248,6 +248,11 @@ void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 			iPlayProgressbar->SetFocusing(ETrue);
 			iPodcastModel.SoundEngine().Stop();	
 		}break;
+	case EPodcastRemoveDownload:
+		{
+			iPodcastModel.ShowEngine().RemoveDownload(iShowInfo->Uid());
+			UpdateViewL();
+		}break;
 	case EPodcastDownloadShow:
 		{
 			iPodcastModel.ShowEngine().AddDownload(iShowInfo);
@@ -460,20 +465,26 @@ void CPodcastClientPlayView::UpdateViewL()
 			{
 				comMan.SetInvisible(*this, EPodcastDownloadShow, EFalse);
 				comMan.SetInvisible(*this, EPodcastPlay, ETrue);
+				comMan.SetInvisible(*this, EPodcastRemoveDownload, ETrue);
+				comMan.SetInvisible(*this, EPodcastSetVolume, ETrue);
 				iDownloadProgressInfo->MakeVisible(EFalse);
 				iPlayProgressbar->MakeVisible(EFalse);
 			}
-			else if(iShowInfo->DownloadState() != EDownloaded)
+			else if(iShowInfo->DownloadState() != EDownloaded) // Qued or downloading.
 			{
 				comMan.SetInvisible(*this, EPodcastPlay, ETrue);
 				comMan.SetInvisible(*this, EPodcastDownloadShow, ETrue);
+				comMan.SetInvisible(*this, EPodcastRemoveDownload, EFalse);
+				comMan.SetInvisible(*this, EPodcastSetVolume, ETrue);
 				iDownloadProgressInfo->MakeVisible(iShowInfo->DownloadState() == EDownloading);
 				iPlayProgressbar->MakeVisible(EFalse);
 			}
-			else
+			else // Downloaded
 			{
 				comMan.SetInvisible(*this, EPodcastPlay, EFalse);
+				comMan.SetInvisible(*this, EPodcastSetVolume, EFalse);
 				comMan.SetInvisible(*this, EPodcastDownloadShow, ETrue);
+				comMan.SetInvisible(*this, EPodcastRemoveDownload, ETrue);
 				iDownloadProgressInfo->MakeVisible(EFalse);
 				iPlayProgressbar->MakeVisible(ETrue);
 			}
