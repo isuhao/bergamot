@@ -43,6 +43,8 @@ public:
 	RShowInfoArray& GetSelectedShows();
 	void SetPlayedByFeed(TUint aFeedUid);
 	void CheckFiles();
+	void GetStatsByFeed(TUint aFeedUid, TUint &aNumShows, TUint &aNumUnplayed );
+
 	
 	void AddObserver(MShowEngineObserver *observer);
 protected:

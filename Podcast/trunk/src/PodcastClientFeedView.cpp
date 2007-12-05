@@ -7,6 +7,7 @@
 #include "PodcastClientAddFeedDlg.h"
 #include "PodcastClientFeedView.h"
 #include "PodcastModel.h"
+#include "ShowEngine.h"
 const TInt KMaxFeedNameLength = 100;
 /**
 Creates and constructs the view.
@@ -243,8 +244,12 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 					listBoxData->SetItemId(fi->Uid());
 					listBoxData->AddTextL(fi->Title(), EQikListBoxSlotText1);
 					//listBoxData->AddTextL(fi->Description(), EQikListBoxSlotText2);
-
-					//unplayedShows.Format(_L("124 shows"));
+					TUint unplayedCount = 0;
+					TUint showCount = 0;
+					iPodcastModel.ShowEngine().GetStatsByFeed(fi->Uid(), showCount, unplayedCount);
+					unplayedShows.Format(_L("%d/%d shows"), unplayedCount, showCount);
+					listBoxData->SetEmphasis(unplayedCount > 0);					
+					
 					//listBoxData->AddTextL(unplayedShows, EQikListBoxSlotText2);
 
 					if (fi->LastUpdated().Int64() == 0) {

@@ -111,6 +111,24 @@ void CShowEngine::DownloadInfo(CHttpClient* aHttpClient, int aTotalBytes)
 		}
 	}
 
+void CShowEngine::GetStatsByFeed(TUint aFeedUid, TUint &aNumShows, TUint &aNumUnplayed )
+	{
+	int showsCount = 0;
+	int unplayedCount = 0;
+	
+	for (int i=0;i<iShows.Count();i++) {
+		if (iShows[i]->FeedUid() == aFeedUid)
+			{
+			showsCount++;
+			if (iShows[i]->PlayState() == ENeverPlayed) {
+				unplayedCount++;
+			}
+			}
+	}
+	aNumShows = showsCount;
+	aNumUnplayed = unplayedCount;
+	}
+
 void CShowEngine::GetShow(CShowInfo *info)
 	{
 	CFeedInfo *feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(info->FeedUid());
