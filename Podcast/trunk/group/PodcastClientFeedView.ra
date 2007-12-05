@@ -165,7 +165,8 @@ RESOURCE QIK_LISTBOX_LAYOUT r_podcast_feedview_listbox_layout
 						type = QIK_LISTBOX_TEXT_TYPE
 						{
 							font_size = EQikListBoxFontExtraSmall;
-							emphasis_font_size = EQikListBoxFontExtraSmall;					
+							emphasis_font_size = EQikListBoxFontExtraSmall;			
+							alignment = EQikListBoxTextAlignRight;		
 						};
 					}
 				};
