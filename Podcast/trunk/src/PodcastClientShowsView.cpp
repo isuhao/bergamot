@@ -141,6 +141,7 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 				{
 					iPodcastModel.ShowEngine().AddDownload(iPodcastModel.ActiveShowList()[index]);
 					UpdateShowItemL(iPodcastModel.ActiveShowList()[index]);
+					UpdateCommandsL();
 				}
 			}break;
 		case EPodcastPurgeFeed:
@@ -580,6 +581,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 	RShowInfoArray &fItems = iPodcastModel.ActiveShowList();
 	TBool removeDownloadCmd = EFalse;
 	TBool removePurgeShowCmd = ETrue;
+	TBool removeDownloadShowCmd = ETrue;
 	if(iListbox != NULL)
 	{
 		TInt index = iListbox->CurrentItemIndex();
@@ -594,7 +596,12 @@ void CPodcastClientShowsView::UpdateCommandsL()
 				removeDownloadCmd = ETrue;
 			}
 			removePurgeShowCmd = fItems[index]->DownloadState() != EDownloaded;
-		
+
+			if(fItems[index]->DownloadState() == ENotDownloaded)
+			{
+				 removeDownloadShowCmd = EFalse;
+			}
+			
 		}
 		else
 		{
@@ -611,6 +618,8 @@ void CPodcastClientShowsView::UpdateCommandsL()
 	comMan.SetInvisible(*this, EPodcastUpdateFeed, iCurrentCategory != EShowFeedShows);
 
 	TBool notshowDownloadCommands = (iCurrentCategory != EShowPendingShows);
+	comMan.SetInvisible(*this, EPodcastDownloadShow, removeDownloadShowCmd);
+
 	comMan.SetInvisible(*this, EPodcastRemoveDownload, (notshowDownloadCommands||removeDownloadCmd));
 	comMan.SetInvisible(*this, EPodcastStopDownloads, notshowDownloadCommands);
 	comMan.SetInvisible(*this, EPodcastResumeDownloads, notshowDownloadCommands);
