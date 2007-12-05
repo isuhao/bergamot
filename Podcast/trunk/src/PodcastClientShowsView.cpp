@@ -15,7 +15,6 @@
 
 _LIT(KShowsTitleFormat, "%d / %d");
 _LIT(KSizeDownloadingOf, "%S/%S");
-_LIT(KDateFormat,"%D%M%Y%/0%1%/1%2%/2%3%/3");
 
 const TInt KSizeBufLen = 16;
 

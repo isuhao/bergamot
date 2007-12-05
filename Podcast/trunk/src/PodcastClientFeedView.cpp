@@ -102,7 +102,7 @@ void CPodcastClientFeedView::UpdateFeedInfoDataL(CFeedInfo* aFeedInfo,  MQikList
 	aListboxData->SetTextL(aFeedInfo->Title(), EQikListBoxSlotText1);
 	aListboxData->SetTextL(aFeedInfo->Description(), EQikListBoxSlotText2);
 			
-	aFeedInfo->LastUpdated().FormatL(updatedDate, TShortDateFormatSpec());
+	aFeedInfo->LastUpdated().FormatL(updatedDate, KDateFormat());
 	aListboxData->SetTextL(updatedDate, EQikListBoxSlotText3);
 }
 
@@ -255,9 +255,9 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 						now.UniversalTime();
 						now.HoursFrom(fi->LastUpdated(), interval);
 						if (interval.Int() < 24) {
-							fi->LastUpdated().FormatL(updatedDate, TTimeFormatSpec());
+							fi->LastUpdated().FormatL(updatedDate, KTimeFormat());
 						}else {
-							fi->LastUpdated().FormatL(updatedDate, TShortDateFormatSpec());
+							fi->LastUpdated().FormatL(updatedDate, KDateFormat());
 						}
 					}
 					listBoxData->AddTextL(updatedDate, EQikListBoxSlotText3);
