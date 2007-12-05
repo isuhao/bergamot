@@ -227,6 +227,7 @@ void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 					iPodcastModel.SoundEngine().Pause();
 					iPlayProgressbar->SetFocusing(ETrue);
 					comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PLAY_CMD);
+					RequestFocusL(iScrollableContainer);
 				}
 				else
 				{
@@ -540,6 +541,7 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 		{
 			comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PAUSE_CMD);
 			iPlayProgressbar->SetFocusing(EFalse);
+			RequestFocusL(iScrollableContainer);
 		}
 		else
 		{
@@ -556,10 +558,13 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 			
 			if(iPodcastModel.SoundEngine().PlayTime()>0)
 			{
-				TUint duration = iPodcastModel.SoundEngine().PlayTime();
-				pos = iPodcastModel.SoundEngine().Position().Int64()/1000000;
-				iPlayProgressbar->SetValue((KMaxProgressValue*pos)/duration);
-				iPlayProgressbar->DrawDeferred();		
+				if(iPodcastModel.SoundEngine().State() == ESoundEnginePlaying)
+				{
+					TUint duration = iPodcastModel.SoundEngine().PlayTime();
+					pos = iPodcastModel.SoundEngine().Position().Int64()/1000000;
+					iPlayProgressbar->SetValue((KMaxProgressValue*pos)/duration);
+					iPlayProgressbar->DrawDeferred();		
+				}
 			}
 			else
 			{
