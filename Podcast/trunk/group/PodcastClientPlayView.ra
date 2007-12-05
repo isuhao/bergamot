@@ -68,7 +68,7 @@ RESOURCE QIK_COMMAND_LIST r_podcast_playview_commands
 			id = EPodcastRemoveDownload;
 			type = EQikCommandTypeDone;
 			text = STRING_r_view_remove_download_cmd;
-			shortText = STRING_r_view_remove_download_cmd;
+			shortText = STRING_r_view_remove_download_short_cmd;
 			},			
 		QIK_COMMAND
 			{
