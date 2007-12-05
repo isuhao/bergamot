@@ -602,6 +602,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 	comMan.SetInvisible(*this, EPodcastStopDownloads, notshowDownloadCommands);
 	comMan.SetInvisible(*this, EPodcastResumeDownloads, notshowDownloadCommands);
 	comMan.SetInvisible(*this, EPodcastPurgeShow, removePurgeShowCmd);
+	comMan.SetInvisible(*this, EPodcastPurgeFeed, (iCurrentCategory == EShowPendingShows || iCurrentCategory == EShowDownloadedShows));
 
 }
 
