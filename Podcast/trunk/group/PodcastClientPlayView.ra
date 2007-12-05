@@ -211,6 +211,7 @@ standard_font=EEikLabelFontLegend;
 RESOURCE LABEL r_podcast_playview_info
 {
 	horiz_align=EEikLabelAlignHLeft;
+	//horiz_align=EEikLabelAlignHCenter;
 }
 
 RESOURCE QIK_SLIDER r_podcast_playview_progress

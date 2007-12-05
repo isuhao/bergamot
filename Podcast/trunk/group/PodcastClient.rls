@@ -19,7 +19,7 @@ rls_string STRING_r_view_cmd "View"
 rls_string STRING_r_view_main_cmd "Main"
 rls_string STRING_r_view_shows_cmd "Shows"
 rls_string STRING_r_view_all_shows_cmd "All Shows"
-rls_string STRING_r_view_new_shows_cmd "New Shows"
+rls_string STRING_r_view_new_shows_cmd "Unplayed"
 rls_string STRING_r_view_dl_shows_cmd "Library"
 rls_string STRING_r_view_dling_shows_cmd "Downloads"
 
@@ -49,6 +49,7 @@ rls_string STRING_r_update_feed_cmd "Update feed"
 rls_string STRING_r_update_feed_short_cmd "Update"
 rls_string STRING_r_update_all_feeds_cmd "Update All"
 rls_string STRING_r_update_all_feeds_short_cmd "Upd. All"
+rls_string STRING_r_view_mark_all_played_cmd "Mark all played"
 
 // Actions for shows
 rls_string STRING_r_view_delete_show_cmd "Delete show"
@@ -63,7 +64,7 @@ rls_string STRING_r_settings_cmd "Settings"
 
 // Categories
 rls_string STRING_r_category_all "All shows"
-rls_string STRING_r_category_new "New shows"
+rls_string STRING_r_category_new "Unplayed"
 rls_string STRING_r_category_dled "Library"
 rls_string STRING_r_category_pending "Downloads"
 
