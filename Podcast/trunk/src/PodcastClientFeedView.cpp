@@ -229,6 +229,7 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 			
 			MQikListBoxData* listBoxData;
 			TBuf<KMaxShortDateFormatSpec*2> updatedDate;
+			TBuf<100> unplayedShows;
 			
 			if (len > 0) {
 				for (int i=0;i<len;i++) {
@@ -240,9 +241,24 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 					CFeedInfo *fi = feeds[i];
 					listBoxData->SetItemId(fi->Uid());
 					listBoxData->AddTextL(fi->Title(), EQikListBoxSlotText1);
-					listBoxData->AddTextL(fi->Description(), EQikListBoxSlotText2);
-					
-					fi->LastUpdated().FormatL(updatedDate, TShortDateFormatSpec());
+					//listBoxData->AddTextL(fi->Description(), EQikListBoxSlotText2);
+
+					//unplayedShows.Format(_L("124 shows"));
+					//listBoxData->AddTextL(unplayedShows, EQikListBoxSlotText2);
+
+					if (fi->LastUpdated().Int64() == 0) {
+						updatedDate.Zero();
+					}else {
+						TTime now;
+						TTimeIntervalHours interval;
+						now.UniversalTime();
+						now.HoursFrom(fi->LastUpdated(), interval);
+						if (interval.Int() < 24) {
+							fi->LastUpdated().FormatL(updatedDate, TTimeFormatSpec());
+						}else {
+							fi->LastUpdated().FormatL(updatedDate, TShortDateFormatSpec());
+						}
+					}
 					listBoxData->AddTextL(updatedDate, EQikListBoxSlotText3);
 					
 					CQikContent* content = CQikContent::NewL(this, _L("*"), bitmap, mask);
