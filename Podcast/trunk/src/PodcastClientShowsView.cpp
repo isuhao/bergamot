@@ -134,7 +134,15 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 			iPodcastModel.ShowEngine().SetPlayedByFeed(iPodcastModel.ActiveFeedInfo()->Uid());
 			UpdateListboxItemsL();
 			break;
-		
+		case EPodcastDownloadShow:
+			{
+				TInt index = iListbox->CurrentItemIndex();
+				if(index >= 0 && index < iPodcastModel.ActiveShowList().Count())
+				{
+					iPodcastModel.ShowEngine().AddDownload(iPodcastModel.ActiveShowList()[index]);
+					UpdateShowItemL(iPodcastModel.ActiveShowList()[index]);
+				}
+			}break;
 		case EPodcastPurgeFeed:
 			{
 				if(iEikonEnv->QueryWinL(R_PODCAST_PURGE_FEED_TITLE, R_PODCAST_PURGE_FEED_PROMPT))				

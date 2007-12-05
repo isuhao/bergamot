@@ -76,6 +76,7 @@ CQikCommand* CPodcastClientFeedView::DynInitOrDeleteCommandL(CQikCommand* aComma
 	case EPodcastPurgeFeed:
 	case EPodcastPurgeShow:
 	case EPodcastDeleteAllShows:
+	case EPodcastDownloadShow:
 	case EPodcastRemoveDownload:
 	case EPodcastStopDownloads:
 	case EPodcastResumeDownloads:
