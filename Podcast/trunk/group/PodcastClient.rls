@@ -43,6 +43,7 @@ rls_string STRING_r_view_remove_download_cmd "Remove download"
 rls_string STRING_r_view_show_cmd "Show"
 rls_string STRING_r_view_cmd "View"
 rls_string STRING_r_view_play_cmd "Play"
+
 // Actions for feeds
 rls_string STRING_r_view_add_feed_cmd "Add feed"
 rls_string STRING_r_view_edit_feed_cmd "Edit feed"
@@ -63,6 +64,10 @@ rls_string STRING_r_view_stop_downloads_cmd "Stop downloads"
 rls_string STRING_r_view_resume_downloads_cmd "Resume downloads"
 rls_string STRING_r_view_mark_all_played_cmd "Mark all played"
 rls_string STRING_r_view_show_unplayed_cmd "Show unplayed only"
+
+// Actions for library
+
+rls_string STRING_r_view_library_update_cmd "Scan podcasts folder"
 
 
 // Common actions

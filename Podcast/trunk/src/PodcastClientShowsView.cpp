@@ -127,6 +127,9 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 					}
 				}
 			}break;
+		case EPodcastUpdateLibrary:
+			iPodcastModel.ShowEngine().CheckFiles();
+			break;
 		case EPodcastShowUnplayedOnly:
 			{
 			}break;
