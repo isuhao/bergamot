@@ -651,10 +651,11 @@ void CPodcastClientShowsView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQ
 	case EEventItemTapped:
 		{
 			RShowInfoArray &fItems = iPodcastModel.ActiveShowList();
+
 			if(aItemIndex>=0 && aItemIndex< fItems.Count())
 			{
 				RDebug::Print(_L("Handle event for podcast %S, downloadState is %d"), &(fItems[aItemIndex]->Title()), fItems[aItemIndex]->DownloadState());
-				//iPodcastModel.PlayPausePodcastL(fItems[aItemIndex]);
+				
 				TPckgBuf<TInt> showUid;
 				showUid() = fItems[aItemIndex]->Uid();
 				TVwsViewId viewId = TVwsViewId(KUidPodcastClientID, KUidPodcastPlayViewID);

@@ -38,7 +38,7 @@ void CPodcastModel::ConstructL()
 {
 	iEnv = CEikonEnv::Static();
 	iCommDB = CCommsDatabase::NewL (EDatabaseTypeUnspecified);
-	iCommDB ->ShowHiddenRecords(); // magic
+	//iCommDB ->ShowHiddenRecords(); // magic
 	iIapNameArray = new (ELeave) CDesCArrayFlat(KDefaultGranu);
 
 	UpdateIAPListL();

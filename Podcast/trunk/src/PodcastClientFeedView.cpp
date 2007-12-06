@@ -333,10 +333,14 @@ void CPodcastClientFeedView::HandleListBoxEventL(CQikListBox *aListBox, TQikList
 			RFeedInfoArray feeds;
 			CleanupClosePushL(feeds);
 			iPodcastModel.FeedEngine().GetFeeds(feeds);
-			iPodcastModel.ActiveShowList().Reset();
-			iPodcastModel.SetActiveFeedInfo(feeds[aItemIndex]);
-			TVwsViewId showsView = TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID);
-			iQikAppUi.ActivateViewL(showsView,  TUid::Uid(EShowFeedShows), KNullDesC8());
+
+			if(aItemIndex >= 0 && aItemIndex < feeds.Count())
+			{
+				iPodcastModel.ActiveShowList().Reset();
+				iPodcastModel.SetActiveFeedInfo(feeds[aItemIndex]);
+				TVwsViewId showsView = TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID);
+				iQikAppUi.ActivateViewL(showsView,  TUid::Uid(EShowFeedShows), KNullDesC8());
+			}
 			CleanupStack::PopAndDestroy();// close feeds
 		}
 		break;
