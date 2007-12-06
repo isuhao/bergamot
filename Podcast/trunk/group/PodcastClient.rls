@@ -90,6 +90,9 @@ rls_string STRING_r_add_feed_prompt "Feed URL:"
 rls_string STRING_r_remove_feed_title "Remove feed"
 rls_string STRING_r_remove_feed_prompt "Are you really sure you want to remove this feed?"
 
+rls_string STRING_r_enable_downloads_title "Enable downloads?"
+rls_string STRING_r_enable_downloads_prompt "There are shows in the download queue. Do you want to download now?"
+
 
 rls_string STRING_r_purge_feed_title "Purge feed"
 rls_string STRING_r_purge_feed_prompt "Are you really sure you want to purge this feed, and remove all downloaded shows?"
