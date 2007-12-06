@@ -9,6 +9,7 @@ class CFeedEngine;
 class CSoundEngine;
 class CShowEngine;
 class CSettingsEngine;
+class CCommsDatabase;
 
 /**
  * This class handles application storage needs and ownership of audioplayer, resource lists etc.
@@ -33,6 +34,10 @@ public:
 
 	TBool SetZoomState(TInt aZoomState);
 	TInt ZoomState();
+
+	void UpdateIAPListL();
+	CDesCArrayFlat* IAPNames();
+	RArray<TInt>& IAPIds();
 protected:
 	CPodcastModel();
 	void ConstructL();
@@ -49,6 +54,9 @@ private:
    TInt iZoomState;
    
    CEikonEnv* iEnv;
+   RArray<TInt> iIapIdArray;
+   CDesCArrayFlat* iIapNameArray;
+   CCommsDatabase* iCommDB;
 };
 
 #endif // PODCASTMODEL_H

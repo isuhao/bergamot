@@ -1,10 +1,13 @@
 #include <qikon.hrh>
+#include <commdb.h>
 
 #include "PodcastModel.h"
 #include "FeedEngine.h"
 #include "SoundEngine.h"
 #include "SettingsEngine.h"
 #include "ShowEngine.h"
+
+const TInt KDefaultGranu = 5;
 
 CPodcastModel* CPodcastModel::NewL()
 {
@@ -21,6 +24,9 @@ CPodcastModel::~CPodcastModel()
 	delete iSoundEngine;
 	delete iSettingsEngine;
 	iActiveShowList.Close();
+	delete iIapNameArray;
+	iIapIdArray.Close();
+	delete iCommDB;
 }
 
 CPodcastModel::CPodcastModel()
@@ -31,11 +37,48 @@ CPodcastModel::CPodcastModel()
 void CPodcastModel::ConstructL()
 {
 	iEnv = CEikonEnv::Static();
+	iCommDB = CCommsDatabase::NewL (EDatabaseTypeUnspecified);
+	iCommDB ->ShowHiddenRecords(); // magic
+	iIapNameArray = new (ELeave) CDesCArrayFlat(KDefaultGranu);
+
+	UpdateIAPListL();
+
 	iSettingsEngine = CSettingsEngine::NewL(*this);
 	iFeedEngine = CFeedEngine::NewL(*this);
 	iShowEngine = CShowEngine::NewL(*this);
 	iSoundEngine = CSoundEngine::NewL(*this);
 }
+
+void CPodcastModel::UpdateIAPListL()
+{
+	iIapNameArray->Reset();
+	iIapIdArray.Reset();
+	CCommsDbTableView* table = iCommDB->OpenTableLC (TPtrC (IAP)); 
+	TInt ret = table->GotoFirstRecord ();
+	TUint32 iap = 0;
+	TBuf <KCommsDbSvrMaxFieldLength> bufName;
+	while (ret == KErrNone) // There was a first record
+	{
+		table->ReadUintL(TPtrC(COMMDB_ID), iap);
+		table->ReadTextL (TPtrC(COMMDB_NAME), bufName);
+		iIapIdArray.Append(iap);
+		iIapNameArray->AppendL(bufName); 
+		ret = table->GotoNextRecord();
+	}
+	CleanupStack::PopAndDestroy(); // Close table
+}
+
+CDesCArrayFlat* CPodcastModel::IAPNames()
+{
+	return iIapNameArray;
+}
+
+RArray<TInt>& CPodcastModel::IAPIds()
+{
+	return iIapIdArray;
+}
+
+
 
 CEikonEnv* CPodcastModel::EikonEnv()
 {

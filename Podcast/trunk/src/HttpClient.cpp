@@ -52,6 +52,7 @@ void CHttpClient::ConstructL()
 
   }
 
+
 void CHttpClient::ManageConnections(TBool aRequireWLAN)
 	{
 	// 0. If WLAN required-setting is off, take whatever connection we have, return
@@ -62,7 +63,9 @@ void CHttpClient::ManageConnections(TBool aRequireWLAN)
 	
 	// WLAN som connectar men inte routar?
 	
-	CCommsDatabase *cdb = CCommsDatabase::NewL(EDatabaseTypeIAP);
+	CCommsDatabase *cdb = CCommsDatabase::NewL(EDatabaseTypeUnspecified);
+	CleanupStack::PushL(cdb);
+
 	unsigned long defaultIap;
 	CCommsDbTableView* prefTableView = cdb->OpenTableLC( TPtrC( IAP ) );
 	prefTableView->ReadUintL( TPtrC( COMMDB_ID), defaultIap );
