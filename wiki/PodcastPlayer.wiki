@@ -20,16 +20,17 @@ This is how we plan to implement features. Please [http://groups.google.com/grou
   * Release 1 (New Year)
     * Bug fixes
     * Symbian signed?
+    * Translations
 
   * Beta 2 (Christmas)
+    * Bug fixes
+    * UI refinements
     * Translations
 
   * Beta 1 (December 16th)
-    * No new features
-    * Speed improvements
-
-  * Alpha 6
     * Improved icons
+    * UI refinements
+    * Feature freeze
 
   * Alpha 5 (December 9th)
     * Automatic downloading 
@@ -37,8 +38,9 @@ This is how we plan to implement features. Please [http://groups.google.com/grou
     * Resume downloads
     * Files manually added to podcast folder playable
     * Check connection type, option to download only on WLAN
-    * Setup on install (choose flash drive etc)
-    * Automatic purging
+    * ~~Setup on install (choose flash drive etc)~~ Don't think we need this.
+    * Find flash drive automatically
+    * Automatic purging of old files
 
   * Alpha 4 (December 1st) | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha4 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha4/group/Podcast_udeb_signed.sis SIS]
     * UI refinements, mainly improved, somewhat experimental player dialog
