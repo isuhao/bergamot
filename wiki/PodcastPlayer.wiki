@@ -31,6 +31,7 @@ This is how we plan to implement features. Please [http://groups.google.com/grou
     * Improved icons
     * UI refinements
     * Feature freeze
+    * Infrastructure for translations
 
   * Alpha 5 (December 9th)
     * Automatic downloading 
