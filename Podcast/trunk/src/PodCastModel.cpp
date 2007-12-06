@@ -55,13 +55,16 @@ void CPodcastModel::UpdateIAPListL()
 	iIapIdArray.Reset();
 	CCommsDbTableView* table = iCommDB->OpenTableLC (TPtrC (IAP)); 
 	TInt ret = table->GotoFirstRecord ();
-	TUint32 iap = 0;
+	TPodcastIAPItem IAPItem;
 	TBuf <KCommsDbSvrMaxFieldLength> bufName;
 	while (ret == KErrNone) // There was a first record
 	{
-		table->ReadUintL(TPtrC(COMMDB_ID), iap);
+		table->ReadUintL(TPtrC(COMMDB_ID), IAPItem.iIapId);
 		table->ReadTextL (TPtrC(COMMDB_NAME), bufName);
-		iIapIdArray.Append(iap);
+		table->ReadTextL (TPtrC(IAP_BEARER_TYPE), IAPItem.iBearerType);
+		table->ReadTextL (TPtrC(IAP_SERVICE_TYPE), IAPItem.iServiceType);
+
+		iIapIdArray.Append(IAPItem);
 		iIapNameArray->AppendL(bufName); 
 		ret = table->GotoNextRecord();
 	}
@@ -73,7 +76,7 @@ CDesCArrayFlat* CPodcastModel::IAPNames()
 	return iIapNameArray;
 }
 
-RArray<TInt>& CPodcastModel::IAPIds()
+RArray<TPodcastIAPItem>& CPodcastModel::IAPIds()
 {
 	return iIapIdArray;
 }

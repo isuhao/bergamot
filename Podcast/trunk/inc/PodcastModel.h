@@ -2,6 +2,7 @@
 #define PODCASTMODEL_H
 #include <e32base.h>
 #include <eikenv.h>
+#include <commdb.h>
 #include "FeedInfo.h"
 #include "ShowInfo.h"
 
@@ -10,6 +11,14 @@ class CSoundEngine;
 class CShowEngine;
 class CSettingsEngine;
 class CCommsDatabase;
+
+class TPodcastIAPItem
+{
+public:
+	TUint32 iIapId;
+	TBuf<KCommsDbSvrMaxFieldLength> iServiceType;
+	TBuf<KCommsDbSvrMaxFieldLength> iBearerType;
+};
 
 /**
  * This class handles application storage needs and ownership of audioplayer, resource lists etc.
@@ -37,7 +46,7 @@ public:
 
 	void UpdateIAPListL();
 	CDesCArrayFlat* IAPNames();
-	RArray<TInt>& IAPIds();
+	RArray<TPodcastIAPItem>& IAPIds();
 protected:
 	CPodcastModel();
 	void ConstructL();
@@ -54,7 +63,7 @@ private:
    TInt iZoomState;
    
    CEikonEnv* iEnv;
-   RArray<TInt> iIapIdArray;
+   RArray<TPodcastIAPItem> iIapIdArray;
    CDesCArrayFlat* iIapNameArray;
    CCommsDatabase* iCommDB;
 };
