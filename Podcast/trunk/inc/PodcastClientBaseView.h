@@ -25,7 +25,10 @@ protected:
 
 	// from MQikCommandModelOwner	
 	CQikCommand* DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& aControlAddingCommands);
+	void ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage);
+
 private:
+	TBool iCheckForQuedDownloads;
 
 };
 #endif // baseview

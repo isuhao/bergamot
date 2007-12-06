@@ -29,14 +29,6 @@ void CPodcastClientAppUi::ConstructL()
   iPlayView = CPodcastClientPlayView::NewLC(*this, *iPodcastModel);
   AddViewL(*iPlayView);
   CleanupStack::Pop(iPlayView);
-  
-  iPodcastModel->ShowEngine().SelectShowsDownloading();
-  if (iPodcastModel->ShowEngine().GetSelectedShows().Count() > 0) {
-	  if(iPodcastModel->EikonEnv()->QueryWinL(R_PODCAST_ENABLE_DOWNLOADS_TITLE, R_PODCAST_ENABLE_DOWNLOADS_PROMPT))
-		{
-			iPodcastModel->ShowEngine().ResumeDownloads();
-		}
-	}
 }
 
 /*-----------------------------------------------------------------------*/

@@ -6,6 +6,7 @@
 #include "PodcastClientBaseView.h"
 #include "PodcastModel.h"
 #include "SoundEngine.h"
+#include "ShowEngine.h"
 
 /**
 Creates and constructs the view.
@@ -30,6 +31,25 @@ TVwsViewId CPodcastClientBaseView::ViewId()const
 	{
 	return TVwsViewId(KUidPodcastClientID, KUidPodcastBaseViewID);
 	}
+
+void CPodcastClientBaseView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage)
+{
+	CPodcastClientView::ViewActivatedL(aPrevViewId, aCustomMessageId, aCustomMessage);
+
+	if(iCheckForQuedDownloads)
+	{
+		iCheckForQuedDownloads = EFalse;
+		iPodcastModel.ShowEngine().SelectShowsDownloading();
+		if (iPodcastModel.ShowEngine().GetSelectedShows().Count() > 0) {
+			if(iEikonEnv->QueryWinL(R_PODCAST_ENABLE_DOWNLOADS_TITLE, R_PODCAST_ENABLE_DOWNLOADS_PROMPT))
+			{
+				iPodcastModel.ShowEngine().ResumeDownloads();
+			}
+		}
+	}
+}
+
+
 
 void CPodcastClientBaseView::ViewConstructL()
 {
@@ -67,6 +87,7 @@ void CPodcastClientBaseView::ViewConstructL()
 
 CPodcastClientBaseView::CPodcastClientBaseView(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel):CPodcastClientView(aAppUi, aPodcastModel)
 {
+	iCheckForQuedDownloads = ETrue;
 }
 
 CPodcastClientBaseView::~CPodcastClientBaseView()
