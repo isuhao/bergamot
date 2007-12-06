@@ -56,6 +56,11 @@ void CFeedEngine::RunFeedTimer()
 
 void CFeedEngine::UpdateAllFeeds()
 	{
+	if (iFeedsUpdating.Count() > 0) {
+		RDebug::Print(_L("UpdateAllFeeds: Already updating"));
+		return;
+	}
+	
 	for (int i=0;i<iFeeds.Count();i++) {
 		iFeedsUpdating.Append(iFeeds[i]);
 	}

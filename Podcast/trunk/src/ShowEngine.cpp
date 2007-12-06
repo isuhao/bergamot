@@ -577,7 +577,6 @@ void CShowEngine::ListDir(TFileName &folder) {
 	}
 	delete dirPtr;
 	CleanupStack::Pop(dirScan);
-
 }
 
 void CShowEngine::CheckFiles()
