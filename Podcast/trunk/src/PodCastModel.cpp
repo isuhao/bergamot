@@ -66,6 +66,7 @@ void CPodcastModel::UpdateIAPListL()
 
 		iIapIdArray.Append(IAPItem);
 		iIapNameArray->AppendL(bufName); 
+		iIapNameArray->AppendL(IAPItem.iBearerType); 
 		ret = table->GotoNextRecord();
 	}
 	CleanupStack::PopAndDestroy(); // Close table
