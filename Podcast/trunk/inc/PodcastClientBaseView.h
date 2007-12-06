@@ -26,9 +26,11 @@ protected:
 	// from MQikCommandModelOwner	
 	CQikCommand* DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& aControlAddingCommands);
 	void ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage);
-
+	static TInt StaticCheckForQuedDownloadsL(TAny* aBaseView);
+	void CheckForQuedDownloadsL();
 private:
 	TBool iCheckForQuedDownloads;
+	CAsyncCallBack* iStartupCallBack;
 
 };
 #endif // baseview

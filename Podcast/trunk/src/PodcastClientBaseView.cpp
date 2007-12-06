@@ -39,17 +39,30 @@ void CPodcastClientBaseView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid 
 	if(iCheckForQuedDownloads)
 	{
 		iCheckForQuedDownloads = EFalse;
-		iPodcastModel.ShowEngine().SelectShowsDownloading();
-		if (iPodcastModel.ShowEngine().GetSelectedShows().Count() > 0) {
-			if(iEikonEnv->QueryWinL(R_PODCAST_ENABLE_DOWNLOADS_TITLE, R_PODCAST_ENABLE_DOWNLOADS_PROMPT))
-			{
-				iPodcastModel.ShowEngine().ResumeDownloads();
-			}
-		}
+		iStartupCallBack = new (ELeave) CAsyncCallBack(TCallBack(StaticCheckForQuedDownloadsL, this), CActive::EPriorityIdle);
+		iStartupCallBack->Call();
 	}
 }
 
+TInt CPodcastClientBaseView::StaticCheckForQuedDownloadsL(TAny* aBaseView)
+{
+	static_cast<CPodcastClientBaseView*>(aBaseView)->CheckForQuedDownloadsL();
+	return KErrNone;
+}
 
+void CPodcastClientBaseView::CheckForQuedDownloadsL()
+{
+	delete iStartupCallBack;
+	iStartupCallBack = NULL;
+
+	iPodcastModel.ShowEngine().SelectShowsDownloading();
+	if (iPodcastModel.ShowEngine().GetSelectedShows().Count() > 0) {
+		if(iEikonEnv->QueryWinL(R_PODCAST_ENABLE_DOWNLOADS_TITLE, R_PODCAST_ENABLE_DOWNLOADS_PROMPT))
+		{
+			iPodcastModel.ShowEngine().ResumeDownloads();
+		}
+	}
+}
 
 void CPodcastClientBaseView::ViewConstructL()
 {
@@ -92,6 +105,7 @@ CPodcastClientBaseView::CPodcastClientBaseView(CQikAppUi& aAppUi, CPodcastModel&
 
 CPodcastClientBaseView::~CPodcastClientBaseView()
 {
+	delete iStartupCallBack;
 }
 
 CQikCommand* CPodcastClientBaseView::DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& /*aControlAddingCommands*/)
