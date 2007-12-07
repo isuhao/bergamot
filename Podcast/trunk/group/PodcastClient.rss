@@ -453,7 +453,7 @@ RESOURCE DIALOG r_podcast_settings_dlg
 			};
 		},
 
-		DLG_LINE
+		/*DLG_LINE
 		{
 			id = EPodcastSettingsVolume;
 			itemflags = EQikDlgItemCaptionAboveControl;
@@ -465,7 +465,7 @@ RESOURCE DIALOG r_podcast_settings_dlg
 				max_value = 100;
 				num_markers = 10;
 			};
-		},
+		},*/
 
 
 		DLG_LINE
