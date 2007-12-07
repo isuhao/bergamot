@@ -131,7 +131,6 @@ void CHttpClient::SetResumeEnabled(TBool aEnabled)
 
 void CHttpClient::GetL(TDesC& url, TDesC& fileName, TBool aSilent) {
 	RDebug::Print(_L("CHttpClient::Get START"));
-	//ManageConnections(ETrue);
 	iIsActive = ETrue;
 		
 	TBuf8<256> url8;

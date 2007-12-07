@@ -198,6 +198,10 @@ void CSettingsEngine::ImportSettings()
 				TLex lex(value);
 				lex.Val(iDownloadOnlyOnWLAN);
 				RDebug::Print(_L("Download only on WLAN: %d"), iDownloadOnlyOnWLAN);
+			} else if (tag.CompareF(_L("MaxShowsPerFeed")) == 0) {
+				TLex lex(value);
+				lex.Val(iMaxListItems);
+				RDebug::Print(_L("Max shows per feed: %d"), iMaxListItems);
 			}
 		}
 		

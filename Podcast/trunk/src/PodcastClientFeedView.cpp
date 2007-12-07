@@ -276,12 +276,10 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 					TUint showCount = 0;
 					iPodcastModel.ShowEngine().GetStatsByFeed(fi->Uid(), showCount, unplayedCount);
 					unplayedShows.Format(_L("%d/%d shows"), unplayedCount, showCount);
-					listBoxData->SetEmphasis(unplayedCount > 0);					
-					
-					listBoxData->AddTextL(unplayedShows, EQikListBoxSlotText2);
 
 					if (fi->LastUpdated().Int64() == 0) {
-						updatedDate.Zero();
+						updatedDate.Copy(_L("Never"));
+						unplayedShows.Copy(_L("Unknown"));
 					}else {
 						TTime now;
 						TTimeIntervalHours interval;
@@ -293,6 +291,8 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 							fi->LastUpdated().FormatL(updatedDate, KDateFormat());
 						}
 					}
+					listBoxData->SetEmphasis(unplayedCount > 0);					
+					listBoxData->AddTextL(unplayedShows, EQikListBoxSlotText2);
 					listBoxData->AddTextL(updatedDate, EQikListBoxSlotText3);
 					
 					CQikContent* content = CQikContent::NewL(this, _L("*"), bitmap, mask);

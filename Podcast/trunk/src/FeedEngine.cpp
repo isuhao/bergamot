@@ -282,8 +282,18 @@ void CFeedEngine::ImportFeeds(TFileName &aFile)
 		}
 		CFeedInfo *fi = new CFeedInfo;
 		line.Trim();
-		fi->SetUrl(line);
-		fi->SetTitle(line);
+		int pos = line.Locate('|');
+		if (pos != -1) {
+			TPtrC title = line.Left(pos);
+			TPtrC url = line.Mid(pos+1);
+			//RDebug::Print(_L("url: %S"), &url);
+			//RDebug::Print(_L("title: %S"), &title);
+			fi->SetUrl(url);
+			fi->SetTitle(title);
+		} else {
+			fi->SetUrl(line);
+			fi->SetTitle(line);
+		}
 		
 		AddFeed(fi);
 		error = tft.Read(line);
