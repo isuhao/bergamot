@@ -123,7 +123,7 @@ void CPodcastClientFeedView::UpdateFeedInfoDataL(CFeedInfo* aFeedInfo,  MQikList
 	}else {
 		TTime now;
 		TTimeIntervalHours interval;
-		now.UniversalTime();
+		now.HomeTime();
 		now.HoursFrom(aFeedInfo->LastUpdated(), interval);
 		if (interval.Int() < KADayInHours) {
 			aFeedInfo->LastUpdated().FormatL(updatedDate, KTimeFormat());

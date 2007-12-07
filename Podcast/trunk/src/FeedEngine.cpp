@@ -231,7 +231,7 @@ void CFeedEngine::Complete(CHttpClient* /*aClient*/, TBool aSuccessful)
 		}
 
 		TTime time;
-		time.UniversalTime();
+		time.HomeTime();
 		iActiveFeed->SetLastUpdated(time);
 		SaveFeeds();
 		
