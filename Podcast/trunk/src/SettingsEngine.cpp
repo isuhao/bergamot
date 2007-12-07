@@ -33,21 +33,24 @@ void CSettingsEngine::ConstructL()
 	iMaxSimultaneousDownloads = 1;
 	iDownloadAutomatically = EFalse;
 	iDownloadOnlyOnWLAN = EFalse;
-	iBaseDir.Copy(KPodcastDir);
+	iFs.Connect();
+	
+	GetDefaultBaseDir(iBaseDir);
+	RDebug::Print(_L("Base dir: %S"), &iBaseDir);
 	iDefaultFeedsFile.Copy(PrivatePath());
 	iDefaultFeedsFile.Append(KDefaultFeedsFile);
 	iMaxListItems = 100;
-	iFs.Connect();
 	
 	TFileName configPath;
 	configPath.Copy(PrivatePath());
 	configPath.Append(KConfigFile);
+	
 	RDebug::Print(_L("Checking settings file: %S"), &configPath);
 	if (BaflUtils::FileExists(iFs, configPath)) {
 		TRAPD(error, LoadSettingsL());
 		RDebug::Print(_L("LoadSettingsL returned error=%d"), error);
 	} else {
-		RDebug::Print(_L("Importing settings"));
+		RDebug::Print(_L("Importing default settings"));
 		ImportSettings();
 		TRAPD(error,SaveSettingsL());
 		if (error != KErrNone) {
@@ -57,6 +60,28 @@ void CSettingsEngine::ConstructL()
 	}
 
 	BaflUtils::EnsurePathExistsL(iFs, iBaseDir);
+	}
+
+void CSettingsEngine::GetDefaultBaseDir(TDes &aBaseDir)
+	{
+	CDesCArray* disks = new(ELeave) CDesCArrayFlat(10);
+	BaflUtils::GetDiskListL(iFs, *disks);
+	
+	#ifdef __WINS__
+		aBaseDir.Copy(KInternalPodcastDir);
+		return;
+	#endif
+
+	// if only one drive, use C:\Media files\Podcasts
+	if (disks->Count() == 1) {
+		aBaseDir.Copy(KInternalPodcastDir);
+	// else we use the first flash drive
+	} else {
+		aBaseDir.Copy((*disks)[1]);
+		aBaseDir.Append(_L(":"));
+		aBaseDir.Append(KFlashPodcastDir);
+	}
+	delete disks;
 	}
 
 void CSettingsEngine::LoadSettingsL()

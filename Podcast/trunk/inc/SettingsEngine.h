@@ -4,13 +4,9 @@
 #include <e32base.h>
 #include "PodcastModel.h"
 
-#ifdef __WINS__
-	_LIT(KPodcastDir, "c:\\Media files\\Podcasts\\");
-#else
-	_LIT(KPodcastDir, "d:\\podcasts\\");
-#endif
-
 const TInt KSettingsUid = 1000;
+_LIT(KInternalPodcastDir, "c:\\Media files\\Podcasts\\");
+_LIT(KFlashPodcastDir, "\\Podcasts\\");
 
 _LIT(KConfigImportFile, "config.cfg");
 _LIT(KDefaultFeedsFile, "defaultfeeds.cfg");
@@ -35,6 +31,7 @@ private:
 	void ImportSettings();
 	void LoadSettingsL();
 	void SaveSettingsL();
+	void GetDefaultBaseDir(TDes &aBaseDir);
 
 public:
 	TFileName& BaseDir();
