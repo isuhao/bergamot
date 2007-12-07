@@ -279,7 +279,7 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 
 					if (fi->LastUpdated().Int64() == 0) {
 						updatedDate.Copy(_L("Never"));
-						unplayedShows.Copy(_L("Unknown"));
+						unplayedShows.Copy(_L("?/?"));
 					}else {
 						TTime now;
 						TTimeIntervalHours interval;
