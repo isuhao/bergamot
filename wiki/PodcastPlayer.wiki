@@ -101,9 +101,6 @@ Podcast Player has been tested on the following phones:
 
 I stumbled upon the [http://uiqopen.uiq.com/ UIQ Open] contest. Hopefully the podcast player will be good enough to submit before December 31st.
 
-= Name =
-
-Podcast Player is just a placeholder name. [http://groups.google.com/group/bergamot Come up with something better!]
 
 = Help! =
 
