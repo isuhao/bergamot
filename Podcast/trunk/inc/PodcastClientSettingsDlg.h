@@ -55,7 +55,6 @@ private:
 //	CQikNumberEditor* iMaxSimDlsCtrl;
 	CEikChoiceList* iConnectionCtrl;
 	CEikChoiceList* iIAPListCtrl;
-	//CQikSlider* iVolumeSlider;
 
 	TFileName iSelectedPathTemp;
 };

@@ -72,7 +72,6 @@ void CPodcastClientSettingsDlg::PreLayoutDynInitL()
 	iIAPListCtrl->SetArrayL((MDesCArray*) NULL);
 	iIAPListCtrl->SetArrayExternalOwnership(ETrue);
 	iIAPListCtrl->SetArrayL(iPodcastModel.IAPNames());
-	//iVolumeSlider =	 static_cast<CQikSlider*> (ControlOrNull(EPodcastSettingsVolume));
 
 	// Populate data
 	iSelectedPathTemp = iPodcastModel.SettingsEngine().BaseDir();
@@ -81,10 +80,6 @@ void CPodcastClientSettingsDlg::PreLayoutDynInitL()
 	iAutoDLCtrl->SetState(iPodcastModel.SettingsEngine().DownloadAutomatically() ? CEikButtonBase::ESet : CEikButtonBase::EClear);
 	iUpdateIntervalCtrl->SetValueL(iPodcastModel.SettingsEngine().UpdateFeedInterval());
 //	iMaxSimDlsCtrl->SetValueL(iPodcastModel.SettingsEngine().MaxSimultaneousDownloads());
-	/*if(iVolumeSlider != NULL)
-	{
-		iVolumeSlider->SetValue(iPodcastModel.SettingsEngine().Volume());
-	}*/
 
 	if(iPodcastModel.SettingsEngine().DownloadOnlyOnWLAN())
 	{
@@ -158,11 +153,6 @@ TBool CPodcastClientSettingsDlg::OkToExitL(TInt aCommandId)
 void CPodcastClientSettingsDlg::HandleControlStateChangeL(TInt aControlId)
 {
 	CEikDialog::HandleControlStateChangeL(aControlId);
-
-	/*if(EPodcastSettingsVolume == aControlId)
-	{
-		iPodcastModel.SettingsEngine().SetVolume(iVolumeSlider->CurrentValue());
-	}*/
 
 	if(EPodcastSettingConnection == aControlId)
 	{

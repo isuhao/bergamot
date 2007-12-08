@@ -481,9 +481,10 @@ RESOURCE DIALOG r_podcast_settings_dlg
 		DLG_LINE
 		{
 			id = EPodcastSettingUpdateInterval;
-			itemflags = EQikDlgItemCaptionAboveControl;
-			prompt = STRING_r_podcast_setting_updateinterval;
+			itemflags = EQikDlgItemDenselyPacked;//EQikDlgItemCaptionAboveControl;
+			prompt = STRING_r_podcast_setting_checkevery;
 			type = EQikCtNumberEditor;
+			trailer = STRING_r_podcast_setting_minutes;
 			control = QIK_NUMBER_EDITOR
 			{
 				min = 0;

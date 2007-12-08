@@ -108,7 +108,9 @@ rls_string STRING_r_purge_show_prompt "Are you really sure you want to delete th
 rls_string STRING_r_podcast_settings_title "Settings"
 rls_string STRING_r_podcast_setting_showdir "Podcast directory"
 rls_string STRING_r_podcast_setting_autodl "Automatic download"
-rls_string STRING_r_podcast_setting_updateinterval "Update interval"
+rls_string STRING_r_podcast_setting_checkevery "Check every"
+rls_string STRING_r_podcast_setting_minutes "minutes"
+
 rls_string STRING_r_podcast_setting_maxsimul "Max simultaneous downloads"
 rls_string STRING_r_podcast_setting_connection "Connection"
 rls_string STRING_r_podcast_setting_default "Use Default"
