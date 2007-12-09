@@ -53,6 +53,11 @@ void CPodcastModel::UpdateIAPListL()
 {
 	iIapNameArray->Reset();
 	iIapIdArray.Reset();
+    //TUint32 bearerset = KCommDbBearerWcdma | KCommDbBearerWLAN | KCommDbBearerLAN;
+    //TCommDbConnectionDirection connDirection = ECommDbConnectionDirectionOutgoing;
+
+    //CCommsDbTableView* table = iCommDB->OpenIAPTableViewMatchingBearerSetLC(bearerset, connDirection);
+
 	CCommsDbTableView* table = iCommDB->OpenTableLC (TPtrC (IAP)); 
 	TInt ret = table->GotoFirstRecord ();
 	TPodcastIAPItem IAPItem;
@@ -66,7 +71,7 @@ void CPodcastModel::UpdateIAPListL()
 
 		iIapIdArray.Append(IAPItem);
 		iIapNameArray->AppendL(bufName); 
-		iIapNameArray->AppendL(IAPItem.iBearerType); 
+		//iIapNameArray->AppendL(IAPItem.iBearerType); 
 		ret = table->GotoNextRecord();
 	}
 	CleanupStack::PopAndDestroy(); // Close table
