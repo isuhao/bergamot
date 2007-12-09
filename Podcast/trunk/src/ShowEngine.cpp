@@ -7,7 +7,7 @@
 
 CShowEngine::CShowEngine(CPodcastModel& aPodcastModel) : iPodcastModel(aPodcastModel)
 {
-	iDownloadsSuspended = ETrue;
+	iDownloadsSuspended = EFalse;
 }
 
 CShowEngine::~CShowEngine()

@@ -60,6 +60,8 @@ void CPodcastClientBaseView::CheckForQuedDownloadsL()
 		if(iEikonEnv->QueryWinL(R_PODCAST_ENABLE_DOWNLOADS_TITLE, R_PODCAST_ENABLE_DOWNLOADS_PROMPT))
 		{
 			iPodcastModel.ShowEngine().ResumeDownloads();
+		} else {
+			iPodcastModel.ShowEngine().StopDownloads();
 		}
 	}
 }

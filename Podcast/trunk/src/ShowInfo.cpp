@@ -156,6 +156,7 @@ TTimeIntervalMicroSeconds& CShowInfo::Position()
 
 void CShowInfo::SetPosition(TTimeIntervalMicroSeconds aPosition)
 	{
+	RDebug::Print(_L("SetPosition"));
 	iPosition = aPosition;
 	}
 

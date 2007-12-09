@@ -152,6 +152,9 @@ void CSoundEngine::Pause()
 		iState = ESoundEnginePaused;
 		iPlayer->Pause();
 		// really wasteful saving EVERYTHING every time
+		TTimeIntervalMicroSeconds pos = 0;
+		iPlayer->GetPosition(pos);
+		iPodcastModel.PlayingPodcast()->SetPosition(pos);
 		iPodcastModel.ShowEngine().SaveShows();
 	}
 }
