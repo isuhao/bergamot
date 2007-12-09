@@ -29,6 +29,7 @@ void CFeedParser::ParseFeedL(const TFileName &feedFileName, CFeedInfo *info, TUi
 	iItemsParsed = 0;
 	iMaxItems = aMaxItems;
 	iStoppedParsing = EFalse;
+	iEncoding = ELatin1;
 
 	ParseL(*parser, rfs, feedFileName);
 	rfs.Close(); // this makes sure the file was closed
@@ -47,7 +48,14 @@ void CFeedParser::OnStartDocumentL(const RDocumentParameters& aDocParam, TInt aE
 	RDebug::Print(_L("OnStartDocumentL()"));
 	TBuf<1024> charset;
 	charset.Copy(aDocParam.CharacterSetName().DesC());
-	RDebug::Print(_L("charset: %S"), &charset);
+	if (charset.CompareF(_L("utf-8")) == 0) {
+		RDebug::Print(_L("setting UTF8"));
+		iEncoding = EUtf8;
+	} else if (charset.CompareF(_L("ISO-8859-1")) == 0) {
+		iEncoding = ELatin1;
+	} else {
+		RDebug::Print(_L("unknown charset: %S"), &charset);
+	}
 	}
 
 void CFeedParser::OnEndDocumentL(TInt aErrorCode)
@@ -295,7 +303,12 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 void CFeedParser::OnContentL(const TDesC8& aBytes, TInt aErrorCode)
 	{
 	TBuf<KBufferLength> temp;
-	CnvUtfConverter::ConvertToUnicodeFromUtf8(temp, aBytes);
+	if (iEncoding == EUtf8) {
+		CnvUtfConverter::ConvertToUnicodeFromUtf8(temp, aBytes);
+	} else {
+		temp.Copy(aBytes);
+	}
+	
 	if(temp.Length() + iBuffer.Length() < KBufferLength) {
 		iBuffer.Append(temp);
 	}

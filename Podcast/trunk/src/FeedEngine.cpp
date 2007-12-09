@@ -187,6 +187,10 @@ void CFeedEngine::RemoveFeed(TInt aUid) {
 
 void CFeedEngine::ParsingComplete(CFeedInfo *item)
 	{
+	TBuf<1024> title;
+	title.Copy(item->Title());
+	CleanHtml(title);
+	item->SetTitle(title);
 	//RDebug::Print(_L("feed image url: %S"), &item->ImageUrl());
 	for (int i=0;i<iObservers.Count();i++) {
 		iObservers[i]->FeedInfoUpdated(item);

@@ -175,7 +175,7 @@ void CHttpClient::GetL(TDesC& url, TDesC& fileName, TInt aIap, TBool aSilent) {
 	
 	TUriParser8 uri; 
 	uri.Parse(url8);
-	RDebug::Print(_L("Getting %S to %S"), &url, &fileName);
+	RDebug::Print(_L("Getting '%S' to:\n '%S'"), &url, &fileName);
 
 	iHandler = CHttpEventHandler::NewL(this, iObserver);
 	iHandler->SetSilent(aSilent);

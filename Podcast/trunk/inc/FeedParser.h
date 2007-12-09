@@ -38,6 +38,11 @@ enum TFeedState {
 	EStateItemPubDate
 };
 
+enum TEncoding {
+	EUtf8,
+	ELatin1
+};
+
 const int KBufferLength = 1024;
 
 class CFeedParser : public MContentHandler, public CBase
@@ -75,6 +80,7 @@ private:
 	TUint iMaxItems;
 	TUint iItemsParsed;
 	TBool iStoppedParsing;
+	TEncoding iEncoding;
 
 };
 
