@@ -1,0 +1,127 @@
+// ListBox.rls
+//
+// © Symbian Software Ltd 2005. All rights reserved.
+//
+
+// Defines localisable strings, for inclusion in the resource source file
+// Used to localise an application by simply changing the resource file text.
+// Since changes to the text do not change the symbol information in the 
+// generated header file, it is not necessary to recompile the application
+// to use the new file.
+
+// list view commands
+rls_string STRING_r_listbox_listview_cmd_close_debug "Close (debug)"
+rls_string STRING_r_listbox_listview_cmd_close_debug_shorttext "Close"
+
+// Menu commands, view filtering and navigation
+rls_string STRING_r_view_cmd "View"
+// Navigation to shows view
+rls_string STRING_r_view_main_cmd "Main"
+rls_string STRING_r_view_shows_cmd "Shows"
+rls_string STRING_r_view_all_shows_cmd "All Shows"
+rls_string STRING_r_view_new_shows_cmd "Unplayed"
+rls_string STRING_r_view_dl_shows_cmd "Library"
+rls_string STRING_r_view_dling_shows_cmd "Downloads"
+
+// Navigation to feeds
+rls_string STRING_r_view_feeds_cmd "Feeds"
+
+// Navigation to the player
+rls_string STRING_r_view_player_cmd "Player"
+
+// Actions for the player
+rls_string STRING_r_play_cmd "Play"
+rls_string STRING_r_stop_cmd "Stop"
+rls_string STRING_r_pause_cmd "Pause"
+rls_string STRING_r_volume_cmd "Volume"
+
+rls_string STRING_r_view_download_cmd "Download"
+rls_string STRING_r_view_download_short_cmd "Get"
+rls_string STRING_r_view_remove_download_short_cmd "Remove"
+rls_string STRING_r_view_remove_download_cmd "Remove download"
+
+rls_string STRING_r_view_show_cmd "Show"
+rls_string STRING_r_view_cmd "View"
+rls_string STRING_r_view_play_cmd "Play"
+
+// Actions for feeds
+rls_string STRING_r_view_add_feed_cmd "Add feed"
+rls_string STRING_r_view_edit_feed_cmd "Edit feed"
+rls_string STRING_r_view_delete_feed_cmd "Remove feed"
+rls_string STRING_r_view_purge_feed_cmd "Purge feed"
+rls_string STRING_r_update_feed_cmd "Update feed"
+rls_string STRING_r_update_feed_short_cmd "Update"
+rls_string STRING_r_update_all_feeds_cmd "Update All"
+rls_string STRING_r_update_all_feeds_short_cmd "Upd. All"
+
+// Actions for shows
+rls_string STRING_r_view_download_show_cmd "Download show"
+rls_string STRING_r_view_delete_show_cmd "Delete show"
+rls_string STRING_r_view_delete_shows_cmd "Delete shows"
+rls_string STRING_r_view_purge_show_cmd "Delete show"
+rls_string STRING_r_view_remove_download_cmd "Remove download"
+rls_string STRING_r_view_stop_downloads_cmd "Stop downloads"
+rls_string STRING_r_view_resume_downloads_cmd "Resume downloads"
+rls_string STRING_r_view_mark_all_played_cmd "Mark all played"
+rls_string STRING_r_view_show_unplayed_cmd "Show unplayed only"
+
+// Actions for library
+
+rls_string STRING_r_view_library_update_cmd "Scan podcasts folder"
+
+
+// Common actions
+rls_string STRING_r_zoom_cmd "Zoom"
+rls_string STRING_r_settings_cmd "Settings"
+
+// Categories
+rls_string STRING_r_category_all "All shows"
+rls_string STRING_r_category_new "Unplayed"
+rls_string STRING_r_category_dled "Library"
+rls_string STRING_r_category_pending "Downloads"
+
+// Application caption
+rls_string STRING_r_caption "Podcast Player"
+rls_string STRING_r_short_caption "Podcast"
+
+// View titles
+rls_string STRING_r_view_feeds_title "Feeds"
+rls_string STRING_r_view_shows_title "Shows"
+
+// DIALOG string
+rls_string STRING_r_add_feed_title "Add feed"
+rls_string STRING_r_add_feed_prompt "Feed URL:"
+
+rls_string STRING_r_remove_feed_title "Remove feed"
+rls_string STRING_r_remove_feed_prompt "Are you really sure you want to remove this feed?"
+
+rls_string STRING_r_enable_downloads_title "Enable downloads?"
+rls_string STRING_r_enable_downloads_prompt "There are shows in the download queue. Do you want to download now?"
+
+
+rls_string STRING_r_purge_feed_title "Purge feed"
+rls_string STRING_r_purge_feed_prompt "Are you really sure you want to purge this feed, and remove all downloaded shows?"
+
+rls_string STRING_r_purge_show_title "Purge show"
+rls_string STRING_r_purge_show_prompt "Are you really sure you want to delete this show?"
+
+rls_string STRING_r_podcast_settings_title "Settings"
+rls_string STRING_r_podcast_setting_showdir "Podcast directory"
+rls_string STRING_r_podcast_setting_autodl "Automatic download"
+rls_string STRING_r_podcast_setting_checkevery "Check every"
+rls_string STRING_r_podcast_setting_minutes "minutes"
+
+rls_string STRING_r_podcast_setting_maxsimul "Max simultaneous downloads"
+rls_string STRING_r_podcast_setting_connection "Connection"
+rls_string STRING_r_podcast_setting_default "Use Default"
+rls_string STRING_r_podcast_setting_wlanonly "Use WLAN only"
+rls_string STRING_r_podcast_setting_usespecified "Use specified"
+rls_string STRING_r_podcast_setting_iaplist "Internet accounts"
+rls_string STRING_r_podcast_setting_cancel_cmd "Cancel" // Cancel command in settings dialog
+rls_string STRING_r_podcast_setting_done_cmd "Done" // Done command in settings dialog
+rls_string STRING_r_podcast_setting_showdir_cmd "Select" // Use to select show dir
+rls_string STRING_r_podcast_setting_volume "Volume" 
+
+
+
+
