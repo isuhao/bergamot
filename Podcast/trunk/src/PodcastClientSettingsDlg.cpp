@@ -86,7 +86,7 @@ void CPodcastClientSettingsDlg::PreLayoutDynInitL()
 		iConnectionCtrl->SetCurrentItem(EUseWLANOnly);
 		MakeWholeLineVisible(EPodcastSettingIAPList, EFalse);
 	}
-	else if(iPodcastModel.SettingsEngine().SpecificIAP() > 0)
+	else if(iPodcastModel.SettingsEngine().SpecificIAP() > -1)
 	{
 		iConnectionCtrl->SetCurrentItem(EUseSpecifiedIAP);
 		MakeWholeLineVisible(EPodcastSettingIAPList, ETrue);
@@ -119,7 +119,7 @@ TBool CPodcastClientSettingsDlg::OkToExitL(TInt aCommandId)
 			{
 			case EUseDefaultAccount:
 				{
-					iPodcastModel.SettingsEngine().SetSpecificIAP(0);
+					iPodcastModel.SettingsEngine().SetSpecificIAP(-1);
 					iPodcastModel.SettingsEngine().SetDownloadOnlyOnWLAN(EFalse);
 				}break;
 			case EUseWLANOnly:
@@ -129,10 +129,11 @@ TBool CPodcastClientSettingsDlg::OkToExitL(TInt aCommandId)
 			case EUseSpecifiedIAP:
 				{
 					iPodcastModel.SettingsEngine().SetDownloadOnlyOnWLAN(EFalse);
-					// Now also set a listed IAP 
+					iPodcastModel.SettingsEngine().SetSpecificIAP(iIAPListCtrl->CurrentItem());
 				}
 				break;
 			}
+			iPodcastModel.SettingsEngine().SaveSettingsL();
 			
 		}break;
 	case EPodcastSelectShowDir:

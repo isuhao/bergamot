@@ -30,7 +30,6 @@ private:
 	CSettingsEngine(CPodcastModel& aPodcastModel);
 	void ImportSettings();
 	void LoadSettingsL();
-	void SaveSettingsL();
 	void GetDefaultBaseDir(TDes &aBaseDir);
 
 public:
@@ -53,6 +52,8 @@ public:
 	
 	TUint Volume();
 	void SetVolume(TUint aVolume);
+
+	void SaveSettingsL();
 
 private:
 	// the settings we serialize

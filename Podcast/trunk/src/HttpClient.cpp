@@ -21,6 +21,7 @@ merchantability and/or non-infringement of the software provided herein.
 #include <eikenv.h>
 #include <es_sock.h>
 #include <bautils.h>
+#include <CommDbConnPref.h>
 
 CHttpClient::~CHttpClient()
   {
@@ -129,32 +130,43 @@ void CHttpClient::SetResumeEnabled(TBool aEnabled)
 	iResumeEnabled = aEnabled;
 	}
 
-void CHttpClient::GetL(TDesC& url, TDesC& fileName, TBool aSilent) {
-	RDebug::Print(_L("CHttpClient::Get START"));
+void CHttpClient::GetL(TDesC& url, TDesC& fileName, TInt aIap, TBool aSilent) {
+	RDebug::Print(_L("CHttpClient::Get START, aIap: %d"), aIap);
 	iIsActive = ETrue;
 		
 	TBuf8<256> url8;
 	url8.Copy(url);
 	if (iTransactionCount == 0) {
 		RDebug::Print(_L("** Opening session"));
-		iSession.OpenL();
-		/*RHTTPConnectionInfo connInfo = iSession.ConnectionInfo();
-		THTTPHdrVal val;
-		RStringPool pool = iSession.StringPool();
-
-		//TInt connPtr=REINTERPRET_CAST(TInt, &connection);
-		connInfo.Property(pool.StringF(HTTP::EHttpSocketConnection, 
-				RHTTPSession::GetTable()), val);*/
-		//
-		// TInt connPtr = REINTERPRET_CAST(TInt, &iConnection);
-		/*RConnection* connection=reinterpret_cast<RConnection*>(val.Int());
-		TBuf<200> bearer;
-		connection->GetDesSetting(TPtrC(IAP_BEARER_TYPE), bearer);
-		RDebug::Print(_L("Bearer: %S"), &bearer);*/
-			
-		/*connInfo.SetPropertyL(pool.StringF(HTTP::EHttpSocketConnection, 
-				RHTTPSession::GetTable()), THTTPHdrVal(connPtr));*/
+		if (aIap == -1) {
+			iSession.OpenL();
 		
+		} else {
+			RDebug::Print(_L("Specified IAP: %d"), aIap);
+			User::LeaveIfError(iSocketServ.Connect());
+			User::LeaveIfError(iConnection.Open(iSocketServ));
+			iSession.OpenL();
+			
+			TCommDbConnPref prefs;
+			prefs.SetDialogPreference(ECommDbDialogPrefDoNotPrompt);
+			prefs.SetDirection(ECommDbConnectionDirectionOutgoing);
+			prefs.SetIapId(aIap);
+			
+			if (iConnection.Start(prefs) != KErrNone) {
+				RDebug::Print(_L("Error connecting to IAP"));
+				return;
+			}
+			
+			RHTTPConnectionInfo connInfo = iSession.ConnectionInfo();
+			RStringPool pool = iSession.StringPool();
+
+			// Attach to socket server
+			connInfo.SetPropertyL(pool.StringF(HTTP::EHttpSocketServ, RHTTPSession::GetTable()), THTTPHdrVal(iSocketServ.Handle()));
+
+			// Attach to connection
+			TInt connPtr = REINTERPRET_CAST(TInt, &iConnection);
+			connInfo.SetPropertyL(pool.StringF(HTTP::EHttpSocketConnection, RHTTPSession::GetTable()), THTTPHdrVal(connPtr));
+		}
 	}
 	
 	RStringPool strP = iSession.StringPool();

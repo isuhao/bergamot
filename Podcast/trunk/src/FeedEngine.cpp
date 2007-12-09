@@ -88,7 +88,7 @@ void CFeedEngine::UpdateFeed(TInt aFeedUid)
 	filePath.Append(_L("feed.xml"));
 	iUpdatingFeedFileName.Copy(filePath);
 	User::InfoPrint(_L("Updating feed..."));
-	iFeedClient->GetL(iActiveFeed->Url(), iUpdatingFeedFileName);//, ETrue);
+	iFeedClient->GetL(iActiveFeed->Url(), iUpdatingFeedFileName, iPodcastModel.SettingsEngine().SpecificIAP());//, ETrue);
 	}
 
 void CFeedEngine::NewShow(CShowInfo *item)

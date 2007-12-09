@@ -33,6 +33,7 @@ void CSettingsEngine::ConstructL()
 	iMaxSimultaneousDownloads = 1;
 	iDownloadAutomatically = EFalse;
 	iDownloadOnlyOnWLAN = EFalse;
+	iIap = -1;
 	iFs.Connect();
 	
 	GetDefaultBaseDir(iBaseDir);
@@ -297,6 +298,7 @@ void CSettingsEngine::SetDownloadOnlyOnWLAN(TBool aOnlyOnWLAN)
 
 void CSettingsEngine::SetSpecificIAP(TInt aIap)
 	{
+	RDebug::Print(_L("SetSpecificIAP: %d"), aIap);
 	iIap = aIap;
 	}
 

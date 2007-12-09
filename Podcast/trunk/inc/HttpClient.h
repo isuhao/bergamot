@@ -4,6 +4,7 @@
 #include <http/rhttpsession.h>
 #include "HttpClientObserver.h"
 #include "HttpEventHandler.h"
+#include "es_sock.h"
 
 _LIT8(KUserAgent, "PodcastPlayer (0.2)");
 _LIT8(KAccept, "*/*");
@@ -13,7 +14,7 @@ class CHttpClient : public CBase
 public:
 	virtual ~CHttpClient();
 	static CHttpClient* NewL(MHttpClientObserver& aResObs);
-	void GetL(TDesC& url, TDesC& fileName, TBool aSilent = EFalse);
+	void GetL(TDesC& url, TDesC& fileName, TInt aIap = -1, TBool aSilent = EFalse);
 	void Stop();
   	TBool IsActive();
 	void ClientRequestCompleteL(TBool aSuccessful);
@@ -34,5 +35,8 @@ private:
 	RHTTPTransaction iTrans;
 	CHttpEventHandler* iHandler;
 	TBool iResumeEnabled;
+	
+	RSocketServ iSocketServ;
+	RConnection iConnection;
 };
 #endif

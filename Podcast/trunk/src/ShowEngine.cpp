@@ -153,7 +153,7 @@ void CShowEngine::GetShow(CShowInfo *info)
 	// complete file path is base dir + rel path
 	filePath.Append(relPath);
 	info->SetFileName(filePath);
-	iShowClient->GetL(info->Url(), filePath);
+	iShowClient->GetL(info->Url(), filePath, iPodcastModel.SettingsEngine().SpecificIAP());
 	}
 
 void CShowEngine::AddShow(CShowInfo *item) {
