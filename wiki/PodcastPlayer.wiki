@@ -37,7 +37,7 @@ This is how we plan to implement features. Please [http://groups.google.com/grou
     * Automatic purging of old files
     * Check connection type, option to download only on WLAN
 
-  * Alpha 5 (December 9th)
+  * Alpha 5 (December 9th) | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha5 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha5/group/Podcast_udeb_signed.sis SIS]
     * Automatic downloading 
     * UI refinements
     * Resume unfinished downloads
