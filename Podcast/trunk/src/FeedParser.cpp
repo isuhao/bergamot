@@ -52,7 +52,7 @@ void CFeedParser::OnStartDocumentL(const RDocumentParameters& aDocParam, TInt aE
 		RDebug::Print(_L("setting UTF8"));
 		iEncoding = EUtf8;
 	} else if (charset.CompareF(_L("ISO-8859-1")) == 0) {
-		iEncoding = ELatin1;
+		iEncoding = EUtf8; //Latin1;
 	} else {
 		RDebug::Print(_L("unknown charset: %S"), &charset);
 	}
