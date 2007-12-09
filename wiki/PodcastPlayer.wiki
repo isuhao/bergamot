@@ -32,6 +32,8 @@ This is how we plan to implement features. Please [http://groups.google.com/grou
     * UI refinements
     * Feature freeze
     * Infrastructure for translations
+    * Meta-data read from manually added files
+    * New name!
 
   * Alpha 5 (December 9th)
     * Automatic downloading 
