@@ -8,6 +8,7 @@
 CShowEngine::CShowEngine(CPodcastModel& aPodcastModel) : iPodcastModel(aPodcastModel)
 {
 	iDownloadsSuspended = EFalse;
+	iSelectOnlyUnplayed = EFalse;
 }
 
 CShowEngine::~CShowEngine()
@@ -382,6 +383,11 @@ void CShowEngine::PurgePlayedShows()
 	}
 }
 
+void CShowEngine::SetSelectUnplayedOnly(TBool aOnlyUnplayed)
+	{
+	iSelectOnlyUnplayed = aOnlyUnplayed;
+	}
+
 void CShowEngine::PurgeOldShows()
 	{
 	// TODO: implement
@@ -406,7 +412,9 @@ void CShowEngine::SelectShowsByFeed(TUint aFeedUid)
 		{
 		if (iShows[i]->FeedUid() == aFeedUid)
 			{
-			AppendToSelection(iShows[i]);
+			if (!iSelectOnlyUnplayed || (iSelectOnlyUnplayed && iShows[i]->PlayState() == ENeverPlayed) ) {
+				AppendToSelection(iShows[i]);
+			}
 			}
 		}
 	

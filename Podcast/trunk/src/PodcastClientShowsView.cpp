@@ -132,6 +132,8 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 			break;
 		case EPodcastShowUnplayedOnly:
 			{
+			iPodcastModel.ShowEngine().SetSelectUnplayedOnly(ETrue);
+			UpdateListboxItemsL();
 			}break;
 		case EPodcastMarkAllPlayed:
 			iPodcastModel.ShowEngine().SetPlayedByFeed(iPodcastModel.ActiveFeedInfo()->Uid());

@@ -44,7 +44,7 @@ public:
 	void SetPlayedByFeed(TUint aFeedUid);
 	void CheckFiles();
 	void GetStatsByFeed(TUint aFeedUid, TUint &aNumShows, TUint &aNumUnplayed );
-
+	void SetSelectUnplayedOnly(TBool aOnlyUnplayed);
 	
 	void AddObserver(MShowEngineObserver *observer);
 protected:
@@ -97,7 +97,9 @@ private:
     RArray<MShowEngineObserver*> iObservers;
 
     TBool iDownloadsSuspended;
-    	
+    
+    TBool iSelectOnlyUnplayed;
+    
     TUint iDownloadErrors;
     TLinearOrder<CShowInfo>* iLinearOrder;
 };
