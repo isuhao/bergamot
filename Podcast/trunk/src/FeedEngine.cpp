@@ -89,6 +89,7 @@ void CFeedEngine::UpdateFeed(TInt aFeedUid)
 	iUpdatingFeedFileName.Copy(filePath);
 	User::InfoPrint(_L("Updating feed..."));
 	iFeedClient->GetL(iActiveFeed->Url(), iUpdatingFeedFileName, iPodcastModel.SettingsEngine().SpecificIAP());//, ETrue);
+	RDebug::Print(_L("Update done"));
 	}
 
 void CFeedEngine::NewShow(CShowInfo *item)
@@ -224,6 +225,7 @@ void CFeedEngine::Progress(CHttpClient* /*aHttpClient*/, int aBytes, int aTotalB
 
 void CFeedEngine::Complete(CHttpClient* /*aClient*/, TBool aSuccessful)
 {
+	RDebug::Print(_L("Complete, aSuccessful=%d"), aSuccessful);
 	if (iClientState == EFeed) {
 		TFileName filePath;
 		iParser->ParseFeedL(iUpdatingFeedFileName, iActiveFeed, iPodcastModel.SettingsEngine().MaxListItems());
