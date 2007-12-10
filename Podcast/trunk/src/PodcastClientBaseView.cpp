@@ -83,19 +83,19 @@ void CPodcastClientBaseView::ViewConstructL()
 	data->SetItemId(EBaseViewPlayer);
 	data->Close();
 	
-	data = model.RetrieveDataL(1);	
+/*	data = model.RetrieveDataL(1);	
 	data->SetItemId(EBaseViewNewShows);
-	data->Close();
+	data->Close();*/
 	
-	data = model.RetrieveDataL(2);	
+	data = model.RetrieveDataL(1);	
 	data->SetItemId(EBaseViewDownloadedShows);
 	data->Close();
 	
-	data = model.RetrieveDataL(3);	
+	data = model.RetrieveDataL(2);	
 	data->SetItemId(EBaseViewPendingShows);
 	data->Close();
 
-	data = model.RetrieveDataL(4);	
+	data = model.RetrieveDataL(3);	
 	data->SetItemId(EBaseViewFeeds);
 	data->Close();
 
