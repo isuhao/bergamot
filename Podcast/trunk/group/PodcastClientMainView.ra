@@ -114,6 +114,7 @@ RESOURCE QIK_LISTBOX r_podcast_mainview_listbox
 				slot_id = EQikListBoxSlotLeftMediumIcon1;
 				}
 			};
+			data_flags = KQikListBoxDimmed|KQikListUnselectable;
 		},
 		/*QIK_LISTBOX_DATA
 		{

@@ -418,6 +418,17 @@ RESOURCE ARRAY r_podcast_connection_selection_array
 
 }
 
+RESOURCE ARRAY r_podcast_settings_autodl_array
+{
+	items = 
+	{
+	 LBUF {txt = STRING_podcast_autodl_off;},
+	 LBUF {txt = STRING_podcast_audodl_feeds;},
+	 LBUF {txt = STRING_podcast_audodl_feedsandshows;}
+	};
+
+}
+
 RESOURCE DLG_BUTTONS r_podcast_settings_buttons
     {
     buttons=
@@ -473,9 +484,10 @@ RESOURCE DIALOG r_podcast_settings_dlg
 			id = EPodcastSettingAutoDL;
 			itemflags = EQikDlgItemCaptionAboveControl;
 			prompt = STRING_r_podcast_setting_autodl;
-			type = EEikCtCheckBox;
-			control = CHECKBOX
+			type = EEikCtChoiceList;
+			control = CHOICELIST
 			{
+			array_id = r_podcast_settings_autodl_array;
 			};
 		},
 		DLG_LINE

@@ -13,7 +13,6 @@
 #include "FeedEngine.h"
 #include "SettingsEngine.h"
 
-
 CPodcastClientVolumeDlg::CPodcastClientVolumeDlg(CPodcastModel& aPodcastModel):iPodcastModel(aPodcastModel)
 {
 }
@@ -64,7 +63,7 @@ void CPodcastClientSettingsDlg::PreLayoutDynInitL()
 {
 	// First init control pointers
 	iShowBaseDirCtrl = static_cast<CEikEdwin*> (ControlOrNull(EPodcastSettingShowDir));
-	iAutoDLCtrl = static_cast<CEikCheckBox*> (ControlOrNull(EPodcastSettingAutoDL));
+	iAutoDLCtrl = static_cast<CEikChoiceList*> (ControlOrNull(EPodcastSettingAutoDL));
 	iUpdateIntervalCtrl = static_cast<CQikNumberEditor*> (ControlOrNull(EPodcastSettingUpdateInterval));
 //	iMaxSimDlsCtrl = static_cast<CQikNumberEditor*> (ControlOrNull(EPodcastSettingMaxsimdls));
 	iConnectionCtrl = static_cast<CEikChoiceList*> (ControlOrNull(EPodcastSettingConnection));
@@ -77,7 +76,7 @@ void CPodcastClientSettingsDlg::PreLayoutDynInitL()
 	iSelectedPathTemp = iPodcastModel.SettingsEngine().BaseDir();
 	iShowBaseDirCtrl->SetTextL(&iSelectedPathTemp);
 
-	iAutoDLCtrl->SetState(iPodcastModel.SettingsEngine().DownloadAutomatically() ? CEikButtonBase::ESet : CEikButtonBase::EClear);
+	iAutoDLCtrl->SetCurrentItem(iPodcastModel.SettingsEngine().DownloadAutomatically());
 	iUpdateIntervalCtrl->SetValueL(iPodcastModel.SettingsEngine().UpdateFeedInterval());
 //	iMaxSimDlsCtrl->SetValueL(iPodcastModel.SettingsEngine().MaxSimultaneousDownloads());
 
@@ -107,7 +106,7 @@ TBool CPodcastClientSettingsDlg::OkToExitL(TInt aCommandId)
 		{
 			iShowBaseDirCtrl->GetText(iSelectedPathTemp);
 			iPodcastModel.SettingsEngine().SetBaseDir(iSelectedPathTemp);
-			iPodcastModel.SettingsEngine().SetDownloadAutomatically((TAutomaticDownloadStates)(iAutoDLCtrl->State() == CEikButtonBase::ESet ? ETrue : EFalse));
+			iPodcastModel.SettingsEngine().SetDownloadAutomatically((TAutoDownloadSetting) iAutoDLCtrl->CurrentItem());
 			iPodcastModel.SettingsEngine().SetUpdateFeedInterval(iUpdateIntervalCtrl->Value());
 //			iPodcastModel.SettingsEngine().SetMaxSimultaneousDownloads(iMaxSimDlsCtrl->Value());
 			/*if(iVolumeSlider != NULL)

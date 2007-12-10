@@ -122,6 +122,10 @@ rls_string STRING_r_podcast_setting_done_cmd "Done" // Done command in settings 
 rls_string STRING_r_podcast_setting_showdir_cmd "Select" // Use to select show dir
 rls_string STRING_r_podcast_setting_volume "Volume" 
 
+// Choicelist for autodownload
+rls_string STRING_podcast_autodl_off "Off"
+rls_string STRING_podcast_audodl_feeds "Feeds only" 
+rls_string STRING_podcast_audodl_feedsandshows "Feeds and shows"
 
 
 

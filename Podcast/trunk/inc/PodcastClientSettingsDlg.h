@@ -50,7 +50,7 @@ private:
 	CPodcastModel& iPodcastModel;
 
 	CEikEdwin* iShowBaseDirCtrl;
-	CEikCheckBox* iAutoDLCtrl;
+	CEikChoiceList* iAutoDLCtrl;
 	CQikNumberEditor* iUpdateIntervalCtrl;
 //	CQikNumberEditor* iMaxSimDlsCtrl;
 	CEikChoiceList* iConnectionCtrl;
