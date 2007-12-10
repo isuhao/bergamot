@@ -95,7 +95,7 @@ RESOURCE QIK_LISTBOX r_podcast_mainview_listbox
 	layouts = { r_podcast_mainview_normal_layout_pair };
 	item_data =
 	{
-	/*	QIK_LISTBOX_DATA
+		QIK_LISTBOX_DATA
 		{
 			data = 
 			{
@@ -114,7 +114,7 @@ RESOURCE QIK_LISTBOX r_podcast_mainview_listbox
 				slot_id = EQikListBoxSlotLeftMediumIcon1;
 				}
 			};
-		},*/
+		},
 		QIK_LISTBOX_DATA
 		{
 			data = 

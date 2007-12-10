@@ -216,7 +216,10 @@ void CHttpClient::GetL(TDesC& url, TDesC& fileName, TInt aIap, TBool aSilent) {
 void CHttpClient::Stop()
 	{
 	iIsActive = EFalse;
-	iHandler->CloseSaveFile();
+	if(iHandler != NULL)
+	{
+		iHandler->CloseSaveFile();
+	}
 	iTrans.Cancel();
 	//iSession.Close();
 	}

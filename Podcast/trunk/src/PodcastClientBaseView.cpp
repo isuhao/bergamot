@@ -80,20 +80,26 @@ void CPodcastClientBaseView::ViewConstructL()
 	model.ModelBeginUpdateLC();
 	
 	MQikListBoxData* data = model.RetrieveDataL(0);	
-	data->SetItemId(EBaseViewNewShows);
+	data->SetItemId(EBaseViewPlayer);
 	data->Close();
 	
 	data = model.RetrieveDataL(1);	
-	data->SetItemId(EBaseViewDownloadedShows);
+	data->SetItemId(EBaseViewNewShows);
 	data->Close();
 	
 	data = model.RetrieveDataL(2);	
+	data->SetItemId(EBaseViewDownloadedShows);
+	data->Close();
+	
+	data = model.RetrieveDataL(3);	
 	data->SetItemId(EBaseViewPendingShows);
 	data->Close();
 
-	data = model.RetrieveDataL(3);	
+	data = model.RetrieveDataL(4);	
 	data->SetItemId(EBaseViewFeeds);
 	data->Close();
+
+
 	model.ModelEndUpdateL();
 
     UpdateListboxItemsL();
@@ -161,34 +167,14 @@ void CPodcastClientBaseView::UpdateListboxItemsL()
 				if(itemId == EBaseViewPlayer)
 				{	
 					found = ETrue;
-					data->SetTextL(iPodcastModel.PlayingPodcast()->Title(), EQikListBoxSlotText2);
+					data->SetDimmed(EFalse);
 					data->Close();
 					model.DataUpdatedL(loop);
 					break;
 				}
 
 				data->Close();				
-			}	
-		
-			if(!found)
-			{
-				MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal, 0);
-				CleanupClosePushL(*listBoxData);
-				listBoxData->SetItemId(EBaseViewPlayer);
-				
-				HBufC* playerTxt = iEikonEnv->AllocReadResourceLC(R_PODCAST_MAIN_PLAYER_CMD);
-				listBoxData->AddTextL(playerTxt, EQikListBoxSlotText1);			
-				listBoxData->AddTextL(iPodcastModel.PlayingPodcast()->Title(), EQikListBoxSlotText2);			
-				CleanupStack::Pop(playerTxt);
-				
-				CQikContent* content = CQikContent::NewL(this, _L("*"), EMbmPodcastclientPlay_40x40, EMbmPodcastclientPlay_40x40m);
-				
-				CleanupStack::PushL(content);
-				listBoxData->AddIconL(content,EQikListBoxSlotLeftMediumIcon1);
-				CleanupStack::Pop(content);
-				
-				CleanupStack::PopAndDestroy(); // close listbox data
-			}
+			}			
 		}
 		else
 		{
@@ -196,14 +182,16 @@ void CPodcastClientBaseView::UpdateListboxItemsL()
 			{
 				MQikListBoxData* data = model.RetrieveDataL(loop);	
 				TInt itemId = data->ItemId();
-				data->Close();
-
+			
 				if(itemId == EBaseViewPlayer)
 				{
-					model.RemoveDataL(loop);
+					data->SetDimmed(ETrue);
+					data->Close();
+					model.DataUpdatedL(loop);
 					break;
 				}
 			
+				data->Close();
 			}	
 		}
 		model.ModelEndUpdateL();
