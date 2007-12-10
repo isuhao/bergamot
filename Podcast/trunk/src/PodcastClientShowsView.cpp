@@ -14,7 +14,11 @@
 
 
 _LIT(KShowsTitleFormat, "%d Unplayed, %d Total");
+_LIT(KShowsTitleDownloads, "%d Downloading, %d Queued");
+_LIT(KShowsTitleDownloadsSuspended, "Downloads Suspended");
+
 _LIT(KSizeDownloadingOf, "%S/%S");
+
 
 const TInt KSizeBufLen = 16;
 
@@ -562,19 +566,32 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 			
 		}
 
-		if(len == 0)
-		{
-			ViewContext()->ChangeTextL(EPodcastListViewContextLabel, KNullDesC());
-		}
-		else
-		{
-			HBufC* titleBuffer = HBufC::NewLC(KShowsTitleFormat().Length()+8);
-			titleBuffer->Des().Format(KShowsTitleFormat, unplayed, len);
+		if (iCurrentCategory == EShowPendingShows) {
+			HBufC* titleBuffer; 	
+			if (iPodcastModel.ShowEngine().DownloadsStopped()) {
+				titleBuffer = HBufC::NewLC(KShowsTitleDownloadsSuspended().Length()+8);
+				titleBuffer->Des().Copy(KShowsTitleDownloadsSuspended);
+			} else {
+				titleBuffer = HBufC::NewLC(KShowsTitleDownloads().Length()+8);
+				titleBuffer->Des().Format(KShowsTitleDownloads, 1, len-1);			
+			}
 			ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *titleBuffer);
 			CleanupStack::PopAndDestroy(titleBuffer);
 
+		} else {
+			if(len == 0)
+			{
+				ViewContext()->ChangeTextL(EPodcastListViewContextLabel, KNullDesC());
+			}
+			else
+			{
+				HBufC* titleBuffer = HBufC::NewLC(KShowsTitleFormat().Length()+8);
+				titleBuffer->Des().Format(KShowsTitleFormat, unplayed, len);
+				ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *titleBuffer);
+				CleanupStack::PopAndDestroy(titleBuffer);	
+			}
 		}
-
+		
 		UpdateCommandsL();
 
 	}
