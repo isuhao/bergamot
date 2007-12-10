@@ -10,6 +10,8 @@
 #include "ShowEngine.h"
 const TInt KMaxFeedNameLength = 100;
 const TInt KADayInHours = 24;
+_LIT(KFeedsTitleFormat, "%d Feeds");
+
 /**
 Creates and constructs the view.
 
@@ -312,6 +314,11 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 					CleanupStack::PopAndDestroy();
 				}
 			}
+			
+			HBufC* titleBuffer = HBufC::NewLC(KFeedsTitleFormat().Length()+8);
+			titleBuffer->Des().Format(KFeedsTitleFormat, len);
+			ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *titleBuffer);
+			CleanupStack::PopAndDestroy(titleBuffer);
 			
 			// Informs that the update of the list box model has ended
 			model.ModelEndUpdateL();

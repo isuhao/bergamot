@@ -13,7 +13,7 @@
 #include "ShowEngine.h"
 
 
-_LIT(KShowsTitleFormat, "%d / %d");
+_LIT(KShowsTitleFormat, "%d Unplayed, %d Total");
 _LIT(KSizeDownloadingOf, "%S/%S");
 
 const TInt KSizeBufLen = 16;
