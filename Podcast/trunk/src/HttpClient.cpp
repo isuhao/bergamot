@@ -219,8 +219,8 @@ void CHttpClient::Stop()
 	if(iHandler != NULL)
 	{
 		iHandler->CloseSaveFile();
+		iTrans.Cancel();
 	}
-	iTrans.Cancel();
 	//iSession.Close();
 	}
 
