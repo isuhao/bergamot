@@ -31,7 +31,7 @@ void CSettingsEngine::ConstructL()
 	// default values
 	iUpdateFeedInterval = 60;
 	iMaxSimultaneousDownloads = 1;
-	iDownloadAutomatically = EFalse;
+	iDownloadAutomatically = ENeither;
 	iDownloadOnlyOnWLAN = EFalse;
 	iIap = -1;
 	iFs.Connect();
@@ -109,7 +109,7 @@ void CSettingsEngine::LoadSettingsL()
 	int len = stream.ReadInt32L();
 	stream.ReadL(iBaseDir, len);
 	iUpdateFeedInterval = stream.ReadInt32L();
-	iDownloadAutomatically = stream.ReadInt32L();
+	iDownloadAutomatically = (TAutomaticDownloadStates) stream.ReadInt32L();
 	iDownloadOnlyOnWLAN = stream.ReadInt32L();
 	iMaxSimultaneousDownloads = stream.ReadInt32L();
 	iIap = stream.ReadInt32L();
@@ -189,7 +189,9 @@ void CSettingsEngine::ImportSettings()
 				RDebug::Print(_L("Updating automatically every %d minutes"), iUpdateFeedInterval);
 			} else if (tag.CompareF(_L("DownloadAutomatically")) == 0) {
 				TLex lex(value);
-				lex.Val(iDownloadAutomatically);
+				TInt intval;
+				lex.Val(intval);
+				iDownloadAutomatically = (TAutomaticDownloadStates) intval;
 				RDebug::Print(_L("Download automatically: %d"), iDownloadAutomatically);
 			} else if (tag.CompareF(_L("MaxSimultaneousDownloads")) == 0) {
 				TLex lex(value);
@@ -227,7 +229,7 @@ TInt CSettingsEngine::MaxSimultaneousDownloads()
 	return iMaxSimultaneousDownloads;
 	}
 
-TBool CSettingsEngine::DownloadAutomatically() 
+TAutomaticDownloadStates CSettingsEngine::DownloadAutomatically() 
 	{
 	return iDownloadAutomatically;
 	}
@@ -286,9 +288,9 @@ void CSettingsEngine::SetMaxSimultaneousDownloads(TInt aMaxDownloads)
 	iMaxSimultaneousDownloads = aMaxDownloads;
 	}
 
-void CSettingsEngine::SetDownloadAutomatically(TBool aAutoOn)
+void CSettingsEngine::SetDownloadAutomatically(TAutomaticDownloadStates aAutoState)
 	{
-	iDownloadAutomatically = aAutoOn;
+	iDownloadAutomatically = aAutoState;
 	}
 
 void CSettingsEngine::SetDownloadOnlyOnWLAN(TBool aOnlyOnWLAN)

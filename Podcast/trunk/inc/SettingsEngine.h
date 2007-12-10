@@ -19,6 +19,12 @@ _LIT(KFeedDB, "feeds.db");
 const TInt KMaxVolume = 100;
 const TInt KVolumeDelta = 10;
 
+enum TAutomaticDownloadStates {
+	ENeither,
+	EFeedsOnly,
+	EFeedsAndShows
+};
+
 class CSettingsEngine : public CBase
 {
 public:
@@ -37,7 +43,7 @@ public:
 	TFileName& FeedListFile();
 	TInt UpdateFeedInterval();
 	TInt MaxSimultaneousDownloads();
-	TBool DownloadAutomatically();	
+	TAutomaticDownloadStates DownloadAutomatically();	
 	TFileName& DefaultFeedsFileName();
 	TBool DownloadOnlyOnWLAN();	
 	TInt SpecificIAP();
@@ -45,7 +51,7 @@ public:
 	void SetBaseDir(TFileName& aFileName);
 	void SetUpdateFeedInterval(TInt aInterval);
 	void SetMaxSimultaneousDownloads(TInt aMaxDownloads);
-	void SetDownloadAutomatically(TBool aAutoOn);
+	void SetDownloadAutomatically(TAutomaticDownloadStates aAutoState);
 	void SetDownloadOnlyOnWLAN(TBool aOnlyOnWLAN);
 	void SetSpecificIAP(TInt aIap);
 	TFileName PrivatePath();
@@ -60,7 +66,7 @@ private:
 	TFileName iBaseDir;
 	TFileName iDefaultFeedsFile;
 	TInt iUpdateFeedInterval;
-	TBool iDownloadAutomatically;
+	TAutomaticDownloadStates iDownloadAutomatically;
 	TBool iDownloadOnlyOnWLAN;
 	TInt iMaxSimultaneousDownloads;
 	TInt iIap;
