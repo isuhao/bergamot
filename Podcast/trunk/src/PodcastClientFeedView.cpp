@@ -156,10 +156,11 @@ void CPodcastClientFeedView::FeedInfoUpdated(CFeedInfo* aFeedInfo)
 	iPodcastModel.FeedEngine().GetFeeds(feeds);
 
 	TInt index = feeds.Find(aFeedInfo);
+	MQikListBoxModel& model(iListbox->Model());
 
-	if(index != KErrNotFound)
+	if(index != KErrNotFound && index<model.Count())
 	{
-		MQikListBoxModel& model(iListbox->Model());
+	
 		model.ModelBeginUpdateLC();
 		MQikListBoxData* data = model.RetrieveDataL(index);	
 

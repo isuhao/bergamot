@@ -398,11 +398,10 @@ void CPodcastClientShowsView::UpdateShowItemL(CShowInfo* aShowInfo, TInt aSizeDo
 {
 	// First find the item
 	TInt index = iPodcastModel.ActiveShowList().Find(aShowInfo);
+	MQikListBoxModel& model(iListbox->Model());
 
-	if(index != KErrNotFound)
+	if(index != KErrNotFound && index < model.Count())
 	{
-
-		MQikListBoxModel& model(iListbox->Model());
 		model.ModelBeginUpdateLC();
 		MQikListBoxData* data = model.RetrieveDataL(index);	
 		CleanupClosePushL(*data);
