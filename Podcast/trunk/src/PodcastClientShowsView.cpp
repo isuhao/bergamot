@@ -612,6 +612,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 	comMan.SetInvisible(*this, EPodcastPurgeShow, removePurgeShowCmd);
 	comMan.SetInvisible(*this, EPodcastPurgeFeed, (iCurrentCategory == EShowPendingShows || iCurrentCategory == EShowDownloadedShows));
 	comMan.SetInvisible(*this, EPodcastDeleteAllShows, (iCurrentCategory != EShowDownloadedShows));
+
 	switch(iCurrentCategory)
 	{	
 	case EShowPendingShows:
@@ -668,7 +669,12 @@ void CPodcastClientShowsView::UpdateCommandsL()
 		else
 		{
 			TUint unplayed = 0;
-			//unplayed+=(si->PlayState() == ENeverPlayed);
+		
+			for (TInt loop = 0;loop<cnt;loop++)
+			{
+				unplayed+=(iPodcastModel.ActiveShowList()[loop]->PlayState() == ENeverPlayed);
+			}
+
 			HBufC* titleFormat=  iEikonEnv->AllocReadResourceLC(R_PODCAST_SHOWS_TITLE_FORMAT);
 			HBufC* titleBuffer = HBufC::NewL(titleFormat->Length()+8);
 			titleBuffer->Des().Format(*titleFormat, unplayed, cnt);
