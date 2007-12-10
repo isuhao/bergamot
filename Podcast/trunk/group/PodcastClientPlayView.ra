@@ -296,7 +296,7 @@ RESOURCE PROGRESSINFO r_podcast_playview_dl_progress
 {
  finalval = 100;
  //splits_in_block = 10;
- text_type = EEikProgressTextFraction;
+ text_type = EEikProgressTextPercentage;
 }
 
 // The page contains a list box that fills the whole application space.

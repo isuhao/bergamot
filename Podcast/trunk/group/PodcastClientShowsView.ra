@@ -192,3 +192,10 @@ RESOURCE QIK_LISTBOX_LAYOUT r_podcast_showsview_listbox_layout
 	}
 	};
 }
+
+
+// Shows view status strings
+RESOURCE TBUF r_podcast_shows_title_format { buf =  STRING_r_podcast_shows_title_format;}
+RESOURCE TBUF r_podcast_shows_title_download {buf = STRING_r_podcast_shows_title_download;}
+RESOURCE TBUF r_podcast_shows_downloads_suspended { buf = STRING_r_podcast_shows_downloads_suspended;}
+

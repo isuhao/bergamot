@@ -359,40 +359,21 @@ void CPodcastClientPlayView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid 
 	SetParentView( aPrevViewId );
 	iScrollableContainer->ScrollToMakeVisible(iTitleEdwin);
 	RequestFocusL(iScrollableContainer);
+
+	if(iShowInfo != NULL && iPodcastModel.SoundEngine().State() != ESoundEnginePlaying && iPodcastModel.SoundEngine().State() != ESoundEnginePaused && iPodcastModel.PlayingPodcast()->Uid() != iShowInfo->Uid())
+	{
+		iPodcastModel.PlayPausePodcastL(iShowInfo);
+	}
 }
 
 void CPodcastClientPlayView::ViewDeactivated()
 {
 	CQikViewBase::ViewDeactivated();
-
-/*	if(iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.SoundEngine().State() != ESoundEnginePlaying && iPodcastModel.SoundEngine().State() != ESoundEnginePaused)
-	{
-		iLastShowInfo = iPodcastModel.PlayingPodcast();
-		iPodcastModel.SetPlayingPodcast(NULL);
-	}*/
 }
 
 void CPodcastClientPlayView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt aBytesTotal)
 
 {
-/*	if(aPercentOfCurrentDownload>=0 && aPercentOfCurrentDownload < KOneHundredPercent && iPodcastModel.PlayingPodcast() == iPodcastModel.ShowEngine().ShowDownloading())
-	{
-		if(!iProgressAdded)
-		{
-			ViewContext()->AddProgressInfoL(EEikProgressTextPercentage, KOneHundredPercent);
-
-			iProgressAdded = ETrue;
-		}
-		
-		ViewContext()->SetAndDrawProgressInfo(aPercentOfCurrentDownload);
-	}
-	else if(iProgressAdded)
-	{
-		ViewContext()->RemoveAndDestroyProgressInfo();
-		ViewContext()->DrawNow();
-		iProgressAdded = EFalse;
-	}*/
-
 	if(iDownloadProgressInfo != NULL)
 	{
 		iDownloadProgressInfo->SetFinalValue(aBytesTotal);
@@ -575,6 +556,11 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 					pos = iPodcastModel.SoundEngine().Position().Int64()/1000000;
 					iPlayProgressbar->SetValue((KMaxProgressValue*pos)/duration);
 					iPlayProgressbar->DrawDeferred();		
+				}
+				else if (iPodcastModel.SoundEngine().State() == ESoundEngineStopped)
+				{
+					iPlayProgressbar->SetValue(0);
+					iPlayProgressbar->DrawDeferred();
 				}
 			}
 			else

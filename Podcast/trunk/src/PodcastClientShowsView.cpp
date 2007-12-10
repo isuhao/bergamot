@@ -12,11 +12,6 @@
 #include "PodcastModel.h"
 #include "ShowEngine.h"
 
-
-_LIT(KShowsTitleFormat, "%d Unplayed, %d Total");
-_LIT(KShowsTitleDownloads, "%d Downloading, %d Queued");
-_LIT(KShowsTitleDownloadsSuspended, "Downloads Suspended");
-
 _LIT(KSizeDownloadingOf, "%S/%S");
 
 
@@ -117,8 +112,7 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 	else
 	{	
 		switch(aCommand.Id())
-		{
-			
+		{			
 		case EPodcastPurgeShow:
 			{				
 				if(iEikonEnv->QueryWinL(R_PODCAST_PURGE_SHOW_TITLE, R_PODCAST_PURGE_SHOW_PROMPT))				
@@ -150,7 +144,7 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 				{
 					iPodcastModel.ShowEngine().AddDownload(iPodcastModel.ActiveShowList()[index]);
 					UpdateShowItemL(iPodcastModel.ActiveShowList()[index]);
-					UpdateCommandsL();
+				
 				}
 			}break;
 		case EPodcastPurgeFeed:
@@ -196,6 +190,8 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 			break;
 		}
 	}
+
+	UpdateCommandsL();
 	
 }
 
@@ -426,7 +422,7 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 		TBuf<KMaxShortDateFormatSpec*2> showDate;
 
 		TInt len = 0;
-		TUint unplayed = 0;
+	
 		SetAppTitleNameL(KNullDesC());
 
 		switch(iCurrentCategory)
@@ -537,8 +533,7 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 						}
 						listBoxData->AddTextL(showDate, EQikListBoxSlotText3);
 						
-						listBoxData->SetEmphasis(si->PlayState() == ENeverPlayed);					
-						unplayed+=(si->PlayState() == ENeverPlayed);
+						listBoxData->SetEmphasis(si->PlayState() == ENeverPlayed);										
 						CleanupStack::PopAndDestroy();	
 						
 						TInt bitmap = EMbmPodcastclientShow_40x40;
@@ -564,33 +559,7 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 			}
 			
 			
-		}
-
-		if (iCurrentCategory == EShowPendingShows) {
-			HBufC* titleBuffer; 	
-			if (iPodcastModel.ShowEngine().DownloadsStopped()) {
-				titleBuffer = HBufC::NewLC(KShowsTitleDownloadsSuspended().Length()+8);
-				titleBuffer->Des().Copy(KShowsTitleDownloadsSuspended);
-			} else {
-				titleBuffer = HBufC::NewLC(KShowsTitleDownloads().Length()+8);
-				titleBuffer->Des().Format(KShowsTitleDownloads, 1, len-1);			
-			}
-			ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *titleBuffer);
-			CleanupStack::PopAndDestroy(titleBuffer);
-
-		} else {
-			if(len == 0)
-			{
-				ViewContext()->ChangeTextL(EPodcastListViewContextLabel, KNullDesC());
-			}
-			else
-			{
-				HBufC* titleBuffer = HBufC::NewLC(KShowsTitleFormat().Length()+8);
-				titleBuffer->Des().Format(KShowsTitleFormat, unplayed, len);
-				ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *titleBuffer);
-				CleanupStack::PopAndDestroy(titleBuffer);	
-			}
-		}
+		}	
 		
 		UpdateCommandsL();
 
@@ -638,20 +607,77 @@ void CPodcastClientShowsView::UpdateCommandsL()
 	}
 
 	comMan.SetInvisible(*this, EPodcastUpdateFeed, iCurrentCategory != EShowFeedShows);
-
-	TBool notshowDownloadCommands = (iCurrentCategory != EShowPendingShows);
 	comMan.SetInvisible(*this, EPodcastDownloadShow, removeDownloadShowCmd);
 
-	comMan.SetInvisible(*this, EPodcastRemoveDownload, (notshowDownloadCommands||removeDownloadCmd));
-	comMan.SetInvisible(*this, EPodcastStopDownloads, notshowDownloadCommands);
-	comMan.SetInvisible(*this, EPodcastResumeDownloads, notshowDownloadCommands);
 	comMan.SetInvisible(*this, EPodcastPurgeShow, removePurgeShowCmd);
 	comMan.SetInvisible(*this, EPodcastPurgeFeed, (iCurrentCategory == EShowPendingShows || iCurrentCategory == EShowDownloadedShows));
 	comMan.SetInvisible(*this, EPodcastDeleteAllShows, (iCurrentCategory != EShowDownloadedShows));
+	switch(iCurrentCategory)
+	{	
+	case EShowPendingShows:
+		{
+			comMan.SetInvisible(*this, EPodcastMarkAllPlayed, ETrue);
+			comMan.SetInvisible(*this, EPodcastUpdateLibrary, ETrue);
+			comMan.SetInvisible(*this, EPodcastRemoveDownload, EFalse);
+			comMan.SetInvisible(*this, EPodcastStopDownloads, iPodcastModel.ShowEngine().DownloadsStopped());
+			comMan.SetInvisible(*this, EPodcastResumeDownloads, !iPodcastModel.ShowEngine().DownloadsStopped());			
+			comMan.SetInvisible(*this, EPodcastShowUnplayedOnly, ETrue);
 
+		}break;
+	case EShowDownloadedShows:
+		{
+			comMan.SetInvisible(*this, EPodcastMarkAllPlayed, EFalse);
+			comMan.SetInvisible(*this, EPodcastUpdateLibrary, EFalse);
+			comMan.SetInvisible(*this, EPodcastRemoveDownload, ETrue);
+			comMan.SetInvisible(*this, EPodcastStopDownloads, ETrue);
+			comMan.SetInvisible(*this, EPodcastResumeDownloads, ETrue);
+			comMan.SetInvisible(*this, EPodcastShowUnplayedOnly, EFalse);
+		}break;
+	default:
+		{
+			comMan.SetInvisible(*this, EPodcastRemoveDownload, ETrue);
+			comMan.SetInvisible(*this, EPodcastStopDownloads, ETrue);
+			comMan.SetInvisible(*this, EPodcastResumeDownloads, ETrue);
+			comMan.SetInvisible(*this, EPodcastMarkAllPlayed, ETrue);
+			comMan.SetInvisible(*this, EPodcastUpdateLibrary, ETrue);
+			comMan.SetInvisible(*this, EPodcastShowUnplayedOnly, EFalse);
+		}break;
+	}
+	TInt cnt = iPodcastModel.ActiveShowList().Count();
 
-	
-
+	if (iCurrentCategory == EShowPendingShows) {
+		HBufC* titleBuffer = NULL;
+		
+		if (iPodcastModel.ShowEngine().DownloadsStopped()) {
+			titleBuffer =  iEikonEnv->AllocReadResourceLC(R_PODCAST_SHOWS_DOWNLOADS_SUSPENDED);
+		} else {
+			HBufC* titleFormat=  iEikonEnv->AllocReadResourceLC(R_PODCAST_SHOWS_TITLE_DOWNLOAD);
+			titleBuffer = HBufC::NewL(titleFormat->Length()+8);
+			titleBuffer->Des().Format(*titleFormat, 1, cnt-1);			
+			CleanupStack::PopAndDestroy(titleFormat);
+			CleanupStack::PushL(titleBuffer);
+		}
+		ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *titleBuffer);
+		CleanupStack::PopAndDestroy(titleBuffer);
+		
+	} else {
+		if(cnt == 0)
+		{
+			ViewContext()->ChangeTextL(EPodcastListViewContextLabel, KNullDesC());
+		}
+		else
+		{
+			TUint unplayed = 0;
+			//unplayed+=(si->PlayState() == ENeverPlayed);
+			HBufC* titleFormat=  iEikonEnv->AllocReadResourceLC(R_PODCAST_SHOWS_TITLE_FORMAT);
+			HBufC* titleBuffer = HBufC::NewL(titleFormat->Length()+8);
+			titleBuffer->Des().Format(*titleFormat, unplayed, cnt);
+			CleanupStack::PopAndDestroy(titleFormat);
+			CleanupStack::PushL(titleBuffer);
+			ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *titleBuffer);
+			CleanupStack::PopAndDestroy(titleBuffer);	
+		}
+	}
 }
 
 
