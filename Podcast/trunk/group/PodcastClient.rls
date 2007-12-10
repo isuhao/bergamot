@@ -20,7 +20,7 @@ rls_string STRING_r_view_main_cmd "Main"
 rls_string STRING_r_view_shows_cmd "Shows"
 rls_string STRING_r_view_all_shows_cmd "All Shows"
 rls_string STRING_r_view_new_shows_cmd "Unplayed"
-rls_string STRING_r_view_dl_shows_cmd "Library"
+rls_string STRING_r_view_dl_shows_cmd "Shows"
 rls_string STRING_r_view_dling_shows_cmd "Downloads"
 
 // Navigation to feeds
@@ -77,7 +77,7 @@ rls_string STRING_r_settings_cmd "Settings"
 // Categories
 rls_string STRING_r_category_all "All shows"
 rls_string STRING_r_category_new "Unplayed"
-rls_string STRING_r_category_dled "Library"
+rls_string STRING_r_category_dled "Shows"
 rls_string STRING_r_category_pending "Downloads"
 
 // Application caption
