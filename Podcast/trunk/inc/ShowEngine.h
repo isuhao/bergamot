@@ -27,7 +27,7 @@ public:
 	// show selection methods
 	void SelectAllShows();
 	void SelectShowsByFeed(TUint aFeedUid);
-	void SelectShowsByDownloadState(TInt aDownloadState);
+	void SelectShowsDownloaded();
 	void SelectNewShows();
 	void SelectShowsDownloading();
 	
@@ -61,7 +61,6 @@ private:
 	
 	void LoadShows();
 
-	void AppendToSelection(CShowInfo *aInfo);
 	static TInt CompareShowsByDate(const CShowInfo &a, const CShowInfo &b);
 
 	void DownloadNextShow();

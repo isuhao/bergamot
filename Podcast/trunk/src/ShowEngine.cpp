@@ -337,7 +337,7 @@ void CShowEngine::SelectAllShows()
 	
 	for (int i=0;i<iShows.Count();i++)
 		{
-		AppendToSelection(iShows[i]);
+		iSelectedShows.Append(iShows[i]);
 		}
 	}
 
@@ -413,13 +413,26 @@ void CShowEngine::SelectShowsByFeed(TUint aFeedUid)
 		if (iShows[i]->FeedUid() == aFeedUid)
 			{
 			if (!iSelectOnlyUnplayed || (iSelectOnlyUnplayed && iShows[i]->PlayState() == ENeverPlayed) ) {
-				AppendToSelection(iShows[i]);
+
+				iSelectedShows.Append(iShows[i]);
+		
 			}
 			}
 		}
 	
+	// sort by date falling
 	iSelectedShows.Sort(*iLinearOrder);
+	
+	// now purge if more than limit
+	int count = iSelectedShows.Count();
+	while (count > iPodcastModel.SettingsEngine().MaxListItems()) {
+		RDebug::Print(_L("Too many items, Removing"));
+		delete iSelectedShows[count-1];
+		iSelectedShows.Remove(count-1);
+		count = iSelectedShows.Count();
 	}
+
+}
 
 void CShowEngine::SelectNewShows()
 	{
@@ -428,22 +441,22 @@ void CShowEngine::SelectNewShows()
 		{
 		if (iShows[i]->PlayState() == ENeverPlayed)
 			{
-			AppendToSelection(iShows[i]);
+			iSelectedShows.Append(iShows[i]);
 			}
 		}
 	
 	iSelectedShows.Sort(*iLinearOrder);
 	}
 
-void CShowEngine::SelectShowsByDownloadState(TInt aDownloadState)
+void CShowEngine::SelectShowsDownloaded()
 	{
 	iSelectedShows.Reset();
 	for (int i=0;i<iShows.Count();i++)
 		{
-		if (iShows[i]->DownloadState() == aDownloadState)
+		if (iShows[i]->DownloadState() == EDownloaded)
 			{
 			if (!iSelectOnlyUnplayed || (iSelectOnlyUnplayed && iShows[i]->PlayState() == ENeverPlayed) ) {
-				AppendToSelection(iShows[i]);
+				iSelectedShows.Append(iShows[i]);
 				}
 			}
 		}
@@ -458,7 +471,7 @@ void CShowEngine::SelectShowsDownloading()
 		{
 		if (iShows[i]->DownloadState() == EDownloading)
 				{
-				AppendToSelection(iShows[i]);
+				iSelectedShows.Append(iShows[i]);
 				}
 		}
 
@@ -466,19 +479,10 @@ void CShowEngine::SelectShowsDownloading()
 		{
 		if (iShows[i]->DownloadState() == EQueued)
 				{
-				AppendToSelection(iShows[i]);
+				iSelectedShows.Append(iShows[i]);
 				}
 		}
 
-	}
-
-void CShowEngine::AppendToSelection(CShowInfo *aInfo)
-	{
-	if (iSelectedShows.Count() > iPodcastModel.SettingsEngine().MaxListItems()) {
-		return;
-	}
-	
-	iSelectedShows.Append(aInfo);
 	}
 
 RShowInfoArray& CShowEngine::GetSelectedShows()

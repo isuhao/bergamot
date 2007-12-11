@@ -437,7 +437,7 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 			break;		
 		case EShowDownloadedShows:
 			SelectCategoryL(EShowDownloadedShows);
-			iPodcastModel.ShowEngine().SelectShowsByDownloadState(EDownloaded);
+			iPodcastModel.ShowEngine().SelectShowsDownloaded();
 			break;
 		case EShowPendingShows:
 			SelectCategoryL(EShowPendingShows);
