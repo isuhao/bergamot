@@ -21,6 +21,7 @@ void CShowInfo::ConstructL()
 CShowInfo::CShowInfo()
 	{
 	iDownloadState = ENotDownloaded;
+	iDelete = EFalse;
 	}
 
 CShowInfo::~CShowInfo()
@@ -223,6 +224,15 @@ void CShowInfo::SetPubDate(TTime aPubDate)
 TDesC& CShowInfo::FileName()
 	{
 	return *iFileName;
+	}
+void CShowInfo::SetDelete()
+	{
+	iDelete = ETrue;
+	}
+
+TBool CShowInfo::Delete()
+	{
+	return iDelete;
 	}
 
 void CShowInfo::SetFileName(TDesC &aFileName)

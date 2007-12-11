@@ -36,7 +36,7 @@ void CShowEngine::ConstructL()
 	iShowClient->SetResumeEnabled(ETrue);
 	iLinearOrder = new TLinearOrder<CShowInfo>(CShowEngine::CompareShowsByDate);
 
-	LoadShows();
+	TRAPD(error, LoadShowsL());
 	CheckFiles();
 	}
 
@@ -226,9 +226,9 @@ TBool CShowEngine::CompareShowsByUid(const CShowInfo &a, const CShowInfo &b)
 	return a.Uid() == b.Uid();
 }
 
-void CShowEngine::LoadShows()
+void CShowEngine::LoadShowsL()
 	{
-	RDebug::Print(_L("LoadShows"));
+	RDebug::Print(_L("LoadShowsL"));
 	TFileName path;
 	TParse	filestorename;
 	
@@ -248,9 +248,8 @@ void CShowEngine::LoadShows()
 	CleanupStack::PushL(store);
 	
 	if (error != KErrNone) {
-		RDebug::Print(_L("error=%d"), error);
 		CleanupStack::Pop(store);
-		return;
+		User::Leave(error);
 	}
 	
 	RStoreReadStream instream;
@@ -274,18 +273,19 @@ void CShowEngine::LoadShows()
 	int lastUid = -1;
 	for (int i=0;i<count;i++) {
 		readData = CShowInfo::NewL();
-		TRAPD(error, instream  >> *readData);
+		instream  >> *readData;
 		
 		if (readData->FeedUid() != lastUid) {
 			lastUid = readData->FeedUid();
 			feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(readData->FeedUid());
 		}
 		
-		// if this show does not have a valid feed, we don't bother
-		if (feedInfo == NULL) {
+		// might be useful to keep these shows after all...
+		/*if (feedInfo == NULL) {
+			// if this show does not have a valid feed, we don't bother
 			RDebug::Print(_L("Discarding show since it has no feed!"));
 			continue;
-		}
+		}*/
 		//RDebug::Print(_L("error: %d"), error);
 		AddShow(readData);
 		
@@ -320,8 +320,10 @@ void CShowEngine::SaveShows()
 	RDebug::Print(_L("Saving %d shows"), iShows.Count());
 	outstream.WriteInt32L(iShows.Count());
 	for (int i=0;i<iShows.Count();i++) {
+		if (!iShows[i]->Delete()) {
 //		RDebug::Print(_L("Storing show %i"), i);
 		outstream  << *iShows[i];
+		}
 	}
 	
 	outstream.CommitL();
@@ -427,7 +429,8 @@ void CShowEngine::SelectShowsByFeed(TUint aFeedUid)
 	int count = iSelectedShows.Count();
 	while (count > iPodcastModel.SettingsEngine().MaxListItems()) {
 		RDebug::Print(_L("Too many items, Removing"));
-		delete iSelectedShows[count-1];
+		//delete iSelectedShows[count-1];
+		iSelectedShows[count-1]->SetDelete();
 		iSelectedShows.Remove(count-1);
 		count = iSelectedShows.Count();
 	}
@@ -450,6 +453,7 @@ void CShowEngine::SelectNewShows()
 
 void CShowEngine::SelectShowsDownloaded()
 	{
+	CheckFiles();
 	iSelectedShows.Reset();
 	for (int i=0;i<iShows.Count();i++)
 		{

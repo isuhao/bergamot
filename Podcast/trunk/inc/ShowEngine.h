@@ -59,7 +59,7 @@ private:
 
 	void GetShow(CShowInfo *info);
 	
-	void LoadShows();
+	void LoadShowsL();
 
 	static TInt CompareShowsByDate(const CShowInfo &a, const CShowInfo &b);
 

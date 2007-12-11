@@ -62,6 +62,9 @@ public:
 	TDesC &FileName();
 	void SetFileName(TDesC &aFileName);
 
+	void SetDelete();
+	TBool Delete();
+	
 private:
 	CShowInfo();
 	void ConstructL();
@@ -78,6 +81,7 @@ private:
 	TUint iUid;
 	TUint iShowSize;
 	TTime iPubDate;
+	TBool iDelete;
 };
 
 typedef RPointerArray<CShowInfo> RShowInfoArray;
