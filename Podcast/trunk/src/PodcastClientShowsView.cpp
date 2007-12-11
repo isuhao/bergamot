@@ -650,11 +650,21 @@ void CPodcastClientShowsView::UpdateCommandsL()
 		HBufC* titleBuffer = NULL;
 		
 		if (iPodcastModel.ShowEngine().DownloadsStopped()) {
-			titleBuffer =  iEikonEnv->AllocReadResourceLC(R_PODCAST_SHOWS_DOWNLOADS_SUSPENDED);
+			HBufC* titleFormat=  iEikonEnv->AllocReadResourceLC(R_PODCAST_SHOWS_DOWNLOADS_SUSPENDED);
+			titleBuffer = HBufC::NewL(titleFormat->Length()+8);
+			titleBuffer->Des().Format(*titleFormat, cnt);			
+			CleanupStack::PopAndDestroy(titleFormat);
+			CleanupStack::PushL(titleBuffer);
 		} else {
 			HBufC* titleFormat=  iEikonEnv->AllocReadResourceLC(R_PODCAST_SHOWS_TITLE_DOWNLOAD);
 			titleBuffer = HBufC::NewL(titleFormat->Length()+8);
-			titleBuffer->Des().Format(*titleFormat, 1, cnt-1);			
+			int numDownloading = 0;
+			int numQueued = 0;
+			if (cnt > 0) {
+				numDownloading = 1;
+				numQueued = cnt - 1;
+			}
+			titleBuffer->Des().Format(*titleFormat, numDownloading, numQueued);			
 			CleanupStack::PopAndDestroy(titleFormat);
 			CleanupStack::PushL(titleBuffer);
 		}

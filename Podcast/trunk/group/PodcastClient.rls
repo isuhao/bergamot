@@ -59,7 +59,7 @@ rls_string STRING_r_view_download_show_cmd "Download Show"
 rls_string STRING_r_view_delete_show_cmd "Delete Show"
 rls_string STRING_r_view_delete_shows_cmd "Delete Shows"
 rls_string STRING_r_view_purge_show_cmd "Delete Show"
-rls_string STRING_r_view_remove_download_cmd "Remove download"
+rls_string STRING_r_view_remove_download_cmd "Remove"
 rls_string STRING_r_view_stop_downloads_cmd "Suspend Downloading"
 rls_string STRING_r_view_resume_downloads_cmd "Resume Downloading"
 rls_string STRING_r_view_mark_all_played_cmd "Mark All Played"
@@ -92,7 +92,7 @@ rls_string STRING_r_view_shows_title "Shows"
 // Shows view status strings
 rls_string STRING_r_podcast_shows_title_format "%d Unplayed, %d Total";
 rls_string STRING_r_podcast_shows_title_download "%d Downloading, %d Queued";
-rls_string STRING_r_podcast_shows_downloads_suspended "Downloads Suspended";
+rls_string STRING_r_podcast_shows_downloads_suspended "Suspended, %d Queued";
 
 // DIALOG string
 rls_string STRING_r_add_feed_title "Add Feed"
