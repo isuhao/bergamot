@@ -191,6 +191,17 @@ void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 
 	switch(aCommand.Id())
 	{
+	case EPodcastMarkAsPlayed:
+		{
+			iShowInfo->SetPlayState(EPlayed);
+			UpdateViewL();
+		}break;
+	case EPodcastMarkAsUnplayed:
+		{
+			iShowInfo->SetPlayState(ENeverPlayed);
+			UpdateViewL();
+		}break;
+
 	case EPodcastSetVolume:
 		{
 			CPodcastClientVolumeDlg* dlg = new (ELeave) CPodcastClientVolumeDlg(iPodcastModel);
@@ -443,6 +454,9 @@ void CPodcastClientPlayView::UpdateViewL()
 				iTitleEdwin->SetTextL(iShowInfo->Title());
 			}
 
+			comMan.SetInvisible(*this, EPodcastMarkAsPlayed, iShowInfo->PlayState() != ENeverPlayed);
+			comMan.SetInvisible(*this, EPodcastMarkAsUnplayed, iShowInfo->PlayState() == ENeverPlayed);
+
 			if(iShowInfo->DownloadState() == ENotDownloaded)
 			{
 				comMan.SetInvisible(*this, EPodcastDownloadShow, EFalse);
@@ -517,6 +531,8 @@ void CPodcastClientPlayView::UpdateViewL()
 		{
 			iProgressBB->RequestRelayout(iProgressBB);
 		}
+
+		
 
 		RequestRelayout(this);
 }

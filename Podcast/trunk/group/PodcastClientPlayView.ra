@@ -83,7 +83,20 @@ RESOURCE QIK_COMMAND_LIST r_podcast_playview_commands
 			type = EQikCommandTypeDone;
 			text = STRING_r_volume_cmd;
 			},
-
+	QIK_COMMAND
+			{
+			id = EPodcastMarkAsPlayed;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_view_mark_as_played_cmd;
+			groupId = 1;
+			},
+	QIK_COMMAND
+			{
+			id = EPodcastMarkAsUnplayed;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_view_mark_as_unplayed_cmd;
+			groupId = 1;
+			},
 		QIK_COMMAND
 			{
 			id = EPodcastView;

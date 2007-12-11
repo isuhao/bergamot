@@ -43,6 +43,8 @@ rls_string STRING_r_view_remove_download_cmd "Remove Download"
 rls_string STRING_r_view_show_cmd "Show"
 rls_string STRING_r_view_cmd "View"
 rls_string STRING_r_view_play_cmd "Play"
+rls_string STRING_r_view_mark_as_played_cmd "Mark played"
+rls_string STRING_r_view_mark_as_unplayed_cmd "Mark unplayed"
 
 // Actions for feeds
 rls_string STRING_r_view_add_feed_cmd "Add Feed"

@@ -370,9 +370,13 @@ void CHttpEventHandler::SetSilent(TBool aSilent)
 	}
 
 void CHttpEventHandler::CloseSaveFile()
+{
+	if(iRespBody != NULL)
 	{
-	int size;
-	iRespBodyFile.Size(size);
-	RDebug::Print(_L("Closing file at size %d, bytes downloaded %d"), size, iBytesDownloaded);
-	iRespBodyFile.Close();
+		TInt size;
+		
+		iRespBodyFile.Size(size);
+		RDebug::Print(_L("Closing file at size %d, bytes downloaded %d"), size, iBytesDownloaded);
+		iRespBodyFile.Close();
 	}
+}
