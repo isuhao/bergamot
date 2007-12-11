@@ -17,10 +17,10 @@ rls_string STRING_r_listbox_listview_cmd_close_debug_shorttext "Close"
 rls_string STRING_r_view_cmd "View"
 // Navigation to shows view
 rls_string STRING_r_view_main_cmd "Main"
-rls_string STRING_r_view_shows_cmd "Shows"
+rls_string STRING_r_view_shows_cmd "Shows On Phone"
 rls_string STRING_r_view_all_shows_cmd "All Shows"
 rls_string STRING_r_view_new_shows_cmd "Unplayed"
-rls_string STRING_r_view_dl_shows_cmd "Shows"
+rls_string STRING_r_view_dl_shows_cmd "Shows On Phone"
 rls_string STRING_r_view_dling_shows_cmd "Downloader"
 
 // Navigation to feeds
