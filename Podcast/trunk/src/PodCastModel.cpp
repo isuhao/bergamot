@@ -141,7 +141,6 @@ void CPodcastModel::PlayPausePodcastL(CShowInfo* aPodcast)
 		iSoundEngine->Pause();
 		if (iPlayingPodcast != NULL) {
 			iPlayingPodcast->SetPosition(iSoundEngine->Position());
-			iPlayingPodcast->SetPlayState(EPlayed);
 		}
 		
 		iSoundEngine->Stop();
