@@ -128,6 +128,11 @@ void CSoundEngine::Play()
 	{
 		iPlayer->Play();
 		iState = ESoundEnginePlaying;
+
+		if (iPodcastModel.PlayingPodcast() != NULL) {
+			iPodcastModel.PlayingPodcast()->SetPlayState(EPlayed);
+		}
+
 		if(iObserver != NULL)
 		{
 			TRAPD(err, iObserver->PlaybackStartedL());
