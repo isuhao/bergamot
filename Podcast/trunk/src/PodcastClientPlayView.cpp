@@ -252,6 +252,7 @@ void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 				iPodcastModel.PlayPausePodcastL(iShowInfo);
 				iPlayOnInit = ETrue;
 			}
+			UpdateViewL();
 		}break;
 	case EPodcastStop:
 		{
