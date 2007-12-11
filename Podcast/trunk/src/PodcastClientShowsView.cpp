@@ -130,7 +130,8 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 			break;
 		case EPodcastShowUnplayedOnly:
 			{
-			iPodcastModel.ShowEngine().SetSelectUnplayedOnly(ETrue);
+			iShowUnplayedOnly = !iShowUnplayedOnly;
+			iPodcastModel.ShowEngine().SetSelectUnplayedOnly(iShowUnplayedOnly);
 			UpdateListboxItemsL();
 			}break;
 		case EPodcastMarkAllPlayed:

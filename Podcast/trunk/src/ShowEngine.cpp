@@ -406,7 +406,7 @@ void CShowEngine::PurgeShow(TInt aShowUid)
 
 void CShowEngine::SelectShowsByFeed(TUint aFeedUid)
 	{
-	RDebug::Print(_L("SelectShowsByFeed: %u"), aFeedUid);
+	RDebug::Print(_L("SelectShowsByFeed: %u, unplayed only=%d"), aFeedUid, iSelectOnlyUnplayed);
 	iSelectedShows.Reset();
 	for (int i=0;i<iShows.Count();i++)
 		{
