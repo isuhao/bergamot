@@ -12,13 +12,16 @@ class CPodcastClientAddFeedDlg: public CEikDialog
 {
 public:
 	CPodcastClientAddFeedDlg(CPodcastModel& aPodcastModel);
+	CPodcastClientAddFeedDlg(CPodcastModel& aPodcastModel, CFeedInfo* aFeedInfo);
+
 	~CPodcastClientAddFeedDlg();
 	TBool OkToExitL(TInt aCommandId);
 	 void PreLayoutDynInitL();
 private:
 	/** Reference to the podcast application model */
 	CPodcastModel& iPodcastModel;
-	CFeedInfo iFeedInfo;
+	CFeedInfo* iFeedInfo;
+	TBool iEditFeed;
 };
 
 #endif

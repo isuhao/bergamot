@@ -8,6 +8,12 @@
 
 CPodcastClientAddFeedDlg::CPodcastClientAddFeedDlg(CPodcastModel& aPodcastModel):iPodcastModel(aPodcastModel)
 {
+	 iEditFeed = EFalse;
+}
+
+CPodcastClientAddFeedDlg::CPodcastClientAddFeedDlg(CPodcastModel& aPodcastModel, CFeedInfo* aFeedInfo):iPodcastModel(aPodcastModel), iFeedInfo(aFeedInfo)
+{
+	iEditFeed = ETrue;
 }
 
 CPodcastClientAddFeedDlg::~CPodcastClientAddFeedDlg()
@@ -18,7 +24,15 @@ _LIT(KURLPrefix, "http://");
 void CPodcastClientAddFeedDlg::PreLayoutDynInitL()
 {
 		CEikEdwin* edwin = static_cast<CEikEdwin*>(ControlOrNull(EPodcastAddEditFeedDlgUrl));
-		edwin->SetTextL(&KURLPrefix());
+
+		if(iEditFeed)
+		{
+			edwin->SetTextL(&iFeedInfo->Url());
+		}
+		else
+		{
+			edwin->SetTextL(&KURLPrefix());
+		}
 }
 
 
@@ -34,11 +48,22 @@ TBool CPodcastClientAddFeedDlg::OkToExitL(TInt aCommandId)
 	{
 		TBuf<1024> buffer;
 		edwin->GetText(buffer);
-		CFeedInfo* newFeedInfo = new (ELeave) CFeedInfo;
-		newFeedInfo->SetUrl(buffer);
-		newFeedInfo->SetTitle(iFeedInfo.Url());
-		iPodcastModel.FeedEngine().AddFeed(newFeedInfo);
-		iPodcastModel.FeedEngine().UpdateFeed(newFeedInfo->Uid());
+	
+
+		if(iEditFeed)
+		{
+			iFeedInfo->SetUrl(buffer);			
+		}
+		else
+		{
+			CFeedInfo* newFeedInfo = new (ELeave) CFeedInfo;
+			iFeedInfo = newFeedInfo;
+			iFeedInfo->SetUrl(buffer);
+			iFeedInfo->SetTitle(newFeedInfo->Url());
+			iPodcastModel.FeedEngine().AddFeed(newFeedInfo);
+		}
+
+		iPodcastModel.FeedEngine().UpdateFeed(iFeedInfo->Uid());
 	}
 
 	return ETrue;

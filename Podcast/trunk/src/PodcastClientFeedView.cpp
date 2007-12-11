@@ -376,6 +376,22 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 			if(iListbox != NULL)
 			{
 				TInt index = iListbox->CurrentItemIndex();
+				RFeedInfoArray feeds;
+				CleanupClosePushL(feeds);
+				iPodcastModel.FeedEngine().GetFeeds(feeds);
+				TInt cnt = feeds.Count();
+
+				if(index< cnt)
+				{
+					CPodcastClientAddFeedDlg* dlg = new (ELeave) CPodcastClientAddFeedDlg(iPodcastModel, feeds[index]);
+					if(dlg->ExecuteLD(R_PODCAST_EDIT_FEED_DLG))
+					{
+						UpdateListboxItemsL();
+					}
+				}
+				
+				CleanupStack::PopAndDestroy();//close feeds array
+				
 			}
 		}break;
 
