@@ -41,7 +41,7 @@ public:
 	void PurgeShow(TInt aShowUid);
 	
 	RShowInfoArray& GetSelectedShows();
-	void SetPlayedByFeed(TUint aFeedUid);
+	void SetSelectionPlayed();
 	void CheckFiles();
 	void GetStatsByFeed(TUint aFeedUid, TUint &aNumShows, TUint &aNumUnplayed );
 	void SetSelectUnplayedOnly(TBool aOnlyUnplayed);

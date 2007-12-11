@@ -526,15 +526,13 @@ void CShowEngine::DownloadNextShow()
 	}
 }
 
-void CShowEngine::SetPlayedByFeed(TUint aFeedUid)
+void CShowEngine::SetSelectionPlayed()
 	{
-	RDebug::Print(_L("SetPlayedByFeed %d"), aFeedUid);
-	for (int i=0;i<iShows.Count();i++)
+	RDebug::Print(_L("SetSelectionPlayed"));
+	for (int i=0;i<iSelectedShows.Count();i++)
 		{
-			if (iShows[i]->FeedUid() == aFeedUid) {
-				RDebug::Print(_L("Setting %d played"), iShows[i]->Uid());
-				iShows[i]->SetPlayState(EPlayed);
-			}
+			//RDebug::Print(_L("Setting %d played"), iSelectedShows[i]->Uid());
+			iSelectedShows[i]->SetPlayState(EPlayed);
 		}
 	
 	SaveShows();

@@ -135,7 +135,7 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 			UpdateListboxItemsL();
 			}break;
 		case EPodcastMarkAllPlayed:
-			iPodcastModel.ShowEngine().SetPlayedByFeed(iPodcastModel.ActiveFeedInfo()->Uid());
+			iPodcastModel.ShowEngine().SetSelectionPlayed();
 			UpdateListboxItemsL();
 			break;
 		case EPodcastDownloadShow:
