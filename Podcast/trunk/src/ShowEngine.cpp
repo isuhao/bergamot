@@ -442,7 +442,9 @@ void CShowEngine::SelectShowsByDownloadState(TInt aDownloadState)
 		{
 		if (iShows[i]->DownloadState() == aDownloadState)
 			{
-			AppendToSelection(iShows[i]);
+			if (!iSelectOnlyUnplayed || (iSelectOnlyUnplayed && iShows[i]->PlayState() == ENeverPlayed) ) {
+				AppendToSelection(iShows[i]);
+				}
 			}
 		}
 	}
