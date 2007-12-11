@@ -153,7 +153,7 @@ void CPodcastModel::PlayPausePodcastL(CShowInfo* aPodcast)
 			}
 		}
 
-		iPlayingPodcast = aPodcast;
+		iPlayingPodcast = aPodcast;		
 	}
 }
 
