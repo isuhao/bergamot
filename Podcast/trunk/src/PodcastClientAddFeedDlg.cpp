@@ -5,6 +5,7 @@
 #include "PodcastClientAddFeedDlg.h"
 #include "PodcastModel.h"
 #include "FeedEngine.h"
+#include "PodcastClient.rsg"
 
 CPodcastClientAddFeedDlg::CPodcastClientAddFeedDlg(CPodcastModel& aPodcastModel):iPodcastModel(aPodcastModel)
 {
@@ -62,8 +63,12 @@ TBool CPodcastClientAddFeedDlg::OkToExitL(TInt aCommandId)
 			iFeedInfo->SetTitle(newFeedInfo->Url());
 			iPodcastModel.FeedEngine().AddFeed(newFeedInfo);
 		}
-
-		iPodcastModel.FeedEngine().UpdateFeed(iFeedInfo->Uid());
+		/*
+		if(iEikonEnv->QueryWinL(R_PODCAST_UPDATE_NEW_FEED_TITLE, R_PODCAST_UPDATE_NEW_FEED_PROMPT))
+			{
+				iPodcastModel.FeedEngine().UpdateFeed(iFeedInfo->Uid());
+			}
+		*/
 	}
 
 	return ETrue;

@@ -300,6 +300,9 @@ RESOURCE TBUF r_podcast_view_cmd {buf = STRING_r_view_cmd;}
 RESOURCE TBUF r_podcast_remove_feed_title {buf = STRING_r_remove_feed_title;}
 RESOURCE TBUF r_podcast_remove_feed_prompt {buf = STRING_r_remove_feed_prompt;}
 
+RESOURCE TBUF r_podcast_update_new_feed_title {buf = STRING_r_update_new_feed_title;}
+RESOURCE TBUF r_podcast_update_new_feed_prompt {buf = STRING_r_update_new_feed_prompt;}
+
 RESOURCE TBUF r_podcast_purge_feed_title {buf = STRING_r_purge_feed_title;}
 RESOURCE TBUF r_podcast_purge_feed_prompt {buf = STRING_r_purge_feed_prompt;}
 

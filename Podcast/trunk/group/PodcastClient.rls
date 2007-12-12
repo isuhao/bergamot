@@ -108,6 +108,8 @@ rls_string STRING_r_remove_feed_prompt "Are you really sure you want to remove t
 rls_string STRING_r_enable_downloads_title "Resume Downloading"
 rls_string STRING_r_enable_downloads_prompt "There are shows in the download queue. Do you want to download now?"
 
+rls_string STRING_r_update_new_feed_title "Update Feed"
+rls_string STRING_r_update_new_feed_prompt "Do you want to update the feed now?"
 
 rls_string STRING_r_purge_feed_title "Purge Feed"
 rls_string STRING_r_purge_feed_prompt "Are you really sure you want to purge this feed, and remove all downloaded shows?"
