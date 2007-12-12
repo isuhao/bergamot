@@ -32,7 +32,7 @@ CShowEngine* CShowEngine::NewL(CPodcastModel& aPodcastModel)
 void CShowEngine::ConstructL()
 	{
 	iFs.Connect();
-	iShowClient = CHttpClient::NewL(*this);
+	iShowClient = CHttpClient::NewL(iPodcastModel, *this);
 	iShowClient->SetResumeEnabled(ETrue);
 	iLinearOrder = new TLinearOrder<CShowInfo>(CShowEngine::CompareShowsByDate);
 
@@ -126,8 +126,9 @@ void CShowEngine::GetStatsByFeed(TUint aFeedUid, TUint &aNumShows, TUint &aNumUn
 			}
 			}
 	}
-	aNumShows = showsCount;
-	aNumUnplayed = unplayedCount;
+	int maxItems = iPodcastModel.SettingsEngine().MaxListItems();
+	aNumShows = showsCount < maxItems ? showsCount : maxItems;
+	aNumUnplayed = unplayedCount < maxItems ? unplayedCount : maxItems;
 	}
 
 void CShowEngine::GetShow(CShowInfo *info)
@@ -154,7 +155,7 @@ void CShowEngine::GetShow(CShowInfo *info)
 	// complete file path is base dir + rel path
 	filePath.Append(relPath);
 	info->SetFileName(filePath);
-	iShowClient->GetL(info->Url(), filePath, iPodcastModel.SettingsEngine().SpecificIAP());
+	iShowClient->GetL(info->Url(), filePath);
 	}
 
 void CShowEngine::AddShow(CShowInfo *item) {

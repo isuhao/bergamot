@@ -47,6 +47,9 @@ void CPodcastModel::ConstructL()
 	iFeedEngine = CFeedEngine::NewL(*this);
 	iShowEngine = CShowEngine::NewL(*this);
 	iSoundEngine = CSoundEngine::NewL(*this);
+	
+	User::LeaveIfError(iSocketServ.Connect());
+	User::LeaveIfError(iConnection.Open(iSocketServ));
 }
 
 void CPodcastModel::UpdateIAPListL()
@@ -183,6 +186,7 @@ void CPodcastModel::SetActiveShowList(RShowInfoArray& aShowArray)
 	}
 }
 
+
 TBool CPodcastModel::SetZoomState(TInt aZoomState)
 {
 	if(iZoomState != aZoomState)
@@ -198,3 +202,42 @@ TInt CPodcastModel::ZoomState()
 {
 	return iZoomState;
 }
+
+RConnection& CPodcastModel::Connection()
+{
+	return iConnection;
+}
+
+TConnPref& CPodcastModel::ConnPref()
+{
+	return iConnPref;
+}
+
+void CPodcastModel::ConnectHttpSessionL(RHTTPSession &aSession)
+{
+	RDebug::Print(_L("ConnectHttpSessionL START"));
+	iConnection.Stop();
+	User::LeaveIfError(iConnection.Start(iConnPref));
+
+	RHTTPConnectionInfo connInfo = aSession.ConnectionInfo();
+	RStringPool pool = aSession.StringPool();
+	// Attach to socket server
+	connInfo.SetPropertyL(pool.StringF(HTTP::EHttpSocketServ, RHTTPSession::GetTable()), THTTPHdrVal(iSocketServ.Handle()));
+	// Attach to connection
+	TInt connPtr = REINTERPRET_CAST(TInt, &iConnection);
+	connInfo.SetPropertyL(pool.StringF(HTTP::EHttpSocketConnection, RHTTPSession::GetTable()), THTTPHdrVal(connPtr));
+	RDebug::Print(_L("ConnectHttpSessionL END"));
+}
+
+void CPodcastModel::SetIap(TInt aIap)
+	{
+	if (aIap == -1) {
+		RDebug::Print(_L("Will prompt"));
+		iConnPref.SetDialogPreference(ECommDbDialogPrefPrompt);
+	} else {
+		iConnPref.SetDialogPreference(ECommDbDialogPrefDoNotPrompt);
+		iConnPref.SetDirection(ECommDbConnectionDirectionOutgoing);
+		iConnPref.SetIapId(aIap);
+	}
+	
+	}

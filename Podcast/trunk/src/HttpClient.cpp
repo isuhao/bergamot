@@ -28,21 +28,21 @@ CHttpClient::~CHttpClient()
   iSession.Close();
   }
 
-CHttpClient* CHttpClient::NewL(MHttpClientObserver& aObserver)
+CHttpClient* CHttpClient::NewL(CPodcastModel& aPodcastModel, MHttpClientObserver& aObserver)
   {
-  CHttpClient* me = NewLC(aObserver);
+  CHttpClient* me = NewLC(aPodcastModel, aObserver);
   CleanupStack::Pop(me);
   return me;
   }
 
-CHttpClient::CHttpClient(MHttpClientObserver& aObserver) : iObserver(aObserver)
+CHttpClient::CHttpClient(CPodcastModel& aPodcastModel, MHttpClientObserver& aObserver) : iPodcastModel(aPodcastModel), iObserver(aObserver)
   {
   iResumeEnabled = EFalse;
   }
 
-CHttpClient* CHttpClient::NewLC(MHttpClientObserver& aObserver)
+CHttpClient* CHttpClient::NewLC(CPodcastModel& aPodcastModel, MHttpClientObserver& aObserver)
   {
-  CHttpClient* me = new (ELeave) CHttpClient(aObserver);
+  CHttpClient* me = new (ELeave) CHttpClient(aPodcastModel, aObserver);
   CleanupStack::PushL(me);
   me->ConstructL();
   return me;
@@ -52,60 +52,6 @@ void CHttpClient::ConstructL()
   {
 
   }
-
-
-void CHttpClient::ManageConnections(TBool aRequireWLAN)
-	{
-	// 0. If WLAN required-setting is off, take whatever connection we have, return
-	// 1. Test if default connection is WLAN, if so, use this
-	// 2. If we have a previously selected WLAN, try to connect to this one
-	//    if successful, use it
-	// 3. Let the user select a WLAN
-	
-	// WLAN som connectar men inte routar?
-	
-	CCommsDatabase *cdb = CCommsDatabase::NewL(EDatabaseTypeUnspecified);
-	CleanupStack::PushL(cdb);
-
-	unsigned long defaultIap;
-	CCommsDbTableView* prefTableView = cdb->OpenTableLC( TPtrC( IAP ) );
-	prefTableView->ReadUintL( TPtrC( COMMDB_ID), defaultIap );
-	RDebug::Print(_L("default IAP: %d"), defaultIap);
-
-	CCommsDbTableView *view = cdb->OpenIAPTableViewMatchingBearerSetLC(KCommDbBearerWLAN | KCommDbBearerLAN | KCommDbBearerPAN, ECommDbConnectionDirectionOutgoing);
-	unsigned long val = 0;
-	int error =view->GotoFirstRecord();
-	TBool isWLAN = EFalse;
-	while (error == KErrNone) {
-		TBuf<100> iapName;
-		view->ReadTextL(TPtrC(COMMDB_NAME), iapName);
-		RDebug::Print(_L("iapName: %S"), &iapName);
-		view->ReadTextL(TPtrC(IAP_BEARER_TYPE), iapName);
-		RDebug::Print(_L("bearer type: %S"), &iapName);
-		view->ReadTextL(TPtrC(IAP_SERVICE_TYPE), iapName);
-		RDebug::Print(_L("service type: %S"), &iapName);
-
-		view->ReadUintL(TPtrC(COMMDB_ID), val);
-		RDebug::Print(_L("IAP ID: %d, default=%d"), val, defaultIap);
-		if (val == defaultIap) {
-			isWLAN = ETrue;
-		}
-		
-		/*view->ReadUintL(TPtrC(IAP_NETWORK), val);
-		RDebug::Print(_L("Network ID: %d"), val);
-		
-	    view->ReadUintL(TPtrC(IAP_DIALOG_PREF), val);
-		RDebug::Print(_L("Dialog pref: %d"), val);*/
-		error = view->GotoNextRecord();
-	}
-	
-	if (isWLAN) {
-		User::InfoPrint(_L("On WLAN"));
-	} else {
-		User::InfoPrint(_L("No WLAN"));	
-	}
-	CleanupStack::PopAndDestroy(view);
-	}
 
 void CHttpClient::SetHeaderL(RHTTPHeaders aHeaders,
                              TInt aHdrField,
@@ -130,45 +76,16 @@ void CHttpClient::SetResumeEnabled(TBool aEnabled)
 	iResumeEnabled = aEnabled;
 	}
 
-void CHttpClient::GetL(TDesC& url, TDesC& fileName, TInt aIap, TBool aSilent) {
-	RDebug::Print(_L("CHttpClient::Get START, aIap: %d"), aIap);
+void CHttpClient::GetL(TDesC& url, TDesC& fileName,  TBool aSilent) {
+	RDebug::Print(_L("CHttpClient::Get START"));
 	iIsActive = ETrue;
 		
 	TBuf8<256> url8;
 	url8.Copy(url);
-	if (iTransactionCount == 0) {
-		RDebug::Print(_L("** Opening session"));
-		if (aIap == -1) {
-			iSession.OpenL();
-		
-		} else {
-			RDebug::Print(_L("Specified IAP: %d"), aIap);
-			User::LeaveIfError(iSocketServ.Connect());
-			User::LeaveIfError(iConnection.Open(iSocketServ));
-			iSession.OpenL();
+	RDebug::Print(_L("** Opening session"));
+	iSession.OpenL();
+	iPodcastModel.ConnectHttpSessionL(iSession);
 			
-			TCommDbConnPref prefs;
-			prefs.SetDialogPreference(ECommDbDialogPrefDoNotPrompt);
-			prefs.SetDirection(ECommDbConnectionDirectionOutgoing);
-			prefs.SetIapId(aIap);
-			
-			if (iConnection.Start(prefs) != KErrNone) {
-				RDebug::Print(_L("Error connecting to IAP"));
-				return;
-			}
-			
-			RHTTPConnectionInfo connInfo = iSession.ConnectionInfo();
-			RStringPool pool = iSession.StringPool();
-
-			// Attach to socket server
-			connInfo.SetPropertyL(pool.StringF(HTTP::EHttpSocketServ, RHTTPSession::GetTable()), THTTPHdrVal(iSocketServ.Handle()));
-
-			// Attach to connection
-			TInt connPtr = REINTERPRET_CAST(TInt, &iConnection);
-			connInfo.SetPropertyL(pool.StringF(HTTP::EHttpSocketConnection, RHTTPSession::GetTable()), THTTPHdrVal(connPtr));
-		}
-	}
-	
 	RStringPool strP = iSession.StringPool();
 	RStringF method;
 	method = strP.StringF(HTTP::EGET, RHTTPSession::GetTable());
@@ -195,8 +112,6 @@ void CHttpClient::GetL(TDesC& url, TDesC& fileName, TInt aIap, TBool aSilent) {
 		iHandler->SetSaveFileName(fileName);
 	}
 	rfs.Close();
-
-	
 	
 	iTrans = iSession.OpenTransactionL(uri, *iHandler, method);
 	RHTTPHeaders hdr = iTrans.Request().GetHeaderCollection();
@@ -207,7 +122,7 @@ void CHttpClient::GetL(TDesC& url, TDesC& fileName, TInt aIap, TBool aSilent) {
 	range16.Copy(rangeText);
 	RDebug::Print(_L("range text: %S"), &range16);
 	SetHeaderL(hdr, HTTP::ERange, rangeText);
-	iTransactionCount++;
+	//iTransactionCount++;
 	// submit the transaction
 	iTrans.SubmitL();
 	RDebug::Print(_L("CHttpClient::Get END"));
@@ -228,11 +143,11 @@ void CHttpClient::ClientRequestCompleteL(TBool aSuccessful) {
 	iIsActive = EFalse;
 	iObserver.Complete(this, aSuccessful);
 	RDebug::Print(_L("CHttpClient::Get END"));
-	iTransactionCount--;
+	//iTransactionCount--;
 	
-	if(iTransactionCount == 0) {
+	//if(iTransactionCount == 0) {
 		RDebug::Print(_L("** Closing session"));
 		iSession.Close();
-	}
+	//}
 }
 

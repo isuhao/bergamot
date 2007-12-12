@@ -80,12 +80,12 @@ void CPodcastClientSettingsDlg::PreLayoutDynInitL()
 	iUpdateIntervalCtrl->SetValueL(iPodcastModel.SettingsEngine().UpdateFeedInterval());
 //	iMaxSimDlsCtrl->SetValueL(iPodcastModel.SettingsEngine().MaxSimultaneousDownloads());
 
-	if(iPodcastModel.SettingsEngine().DownloadOnlyOnWLAN())
+	if(iPodcastModel.SettingsEngine().SpecificIAP() == -1)
 	{
 		iConnectionCtrl->SetCurrentItem(EUseWLANOnly);
 		MakeWholeLineVisible(EPodcastSettingIAPList, EFalse);
 	}
-	else if(iPodcastModel.SettingsEngine().SpecificIAP() > -1)
+	else if(iPodcastModel.SettingsEngine().SpecificIAP() > 0)
 	{
 		iConnectionCtrl->SetCurrentItem(EUseSpecifiedIAP);
 		MakeWholeLineVisible(EPodcastSettingIAPList, ETrue);
@@ -128,17 +128,18 @@ TBool CPodcastClientSettingsDlg::OkToExitL(TInt aCommandId)
 			{
 			case EUseDefaultAccount:
 				{
-					iPodcastModel.SettingsEngine().SetSpecificIAP(-1);
-					iPodcastModel.SettingsEngine().SetDownloadOnlyOnWLAN(EFalse);
+					iPodcastModel.SettingsEngine().SetSpecificIAP(0);
+					iPodcastModel.SetIap(0);
 				}break;
 			case EUseWLANOnly:
 				{
-					iPodcastModel.SettingsEngine().SetDownloadOnlyOnWLAN(ETrue);
+					iPodcastModel.SettingsEngine().SetSpecificIAP(-1);
+					iPodcastModel.SetIap(-1);
 				}break;
 			case EUseSpecifiedIAP:
 				{
-					iPodcastModel.SettingsEngine().SetDownloadOnlyOnWLAN(EFalse);
 					iPodcastModel.SettingsEngine().SetSpecificIAP(iPodcastModel.IAPIds()[iIAPListCtrl->CurrentItem()].iIapId);
+					iPodcastModel.SetIap(iPodcastModel.IAPIds()[iIAPListCtrl->CurrentItem()].iIapId);
 				}
 				break;
 			}

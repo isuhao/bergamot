@@ -20,7 +20,7 @@ void CFeedEngine::ConstructL()
 	{
 	iParser = new (ELeave) CFeedParser(*this);
 	iFs.Connect();
-	iFeedClient = CHttpClient::NewL(*this);
+	iFeedClient = CHttpClient::NewL(iPodcastModel, *this);
 	iFeedTimer.ConstructL();
 	
 	RunFeedTimer();

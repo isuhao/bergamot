@@ -32,8 +32,7 @@ void CSettingsEngine::ConstructL()
 	iUpdateFeedInterval = 60;
 	iMaxSimultaneousDownloads = 1;
 	iDownloadAutomatically = EAutoDownloadOff;
-	iDownloadOnlyOnWLAN = EFalse;
-	iIap = -1;
+	iIap = 0;
 	iFs.Connect();
 	
 	GetDefaultBaseDir(iBaseDir);
@@ -110,10 +109,10 @@ void CSettingsEngine::LoadSettingsL()
 	stream.ReadL(iBaseDir, len);
 	iUpdateFeedInterval = stream.ReadInt32L();
 	iDownloadAutomatically = (TAutoDownloadSetting) stream.ReadInt32L();
-	iDownloadOnlyOnWLAN = stream.ReadInt32L();
 	iMaxSimultaneousDownloads = stream.ReadInt32L();
 	iIap = stream.ReadInt32L();
-		
+
+	iPodcastModel.SetIap(iIap);
 	CleanupStack::PopAndDestroy(2); // readStream and iniFile
 	}
 
@@ -137,7 +136,6 @@ void CSettingsEngine::SaveSettingsL()
 	stream.WriteL(iBaseDir);
 	stream.WriteInt32L(iUpdateFeedInterval);
 	stream.WriteInt32L(iDownloadAutomatically);
-	stream.WriteInt32L(iDownloadOnlyOnWLAN);
 	stream.WriteInt32L(iMaxSimultaneousDownloads);
 	stream.WriteInt32L(iIap);
 	
@@ -195,10 +193,6 @@ void CSettingsEngine::ImportSettings()
 				TLex lex(value);
 				lex.Val(iMaxSimultaneousDownloads);
 				RDebug::Print(_L("Max simultaneous downloads: %d"), iMaxSimultaneousDownloads);
-			} else if (tag.CompareF(_L("DownloadOnlyOnWLAN")) == 0) {
-				TLex lex(value);
-				lex.Val(iDownloadOnlyOnWLAN);
-				RDebug::Print(_L("Download only on WLAN: %d"), iDownloadOnlyOnWLAN);
 			} else if (tag.CompareF(_L("MaxShowsPerFeed")) == 0) {
 				TLex lex(value);
 				lex.Val(iMaxListItems);
@@ -232,11 +226,6 @@ TAutoDownloadSetting CSettingsEngine::DownloadAutomatically()
 	return iDownloadAutomatically;
 	}
 
-TBool CSettingsEngine::DownloadOnlyOnWLAN() 
-	{
-	return iDownloadOnlyOnWLAN;
-	}
-
 TInt CSettingsEngine::MaxListItems() 
 	{
 	return iMaxListItems;
@@ -261,7 +250,6 @@ TInt CSettingsEngine::SpecificIAP()
 	{
 	return iIap;
 	}
-
 
 void CSettingsEngine::SetBaseDir(TFileName& aFileName)
 	{
@@ -291,11 +279,6 @@ void CSettingsEngine::SetDownloadAutomatically(TAutoDownloadSetting aAutoSetting
 	iDownloadAutomatically = aAutoSetting;
 	}
 
-void CSettingsEngine::SetDownloadOnlyOnWLAN(TBool aOnlyOnWLAN)
-	{
-	iDownloadOnlyOnWLAN = aOnlyOnWLAN;
-	}
-
 void CSettingsEngine::SetSpecificIAP(TInt aIap)
 	{
 	RDebug::Print(_L("SetSpecificIAP: %d"), aIap);
@@ -315,4 +298,3 @@ void CSettingsEngine::SetVolume(TUint aVolume)
 		iPodcastModel.SoundEngine().SetVolume(iVolume);
 	}
 }
-
