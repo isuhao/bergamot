@@ -89,6 +89,16 @@ void CPodcastClientSettingsDlg::PreLayoutDynInitL()
 	{
 		iConnectionCtrl->SetCurrentItem(EUseSpecifiedIAP);
 		MakeWholeLineVisible(EPodcastSettingIAPList, ETrue);
+		TInt cnt = iPodcastModel.IAPIds().Count();
+		for(TInt loop = 0;loop<cnt;loop++)
+		{
+			if(iPodcastModel.IAPIds()[loop].iIapId == iPodcastModel.SettingsEngine().SpecificIAP())
+			{
+				iIAPListCtrl->SetCurrentItem(loop);
+				break;
+			}
+
+		}
 	}
 	else
 	{
