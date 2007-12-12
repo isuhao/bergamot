@@ -639,7 +639,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 			comMan.SetInvisible(*this, EPodcastRemoveDownload, ETrue);
 			comMan.SetInvisible(*this, EPodcastStopDownloads, ETrue);
 			comMan.SetInvisible(*this, EPodcastResumeDownloads, ETrue);
-			comMan.SetInvisible(*this, EPodcastMarkAllPlayed, ETrue);
+			comMan.SetInvisible(*this, EPodcastMarkAllPlayed, EFalse);
 			comMan.SetInvisible(*this, EPodcastUpdateLibrary, ETrue);
 			comMan.SetInvisible(*this, EPodcastShowUnplayedOnly, EFalse);
 		}break;
