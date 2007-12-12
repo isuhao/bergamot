@@ -128,7 +128,7 @@ TBool CPodcastClientSettingsDlg::OkToExitL(TInt aCommandId)
 			case EUseSpecifiedIAP:
 				{
 					iPodcastModel.SettingsEngine().SetDownloadOnlyOnWLAN(EFalse);
-					iPodcastModel.SettingsEngine().SetSpecificIAP(iIAPListCtrl->CurrentItem());
+					iPodcastModel.SettingsEngine().SetSpecificIAP(iPodcastModel.IAPIds()[iIAPListCtrl->CurrentItem()].iIapId);
 				}
 				break;
 			}
