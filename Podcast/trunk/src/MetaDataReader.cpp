@@ -1,4 +1,4 @@
-#include "../inc/MetaDataReader.h"
+#include "MetaDataReader.h"
 
 CMetaDataReader::CMetaDataReader()
 {
@@ -8,6 +8,7 @@ CMetaDataReader::CMetaDataReader()
 CMetaDataReader::~CMetaDataReader()
 {
 	delete iPlayer;
+	iShowsToParse.Close();
 }
 
 void CMetaDataReader::ConstructL()
@@ -30,8 +31,10 @@ void CMetaDataReader::SubmitShow(CShowInfo *aShowInfo)
 void CMetaDataReader::ParseNextShow()
 	{
 	RDebug::Print(_L("ParseNextShow"));
+	iPlayer->Close();
 	if (iShowsToParse.Count() == 0) {
 		RDebug::Print(_L("No more shows, stopping"));
+	
 		return;
 	}
 	
