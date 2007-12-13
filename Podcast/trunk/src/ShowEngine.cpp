@@ -7,7 +7,7 @@
 
 CShowEngine::CShowEngine(CPodcastModel& aPodcastModel) : iPodcastModel(aPodcastModel)
 {
-	iDownloadsSuspended = EFalse;
+	iDownloadsSuspended = ETrue;
 	iSelectOnlyUnplayed = EFalse;
 }
 
@@ -35,6 +35,7 @@ void CShowEngine::ConstructL()
 	iShowClient = CHttpClient::NewL(iPodcastModel, *this);
 	iShowClient->SetResumeEnabled(ETrue);
 	iLinearOrder = new TLinearOrder<CShowInfo>(CShowEngine::CompareShowsByDate);
+	iMetaDataReader.ConstructL();
 
 	TRAPD(error, LoadShowsL());
 	CheckFiles();
@@ -60,7 +61,7 @@ TBool CShowEngine::DownloadsStopped()
 	return iDownloadsSuspended;
 	}
 
-void CShowEngine::RemoveDownload(TInt aUid) 
+void CShowEngine::RemoveDownload(TUint aUid) 
 	{
 	RDebug::Print(_L("RemoveDownload"));
 	for (int i=0;i<iShowsDownloading.Count();i++) {
@@ -358,7 +359,7 @@ TInt CShowEngine::CompareShowsByDate(const CShowInfo &a, const CShowInfo &b)
 		}
 	}
 
-void CShowEngine::PurgeShowsByFeed(TInt aFeedUid)
+void CShowEngine::PurgeShowsByFeed(TUint aFeedUid)
 	{
 	for (int i=0;i<iShows.Count();i++)
 		{
@@ -396,7 +397,7 @@ void CShowEngine::PurgeOldShows()
 	// TODO: implement
 	}
 
-void CShowEngine::PurgeShow(TInt aShowUid)
+void CShowEngine::PurgeShow(TUint aShowUid)
 	{
 	for (int i=0;i<iShows.Count();i++)
 		{
@@ -589,6 +590,9 @@ void CShowEngine::ListDir(TFileName &folder) {
 			info->SetShowSize(entry.iSize);
 			info->SetPubDate(entry.iModified);
 			iShows.Append(info);
+			
+			// submit the file for meta data reading
+			iMetaDataReader.SubmitShow(info);
 		}
 		}
 	}

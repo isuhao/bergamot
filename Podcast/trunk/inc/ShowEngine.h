@@ -6,6 +6,7 @@
 #include "PodcastModel.h"
 #include "HttpClient.h"
 #include "ShowEngineObserver.h"
+#include "MetaDataReader.h"
 
 class CShowEngine : public CBase, public MHttpClientObserver
 {
@@ -15,7 +16,7 @@ public:
 	
 public:
 	void AddDownload(CShowInfo *info);
-	void RemoveDownload(TInt aUid);
+	void RemoveDownload(TUint aUid);
 
 	void StopDownloads();
 	void ResumeDownloads();
@@ -35,10 +36,10 @@ public:
 	void AddShow(CShowInfo *item);
 	void SaveShows();
 
-	void PurgeShowsByFeed(TInt aFeedUid);
+	void PurgeShowsByFeed(TUint aFeedUid);
 	void PurgePlayedShows();
 	void PurgeOldShows();
-	void PurgeShow(TInt aShowUid);
+	void PurgeShow(TUint aShowUid);
 	
 	RShowInfoArray& GetSelectedShows();
 	void SetSelectionPlayed();
@@ -101,6 +102,8 @@ private:
     
     TUint iDownloadErrors;
     TLinearOrder<CShowInfo>* iLinearOrder;
+    
+    CMetaDataReader iMetaDataReader;
 };
 
 #endif /*SHOWENGINE_H_*/

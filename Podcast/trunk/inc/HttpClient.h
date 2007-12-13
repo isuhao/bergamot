@@ -35,5 +35,6 @@ private:
 	CHttpEventHandler* iHandler;
 	TBool iResumeEnabled;
 	CPodcastModel& iPodcastModel;
+	TInt iTransactionCount;
 };
 #endif

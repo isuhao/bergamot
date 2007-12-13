@@ -82,14 +82,13 @@ void CHttpClient::GetL(TDesC& url, TDesC& fileName,  TBool aSilent) {
 		
 	TBuf8<256> url8;
 	url8.Copy(url);
-	RDebug::Print(_L("** Opening session"));
-	iSession.OpenL();
-	iPodcastModel.ConnectHttpSessionL(iSession);
-			
-	RStringPool strP = iSession.StringPool();
-	RStringF method;
-	method = strP.StringF(HTTP::EGET, RHTTPSession::GetTable());
 	
+	if (iTransactionCount == 0) {
+		RDebug::Print(_L("** Opening session"));
+		iSession.OpenL();
+		iPodcastModel.ConnectHttpSessionL(iSession);
+	}
+		
 	TUriParser8 uri; 
 	uri.Parse(url8);
 	RDebug::Print(_L("Getting '%S' to '%S'"), &url, &fileName);
@@ -113,6 +112,10 @@ void CHttpClient::GetL(TDesC& url, TDesC& fileName,  TBool aSilent) {
 	}
 	rfs.Close();
 	
+	RStringPool strP = iSession.StringPool();
+	RStringF method;
+	method = strP.StringF(HTTP::EGET, RHTTPSession::GetTable());
+
 	iTrans = iSession.OpenTransactionL(uri, *iHandler, method);
 	RHTTPHeaders hdr = iTrans.Request().GetHeaderCollection();
 	// Add headers appropriate to all methods
@@ -122,7 +125,7 @@ void CHttpClient::GetL(TDesC& url, TDesC& fileName,  TBool aSilent) {
 	range16.Copy(rangeText);
 	RDebug::Print(_L("range text: %S"), &range16);
 	SetHeaderL(hdr, HTTP::ERange, rangeText);
-	//iTransactionCount++;
+	iTransactionCount++;
 	// submit the transaction
 	iTrans.SubmitL();
 	RDebug::Print(_L("CHttpClient::Get END"));
@@ -143,11 +146,11 @@ void CHttpClient::ClientRequestCompleteL(TBool aSuccessful) {
 	iIsActive = EFalse;
 	iObserver.Complete(this, aSuccessful);
 	RDebug::Print(_L("CHttpClient::Get END"));
-	//iTransactionCount--;
+	iTransactionCount--;
 	
-	//if(iTransactionCount == 0) {
+	if(iTransactionCount == 0) {
 		RDebug::Print(_L("** Closing session"));
 		iSession.Close();
-	//}
+	}
 }
 

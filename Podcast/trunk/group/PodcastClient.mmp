@@ -63,7 +63,7 @@ SOURCE			FeedEngine.cpp
 SOURCE			ShowInfo.cpp
 SOURCE			SoundEngine.cpp
 SOURCE			PodCastModel.cpp 
-SOURCE			FeedInfo.cpp FeedTimer.cpp ShowEngine.cpp SettingsEngine.cpp
+SOURCE			FeedInfo.cpp FeedTimer.cpp ShowEngine.cpp SettingsEngine.cpp MetaDataReader.cpp
 
 
 LIBRARY         euser.lib

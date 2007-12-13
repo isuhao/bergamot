@@ -247,12 +247,12 @@ void CFeedEngine::Complete(CHttpClient* /*aClient*/, TBool aSuccessful)
 	}
 }
 
-void CFeedEngine::Disconnected(CHttpClient* aClient)
+void CFeedEngine::Disconnected(CHttpClient* /*aClient*/)
 	{
 	
 	}
 
-void CFeedEngine::DownloadInfo(CHttpClient* aHttpClient, int aTotalBytes)
+void CFeedEngine::DownloadInfo(CHttpClient* /*aHttpClient */, int /*aTotalBytes*/)
 	{
 	/*RDebug::Print(_L("About to download %d bytes"), aTotalBytes);
 	if(aHttpClient == iShowClient && iShowDownloading != NULL && aTotalBytes != -1) {
