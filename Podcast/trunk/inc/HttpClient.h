@@ -4,6 +4,7 @@
 #include <http/rhttpsession.h>
 #include "HttpClientObserver.h"
 #include "HttpEventHandler.h"
+#include "PodcastModel.h"
 #include "es_sock.h"
 
 _LIT8(KUserAgent, "PodcastPlayer (0.2)");
@@ -13,17 +14,16 @@ class CHttpClient : public CBase
 {
 public:
 	virtual ~CHttpClient();
-	static CHttpClient* NewL(MHttpClientObserver& aResObs);
-	void GetL(TDesC& url, TDesC& fileName, TInt aIap = -1, TBool aSilent = EFalse);
+	static CHttpClient* NewL(CPodcastModel& aPodcastModel, MHttpClientObserver& aResObs);
+	void GetL(TDesC& url, TDesC& fileName, TBool aSilent = EFalse);
 	void Stop();
   	TBool IsActive();
 	void ClientRequestCompleteL(TBool aSuccessful);
-	void ManageConnections(TBool aRequireWLAN);
 	void SetResumeEnabled(TBool aEnabled);
 
 private:
-	CHttpClient(MHttpClientObserver& aResObs);
-	static CHttpClient* NewLC(MHttpClientObserver& aResObs);
+	CHttpClient(CPodcastModel& aPodcastModel, MHttpClientObserver& aResObs);
+	static CHttpClient* NewLC(CPodcastModel& aPodcastModel, MHttpClientObserver& aResObs);
 	void ConstructL();
 	void SetHeaderL(RHTTPHeaders aHeaders, TInt aHdrField, const TDesC8& aHdrValue);
 
@@ -31,12 +31,9 @@ private:
 	RHTTPSession iSession;
 	MHttpClientObserver& iObserver;
 	TBool iIsActive;
-	TInt iTransactionCount;
 	RHTTPTransaction iTrans;
 	CHttpEventHandler* iHandler;
 	TBool iResumeEnabled;
-	
-	RSocketServ iSocketServ;
-	RConnection iConnection;
+	CPodcastModel& iPodcastModel;
 };
 #endif

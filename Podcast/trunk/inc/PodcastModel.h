@@ -3,6 +3,9 @@
 #include <e32base.h>
 #include <eikenv.h>
 #include <commdb.h>
+#include <CommDbConnPref.h>
+#include <es_sock.h>
+#include <http/rhttpsession.h>
 #include "FeedInfo.h"
 #include "ShowInfo.h"
 
@@ -47,6 +50,11 @@ public:
 	void UpdateIAPListL();
 	CDesCArrayFlat* IAPNames();
 	RArray<TPodcastIAPItem>& IAPIds();
+	
+	void SetIap(TInt aIap);
+	RConnection& Connection();
+	TConnPref& ConnPref();
+	void ConnectHttpSessionL(RHTTPSession& aSession);
 protected:
 	CPodcastModel();
 	void ConstructL();
@@ -66,6 +74,11 @@ private:
    RArray<TPodcastIAPItem> iIapIdArray;
    CDesCArrayFlat* iIapNameArray;
    CCommsDatabase* iCommDB;
+   
+   RSocketServ iSocketServ;
+
+   RConnection iConnection;
+   TCommDbConnPref iConnPref;
 };
 
 #endif // PODCASTMODEL_H

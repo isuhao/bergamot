@@ -46,14 +46,12 @@ public:
 	TInt MaxSimultaneousDownloads();
 	TAutoDownloadSetting DownloadAutomatically();	
 	TFileName& DefaultFeedsFileName();
-	TBool DownloadOnlyOnWLAN();	
 	TInt SpecificIAP();
 	TInt MaxListItems();
 	void SetBaseDir(TFileName& aFileName);
 	void SetUpdateFeedInterval(TInt aInterval);
 	void SetMaxSimultaneousDownloads(TInt aMaxDownloads);
 	void SetDownloadAutomatically(TAutoDownloadSetting aAutoOn);
-	void SetDownloadOnlyOnWLAN(TBool aOnlyOnWLAN);
 	void SetSpecificIAP(TInt aIap);
 	TFileName PrivatePath();
 	
@@ -68,7 +66,6 @@ private:
 	TFileName iDefaultFeedsFile;
 	TInt iUpdateFeedInterval;
 	TAutoDownloadSetting iDownloadAutomatically;
-	TBool iDownloadOnlyOnWLAN;
 	TInt iMaxSimultaneousDownloads;
 	TInt iIap;
 	TInt iVolume;

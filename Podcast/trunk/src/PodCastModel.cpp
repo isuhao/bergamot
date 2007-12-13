@@ -234,6 +234,8 @@ void CPodcastModel::SetIap(TInt aIap)
 	if (aIap == -1) {
 		RDebug::Print(_L("Will prompt"));
 		iConnPref.SetDialogPreference(ECommDbDialogPrefPrompt);
+		iConnPref.SetDirection(ECommDbConnectionDirectionOutgoing);
+		iConnPref.SetIapId(0);
 	} else {
 		iConnPref.SetDialogPreference(ECommDbDialogPrefDoNotPrompt);
 		iConnPref.SetDirection(ECommDbConnectionDirectionOutgoing);
