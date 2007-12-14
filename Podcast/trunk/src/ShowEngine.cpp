@@ -39,6 +39,11 @@ void CShowEngine::ConstructL()
 
 	TRAPD(error, LoadShowsL());
 	//CheckFiles();
+
+	// maybe this is a bad idea?
+	if (iShowsDownloading.Count() == 0) {
+		iDownloadsSuspended = EFalse;
+	}
 	}
 
 void CShowEngine::StopDownloads() 
