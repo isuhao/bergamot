@@ -136,9 +136,11 @@ RESOURCE QIK_COMMAND_LIST r_podcast_listview_commands
 			},
 		QIK_COMMAND
 			{
+			cpfFlags = EQikCpfFlagDuplicateInMenuPane;
+			type = EQikCommandTypeDelete;//EQikCommandTypeScreen;
 			groupId = 5;
 			id = EPodcastDeleteFeed;
-			type = EQikCommandTypeScreen;
+	
 			text = STRING_r_view_delete_feed_cmd;
 			},		
 	
@@ -170,14 +172,16 @@ RESOURCE QIK_COMMAND_LIST r_podcast_listview_commands
 			{
 			groupId = 5;
 			id = EPodcastPurgeShow;
-			type = EQikCommandTypeScreen;
+			cpfFlags = EQikCpfFlagDuplicateInMenuPane;
+			type = EQikCommandTypeDelete;//EQikCommandTypeScreen;
 			text = STRING_r_view_purge_show_cmd;
 			},
 	QIK_COMMAND
 			{
 			groupId = 6;
 			id = EPodcastRemoveDownload;
-			type = EQikCommandTypeScreen;
+			cpfFlags = EQikCpfFlagDuplicateInMenuPane;
+			type = EQikCommandTypeDelete;//EQikCommandTypeScreen;
 			text = STRING_r_view_remove_download_cmd;
 			},
 	QIK_COMMAND
