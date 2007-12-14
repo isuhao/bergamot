@@ -33,9 +33,9 @@ This is how we plan to implement features. Please [http://groups.google.com/grou
     * Feature freeze
     * Infrastructure for translations
     * Meta-data read from manually added files
-    * New name!
-    * Automatic purging of old files
+    * ~~Automatic purging of old files~~ Quite easy to do manually, maybe for 1.1 or so
     * Check connection type, option to download only on WLAN
+    * New name!
 
   * Alpha 5 (December 9th) | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha5 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha5/group/Podcast_udeb_signed.sis SIS]
     * Automatic downloading 
