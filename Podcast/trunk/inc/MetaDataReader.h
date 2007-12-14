@@ -4,11 +4,12 @@
 #include <e32base.h>
 #include <mdaaudiosampleplayer.h>
 #include "ShowInfo.h"
+#include "MetaDataReaderObserver.h"
 
 class CMetaDataReader : public CBase, public MMdaAudioPlayerCallback
 {
 public:
-	CMetaDataReader();
+	CMetaDataReader(MMetaDataReaderObserver &aObserver);
 	void SubmitShow(CShowInfo *aShowInfo);
 	virtual ~CMetaDataReader();
 	void ConstructL();
@@ -24,6 +25,7 @@ private:
 	CMdaAudioPlayerUtility *iPlayer;
 	RShowInfoArray iShowsToParse;
 	CShowInfo *iShow;
+	MMetaDataReaderObserver &iObserver;
 };
 
 #endif /*METADATAREADER_H_*/

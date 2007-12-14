@@ -1,6 +1,6 @@
 #include "MetaDataReader.h"
 
-CMetaDataReader::CMetaDataReader()
+CMetaDataReader::CMetaDataReader(MMetaDataReaderObserver& aObserver) : iObserver(aObserver)
 {
 	iShow = NULL;
 }
@@ -51,7 +51,7 @@ void CMetaDataReader::MapcPlayComplete(TInt aError)
 
 void CMetaDataReader::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds &aDuration)
 {
-	RDebug::Print(_L("MapcInitComplete"));
+	RDebug::Print(_L("MapcInitComplete, file=%S"), &(iShow->FileName()));
 
 	int numEntries = 0;
 	if (iPlayer->GetNumberOfMetaDataEntries(numEntries) == KErrNone) {
@@ -87,6 +87,7 @@ void CMetaDataReader::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeco
 			}			
 		}
 	}
+	iObserver.ReadMetaData(iShow);
 	iPlayer->Stop();
 	iShow = NULL;
 	ParseNextShow();

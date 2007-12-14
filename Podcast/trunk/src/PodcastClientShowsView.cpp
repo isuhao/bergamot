@@ -687,7 +687,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 
 			HBufC* titleFormat=  iEikonEnv->AllocReadResourceLC(R_PODCAST_SHOWS_TITLE_FORMAT);
 			HBufC* titleBuffer = HBufC::NewL(titleFormat->Length()+8);
-			titleBuffer->Des().Format(*titleFormat, unplayed, cnt);
+			titleBuffer->Des().Format(*titleFormat, unplayed, iPodcastModel.ShowEngine().GetGrossSelectionLength());
 			CleanupStack::PopAndDestroy(titleFormat);
 			CleanupStack::PushL(titleBuffer);
 			ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *titleBuffer);

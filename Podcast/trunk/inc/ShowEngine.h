@@ -8,7 +8,7 @@
 #include "ShowEngineObserver.h"
 #include "MetaDataReader.h"
 
-class CShowEngine : public CBase, public MHttpClientObserver
+class CShowEngine : public CBase, public MHttpClientObserver, public MMetaDataReaderObserver
 {
 public:
 	static CShowEngine* NewL(CPodcastModel& aPodcastModel);
@@ -48,12 +48,16 @@ public:
 	void SetSelectUnplayedOnly(TBool aOnlyUnplayed);
 	
 	void AddObserver(MShowEngineObserver *observer);
+	TUint GetGrossSelectionLength();
 protected:
 	// from HttpClientObserver, dont have to be public
 	void Connected(CHttpClient* aClient);
 	void Disconnected(CHttpClient* aClient);
 	void Progress(CHttpClient* aHttpClient, int aBytes, int aTotalBytes);
 	void DownloadInfo(CHttpClient* aClient, int aSize);
+	
+	// from MetaDataReaderObserver
+	void ReadMetaData(CShowInfo *aShowInfo);
 private:
 	CShowEngine(CPodcastModel& aPodcastModel);
 	void ConstructL();
@@ -104,6 +108,8 @@ private:
     TLinearOrder<CShowInfo>* iLinearOrder;
     
     CMetaDataReader iMetaDataReader;
+    
+    TUint iGrossSelectionLength;
 };
 
 #endif /*SHOWENGINE_H_*/

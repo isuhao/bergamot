@@ -5,7 +5,7 @@
 #include <s32file.h>
 #include "SettingsEngine.h"
 
-CShowEngine::CShowEngine(CPodcastModel& aPodcastModel) : iPodcastModel(aPodcastModel)
+CShowEngine::CShowEngine(CPodcastModel& aPodcastModel) : iPodcastModel(aPodcastModel), iMetaDataReader(*this)
 {
 	iDownloadsSuspended = ETrue;
 	iSelectOnlyUnplayed = EFalse;
@@ -38,7 +38,7 @@ void CShowEngine::ConstructL()
 	iMetaDataReader.ConstructL();
 
 	TRAPD(error, LoadShowsL());
-	CheckFiles();
+	//CheckFiles();
 	}
 
 void CShowEngine::StopDownloads() 
@@ -408,18 +408,23 @@ void CShowEngine::PurgeShow(TUint aShowUid)
 		}
 	}
 
+TUint CShowEngine::GetGrossSelectionLength()
+	{
+	return iGrossSelectionLength;
+	}
+
 void CShowEngine::SelectShowsByFeed(TUint aFeedUid)
 	{
 	RDebug::Print(_L("SelectShowsByFeed: %u, unplayed only=%d"), aFeedUid, iSelectOnlyUnplayed);
 	iSelectedShows.Reset();
+	iGrossSelectionLength = 0;
 	for (int i=0;i<iShows.Count();i++)
 		{
 		if (iShows[i]->FeedUid() == aFeedUid)
 			{
+			iGrossSelectionLength++;
 			if (!iSelectOnlyUnplayed || (iSelectOnlyUnplayed && iShows[i]->PlayState() == ENeverPlayed) ) {
-
 				iSelectedShows.Append(iShows[i]);
-		
 			}
 			}
 		}
@@ -436,7 +441,6 @@ void CShowEngine::SelectShowsByFeed(TUint aFeedUid)
 		iSelectedShows.Remove(count-1);
 		count = iSelectedShows.Count();
 	}
-
 }
 
 void CShowEngine::SelectNewShows()
@@ -457,10 +461,12 @@ void CShowEngine::SelectShowsDownloaded()
 	{
 	CheckFiles();
 	iSelectedShows.Reset();
+	iGrossSelectionLength = 0;
 	for (int i=0;i<iShows.Count();i++)
 		{
 		if (iShows[i]->DownloadState() == EDownloaded)
 			{
+			iGrossSelectionLength++;
 			if (!iSelectOnlyUnplayed || (iSelectOnlyUnplayed && iShows[i]->PlayState() == ENeverPlayed) ) {
 				iSelectedShows.Append(iShows[i]);
 				}
@@ -616,3 +622,12 @@ void CShowEngine::CheckFiles()
 	// check if any new files were added
 	ListDir(iPodcastModel.SettingsEngine().BaseDir());	
 }
+
+void CShowEngine::ReadMetaData(CShowInfo *aShowInfo)
+	{
+	RDebug::Print(_L("Read %S"), &(aShowInfo->Title()));
+	
+	for (int i=0;i<iObservers.Count();i++) {
+		iObservers[i]->ShowListUpdated();
+	}
+	}
