@@ -5,7 +5,7 @@
 #include "PodcastClientAddFeedDlg.h"
 #include "PodcastModel.h"
 #include "FeedEngine.h"
-#include "PodcastClient.rsg"
+#include <PodcastClient.rsg>
 
 CPodcastClientAddFeedDlg::CPodcastClientAddFeedDlg(CPodcastModel& aPodcastModel):iPodcastModel(aPodcastModel)
 {

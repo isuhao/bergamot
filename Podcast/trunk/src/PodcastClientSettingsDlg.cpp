@@ -51,6 +51,13 @@ enum
 	EUseSpecifiedIAP
 };
 
+enum
+{
+	ENoAutoDownload,
+	EFeedsOnly,
+	EFeedsAndShows
+};
+
 CPodcastClientSettingsDlg::CPodcastClientSettingsDlg(CPodcastModel& aPodcastModel):iPodcastModel(aPodcastModel)
 {
 }
@@ -78,17 +85,25 @@ void CPodcastClientSettingsDlg::PreLayoutDynInitL()
 
 	iAutoDLCtrl->SetCurrentItem(iPodcastModel.SettingsEngine().DownloadAutomatically());
 	iUpdateIntervalCtrl->SetValueL(iPodcastModel.SettingsEngine().UpdateFeedInterval());
+
+	if (iPodcastModel.SettingsEngine().DownloadAutomatically() == 0) {
+		SetLineDimmedNow(EPodcastSettingUpdateInterval, ETrue);
+	} else {
+		SetLineDimmedNow(EPodcastSettingUpdateInterval, EFalse);
+	}
 //	iMaxSimDlsCtrl->SetValueL(iPodcastModel.SettingsEngine().MaxSimultaneousDownloads());
 
 	if(iPodcastModel.SettingsEngine().SpecificIAP() == -1)
 	{
 		iConnectionCtrl->SetCurrentItem(EUseWLANOnly);
-		MakeWholeLineVisible(EPodcastSettingIAPList, EFalse);
+		SetLineDimmedNow(EPodcastSettingIAPList, ETrue);
+		//MakeWholeLineVisible(EPodcastSettingIAPList, EFalse);
 	}
 	else if(iPodcastModel.SettingsEngine().SpecificIAP() > 0)
 	{
 		iConnectionCtrl->SetCurrentItem(EUseSpecifiedIAP);
-		MakeWholeLineVisible(EPodcastSettingIAPList, ETrue);
+		//MakeWholeLineVisible(EPodcastSettingIAPList, ETrue);
+		SetLineDimmedNow(EPodcastSettingIAPList, EFalse);
 		TInt cnt = iPodcastModel.IAPIds().Count();
 		for(TInt loop = 0;loop<cnt;loop++)
 		{
@@ -103,7 +118,8 @@ void CPodcastClientSettingsDlg::PreLayoutDynInitL()
 	else
 	{
 		iConnectionCtrl->SetCurrentItem(EUseDefaultAccount);
-		MakeWholeLineVisible(EPodcastSettingIAPList, EFalse);
+		//MakeWholeLineVisible(EPodcastSettingIAPList, EFalse);
+		SetLineDimmedNow(EPodcastSettingIAPList, ETrue);
 	}
 }
 
@@ -171,12 +187,29 @@ void CPodcastClientSettingsDlg::HandleControlStateChangeL(TInt aControlId)
 		{
 		case EUseSpecifiedIAP:
 			{
-			MakeWholeLineVisible(EPodcastSettingIAPList, ETrue);
+			SetLineDimmedNow(EPodcastSettingIAPList, EFalse);
+			//MakeWholeLineVisible(EPodcastSettingIAPList, ETrue);
 			}
 			break;
 		default:
 			{
-			MakeWholeLineVisible(EPodcastSettingIAPList, EFalse);
+			SetLineDimmedNow(EPodcastSettingIAPList, ETrue);
+			//MakeWholeLineVisible(EPodcastSettingIAPList, EFalse);
+			}break;
+		}
+	} else if (EPodcastSettingAutoDL == aControlId) {
+		switch(iAutoDLCtrl->CurrentItem())
+		{
+		case ENoAutoDownload:
+			{
+			SetLineDimmedNow(EPodcastSettingUpdateInterval, ETrue);
+			//MakeWholeLineVisible(EPodcastSettingIAPList, ETrue);
+			}
+			break;
+		default:
+			{
+			SetLineDimmedNow(EPodcastSettingUpdateInterval, EFalse);
+			//MakeWholeLineVisible(EPodcastSettingIAPList, EFalse);
 			}break;
 		}
 	}
