@@ -1,12 +1,10 @@
-= Podcast Player =
+= Podcast Player=
 
-Podcast Player aims to be a fully featured podcatcher for UIQ. It is still under development, but the latest alpha versions are very usable. To download, see Releases below.
-
-There is a new alpha release every week, so update regularly. Beta and release versions are due in December according to plan.
+Podcast Player aims to be a fully featured podcatcher for UIQ. It is still under development, but the latest beta versions are very usable. To download, see Releases below.
 
 = Screenshots =
 
-These screenshots are from alpha 3 and alpha 4.
+These screenshots are from alpha 3 and alpha 4. Newer screenshots will be posted shortly.
 
 http://bergamot.googlecode.com/svn/wiki/pp5.jpg
 http://bergamot.googlecode.com/svn/wiki/pp6.jpg
@@ -23,19 +21,19 @@ This is how we plan to implement features. Please [http://groups.google.com/grou
     * Translations
 
   * Beta 2 (Christmas)
+    * New name!
     * Bug fixes
     * UI refinements
     * Translations
 
-  * Beta 1 (December 16th)
+  * Beta 1 (December 16th) | [http://bergamot.googlecode.com/svn/Podcast/tags/beta1 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/beta1/group/Podcast_udeb_signed.sis SIS]
     * Improved icons
     * UI refinements
     * Feature freeze
     * Infrastructure for translations
     * Meta-data read from manually added files
     * ~~Automatic purging of old files~~ Quite easy to do manually, maybe for 1.1 or so
-    * Check connection type, option to download only on WLAN
-    * New name!
+    * Check connection type, option to specify connection
 
   * Alpha 5 (December 9th) | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha5 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha5/group/Podcast_udeb_signed.sis SIS]
     * Automatic downloading 
