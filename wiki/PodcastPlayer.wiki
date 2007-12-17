@@ -26,7 +26,7 @@ This is how we plan to implement features. Please [http://groups.google.com/grou
     * UI refinements
     * Translations
 
-  * Beta 1 (December 16th) | [http://bergamot.googlecode.com/svn/Podcast/tags/beta1 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/beta1/group/Podcast_udeb_signed.sis SIS]
+  * Beta 1 (December 17th) | [http://bergamot.googlecode.com/svn/Podcast/tags/beta1 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/beta1/group/Podcast_udeb_signed.sis SIS]
     * Improved icons
     * UI refinements
     * Feature freeze
