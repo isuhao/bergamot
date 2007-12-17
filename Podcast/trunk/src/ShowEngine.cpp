@@ -4,6 +4,7 @@
 #include <bautils.h>
 #include <s32file.h>
 #include "SettingsEngine.h"
+#include <e32hashtab.h>
 
 CShowEngine::CShowEngine(CPodcastModel& aPodcastModel) : iPodcastModel(aPodcastModel), iMetaDataReader(*this)
 {
@@ -277,7 +278,7 @@ void CShowEngine::LoadShowsL()
 	
 	iSuppressAutoDownload = ETrue;
 	CFeedInfo *feedInfo = NULL;
-	int lastUid = -1;
+	TUint lastUid = 0;
 	for (int i=0;i<count;i++) {
 		readData = CShowInfo::NewL();
 		instream  >> *readData;
@@ -596,6 +597,7 @@ void CShowEngine::ListDir(TFileName &folder) {
 			info->SetFileName(pathName);
 			info->SetTitle(fileName);
 			info->SetDownloadState(EDownloaded);
+			info->SetUid(DefaultHash::Des16(fileName));
 			TEntry entry;
 			iFs.Entry(pathName, entry);
 			info->SetShowSize(entry.iSize);
