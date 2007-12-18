@@ -30,6 +30,7 @@ This is how we plan to implement features. Please [http://groups.google.com/grou
     * New and improved icons for parts of the program
     * UI refinements
     * Feature freeze
+    * Delete files using hardware delete button
     * Infrastructure for translations
     * Meta-data read from manually added files
     * ~~Automatic purging of old files~~ Quite easy to do manually, maybe for 1.1 or so
