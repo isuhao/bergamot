@@ -27,13 +27,13 @@ This is how we plan to implement features. Please [http://groups.google.com/grou
     * Translations
 
   * Beta 1 (December 17th) | [http://bergamot.googlecode.com/svn/Podcast/tags/beta1 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/beta1/group/Podcast_udeb_signed.sis SIS]
-    * Improved icons
+    * New and improved icons for parts of the program
     * UI refinements
     * Feature freeze
     * Infrastructure for translations
     * Meta-data read from manually added files
     * ~~Automatic purging of old files~~ Quite easy to do manually, maybe for 1.1 or so
-    * Check connection type, option to specify connection
+    * Option to specify connection
 
   * Alpha 5 (December 9th) | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha5 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha5/group/Podcast_udeb_signed.sis SIS]
     * Automatic downloading 
