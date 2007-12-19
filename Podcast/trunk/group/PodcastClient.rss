@@ -481,7 +481,7 @@ RESOURCE DIALOG r_podcast_iap_dlg
 		DLG_LINE
 		{
 			id = EPodcastSettingIAPList;
-			itemflags = EQikDlgItemCaptionAboveControl;
+			itemflags = EQikDlgItemCaptionAboveControl|EQikDlgItemHideHighlight;
 			prompt = STRING_r_podcast_setting_iaplist;
 			type = EEikCtChoiceList;
 			control = CHOICELIST
