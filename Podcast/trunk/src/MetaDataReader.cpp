@@ -34,7 +34,7 @@ void CMetaDataReader::ParseNextShow()
 	iPlayer->Close();
 	if (iShowsToParse.Count() == 0) {
 		RDebug::Print(_L("No more shows, stopping"));
-	
+		iObserver.ReadMetaDataComplete();
 		return;
 	}
 	

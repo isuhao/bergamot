@@ -246,7 +246,7 @@ TFileName& CSettingsEngine::DefaultFeedsFileName()
 	return iDefaultFeedsFile;
 }
 
-TInt CSettingsEngine::SpecificIAP()
+TUint CSettingsEngine::SpecificIAP()
 	{
 	return iIap;
 	}
@@ -279,7 +279,7 @@ void CSettingsEngine::SetDownloadAutomatically(TAutoDownloadSetting aAutoSetting
 	iDownloadAutomatically = aAutoSetting;
 	}
 
-void CSettingsEngine::SetSpecificIAP(TInt aIap)
+void CSettingsEngine::SetSpecificIAP(TUint aIap)
 	{
 	RDebug::Print(_L("SetSpecificIAP: %d"), aIap);
 	iIap = aIap;

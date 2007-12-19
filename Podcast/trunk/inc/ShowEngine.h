@@ -58,6 +58,7 @@ protected:
 	
 	// from MetaDataReaderObserver
 	void ReadMetaData(CShowInfo *aShowInfo);
+	void ReadMetaDataComplete();
 private:
 	CShowEngine(CPodcastModel& aPodcastModel);
 	void ConstructL();

@@ -162,7 +162,11 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 			{
 				if (iPodcastModel.ActiveFeedInfo()->Url().Length()>0) {
 					User::InfoPrint(_L("Updating feed..."));
-					iPodcastModel.FeedEngine().UpdateFeed(iPodcastModel.ActiveFeedInfo()->Uid());
+					TRAPD(error, iPodcastModel.FeedEngine().UpdateFeedL(iPodcastModel.ActiveFeedInfo()->Uid()));
+					
+					if (error != KErrNone) {
+						User::InfoPrint(_L("Error while updating feed!"));
+					}
 				} 
 			}
 			break;

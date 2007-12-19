@@ -26,12 +26,12 @@ public:
 	
 public:
 	void AddFeed(CFeedInfo *item);
-	void RemoveFeed(TInt aUid);
-	void UpdateFeed(TInt aFeedUid);
+	void RemoveFeed(TUint aUid);
+	void UpdateFeedL(TUint aFeedUid);
 	void UpdateAllFeeds();
 
 	void GetFeeds(RFeedInfoArray& array);
-	CFeedInfo* GetFeedInfoByUid(int aFeedUid);	
+	CFeedInfo* GetFeedInfoByUid(TUint aFeedUid);	
 
 	void AddObserver(MFeedEngineObserver *observer);
 
@@ -59,7 +59,7 @@ private:
 	void NewShow(CShowInfo *item);
 	void ParsingComplete(CFeedInfo *item);
 
-	void GetFeedImage(CFeedInfo *aFeedInfo);
+	void GetFeedImageL(CFeedInfo *aFeedInfo);
 	void ReplaceString(TDes & aString, const TDesC& aStringToReplace,const TDesC& aReplacement);
 	void CleanHtml(TDes &str);
 	

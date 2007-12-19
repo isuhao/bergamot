@@ -46,13 +46,13 @@ public:
 	TInt MaxSimultaneousDownloads();
 	TAutoDownloadSetting DownloadAutomatically();	
 	TFileName& DefaultFeedsFileName();
-	TInt SpecificIAP();
+	TUint SpecificIAP();
 	TInt MaxListItems();
 	void SetBaseDir(TFileName& aFileName);
 	void SetUpdateFeedInterval(TInt aInterval);
 	void SetMaxSimultaneousDownloads(TInt aMaxDownloads);
 	void SetDownloadAutomatically(TAutoDownloadSetting aAutoOn);
-	void SetSpecificIAP(TInt aIap);
+	void SetSpecificIAP(TUint aIap);
 	TFileName PrivatePath();
 	
 	TUint Volume();
@@ -67,7 +67,7 @@ private:
 	TInt iUpdateFeedInterval;
 	TAutoDownloadSetting iDownloadAutomatically;
 	TInt iMaxSimultaneousDownloads;
-	TInt iIap;
+	TUint iIap;
 	TInt iVolume;
 	TInt iMaxListItems;
 	

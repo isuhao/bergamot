@@ -57,8 +57,9 @@ void CFeedEngine::RunFeedTimer()
 void CFeedEngine::UpdateAllFeeds()
 	{
 	if (iFeedsUpdating.Count() > 0) {
-		RDebug::Print(_L("UpdateAllFeeds: Already updating"));
-		return;
+		RDebug::Print(_L("Cancelling update"));
+		iFeedClient->Stop();
+		iFeedsUpdating.Reset();
 	}
 	
 	for (int i=0;i<iFeeds.Count();i++) {
@@ -66,6 +67,7 @@ void CFeedEngine::UpdateAllFeeds()
 	}
 	
 	UpdateNextFeed();
+	
 	}
 
 void CFeedEngine::UpdateNextFeed()
@@ -75,11 +77,17 @@ void CFeedEngine::UpdateNextFeed()
 		CFeedInfo *info = iFeedsUpdating[0];
 		iFeedsUpdating.Remove(0);
 		//RDebug::Print(_L("** UpdateNextFeed: %S, ID: %u"), &(info->Url()), info->Uid());
-		UpdateFeed(info->Uid());
+		TRAPD(error, UpdateFeedL(info->Uid()));
+		
+		if (error != KErrNone) {
+			RDebug::Print(_L("Error while updating all feeds"));
+			User::InfoPrint(_L("Failed to update feed!"));
+			//iFeedsUpdating.Reset();
+		}
 	}
 	}
 
-void CFeedEngine::UpdateFeed(TInt aFeedUid)
+void CFeedEngine::UpdateFeedL(TUint aFeedUid)
 	{
 	iClientState = EFeed;
 	iActiveFeed = GetFeedInfoByUid(aFeedUid);
@@ -87,8 +95,7 @@ void CFeedEngine::UpdateFeed(TInt aFeedUid)
 	filePath.Copy(iPodcastModel.SettingsEngine().PrivatePath());
 	filePath.Append(_L("feed.xml"));
 	iUpdatingFeedFileName.Copy(filePath);
-	//User::InfoPrint(_L("Updating feed..."));
-	iFeedClient->GetL(iActiveFeed->Url(), iUpdatingFeedFileName, iPodcastModel.SettingsEngine().SpecificIAP());//, ETrue);
+	iFeedClient->GetL(iActiveFeed->Url(), iUpdatingFeedFileName, iPodcastModel.SettingsEngine().SpecificIAP());
 	RDebug::Print(_L("Update done"));
 	}
 
@@ -105,7 +112,7 @@ void CFeedEngine::NewShow(CShowInfo *item)
 	iPodcastModel.ShowEngine().AddShow(item);
 	}
 
-void CFeedEngine::GetFeedImage(CFeedInfo *aFeedInfo)
+void CFeedEngine::GetFeedImageL(CFeedInfo *aFeedInfo)
 	{
 	RDebug::Print(_L("GetFeedImage"));
 	iClientState = EImage;
@@ -174,7 +181,7 @@ void CFeedEngine::AddFeed(CFeedInfo *item) {
 	iFeeds.Append(item);
 	}
 
-void CFeedEngine::RemoveFeed(TInt aUid) {
+void CFeedEngine::RemoveFeed(TUint aUid) {
 	for (int i=0;i<iFeeds.Count();i++) {
 		if (iFeeds[i]->Uid() == aUid) {
 			iPodcastModel.ShowEngine().PurgeShowsByFeed(aUid);
@@ -230,10 +237,8 @@ void CFeedEngine::Complete(CHttpClient* /*aClient*/, TBool aSuccessful)
 		TFileName filePath;
 		iParser->ParseFeedL(iUpdatingFeedFileName, iActiveFeed, iPodcastModel.SettingsEngine().MaxListItems());
 		
-		if (iActiveFeed->ImageFileName().Length() == 0) {
-			GetFeedImage(iActiveFeed);
-		} else if (!BaflUtils::FileExists(iFs,iActiveFeed->ImageFileName())) {
-			GetFeedImage(iActiveFeed);
+		if (iActiveFeed->ImageFileName().Length() == 0 || !BaflUtils::FileExists(iFs,iActiveFeed->ImageFileName())) {
+			TRAPD(error, GetFeedImageL(iActiveFeed));
 		}
 
 		TTime time;
@@ -393,7 +398,7 @@ void CFeedEngine::SaveFeeds()
 	}
 
 
-CFeedInfo* CFeedEngine::GetFeedInfoByUid(TInt aFeedUid)
+CFeedInfo* CFeedEngine::GetFeedInfoByUid(TUint aFeedUid)
 	{
 	for (int i=0;i<iFeeds.Count();i++)
 		{

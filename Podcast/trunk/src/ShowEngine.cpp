@@ -174,7 +174,7 @@ void CShowEngine::AddShow(CShowInfo *item) {
 	
 	iShows.Append(item);
 
-	if (!iSuppressAutoDownload && iPodcastModel.SettingsEngine().DownloadAutomatically()) {
+	if (!iSuppressAutoDownload && iPodcastModel.SettingsEngine().DownloadAutomatically() == EAutoDownloadFeedsAndShows) {
 		AddDownload(item);
 	}
 	}
@@ -634,6 +634,14 @@ void CShowEngine::ReadMetaData(CShowInfo *aShowInfo)
 	{
 	RDebug::Print(_L("Read %S"), &(aShowInfo->Title()));
 	
+	//for (int i=0;i<iObservers.Count();i++) {
+	//	iObservers[i]->ShowListUpdated();
+	//}
+	}
+
+void CShowEngine::ReadMetaDataComplete()
+	{
+	SaveShows();
 	for (int i=0;i<iObservers.Count();i++) {
 		iObservers[i]->ShowListUpdated();
 	}
