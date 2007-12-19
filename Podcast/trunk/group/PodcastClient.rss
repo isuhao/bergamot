@@ -471,7 +471,25 @@ RESOURCE DLG_BUTTONS r_podcast_settings_buttons
 
 
 
-
+RESOURCE DIALOG r_podcast_iap_dlg
+{
+	buttons = R_EIK_BUTTONS_CANCEL_DONE;
+	flags = EEikDialogFlagButtonsBelow|EEikDialogFlagDensePacking|EEikDialogFlagWait;
+    title = STRING_r_podcast_iap_dlg_title;
+	items = 
+	{
+		DLG_LINE
+		{
+			id = EPodcastSettingIAPList;
+			itemflags = EQikDlgItemCaptionAboveControl;
+			prompt = STRING_r_podcast_setting_iaplist;
+			type = EEikCtChoiceList;
+			control = CHOICELIST
+			{
+			};
+		}
+	};
+}
 
 RESOURCE DIALOG r_podcast_settings_dlg
 {

@@ -139,5 +139,5 @@ rls_string STRING_podcast_autodl_off "Off"
 rls_string STRING_podcast_audodl_feeds "Feeds only" 
 rls_string STRING_podcast_audodl_feedsandshows "Feeds and shows"
 
-
+rls_string STRING_r_podcast_iap_dlg_title "Select internet account"
 

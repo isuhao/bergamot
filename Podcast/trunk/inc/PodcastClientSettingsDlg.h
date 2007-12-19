@@ -32,6 +32,26 @@ private:
 
 
 /**
+ * Dialog (old style) used to do volumd
+ */
+class CPodcastClientIAPDlg: public CEikDialog
+{
+public:
+	CPodcastClientIAPDlg(CPodcastModel& aPodcastModel, TInt& aSelectedIAP);
+	~CPodcastClientIAPDlg();
+protected:
+	TBool OkToExitL(TInt aCommandId);
+	void PreLayoutDynInitL();
+private:
+	/** Reference to the podcast application model */
+	CPodcastModel& iPodcastModel;
+	CEikChoiceList* iIAPListCtrl;
+	TInt& iSelectedIAP;
+};
+
+
+
+/**
  * Dialog (old style) used to do settings
  */
 class CPodcastClientSettingsDlg: public CEikDialog

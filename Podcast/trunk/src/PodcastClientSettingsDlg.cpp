@@ -13,6 +13,42 @@
 #include "FeedEngine.h"
 #include "SettingsEngine.h"
 
+
+CPodcastClientIAPDlg::CPodcastClientIAPDlg(CPodcastModel& aPodcastModel, TInt& aSelectedIAP):iPodcastModel(aPodcastModel), iSelectedIAP(aSelectedIAP)
+{
+}
+
+CPodcastClientIAPDlg::~CPodcastClientIAPDlg()
+{
+}
+
+void CPodcastClientIAPDlg::PreLayoutDynInitL()
+{
+	iPodcastModel.UpdateIAPListL();
+	iIAPListCtrl = static_cast<CEikChoiceList*> (ControlOrNull(EPodcastSettingIAPList));
+	iIAPListCtrl->SetArrayL((MDesCArray*) NULL);
+	iIAPListCtrl->SetArrayExternalOwnership(ETrue);
+	iIAPListCtrl->SetArrayL(iPodcastModel.IAPNames());
+	
+	TInt cnt = iPodcastModel.IAPIds().Count();
+	for(TInt loop = 0;loop<cnt;loop++)
+	{
+		if(iPodcastModel.IAPIds()[loop].iIapId == iSelectedIAP)
+		{
+			iIAPListCtrl->SetCurrentItem(loop);
+			break;
+		}
+		
+	}
+}
+
+
+TBool CPodcastClientIAPDlg::OkToExitL(TInt aCommandId)
+{
+	iSelectedIAP = iPodcastModel.IAPIds()[iIAPListCtrl->CurrentItem()].iIapId;
+	return ETrue;
+}
+
 CPodcastClientVolumeDlg::CPodcastClientVolumeDlg(CPodcastModel& aPodcastModel):iPodcastModel(aPodcastModel)
 {
 }
