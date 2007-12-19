@@ -95,7 +95,7 @@ void CShowEngine::Connected(CHttpClient* /*aClient*/)
 	
 	}
 
-void CShowEngine::Progress(CHttpClient* aHttpClient, int aBytes, int aTotalBytes)
+void CShowEngine::Progress(CHttpClient* /*aHttpClient */, int aBytes, int aTotalBytes)
 {	
 	int percent = -1;
 	if (aTotalBytes != -1) {
@@ -106,7 +106,7 @@ void CShowEngine::Progress(CHttpClient* aHttpClient, int aBytes, int aTotalBytes
 	}
 }
 
-void CShowEngine::Disconnected(CHttpClient* aClient)
+void CShowEngine::Disconnected(CHttpClient* /*aClient */)
 	{
 	
 	}
@@ -184,7 +184,7 @@ void CShowEngine::AddObserver(MShowEngineObserver *observer)
 	iObservers.Append(observer);
 	}
 
-void CShowEngine::Complete(CHttpClient *aHttpClient, TBool aSuccessful)
+void CShowEngine::Complete(CHttpClient* /*aHttpClient*/, TBool aSuccessful)
 	{
 	RDebug::Print(_L("File %S complete"), &iShowDownloading->FileName());
 	

@@ -115,7 +115,7 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 							User::Leave(err);
 							} else {
 							int pos = -KByteOverlap;
-							if(err=iRespBodyFile.Seek(ESeekEnd, pos) != KErrNone) {
+							if((err=iRespBodyFile.Seek(ESeekEnd, pos)) != KErrNone) {
 								RDebug::Print(_L("Failed to set position!"));
 								User::Leave(err);
 							}

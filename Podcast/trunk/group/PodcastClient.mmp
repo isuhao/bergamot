@@ -54,7 +54,6 @@ SOURCE		PodcastClientPlayView.cpp
 SOURCE			PodcastClientAddFeedDlg.cpp
 SOURCE			PodcastClientSettingsDlg.cpp
 // Engine
-SOURCE 			RPodcastServerSession.cpp
 SOURCE			PodcastData.cpp 
 SOURCE			HttpClient.cpp
 SOURCE			HttpEventHandler.cpp 

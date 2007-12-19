@@ -1,6 +1,5 @@
 PRJ_MMPFILES
 PodcastClient.mmp
-//PodcastServer.mmp
 
 PRJ_PLATFORMS
 GCCE
