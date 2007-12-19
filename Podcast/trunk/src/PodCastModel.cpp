@@ -1,11 +1,12 @@
 #include <qikon.hrh>
 #include <commdb.h>
-
+#include <podcastclient.rsg>
 #include "PodcastModel.h"
 #include "FeedEngine.h"
 #include "SoundEngine.h"
 #include "SettingsEngine.h"
 #include "ShowEngine.h"
+#include "PodCastClientSettingsDlg.h"
 
 const TInt KDefaultGranu = 5;
 
@@ -217,6 +218,20 @@ void CPodcastModel::ConnectHttpSessionL(RHTTPSession &aSession)
 {
 	RDebug::Print(_L("ConnectHttpSessionL START"));
 	iConnection.Stop();
+	if(iSettingsEngine->SpecificIAP() == -1)
+	{
+		TInt iapSelected = iConnPref.IapId();
+		CPodcastClientIAPDlg* selectIAPDlg = new (ELeave) CPodcastClientIAPDlg(*this, iapSelected);
+		if(selectIAPDlg->ExecuteLD(R_PODCAST_IAP_DLG))
+		{
+			iConnPref.SetIapId(iapSelected);
+		}
+		else
+		{
+			return;
+		}
+	}
+
 	User::LeaveIfError(iConnection.Start(iConnPref));
 
 	RHTTPConnectionInfo connInfo = aSession.ConnectionInfo();
