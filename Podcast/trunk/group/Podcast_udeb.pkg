@@ -1,7 +1,7 @@
 &EN,SW
 %{"Bergamot","Bergamot"}
 :"Bergamot"
-#{"Escarpod","Escarpod"}, (0xA00046BD), 0, 10, 0, TYPE=SA
+#{"Escarpod","Escarpod"}, (0xA00046BD), 0, 20, 0, TYPE=SA
 
 ;(0x101F6300), 3, 0, 0, {"UIQ30ProductID"}
 

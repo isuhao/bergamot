@@ -52,7 +52,7 @@ rls_string STRING_r_view_edit_feed_cmd "Ändra ström"
 rls_string STRING_r_view_delete_feed_cmd "Ta bort ström"
 rls_string STRING_r_view_purge_feed_cmd "Ta bort alla"
 rls_string STRING_r_update_feed_cmd "Uppdatera ström"
-rls_string STRING_r_update_feed_short_cmd "Uppdatera"
+rls_string STRING_r_update_feed_short_cmd "Uppdat."
 rls_string STRING_r_update_all_feeds_cmd "Uppdatera alla"
 rls_string STRING_r_update_all_feeds_short_cmd "Upd. alla"
 
@@ -135,7 +135,7 @@ rls_string STRING_r_podcast_setting_wlanonly "Fråga mig"
 rls_string STRING_r_podcast_setting_usespecified "Använd förvald"
 rls_string STRING_r_podcast_setting_iaplist "Anslutningar"
 rls_string STRING_r_podcast_setting_cancel_cmd "Avbryt" // Cancel command in settings dialog
-rls_string STRING_r_podcast_setting_done_cmd "Klar" // Done command in settings dialog
+rls_string STRING_r_podcast_setting_done_cmd "Stäng" // Done command in settings dialog
 rls_string STRING_r_podcast_setting_showdir_cmd "Välj" // Use to select show dir
 rls_string STRING_r_podcast_setting_volume "Volym" 
 
