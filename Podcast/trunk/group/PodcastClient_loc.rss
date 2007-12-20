@@ -2,8 +2,13 @@
 
 #include <appinfo.rh>
 #include <qikon.hrh>
-#include "PodcastClient.rls"
 #include "PodcastClient.hrh"
+
+#ifdef LANGUAGE_01
+	#include "PodcastClient_english.rls"
+#elif defined LANGUAGE_06
+	#include "PodcastClient_swedish.rls"
+#endif
 
 RESOURCE LOCALISABLE_APP_INFO
 {

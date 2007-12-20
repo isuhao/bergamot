@@ -12,7 +12,12 @@
 #include <eikon.rsg>
 #include <QikCategory.hrh>
 #include "PodcastClient.hrh"
-#include "PodcastClient.rls"
+#ifdef LANGUAGE_01
+	#include "PodcastClient_english.rls"
+#elif defined LANGUAGE_06
+	#include "PodcastClient_swedish.rls"
+#endif
+
 
 // Use this statement to ensure that the resources in the file have a unique ID
 // so that an application can use multiple resource files without resource ID

@@ -15,18 +15,18 @@ DOCUMENT		  PodcastClientFeedView.ra
 
 START RESOURCE    PodcastClient.rss
 TARGETPATH        \resource\apps
+LANG			  01 06
 HEADER
-END
-
-
-START RESOURCE    PodcastClient_reg.rss
-TARGETPATH        \private\10003A3F\apps
 END
 
 START RESOURCE    PodcastClient_loc.rss
 TARGETPATH        \resource\apps
-LANG              SC
+LANG			  01 06
 HEADER
+END
+
+START RESOURCE    PodcastClient_reg.rss
+TARGETPATH        \private\10003A3F\apps
 END
 
 SYSTEMINCLUDE   \epoc32\include\ecom
@@ -62,8 +62,11 @@ SOURCE			FeedEngine.cpp
 SOURCE			ShowInfo.cpp
 SOURCE			SoundEngine.cpp
 SOURCE			PodCastModel.cpp 
-SOURCE			FeedInfo.cpp FeedTimer.cpp ShowEngine.cpp SettingsEngine.cpp MetaDataReader.cpp
-
+SOURCE			FeedInfo.cpp
+SOURCE			FeedTimer.cpp
+SOURCE			ShowEngine.cpp
+SOURCE			SettingsEngine.cpp
+SOURCE			MetaDataReader.cpp
 
 LIBRARY         euser.lib
 LIBRARY         apparc.lib
