@@ -16,8 +16,8 @@ _LIT(KShowDB, "shows.db");
 _LIT(KFeedDB, "feeds.db");
 
 
-const TInt KMaxVolume = 100;
-const TInt KVolumeDelta = 10;
+const TUint KMaxVolume = 100;
+const TUint KVolumeDelta = 10;
 
 enum TAutoDownloadSetting
 {
@@ -46,13 +46,13 @@ public:
 	TInt MaxSimultaneousDownloads();
 	TAutoDownloadSetting DownloadAutomatically();	
 	TFileName& DefaultFeedsFileName();
-	TUint SpecificIAP();
+	TInt SpecificIAP();
 	TInt MaxListItems();
 	void SetBaseDir(TFileName& aFileName);
 	void SetUpdateFeedInterval(TInt aInterval);
 	void SetMaxSimultaneousDownloads(TInt aMaxDownloads);
 	void SetDownloadAutomatically(TAutoDownloadSetting aAutoOn);
-	void SetSpecificIAP(TUint aIap);
+	void SetSpecificIAP(TInt aIap);
 	TFileName PrivatePath();
 	
 	TUint Volume();
@@ -67,7 +67,7 @@ private:
 	TInt iUpdateFeedInterval;
 	TAutoDownloadSetting iDownloadAutomatically;
 	TInt iMaxSimultaneousDownloads;
-	TUint iIap;
+	TInt iIap;
 	TInt iVolume;
 	TInt iMaxListItems;
 	

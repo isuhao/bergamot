@@ -217,7 +217,7 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 
 		if(len == iListbox->Model().Count())
 		{
-			TInt itemId = 0;
+			TUint itemId = 0;
 			for(TInt loop = 0;loop< len ;loop++)
 			{
 				MQikListBoxData* data = model.RetrieveDataL(loop);	
@@ -323,8 +323,8 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 			HBufC* titleBuffer = HBufC::NewLC(templateStr->Length()+8);
 			titleBuffer->Des().Format(*templateStr, len);
 			ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *titleBuffer);
-			CleanupStack::PopAndDestroy(templateStr);
 			CleanupStack::PopAndDestroy(titleBuffer);
+			CleanupStack::PopAndDestroy(templateStr);
 			
 			// Informs that the update of the list box model has ended
 			model.ModelEndUpdateL();
