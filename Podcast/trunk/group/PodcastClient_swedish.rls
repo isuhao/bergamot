@@ -95,6 +95,8 @@ rls_string STRING_r_view_shows_title "Program"
 rls_string STRING_r_podcast_shows_title_format "%d ospelade, %d totalt";
 rls_string STRING_r_podcast_shows_title_download "%d laddas ner, %d i kö";
 rls_string STRING_r_podcast_shows_downloads_suspended "Pausad, %d i kö";
+rls_string STRING_r_podcast_shows_no_items "Listan är tom";
+
 
 // Feeds view status strings
 

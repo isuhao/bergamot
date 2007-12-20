@@ -95,7 +95,7 @@ rls_string STRING_r_view_shows_title "Shows"
 rls_string STRING_r_podcast_shows_title_format "%d Unplayed, %d Total";
 rls_string STRING_r_podcast_shows_title_download "%d Downloading, %d Queued";
 rls_string STRING_r_podcast_shows_downloads_suspended "Suspended, %d Queued";
-
+rls_string STRING_r_podcast_shows_no_items "No items";
 // Feeds view status strings
 
 rls_string STRING_r_podcast_feeds_title_format "%d Feeds"
