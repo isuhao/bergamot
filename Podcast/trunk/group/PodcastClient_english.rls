@@ -83,7 +83,7 @@ rls_string STRING_r_category_dled "Shows"
 rls_string STRING_r_category_pending "Downloader"
 
 // Application caption
-rls_string STRING_r_caption "Podcast Player"
+rls_string STRING_r_caption "Escarpod"
 rls_string STRING_r_short_caption "Podcast"
 
 // View titles
@@ -96,11 +96,16 @@ rls_string STRING_r_podcast_shows_title_format "%d Unplayed, %d Total";
 rls_string STRING_r_podcast_shows_title_download "%d Downloading, %d Queued";
 rls_string STRING_r_podcast_shows_downloads_suspended "Suspended, %d Queued";
 
+// Feeds view status strings
+
+rls_string STRING_r_podcast_feeds_title_format "%d Feeds"
+rls_string STRING_r_podcast_feeds_status_format "%d/%d Shows"
+
 // DIALOG string
 rls_string STRING_r_add_feed_title "Add Feed"
 rls_string STRING_r_edit_feed_title "Edit Feed"
 
-rls_string STRING_r_add_feed_prompt "Feed URL:"
+rls_string STRING_r_add_feed_prompt "Feed URL"
 
 rls_string STRING_r_remove_feed_title "Remove Feed"
 rls_string STRING_r_remove_feed_prompt "Are you really sure you want to remove this feed?"
@@ -125,10 +130,10 @@ rls_string STRING_r_podcast_setting_minutes "minutes"
 
 rls_string STRING_r_podcast_setting_maxsimul "Max simultaneous downloads"
 rls_string STRING_r_podcast_setting_connection "Connection"
-rls_string STRING_r_podcast_setting_default "Use Any"
+rls_string STRING_r_podcast_setting_default "Use Default"
 rls_string STRING_r_podcast_setting_wlanonly "Always Ask"
 rls_string STRING_r_podcast_setting_usespecified "Use Specified"
-rls_string STRING_r_podcast_setting_iaplist "Internet Accounts"
+rls_string STRING_r_podcast_setting_iaplist "Connections"
 rls_string STRING_r_podcast_setting_cancel_cmd "Cancel" // Cancel command in settings dialog
 rls_string STRING_r_podcast_setting_done_cmd "Done" // Done command in settings dialog
 rls_string STRING_r_podcast_setting_showdir_cmd "Select" // Use to select show dir

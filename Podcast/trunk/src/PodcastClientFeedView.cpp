@@ -10,7 +10,6 @@
 #include "ShowEngine.h"
 const TInt KMaxFeedNameLength = 100;
 const TInt KADayInHours = 24;
-_LIT(KFeedsTitleFormat, "%d Feeds");
 
 /**
 Creates and constructs the view.
@@ -116,7 +115,11 @@ void CPodcastClientFeedView::UpdateFeedInfoDataL(CFeedInfo* aFeedInfo,  MQikList
 	TBuf<100> unplayedShows;
 
 	iPodcastModel.ShowEngine().GetStatsByFeed(aFeedInfo->Uid(), showCount, unplayedCount);
-	unplayedShows.Format(_L("%d/%d shows"), unplayedCount, showCount);
+	
+	HBufC* templateStr = CEikonEnv::Static()->AllocReadResourceAsDes16LC(R_PODCAST_FEEDS_STATUS_FORMAT);
+
+	unplayedShows.Format(*templateStr, unplayedCount, showCount);
+	CleanupStack::PopAndDestroy(templateStr);
 	aListboxData->SetEmphasis(unplayedCount > 0);					
 	aListboxData->SetTextL(unplayedShows, EQikListBoxSlotText2);
 	
@@ -315,10 +318,12 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 					CleanupStack::PopAndDestroy();
 				}
 			}
-			
-			HBufC* titleBuffer = HBufC::NewLC(KFeedsTitleFormat().Length()+8);
-			titleBuffer->Des().Format(KFeedsTitleFormat, len);
+			HBufC* templateStr = CEikonEnv::Static()->AllocReadResourceAsDes16LC(R_PODCAST_FEEDS_TITLE_FORMAT);
+
+			HBufC* titleBuffer = HBufC::NewLC(templateStr->Length()+8);
+			titleBuffer->Des().Format(*templateStr, len);
 			ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *titleBuffer);
+			CleanupStack::PopAndDestroy(templateStr);
 			CleanupStack::PopAndDestroy(titleBuffer);
 			
 			// Informs that the update of the list box model has ended

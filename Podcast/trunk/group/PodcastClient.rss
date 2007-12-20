@@ -321,6 +321,9 @@ RESOURCE TBUF r_podcast_purge_show_prompt {buf = STRING_r_purge_show_prompt;}
 RESOURCE TBUF r_podcast_enable_downloads_title {buf = STRING_r_enable_downloads_title;}
 RESOURCE TBUF r_podcast_enable_downloads_prompt {buf = STRING_r_enable_downloads_prompt;}
 
+RESOURCE TBUF r_podcast_feeds_title_format {buf = STRING_r_podcast_feeds_title_format;}
+
+RESOURCE TBUF r_podcast_feeds_status_format {buf = STRING_r_podcast_feeds_status_format;}
 RESOURCE ARRAY r_podcast_shows_categories
 	{
 	items=
