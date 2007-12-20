@@ -553,8 +553,10 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 				} else {		
 					MQikListBoxData* listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
 					CleanupClosePushL(*listBoxData);
-					
-					listBoxData->AddTextL(_L("No items"), EQikListBoxSlotText1);
+					HBufC* noItems=  iEikonEnv->AllocReadResourceLC(R_PODCAST_SHOWS_NO_ITEMS);
+
+					listBoxData->AddTextL(*noItems, EQikListBoxSlotText1);
+					CleanupStack::PopAndDestroy(noItems);
 					CleanupStack::PopAndDestroy();
 				}
 				

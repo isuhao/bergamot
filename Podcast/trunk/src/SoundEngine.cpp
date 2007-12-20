@@ -35,7 +35,6 @@ void CSoundEngine::SetObserver(MSoundEngineObserver* aObserver)
 
 void CSoundEngine::MapcPlayComplete(TInt aError) {
 //	RDebug::Print(_L("Play Complete: %d"), aError);
-//	User::InfoPrint(_L("Done!"));
 	if (iPodcastModel.PlayingPodcast() != NULL) {
 		iPodcastModel.PlayingPodcast()->SetPlayState(EPlayed);
 	}
