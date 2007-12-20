@@ -269,8 +269,8 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 			
 			if (len > 0) {
 				for (int i=0;i<len;i++) {
-					TInt bitmap = EMbmPodcastclientFeeds_40x40;
-					TInt mask = EMbmPodcastclientFeeds_40x40m;
+					TInt bitmap = EMbmPodcastclientFeed_40x40;
+					TInt mask = EMbmPodcastclientFeed_40x40m;
 					
 					listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
 					CleanupClosePushL(*listBoxData);
