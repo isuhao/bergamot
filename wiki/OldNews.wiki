@@ -1,0 +1,8 @@
+#summary Older news postings, for tracking purposes.
+
+  * 2007-11-14 - Lars has joined the project.
+  * 2007-11-11 - [PodcastPlayer Podcast Player] alpha 1 is [http://bergamot.googlecode.com/svn/Podcast/tags/alpha1/group/Podcast_udeb_signed.sis available]!
+  * 2007-11-04 - Beta 2 of [Swim] is out.
+  * 2007-11-03 - KitchenSync is now named [Swim]. Go get the beta!
+  * 2007-11-02 - The [PodcastPlayer Podcast Player] project started.
+  * 2007-11-01 - Beta 1 of KitchenSync is out! Help me test it by getting the unsigned version [http://bergamot.googlecode.com/svn/KitchenSync/tags/beta1/group/KitchenSync_unsigned.sis here], and [SignSIS signing] it yourself.
