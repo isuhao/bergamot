@@ -9,9 +9,16 @@ Notable features include:
   * Automatic RSS feed updating
   * Automatic downloading
   * Cover art
-  * 
 
 = Screenshots =
+
+= Data plan warning = 
+
+Before you start using Escarpod, check your data rates with your access provider. Many charge exorbitant fees, and downloading large files such as podcasts may force you to sell your house.
+
+Many provides offer flat rate fees that allow you unlimited data for a more reasonable charge.
+
+If your phone supports it, using your own wireless LAN is a great option. Escarpod allows you to specify a connection.
 
 = Download = 
 
