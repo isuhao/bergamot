@@ -1,4 +1,4 @@
-# A pocket full of snails
+#summary A pocket full of snails
 
 = Escarpod =
 
