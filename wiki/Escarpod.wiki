@@ -1,4 +1,4 @@
-#summary A pocket full of snails
+#summary A podket full of snails
 
 = Escarpod =
 
@@ -9,6 +9,10 @@ Notable features include:
   * Automatic RSS feed updating
   * Automatic downloading
   * Cover art
+
+== Credits ==
+
+Escarpod was started by Sebastian Brännström who wrote the feed parser, the file downloader and the player. Much help was received from Lars Persson, who did most of the UI as well as code improvement. Alan Eddie drew all the graphics, including icons.
 
 = Screenshots =
 
