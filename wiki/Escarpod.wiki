@@ -37,3 +37,7 @@ All UIQ 3 based phones should work, however Escarpod has been explicitly tested 
 
   * Motorola
     * Z8
+
+= License =
+
+Escarpod is licensed under the GPL version 3 open source license. The autors retain the right to dual license this program for commercial purposes.
