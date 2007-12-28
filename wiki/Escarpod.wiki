@@ -1,4 +1,4 @@
-#summary A podket full of snails
+#summary A pocket full of snails
 
 = Escarpod =
 
@@ -22,9 +22,9 @@ The following versions are available for download. All previous versions, as wel
 
 Escarpod was started by Sebastian Brännström. Much help was received from Lars Persson, who did most of the UI as well as code improvement. Alan Eddie drew all the graphics, including icons.
 
-= Screenshots =
+== Screenshots ==
 
-= Data plan warning = 
+== Data plan warning == 
 
 Before you start using Escarpod, check your data rates with your access provider. Many charge exorbitant fees, and downloading large files such as podcasts may force you to sell your house.
 
@@ -46,6 +46,6 @@ All UIQ 3 based phones should work, however Escarpod has been explicitly tested 
   * Motorola
     * Z8
 
-= License =
+== License ==
 
 Escarpod is licensed under the GPL version 3 open source license. The autors retain the right to dual license this program for commercial purposes.
