@@ -568,7 +568,8 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 			
 			if(iPodcastModel.SoundEngine().PlayTime()>0)
 			{
-				if(iPodcastModel.SoundEngine().State() == ESoundEnginePlaying)
+				if(iPodcastModel.SoundEngine().State() == ESoundEnginePlaying ||
+				   iPodcastModel.SoundEngine().State() == ESoundEnginePaused)
 				{
 					TUint duration = iPodcastModel.SoundEngine().PlayTime();
 					pos = iPodcastModel.SoundEngine().Position().Int64()/1000000;

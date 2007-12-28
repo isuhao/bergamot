@@ -420,10 +420,10 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 		}break;
 	case EPodcastPurgeFeed:
 		{
-			if(iListbox != NULL)
+			/*if(iListbox != NULL)
 			{
 				TInt index = iListbox->CurrentItemIndex();
-			}
+			}*/
 		}break;
 	default:
 		CPodcastClientView::HandleCommandL(aCommand);

@@ -145,7 +145,7 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 				// length=...
 				} else if (attr16.Compare(KTagLength) == 0) {
 					TLex8 lex(attr.Value().DesC());
-					TUint size = -1;
+					TUint size = 0;
 					lex.Val(size, EDecimal);
 					iActiveShow->SetShowSize(size);
 				}
@@ -159,8 +159,9 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 			iFeedState = EStateItemPubDate;
 		}
 		break;
-	//default:
+	default:
 		//RDebug::Print(_L("Ignoring tag %S when in state %d"), &str, iFeedState);
+		break;
 	}
 //	RDebug::Print(_L("OnStartElementL END state=%d"), iFeedState);
 	}

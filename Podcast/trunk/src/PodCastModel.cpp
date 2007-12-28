@@ -154,6 +154,8 @@ void CPodcastModel::PlayPausePodcastL(CShowInfo* aPodcast)
 			TRAPD(error, iSoundEngine->OpenFileL(aPodcast->FileName()));
 			if (error != KErrNone) {
 				RDebug::Print(_L("Error: %d"), error);
+			} else {
+				iSoundEngine->SetPosition(aPodcast->Position().Int64() / 1000000);
 			}
 		}
 

@@ -77,7 +77,7 @@ rls_string STRING_r_settings_cmd "Inställningar"
 // Categories
 rls_string STRING_r_category_all "Alla program"
 rls_string STRING_r_category_new "Ospelade"
-rls_string STRING_r_category_dled "Program"
+rls_string STRING_r_category_dled "Program på telefonen"
 rls_string STRING_r_category_pending "Nedladdare"
 
 // Application caption
@@ -86,7 +86,6 @@ rls_string STRING_r_short_caption "Podcast"
 
 // View titles
 rls_string STRING_r_view_feeds_title "Strömmar"
-rls_string STRING_r_view_shows_title "Program"
 
 // Shows view status strings
 rls_string STRING_r_podcast_shows_title_format "%d ospelade, %d totalt";

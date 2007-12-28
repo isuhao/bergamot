@@ -77,7 +77,7 @@ rls_string STRING_r_settings_cmd "Settings"
 // Categories
 rls_string STRING_r_category_all "All Shows"
 rls_string STRING_r_category_new "Unplayed"
-rls_string STRING_r_category_dled "Shows"
+rls_string STRING_r_category_dled "Shows on Phone"
 rls_string STRING_r_category_pending "Downloader"
 
 // Application caption
@@ -86,7 +86,6 @@ rls_string STRING_r_short_caption "Podcast"
 
 // View titles
 rls_string STRING_r_view_feeds_title "Feeds"
-rls_string STRING_r_view_shows_title "Shows"
 
 // Shows view status strings
 rls_string STRING_r_podcast_shows_title_format "%d Unplayed, %d Total";

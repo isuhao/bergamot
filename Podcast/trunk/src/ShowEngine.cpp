@@ -297,9 +297,11 @@ void CShowEngine::LoadShowsL()
 		//RDebug::Print(_L("error: %d"), error);
 		AddShow(readData);
 		
-		if (readData->DownloadState() == EQueued) {
-			AddDownload(readData);
-		} 
+		if (readData->DownloadState() == EQueued || readData->DownloadState() == EDownloading) {
+			readData->SetDownloadState(EQueued);
+			iShowsDownloading.Append(readData);
+		}
+		DownloadNextShow();
 	}
 
 	iSuppressAutoDownload = EFalse;
@@ -485,7 +487,7 @@ void CShowEngine::SelectShowsDownloading()
 	{
 	iSelectedShows.Reset();
 	
-	for (int i=0;i<iShows.Count();i++)
+	/*for (int i=0;i<iShows.Count();i++)
 		{
 		if (iShows[i]->DownloadState() == EDownloading)
 				{
@@ -500,7 +502,10 @@ void CShowEngine::SelectShowsDownloading()
 				iSelectedShows.Append(iShows[i]);
 				}
 		}
-
+*/
+	for (int i=0;i<iShowsDownloading.Count();i++) {
+		iSelectedShows.Append(iShowsDownloading[i]);
+	}
 	}
 
 RShowInfoArray& CShowEngine::GetSelectedShows()
@@ -512,6 +517,7 @@ void CShowEngine::AddDownload(CShowInfo *info)
 	{
 	info->SetDownloadState(EQueued);
 	iShowsDownloading.Append(info);
+	SaveShows();
 	DownloadNextShow();
 	}
 
