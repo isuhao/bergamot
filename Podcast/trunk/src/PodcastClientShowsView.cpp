@@ -161,11 +161,15 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 		case EPodcastUpdateFeed:
 			{
 				if (iPodcastModel.ActiveFeedInfo()->Url().Length()>0) {
-					User::InfoPrint(_L("Updating feed..."));
+					HBufC* str = CEikonEnv::Static()->AllocReadResourceLC(R_PODCAST_FEEDS_UPDATE_MESSAGE);
+					User::InfoPrint(*str);
+					CleanupStack::PopAndDestroy(str);
 					TRAPD(error, iPodcastModel.FeedEngine().UpdateFeedL(iPodcastModel.ActiveFeedInfo()->Uid()));
 					
 					if (error != KErrNone) {
-						User::InfoPrint(_L("Error while updating feed!"));
+						HBufC* str = CEikonEnv::Static()->AllocReadResourceLC(R_PODCAST_FEEDS_UPDATE_ERROR);
+						User::InfoPrint(*str);
+						CleanupStack::PopAndDestroy(str);
 					}
 				} 
 			}

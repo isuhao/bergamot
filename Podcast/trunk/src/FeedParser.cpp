@@ -48,6 +48,7 @@ void CFeedParser::OnStartDocumentL(const RDocumentParameters& aDocParam, TInt aE
 	RDebug::Print(_L("OnStartDocumentL()"));
 	TBuf<1024> charset;
 	charset.Copy(aDocParam.CharacterSetName().DesC());
+	iEncoding = EUtf8;
 	if (charset.CompareF(_L("utf-8")) == 0) {
 		RDebug::Print(_L("setting UTF8"));
 		iEncoding = EUtf8;

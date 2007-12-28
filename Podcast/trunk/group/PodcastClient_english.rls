@@ -56,6 +56,9 @@ rls_string STRING_r_update_feed_short_cmd "Update"
 rls_string STRING_r_update_all_feeds_cmd "Update All"
 rls_string STRING_r_update_all_feeds_short_cmd "Upd. All"
 
+rls_string STRING_r_podcast_feeds_update_message "Updating..."
+rls_string STRING_r_podcast_feeds_update_error "Update failed!"
+
 // Actions for shows
 rls_string STRING_r_view_download_show_cmd "Download"
 rls_string STRING_r_view_delete_show_cmd "Delete"
@@ -66,11 +69,6 @@ rls_string STRING_r_view_stop_downloads_cmd "Suspend Downloading"
 rls_string STRING_r_view_resume_downloads_cmd "Resume Downloading"
 rls_string STRING_r_view_mark_all_played_cmd "Mark All Played"
 rls_string STRING_r_view_show_unplayed_cmd "Show Unplayed Only"
-
-// Actions for library
-
-rls_string STRING_r_view_library_update_cmd "Scan Podcasts Folder"
-
 
 // Common actions
 rls_string STRING_r_zoom_cmd "Zoom"
@@ -90,14 +88,13 @@ rls_string STRING_r_short_caption "Podcast"
 rls_string STRING_r_view_feeds_title "Feeds"
 rls_string STRING_r_view_shows_title "Shows"
 
-
 // Shows view status strings
 rls_string STRING_r_podcast_shows_title_format "%d Unplayed, %d Total";
 rls_string STRING_r_podcast_shows_title_download "%d Downloading, %d Queued";
 rls_string STRING_r_podcast_shows_downloads_suspended "Suspended, %d Queued";
 rls_string STRING_r_podcast_shows_no_items "No items";
-// Feeds view status strings
 
+// Feeds view status strings
 rls_string STRING_r_podcast_feeds_title_format "%d Feeds"
 rls_string STRING_r_podcast_feeds_status_format "%d/%d Shows"
 

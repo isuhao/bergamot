@@ -102,7 +102,9 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 	case EPodcastUpdateAllFeeds:
 		{
 			iPodcastModel.FeedEngine().UpdateAllFeeds();
-			User::InfoPrint(_L("Updating all feeds..."));
+			HBufC* str = CEikonEnv::Static()->AllocReadResourceLC(R_PODCAST_FEEDS_UPDATE_MESSAGE);
+			User::InfoPrint(*str);
+			CleanupStack::PopAndDestroy(str);
 		}
 		break;
 	case EPodcastSettings:

@@ -29,6 +29,7 @@ void CPodcastClientIAPDlg::PreLayoutDynInitL()
 	iIAPListCtrl->SetArrayL((MDesCArray*) NULL);
 	iIAPListCtrl->SetArrayExternalOwnership(ETrue);
 	iIAPListCtrl->SetArrayL(iPodcastModel.IAPNames());
+	iIAPListCtrl->SetFocus(ETrue);
 	
 	TInt cnt = iPodcastModel.IAPIds().Count();
 	for(TInt loop = 0;loop<cnt;loop++)

@@ -56,6 +56,9 @@ rls_string STRING_r_update_feed_short_cmd "Uppdat."
 rls_string STRING_r_update_all_feeds_cmd "Uppdatera alla"
 rls_string STRING_r_update_all_feeds_short_cmd "Upd. alla"
 
+rls_string STRING_r_podcast_feeds_update_message "Uppdaterar..."
+rls_string STRING_r_podcast_feeds_update_error "Misslyckades!"
+
 // Actions for shows
 rls_string STRING_r_view_download_show_cmd "Ladda ner"
 rls_string STRING_r_view_delete_show_cmd "Ta bort"
@@ -66,11 +69,6 @@ rls_string STRING_r_view_stop_downloads_cmd "Pausa nedladdningar"
 rls_string STRING_r_view_resume_downloads_cmd "Fortsätt nedladdningar"
 rls_string STRING_r_view_mark_all_played_cmd "Markera alla som spelade"
 rls_string STRING_r_view_show_unplayed_cmd "Visa endast ospelade"
-
-// Actions for library
-
-rls_string STRING_r_view_library_update_cmd "Scan Podcasts Folder"
-
 
 // Common actions
 rls_string STRING_r_zoom_cmd "Zooma"
@@ -90,7 +88,6 @@ rls_string STRING_r_short_caption "Podcast"
 rls_string STRING_r_view_feeds_title "Strömmar"
 rls_string STRING_r_view_shows_title "Program"
 
-
 // Shows view status strings
 rls_string STRING_r_podcast_shows_title_format "%d ospelade, %d totalt";
 rls_string STRING_r_podcast_shows_title_download "%d laddas ner, %d i kö";
@@ -99,7 +96,6 @@ rls_string STRING_r_podcast_shows_no_items "Listan är tom";
 
 
 // Feeds view status strings
-
 rls_string STRING_r_podcast_feeds_title_format "%d strömmar"
 rls_string STRING_r_podcast_feeds_status_format "%d/%d program"
 

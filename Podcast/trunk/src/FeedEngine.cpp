@@ -81,7 +81,6 @@ void CFeedEngine::UpdateNextFeed()
 		
 		if (error != KErrNone) {
 			RDebug::Print(_L("Error while updating all feeds"));
-			User::InfoPrint(_L("Failed to update feed!"));
 			//iFeedsUpdating.Reset();
 		}
 	}

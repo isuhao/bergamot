@@ -247,8 +247,7 @@ void CPodcastModel::ConnectHttpSessionL(RHTTPSession &aSession)
 void CPodcastModel::SetIap(TInt aIap)
 	{
 	if (aIap == -1) {
-		RDebug::Print(_L("Will prompt"));
-		iConnPref.SetDialogPreference(ECommDbDialogPrefPrompt);
+		iConnPref.SetDialogPreference(ECommDbDialogPrefDoNotPrompt);
 		iConnPref.SetDirection(ECommDbConnectionDirectionOutgoing);
 		iConnPref.SetIapId(0);
 	} else {
