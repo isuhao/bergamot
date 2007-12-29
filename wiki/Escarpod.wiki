@@ -36,7 +36,7 @@ If your phone supports it, using your own wireless LAN is a great option. Escarp
 
   * Beta 2
 
-Older releases
+The complete list of releases can be found [EscarpodReleases here].
 
 == Supported Phones ==
 
