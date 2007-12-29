@@ -15,9 +15,12 @@ protected:
 	void ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage);
 
 	void ConstructL();
+	
+	// from MFeedEngineObserver
 	void UpdateFeedInfoDataL(CFeedInfo* aFeedInfo,  MQikListBoxData* aListboxData); 
     void FeedInfoUpdated(CFeedInfo* aFeedInfo);
 	void FeedDownloadUpdatedL(TInt aPercentOfCurrentDownload);
+	void FeedUpdateComplete();
 	// from MQikCommandModelOwner	
 	CQikCommand* DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& aControlAddingCommands);
 	void HandleCommandL(CQikCommand& aCommand);
