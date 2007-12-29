@@ -32,10 +32,8 @@ END
 SYSTEMINCLUDE   \epoc32\include\ecom
 SYSTEMINCLUDE   \epoc32\include
 
-
 SOURCEPATH      ..\src
 USERINCLUDE     ..\inc
-
 
 SOURCE          PodcastClientAppUi.cpp
 SOURCE          PodcastClientDocument.cpp
@@ -83,7 +81,8 @@ LIBRARY			qikctl.lib
 LIBRARY			eikctl.lib
 LIBRARY			qikdlg.lib
 LIBRARY			qikallocdll.lib 
-LIBRARY			estor.lib efsrv.lib
+LIBRARY			estor.lib 
+LIBRARY			efsrv.lib
 LIBRARY			mediaclientaudio.lib
 LIBRARY			mediaclient.lib
 LIBRARY			mmcommon.lib 
@@ -108,44 +107,29 @@ SOURCE          c16 PodcastClient_40x40.bmp
 SOURCE          8   PodcastClient_40x40_mask.bmp
 SOURCE          c16 PodcastClient_18x18.bmp
 SOURCE          8   PodcastClient_18x18_mask.bmp
-
 SOURCE          c16 feeds_40x40.bmp
 SOURCE          8   feeds_40x40m.bmp
 SOURCE          c16 feed_40x40.bmp
 SOURCE          8   feed_40x40m.bmp
-SOURCE		c16	feeds_18x18.bmp
-SOURCE		8	feeds_18x18m.bmp
-
-SOURCE		c16 play_40x40.bmp
-SOURCE		8   play_40x40m.bmp
-
-SOURCE          c16 shows_40x40.bmp
-SOURCE          8   shows_40x40m.bmp
-
-SOURCE		c16 new_view_40x40.bmp
-SOURCE		8   new_view_40x40m.bmp
-SOURCE		c16 downloaded_view_40x40.bmp
-SOURCE		8   downloaded_view_40x40m.bmp
-SOURCE		c16 pending_view_40x40.bmp
-SOURCE		8   pending_view_40x40m.bmp
-
-
-SOURCE		c16 show_40x40.bmp
-SOURCE		8   show_40x40m.bmp
-
-SOURCE		c16 show_playing_40x40.bmp
-SOURCE		8   show_playing_40x40m.bmp
-
-SOURCE		C16 downloading_40x40.bmp
-SOURCE		8   downloading_40x40m.bmp
-
-SOURCE		C16 queued_40x40.bmp
-SOURCE		8   queued_40x40m.bmp
-
-SOURCE		C16 new_40x40.bmp
-SOURCE		8   new_40x40m.bmp
-
-SOURCE		8   emptyimage.bmp
+SOURCE			c16	feeds_18x18.bmp
+SOURCE			8	feeds_18x18m.bmp
+SOURCE			c16 play_40x40.bmp
+SOURCE			8   play_40x40m.bmp
+SOURCE			c16 downloaded_view_40x40.bmp
+SOURCE			8   downloaded_view_40x40m.bmp
+SOURCE			c16 pending_view_40x40.bmp
+SOURCE			8   pending_view_40x40m.bmp
+SOURCE			c16 show_40x40.bmp
+SOURCE			8   show_40x40m.bmp
+SOURCE			c16 show_playing_40x40.bmp
+SOURCE			8   show_playing_40x40m.bmp
+SOURCE			C16 downloading_40x40.bmp
+SOURCE			8   downloading_40x40m.bmp
+SOURCE			C16 queued_40x40.bmp
+SOURCE			8   queued_40x40m.bmp
+SOURCE			C16 new_40x40.bmp
+SOURCE			8   new_40x40m.bmp
+SOURCE			8   emptyimage.bmp
 
 END
 
