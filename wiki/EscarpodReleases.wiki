@@ -1,13 +1,8 @@
 == Complete list of releases ==
 
-This is how we plan to implement features. Please [http://groups.google.com/group/bergamot help us find out what's important!]
+This is a complete list of releases of Escarpod.
 
-  * Release 1 (New Year)
-    * Bug fixes
-    * Symbian signed?
-    * Translations
-
-  * Beta 2 (Christmas)
+  * Beta 2 (New Year)
     * New name!
     * Bug fixes
     * UI refinements
