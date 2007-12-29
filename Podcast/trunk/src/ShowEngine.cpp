@@ -604,6 +604,7 @@ void CShowEngine::ListDir(TFileName &folder) {
 			info->SetTitle(fileName);
 			info->SetDownloadState(EDownloaded);
 			info->SetUid(DefaultHash::Des16(fileName));
+			info->SetFeedUid(0);
 			TEntry entry;
 			iFs.Entry(pathName, entry);
 			info->SetShowSize(entry.iSize);
@@ -627,6 +628,9 @@ void CShowEngine::CheckFiles()
 		if(iShows[i]->DownloadState() == EDownloaded) {
 			if(!BaflUtils::FileExists(iFs, iShows[i]->FileName())) {
 				RDebug::Print(_L("%S was removed, delisting"), &iShows[i]->FileName());
+				if (iShows[i]->FeedUid() == 0) {
+					iShows[i]->SetDelete();
+				} 
 				iShows[i]->SetDownloadState(ENotDownloaded);
 			}
 		}

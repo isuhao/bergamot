@@ -430,3 +430,9 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 		break;
 	}
 }
+
+void CPodcastClientFeedView::FeedUpdateComplete()
+	{
+	RDebug::Print(_L("FeedUpdateComplete"));
+	}
+

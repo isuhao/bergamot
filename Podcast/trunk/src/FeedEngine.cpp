@@ -60,6 +60,7 @@ void CFeedEngine::UpdateAllFeeds()
 		RDebug::Print(_L("Cancelling update"));
 		iFeedClient->Stop();
 		iFeedsUpdating.Reset();
+		return;
 	}
 	
 	for (int i=0;i<iFeeds.Count();i++) {
@@ -82,6 +83,10 @@ void CFeedEngine::UpdateNextFeed()
 		if (error != KErrNone) {
 			RDebug::Print(_L("Error while updating all feeds"));
 			//iFeedsUpdating.Reset();
+		}
+	} else {
+		for (int i=0;i<iObservers.Count();i++) {
+			iObservers[i]->FeedUpdateComplete();
 		}
 	}
 	}
@@ -218,15 +223,13 @@ void CFeedEngine::Connected(CHttpClient* /*aClient*/)
 
 void CFeedEngine::Progress(CHttpClient* /*aHttpClient*/, int aBytes, int aTotalBytes)
 {	
-	if (iClientState == EFeed) {
+	/*if (iClientState == EFeed) {
 		int percent = -1;
 		if (aTotalBytes != -1) {
 			percent = (int) ((float)aBytes * 100.0 / (float)aTotalBytes) ;
 		}
-		for (int i=0;i<iObservers.Count();i++) {
-			iObservers[i]->FeedDownloadUpdatedL(percent);
-		}
-	}
+
+	}*/
 }
 
 void CFeedEngine::Complete(CHttpClient* /*aClient*/, TBool aSuccessful)
