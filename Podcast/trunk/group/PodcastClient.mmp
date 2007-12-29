@@ -39,13 +39,13 @@ SOURCE          PodcastClientAppUi.cpp
 SOURCE          PodcastClientDocument.cpp
 SOURCE          PodcastClientApplication.cpp
 // This is a generic view which all listviews inherits from
-SOURCE		PodcastClientView.cpp
+SOURCE			PodcastClientView.cpp
 // The three different listviews, baseview, feedview and 
-SOURCE		PodcastClientBaseView.cpp
-SOURCE		PodcastClientShowsView.cpp
-SOURCE		PodcastClientFeedView.cpp
+SOURCE			PodcastClientBaseView.cpp
+SOURCE			PodcastClientShowsView.cpp
+SOURCE			PodcastClientFeedView.cpp
 // This is the playview
-SOURCE		PodcastClientPlayView.cpp
+SOURCE			PodcastClientPlayView.cpp
 
 
 // Dialogs
