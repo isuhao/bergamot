@@ -1,0 +1,63 @@
+== Complete list of releases ==
+
+This is how we plan to implement features. Please [http://groups.google.com/group/bergamot help us find out what's important!]
+
+  * Release 1 (New Year)
+    * Bug fixes
+    * Symbian signed?
+    * Translations
+
+  * Beta 2 (Christmas)
+    * New name!
+    * Bug fixes
+    * UI refinements
+    * Translations
+
+  * Beta 1 (December 17th) | [http://bergamot.googlecode.com/svn/Podcast/tags/beta1 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/beta1/group/Podcast_udeb_signed.sis SIS]
+    * New and improved icons for parts of the program
+    * UI refinements
+    * Feature freeze
+    * Delete files using hardware delete button
+    * Infrastructure for translations
+    * Meta-data read from manually added files
+    * ~~Automatic purging of old files~~ Quite easy to do manually, maybe for 1.1 or so
+    * Option to specify connection
+
+  * Alpha 5 (December 9th) | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha5 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha5/group/Podcast_udeb_signed.sis SIS]
+    * Automatic downloading 
+    * UI refinements
+    * Resume unfinished downloads
+    * Paused position bug fixed
+    * Files manually added to podcast folder playable
+    * ~~Setup on install (choose flash drive etc)~~ Don't think we need this.
+    * Find flash drive automatically
+
+  * Alpha 4 (December 1st) | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha4 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha4/group/Podcast_udeb_signed.sis SIS]
+    * UI refinements, mainly improved, somewhat experimental player dialog
+    * Volume control
+    * Configuration dialog
+    * ~~Video support?~~ (Bumped to 2.0)
+    * ~~Support for other feeds (Atom, RSS 0.9, any more?)~~ I can't find any podcasts that don't use RSS 2.0, so this is on hold, possibly 2.0 for Atom.
+    * Automatic feed update
+    * Memory consumption improvements
+    * Scrolling list items show entire show title
+
+  * Alpha 3 (November 25th) | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha3 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha3/group/Podcast_udeb_signed.sis SIS]
+    * UI improvements (cover art, icons...)
+    * Adding and removal of feeds from the UI
+    * Feed encoding issues fixed
+    * Purging (removal) of downloaded files and feeds
+
+  * Alpha 2 (November 18th) |  [http://bergamot.googlecode.com/svn/Podcast/tags/alpha2 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha2/group/Podcast_udeb_signed.sis SIS]
+    * New and improved UI thanks to Lars
+    * Download queue
+    * Pretty stable
+    * Much improved feed handling
+    * Keeps track of position inside audio file, even between restarts, and for multiple podcasts at a time
+
+  * Alpha 1 (November 11th) |  [http://bergamot.googlecode.com/svn/Podcast/tags/alpha1 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/alpha1/group/Podcast_udeb_signed.sis SIS]
+    * Plays MP3 and AAC from memory card (must be in D:\podcasts)
+    * Fetches and parses RSS 2.0 feeds
+    * Feeds are defined in the plain text D:\podcasts\feeds.cfg
+    * Downloads audio files from feeds
+    * Rudimentary UI
