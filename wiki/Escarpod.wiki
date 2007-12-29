@@ -50,6 +50,10 @@ All UIQ 3 based phones should work, however Escarpod has been explicitly tested 
   * Motorola
     * Z8
 
+== Feature suggestions ==
+
+Add any ideas as comments to this wiki page, or mail us at bergamot@googlegroups.com, or write directly in the [http://groups.google.com/group/bergamot discussion group].
+
 == License ==
 
 Escarpod is licensed under the GPL version 3 open source license. The autors retain the right to dual license this program for commercial purposes.
