@@ -32,9 +32,13 @@ Many provides offer flat rate fees that allow you unlimited data for a more reas
 
 If your phone supports it, using your own wireless LAN is a great option. Escarpod allows you to specify a connection.
 
-= Download = 
+== Download ==
 
-= Supported Phones = 
+  * Beta 2
+
+Older releases
+
+== Supported Phones ==
 
 All UIQ 3 based phones should work, however Escarpod has been explicitly tested on the following phones.
 
