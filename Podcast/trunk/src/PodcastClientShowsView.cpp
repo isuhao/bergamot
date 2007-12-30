@@ -312,40 +312,29 @@ CQikCommand* CPodcastClientShowsView::DynInitOrDeleteCommandL(CQikCommand* aComm
 
 void CPodcastClientShowsView::GetShowIcons(CShowInfo* aShowInfo, TInt& aImageId, TInt& aMaskId)
 {	
-	aImageId = EMbmPodcastclientShow_40x40;
-	aMaskId = EMbmPodcastclientShow_40x40m;
-
-	if(aShowInfo->DownloadState() == EDownloaded)
+	switch(aShowInfo->DownloadState())
 	{
-		if(	aShowInfo->PlayState() == EPlaying)
-		{
+	case EDownloaded:
+		if (aShowInfo->PlayState() == EPlaying) {
 			aImageId = EMbmPodcastclientShow_playing_40x40;
 			aMaskId = EMbmPodcastclientShow_playing_40x40m;
+		} else {
+			aImageId = EMbmPodcastclientShow_40x40;
+			aMaskId = EMbmPodcastclientShow_40x40m;
 		}
-		else if(aShowInfo->PlayState() == ENeverPlayed)
-		{
-			aImageId = EMbmPodcastclientNew_40x40;
-			aMaskId = EMbmPodcastclientNew_40x40m;
-		}
-		
-	}
-	else
-	{
-		switch(aShowInfo->DownloadState())
-		{
-		case ENotDownloaded:
-			aImageId = EMbmPodcastclientNew_40x40;
-			aMaskId = EMbmPodcastclientNew_40x40m;
-			break;
-		case EQueued:
-			aImageId = EMbmPodcastclientQueued_40x40;
-			aMaskId = EMbmPodcastclientQueued_40x40m;
-			break;
-		case EDownloading:
-			aImageId = EMbmPodcastclientDownloading_40x40;
-			aMaskId = EMbmPodcastclientDownloading_40x40m;
-			break;
-		}
+		break;	
+	case ENotDownloaded:
+		aImageId = EMbmPodcastclientNew_40x40;
+		aMaskId = EMbmPodcastclientNew_40x40m;
+		break;
+	case EQueued:
+		aImageId = EMbmPodcastclientQueued_40x40;
+		aMaskId = EMbmPodcastclientQueued_40x40m;
+		break;
+	case EDownloading:
+		aImageId = EMbmPodcastclientDownloading_40x40;
+		aMaskId = EMbmPodcastclientDownloading_40x40m;
+		break;
 	}
 }
 
