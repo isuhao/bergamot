@@ -47,6 +47,8 @@ All UIQ 3 based phones should work, however Escarpod has been explicitly tested 
     * P1
     * P990
     * M600
+    * W950
+    * W960
 
   * Motorola
     * Z8
