@@ -16,7 +16,11 @@ You can download the latest version below, and see some screenshots further down
 
 The following versions are available for download. All previous versions, as well as the complete source code is available in our Subversion repository.
 
-  * Escarpod beta 2 | [http://bergamot.googlecode.com/svn/Podcast/tags/beta2/group/Podcast_udeb_signed.sis SIS]
+  * Escarpod beta 2 | [http://bergamot.googlecode.com/svn/Podcast/tags/beta2/group/Podcast_udeb_signed.sis SIS] | [http://bergamot.googlecode.com/svn/Podcast/tags/beta2/
+code]
+    * New icons
+    * Bug fixes
+    * Swedish translation
 
 == Credits ==
 
