@@ -29,6 +29,8 @@ Escarpod was started by Sebastian Brännström. Much help was received from Lars
 
 == Screenshots ==
 
+http://bergamot.googlecode.com/svn/wiki/escarpod01.jpg http://bergamot.googlecode.com/svn/wiki/escarpod02.jpg http://bergamot.googlecode.com/svn/wiki/escarpod03.jpg
+
 == Data plan warning == 
 
 Before you start using Escarpod, check your data rates with your access provider. Many charge exorbitant fees, and downloading large files such as podcasts may force you to sell your house.
