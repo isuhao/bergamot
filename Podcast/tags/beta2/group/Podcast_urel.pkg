@@ -1,0 +1,27 @@
+&EN,SW
+%{"Bergamot Project","Bergamot Project"}
+:"Bergamot"
+#{"Escarpod","Escarpod"}, (0xA00046BD), 0, 90, 0, TYPE=SA
+
+;(0x101F6300), 3, 0, 0, {"UIQ30ProductID"}
+
+; Freeware installation "warning" required by Symbian signed
+"./FreewareWarningEN.txt"-"",FT 
+;"./DownloadWarningEN.txt"-"",FT 
+
+"/epoc32/release/gcce/urel/PodcastClient.exe"-"!:\sys\bin\PodcastClient.exe"
+;"/epoc32/release/gcce/urel/PodcastServer.exe"-"!:\sys\bin\PodcastServer.exe"
+"/epoc32/data/z/resource/apps/PodcastClient.mbm"-"!:\resource\apps\PodcastClient.mbm"
+"/epoc32/data/z/private/10003A3F/apps/PodcastClient_reg.rsc"-"!:\private\10003a3f\import\apps\PodcastClient_reg.rsc"
+"./config.cfg"-"!:\private\A00046ae\config.cfg"
+"./defaultfeeds.cfg"-"!:\private\A00046ae\defaultfeeds.cfg"
+
+{
+"../../epoc32/data/z/resource/apps/PodcastClient.R01"
+"../../epoc32/data/z/resource/apps/PodcastClient.R06"
+}-"!:\resource\apps\PodcastClient.rsc"
+
+{
+"../../epoc32/data/z/resource/apps/PodcastClient_loc.R01"
+"../../epoc32/data/z/resource/apps/PodcastClient_loc.R06"
+}-"!:\resource\apps\PodcastClient_loc.rsc"
