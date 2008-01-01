@@ -21,6 +21,8 @@ The following versions are available for download. All previous versions, as wel
     * Bug fixes
     * Swedish translation
 
+The complete list of releases can be found [EscarpodReleases here].
+
 == Credits ==
 
 Escarpod was started by Sebastian Brännström. Much help was received from Lars Persson, who did most of the UI as well as code improvement. Alan Eddie drew all the graphics, including icons.
@@ -34,12 +36,6 @@ Before you start using Escarpod, check your data rates with your access provider
 Many provides offer flat rate fees that allow you unlimited data for a more reasonable charge.
 
 If your phone supports it, using your own wireless LAN is a great option. Escarpod allows you to specify a connection.
-
-== Download ==
-
-  * Beta 2
-
-The complete list of releases can be found [EscarpodReleases here].
 
 == Supported Phones ==
 
