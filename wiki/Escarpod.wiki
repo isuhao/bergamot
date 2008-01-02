@@ -41,7 +41,7 @@ If your phone supports it, using your own wireless LAN is a great option. Escarp
 
 == Translations ==
 
-We need help translating Escarpod into more languages. If you want to translate it into your language, it is quite simple! Download the English [http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_english.rls language file], rename it and translate all the strings. Then send them to us in an email to bergamot@googlecode.com.
+We need help translating Escarpod into more languages. If you want to translate it into your language, it is quite simple! Download the English [http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_english.rls language file], rename it and translate all the strings. Then send them to us in an email to bergamot@googlegroups.com.
 
 == Supported Phones ==
 
