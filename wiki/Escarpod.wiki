@@ -11,7 +11,27 @@ Notable features include:
   * Cover art support
   * Support for podcasts stored on flash card
 
-You can download the latest version below, and see some screenshots further down the page.
+You can see some screenshots below, and download the latest version further down the page.
+
+== Screenshots ==
+
+These screenshots are from beta 2.
+
+http://bergamot.googlecode.com/svn/wiki/escarpod01.jpg http://bergamot.googlecode.com/svn/wiki/escarpod02.jpg http://bergamot.googlecode.com/svn/wiki/escarpod03.jpg
+
+== Credits ==
+
+Escarpod was started by Sebastian Brännström, a.k.a _Teknolog_. Much help was received from Lars Persson, a.k.a. _AnThese screenshots
+otherGuest_, who did most of the UI as well as general code improvement. Alan Eddie drew all icons.
+
+== Data Usage Warning == 
+
+Before you start using Escarpod, check your data rates with your access provider. Many charge exorbitant fees, and downloading large files such as podcasts may force you to sell your house.
+
+Many provides offer flat rate fees that allow you unlimited data for a more reasonable charge.
+
+If your phone supports it, using your own wireless LAN is a great option. Escarpod allows you to specify a connection.
+
 
 == Download ==
 
@@ -23,25 +43,6 @@ The following versions are suggested for download. All previous versions, as wel
     * Swedish translation
 
 The complete list of releases can be found [EscarpodReleases here].
-
-== Credits ==
-
-Escarpod was started by Sebastian Brännström, a.k.a _Teknolog_. Much help was received from Lars Persson, a.k.a. _AnThese screenshots
-otherGuest_, who did most of the UI as well as general code improvement. Alan Eddie drew all icons.
-
-== Screenshots ==
-
-These screenshots are from beta 2.
-
-http://bergamot.googlecode.com/svn/wiki/escarpod01.jpg http://bergamot.googlecode.com/svn/wiki/escarpod02.jpg http://bergamot.googlecode.com/svn/wiki/escarpod03.jpg
-
-== Data Usage Warning == 
-
-Before you start using Escarpod, check your data rates with your access provider. Many charge exorbitant fees, and downloading large files such as podcasts may force you to sell your house.
-
-Many provides offer flat rate fees that allow you unlimited data for a more reasonable charge.
-
-If your phone supports it, using your own wireless LAN is a great option. Escarpod allows you to specify a connection.
 
 == Translations ==
 
