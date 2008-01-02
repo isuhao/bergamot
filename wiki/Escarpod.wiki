@@ -61,6 +61,10 @@ All UIQ 3 based phones should work, however Escarpod has been specifically teste
   * Motorola
     * Z8
 
+== Why Escarpod? ==
+
+The name Escarpod is a pun on the french Escargot, meaning snail, and also used cooked snails is many other languages. Apart from being a cutesy name allowing the nice little icon, downloading podcasts over cell phone networks is at best done at snail's pace.
+
 == Feature suggestions ==
 
 Add any ideas as comments to this wiki page, or mail us at bergamot@googlegroups.com, or write directly in the [http://groups.google.com/group/bergamot discussion group].
