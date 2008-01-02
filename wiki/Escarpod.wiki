@@ -2,21 +2,22 @@
 
 = Escarpod =
 
-Escarpod is a podcatcher (downloader and player of podcasts) for cell phones that run the UIQ graphical environment. This includes many of the higher end Sony Ericsson phones, as well as some Motorola Z-series phones. See supported phones below for a complete list.
+Escarpod is a podcatcher (downloader and player of podcasts) for cell phones that run the UIQ graphical environment. This includes many of the higher end Sony Ericsson phones, as well as some Motorola Z-series phones. See supported phones below for a list of phones Escarpod is known to work on.
 
 Notable features include:
 
-  * Automatic RSS feed updating
-  * Automatic downloading
-  * Cover art
+  * Built-in player with persistent position between restarts
+  * RSS feed updating and show downloading
+  * Cover art support
+  * Support for podcasts stored on flash card
 
 You can download the latest version below, and see some screenshots further down the page.
 
 == Download ==
 
-The following versions are available for download. All previous versions, as well as the complete source code is available in our [http://bergamot.googlecode.com/svn/Podcast/ Subversion repository].
+The following versions are suggested for download. All previous versions, as well as the complete source code is available in our [http://bergamot.googlecode.com/svn/Podcast/ Subversion repository].
 
-  * Beta 2 (January 1st) | [http://bergamot.googlecode.com/svn/Podcast/tags/beta2/group/Podcast_udeb_signed.sis SIS] | [http://bergamot.googlecode.com/svn/Podcast/tags/beta2 code]
+  * Beta 2 (version 0.9) (January 1st) | [http://bergamot.googlecode.com/svn/Podcast/tags/beta2/group/Podcast_udeb_signed.sis SIS] | [http://bergamot.googlecode.com/svn/Podcast/tags/beta2 code]
     * New icons
     * Bug fixes
     * Swedish translation
@@ -25,13 +26,16 @@ The complete list of releases can be found [EscarpodReleases here].
 
 == Credits ==
 
-Escarpod was started by Sebastian Brännström, a.k.a Teknolog. Much help was received from Lars Persson, a.k.a. AnotherGuest, who did most of the UI as well as general code improvement. Alan Eddie drew all icons.
+Escarpod was started by Sebastian Brännström, a.k.a _Teknolog_. Much help was received from Lars Persson, a.k.a. _AnThese screenshots
+otherGuest_, who did most of the UI as well as general code improvement. Alan Eddie drew all icons.
 
 == Screenshots ==
 
+These screenshots are from beta 2.
+
 http://bergamot.googlecode.com/svn/wiki/escarpod01.jpg http://bergamot.googlecode.com/svn/wiki/escarpod02.jpg http://bergamot.googlecode.com/svn/wiki/escarpod03.jpg
 
-== Data plan warning == 
+== Data Usage Warning == 
 
 Before you start using Escarpod, check your data rates with your access provider. Many charge exorbitant fees, and downloading large files such as podcasts may force you to sell your house.
 
@@ -45,7 +49,7 @@ We need help translating Escarpod into more languages. If you want to translate 
 
 == Supported Phones ==
 
-All UIQ 3 based phones should work, however Escarpod has been explicitly tested on the following phones.
+All UIQ 3 based phones should work, however Escarpod has been specifically tested on the following phones.
 
   * Sony Ericsson
     * P1
@@ -63,4 +67,4 @@ Add any ideas as comments to this wiki page, or mail us at bergamot@googlegroups
 
 == License ==
 
-Escarpod is licensed under the GPL version 3 open source license. The autors retain the right to dual license this program for commercial purposes.
+Escarpod is licensed under the GPL version 3 open source license. The authors retain the right to dual license this program for commercial purposes.
