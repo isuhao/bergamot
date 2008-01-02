@@ -63,7 +63,7 @@ All UIQ 3 based phones should work, however Escarpod has been specifically teste
 
 == Why Escarpod? ==
 
-The name Escarpod is a pun on the french Escargot, meaning snail, and also used cooked snails is many other languages. Apart from being a cutesy name allowing the nice little icon, downloading podcasts over cell phone networks is at best done at snail's pace.
+The name Escarpod is a pun on the french Escargot, meaning snail, and also used for cooked snails is many other languages. Apart from being a cutesy name allowing the nice little icon, downloading podcasts over cell phone networks is at best done at snail's pace.
 
 == Feature suggestions ==
 
