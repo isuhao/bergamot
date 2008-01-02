@@ -25,7 +25,7 @@ The complete list of releases can be found [EscarpodReleases here].
 
 == Credits ==
 
-Escarpod was started by Sebastian Brännström, a.k.a Teknolog. Much help was received from Lars Persson, a.k.a. AnotherGuest, who did most of the UI as well as code improvement. Alan Eddie drew all icons.
+Escarpod was started by Sebastian Brännström, a.k.a Teknolog. Much help was received from Lars Persson, a.k.a. AnotherGuest, who did most of the UI as well as general code improvement. Alan Eddie drew all icons.
 
 == Screenshots ==
 
