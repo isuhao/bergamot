@@ -1,5 +1,3 @@
-= Podcast Player=
+= Podcast Player =
 
-Podcast Player is now known as [Escarpod]. The last version of Podcast Player was beta 1, which you can get here:
-
-  * Beta 1 (December 17th) | [http://bergamot.googlecode.com/svn/Podcast/tags/beta1 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/beta1/group/Podcast_udeb_signed.sis SIS]
+Podcast Player is now known as [Escarpod].
