@@ -2,11 +2,10 @@
 
 This is a complete list of releases of Escarpod.
 
-  * Beta 2 (New Year)
-    * New name!
+  * Beta 2 (January 1st) | [http://bergamot.googlecode.com/svn/Podcast/tags/beta2/group/Podcast_udeb_signed.sis SIS] | [http://bergamot.googlecode.com/svn/Podcast/tags/beta2 code]
+    * New icons
     * Bug fixes
-    * UI refinements
-    * Translations
+    * Swedish translation
 
   * Beta 1 (December 17th) | [http://bergamot.googlecode.com/svn/Podcast/tags/beta1 code] | [http://bergamot.googlecode.com/svn/Podcast/tags/beta1/group/Podcast_udeb_signed.sis SIS]
     * New and improved icons for parts of the program
