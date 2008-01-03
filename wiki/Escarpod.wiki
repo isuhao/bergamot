@@ -35,7 +35,7 @@ If your phone supports it, using your own wireless LAN is a great option. Escarp
 
 == Download ==
 
-The following versions are suggested for download. All previous versions, as well as the complete source code is available in our [http://bergamot.googlecode.com/svn/Podcast/ Subversion repository].
+The following versions are suggested for download. All versions, together with their complete source code is available in our [http://bergamot.googlecode.com/svn/Podcast/ Subversion repository].
 
   * Beta 2 (version 0.9) (January 1st) | [http://bergamot.googlecode.com/svn/Podcast/tags/beta2/group/Podcast_udeb_signed.sis SIS] | [http://bergamot.googlecode.com/svn/Podcast/tags/beta2 code]
     * New icons
