@@ -21,7 +21,7 @@ rls_string STRING_r_view_shows_cmd "Program på telefonen"
 rls_string STRING_r_view_all_shows_cmd "Alla program"
 rls_string STRING_r_view_new_shows_cmd "Ospelade"
 rls_string STRING_r_view_dl_shows_cmd "Program på telefonen"
-rls_string STRING_r_view_dling_shows_cmd "Nedladdaren"
+rls_string STRING_r_view_dling_shows_cmd "Nedladdare"
 
 // Navigation to feeds
 rls_string STRING_r_view_feeds_cmd "Strömmar"
