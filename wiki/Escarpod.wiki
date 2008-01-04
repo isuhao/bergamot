@@ -1,6 +1,6 @@
 #summary A pocket full of snails
 
-http://bergamot.googlecode.com/svn/wiki/escarpod_large.jpg 
+http://bergamot.googlecode.com/svn/wiki/escarpod_large.jpg
 
 = Escarpod =
 
@@ -14,7 +14,7 @@ Notable features include:
   * Support for podcasts stored on flash card
 
 You can see some screenshots below, and download the latest version further down the page.
-
+||
 == Screenshots ==
 
 These screenshots are from beta 2.
