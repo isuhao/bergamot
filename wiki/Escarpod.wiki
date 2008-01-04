@@ -48,7 +48,7 @@ The complete list of releases can be found [EscarpodReleases here].
 
 == Translations ==
 
-We need help translating Escarpod into more languages. If you want to translate it into your language, it is quite simple! Download the English [http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_english.rls language file], rename it and translate all the strings. Then send them to us in an email to bergamot@googlegroups.com.
+We need help translating Escarpod into more languages. If you want to translate it into your language, it is quite simple! Download the English [http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_english.rls language file], open it in a text editor such as Emacs or Notepad, and translate all the strings. Then send them to us in an email to bergamot@googlegroups.com.
 
 == Supported Phones ==
 
