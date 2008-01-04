@@ -23,8 +23,7 @@ http://bergamot.googlecode.com/svn/wiki/escarpod01.jpg http://bergamot.googlecod
 
 == Credits ==
 
-Escarpod was started by Sebastian Brännström, a.k.a _Teknolog_. Much help was received from Lars Persson, a.k.a. _AnThese screenshots
-otherGuest_, who did most of the UI as well as general code improvement. Alan Eddie drew all icons.
+Escarpod was started by Sebastian Brännström, a.k.a _Teknolog_. Much help was received from Lars Persson, a.k.a. _AnotherGuest_, who did most of the UI as well as general code improvement. Alan Eddie drew all icons.
 
 == Data Usage Warning == 
 
