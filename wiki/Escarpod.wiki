@@ -73,4 +73,4 @@ Add any ideas as comments to this wiki page, or mail us at bergamot@googlegroups
 
 == License ==
 
-Escarpod is licensed under the GPL version 3 open source license. The authors retain the right to dual license this program for commercial purposes.
+Escarpod is licensed under the [http://www.gnu.org/licenses/gpl-3.0.html GPL version 3] open source license. The authors retain the right to dual license this program for commercial purposes.
