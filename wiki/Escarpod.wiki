@@ -13,8 +13,8 @@ Notable features include:
   * Cover art support
   * Support for podcasts stored on flash card
 
-You can see some screenshots below, and download the latest version further down the page.
-||
+You can see some screenshots below, and download the latest version further down the page, or from the Downloads link above.
+
 == Screenshots ==
 
 These screenshots are from beta 2.
