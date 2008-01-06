@@ -63,6 +63,10 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 {
 	switch(aCommand.Id())
 	{
+	case EPodcastAbout:
+		{
+			iEikonEnv->InfoWinL(R_PODCAST_ABOUT_TITLE, R_PODCAST_ABOUT_TEXT);
+		}break;
 	case EPodcastViewMain:
 		{			
 			TVwsViewId playView = TVwsViewId(KUidPodcastClientID, KUidPodcastBaseViewID);

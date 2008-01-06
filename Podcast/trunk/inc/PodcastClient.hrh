@@ -41,7 +41,8 @@ enum TPodcatClientCommands
 	EPodcastZoomSetting,
 	EPodcastSettings,
 	EPodcastSelectShowDir,
-	EPodcastSetVolume
+	EPodcastSetVolume,
+	EPodcastAbout
 	};
 
     enum TPodcastControl
