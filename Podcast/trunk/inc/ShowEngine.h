@@ -46,7 +46,8 @@ public:
 	void CheckFiles();
 	void GetStatsByFeed(TUint aFeedUid, TUint &aNumShows, TUint &aNumUnplayed );
 	void SetSelectUnplayedOnly(TBool aOnlyUnplayed);
-	
+	TBool SelectUnplayedOnly();
+
 	void AddObserver(MShowEngineObserver *observer);
 	TUint GetGrossSelectionLength();
 protected:

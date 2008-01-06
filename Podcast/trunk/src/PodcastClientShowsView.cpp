@@ -130,8 +130,7 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 			break;
 		case EPodcastShowUnplayedOnly:
 			{
-			iShowUnplayedOnly = !iShowUnplayedOnly;
-			iPodcastModel.ShowEngine().SetSelectUnplayedOnly(iShowUnplayedOnly);
+			iPodcastModel.ShowEngine().SetSelectUnplayedOnly(!iPodcastModel.ShowEngine().SelectUnplayedOnly());
 			UpdateListboxItemsL();
 			}break;
 		case EPodcastMarkAllPlayed:
@@ -611,6 +610,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 	comMan.SetInvisible(*this, EPodcastPurgeShow, removePurgeShowCmd);
 	comMan.SetInvisible(*this, EPodcastPurgeFeed, (iCurrentCategory == EShowPendingShows || iCurrentCategory == EShowDownloadedShows));
 	comMan.SetInvisible(*this, EPodcastDeleteAllShows, (iCurrentCategory != EShowDownloadedShows));
+	comMan.SetChecked(*this, EPodcastShowUnplayedOnly, iPodcastModel.ShowEngine().SelectUnplayedOnly());
 
 	switch(iCurrentCategory)
 	{	

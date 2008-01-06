@@ -333,11 +333,6 @@ RESOURCE TBUF r_podcast_feeds_status_format {buf = STRING_r_podcast_feeds_status
 RESOURCE TBUF r_podcast_feeds_update_message {buf = STRING_r_podcast_feeds_update_message;}
 RESOURCE TBUF r_podcast_feeds_update_error {buf = STRING_r_podcast_feeds_update_error;}
 
-
-RESOURCE TBUF r_podcast_about_title { buf = STRING_r_about_title;}
-RESOURCE TBUF r_podcast_about_text { buf = STRING_r_about_text;}
-
-
 RESOURCE TBUF r_podcast_shows_no_items {buf = STRING_r_podcast_shows_no_items;}
 RESOURCE ARRAY r_podcast_shows_categories
 	{
@@ -412,7 +407,32 @@ RESOURCE DIALOG r_podcast_add_feed_dlg
 	};
 }
 
-// DIALOGS
+RESOURCE TBUF r_podcast_about_text{buf = STRING_r_about_text;}
+
+
+RESOURCE DIALOG r_podcast_about_dlg
+{
+	buttons = R_EIK_BUTTONS_DONE;
+
+	flags = EEikDialogFlagWait|EEikDialogFlagButtonsBelow;
+	title = STRING_r_about_title;
+	items = 
+		{
+			DLG_LINE
+			{
+			id = EPodcastAboutText;
+			itemflags = EQikDlgItemCaptionAboveControl|EQikDlgItemCtlIsEditInPlace|EQikDlgItemHideHighlight;			
+			type = EEikCtLabel;
+			control = LABEL
+			{
+			
+			};
+			}
+		};
+}
+
+
+
 RESOURCE DIALOG r_podcast_edit_feed_dlg
 {
 	buttons = R_EIK_BUTTONS_CANCEL_DONE;

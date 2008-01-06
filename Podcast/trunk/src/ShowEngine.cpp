@@ -9,7 +9,7 @@
 CShowEngine::CShowEngine(CPodcastModel& aPodcastModel) : iPodcastModel(aPodcastModel), iMetaDataReader(*this)
 {
 	iDownloadsSuspended = ETrue;
-	iSelectOnlyUnplayed = EFalse;
+	iSelectOnlyUnplayed = ETrue;
 }
 
 CShowEngine::~CShowEngine()
@@ -399,6 +399,12 @@ void CShowEngine::SetSelectUnplayedOnly(TBool aOnlyUnplayed)
 	{
 	iSelectOnlyUnplayed = aOnlyUnplayed;
 	}
+
+TBool CShowEngine::SelectUnplayedOnly()
+	{
+	return iSelectOnlyUnplayed;
+	}
+
 
 void CShowEngine::PurgeOldShows()
 	{

@@ -36,7 +36,6 @@ protected:
 private:
 	TPodcastClientShowCategory iCurrentCategory;
 	TBool iProgressAdded;
-	TBool iShowUnplayedOnly;
 };
 
 

@@ -51,6 +51,30 @@ void CPodcastClientView::ConstructL()
 	BaseConstructL();
 	}
 
+
+class CAboutDlg:public CEikDialog
+{
+public:
+  CAboutDlg()
+  {
+  }
+
+  ~CAboutDlg()
+  {
+  }
+
+  void PreLayoutDynInitL()
+  {
+	  CEikLabel* label = static_cast<CEikLabel*>(ControlOrNull(EPodcastAboutText));
+	  if(label != NULL)
+	  {
+		  HBufC* aboutText = iEikonEnv->AllocReadResourceLC(R_PODCAST_ABOUT_TEXT);
+		  label->SetTextL(*aboutText);
+		  CleanupStack::PopAndDestroy(aboutText);
+	  }
+  }
+
+};
 /**
 Handles all commands in the view.
 Called by the UI framework when a command has been issued.
@@ -65,7 +89,8 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 	{
 	case EPodcastAbout:
 		{
-			iEikonEnv->InfoWinL(R_PODCAST_ABOUT_TITLE, R_PODCAST_ABOUT_TEXT);
+			CEikDialog* dlg = new (ELeave) CAboutDlg;
+			dlg->ExecuteLD(R_PODCAST_ABOUT_DLG);
 		}break;
 	case EPodcastViewMain:
 		{			

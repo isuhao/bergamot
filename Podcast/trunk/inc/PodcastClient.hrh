@@ -70,7 +70,8 @@ enum TPodcatClientCommands
 	EPodcastSettingMaxsimdls,
 	EPodcastSettingConnection,
 	EPodcastSettingIAPList,
-	EPodcastSettingsVolume
+	EPodcastSettingsVolume,
+	EPodcastAboutText
 	};
 	
     
