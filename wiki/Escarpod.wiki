@@ -7,11 +7,13 @@ http://bergamot.googlecode.com/svn/wiki/escarpod_large.jpg
 Escarpod is a podcatcher (downloader and player of podcasts) for cell phones that run the UIQ graphical environment. This includes many of the higher end Sony Ericsson phones, as well as some Motorola Z-series phones. See supported phones below for a list of phones Escarpod is known to work on.
 
 Notable features include:
-
-  * Built-in player with persistent position between restarts
+  
   * RSS feed updating and show downloading
-  * Cover art support
+  * Built-in player
+  * Persistent position in shows between restarts
+  * Cover art
   * Support for podcasts stored on flash card
+  * Automatic downloading of new shows
 
 You can see some screenshots below, and download the latest version further down the page, or from the Downloads link above.
 
