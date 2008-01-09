@@ -21,7 +21,6 @@ END
 
 START RESOURCE    PodcastClient_loc.rss
 TARGETPATH        \resource\apps
-LANG			  01
 HEADER
 END
 
