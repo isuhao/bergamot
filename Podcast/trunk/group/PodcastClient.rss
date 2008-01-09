@@ -16,6 +16,12 @@
 	#include "PodcastClient_english.rls"
 #elif defined LANGUAGE_06
 	#include "PodcastClient_swedish.rls"
+#elif defined LANGUAGE_07
+	#include "PodcastClient_danish.rls"
+#elif defined LANGUAGE_16
+	#include "PodcastClient_russian.rls"
+#elif defined LANGUAGE_25
+	#include "PodcastClient_czech.rls"
 #endif
 
 
