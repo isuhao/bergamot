@@ -98,6 +98,7 @@ rls_string STRING_r_podcast_shows_no_items "Пусто";
 // Feeds view status strings
 rls_string STRING_r_podcast_feeds_title_format "%d Потоков"
 rls_string STRING_r_podcast_feeds_status_format "%d/%d Подкастов"
+rls_string STRING_r_podcast_shows_never_updated "TRANSLATE:Never"
 
 // DIALOG string
 rls_string STRING_r_about_title "О программе";

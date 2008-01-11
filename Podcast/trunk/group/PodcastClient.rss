@@ -340,6 +340,9 @@ RESOURCE TBUF r_podcast_feeds_update_message {buf = STRING_r_podcast_feeds_updat
 RESOURCE TBUF r_podcast_feeds_update_error {buf = STRING_r_podcast_feeds_update_error;}
 
 RESOURCE TBUF r_podcast_shows_no_items {buf = STRING_r_podcast_shows_no_items;}
+
+RESOURCE TBUF r_podcast_feeds_never_updated {buf = STRING_r_podcast_shows_never_updated;}
+
 RESOURCE ARRAY r_podcast_shows_categories
 	{
 	items=

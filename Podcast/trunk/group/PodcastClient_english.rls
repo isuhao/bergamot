@@ -97,6 +97,7 @@ rls_string STRING_r_podcast_shows_no_items "No items";
 // Feeds view status strings
 rls_string STRING_r_podcast_feeds_title_format "%d Feeds"
 rls_string STRING_r_podcast_feeds_status_format "%d/%d Shows"
+rls_string STRING_r_podcast_shows_never_updated "Never"
 
 // DIALOG string
 rls_string STRING_r_about_title "About Escarpod";

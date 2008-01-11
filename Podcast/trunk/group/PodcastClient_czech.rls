@@ -99,6 +99,7 @@ rls_string STRING_r_podcast_shows_no_items "Žádné položky";
 // Feeds view status strings
 rls_string STRING_r_podcast_feeds_title_format "%d Zdrojù"
 rls_string STRING_r_podcast_feeds_status_format "%d/%d Šou"
+rls_string STRING_r_podcast_shows_never_updated "TRANSLATE:Never"
 
 // DIALOG string
 rls_string STRING_r_add_feed_title "Pøidat zdroj"

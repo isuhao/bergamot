@@ -97,6 +97,7 @@ rls_string STRING_r_podcast_shows_no_items "Listan är tom";
 // Feeds view status strings
 rls_string STRING_r_podcast_feeds_title_format "%d strömmar"
 rls_string STRING_r_podcast_feeds_status_format "%d/%d program"
+rls_string STRING_r_podcast_shows_never_updated "Aldrig"
 
 // DIALOG string
 rls_string STRING_r_about_title "Om Escarpod";

@@ -284,8 +284,11 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 					unplayedShows.Format(_L("%d/%d shows"), unplayedCount, showCount);
 
 					if (fi->LastUpdated().Int64() == 0) {
-						updatedDate.Copy(_L("Never"));
+						HBufC* neverStr = CEikonEnv::Static()->AllocReadResourceAsDes16LC(R_PODCAST_FEEDS_NEVER_UPDATED);
+						updatedDate.Copy(*neverStr);
+						CleanupStack::PopAndDestroy(neverStr);
 						unplayedShows.Copy(_L("?/?"));
+						
 					}else {
 						TTime now;
 						TTimeIntervalHours interval;
