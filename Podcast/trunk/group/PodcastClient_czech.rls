@@ -1,4 +1,3 @@
-CHARACTER_SET UTF8
 // ListBox.rls
 //
 // ř Symbian Software Ltd 2005. All rights reserved.
@@ -99,6 +98,7 @@ rls_string STRING_r_podcast_shows_title_format "%d Nepřehraných, %d Celkem";
 rls_string STRING_r_podcast_shows_title_download "%d Stahuji, %d ve frontě";
 rls_string STRING_r_podcast_shows_downloads_suspended "Pozastaveno, %d fronta";
 rls_string STRING_r_podcast_shows_no_items "Žádné položky";
+rls_string STRING_r_podcast_shows_never_updated "Nikdy";
 
 // Feeds view status strings
 rls_string STRING_r_podcast_feeds_title_format "%d Zdrojů"
@@ -129,7 +129,7 @@ rls_string STRING_r_podcast_settings_title "Nastavení"
 rls_string STRING_r_podcast_setting_showdir "Adresář Podkastů"
 rls_string STRING_r_podcast_setting_autodl "Automatické Stahování"
 rls_string STRING_r_podcast_setting_checkevery "Interval pro stahování"
-rls_string STRING_r_podcast_setting_minutes "minuty"
+rls_string STRING_r_podcast_setting_minutes "minut"
 
 rls_string STRING_r_podcast_setting_maxsimul "Max souběžné stahování"
 rls_string STRING_r_podcast_setting_connection "Připojení"
