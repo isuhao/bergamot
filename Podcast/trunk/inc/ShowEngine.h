@@ -49,6 +49,8 @@ public:
 	TBool SelectUnplayedOnly();
 
 	void AddObserver(MShowEngineObserver *observer);
+	void RemoveObserver(MShowEngineObserver *observer);
+	
 	TUint GetGrossSelectionLength();
 protected:
 	// from HttpClientObserver, dont have to be public
@@ -107,7 +109,6 @@ private:
     TBool iSelectOnlyUnplayed;
     
     TUint iDownloadErrors;
-    TLinearOrder<CShowInfo>* iLinearOrder;
     
     CMetaDataReader iMetaDataReader;
     

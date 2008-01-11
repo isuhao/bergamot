@@ -15,28 +15,35 @@ const int KFeedInfoVersion = 4;
 class CFeedInfo : public CBase
 {
 public:
-	CFeedInfo();
+	static CFeedInfo* NewL();
+	static CFeedInfo* NewLC();
+	
 	~CFeedInfo();
 	void ExternalizeL(RWriteStream& aStream) const;
 	void InternalizeL(RReadStream& aStream);
 	
 	TDesC& Url() const;
-	void SetUrl(TDesC &aUrl);
+	void SetUrlL(TDesC &aUrl);
 	TDesC& Title() const;
-	void SetTitle(TDesC &aTitle);
+	void SetTitleL(TDesC &aTitle);
 	TDesC& Description() const;
-	void SetDescription(TDesC &aDescription);
+	void SetDescriptionL(TDesC &aDescription);
 	TDesC& ImageUrl() const;
-	void SetImageUrl(TDesC &aImageUrl);
+	void SetImageUrlL(TDesC &aImageUrl);
 	TDesC& Link() const;
-	void SetLink(TDesC &aLink);
+	void SetLinkL(TDesC &aLink);
 	TTime BuildDate();
 	void SetBuildDate(TTime aBuildDate);
 	TTime LastUpdated();
 	void SetLastUpdated(TTime aUpdated);
 	TUint Uid();
 	TDesC& ImageFileName();
-	void SetImageFileName(TDesC &aFileName);
+	void SetImageFileNameL(TDesC &aFileName);
+
+private:
+	CFeedInfo();
+	void ConstructL();
+
 
 private:
 	HBufC* iUrl;

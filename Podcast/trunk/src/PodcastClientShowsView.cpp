@@ -46,6 +46,8 @@ void CPodcastClientShowsView::ConstructL()
 
 CPodcastClientShowsView::~CPodcastClientShowsView()
 {
+	iPodcastModel.ShowEngine().RemoveObserver(this);
+	iPodcastModel.FeedEngine().RemoveObserver(this);
 }
 
 /**
@@ -268,7 +270,11 @@ void CPodcastClientShowsView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownloa
 CQikCommand* CPodcastClientShowsView::DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& /*aControlAddingCommands*/)
 {
 	if(aCommand->Type() == EQikCommandTypeCategory && CategoryHandleForCommandId(aCommand->Id()) == EShowFeedShows)
+		{
+		delete aCommand;
 		 return NULL;
+		}
+		
 
 	switch(aCommand->Id())
 	{
@@ -276,8 +282,10 @@ CQikCommand* CPodcastClientShowsView::DynInitOrDeleteCommandL(CQikCommand* aComm
 	case EPodcastEditFeed:
 	case EPodcastDeleteFeed:
 	case EPodcastUpdateAllFeeds:
+		delete aCommand;
 		aCommand = NULL;
 		break;
+		
 	case EQikListBoxCmdSelect:
 		{
 			if(iPodcastModel.ActiveShowList().Count() == 0)
@@ -304,8 +312,6 @@ CQikCommand* CPodcastClientShowsView::DynInitOrDeleteCommandL(CQikCommand* aComm
 	default:
 		break;
 	}
-
-
 	return aCommand;
 }
 

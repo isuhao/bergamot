@@ -69,6 +69,9 @@ CPodcastClientPlayView::~CPodcastClientPlayView()
 	delete iPlaybackTicker;
 	delete iCurrentCoverImage;
 	delete iBitmapConverter;
+	
+	iPodcastModel.FeedEngine().RemoveObserver(this);
+	iPodcastModel.ShowEngine().RemoveObserver(this);
 	}
 
 /**

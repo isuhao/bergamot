@@ -7,6 +7,7 @@ CMetaDataReader::CMetaDataReader(MMetaDataReaderObserver& aObserver) : iObserver
 
 CMetaDataReader::~CMetaDataReader()
 {
+	iPlayer->Close();
 	delete iPlayer;
 	iShowsToParse.Close();
 }
@@ -15,7 +16,6 @@ void CMetaDataReader::ConstructL()
 {
 	RDebug::Print(_L("ConstructL"));
 	iPlayer = CMdaAudioPlayerUtility::NewL(*this);
-	
 }
 
 void CMetaDataReader::SubmitShow(CShowInfo *aShowInfo)
@@ -66,7 +66,7 @@ void CMetaDataReader::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeco
 			TBuf<1024> buf;
 			if (entry->Name() == _L("title")) {
 				buf.Copy(entry->Value());
-				iShow->SetTitle(buf);
+				iShow->SetTitleL(buf);
 				RDebug::Print(_L("title: %S"), &(iShow->Title()));
 			} else if (entry->Name() == _L("artist")) {
 				if (iShow->Description().Length() > 0) {
@@ -75,7 +75,7 @@ void CMetaDataReader::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeco
 				buf.Append(_L("\n"));
 				buf.Append(entry->Value());
 		
-				iShow->SetDescription(buf);
+				iShow->SetDescriptionL(buf);
 			} else if (entry->Name() == _L("album")) {
 				if (iShow->Description().Length() > 0) {
 					buf.Copy(iShow->Description());
@@ -83,7 +83,7 @@ void CMetaDataReader::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeco
 				buf.Append(_L("\n"));
 				buf.Append(entry->Value());
 
-				iShow->SetDescription(buf);
+				iShow->SetDescriptionL(buf);
 			}			
 		}
 	}

@@ -14,11 +14,13 @@ CShowEngine::CShowEngine(CPodcastModel& aPodcastModel) : iPodcastModel(aPodcastM
 
 CShowEngine::~CShowEngine()
 	{
-	iShowsDownloading.Close();
 	iShows.ResetAndDestroy();
 	iShows.Close();
+	iSelectedShows.Close();
+	iShowsDownloading.Close();
 	iFs.Close();
 	delete iShowClient;
+	iObservers.Close();
 	}
 
 CShowEngine* CShowEngine::NewL(CPodcastModel& aPodcastModel)
@@ -35,7 +37,6 @@ void CShowEngine::ConstructL()
 	iFs.Connect();
 	iShowClient = CHttpClient::NewL(iPodcastModel, *this);
 	iShowClient->SetResumeEnabled(ETrue);
-	iLinearOrder = new TLinearOrder<CShowInfo>(CShowEngine::CompareShowsByDate);
 	iMetaDataReader.ConstructL();
 
 	TRAPD(error, LoadShowsL());
@@ -161,13 +162,19 @@ void CShowEngine::GetShow(CShowInfo *info)
 	
 	// complete file path is base dir + rel path
 	filePath.Append(relPath);
-	info->SetFileName(filePath);
+	info->SetFileNameL(filePath);
 	iShowClient->GetL(info->Url(), filePath);
 	}
 
-void CShowEngine::AddShow(CShowInfo *item) {
-	for (int i=0;i<iShows.Count();i++) {
-		if (iShows[i]->Url().Compare(item->Url()) == 0) {
+void CShowEngine::AddShow(CShowInfo *item) 
+	{
+	for (int i=0;i<iShows.Count();i++) 
+		{
+		if (iShows[i]->Url().Compare(item->Url()) == 0) 
+			{
+			// we need to delete the item other we leak memory.
+			delete item;
+			item = NULL;
 			return;
 		}
 	}
@@ -182,6 +189,16 @@ void CShowEngine::AddShow(CShowInfo *item) {
 void CShowEngine::AddObserver(MShowEngineObserver *observer)
 	{
 	iObservers.Append(observer);
+	}
+
+void CShowEngine::RemoveObserver(MShowEngineObserver *observer)
+	{
+	TInt index = iObservers.Find(observer);
+	
+	if (index > KErrNotFound)
+		{
+		iObservers.Remove(index);
+		}
 	}
 
 void CShowEngine::Complete(CHttpClient* /*aHttpClient*/, TBool aSuccessful)
@@ -297,10 +314,15 @@ void CShowEngine::LoadShowsL()
 		//RDebug::Print(_L("error: %d"), error);
 		AddShow(readData);
 		
-		if (readData->DownloadState() == EQueued || readData->DownloadState() == EDownloading) {
+		// add show will delete duplicate entries. TODO. rewrite in the future.
+		if(readData)
+			{
+			if (readData->DownloadState() == EQueued || readData->DownloadState() == EDownloading) 
+				{
 			readData->SetDownloadState(EQueued);
 			iShowsDownloading.Append(readData);
 		}
+			}
 		DownloadNextShow();
 	}
 
@@ -444,7 +466,8 @@ void CShowEngine::SelectShowsByFeed(TUint aFeedUid)
 		}
 	
 	// sort by date falling
-	iSelectedShows.Sort(*iLinearOrder);
+	TLinearOrder<CShowInfo> sortOrder(CShowEngine::CompareShowsByDate);
+	iSelectedShows.Sort(sortOrder);
 	
 	// now purge if more than limit
 	int count = iSelectedShows.Count();
@@ -468,7 +491,8 @@ void CShowEngine::SelectNewShows()
 			}
 		}
 	
-	iSelectedShows.Sort(*iLinearOrder);
+	TLinearOrder<CShowInfo> sortOrder(CShowEngine::CompareShowsByDate);
+	iSelectedShows.Sort(sortOrder);
 	}
 
 void CShowEngine::SelectShowsDownloaded()
@@ -606,8 +630,8 @@ void CShowEngine::ListDir(TFileName &folder) {
 			//RDebug::Print(_L("We found a new file: %S"), &fileName);
 			
 			CShowInfo *info = CShowInfo::NewL();
-			info->SetFileName(pathName);
-			info->SetTitle(fileName);
+			info->SetFileNameL(pathName);
+			info->SetTitleL(fileName);
 			info->SetDownloadState(EDownloaded);
 			info->SetUid(DefaultHash::Des16(fileName));
 			info->SetFeedUid(0);

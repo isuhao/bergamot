@@ -1,14 +1,27 @@
 #import "FeedInfo.h"
 #include <e32hashtab.h>
 
+
+
+CFeedInfo* CFeedInfo::NewL()
+	{
+	CFeedInfo* self = new (ELeave) CFeedInfo();
+	CleanupStack::PushL(self);
+	self->ConstructL();
+	CleanupStack::Pop();
+	return self;
+	}
+
+CFeedInfo* CFeedInfo::NewLC()
+	{
+	CFeedInfo* self = new (ELeave) CFeedInfo();
+	CleanupStack::PushL(self);
+	self->ConstructL();
+	return self;
+	}
+
 CFeedInfo::CFeedInfo()
 	{
-	iUrl = HBufC::NewL(0);
-	iTitle = HBufC::NewL(0);
-	iDescription = HBufC::NewL(0);
-	iImageUrl = HBufC::NewL(0);
-	iImageFileName = HBufC::NewL(0);
-	iLink = HBufC::NewL(0);
 	}
 
 CFeedInfo::~CFeedInfo()
@@ -20,6 +33,17 @@ CFeedInfo::~CFeedInfo()
 	delete iImageFileName;
 	delete iLink;
 	}
+
+void CFeedInfo::ConstructL()
+	{
+	iUrl = HBufC::NewL(0);
+	iTitle = HBufC::NewL(0);
+	iDescription = HBufC::NewL(0);
+	iImageUrl = HBufC::NewL(0);
+	iImageFileName = HBufC::NewL(0);
+	iLink = HBufC::NewL(0);
+	}
+
 
 void CFeedInfo::ExternalizeL(RWriteStream& aStream) const 
 	{
@@ -68,25 +92,25 @@ void CFeedInfo::InternalizeL(RReadStream& aStream)
 	
 	if (len > 0) {
 		aStream.ReadL(buffer, len);
-		SetTitle(buffer);
+		SetTitleL(buffer);
 	}
 	
 	len = aStream.ReadInt32L();
 	if (len > 0) {
 		aStream.ReadL(buffer, len);
-		SetUrl(buffer);
+		SetUrlL(buffer);
 	}
 
 	len = aStream.ReadInt32L();
 	if (len > 0) {
 		aStream.ReadL(buffer, len);
-		SetDescription(buffer);
+		SetDescriptionL(buffer);
 	}
 		
 	len = aStream.ReadInt32L();
 	if (len > 0) {
 		aStream.ReadL(buffer, len);
-		SetImageFileName(buffer);
+		SetImageFileNameL(buffer);
 	}
 	
 	TInt low = aStream.ReadInt32L();
@@ -105,9 +129,15 @@ TDesC& CFeedInfo::Url() const
 	return *iUrl;
 	}
 
-void CFeedInfo::SetUrl(TDesC &aUrl) 
+void CFeedInfo::SetUrlL(TDesC &aUrl) 
 	{
-	iUrl = aUrl.Alloc();
+	if (iUrl)
+		{
+		delete iUrl;
+		iUrl = NULL;
+		}
+		
+	iUrl = aUrl.AllocL();		
 	iUid = DefaultHash::Des16(Url());
 	}
 
@@ -116,9 +146,14 @@ TDesC& CFeedInfo::Title() const
 	return *iTitle;
 	}
 
-void CFeedInfo::SetTitle(TDesC &aTitle)
+void CFeedInfo::SetTitleL(TDesC &aTitle)
 	{
-	iTitle = aTitle.Alloc();
+	if(iTitle)
+		{
+		delete iTitle;
+		iTitle = NULL;
+		}		
+	iTitle = aTitle.AllocL();
 	}
 
 TDesC& CFeedInfo::Description() const
@@ -126,9 +161,15 @@ TDesC& CFeedInfo::Description() const
 	return *iDescription;
 	}
 
-void CFeedInfo::SetDescription(TDesC &aDescription)
+void CFeedInfo::SetDescriptionL(TDesC &aDescription)
 	{
-	iDescription = aDescription.Alloc();
+	if (iDescription)
+		{
+		delete iDescription;
+		iDescription = NULL;
+		}
+	
+	iDescription = aDescription.AllocL(); 
 	}
 
 TDesC& CFeedInfo::ImageUrl() const
@@ -136,10 +177,14 @@ TDesC& CFeedInfo::ImageUrl() const
 	return *iImageUrl;
 	}
 
-void CFeedInfo::SetImageUrl(TDesC &aImageUrl)
+void CFeedInfo::SetImageUrlL(TDesC &aImageUrl)
 	{
-	delete iImageUrl;
-	iImageUrl = aImageUrl.Alloc();
+	if (iImageUrl)
+		{
+		delete iImageUrl;
+		iImageUrl = NULL;	
+		}	
+	iImageUrl = aImageUrl.AllocL();
 	}
 
 TDesC& CFeedInfo::Link() const
@@ -147,10 +192,14 @@ TDesC& CFeedInfo::Link() const
 	return *iLink;
 	}
 
-void CFeedInfo::SetLink(TDesC &aLink)
+void CFeedInfo::SetLinkL(TDesC &aLink)
+	{
+	if (iLink)
 	{
 	delete iLink;
-	iLink = aLink.Alloc();
+		iLink = NULL;
+		}
+	iLink = aLink.AllocL();
 	}
 
 TTime CFeedInfo::BuildDate()
@@ -184,8 +233,12 @@ TDesC& CFeedInfo::ImageFileName()
 	return *iImageFileName;
 	}
 
-void CFeedInfo::SetImageFileName(TDesC &aFileName)
+void CFeedInfo::SetImageFileNameL(TDesC &aFileName)
 	{
-	delete iImageFileName;
-	iImageFileName = aFileName.Alloc();
+	if (iImageFileName)
+		{
+		delete iImageFileName;
+		iImageFileName = NULL;
+		}
+	iImageFileName = aFileName.AllocL();
 	}

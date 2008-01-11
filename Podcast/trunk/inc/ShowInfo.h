@@ -30,13 +30,13 @@ public:
 
 public:
 	TDesC& Title() const;
-	void SetTitle(TDesC &aTitle);
+	void SetTitleL(TDesC &aTitle);
 
 	TDesC& Url() const;
-	void SetUrl(TDesC &aUrl);
+	void SetUrlL(TDesC &aUrl);
 	
 	TDesC& Description() const;
-	void SetDescription(TDesC &aDescription);
+	void SetDescriptionL(TDesC &aDescription);
 		
 	TTimeIntervalMicroSeconds& Position();
 	void SetPosition(TTimeIntervalMicroSeconds aPosition);
@@ -60,7 +60,7 @@ public:
 	void SetPubDate(TTime aPubDate);
 	
 	TDesC &FileName();
-	void SetFileName(TDesC &aFileName);
+	void SetFileNameL(TDesC &aFileName);
 
 	void SetDelete();
 	TBool Delete();

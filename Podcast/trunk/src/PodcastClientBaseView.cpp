@@ -136,6 +136,7 @@ CQikCommand* CPodcastClientBaseView::DynInitOrDeleteCommandL(CQikCommand* aComma
 	case EPodcastMarkAllPlayed:
 	case EPodcastShowUnplayedOnly:
 	case EPodcastUpdateLibrary:
+		delete aCommand;
 		aCommand = NULL;
 		break;
 	default:
@@ -215,6 +216,8 @@ void CPodcastClientBaseView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQi
 			MQikListBoxModel& model(iListbox->Model());
 			MQikListBoxData* data = model.RetrieveDataL(aItemIndex);	
 			TInt itemId = data->ItemId();
+			data->Close();
+			
 			TUid newview = TUid::Uid(0);
 			TUid messageUid = TUid::Uid(0);
 			switch(itemId)

@@ -143,7 +143,7 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 				if (attr16.Compare(KTagUrl) == 0) {
 					TBuf<1024> val16;
 					val16.Copy(attr.Value().DesC());
-					iActiveShow->SetUrl(val16);
+					iActiveShow->SetUrlL(val16);
 				// length=...
 				} else if (attr16.Compare(KTagLength) == 0) {
 					TLex8 lex(attr.Value().DesC());
@@ -184,16 +184,16 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 	switch (iFeedState) {
 		case EStateChannelTitle:
 			if(str.CompareF(KTagTitle) == 0) {
-				iActiveFeed->SetTitle(iBuffer);
+				iActiveFeed->SetTitleL(iBuffer);
 				iFeedState = EStateChannel;
 			}
 			break;
 		case EStateChannelLink:
-			iActiveFeed->SetLink(iBuffer);
+			iActiveFeed->SetLinkL(iBuffer);
 			iFeedState = EStateChannel;
 			break;
 		case EStateChannelDescription:
-			iActiveFeed->SetDescription(iBuffer);
+			iActiveFeed->SetDescriptionL(iBuffer);
 			iFeedState = EStateChannel;
 			break;
 		case EStateChannelLastBuildDate:
@@ -220,7 +220,7 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 			break;
 		case EStateChannelImageUrl:
 			//RDebug::Print(_L("Image url: %S"), &iBuffer);
-			iActiveFeed->SetImageUrl(iBuffer);
+			iActiveFeed->SetImageUrlL(iBuffer);
 			iFeedState = EStateChannelImage;
 			break;
 		case EStateChannelImage:
@@ -283,15 +283,15 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 			break;
 		case EStateItemTitle:
 			//RDebug::Print(_L("title: %S"), &iBuffer);
-			iActiveShow->SetTitle(iBuffer);
+			iActiveShow->SetTitleL(iBuffer);
 			iFeedState = EStateItem;
 			break;
 		case EStateItemLink:
-			iActiveShow->SetUrl(iBuffer);
+			iActiveShow->SetUrlL(iBuffer);
 			iFeedState = EStateItem;
 			break;
 		case EStateItemDescription:
-			iActiveShow->SetDescription(iBuffer);
+			iActiveShow->SetDescriptionL(iBuffer);
 			iFeedState = EStateItem;
 			break;
 		default:

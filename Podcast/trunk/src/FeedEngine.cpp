@@ -26,7 +26,7 @@ void CFeedEngine::ConstructL()
 	RunFeedTimer();
 	
     if (!LoadFeeds()) {
-    	ImportFeeds(iPodcastModel.SettingsEngine().DefaultFeedsFileName());
+    	ImportFeedsL(iPodcastModel.SettingsEngine().DefaultFeedsFileName());
     }
 	}
 
@@ -36,6 +36,8 @@ CFeedEngine::CFeedEngine(CPodcastModel& aPodcastModel) : iFeedTimer(this), iPodc
 
 CFeedEngine::~CFeedEngine()
 	{
+	iObservers.Close();
+	
 	iFeeds.ResetAndDestroy();
 	iFeeds.Close();
 	iFs.Close();
@@ -110,7 +112,7 @@ void CFeedEngine::NewShow(CShowInfo *item)
 	description.Copy(item->Description());
 	CleanHtml(description);
 	//RDebug::Print(_L("New show has feed ID: %u"), item->FeedUid());
-	item->SetDescription(description);
+	item->SetDescriptionL(description);
 	//RDebug::Print(_L("Description: %S"), &description);
 	
 	iPodcastModel.ShowEngine().AddShow(item);
@@ -135,7 +137,7 @@ void CFeedEngine::GetFeedImageL(CFeedInfo *aFeedInfo)
 	
 	// complete file path is base dir + rel path
 	filePath.Append(relPath);
-	aFeedInfo->SetImageFileName(filePath);
+	aFeedInfo->SetImageFileNameL(filePath);
 	iFeedClient->GetL(aFeedInfo->ImageUrl(), filePath, ETrue);
 	}
 
@@ -202,7 +204,7 @@ void CFeedEngine::ParsingComplete(CFeedInfo *item)
 	TBuf<1024> title;
 	title.Copy(item->Title());
 	CleanHtml(title);
-	item->SetTitle(title);
+	item->SetTitleL(title);
 	//RDebug::Print(_L("feed image url: %S"), &item->ImageUrl());
 	for (int i=0;i<iObservers.Count();i++) {
 		iObservers[i]->FeedInfoUpdated(item);
@@ -214,6 +216,16 @@ void CFeedEngine::ParsingComplete(CFeedInfo *item)
 void CFeedEngine::AddObserver(MFeedEngineObserver *observer)
 	{
 	iObservers.Append(observer);
+	}
+
+void CFeedEngine::RemoveObserver(MFeedEngineObserver *observer)
+	{
+	TInt index = iObservers.Find(observer);
+	
+	if (index > KErrNotFound)
+		{
+		iObservers.Remove(index);
+		}
 	}
 
 void CFeedEngine::Connected(CHttpClient* /*aClient*/)
@@ -267,7 +279,7 @@ void CFeedEngine::DownloadInfo(CHttpClient* /*aHttpClient */, int /*aTotalBytes*
 		}*/
 	}
 
-void CFeedEngine::ImportFeeds(TFileName &aFile)
+void CFeedEngine::ImportFeedsL(TFileName &aFile)
 	{
 	RDebug::Print(_L("Importing default feeds from %S"), &aFile);
 	TFileName configPath;
@@ -293,7 +305,7 @@ void CFeedEngine::ImportFeeds(TFileName &aFile)
 			error = tft.Read(line);
 			continue;
 		}
-		CFeedInfo *fi = new CFeedInfo;
+		CFeedInfo* fi = CFeedInfo::NewLC();
 		line.Trim();
 		int pos = line.Locate('|');
 		if (pos != -1) {
@@ -301,16 +313,18 @@ void CFeedEngine::ImportFeeds(TFileName &aFile)
 			TPtrC url = line.Mid(pos+1);
 			//RDebug::Print(_L("url: %S"), &url);
 			//RDebug::Print(_L("title: %S"), &title);
-			fi->SetUrl(url);
-			fi->SetTitle(title);
+			fi->SetUrlL(url);
+			fi->SetTitleL(title);
 		} else {
-			fi->SetUrl(line);
-			fi->SetTitle(line);
+			fi->SetUrlL(line);
+			fi->SetTitleL(line);
 		}
+		CleanupStack::Pop(fi);
 		
 		AddFeed(fi);
 		error = tft.Read(line);
 		}
+	rfile.Close();
 	}
 	
 TBool CFeedEngine::LoadFeeds()
@@ -357,7 +371,7 @@ TBool CFeedEngine::LoadFeeds()
 	CFeedInfo *readData;
 	
 	for (int i=0;i<count;i++) {
-		readData = new CFeedInfo;
+		readData = CFeedInfo::NewL();
 		TRAP(error, instream  >> *readData);
 		//RDebug::Print(_L("error: %d"), error);
 		iFeeds.Append(readData);

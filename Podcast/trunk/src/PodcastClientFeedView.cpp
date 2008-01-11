@@ -32,6 +32,7 @@ CPodcastClientFeedView::CPodcastClientFeedView(CQikAppUi& aAppUi, CPodcastModel&
 
 CPodcastClientFeedView::~CPodcastClientFeedView()
 {
+	iPodcastModel.FeedEngine().RemoveObserver(this);
 }
 
 void CPodcastClientFeedView::ConstructL()
@@ -84,7 +85,7 @@ CQikCommand* CPodcastClientFeedView::DynInitOrDeleteCommandL(CQikCommand* aComma
 	case EPodcastMarkAllPlayed:
 	case EPodcastShowUnplayedOnly:
 	case EPodcastUpdateLibrary:
-
+		delete aCommand;
 		aCommand = NULL;
 		break;
 	case EQikListBoxCmdSelect:

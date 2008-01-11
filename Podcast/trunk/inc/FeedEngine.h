@@ -34,6 +34,7 @@ public:
 	CFeedInfo* GetFeedInfoByUid(TUint aFeedUid);	
 
 	void AddObserver(MFeedEngineObserver *observer);
+	void RemoveObserver(MFeedEngineObserver *observer);
 
 	void RunFeedTimer();
 	
@@ -44,7 +45,7 @@ private:
 	void ConstructL();
 	CFeedEngine(CPodcastModel& aPodcastModel);
 
-	void ImportFeeds(TFileName &aFile);
+	void ImportFeedsL(TFileName &aFile);
 	TBool LoadFeeds();
 	void SaveFeeds();
 

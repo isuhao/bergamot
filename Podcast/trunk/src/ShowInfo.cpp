@@ -29,6 +29,7 @@ CShowInfo::~CShowInfo()
 	delete iTitle;
 	delete iUrl;
 	delete iDescription;
+	delete iFileName;
 }
 
 void CShowInfo::ExternalizeL(RWriteStream& aStream) const {
@@ -77,25 +78,25 @@ void CShowInfo::InternalizeL(RReadStream& aStream) {
 	int len = aStream.ReadInt32L();
 	if (len > 0) {
 		aStream.ReadL(buffer, len);
-		SetTitle(buffer);
+		SetTitleL(buffer);
 	}
 	
 	len = aStream.ReadInt32L();
 	if (len > 0) {
 		aStream.ReadL(buffer, len);
-		SetUrl(buffer);
+		SetUrlL(buffer);
 	}
 	
 	len = aStream.ReadInt32L();
 	if (len > 0) {
 		aStream.ReadL(buffer, len);
-		SetDescription(buffer);
+		SetDescriptionL(buffer);
 	}
 
 	len = aStream.ReadInt32L();
 	if (len > 0) {
 		aStream.ReadL(buffer, len);
-		SetFileName(buffer);
+		SetFileNameL(buffer);
 	}
 	
 	iFeedUid = aStream.ReadInt32L();
@@ -118,11 +119,14 @@ TDesC& CShowInfo::Title() const
 	return *iTitle;
 	}
 
-void CShowInfo::SetTitle(TDesC &aTitle)
+void CShowInfo::SetTitleL(TDesC &aTitle)
 	{
-	delete iTitle;
-	iTitle = NULL;
-	iTitle = aTitle.Alloc();
+	if (iTitle)
+		{
+		delete iTitle;
+		iTitle = NULL;
+		}
+	iTitle = aTitle.AllocL();
 	}
 
 TDesC& CShowInfo::Url() const
@@ -130,11 +134,14 @@ TDesC& CShowInfo::Url() const
 	return *iUrl;
 	}
 
-void CShowInfo::SetUrl(TDesC &aUrl)
+void CShowInfo::SetUrlL(TDesC &aUrl)
 	{
-	delete iUrl;
-	iUrl = NULL;
-	iUrl = aUrl.Alloc();
+	if (iUrl)
+		{
+		delete iUrl;
+		iUrl = NULL;
+		}
+	iUrl = aUrl.AllocL();
 	iUid = DefaultHash::Des16(Url());
 	}
 
@@ -143,11 +150,15 @@ TDesC& CShowInfo::Description() const
 	return *iDescription;
 	}
 
-void CShowInfo::SetDescription(TDesC &aDescription)
+void CShowInfo::SetDescriptionL(TDesC &aDescription)
+	{
+	if (iDescription)
 	{
 	delete iDescription;
 	iDescription = NULL;
-	iDescription = aDescription.Alloc();
+		}
+
+	iDescription = aDescription.AllocL();
 	}
 
 TTimeIntervalMicroSeconds& CShowInfo::Position()
@@ -235,8 +246,13 @@ TBool CShowInfo::Delete()
 	return iDelete;
 	}
 
-void CShowInfo::SetFileName(TDesC &aFileName)
+void CShowInfo::SetFileNameL(TDesC &aFileName)
+	{
+	if (iFileName)
 	{
 	delete iFileName;
-	iFileName = aFileName.Alloc();
+		iFileName = NULL;
+		}
+
+	iFileName = aFileName.AllocL();
 	}

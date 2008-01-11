@@ -53,14 +53,14 @@ TBool CPodcastClientAddFeedDlg::OkToExitL(TInt aCommandId)
 
 		if(iEditFeed)
 		{
-			iFeedInfo->SetUrl(buffer);			
+			iFeedInfo->SetUrlL(buffer);			
 		}
 		else
 		{
-			CFeedInfo* newFeedInfo = new (ELeave) CFeedInfo;
+			CFeedInfo* newFeedInfo = CFeedInfo::NewL();
 			iFeedInfo = newFeedInfo;
-			iFeedInfo->SetUrl(buffer);
-			iFeedInfo->SetTitle(newFeedInfo->Url());
+			iFeedInfo->SetUrlL(buffer);
+			iFeedInfo->SetTitleL(newFeedInfo->Url());
 			iPodcastModel.FeedEngine().AddFeed(newFeedInfo);
 		}
 		/*

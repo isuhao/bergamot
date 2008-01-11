@@ -25,9 +25,13 @@ CPodcastModel::~CPodcastModel()
 	delete iSoundEngine;
 	delete iSettingsEngine;
 	iActiveShowList.Close();
+	delete iShowEngine;
+	
 	delete iIapNameArray;
 	iIapIdArray.Close();
 	delete iCommDB;
+	iConnection.Close();
+	iSocketServ.Close();
 }
 
 CPodcastModel::CPodcastModel()

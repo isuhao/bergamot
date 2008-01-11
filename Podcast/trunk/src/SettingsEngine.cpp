@@ -65,23 +65,30 @@ void CSettingsEngine::ConstructL()
 void CSettingsEngine::GetDefaultBaseDir(TDes &aBaseDir)
 	{
 	CDesCArray* disks = new(ELeave) CDesCArrayFlat(10);
+	CleanupStack::PushL(disks);
+
 	BaflUtils::GetDiskListL(iFs, *disks);
 	
 	#ifdef __WINS__
 		aBaseDir.Copy(KInternalPodcastDir);
+		CleanupStack::PopAndDestroy(disks);
 		return;
 	#endif
 
 	// if only one drive, use C:\Media files\Podcasts
-	if (disks->Count() == 1) {
+	if (disks->Count() == 1) 
+		{
 		aBaseDir.Copy(KInternalPodcastDir);
 	// else we use the first flash drive
-	} else {
+		} 
+	else 
+		{
 		aBaseDir.Copy((*disks)[1]);
 		aBaseDir.Append(_L(":"));
 		aBaseDir.Append(KFlashPodcastDir);
 	}
-	delete disks;
+	
+	CleanupStack::PopAndDestroy(disks);
 	}
 
 void CSettingsEngine::LoadSettingsL()
