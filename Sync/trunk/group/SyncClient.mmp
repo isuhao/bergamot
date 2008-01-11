@@ -36,12 +36,12 @@ START BITMAP SyncClient.mbm
 	TARGETPATH \resource\apps
 	HEADER
 	SOURCEPATH ..\images
+	SOURCE c16 SyncClient_18x18.bmp
+	SOURCE 8 SyncClient_18x18_mask.bmp
 	SOURCE c16 SyncClient_40x40.bmp
 	SOURCE 8 SyncClient_40x40_mask.bmp
-	SOURCE c16 SyncClient_40x40.bmp
-	SOURCE 8 SyncClient_40x40_mask.bmp
-	SOURCE c16 SyncClient_40x40.bmp
-	SOURCE 8 SyncClient_40x40_mask.bmp
+	SOURCE c16 SyncClient_64x64.bmp
+	SOURCE 8 SyncClient_64x64_mask.bmp
 END
 
 SOURCEPATH ..\group
