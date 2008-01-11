@@ -61,7 +61,7 @@ CPodcastClientVolumeDlg::~CPodcastClientVolumeDlg()
 void CPodcastClientVolumeDlg::PreLayoutDynInitL()
 {
 	iVolumeSlider =	 static_cast<CQikSlider*> (ControlOrNull(EPodcastSettingsVolume));
-	iVolumeSlider->SetValue(iPodcastModel.SettingsEngine().Volume()*KVolumeDelta);
+	iVolumeSlider->SetValue(iPodcastModel.SettingsEngine().Volume()/KVolumeDelta);
 }
 
 TBool CPodcastClientVolumeDlg::OkToExitL(TInt aCommandId)

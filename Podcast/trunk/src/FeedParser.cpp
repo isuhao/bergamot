@@ -7,6 +7,8 @@
 #include <utf.h>
 #include <tinternetdate.h>
 
+using namespace Xml;
+
 CFeedParser::CFeedParser(MFeedParserObserver& aCallbacks) : 	iCallbacks(aCallbacks)
 {
 }

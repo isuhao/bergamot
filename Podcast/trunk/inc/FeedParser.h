@@ -7,8 +7,6 @@
 #include <xml/contenthandler.h>	// for Xml::MContentHandler
 #include <xml/documentparameters.h>
 
-using namespace Xml;
-
 _LIT(KTagItem, "item");
 _LIT(KTagTitle, "title");
 _LIT(KTagImage, "image");
@@ -45,7 +43,7 @@ enum TEncoding {
 
 const int KBufferLength = 1024;
 
-class CFeedParser : public MContentHandler, public CBase
+class CFeedParser : public CBase, public Xml::MContentHandler 
 {
 public:
 	CFeedParser(MFeedParserObserver& aCallbacks);
@@ -55,10 +53,10 @@ public:
 	void ParseFeedL(const TFileName &feedFileName, CFeedInfo *item, TUint aMaxItems);
 	
 public: // from MContentHandler
-	void OnStartDocumentL(const RDocumentParameters& aDocParam, TInt aErrorCode);
+	void OnStartDocumentL(const Xml::RDocumentParameters& aDocParam, TInt aErrorCode);
 	void OnEndDocumentL(TInt aErrorCode);
-	void OnStartElementL(const RTagInfo& aElement, const RAttributeArray& aAttributes, TInt aErrorCode);
-	void OnEndElementL(const RTagInfo& aElement, TInt aErrorCode);
+	void OnStartElementL(const Xml::RTagInfo& aElement, const Xml::RAttributeArray& aAttributes, TInt aErrorCode);
+	void OnEndElementL(const Xml::RTagInfo& aElement, TInt aErrorCode);
 	void OnContentL(const TDesC8& aBytes, TInt aErrorCode);
 	void OnStartPrefixMappingL(const RString& aPrefix, const RString& aUri, TInt aErrorCode);
 	void OnEndPrefixMappingL(const RString& aPrefix, TInt aErrorCode);

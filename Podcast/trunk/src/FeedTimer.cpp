@@ -3,7 +3,7 @@
 #include <eikenv.h>
 #include "FeedEngine.h"
 
-CFeedTimer::CFeedTimer(CFeedEngine *aFeedEngine) : CTimer::CTimer(EPriorityIdle), iFeedEngine(aFeedEngine) {
+CFeedTimer::CFeedTimer(CFeedEngine *aFeedEngine) : CTimer(EPriorityIdle), iFeedEngine(aFeedEngine) {
 }
 
 CFeedTimer::~CFeedTimer() {
