@@ -1,6 +1,7 @@
+CHARACTER_SET UTF8
 // ListBox.rls
 //
-//  Symbian Software Ltd 2005. All rights reserved.
+// � Symbian Software Ltd 2005. All rights reserved.
 //
 
 // Defines localisable strings, for inclusion in the resource source file
@@ -17,10 +18,10 @@ rls_string STRING_r_listbox_listview_cmd_close_debug_shorttext "Закрыть"
 rls_string STRING_r_view_cmd "Перейти"
 // Navigation to shows view
 rls_string STRING_r_view_main_cmd "Главная"
-rls_string STRING_r_view_shows_cmd "Подкасты на Телефоне"
+rls_string STRING_r_view_shows_cmd "Хранилище"
 rls_string STRING_r_view_all_shows_cmd "Все Подкасты"
 rls_string STRING_r_view_new_shows_cmd "Новые"
-rls_string STRING_r_view_dl_shows_cmd "Подкасты на Телефоне"
+rls_string STRING_r_view_dl_shows_cmd "Хранилище"
 rls_string STRING_r_view_dling_shows_cmd "Закачки"
 rls_string STRING_r_view_about_cmd "О программе"
 
@@ -41,11 +42,11 @@ rls_string STRING_r_view_download_short_cmd "Скачать"
 rls_string STRING_r_view_remove_download_short_cmd "Удалить"
 rls_string STRING_r_view_remove_download_cmd "Удалить Закачку"
 
-rls_string STRING_r_view_show_cmd "Подкаст"
+rls_string STRING_r_view_show_cmd "Обзор"
 rls_string STRING_r_view_cmd "Перейти"
 rls_string STRING_r_view_play_cmd "Слушать"
-rls_string STRING_r_view_mark_as_played_cmd "Пометить как Прослушанное"
-rls_string STRING_r_view_mark_as_unplayed_cmd "Пометить как Новое"
+rls_string STRING_r_view_mark_as_played_cmd "Отм. как Прослушанный"
+rls_string STRING_r_view_mark_as_unplayed_cmd "Отм. как Новый"
 
 // Actions for feeds
 rls_string STRING_r_view_add_feed_cmd "Добавить Поток"
@@ -68,8 +69,8 @@ rls_string STRING_r_view_purge_show_cmd "Удалить"
 rls_string STRING_r_view_remove_download_cmd "Удалить Закачку"
 rls_string STRING_r_view_stop_downloads_cmd "Приостановить Скачивание"
 rls_string STRING_r_view_resume_downloads_cmd "Возобновить Скачивание"
-rls_string STRING_r_view_mark_all_played_cmd "Пометить Все как Прослушанные"
-rls_string STRING_r_view_show_unplayed_cmd "Показывать Только Новые"
+rls_string STRING_r_view_mark_all_played_cmd "Отм. Все как Прослушанные"
+rls_string STRING_r_view_show_unplayed_cmd "Показ. Только Новые"
 
 // Common actions
 rls_string STRING_r_zoom_cmd "Масштаб"
@@ -78,7 +79,7 @@ rls_string STRING_r_settings_cmd "Настройки"
 // Categories
 rls_string STRING_r_category_all "Все Подкасты"
 rls_string STRING_r_category_new "Новые"
-rls_string STRING_r_category_dled "Подкасты на"// Телефоне"
+rls_string STRING_r_category_dled "Подкасты"
 rls_string STRING_r_category_pending "Закачки"
 
 // Application caption
@@ -90,8 +91,8 @@ rls_string STRING_r_view_feeds_title "Потоков"
 
 // Shows view status strings
 rls_string STRING_r_podcast_shows_title_format "%d Новых, %d Всего";
-rls_string STRING_r_podcast_shows_title_download "%d Скачиваются, %d Ожидают";
-rls_string STRING_r_podcast_shows_downloads_suspended "Приостановлено, %d Ожидают";
+rls_string STRING_r_podcast_shows_title_download "%d Скач., %d Ожидают";
+rls_string STRING_r_podcast_shows_downloads_suspended "Приост., %d Ожидают";
 rls_string STRING_r_podcast_shows_no_items "Пусто";
 
 // Feeds view status strings
@@ -100,9 +101,10 @@ rls_string STRING_r_podcast_feeds_status_format "%d/%d Подкастов"
 
 // DIALOG string
 rls_string STRING_r_about_title "О программе";
-rls_string STRING_r_about_text "Разработчики:\nПроект Escarpod был начат Себастьяном Бранстрёмом (Sebastian Br�nnstr�m), известным под ником Teknolog. Огромная помощь была получена от Ларса Персонна (Lars Persson), известным также как AnotherGuest. Он проделал основную работу над UI, и общие улучшения кода.\n\nАлан Эдди (Alan Eddie) нарисовал все иконки.\n\nЛицензия\nEscarpod лицензируется под открытой лицензией GPL версии 3. Авторы оставляют за собой право на двойную лицензию в коммерческих целях\n\n(c) 2007/2008"
+rls_string STRING_r_about_text "Разработчики:\nПроект Escarpod был начат Себастьяном Бранстрёмом (Sebastian Brännström), известным под ником Teknolog. Огромная помощь была получена от Ларса Персонна (Lars Persson), известным также как AnotherGuest. Он проделал основную работу над UI, и общие улучшения кода.\n\nАлан Эдди (Alan Eddie) нарисовал все иконки.\n\nЛицензия\nEscarpod лицензируется под открытой лицензией GPL версии 3. Авторы оставляют за собой право на двойную лицензию в коммерческих целях\n\n(c) 2007/2008"
 
-   
+
+
 
 rls_string STRING_r_add_feed_title "Добавить Поток"
 rls_string STRING_r_edit_feed_title "Редактировать Поток"
@@ -119,13 +121,13 @@ rls_string STRING_r_update_new_feed_title "Обновить Поток"
 rls_string STRING_r_update_new_feed_prompt "Вы хотите обновить поток сейчас?"
 
 rls_string STRING_r_purge_feed_title "Очистить Поток"
-rls_string STRING_r_purge_feed_prompt "Вы действительно хотите очистить этот поток и удалить все закачанные шоу?"
+rls_string STRING_r_purge_feed_prompt "Вы действительно хотите очистить этот поток и удалить все закачанные подкасты?"
 
 rls_string STRING_r_purge_show_title "Удалить Подкаст"
 rls_string STRING_r_purge_show_prompt "Вы действительно хотите удалить этот подкаст?"
 
 rls_string STRING_r_podcast_settings_title "Настройки"
-rls_string STRING_r_podcast_setting_showdir "Директория с Подкастами"
+rls_string STRING_r_podcast_setting_showdir "Хранить Подкасты в"
 rls_string STRING_r_podcast_setting_autodl "Скачивать Автоматически"
 rls_string STRING_r_podcast_setting_checkevery "Интервал Скачивания"
 rls_string STRING_r_podcast_setting_minutes "минут"
@@ -144,5 +146,7 @@ rls_string STRING_r_podcast_setting_volume "Громкость"
 // Choicelist for autodownload
 rls_string STRING_podcast_autodl_off "Отключено"
 rls_string STRING_podcast_audodl_feeds "Только Потоки" 
-rls_string STRING_podcast_audodl_feedsandshows "DUMMY" //"Потоки и Подкасты"
-rls_string STRING_r_podcast_iap_dlg_title "DUMMY" //"Выберите подключение"
+rls_string STRING_podcast_audodl_feedsandshows "Потоки и Подкасты"
+
+rls_string STRING_r_podcast_iap_dlg_title "Выберите подключение"
+

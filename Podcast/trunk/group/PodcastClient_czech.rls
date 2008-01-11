@@ -1,6 +1,7 @@
+CHARACTER_SET UTF8
 // ListBox.rls
 //
-// ř Symbian Software Ltd 2005. All rights reserved.
+// ø Symbian Software Ltd 2005. All rights reserved.
 //
 
 // Defines localisable strings, for inclusion in the resource source file
@@ -10,8 +11,8 @@
 // to use the new file.
 
 // list view commands
-rls_string STRING_r_listbox_listview_cmd_close_debug "Zavřít (debug)"
-rls_string STRING_r_listbox_listview_cmd_close_debug_shorttext "Zavřít"
+rls_string STRING_r_listbox_listview_cmd_close_debug "Zavøít (debug)"
+rls_string STRING_r_listbox_listview_cmd_close_debug_shorttext "Zavøít"
 
 // Menu commands, view filtering and navigation
 rls_string STRING_r_view_cmd "Zobrazit"
@@ -19,18 +20,20 @@ rls_string STRING_r_view_cmd "Zobrazit"
 rls_string STRING_r_view_main_cmd "Hlavní nabídka"
 rls_string STRING_r_view_shows_cmd "Šou v telefonu"
 rls_string STRING_r_view_all_shows_cmd "Všechny šou"
-rls_string STRING_r_view_new_shows_cmd "Nepřehrané"
+rls_string STRING_r_view_new_shows_cmd "Nepøehrané"
 rls_string STRING_r_view_dl_shows_cmd "Šou v telefonu"
 rls_string STRING_r_view_dling_shows_cmd "Stahování"
+rls_string STRING_r_about_title "O programu Escarpod";
+rls_string STRING_r_about_text "Escarpod\n\n Copyright(c) 2007-2008, Projekt Bergamot\n\n http://bergamot.googlecode.com"
 
 // Navigation to feeds
 rls_string STRING_r_view_feeds_cmd "Zdroje"
 
 // Navigation to the player
-rls_string STRING_r_view_player_cmd "Přehrávač"
+rls_string STRING_r_view_player_cmd "Pøehrávaè"
 
 // Actions for the player
-rls_string STRING_r_play_cmd "Přehrát"
+rls_string STRING_r_play_cmd "Pøehrát"
 rls_string STRING_r_stop_cmd "Stop"
 rls_string STRING_r_pause_cmd "Pozastavit"
 rls_string STRING_r_volume_cmd "Hlasitost"
@@ -42,12 +45,12 @@ rls_string STRING_r_view_remove_download_cmd "Odstranit stažené"
 
 rls_string STRING_r_view_show_cmd "Šou"
 rls_string STRING_r_view_cmd "Zobrazit"
-rls_string STRING_r_view_play_cmd "Přehrát"
-rls_string STRING_r_view_mark_as_played_cmd "Označit jako přehrané"
-rls_string STRING_r_view_mark_as_unplayed_cmd "Označit jako nepřehrané"
+rls_string STRING_r_view_play_cmd "Pøehrát"
+rls_string STRING_r_view_mark_as_played_cmd "Oznaèit jako pøehrané"
+rls_string STRING_r_view_mark_as_unplayed_cmd "Oznaèit jako nepøehrané"
 
 // Actions for feeds
-rls_string STRING_r_view_add_feed_cmd "Přidat zdroj"
+rls_string STRING_r_view_add_feed_cmd "Pøidat zdroj"
 rls_string STRING_r_view_edit_feed_cmd "Upravit zdroj"
 rls_string STRING_r_view_delete_feed_cmd "Odstranit zdroj"
 rls_string STRING_r_view_purge_feed_cmd "Odstranit vše"
@@ -67,8 +70,8 @@ rls_string STRING_r_view_purge_show_cmd "Smazat"
 rls_string STRING_r_view_remove_download_cmd "Zrušit frontu"
 rls_string STRING_r_view_stop_downloads_cmd "Pozastavit stahování"
 rls_string STRING_r_view_resume_downloads_cmd "Obnovit stahování"
-rls_string STRING_r_view_mark_all_played_cmd "Označit vše jako přehrané"
-rls_string STRING_r_view_show_unplayed_cmd "Zobrazit nepřehrané"
+rls_string STRING_r_view_mark_all_played_cmd "Oznaèit vše jako pøehrané"
+rls_string STRING_r_view_show_unplayed_cmd "Zobrazit nepøehrané"
 
 // Common actions
 rls_string STRING_r_zoom_cmd "Lupa"
@@ -76,7 +79,7 @@ rls_string STRING_r_settings_cmd "Nastavení"
 
 // Categories
 rls_string STRING_r_category_all "Všechny šou"
-rls_string STRING_r_category_new "Nepřehrané"
+rls_string STRING_r_category_new "Nepøehrané"
 rls_string STRING_r_category_dled "Šou v telefonu"
 rls_string STRING_r_category_pending "Stahování"
 
@@ -88,17 +91,17 @@ rls_string STRING_r_short_caption "Podkast"
 rls_string STRING_r_view_feeds_title "Zdroje"
 
 // Shows view status strings
-rls_string STRING_r_podcast_shows_title_format "%d Nepřehraných, %d Celkem";
-rls_string STRING_r_podcast_shows_title_download "%d Stahuji, %d ve frontě";
+rls_string STRING_r_podcast_shows_title_format "%d Nepøehraných, %d Celkem";
+rls_string STRING_r_podcast_shows_title_download "%d Stahuji, %d ve frontì";
 rls_string STRING_r_podcast_shows_downloads_suspended "Pozastaveno, %d fronta";
 rls_string STRING_r_podcast_shows_no_items "Žádné položky";
 
 // Feeds view status strings
-rls_string STRING_r_podcast_feeds_title_format "%d Zdrojů"
+rls_string STRING_r_podcast_feeds_title_format "%d Zdrojù"
 rls_string STRING_r_podcast_feeds_status_format "%d/%d Šou"
 
 // DIALOG string
-rls_string STRING_r_add_feed_title "Přidat zdroj"
+rls_string STRING_r_add_feed_title "Pøidat zdroj"
 rls_string STRING_r_edit_feed_title "Upravit zdroj"
 
 rls_string STRING_r_add_feed_prompt "URL zdroje"
@@ -107,29 +110,29 @@ rls_string STRING_r_remove_feed_title "Odstranit zdroj"
 rls_string STRING_r_remove_feed_prompt "Jste si jistý, že chcete odebrat tento zdroj?"
 
 rls_string STRING_r_enable_downloads_title "Obnovení stahování"
-rls_string STRING_r_enable_downloads_prompt "Máte šou ve frontě ke stahování. Checete jí stahovat?"
+rls_string STRING_r_enable_downloads_prompt "Máte šou ve frontì ke stahování. Checete jí stahovat?"
 
 rls_string STRING_r_update_new_feed_title "Synchr. zdroj"
 rls_string STRING_r_update_new_feed_prompt "Chcete nyní synchronizovat zdroj?"
 
-rls_string STRING_r_purge_feed_title "Vyčistit zdroj"
-rls_string STRING_r_purge_feed_prompt "Opravdu chcete vyčistit tento zdroj a odebrat všechny stažené šou?"
+rls_string STRING_r_purge_feed_title "Vyèistit zdroj"
+rls_string STRING_r_purge_feed_prompt "Opravdu chcete vyèistit tento zdroj a odebrat všechny stažené šou?"
 
-rls_string STRING_r_purge_show_title "Vyčistit Šou"
+rls_string STRING_r_purge_show_title "Vyèistit Šou"
 rls_string STRING_r_purge_show_prompt "Chcete opravdu smazat tuto šou?"
 
 rls_string STRING_r_podcast_settings_title "Nastavení"
-rls_string STRING_r_podcast_setting_showdir "Adresář Podkastů"
+rls_string STRING_r_podcast_setting_showdir "Adresáø Podkastù"
 rls_string STRING_r_podcast_setting_autodl "Automatické Stahování"
 rls_string STRING_r_podcast_setting_checkevery "Interval pro stahování"
 rls_string STRING_r_podcast_setting_minutes "minuty"
 
-rls_string STRING_r_podcast_setting_maxsimul "Max souběžné stahování"
-rls_string STRING_r_podcast_setting_connection "Připojení"
+rls_string STRING_r_podcast_setting_maxsimul "Max soubìžné stahování"
+rls_string STRING_r_podcast_setting_connection "Pøipojení"
 rls_string STRING_r_podcast_setting_default "Použít výchozí"
 rls_string STRING_r_podcast_setting_wlanonly "Vždy se zeptat"
-rls_string STRING_r_podcast_setting_usespecified "Vybrat připojení"
-rls_string STRING_r_podcast_setting_iaplist "Připojení"
+rls_string STRING_r_podcast_setting_usespecified "Vybrat pøipojení"
+rls_string STRING_r_podcast_setting_iaplist "Pøipojení"
 rls_string STRING_r_podcast_setting_cancel_cmd "Zrušit" // Cancel command in settings dialog
 rls_string STRING_r_podcast_setting_done_cmd "Použít" // Done command in settings dialog
 rls_string STRING_r_podcast_setting_showdir_cmd "Vybrat" // Use to select show dir
@@ -140,5 +143,5 @@ rls_string STRING_podcast_autodl_off "Vyp"
 rls_string STRING_podcast_audodl_feeds "Pouze zdroje" 
 rls_string STRING_podcast_audodl_feedsandshows "Zdroje a šou"
 
-rls_string STRING_r_podcast_iap_dlg_title "Vyberte internetový účet"
+rls_string STRING_r_podcast_iap_dlg_title "Vyberte internetový úèet"
 
