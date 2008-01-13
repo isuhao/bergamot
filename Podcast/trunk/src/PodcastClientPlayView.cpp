@@ -326,7 +326,7 @@ void CPodcastClientPlayView::ViewConstructL()
 	iVolumeSlider = LocateControlByUniqueHandle<CQikSlider>(EPodcastPlayViewVolumeCtrl);
 
 	iCoverImageCtrl = LocateControlByUniqueHandle<CEikImage>(EPodcastPlayViewCoverImage);
-
+	
 	iDownloadProgressInfo = LocateControlByUniqueHandle<CEikProgressInfo>(EPodcastPlayViewProgressInfo);
 
 	ViewContext()->AddTextL(EPodcastPlayViewTitleCtrl, KNullDesC(), EHRightVCenter);
@@ -415,8 +415,9 @@ void CPodcastClientPlayView::ImageConverterEventL(TQikImageConverterEvent aMessa
 	{
 		if(iCurrentCoverImage->SizeInPixels().iWidth<=KMaxCoverImageWidth)
 		{
-			iCoverImageCtrl->SetBitmap(iCurrentCoverImage);
-			iCoverImageCtrl->SetMask(NULL);
+			iCoverImageCtrl->SetNewBitmaps(iCurrentCoverImage, NULL);
+			iCoverImageCtrl->SetPictureOwnedExternally(EFalse);
+						
 			iCurrentCoverImage = NULL;
 			RequestRelayout(this);
 		}
@@ -427,15 +428,17 @@ void CPodcastClientPlayView::ImageConverterEventL(TQikImageConverterEvent aMessa
 	}
 	else if(aErrCode == KErrNone && aMessage == MQikImageConverterObserver::EBitmapRescaleComplete)
 	{
-		iCoverImageCtrl->SetBitmap(iCurrentCoverImage);
-		iCoverImageCtrl->SetMask(NULL);
+		iCoverImageCtrl->SetNewBitmaps(iCurrentCoverImage, NULL);
+		iCoverImageCtrl->SetPictureOwnedExternally(EFalse);
+		
 		iCurrentCoverImage = NULL;
 		RequestRelayout(this);
 	}
 	else if(aErrCode != KErrNone)
 	{
-		iCoverImageCtrl->SetBitmap(NULL);
-		iCoverImageCtrl->SetMask(NULL);
+		iCoverImageCtrl->SetNewBitmaps(NULL, NULL);
+		iCoverImageCtrl->SetPictureOwnedExternally(EFalse);
+		
 		RequestRelayout(this);
 
 		delete iCurrentCoverImage;

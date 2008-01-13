@@ -108,15 +108,13 @@ rls_string STRING_r_remove_feed_title "Fjern feed"
 rls_string STRING_r_remove_feed_prompt "Er du helt sikker på at du vil fjerne dette fed?"
 
 rls_string STRING_r_enable_downloads_title "Genoptag downloading"
-rls_string STRING_r_enable_downloads_prompt "Der er afsnit i download-køen. Vil du
-downloade nu?"
+rls_string STRING_r_enable_downloads_prompt "Der er afsnit i download-køen. Vil du downloade nu?"
 
 rls_string STRING_r_update_new_feed_title "Opdater feed"
 rls_string STRING_r_update_new_feed_prompt "Vil du opdatere dette feed nu?"
 
 rls_string STRING_r_purge_feed_title "Slet feed"
-rls_string STRING_r_purge_feed_prompt "Er du helt sikker på at du vil slette dette feed og
-alle downloadede afsnit?"
+rls_string STRING_r_purge_feed_prompt "Er du helt sikker på at du vil slette dette feed og alle downloadede afsnit?"
 
 rls_string STRING_r_purge_show_title "Slet afsnit"
 rls_string STRING_r_purge_show_prompt "Er du sikker på at du vil slette dette afsnit?"
