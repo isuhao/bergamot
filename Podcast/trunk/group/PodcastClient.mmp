@@ -15,7 +15,7 @@ DOCUMENT		  PodcastClientFeedView.ra
 
 START RESOURCE    PodcastClient.rss
 TARGETPATH        \resource\apps
-LANG			  01 06 07 16 25
+LANG			  01 05 06 07 16 25 49
 HEADER
 END
 

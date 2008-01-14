@@ -11,9 +11,13 @@
 #include <PodcastClient.mbg>
 #include <eikon.rsg>
 #include <QikCategory.hrh>
+//#include <e32const.h> // just so I can easily lookup language numbers :)
+
 #include "PodcastClient.hrh"
 #ifdef LANGUAGE_01
 	#include "PodcastClient_english.rls"
+#elif defined LANGUAGE_05
+	#include "PodcastClient_italian.rls"
 #elif defined LANGUAGE_06
 	#include "PodcastClient_swedish.rls"
 #elif defined LANGUAGE_07
@@ -22,6 +26,8 @@
 	#include "PodcastClient_russian.rls"
 #elif defined LANGUAGE_25
 	#include "PodcastClient_czech.rls"
+#elif defined LANGUAGE_49
+	#include "PodcastClient_estonian.rls"
 #endif
 
 
