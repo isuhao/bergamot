@@ -33,7 +33,7 @@ public:
 	void SelectShowsDownloading();
 	
 	void Complete(CHttpClient* aClient, TBool aSuccessful);
-	void AddShow(CShowInfo *item);
+	TBool AddShow(CShowInfo *item);
 	void SaveShows();
 
 	void PurgeShowsByFeed(TUint aFeedUid);

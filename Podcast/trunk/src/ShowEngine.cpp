@@ -166,24 +166,22 @@ void CShowEngine::GetShow(CShowInfo *info)
 	iShowClient->GetL(info->Url(), filePath);
 	}
 
-void CShowEngine::AddShow(CShowInfo *item) 
+TBool CShowEngine::AddShow(CShowInfo *item) 
 	{
 	for (int i=0;i<iShows.Count();i++) 
 		{
 		if (iShows[i]->Url().Compare(item->Url()) == 0) 
 			{
-			// we need to delete the item other we leak memory.
-			delete item;
-			item = NULL;
-			return;
+			return EFalse;
+			}
 		}
-	}
-	
 	iShows.Append(item);
 
-	if (!iSuppressAutoDownload && iPodcastModel.SettingsEngine().DownloadAutomatically() == EAutoDownloadFeedsAndShows) {
+	if (!iSuppressAutoDownload && iPodcastModel.SettingsEngine().DownloadAutomatically() == EAutoDownloadFeedsAndShows) 
+		{
 		AddDownload(item);
-	}
+		}
+	return ETrue;
 	}
 
 void CShowEngine::AddObserver(MShowEngineObserver *observer)
@@ -296,14 +294,16 @@ void CShowEngine::LoadShowsL()
 	iSuppressAutoDownload = ETrue;
 	CFeedInfo *feedInfo = NULL;
 	TUint lastUid = 0;
-	for (int i=0;i<count;i++) {
+	for (int i=0;i<count;i++) 
+		{
 		readData = CShowInfo::NewL();
 		instream  >> *readData;
 		
-		if (readData->FeedUid() != lastUid) {
+		if (readData->FeedUid() != lastUid) 
+			{
 			lastUid = readData->FeedUid();
 			feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(readData->FeedUid());
-		}
+			}
 		
 		// might be useful to keep these shows after all...
 		/*if (feedInfo == NULL) {
@@ -312,19 +312,22 @@ void CShowEngine::LoadShowsL()
 			continue;
 		}*/
 		//RDebug::Print(_L("error: %d"), error);
-		AddShow(readData);
+		TBool isAdded = AddShow(readData);
 		
-		// add show will delete duplicate entries. TODO. rewrite in the future.
-		if(readData)
+		if (isAdded == EFalse)
 			{
-			if (readData->DownloadState() == EQueued || readData->DownloadState() == EDownloading) 
-				{
+			delete readData;
+			readData = NULL;
+			}
+			
+		if (readData && (readData->DownloadState() == EQueued || readData->DownloadState() == EDownloading)) 
+			{
 			readData->SetDownloadState(EQueued);
 			iShowsDownloading.Append(readData);
-		}
 			}
+			
 		DownloadNextShow();
-	}
+		}
 
 	iSuppressAutoDownload = EFalse;
 	CleanupStack::PopAndDestroy(2); // instream and store
