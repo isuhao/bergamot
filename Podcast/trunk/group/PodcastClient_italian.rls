@@ -97,7 +97,7 @@ rls_string STRING_r_podcast_shows_no_items "Nessun elemento";
 // Feeds view status strings
 rls_string STRING_r_podcast_feeds_title_format "%d Feed"
 rls_string STRING_r_podcast_feeds_status_format "%d/%d Elementi"
-rls_string STRING_r_podcast_shows_never_updated "Never"
+rls_string STRING_r_podcast_shows_never_updated "Mai"
 
 // DIALOG string
 rls_string STRING_r_about_title "Informazioni su Escarpod";
@@ -141,9 +141,9 @@ rls_string STRING_r_podcast_setting_showdir_cmd "Seleziona" // Use to select sho
 rls_string STRING_r_podcast_setting_volume "Volume" 
 
 // Choicelist for autodownload
-rls_string STRING_podcast_autodl_off "Spegni"
-rls_string STRING_podcast_audodl_feeds "Solo feed" 
-rls_string STRING_podcast_audodl_feedsandshows "Feed e suoi elementi"
+rls_string STRING_podcast_autodl_off "Disattivato"
+rls_string STRING_podcast_audodl_feeds "Solo elementi feed" 
+rls_string STRING_podcast_audodl_feedsandshows "Elementi e contenuti feed"
 
 rls_string STRING_r_podcast_iap_dlg_title "Seleziona un account internet"
 
