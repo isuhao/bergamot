@@ -41,6 +41,17 @@ To download binaries of Escarpod to use on your phone, visit our [http://code.go
 
 All versions, together with their complete source code is available in our [http://bergamot.googlecode.com/svn/Podcast/ Subversion repository].
 
+  * Escarpod 0.91 (January 16th) [http://bergamot.googlecode.com/svn/Podcast/tags/v091 code]
+    * Bug fixes
+    * Memory leaks fixed
+    * Several new translations (thanks to all the translators!)
+      * Estonian
+      * Czech
+      * Russian
+      * Italian
+      * Danish
+
+
   * Beta 2 (version 0.9) (January 1st) [http://bergamot.googlecode.com/svn/Podcast/tags/beta2 code]
     * New icons
     * Bug fixes
