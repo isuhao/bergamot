@@ -15,7 +15,8 @@ Notable features include:
   * Support for podcasts stored on flash card
   * Automatic downloading of new shows
 
-You can see some screenshots below, and download the latest version further down the page, or from the Downloads link above.
+You can see some screenshots below, and download the latest version from the [http://code.google.com/p/bergamot/downloads/list Downloads] page. All versions, together with their complete source code is available in our [http://bergamot.googlecode.com/svn/Podcast/ Subversion repository].
+
 
 == Screenshots ==
 
@@ -35,11 +36,9 @@ Many providers offer flat rate fees that allow you unlimited data for a more rea
 
 If your phone supports it, using your own wireless LAN is a great option. Escarpod allows you to specify a connection.
 
-== Download ==
+== Releases ==
 
 To download binaries of Escarpod to use on your phone, visit our [http://code.google.com/p/bergamot/downloads/list Downloads] page.
-
-All versions, together with their complete source code is available in our [http://bergamot.googlecode.com/svn/Podcast/ Subversion repository].
 
   * Escarpod 0.91 (January 16th) [http://bergamot.googlecode.com/svn/Podcast/tags/v091 code]
     * Bug fixes
