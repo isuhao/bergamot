@@ -29,18 +29,19 @@ Escarpod was started by Sebastian Brännström, a.k.a _Teknolog_. Much help was 
 
 == Data Usage Warning == 
 
-Before you start using Escarpod, check your data rates with your access provider. Many charge exorbitant fees, and downloading large files such as podcasts may force you to sell your house.
+Before you start using Escarpod, check your data rates with your access provider. Many charge exorbitant fees, and downloading large files such as podcasts may force you to sell your house to pay the bills. We're not kidding!
 
-Many provides offer flat rate fees that allow you unlimited data for a more reasonable charge.
+Many providers offer flat rate fees that allow you unlimited data for a more reasonable charge.
 
 If your phone supports it, using your own wireless LAN is a great option. Escarpod allows you to specify a connection.
 
-
 == Download ==
 
-The following versions are suggested for download. All versions, together with their complete source code is available in our [http://bergamot.googlecode.com/svn/Podcast/ Subversion repository].
+To download binaries of Escarpod to use on your phone, visit our [http://code.google.com/p/bergamot/downloads/list Downloads] page.
 
-  * Beta 2 (version 0.9) (January 1st) | [http://bergamot.googlecode.com/svn/Podcast/tags/beta2/group/Podcast_udeb_signed.sis SIS] | [http://bergamot.googlecode.com/svn/Podcast/tags/beta2 code]
+All versions, together with their complete source code is available in our [http://bergamot.googlecode.com/svn/Podcast/ Subversion repository].
+
+  * Beta 2 (version 0.9) (January 1st) [http://bergamot.googlecode.com/svn/Podcast/tags/beta2 code]
     * New icons
     * Bug fixes
     * Swedish translation
