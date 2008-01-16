@@ -1,4 +1,6 @@
-&EN,SW,DA,RU,CS,IT,ET 
+; EN=01 IT=05 SW=06 DA=07 RU=16 CS=25 ET=49
+
+&EN,IT,SW,DA,RU,CS,ET 
 :"Bergamot Project"
 %{"Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project"}
 #{"Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod"}, (0xA00046BD), 0, 91, 0, TYPE=SA
