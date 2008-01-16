@@ -1,0 +1,148 @@
+// ListBox.rls
+//
+// © Symbian Software Ltd 2005. All rights reserved.
+//
+
+// Defines localisable strings, for inclusion in the resource source file
+// Used to localise an application by simply changing the resource file text.
+// Since changes to the text do not change the symbol information in the 
+// generated header file, it is not necessary to recompile the application
+// to use the new file.
+
+// list view commands
+rls_string STRING_r_listbox_listview_cmd_close_debug "Close (debug)"
+rls_string STRING_r_listbox_listview_cmd_close_debug_shorttext "Close"
+
+// Menu commands, view filtering and navigation
+rls_string STRING_r_view_cmd "Visa"
+// Navigation to shows view
+rls_string STRING_r_view_main_cmd "Huvudmeny"
+rls_string STRING_r_view_shows_cmd "Program på telefonen"
+rls_string STRING_r_view_all_shows_cmd "Alla program"
+rls_string STRING_r_view_new_shows_cmd "Ospelade"
+rls_string STRING_r_view_dl_shows_cmd "Program på telefonen"
+rls_string STRING_r_view_dling_shows_cmd "Nedladdare"
+rls_string STRING_r_view_about_cmd "Om"
+
+// Navigation to feeds
+rls_string STRING_r_view_feeds_cmd "Strömmar"
+
+// Navigation to the player
+rls_string STRING_r_view_player_cmd "Spelare"
+
+// Actions for the player
+rls_string STRING_r_play_cmd "Spela"
+rls_string STRING_r_stop_cmd "Stoppa"
+rls_string STRING_r_pause_cmd "Pause"
+rls_string STRING_r_volume_cmd "Volym"
+
+rls_string STRING_r_view_download_cmd "Ladda ner"
+rls_string STRING_r_view_download_short_cmd "Hämta"
+rls_string STRING_r_view_remove_download_short_cmd "Ta bort"
+rls_string STRING_r_view_remove_download_cmd "Ta bort nedladdning"
+
+rls_string STRING_r_view_show_cmd "Visa"
+rls_string STRING_r_view_cmd "Visa"
+rls_string STRING_r_view_play_cmd "Spela"
+rls_string STRING_r_view_mark_as_played_cmd "Markera som spelad"
+rls_string STRING_r_view_mark_as_unplayed_cmd "Markera som ospelad"
+
+// Actions for feeds
+rls_string STRING_r_view_add_feed_cmd "Lägg till ström"
+rls_string STRING_r_view_edit_feed_cmd "Ändra ström"
+rls_string STRING_r_view_delete_feed_cmd "Ta bort ström"
+rls_string STRING_r_view_purge_feed_cmd "Ta bort alla"
+rls_string STRING_r_update_feed_cmd "Uppdatera ström"
+rls_string STRING_r_update_feed_short_cmd "Uppdat."
+rls_string STRING_r_update_all_feeds_cmd "Uppdatera alla"
+rls_string STRING_r_update_all_feeds_short_cmd "Upd. alla"
+
+rls_string STRING_r_podcast_feeds_update_message "Uppdaterar..."
+rls_string STRING_r_podcast_feeds_update_error "Misslyckades!"
+
+// Actions for shows
+rls_string STRING_r_view_download_show_cmd "Ladda ner"
+rls_string STRING_r_view_delete_show_cmd "Ta bort"
+rls_string STRING_r_view_delete_shows_cmd "Ta bort alla"
+rls_string STRING_r_view_purge_show_cmd "Ta bort"
+rls_string STRING_r_view_remove_download_cmd "Unqueue"
+rls_string STRING_r_view_stop_downloads_cmd "Pausa nedladdningar"
+rls_string STRING_r_view_resume_downloads_cmd "Fortsätt nedladdningar"
+rls_string STRING_r_view_mark_all_played_cmd "Markera alla som spelade"
+rls_string STRING_r_view_show_unplayed_cmd "Visa endast ospelade"
+
+// Common actions
+rls_string STRING_r_zoom_cmd "Zooma"
+rls_string STRING_r_settings_cmd "Inställningar"
+
+// Categories
+rls_string STRING_r_category_all "Alla program"
+rls_string STRING_r_category_new "Ospelade"
+rls_string STRING_r_category_dled "Program på telefonen"
+rls_string STRING_r_category_pending "Nedladdare"
+
+// Application caption
+rls_string STRING_r_caption "Escarpod"
+rls_string STRING_r_short_caption "Podcast"
+
+// View titles
+rls_string STRING_r_view_feeds_title "Strömmar"
+
+// Shows view status strings
+rls_string STRING_r_podcast_shows_title_format "%d ospelade, %d totalt";
+rls_string STRING_r_podcast_shows_title_download "%d laddas ner, %d i kö";
+rls_string STRING_r_podcast_shows_downloads_suspended "Pausad, %d i kö";
+rls_string STRING_r_podcast_shows_no_items "Listan är tom";
+
+// Feeds view status strings
+rls_string STRING_r_podcast_feeds_title_format "%d strömmar"
+rls_string STRING_r_podcast_feeds_status_format "%d/%d program"
+rls_string STRING_r_podcast_shows_never_updated "Aldrig"
+
+// DIALOG string
+rls_string STRING_r_about_title "Om Escarpod";
+rls_string STRING_r_about_text "Escarpod\n\n Copyright(c) 2007-2008, The Bergamot Project\n\n http://bergamot.googlecode.com"
+
+rls_string STRING_r_add_feed_title "Lägg till ström"
+rls_string STRING_r_edit_feed_title "Ändra ström"
+
+rls_string STRING_r_add_feed_prompt "URL"
+
+rls_string STRING_r_remove_feed_title "Ta bort ström"
+rls_string STRING_r_remove_feed_prompt "Är du säker på att du vill ta bort strömmen?"
+
+rls_string STRING_r_enable_downloads_title "Fortsätt nedladdning"
+rls_string STRING_r_enable_downloads_prompt "Det finns program i nedladdningskön. Vill du ladda ner nu?"
+
+rls_string STRING_r_update_new_feed_title "Uppdatera ström"
+rls_string STRING_r_update_new_feed_prompt "Vill du uppdatera strömmen nu?"
+
+rls_string STRING_r_purge_feed_title "Purge Feed"
+rls_string STRING_r_purge_feed_prompt "Are you really sure you want to purge this feed, and remove all downloaded shows?"
+
+rls_string STRING_r_purge_show_title "Ta bort program"
+rls_string STRING_r_purge_show_prompt "Är du säker på att du vill ta bort programmet?"
+
+rls_string STRING_r_podcast_settings_title "Inställningar"
+rls_string STRING_r_podcast_setting_showdir "Programkatalog"
+rls_string STRING_r_podcast_setting_autodl "Automatisk nedladdning"
+rls_string STRING_r_podcast_setting_checkevery "Nedladdningsintervall"
+rls_string STRING_r_podcast_setting_minutes "minuter"
+
+rls_string STRING_r_podcast_setting_maxsimul "Max simultaneous downloads"
+rls_string STRING_r_podcast_setting_connection "Anslutning"
+rls_string STRING_r_podcast_setting_default "Använd standard"
+rls_string STRING_r_podcast_setting_wlanonly "Fråga mig"
+rls_string STRING_r_podcast_setting_usespecified "Använd förvald"
+rls_string STRING_r_podcast_setting_iaplist "Anslutningar"
+rls_string STRING_r_podcast_setting_cancel_cmd "Avbryt" // Cancel command in settings dialog
+rls_string STRING_r_podcast_setting_done_cmd "Stäng" // Done command in settings dialog
+rls_string STRING_r_podcast_setting_showdir_cmd "Välj" // Use to select show dir
+rls_string STRING_r_podcast_setting_volume "Volym" 
+
+// Choicelist for autodownload
+rls_string STRING_podcast_autodl_off "Av"
+rls_string STRING_podcast_audodl_feeds "Endast strömmar" 
+rls_string STRING_podcast_audodl_feedsandshows "Strömmar och program"
+
+rls_string STRING_r_podcast_iap_dlg_title "Välj anslutning"
