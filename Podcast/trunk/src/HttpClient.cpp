@@ -25,6 +25,13 @@ merchantability and/or non-infringement of the software provided herein.
 
 CHttpClient::~CHttpClient()
   {
+  if (iHandler)
+  	{
+  	iHandler->CloseSaveFile();
+	delete iHandler;
+  	}
+
+  
   iSession.Close();
   }
 
@@ -148,8 +155,11 @@ void CHttpClient::ClientRequestCompleteL(TBool aSuccessful) {
 	RDebug::Print(_L("CHttpClient::Get END"));
 	iTransactionCount--;
 	
-	if(iTransactionCount == 0) {
+	if(iTransactionCount == 0) 
+		{
 		RDebug::Print(_L("** Closing session"));
+		delete iHandler;
+		iHandler = NULL;
 		iSession.Close();
 	}
 }
