@@ -124,6 +124,7 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 					{
 						iPodcastModel.ShowEngine().PurgeShow(iPodcastModel.ActiveShowList()[index]->Uid());
 						UpdateShowItemL(iPodcastModel.ActiveShowList()[index]);
+						UpdateListboxItemsL();
 					}
 				}
 			}break;
