@@ -84,6 +84,14 @@ The name Escarpod is a pun on the french Escargot, meaning snail, and also used 
 
 Add any ideas as comments to this wiki page, or mail us at bergamot@googlegroups.com, or write directly in the [http://groups.google.com/group/bergamot discussion group].
 
+== Where do I find feeds? ==
+
+There are several sites that list and host podcasts. Some starting points are
+
+  * [http://podshow.com Podshow]
+  * [http://podcastalley.com Podcast Alley]
+  * [http://podhead.se Podhead] (Swedish)
+
 == License ==
 
 Escarpod is licensed under the [http://www.gnu.org/licenses/gpl-3.0.html GPL version 3] open source license. The authors retain the right to dual license this program for commercial purposes.
