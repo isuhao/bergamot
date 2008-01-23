@@ -14,14 +14,14 @@ rls_string STRING_r_listbox_listview_cmd_close_debug "Sulge (debug)"
 rls_string STRING_r_listbox_listview_cmd_close_debug_shorttext "Sulge"
 
 // Menu commands, view filtering and navigation
-rls_string STRING_r_view_cmd "Vaade"
+rls_string STRING_r_view_cmd "Näita"
 // Navigation to shows view
 rls_string STRING_r_view_main_cmd "Peamenüü"
-rls_string STRING_r_view_shows_cmd "Telefoni laetud"
+rls_string STRING_r_view_shows_cmd "Telefoni laetud lood"
 rls_string STRING_r_view_all_shows_cmd "Kõik"
 rls_string STRING_r_view_new_shows_cmd "Kuulamata"
-rls_string STRING_r_view_dl_shows_cmd "Telefoni laetud"
-rls_string STRING_r_view_dling_shows_cmd "Allalaadimine"
+rls_string STRING_r_view_dl_shows_cmd "Telefoni laetud lood"
+rls_string STRING_r_view_dling_shows_cmd "Allalaetavad lood"
 rls_string STRING_r_view_about_cmd "Escarpodi info"
 
 // Navigation to feeds
@@ -46,8 +46,6 @@ rls_string STRING_r_view_cmd "Vaata"
 rls_string STRING_r_view_play_cmd "Mängi"
 rls_string STRING_r_view_mark_as_played_cmd "Märgi mängituks"
 rls_string STRING_r_view_mark_as_unplayed_cmd "Märgi mittemängituks"
-// if previous one is too long then next one may me used as an alternative
-//rls_string STRING_r_view_mark_as_unplayed_cmd "Märgi mängimata"
 
 // Actions for feeds
 rls_string STRING_r_view_add_feed_cmd "Lisa voog"
@@ -63,7 +61,7 @@ rls_string STRING_r_podcast_feeds_update_message "Uuendan..."
 rls_string STRING_r_podcast_feeds_update_error "Uuendus ebaõnnestus!"
 
 // Actions for shows
-rls_string STRING_r_view_download_show_cmd "Allalaadimine"
+rls_string STRING_r_view_download_show_cmd "Lae alla"
 rls_string STRING_r_view_delete_show_cmd "Kustuta"
 rls_string STRING_r_view_delete_shows_cmd "Kustuta kõik"
 rls_string STRING_r_view_purge_show_cmd "Kustuta"
@@ -81,7 +79,7 @@ rls_string STRING_r_settings_cmd "Seaded"
 rls_string STRING_r_category_all "Kõik lood"
 rls_string STRING_r_category_new "Mängimata lood"
 rls_string STRING_r_category_dled "Telefoni laetud"
-rls_string STRING_r_category_pending "Allalaadija"
+rls_string STRING_r_category_pending "Allalaetavad"
 
 // Application caption
 rls_string STRING_r_caption "Escarpod"
@@ -111,7 +109,7 @@ rls_string STRING_r_edit_feed_title "Muuda voogu"
 rls_string STRING_r_add_feed_prompt "Voo URL"
 
 rls_string STRING_r_remove_feed_title "Eemalda voog"
-rls_string STRING_r_remove_feed_prompt "Soovid sa tõesti eemaldada selle voo?"
+rls_string STRING_r_remove_feed_prompt "Kas eemaldada valitud voog?"
 
 rls_string STRING_r_enable_downloads_title "Taasta allalaadimine"
 rls_string STRING_r_enable_downloads_prompt "Allalaadimise ootel on lugusid. Kas alustada allalaadmist kohe?"
@@ -136,7 +134,7 @@ rls_string STRING_r_podcast_setting_connection "Ühendus"
 rls_string STRING_r_podcast_setting_default "Tavaline"
 rls_string STRING_r_podcast_setting_wlanonly "Küsi alati"
 rls_string STRING_r_podcast_setting_usespecified "Määratud"
-rls_string STRING_r_podcast_setting_iaplist "Ühendused"
+rls_string STRING_r_podcast_setting_iaplist "Kasutatav ühendus"
 rls_string STRING_r_podcast_setting_cancel_cmd "Tühista" // Cancel command in settings dialog
 rls_string STRING_r_podcast_setting_done_cmd "Valmis" // Done command in settings dialog
 rls_string STRING_r_podcast_setting_showdir_cmd "Vali" // Use to select show dir
@@ -148,4 +146,3 @@ rls_string STRING_podcast_audodl_feeds "Ainult vood"
 rls_string STRING_podcast_audodl_feedsandshows "Vood ja lood"
 
 rls_string STRING_r_podcast_iap_dlg_title "Vali ühendus"
-
