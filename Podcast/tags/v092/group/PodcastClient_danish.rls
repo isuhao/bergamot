@@ -1,0 +1,145 @@
+// ListBox.rls
+//
+// © Symbian Software Ltd 2005. All rights reserved.
+//
+
+// Defines localisable strings, for inclusion in the resource source file
+// Used to localise an application by simply changing the resource file text.
+// Since changes to the text do not change the symbol information in the 
+// generated header file, it is not necessary to recompile the application
+// to use the new file.
+
+// list view commands
+rls_string STRING_r_listbox_listview_cmd_close_debug "Afslut (debug)"
+rls_string STRING_r_listbox_listview_cmd_close_debug_shorttext "Afslut"
+
+// Menu commands, view filtering and navigation
+rls_string STRING_r_view_cmd "Vis"
+// Navigation to shows view
+rls_string STRING_r_view_main_cmd "Menu"
+rls_string STRING_r_view_shows_cmd "Afsnit på telefon"
+rls_string STRING_r_view_all_shows_cmd "Alle afsnit"
+rls_string STRING_r_view_new_shows_cmd "Ikke afspillede"
+rls_string STRING_r_view_dl_shows_cmd "Afsnit på telefon"
+rls_string STRING_r_view_dling_shows_cmd "Downloader"
+
+// Navigation to feeds
+rls_string STRING_r_view_feeds_cmd "Feeds"
+
+// Navigation to the player
+rls_string STRING_r_view_player_cmd "Afspiller"
+
+// Actions for the player
+rls_string STRING_r_play_cmd "Afspil"
+rls_string STRING_r_stop_cmd "Stop"
+rls_string STRING_r_pause_cmd "Pause"
+rls_string STRING_r_volume_cmd "Lydstyrke"
+
+rls_string STRING_r_view_download_cmd "Download"
+rls_string STRING_r_view_download_short_cmd "Hent"
+rls_string STRING_r_view_remove_download_short_cmd "Fjern"
+rls_string STRING_r_view_remove_download_cmd "Fjern download"
+
+rls_string STRING_r_view_show_cmd "Afsnit"
+rls_string STRING_r_view_cmd "Vis"
+rls_string STRING_r_view_play_cmd "Afspil"
+rls_string STRING_r_view_mark_as_played_cmd "Marker som afspillet"
+rls_string STRING_r_view_mark_as_unplayed_cmd "Marker som uafspillet"
+
+// Actions for feeds
+rls_string STRING_r_view_add_feed_cmd "Tilføj feed"
+rls_string STRING_r_view_edit_feed_cmd "Rediger feed"
+rls_string STRING_r_view_delete_feed_cmd "Fjern feed"
+rls_string STRING_r_view_purge_feed_cmd "Fjern alle"
+rls_string STRING_r_update_feed_cmd "Opdater feed"
+rls_string STRING_r_update_feed_short_cmd "Opdater"
+rls_string STRING_r_update_all_feeds_cmd "Opdater alle"
+rls_string STRING_r_update_all_feeds_short_cmd "Opdt. alle"
+
+rls_string STRING_r_podcast_feeds_update_message "Opdaterer..."
+rls_string STRING_r_podcast_feeds_update_error "Opdatering mislykkedes!"
+
+// Actions for shows
+rls_string STRING_r_view_download_show_cmd "Download"
+rls_string STRING_r_view_delete_show_cmd "Slet"
+rls_string STRING_r_view_delete_shows_cmd "Slet alle"
+rls_string STRING_r_view_purge_show_cmd "Slet"
+rls_string STRING_r_view_remove_download_cmd "Ikke i kø"
+rls_string STRING_r_view_stop_downloads_cmd "Suspender downloading"
+rls_string STRING_r_view_resume_downloads_cmd "Genoptag downloading"
+rls_string STRING_r_view_mark_all_played_cmd "Marker alle som afspillet"
+rls_string STRING_r_view_show_unplayed_cmd "Vis kun uafspillede"
+
+// Common actions
+rls_string STRING_r_zoom_cmd "Zoom"
+rls_string STRING_r_settings_cmd "Indstillinger"
+
+// Categories
+rls_string STRING_r_category_all "Alle shows"
+rls_string STRING_r_category_new "Uafspillede"
+rls_string STRING_r_category_dled "Afsnit på telefon"
+rls_string STRING_r_category_pending "Downloader"
+
+// Application caption
+rls_string STRING_r_caption "Escarpod"
+rls_string STRING_r_short_caption "Podcast"
+
+// View titles
+rls_string STRING_r_view_feeds_title "Feeds"
+
+// Shows view status strings
+rls_string STRING_r_podcast_shows_title_format "%d uafspillede, %d i alt";
+rls_string STRING_r_podcast_shows_title_download "%d downloading, %d i kø";
+rls_string STRING_r_podcast_shows_downloads_suspended "Suspenderet, %d sat i kø";
+rls_string STRING_r_podcast_shows_no_items "Ingen afsnit";
+
+// Feeds view status strings
+rls_string STRING_r_podcast_feeds_title_format "%d feeds"
+rls_string STRING_r_podcast_feeds_status_format "%d/%d afsnit"
+rls_string STRING_r_podcast_shows_never_updated "Aldrig"
+
+// DIALOG string
+rls_string STRING_r_add_feed_title "Tilføj feed"
+rls_string STRING_r_edit_feed_title "Rediger feed"
+
+rls_string STRING_r_add_feed_prompt "Feed URL"
+
+rls_string STRING_r_remove_feed_title "Fjern feed"
+rls_string STRING_r_remove_feed_prompt "Er du helt sikker på at du vil fjerne dette fed?"
+
+rls_string STRING_r_enable_downloads_title "Genoptag downloading"
+rls_string STRING_r_enable_downloads_prompt "Der er afsnit i download-køen. Vil du downloade nu?"
+
+rls_string STRING_r_update_new_feed_title "Opdater feed"
+rls_string STRING_r_update_new_feed_prompt "Vil du opdatere dette feed nu?"
+
+rls_string STRING_r_purge_feed_title "Slet feed"
+rls_string STRING_r_purge_feed_prompt "Er du helt sikker på at du vil slette dette feed og alle downloadede afsnit?"
+
+rls_string STRING_r_purge_show_title "Slet afsnit"
+rls_string STRING_r_purge_show_prompt "Er du sikker på at du vil slette dette afsnit?"
+
+rls_string STRING_r_podcast_settings_title "Indstillinger"
+rls_string STRING_r_podcast_setting_showdir "Podcast placering"
+rls_string STRING_r_podcast_setting_autodl "Automatisk download"
+rls_string STRING_r_podcast_setting_checkevery "Download interval"
+rls_string STRING_r_podcast_setting_minutes "minutter"
+
+rls_string STRING_r_podcast_setting_maxsimul "Maks. samtidige downloads"
+rls_string STRING_r_podcast_setting_connection "Forbindelse"
+rls_string STRING_r_podcast_setting_default "Brug standard"
+rls_string STRING_r_podcast_setting_wlanonly "Spørg altid"
+rls_string STRING_r_podcast_setting_usespecified "Brug specificeret"
+rls_string STRING_r_podcast_setting_iaplist "Forbindelser"
+rls_string STRING_r_podcast_setting_cancel_cmd "Tilbage" // Cancel command in settings dialog
+rls_string STRING_r_podcast_setting_done_cmd "Færdig" // Done command in settings dialog
+rls_string STRING_r_podcast_setting_showdir_cmd "Vælg" // Use to select show dir
+rls_string STRING_r_podcast_setting_volume "Lydstyrke" 
+
+// Choicelist for autodownload
+rls_string STRING_podcast_autodl_off "Fra"
+rls_string STRING_podcast_audodl_feeds "Kun feeds" 
+rls_string STRING_podcast_audodl_feedsandshows "Feeds og afsnit"
+
+rls_string STRING_r_podcast_iap_dlg_title "Vælg internetkonto"
+
