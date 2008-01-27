@@ -40,7 +40,7 @@ If your phone supports it, using your own wireless LAN is a great option. Escarp
 
 To download binaries of Escarpod to use on your phone, visit our [http://code.google.com/p/bergamot/downloads/list Downloads] page.
 
-  * Escarpod 0.92 (January 26th) [http://bergamot.googlecode.com/svn/Podcast/tags/v091 code]
+  * Escarpod 0.92 (January 26th) [http://bergamot.googlecode.com/svn/Podcast/tags/v092 code]
     * Bug fixes (should stop the almost-daily crash)
     * Czech language fix
 
