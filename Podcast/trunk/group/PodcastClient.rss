@@ -16,6 +16,8 @@
 #include "PodcastClient.hrh"
 #ifdef LANGUAGE_01
 	#include "PodcastClient_english.rls"
+#elif defined LANGUAGE_03
+	#include "PodcastClient_german.rls"
 #elif defined LANGUAGE_05
 	#include "PodcastClient_italian.rls"
 #elif defined LANGUAGE_06

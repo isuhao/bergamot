@@ -19,7 +19,7 @@ rls_string STRING_r_view_cmd "Перейти"
 // Navigation to shows view
 rls_string STRING_r_view_main_cmd "Главная"
 rls_string STRING_r_view_shows_cmd "Хранилище"
-rls_string STRING_r_view_all_shows_cmd "Все Подкасты"
+rls_string STRING_r_view_all_shows_cmd "Все подкасты"
 rls_string STRING_r_view_new_shows_cmd "Новые"
 rls_string STRING_r_view_dl_shows_cmd "Хранилище"
 rls_string STRING_r_view_dling_shows_cmd "Закачки"
@@ -40,23 +40,23 @@ rls_string STRING_r_volume_cmd "Громкость"
 rls_string STRING_r_view_download_cmd "Скачать"
 rls_string STRING_r_view_download_short_cmd "Скачать"
 rls_string STRING_r_view_remove_download_short_cmd "Удалить"
-rls_string STRING_r_view_remove_download_cmd "Удалить Закачку"
+rls_string STRING_r_view_remove_download_cmd "Удалить закачку"
 
 rls_string STRING_r_view_show_cmd "Обзор"
 rls_string STRING_r_view_cmd "Перейти"
 rls_string STRING_r_view_play_cmd "Слушать"
-rls_string STRING_r_view_mark_as_played_cmd "Отм. как Прослушанный"
-rls_string STRING_r_view_mark_as_unplayed_cmd "Отм. как Новый"
+rls_string STRING_r_view_mark_as_played_cmd "Отм. как прослушанный"
+rls_string STRING_r_view_mark_as_unplayed_cmd "Отм. как новый"
 
 // Actions for feeds
-rls_string STRING_r_view_add_feed_cmd "Добавить Поток"
-rls_string STRING_r_view_edit_feed_cmd "Редактировать Поток"
-rls_string STRING_r_view_delete_feed_cmd "Удалить Поток"
-rls_string STRING_r_view_purge_feed_cmd "Удалить Все"
-rls_string STRING_r_update_feed_cmd "Обновить Поток"
+rls_string STRING_r_view_add_feed_cmd "Добавить поток"
+rls_string STRING_r_view_edit_feed_cmd "Редактировать поток"
+rls_string STRING_r_view_delete_feed_cmd "Удалить поток"
+rls_string STRING_r_view_purge_feed_cmd "Удалить все"
+rls_string STRING_r_update_feed_cmd "Обновить поток"
 rls_string STRING_r_update_feed_short_cmd "Обновить"
-rls_string STRING_r_update_all_feeds_cmd "Обновить Все"
-rls_string STRING_r_update_all_feeds_short_cmd "Обн. Все"
+rls_string STRING_r_update_all_feeds_cmd "Обновить все"
+rls_string STRING_r_update_all_feeds_short_cmd "Обн. все"
 
 rls_string STRING_r_podcast_feeds_update_message "Обновляю..."
 rls_string STRING_r_podcast_feeds_update_error "Ошибка при обновлении!"
@@ -64,20 +64,20 @@ rls_string STRING_r_podcast_feeds_update_error "Ошибка при обновл
 // Actions for shows
 rls_string STRING_r_view_download_show_cmd "Скачать"
 rls_string STRING_r_view_delete_show_cmd "Удалить"
-rls_string STRING_r_view_delete_shows_cmd "Удалить Все"
+rls_string STRING_r_view_delete_shows_cmd "Удалить все"
 rls_string STRING_r_view_purge_show_cmd "Удалить"
-rls_string STRING_r_view_remove_download_cmd "Удалить Закачку"
-rls_string STRING_r_view_stop_downloads_cmd "Приостановить Скачивание"
-rls_string STRING_r_view_resume_downloads_cmd "Возобновить Скачивание"
-rls_string STRING_r_view_mark_all_played_cmd "Отм. Все как Прослушанные"
-rls_string STRING_r_view_show_unplayed_cmd "Показ. Только Новые"
+rls_string STRING_r_view_remove_download_cmd "Удалить закачку"
+rls_string STRING_r_view_stop_downloads_cmd "Приостановить скачивание"
+rls_string STRING_r_view_resume_downloads_cmd "Возобновить скачивание"
+rls_string STRING_r_view_mark_all_played_cmd "Отм. все как прослуш."
+rls_string STRING_r_view_show_unplayed_cmd "Показ. только новые"
 
 // Common actions
 rls_string STRING_r_zoom_cmd "Масштаб"
 rls_string STRING_r_settings_cmd "Настройки"
 
 // Categories
-rls_string STRING_r_category_all "Все Подкасты"
+rls_string STRING_r_category_all "Все подкасты"
 rls_string STRING_r_category_new "Новые"
 rls_string STRING_r_category_dled "Подкасты"
 rls_string STRING_r_category_pending "Закачки"
@@ -87,57 +87,56 @@ rls_string STRING_r_caption "Escarpod"
 rls_string STRING_r_short_caption "Escarpod"
 
 // View titles
-rls_string STRING_r_view_feeds_title "Потоков"
+rls_string STRING_r_view_feeds_title "потоков"
 
 // Shows view status strings
-rls_string STRING_r_podcast_shows_title_format "%d Новых, %d Всего";
-rls_string STRING_r_podcast_shows_title_download "%d Скач., %d Ожидают";
-rls_string STRING_r_podcast_shows_downloads_suspended "Приост., %d Ожидают";
+rls_string STRING_r_podcast_shows_title_format "%d новых, %d всего";
+rls_string STRING_r_podcast_shows_title_download "%d скач., %d ожидают";
+rls_string STRING_r_podcast_shows_downloads_suspended "Приост., %d ожидают";
 rls_string STRING_r_podcast_shows_no_items "Пусто";
 
 // Feeds view status strings
-rls_string STRING_r_podcast_feeds_title_format "%d Потоков"
-rls_string STRING_r_podcast_feeds_status_format "%d/%d Подкастов"
-rls_string STRING_r_podcast_shows_never_updated "TRANSLATE:Never"
+rls_string STRING_r_podcast_feeds_title_format "%d потоков"
+rls_string STRING_r_podcast_feeds_status_format "%d/%d подкастов"
+rls_string STRING_r_podcast_shows_never_updated "Неизвестно"
 
 // DIALOG string
 rls_string STRING_r_about_title "О программе";
-rls_string STRING_r_about_text "Разработчики:\nПроект Escarpod был начат Себастьяном Бранстрёмом (Sebastian Brännström), известным под ником Teknolog. Огромная помощь была получена от Ларса Персонна (Lars Persson), известным также как AnotherGuest. Он проделал основную работу над UI, и общие улучшения кода.\n\nАлан Эдди (Alan Eddie) нарисовал все иконки.\n\nЛицензия\nEscarpod лицензируется под открытой лицензией GPL версии 3. Авторы оставляют за собой право на двойную лицензию в коммерческих целях\n\n(c) 2007/2008"
+rls_string STRING_r_about_text "Escarpod\n\n Copyright(c) 2007-2008, The Bergamot Project\n\n http://bergamot.googlecode.com"
 
 
 
+rls_string STRING_r_add_feed_title "Добавить поток"
+rls_string STRING_r_edit_feed_title "Редактировать поток"
 
-rls_string STRING_r_add_feed_title "Добавить Поток"
-rls_string STRING_r_edit_feed_title "Редактировать Поток"
+rls_string STRING_r_add_feed_prompt "URL потока"
 
-rls_string STRING_r_add_feed_prompt "URL Потока"
-
-rls_string STRING_r_remove_feed_title "Удалить Поток"
+rls_string STRING_r_remove_feed_title "Удалить поток"
 rls_string STRING_r_remove_feed_prompt "Вы действительно хотите удалить этот поток?"
 
-rls_string STRING_r_enable_downloads_title "Возобновить Скачивание"
+rls_string STRING_r_enable_downloads_title "Возобновить скачивание"
 rls_string STRING_r_enable_downloads_prompt "В очереди на скачивание присутствуют подкасты. Хотите начать скачивание сейчас?"
 
-rls_string STRING_r_update_new_feed_title "Обновить Поток"
+rls_string STRING_r_update_new_feed_title "Обновить поток"
 rls_string STRING_r_update_new_feed_prompt "Вы хотите обновить поток сейчас?"
 
-rls_string STRING_r_purge_feed_title "Очистить Поток"
+rls_string STRING_r_purge_feed_title "Очистить поток"
 rls_string STRING_r_purge_feed_prompt "Вы действительно хотите очистить этот поток и удалить все закачанные подкасты?"
 
-rls_string STRING_r_purge_show_title "Удалить Подкаст"
+rls_string STRING_r_purge_show_title "Удалить подкаст"
 rls_string STRING_r_purge_show_prompt "Вы действительно хотите удалить этот подкаст?"
 
 rls_string STRING_r_podcast_settings_title "Настройки"
-rls_string STRING_r_podcast_setting_showdir "Хранить Подкасты в"
-rls_string STRING_r_podcast_setting_autodl "Скачивать Автоматически"
-rls_string STRING_r_podcast_setting_checkevery "Интервал Скачивания"
+rls_string STRING_r_podcast_setting_showdir "Хранить подкасты в"
+rls_string STRING_r_podcast_setting_autodl "Скачивать автоматически"
+rls_string STRING_r_podcast_setting_checkevery "Интервал скачивания"
 rls_string STRING_r_podcast_setting_minutes "минут"
 
 rls_string STRING_r_podcast_setting_maxsimul "Макс. кол-во одновременных закачек"
 rls_string STRING_r_podcast_setting_connection "Подключение"
 rls_string STRING_r_podcast_setting_default "По умолчанию"
-rls_string STRING_r_podcast_setting_wlanonly "Всегда Спрашивать"
-rls_string STRING_r_podcast_setting_usespecified "Использовать Указанный"
+rls_string STRING_r_podcast_setting_wlanonly "Всегда спрашивать"
+rls_string STRING_r_podcast_setting_usespecified "Использовать указанный"
 rls_string STRING_r_podcast_setting_iaplist "Подключения"
 rls_string STRING_r_podcast_setting_cancel_cmd "Отмена" // Cancel command in settings dialog
 rls_string STRING_r_podcast_setting_done_cmd "Готово" // Done command in settings dialog
@@ -146,8 +145,8 @@ rls_string STRING_r_podcast_setting_volume "Громкость"
 
 // Choicelist for autodownload
 rls_string STRING_podcast_autodl_off "Отключено"
-rls_string STRING_podcast_audodl_feeds "Только Потоки" 
-rls_string STRING_podcast_audodl_feedsandshows "Потоки и Подкасты"
+rls_string STRING_podcast_audodl_feeds "Только потоки" 
+rls_string STRING_podcast_audodl_feedsandshows "Потоки и подкасты"
 
 rls_string STRING_r_podcast_iap_dlg_title "Выберите подключение"
 
