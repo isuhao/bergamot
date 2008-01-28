@@ -7,7 +7,7 @@
 #include "PodcastModel.h"
 #include "es_sock.h"
 
-_LIT8(KUserAgent, "PodcastPlayer (0.2)");
+_LIT8(KUserAgent, "Escarpod/UIQ");
 _LIT8(KAccept, "*/*");
 
 class CHttpClient : public CBase
