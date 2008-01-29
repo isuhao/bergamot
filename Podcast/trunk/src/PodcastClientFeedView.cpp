@@ -57,7 +57,6 @@ void CPodcastClientFeedView::ViewConstructL()
     ViewConstructFromResourceL(R_PODCAST_FEEDVIEW_UI_CONFIGURATIONS);
 
 	CPodcastClientView::ViewConstructL();
-	ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *iViewLabel);
 }
 
 
@@ -66,6 +65,7 @@ void CPodcastClientFeedView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid 
 	CPodcastClientView::ViewActivatedL(aPrevViewId, aCustomMessageId, aCustomMessage);
 
 	SetParentView( TVwsViewId(KUidPodcastClientID, KUidPodcastBaseViewID) );
+	SetAppTitleNameL(*iViewLabel);
 }
 
 

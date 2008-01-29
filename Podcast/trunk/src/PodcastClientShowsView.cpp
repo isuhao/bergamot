@@ -122,8 +122,7 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 					TInt index = iListbox->CurrentItemIndex();
 					if(index >= 0 && index < iPodcastModel.ActiveShowList().Count())
 					{
-						iPodcastModel.ShowEngine().PurgeShow(iPodcastModel.ActiveShowList()[index]->Uid());
-						UpdateShowItemL(iPodcastModel.ActiveShowList()[index]);
+						iPodcastModel.ShowEngine().PurgeShow(iPodcastModel.ActiveShowList()[index]->Uid());					
 						UpdateListboxItemsL();
 					}
 				}

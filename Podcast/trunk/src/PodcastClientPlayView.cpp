@@ -125,9 +125,17 @@ TKeyResponse CPodcastClientPlayView::OfferKeyEventL(const TKeyEvent& aKeyEvent,T
 	{
 		switch(aKeyEvent.iCode)
 		{
-		case '*':
-		case '6':
+		case EKeyLeftArrow:
+		case EKeyRightArrow:
+		case EDeviceKeyFourWayLeft:
 		case EDeviceKeyFourWayRight:
+			if(iPlayProgressbar->IsVisible())
+			{
+				iPlayProgressbar->OfferKeyEventL(aKeyEvent, aType);
+			}
+			break;
+		case '*':
+		case '6':	
 			if(iPodcastModel.SettingsEngine().Volume() < KMaxVolume)
 			{
 				iPodcastModel.SettingsEngine().SetVolume(iPodcastModel.SettingsEngine().Volume()+KVolumeDelta);
@@ -135,8 +143,7 @@ TKeyResponse CPodcastClientPlayView::OfferKeyEventL(const TKeyEvent& aKeyEvent,T
 			break;
 		case '4':
 		case '#':
-		case EDeviceKeyFourWayLeft:
-				if(iPodcastModel.SettingsEngine().Volume() > 0)
+			if(iPodcastModel.SettingsEngine().Volume() > 0)
 			{
 				iPodcastModel.SettingsEngine().SetVolume(iPodcastModel.SettingsEngine().Volume()-KVolumeDelta);
 			}
@@ -239,7 +246,7 @@ void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 				if(iPodcastModel.SoundEngine().State() == ESoundEnginePlaying)
 				{
 					iPodcastModel.SoundEngine().Pause();
-					iPlayProgressbar->SetFocusing(ETrue);
+					iPlayProgressbar->SetFocusing(EFalse);
 					comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PLAY_CMD);
 					RequestFocusL(iScrollableContainer);
 				}
@@ -260,7 +267,7 @@ void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 	case EPodcastStop:
 		{
 			comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PLAY_CMD);
-			iPlayProgressbar->SetFocusing(ETrue);
+			iPlayProgressbar->SetFocusing(EFalse);
 			iPodcastModel.SoundEngine().Stop();	
 		}break;
 	case EPodcastRemoveDownload:
@@ -392,7 +399,11 @@ void CPodcastClientPlayView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload
 {
 	if(iDownloadProgressInfo != NULL)
 	{
-		iDownloadProgressInfo->SetFinalValue(aBytesTotal);
+		if(iDownloadProgressInfo->Info().iFinalValue != aBytesTotal)
+		{
+			iDownloadProgressInfo->SetFinalValue(aBytesTotal);
+		}
+
 		iDownloadProgressInfo->SetAndDraw(aBytesOfCurrentDownload);
 	}
 
@@ -502,6 +513,8 @@ void CPodcastClientPlayView::UpdateViewL()
 					if(feedInfo->ImageFileName() != iLastImageFileName)
 					{
 						iLastImageFileName = feedInfo->ImageFileName();
+						iCoverImageCtrl->CreatePictureFromFileL(_L("*"), EMbmPodcastclientEmptyimage, EMbmPodcastclientEmptyimage);								
+
 						if(!iBitmapConverter->IsActive())
 						{
 							TRAPD(err, iBitmapConverter->LoadImageDataL(feedInfo->ImageFileName()));
@@ -513,7 +526,6 @@ void CPodcastClientPlayView::UpdateViewL()
 							else
 							{
 								iLastImageFileName = KNullDesC();
-								iCoverImageCtrl->CreatePictureFromFileL(_L("*"), EMbmPodcastclientEmptyimage, EMbmPodcastclientEmptyimage);								
 							}
 						}
 					}
@@ -562,7 +574,7 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 		else
 		{
 			comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PLAY_CMD);
-			iPlayProgressbar->SetFocusing(ETrue);
+			iPlayProgressbar->SetFocusing(EFalse);
 		}
 		
 		
