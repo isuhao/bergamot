@@ -187,11 +187,18 @@ void CFeedEngine::AddFeed(CFeedInfo *item) {
 	iFeeds.Append(item);
 	}
 
-void CFeedEngine::RemoveFeed(TUint aUid) {
-	for (int i=0;i<iFeeds.Count();i++) {
-		if (iFeeds[i]->Uid() == aUid) {
+void CFeedEngine::RemoveFeed(TUint aUid) 
+	{
+	for (int i=0;i<iFeeds.Count();i++) 
+		{
+		if (iFeeds[i]->Uid() == aUid) 
+			{
 			iPodcastModel.ShowEngine().PurgeShowsByFeed(aUid);
+			
+			CFeedInfo* feedToRemove = iFeeds[i];
 			iFeeds.Remove(i);
+			delete feedToRemove;
+			
 			RDebug::Print(_L("Removed feed"));
 			SaveFeeds();
 			return;
@@ -248,7 +255,7 @@ void CFeedEngine::Complete(CHttpClient* /*aClient*/, TBool aSuccessful)
 {
 	RDebug::Print(_L("Complete, aSuccessful=%d"), aSuccessful);
 	if (iClientState == EFeed) {
-		TFileName filePath;
+	
 		iParser->ParseFeedL(iUpdatingFeedFileName, iActiveFeed, iPodcastModel.SettingsEngine().MaxListItems());
 		
 		if (iActiveFeed->ImageFileName().Length() == 0 || !BaflUtils::FileExists(iFs,iActiveFeed->ImageFileName())) {
