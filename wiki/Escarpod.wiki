@@ -1,4 +1,5 @@
 #summary A pocket full of snails
+#labels Featured
 
 http://bergamot.googlecode.com/svn/wiki/escarpod_large.jpg
 
