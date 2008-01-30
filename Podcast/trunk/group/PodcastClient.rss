@@ -1,6 +1,6 @@
-// ListBoxEasy.rss
+// PodcastClient.Rss
 //
-//  Symbian Software Ltd 2005. All rights reserved.
+// (c) The bergamot project
 //
 
 #include <eikon.rh>
@@ -28,6 +28,8 @@
 	#include "PodcastClient_russian.rls"
 #elif defined LANGUAGE_25
 	#include "PodcastClient_czech.rls"
+#elif defined LANGUAGE_27
+	#include "PodcastClient_polish.rls"
 #elif defined LANGUAGE_49
 	#include "PodcastClient_estonian.rls"
 #endif
