@@ -56,6 +56,8 @@ void CMetaDataReader::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeco
 	int numEntries = 0;
 	if (iPlayer->GetNumberOfMetaDataEntries(numEntries) == KErrNone) {
 		RDebug::Print(_L("%d meta data entries"), numEntries);
+		iShow->SetPlayTime((aDuration.Int64()/1000000));
+
 		for (int i=0;i<numEntries;i++) {
 			CMMFMetaDataEntry * entry;
 			TRAPD(error, entry = iPlayer->GetMetaDataEntryL(i));

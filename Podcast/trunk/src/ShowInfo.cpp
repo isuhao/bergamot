@@ -71,6 +71,7 @@ void CShowInfo::ExternalizeL(RWriteStream& aStream) const {
 	aStream.WriteInt32L(I64HIGH(iPosition.Int64()));
 	aStream.WriteInt32L(I64LOW(iPubDate.Int64()));
 	aStream.WriteInt32L(I64HIGH(iPubDate.Int64()));
+	aStream.WriteUint32L(iPlayTime);
 	}
 
 void CShowInfo::InternalizeL(RReadStream& aStream) {
@@ -112,6 +113,7 @@ void CShowInfo::InternalizeL(RReadStream& aStream) {
 	low = aStream.ReadInt32L();
 	high = aStream.ReadInt32L();
 	iPubDate = MAKE_TINT64(high, low);
+	TRAPD(err,iPlayTime = aStream.ReadUint32L());
 }
 
 TDesC& CShowInfo::Title() const
@@ -170,6 +172,16 @@ void CShowInfo::SetPosition(TTimeIntervalMicroSeconds aPosition)
 	{
 	RDebug::Print(_L("SetPosition"));
 	iPosition = aPosition;
+	}
+
+TUint CShowInfo::PlayTime() const
+	{
+	return iPlayTime;
+	}
+
+void CShowInfo::SetPlayTime(TUint aPlayTime)
+	{
+	iPlayTime = aPlayTime;
 	}
 
 TPlayState CShowInfo::PlayState()

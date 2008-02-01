@@ -41,6 +41,9 @@ public:
 	TTimeIntervalMicroSeconds& Position();
 	void SetPosition(TTimeIntervalMicroSeconds aPosition);
 
+	TUint PlayTime() const;
+	void SetPlayTime(TUint aPlayTime);
+
 	TPlayState PlayState();
 	void SetPlayState(TPlayState aPlayState);
 
@@ -75,6 +78,7 @@ private:
 	HBufC* iDescription;
 	HBufC* iFileName;
 	TTimeIntervalMicroSeconds iPosition;
+	TUint   iPlayTime;
 	TPlayState iPlayState;
 	TDownloadState iDownloadState;
 	TUint iFeedUid;

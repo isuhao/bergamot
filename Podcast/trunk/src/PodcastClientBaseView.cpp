@@ -155,45 +155,31 @@ void CPodcastClientBaseView::UpdateListboxItemsL()
 		TInt cnt = model.Count();
 
 		model.ModelBeginUpdateLC();
+		TPtrC descriptionText(KNullDesC());
+		TBool playerActive = EFalse;
 		if(iPodcastModel.PlayingPodcast() != NULL && (iPodcastModel.SoundEngine().State() == ESoundEnginePlaying || iPodcastModel.SoundEngine().State() == ESoundEnginePaused))
 		{
-			TBool found = EFalse;
-			for(TInt loop = 0;loop <cnt;loop++)
-			{
-				MQikListBoxData* data = model.RetrieveDataL(loop);	
-				TInt itemId = data->ItemId();
-				
-				
-				if(itemId == EBaseViewPlayer)
-				{	
-					found = ETrue;
-					data->SetDimmed(EFalse);
-					data->Close();
-					model.DataUpdatedL(loop);
-					break;
-				}
-
-				data->Close();				
-			}			
+			playerActive = ETrue;
+			descriptionText.Set(iPodcastModel.PlayingPodcast()->Description());	
 		}
-		else
+		
+		for(TInt loop = 0;loop <cnt;loop++)
 		{
-			for(TInt loop = 0;loop <cnt;loop++)
+			MQikListBoxData* data = model.RetrieveDataL(loop);	
+			TInt itemId = data->ItemId();
+			
+			if(itemId == EBaseViewPlayer)
 			{
-				MQikListBoxData* data = model.RetrieveDataL(loop);	
-				TInt itemId = data->ItemId();
-			
-				if(itemId == EBaseViewPlayer)
-				{
-					data->SetDimmed(ETrue);
-					data->Close();
-					model.DataUpdatedL(loop);
-					break;
-				}
-			
+				data->SetDimmed(!playerActive);					
+				data->SetTextL(descriptionText, EQikListBoxSlotText2);
 				data->Close();
-			}	
-		}
+				model.DataUpdatedL(loop);
+				break;
+			}
+			
+			data->Close();
+		}	
+		
 		model.ModelEndUpdateL();
 		
 	}

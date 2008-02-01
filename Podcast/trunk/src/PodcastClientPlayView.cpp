@@ -29,7 +29,7 @@ const TInt KMaxCoverImageWidth = 200;
 const TInt KMaxProgressValue = 320;
 const TInt KTimeLabelSize = 32;
 
-_LIT(KZeroTime,"00:00");
+_LIT(KZeroTime,"0:00:00");
 /**
 Creates and constructs the view.
 
@@ -183,6 +183,8 @@ void CPodcastClientPlayView::PlaybackStartedL()
 void CPodcastClientPlayView::PlaybackStoppedL()
 {
 	iPlaybackTicker->Cancel();
+	iShowInfo->SetPosition(0);
+	iPodcastModel.PlayingPodcast()->SetPosition(0);
 	UpdatePlayStatusL();
 }
 
@@ -392,6 +394,7 @@ void CPodcastClientPlayView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid 
 void CPodcastClientPlayView::ViewDeactivated()
 {
 	CQikViewBase::ViewDeactivated();
+	iPlaybackTicker->Cancel();
 }
 
 void CPodcastClientPlayView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt aBytesTotal)
@@ -554,12 +557,18 @@ void CPodcastClientPlayView::UpdateViewL()
 		
 
 		RequestRelayout(this);
+		if(iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.PlayingPodcast()->Uid() == iShowInfo->Uid() && iPodcastModel.SoundEngine().State() == ESoundEnginePlaying)
+		{
+			iPlaybackTicker->Cancel();
+			iPlaybackTicker->Start(KAudioTickerPeriod, KAudioTickerPeriod, TCallBack(PlayingUpdateStaticCallbackL, this));
+		}
+
 }
 
 void CPodcastClientPlayView::UpdatePlayStatusL()
 {
 	CQikCommandManager& comMan = CQikCommandManager::Static();
-	TBuf<KTimeLabelSize> time = _L("0:00:00");
+	TBuf<KTimeLabelSize> time = _L("0:00:00/0:00:00");
 	TUint pos = 0;
 
 	if(iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.PlayingPodcast()->Uid() == iShowInfo->Uid())
@@ -584,7 +593,7 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 		{
 			iPlayProgressbar->SetDimmed(iPodcastModel.SoundEngine().State() == ESoundEngineNotInitialized );
 			
-			if(iPodcastModel.SoundEngine().PlayTime()>0)
+			if(iPodcastModel.SoundEngine().PlayTime()>0 )
 			{
 				if(iPodcastModel.SoundEngine().State() == ESoundEnginePlaying ||
 				   iPodcastModel.SoundEngine().State() == ESoundEnginePaused)
@@ -596,13 +605,32 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 				}
 				else if (iPodcastModel.SoundEngine().State() == ESoundEngineStopped)
 				{
-					iPlayProgressbar->SetValue(0);
+					if(iShowInfo->PlayTime()>0)
+					{				
+						TUint duration = iShowInfo->PlayTime();
+						pos = iShowInfo->Position().Int64()/1000000;
+						iPlayProgressbar->SetValue((KMaxProgressValue*pos)/duration);
+					}
+					else
+					{
+						iPlayProgressbar->SetValue(0);
+					}
+
 					iPlayProgressbar->DrawDeferred();
 				}
 			}
 			else
 			{
-				iPlayProgressbar->SetValue(0);
+				if(iShowInfo->PlayTime()>0)
+				{				
+					TUint duration = iShowInfo->PlayTime();
+					pos = iShowInfo->Position().Int64()/1000000;
+					iPlayProgressbar->SetValue((KMaxProgressValue*pos)/duration);
+				}
+				else
+				{
+					iPlayProgressbar->SetValue(0);
+				}
 				iPlayProgressbar->DrawDeferred();		
 			}
 		}
@@ -613,7 +641,18 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 			comMan.SetDimmed(*this, EPodcastPlay, EFalse);
 			comMan.SetDimmed(*this, EPodcastStop, ETrue);
 			iPlayProgressbar->SetDimmed(ETrue);
-			iPlayProgressbar->SetValue(0);
+
+			if(iShowInfo->PlayTime()>0)
+			{				
+				TUint duration = iShowInfo->PlayTime();
+				pos = iShowInfo->Position().Int64()/1000000;
+				iPlayProgressbar->SetValue((KMaxProgressValue*pos)/duration);
+			}
+			else
+			{
+				iPlayProgressbar->SetValue(0);
+			}
+
 			iPlayProgressbar->DrawDeferred();
 	}
 	
@@ -635,16 +674,28 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 		{
 			CShowInfo* showInfo = iPodcastModel.PlayingPodcast();
 
-			if(showInfo != NULL && showInfo->Uid() == iShowInfo->Uid())
+			if(showInfo != NULL)
 			{
-				TUint playtime = iPodcastModel.SoundEngine().PlayTime();
+				TUint playtime = 0;
 				TBuf<KTimeLabelSize> totTime = _L("00:00");
+
+				if(showInfo->Uid() == iShowInfo->Uid())
+				{
+					playtime = iPodcastModel.SoundEngine().PlayTime();
+				}
+				else
+				{
+					playtime = iShowInfo->PlayTime();
+				}
 				
 				if(playtime >= 0)
-				{
+				{			
+					TInt hour = playtime/3600;
+					playtime = playtime-(hour*3600);
+
 					TInt sec = (playtime%60);
 					TInt min = (playtime/60);
-					totTime.Format(_L("%02d:%02d"), min, sec);
+					totTime.Format(_L("%01d:%02d:%02d"),hour, min, sec);
 				}
 				else
 				{
@@ -653,9 +704,12 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 				
 				if(pos >= 0)
 				{
+					TInt hour = pos/3600;
+					pos = pos-(hour*3600);
+
 					TInt sec = (pos%60);
 					TInt min = (pos/60);
-					time.Format(_L("%02d:%02d"), min, sec);
+					time.Format(_L("%01d:%02d:%02d"),hour, min, sec);
 				}
 				time.Append(_L("/"));
 				time.Append(totTime);

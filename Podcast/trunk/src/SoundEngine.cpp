@@ -61,6 +61,7 @@ void CSoundEngine::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds
 
 	if (iPodcastModel.PlayingPodcast() != NULL) {
 		RDebug::Print(_L("Resuming from position: %ld"), iPodcastModel.PlayingPodcast()->Position().Int64());
+		iPodcastModel.PlayingPodcast()->SetPlayTime(iPlayer->Duration().Int64()/1000000);
 		iPlayer->SetPosition(iPodcastModel.PlayingPodcast()->Position());			
 	}
 
