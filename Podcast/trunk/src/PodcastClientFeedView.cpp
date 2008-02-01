@@ -9,8 +9,9 @@
 #include "PodcastModel.h"
 #include "ShowEngine.h"
 const TInt KMaxFeedNameLength = 100;
+const TInt KMaxUnplayedFeedsLength =64;
 const TInt KADayInHours = 24;
-
+_LIT(KUnknownUpdateDateString, "?/?");
 /**
 Creates and constructs the view.
 
@@ -113,7 +114,7 @@ void CPodcastClientFeedView::UpdateFeedInfoDataL(CFeedInfo* aFeedInfo,  MQikList
 	
 	TUint unplayedCount = 0;
 	TUint showCount = 0;
-	TBuf<100> unplayedShows;
+	TBuf<KMaxUnplayedFeedsLength> unplayedShows;
 
 	iPodcastModel.ShowEngine().GetStatsByFeed(aFeedInfo->Uid(), showCount, unplayedCount);
 	
@@ -266,7 +267,7 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 			
 			MQikListBoxData* listBoxData;
 			TBuf<KMaxShortDateFormatSpec*2> updatedDate;
-			TBuf<100> unplayedShows;
+			TBuf<KMaxUnplayedFeedsLength> unplayedShows;
 			
 			if (len > 0) {
 				for (int i=0;i<len;i++) {
@@ -282,13 +283,16 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 					TUint unplayedCount = 0;
 					TUint showCount = 0;
 					iPodcastModel.ShowEngine().GetStatsByFeed(fi->Uid(), showCount, unplayedCount);
-					unplayedShows.Format(_L("%d/%d shows"), unplayedCount, showCount);
-
+					HBufC* templateStr = CEikonEnv::Static()->AllocReadResourceAsDes16LC(R_PODCAST_FEEDS_STATUS_FORMAT);
+					
+					unplayedShows.Format(*templateStr, unplayedCount, showCount);
+					CleanupStack::PopAndDestroy(templateStr);
+					
 					if (fi->LastUpdated().Int64() == 0) {
 						HBufC* neverStr = CEikonEnv::Static()->AllocReadResourceAsDes16LC(R_PODCAST_FEEDS_NEVER_UPDATED);
 						updatedDate.Copy(*neverStr);
 						CleanupStack::PopAndDestroy(neverStr);
-						unplayedShows.Copy(_L("?/?"));
+						unplayedShows.Copy(KUnknownUpdateDateString());
 						
 					}else {
 						TTime now;
@@ -316,8 +320,7 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 				{
 					listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
 					CleanupClosePushL(*listBoxData);
-					
-					itemName.Copy(_L("No feeds"));
+					iEikonEnv->ReadResourceL(itemName, R_PODCAST_FEEDS_NO_FEEDS);
 					listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
 					CleanupStack::PopAndDestroy();
 				}

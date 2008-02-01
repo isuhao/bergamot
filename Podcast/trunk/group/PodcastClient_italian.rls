@@ -98,6 +98,7 @@ rls_string STRING_r_podcast_shows_no_items "Nessun elemento";
 rls_string STRING_r_podcast_feeds_title_format "%d Feed"
 rls_string STRING_r_podcast_feeds_status_format "%d/%d Elementi"
 rls_string STRING_r_podcast_shows_never_updated "Mai"
+rls_string STRING_r_podcast_no_feeds "Nessun feeds"
 
 // DIALOG string
 rls_string STRING_r_about_title "Informazioni su Escarpod";

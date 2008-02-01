@@ -98,6 +98,7 @@ rls_string STRING_r_podcast_shows_no_items "Tühi";
 rls_string STRING_r_podcast_feeds_title_format "%d voogu"
 rls_string STRING_r_podcast_feeds_status_format "%d/%d lugu"
 rls_string STRING_r_podcast_shows_never_updated "Mitte kunagi"
+rls_string STRING_r_podcast_no_feeds "Tühi"
 
 // DIALOG string
 rls_string STRING_r_about_title "Info Escarpod:ist";
