@@ -1,4 +1,3 @@
-#include <eikdialg.h>
 #include <qikcommand.h>
 #include <qikcontent.h>
 #include <PodcastClient.mbg>
@@ -8,6 +7,7 @@
 #include "PodcastClientFeedView.h"
 #include "PodcastModel.h"
 #include "ShowEngine.h"
+
 const TInt KMaxFeedNameLength = 100;
 const TInt KMaxUnplayedFeedsLength =64;
 const TInt KADayInHours = 24;
@@ -28,19 +28,19 @@ CPodcastClientFeedView* CPodcastClientFeedView::NewLC(CQikAppUi& aAppUi, CPodcas
 	}
 
 CPodcastClientFeedView::CPodcastClientFeedView(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel):CPodcastClientView(aAppUi, aPodcastModel)
-{
-}
+	{
+	}
 
 CPodcastClientFeedView::~CPodcastClientFeedView()
-{
+	{
 	iPodcastModel.FeedEngine().RemoveObserver(this);
-}
+	}
 
 void CPodcastClientFeedView::ConstructL()
-{
+	{
 	CPodcastClientView::ConstructL();
 	iPodcastModel.FeedEngine().AddObserver(this);
-}
+	}
 
 /**
 Returns the view Id
@@ -52,62 +52,62 @@ TVwsViewId CPodcastClientFeedView::ViewId()const
 	}
 
 void CPodcastClientFeedView::ViewConstructL()
-{
+	{
 	iViewLabel = iEikonEnv->AllocReadResourceL(R_PODCAST_FEEDS_TITLE);
-
     ViewConstructFromResourceL(R_PODCAST_FEEDVIEW_UI_CONFIGURATIONS);
-
 	CPodcastClientView::ViewConstructL();
-}
+	}
 
 
 void CPodcastClientFeedView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage)
-{
+	{
 	CPodcastClientView::ViewActivatedL(aPrevViewId, aCustomMessageId, aCustomMessage);
-
 	SetParentView( TVwsViewId(KUidPodcastClientID, KUidPodcastBaseViewID) );
 	SetAppTitleNameL(*iViewLabel);
-}
-
-
-CQikCommand* CPodcastClientFeedView::DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& aControlAddingCommands)
-{
-	switch(aCommand->Id())
-	{
-	case EPodcastUpdateFeed:
-	case EPodcastViewFeeds:
-	case EPodcastPurgeFeed:
-	case EPodcastPurgeShow:
-	case EPodcastDeleteAllShows:
-	case EPodcastDownloadShow:
-	case EPodcastRemoveDownload:
-	case EPodcastStopDownloads:
-	case EPodcastResumeDownloads:
-	case EPodcastMarkAllPlayed:
-	case EPodcastShowUnplayedOnly:
-	case EPodcastUpdateLibrary:
-		delete aCommand;
-		aCommand = NULL;
-		break;
-	case EQikListBoxCmdSelect:
-		{
-			aCommand->SetTextL(R_PODCAST_SHOW_CMD);
-		}
-		break;
-	case EQikSoftkeyCmdSelectCategory:
-		{	
-			aCommand->SetTextL(R_PODCAST_FEEDS_CATEGORY);
-		}
-		break;
-	default:
-		break;
 	}
 
+
+CQikCommand* CPodcastClientFeedView::DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& /*aControlAddingCommands*/)
+	{
+	switch(aCommand->Id())
+		{
+		case EPodcastUpdateFeed:
+		case EPodcastViewFeeds:
+		case EPodcastPurgeFeed:
+		case EPodcastPurgeShow:
+		case EPodcastDeleteAllShows:
+		case EPodcastDownloadShow:
+		case EPodcastRemoveDownload:
+		case EPodcastStopDownloads:
+		case EPodcastResumeDownloads:
+		case EPodcastMarkAllPlayed:
+		case EPodcastShowUnplayedOnly:
+		case EPodcastUpdateLibrary:
+			delete aCommand;
+			aCommand = NULL;
+			break;
+	
+		case EQikListBoxCmdSelect:
+			{
+			aCommand->SetTextL(R_PODCAST_SHOW_CMD);
+			break;
+			}
+			
+		case EQikSoftkeyCmdSelectCategory:
+			{	
+			aCommand->SetTextL(R_PODCAST_FEEDS_CATEGORY);
+			break;
+			}
+		
+		default:
+			break;
+		}
+	
 	return aCommand;
-}
+	}
 
 void CPodcastClientFeedView::UpdateFeedInfoDataL(CFeedInfo* aFeedInfo,  MQikListBoxData* aListboxData)
-{
+	{
 	TBuf<KMaxShortDateFormatSpec*2> updatedDate;
 	aListboxData->SetTextL(aFeedInfo->Title(), EQikListBoxSlotText1);
 	//aListboxData->SetTextL(aFeedInfo->Description(), EQikListBoxSlotText2);
@@ -119,42 +119,47 @@ void CPodcastClientFeedView::UpdateFeedInfoDataL(CFeedInfo* aFeedInfo,  MQikList
 	iPodcastModel.ShowEngine().GetStatsByFeed(aFeedInfo->Uid(), showCount, unplayedCount);
 	
 	HBufC* templateStr = CEikonEnv::Static()->AllocReadResourceAsDes16LC(R_PODCAST_FEEDS_STATUS_FORMAT);
-
 	unplayedShows.Format(*templateStr, unplayedCount, showCount);
 	CleanupStack::PopAndDestroy(templateStr);
+
 	aListboxData->SetEmphasis(unplayedCount > 0);					
 	aListboxData->SetTextL(unplayedShows, EQikListBoxSlotText2);
 	
-	if (aFeedInfo->LastUpdated().Int64() == 0) {
+	if (aFeedInfo->LastUpdated().Int64() == 0) 
+		{
 		updatedDate.Zero();
-	}else {
+		}
+	else 
+		{
 		TTime now;
 		TTimeIntervalHours interval;
 		now.HomeTime();
 		now.HoursFrom(aFeedInfo->LastUpdated(), interval);
-		if (interval.Int() < KADayInHours) {
+		if (interval.Int() < KADayInHours) 
+			{
 			aFeedInfo->LastUpdated().FormatL(updatedDate, KTimeFormat());
-		}else {
+			}
+		else 
+			{
 			aFeedInfo->LastUpdated().FormatL(updatedDate, KDateFormat());
+			}
 		}
-	}
-
 	aListboxData->SetTextL(updatedDate, EQikListBoxSlotText3);
-}
+	}
 
 void CPodcastClientFeedView::FeedInfoUpdated(CFeedInfo* aFeedInfo)
-{
-
-	if (ViewContext() == NULL) {
+	{
+	if (ViewContext() == NULL) 
+		{
 		return;
-	}
+		}
 	
 	// Since a title might have been updated
 	if(iProgressAdded)
-	{
+		{
 		ViewContext()->RemoveAndDestroyProgressInfo();
 		iProgressAdded = EFalse;
-	}
+		}
 
 	RFeedInfoArray feeds;
 	CleanupClosePushL(feeds);
@@ -164,171 +169,171 @@ void CPodcastClientFeedView::FeedInfoUpdated(CFeedInfo* aFeedInfo)
 	MQikListBoxModel& model(iListbox->Model());
 
 	if(index != KErrNotFound && index<model.Count())
-	{
-	
+		{
 		model.ModelBeginUpdateLC();
 		MQikListBoxData* data = model.RetrieveDataL(index);	
 
 		if(data != NULL)
-		{
+			{
 			CleanupClosePushL(*data);
 			UpdateFeedInfoDataL(aFeedInfo, data);
-			CleanupStack::PopAndDestroy(); // close data
+			CleanupStack::PopAndDestroy(data);
 			model.DataUpdatedL(index);
-		}
+			}
 		model.ModelEndUpdateL();
-	}
+		}
 
-	CleanupStack::PopAndDestroy();// close feeds
-}
+	CleanupStack::PopAndDestroy(&feeds);
+	}
 
 void CPodcastClientFeedView::FeedDownloadUpdatedL(TInt aPercentOfCurrentDownload)
-{
-	if (ViewContext() == NULL) {
-		return;
-	}
-	if(aPercentOfCurrentDownload>=0 && aPercentOfCurrentDownload<100)
 	{
-		if(!iProgressAdded)
+	if (ViewContext() == NULL) 
 		{
-			ViewContext()->AddProgressInfoL(EEikProgressTextPercentage, 100);
-
-			iProgressAdded = ETrue;
+		return;
 		}
-
+	
+	if(aPercentOfCurrentDownload>=0 && aPercentOfCurrentDownload<100)
+		{
+		if(!iProgressAdded)
+			{
+			ViewContext()->AddProgressInfoL(EEikProgressTextPercentage, 100);
+			iProgressAdded = ETrue;
+			}
 		ViewContext()->SetAndDrawProgressInfo(aPercentOfCurrentDownload);
-	}
+		}
+		
 	else if(iProgressAdded)
-	{
+		{
 		ViewContext()->RemoveAndDestroyProgressInfo();
 		ViewContext()->DrawNow();
 		iProgressAdded = EFalse;
+		}
 	}
-}
 
 void CPodcastClientFeedView::UpdateListboxItemsL()
-{
+	{
 	if(IsVisible())
-	{		
+		{		
 		RFeedInfoArray feeds;
 		CleanupClosePushL(feeds);
 		iPodcastModel.FeedEngine().GetFeeds(feeds);
-		int len = feeds.Count();
+		TInt len = feeds.Count();
 		TBool allUidsMatch = EFalse;
 		MQikListBoxModel& model(iListbox->Model());
 
 		if(len == iListbox->Model().Count())
-		{
+			{
 			TUint itemId = 0;
 			for(TInt loop = 0;loop< len ;loop++)
-			{
+				{
 				MQikListBoxData* data = model.RetrieveDataL(loop);	
 				itemId = data->ItemId();
 				data->Close();
 				if(feeds[loop]->Uid() != itemId)
-				{						
+					{						
 					break;
-				}
-				
+					}
 				allUidsMatch = ETrue;
+				}
 			}
-		}
 
 		if(allUidsMatch)
-		{
+			{
 			model.ModelBeginUpdateLC();
 
 			for(TInt loop = 0;loop< len ;loop++)
-			{
+				{
 				MQikListBoxData* data = model.RetrieveDataL(loop);	
 				CleanupClosePushL(*data);
 				UpdateFeedInfoDataL(feeds[loop], data);
-				CleanupStack::PopAndDestroy();// close data;
+				CleanupStack::PopAndDestroy(data);
 				model.DataUpdatedL(loop);
-			}
+				}
 
 			// Informs that the update of the list box model has ended
 			model.ModelEndUpdateL();
-		}
+			}
 		else
-		{
+			{
 			iListbox->RemoveAllItemsL();
 			
-			// Informs the list box model that there will be an update of the data.
-			// Notify the list box model that changes will be made after this point.
-			// Observe that a cleanupitem has been put on the cleanupstack and 
-			// will be removed by ModelEndUpdateL. This means that you have to 
-			// balance the cleanupstack.
-			// When you act directly on the model you always need to encapsulate 
-			// the calls between ModelBeginUpdateLC and ModelEndUpdateL.
 			model.ModelBeginUpdateLC();
-			
-			TBuf<KMaxFeedNameLength> itemName;
-			
+									
 			MQikListBoxData* listBoxData;
 			TBuf<KMaxShortDateFormatSpec*2> updatedDate;
 			TBuf<KMaxUnplayedFeedsLength> unplayedShows;
 			
-			if (len > 0) {
-				for (int i=0;i<len;i++) {
-					TInt bitmap = EMbmPodcastclientFeed_40x40;
-					TInt mask = EMbmPodcastclientFeed_40x40m;
-					
+			if (len > 0) 
+				{
+				for (int i=0;i<len;i++) 
+					{
 					listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
 					CleanupClosePushL(*listBoxData);
+					
 					CFeedInfo *fi = feeds[i];
 					listBoxData->SetItemId(fi->Uid());
 					listBoxData->AddTextL(fi->Title(), EQikListBoxSlotText1);
 					//listBoxData->AddTextL(fi->Description(), EQikListBoxSlotText2);
+
+
 					TUint unplayedCount = 0;
 					TUint showCount = 0;
 					iPodcastModel.ShowEngine().GetStatsByFeed(fi->Uid(), showCount, unplayedCount);
 					HBufC* templateStr = CEikonEnv::Static()->AllocReadResourceAsDes16LC(R_PODCAST_FEEDS_STATUS_FORMAT);
-					
 					unplayedShows.Format(*templateStr, unplayedCount, showCount);
 					CleanupStack::PopAndDestroy(templateStr);
 					
-					if (fi->LastUpdated().Int64() == 0) {
+					if (fi->LastUpdated().Int64() == 0) 
+						{
 						HBufC* neverStr = CEikonEnv::Static()->AllocReadResourceAsDes16LC(R_PODCAST_FEEDS_NEVER_UPDATED);
 						updatedDate.Copy(*neverStr);
 						CleanupStack::PopAndDestroy(neverStr);
 						unplayedShows.Copy(KUnknownUpdateDateString());
-						
-					}else {
+						}
+					else 
+						{
 						TTime now;
 						TTimeIntervalHours interval;
 						now.UniversalTime();
 						now.HoursFrom(fi->LastUpdated(), interval);
-						if (interval.Int() < 24) {
+						if (interval.Int() < 24) 
+							{
 							fi->LastUpdated().FormatL(updatedDate, KTimeFormat());
-						}else {
+							}
+						else 
+							{
 							fi->LastUpdated().FormatL(updatedDate, KDateFormat());
+							}
 						}
-					}
+						
 					listBoxData->SetEmphasis(unplayedCount > 0);					
 					listBoxData->AddTextL(unplayedShows, EQikListBoxSlotText2);
 					listBoxData->AddTextL(updatedDate, EQikListBoxSlotText3);
 					
-					CQikContent* content = CQikContent::NewL(this, _L("*"), bitmap, mask);
+					CQikContent* content = CQikContent::NewL(this, _L("*"), EMbmPodcastclientFeed_40x40, EMbmPodcastclientFeed_40x40m);
 					CleanupStack::PushL(content);
 					listBoxData->AddIconL(content,EQikListBoxSlotLeftMediumIcon1);
 					CleanupStack::Pop(content);
 					
-					CleanupStack::PopAndDestroy(); // close listbox data
-				}
-			} else {
+					CleanupStack::PopAndDestroy(listBoxData);
+					}
+				} 
+			else 
 				{
-					listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
-					CleanupClosePushL(*listBoxData);
-					iEikonEnv->ReadResourceL(itemName, R_PODCAST_FEEDS_NO_FEEDS);
-					listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
-					CleanupStack::PopAndDestroy();
+				listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
+				CleanupClosePushL(*listBoxData);
+					
+				TBuf<KMaxFeedNameLength> itemName;
+				iEikonEnv->ReadResourceL(itemName, R_PODCAST_FEEDS_NO_FEEDS);
+				listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
+				
+				CleanupStack::PopAndDestroy(listBoxData);
 				}
-			}
 
 			// Informs that the update of the list box model has ended
 			model.ModelEndUpdateL();
-		}
+			}
 		
 		// Update the contextbar so information matches the listbox content
 		HBufC* templateStr = CEikonEnv::Static()->AllocReadResourceAsDes16LC(R_PODCAST_FEEDS_TITLE_FORMAT);
@@ -340,56 +345,95 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 		CleanupStack::PopAndDestroy(templateStr);
 
 		CleanupStack::PopAndDestroy();// close feeds
+		}
+	
+	UpdateCommandsL();
 	}
-}
 
 
-void CPodcastClientFeedView::HandleListBoxEventL(CQikListBox *aListBox, TQikListBoxEvent aEventType, TInt aItemIndex, TInt aSlotId)
-{
+void CPodcastClientFeedView::HandleListBoxEventL(CQikListBox* /*aListBox*/, TQikListBoxEvent aEventType, TInt aItemIndex, TInt aSlotId)
+	{
 	RDebug::Print(_L("HandleListBoxEvent, itemIndex=%d, slotId=%d, aEventType=%d"), aItemIndex, aSlotId, aEventType);
 	
 	switch (aEventType)
-	{
-	case EEventHighlightMoved:
-		break;
-	case EEventItemConfirmed:
-	case EEventItemTapped:
 		{
+		case EEventHighlightMoved:
+			break;
+	
+		case EEventItemConfirmed:
+		case EEventItemTapped:
+			{
 			RFeedInfoArray feeds;
 			CleanupClosePushL(feeds);
 			iPodcastModel.FeedEngine().GetFeeds(feeds);
 
 			if(aItemIndex >= 0 && aItemIndex < feeds.Count())
-			{
+				{
 				iPodcastModel.ActiveShowList().Reset();
 				iPodcastModel.SetActiveFeedInfo(feeds[aItemIndex]);
 				TVwsViewId showsView = TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID);
 				iQikAppUi.ActivateViewL(showsView,  TUid::Uid(EShowFeedShows), KNullDesC8());
+				}
+				
+			CleanupStack::PopAndDestroy(&feeds);
+			break;	
 			}
-			CleanupStack::PopAndDestroy();// close feeds
+		
+		default:
+			break;
 		}
-		break;
-	default:
-		break;
 	}
-}
+
+
+void CPodcastClientFeedView::UpdateCommandsL()
+	{
+	CQikCommandManager& comMan = CQikCommandManager::Static();
+	
+	if (iListbox == NULL)
+		return;
+	
+	RFeedInfoArray feeds;
+	CleanupClosePushL(feeds);
+	iPodcastModel.FeedEngine().GetFeeds(feeds);
+	
+	// hide commands that should not be visible in no feeds
+	if (feeds.Count() == 0)
+		{
+		comMan.SetInvisible(*this, EQikListBoxCmdSelect, ETrue);
+		comMan.SetInvisible(*this, EPodcastDeleteFeed, ETrue);
+		comMan.SetInvisible(*this, EPodcastUpdateAllFeeds, ETrue);
+		comMan.SetInvisible(*this, EPodcastEditFeed, ETrue);
+		}
+	else
+		{
+		comMan.SetInvisible(*this, EQikListBoxCmdSelect, EFalse);
+		comMan.SetInvisible(*this, EPodcastDeleteFeed, EFalse);
+		comMan.SetInvisible(*this, EPodcastUpdateAllFeeds, EFalse);
+		comMan.SetInvisible(*this, EPodcastEditFeed, EFalse);
+		}
+	CleanupStack::PopAndDestroy(&feeds); 
+	}
+
+
 
 void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
-{
-	switch(aCommand.Id())
 	{
-	case EPodcastAddFeed:
+	switch(aCommand.Id())
 		{
+		case EPodcastAddFeed:
+			{
 			CPodcastClientAddFeedDlg* dlg = new (ELeave) CPodcastClientAddFeedDlg(iPodcastModel);
 			if(dlg->ExecuteLD(R_PODCAST_ADD_FEED_DLG))
-			{
+				{
 				UpdateListboxItemsL();
+				}
+			break;
 			}
-		}break;		
-	case EPodcastEditFeed:
-		{
-			if(iListbox != NULL)
+					
+		case EPodcastEditFeed:
 			{
+			if(iListbox != NULL)
+				{
 				TInt index = iListbox->CurrentItemIndex();
 				RFeedInfoArray feeds;
 				CleanupClosePushL(feeds);
@@ -397,51 +441,53 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 				TInt cnt = feeds.Count();
 
 				if(index< cnt)
-				{
+					{
 					CPodcastClientAddFeedDlg* dlg = new (ELeave) CPodcastClientAddFeedDlg(iPodcastModel, feeds[index]);
 					if(dlg->ExecuteLD(R_PODCAST_EDIT_FEED_DLG))
-					{
+						{
 						UpdateListboxItemsL();
+						}
 					}
-				}
-				
 				CleanupStack::PopAndDestroy();//close feeds array
-				
-			}
-		}break;
-
-	case EPodcastDeleteFeed:
-		{
-		if(iListbox != NULL)
-			{
-			TInt index = iListbox->CurrentItemIndex();
-			MQikListBoxModel& model(iListbox->Model());
-			MQikListBoxData* data = model.RetrieveDataL(index);	
-			if(data != NULL)
-				{
-				if(iEikonEnv->QueryWinL(R_PODCAST_REMOVE_FEED_TITLE, R_PODCAST_REMOVE_FEED_PROMPT))
-					{
-					iPodcastModel.FeedEngine().RemoveFeed(data->ItemId());
-					iListbox->RemoveItemL(index);
-					}
-				data->Close();
 				}
-			UpdateListboxItemsL();
+			break;
 			}
-		}
-		break;
-	case EPodcastPurgeFeed:
-		{
-			/*if(iListbox != NULL)
+			
+
+		case EPodcastDeleteFeed:
 			{
+			if(iListbox != NULL)
+				{
 				TInt index = iListbox->CurrentItemIndex();
-			}*/
-		}break;
-	default:
-		CPodcastClientView::HandleCommandL(aCommand);
-		break;
+				MQikListBoxModel& model(iListbox->Model());
+				MQikListBoxData* data = model.RetrieveDataL(index);	
+				if(data != NULL)
+					{
+					if(iEikonEnv->QueryWinL(R_PODCAST_REMOVE_FEED_TITLE, R_PODCAST_REMOVE_FEED_PROMPT))
+						{
+						iPodcastModel.FeedEngine().RemoveFeed(data->ItemId());
+						iListbox->RemoveItemL(index);
+						}
+					data->Close();
+					}
+				UpdateListboxItemsL();
+				}
+			break;	
+			}
+		
+		case EPodcastPurgeFeed:
+			{
+			/*if(iListbox != NULL)
+				{
+				TInt index = iListbox->CurrentItemIndex();
+				}*/
+			break;
+			}
+		default:
+			CPodcastClientView::HandleCommandL(aCommand);
+			break;
+		}
 	}
-}
 
 void CPodcastClientFeedView::FeedUpdateComplete()
 	{

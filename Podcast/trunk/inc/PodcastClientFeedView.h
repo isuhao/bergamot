@@ -15,6 +15,7 @@ protected:
 	void ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage);
 
 	void ConstructL();
+	void UpdateCommandsL();
 	
 	// from MFeedEngineObserver
 	void UpdateFeedInfoDataL(CFeedInfo* aFeedInfo,  MQikListBoxData* aListboxData); 
