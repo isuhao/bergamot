@@ -407,6 +407,28 @@ void CShowEngine::PurgeShowsByFeed(TUint aFeedUid)
 		}
 	}
 
+void CShowEngine::RemoveAllShowsByFeed(TUint aFeedUid)
+	{
+	const TInt count = iShows.Count();
+	
+	for (TInt i=count-1 ; i >= 0; i--)
+		{
+		if (iShows[i]->FeedUid() == aFeedUid)
+			{
+			if (iShows[i]->FileName().Length() > 0) 
+				{
+				BaflUtils::DeleteFile(iFs, iShows[i]->FileName());
+				iShows[i]->SetDownloadState(ENotDownloaded);
+				}
+			CShowInfo* show = iShows[i];
+			iShows.Remove(i);
+			delete show;
+			}
+		}
+	}
+	
+
+
 void CShowEngine::PurgePlayedShows()
 	{
 	for (int i=0;i<iShows.Count();i++)
@@ -642,6 +664,8 @@ void CShowEngine::ListDir(TFileName &folder) {
 			iFs.Entry(pathName, entry);
 			info->SetShowSize(entry.iSize);
 			info->SetPubDate(entry.iModified);
+			info->SetDelete();  			// so that we do not save the entry in the DB.
+			
 			iShows.Append(info);
 			
 			// submit the file for meta data reading

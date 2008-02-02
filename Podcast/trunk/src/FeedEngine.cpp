@@ -193,9 +193,24 @@ void CFeedEngine::RemoveFeed(TUint aUid)
 		{
 		if (iFeeds[i]->Uid() == aUid) 
 			{
-			iPodcastModel.ShowEngine().PurgeShowsByFeed(aUid);
-			
+			iPodcastModel.ShowEngine().RemoveAllShowsByFeed(aUid);
+			iPodcastModel.ShowEngine().SaveShows();
+					
 			CFeedInfo* feedToRemove = iFeeds[i];
+			
+			//delete the image file if it exists
+			if ( (feedToRemove->ImageFileName().Length() >0) && BaflUtils::FileExists(iFs, feedToRemove->ImageFileName() ))
+				{
+				iFs.Delete(feedToRemove->ImageFileName());
+				}
+				
+			//delete the folder. It has the same name as the title.
+			TFileName filePath;
+			filePath.Copy(iPodcastModel.SettingsEngine().BaseDir());
+			filePath.Append(feedToRemove->Title());
+			filePath.Append(_L("\\"));
+			iFs.RmDir(filePath);
+
 			iFeeds.Remove(i);
 			delete feedToRemove;
 			

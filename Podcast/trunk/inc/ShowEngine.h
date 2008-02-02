@@ -37,6 +37,7 @@ public:
 	void SaveShows();
 
 	void PurgeShowsByFeed(TUint aFeedUid);
+	void RemoveAllShowsByFeed(TUint aFeedUid);
 	void PurgePlayedShows();
 	void PurgeOldShows();
 	void PurgeShow(TUint aShowUid);

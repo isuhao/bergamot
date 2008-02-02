@@ -431,6 +431,10 @@ void CPodcastClientPlayView::ImageConverterEventL(TQikImageConverterEvent aMessa
 		{
 			iCoverImageCtrl->SetNewBitmaps(iCurrentCoverImage, NULL);
 			iCoverImageCtrl->SetPictureOwnedExternally(EFalse);
+			
+			delete iBitmapConverter;  // make sure that we close the file handle
+			iBitmapConverter = NULL;
+			iBitmapConverter = CQikImageConverter::NewL(iEikonEnv->FsSession(), *this);
 						
 			iCurrentCoverImage = NULL;
 			RequestRelayout(this);
@@ -444,6 +448,10 @@ void CPodcastClientPlayView::ImageConverterEventL(TQikImageConverterEvent aMessa
 	{
 		iCoverImageCtrl->SetNewBitmaps(iCurrentCoverImage, NULL);
 		iCoverImageCtrl->SetPictureOwnedExternally(EFalse);
+
+		delete iBitmapConverter; // make sure that we close the file handle
+		iBitmapConverter = NULL;
+		iBitmapConverter = CQikImageConverter::NewL(iEikonEnv->FsSession(), *this);
 		
 		iCurrentCoverImage = NULL;
 		RequestRelayout(this);
@@ -452,6 +460,10 @@ void CPodcastClientPlayView::ImageConverterEventL(TQikImageConverterEvent aMessa
 	{
 		iCoverImageCtrl->SetNewBitmaps(NULL, NULL);
 		iCoverImageCtrl->SetPictureOwnedExternally(EFalse);
+
+		delete iBitmapConverter; // make sure that we close the file handle
+		iBitmapConverter = NULL;
+		iBitmapConverter = CQikImageConverter::NewL(iEikonEnv->FsSession(), *this);
 		
 		RequestRelayout(this);
 

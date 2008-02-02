@@ -325,17 +325,20 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 					CleanupStack::PopAndDestroy();
 				}
 			}
-			HBufC* templateStr = CEikonEnv::Static()->AllocReadResourceAsDes16LC(R_PODCAST_FEEDS_TITLE_FORMAT);
 
-			HBufC* titleBuffer = HBufC::NewLC(templateStr->Length()+8);
-			titleBuffer->Des().Format(*templateStr, len);
-			ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *titleBuffer);
-			CleanupStack::PopAndDestroy(titleBuffer);
-			CleanupStack::PopAndDestroy(templateStr);
-			
 			// Informs that the update of the list box model has ended
 			model.ModelEndUpdateL();
 		}
+		
+		// Update the contextbar so information matches the listbox content
+		HBufC* templateStr = CEikonEnv::Static()->AllocReadResourceAsDes16LC(R_PODCAST_FEEDS_TITLE_FORMAT);
+
+		HBufC* titleBuffer = HBufC::NewLC(templateStr->Length()+8);
+		titleBuffer->Des().Format(*templateStr, len);
+		ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *titleBuffer);
+		CleanupStack::PopAndDestroy(titleBuffer);
+		CleanupStack::PopAndDestroy(templateStr);
+
 		CleanupStack::PopAndDestroy();// close feeds
 	}
 }
@@ -409,22 +412,24 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 
 	case EPodcastDeleteFeed:
 		{
-			if(iListbox != NULL)
+		if(iListbox != NULL)
 			{
-				TInt index = iListbox->CurrentItemIndex();
-				MQikListBoxModel& model(iListbox->Model());
-				MQikListBoxData* data = model.RetrieveDataL(index);	
-				if(data != NULL)
+			TInt index = iListbox->CurrentItemIndex();
+			MQikListBoxModel& model(iListbox->Model());
+			MQikListBoxData* data = model.RetrieveDataL(index);	
+			if(data != NULL)
 				{
-					if(iEikonEnv->QueryWinL(R_PODCAST_REMOVE_FEED_TITLE, R_PODCAST_REMOVE_FEED_PROMPT))
+				if(iEikonEnv->QueryWinL(R_PODCAST_REMOVE_FEED_TITLE, R_PODCAST_REMOVE_FEED_PROMPT))
 					{
-						iPodcastModel.FeedEngine().RemoveFeed(data->ItemId());
-						iListbox->RemoveItemL(index);
+					iPodcastModel.FeedEngine().RemoveFeed(data->ItemId());
+					iListbox->RemoveItemL(index);
 					}
-					data->Close();
-				}	
+				data->Close();
+				}
+			UpdateListboxItemsL();
 			}
-		}break;
+		}
+		break;
 	case EPodcastPurgeFeed:
 		{
 			/*if(iListbox != NULL)
