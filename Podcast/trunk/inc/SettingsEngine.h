@@ -55,7 +55,7 @@ public:
 	void SetMaxSimultaneousDownloads(TInt aMaxDownloads);
 	void SetUpdateAutomatically(TAutoUpdateSetting aAutoOn);
 	void SetDownloadAutomatically(TBool aAutoDownloadOn);
-	void SetUpdateFeedTime(TTime& aTime);
+	void SetUpdateFeedTime(TTime aTime);
 	void SetSpecificIAP(TInt aIap);
 	TFileName PrivatePath();
 	

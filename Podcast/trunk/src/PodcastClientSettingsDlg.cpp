@@ -6,6 +6,7 @@
 #include <QikSelectFolderDlg.h>
 #include <QikCommandManager.h>
 #include <QikSlider.h>
+#include <QikTimeEditor.h>
 
 #include "PodcastClient.hrh"
 #include "PodcastClientSettingsDlg.h"
@@ -112,6 +113,7 @@ void CPodcastClientSettingsDlg::PreLayoutDynInitL()
 	iUpdateIntervalCtrl = static_cast<CQikNumberEditor*> (ControlOrNull(EPodcastSettingUpdateInterval));
 //	iMaxSimDlsCtrl = static_cast<CQikNumberEditor*> (ControlOrNull(EPodcastSettingMaxsimdls));
 	iConnectionCtrl = static_cast<CEikChoiceList*> (ControlOrNull(EPodcastSettingConnection));
+	iUpdateAtCtrl = static_cast<CQikTimeEditor*> (ControlOrNull(EPodcastSettingUpdateTime));
 	iIAPListCtrl = static_cast<CEikChoiceList*> (ControlOrNull(EPodcastSettingIAPList));
 	iIAPListCtrl->SetArrayL((MDesCArray*) NULL);
 	iIAPListCtrl->SetArrayExternalOwnership(ETrue);
@@ -125,7 +127,7 @@ void CPodcastClientSettingsDlg::PreLayoutDynInitL()
 	iAutoDownloadCtrl->SetState(iPodcastModel.SettingsEngine().DownloadAutomatically()?CEikButtonBase::ESet:CEikButtonBase::EClear);
 
 	iUpdateIntervalCtrl->SetValueL(iPodcastModel.SettingsEngine().UpdateFeedInterval());
-
+	iUpdateAtCtrl->SetTimeL(iPodcastModel.SettingsEngine().UpdateFeedTime());
 	RefreshUpdateOptions();
 	
 //	iMaxSimDlsCtrl->SetValueL(iPodcastModel.SettingsEngine().MaxSimultaneousDownloads());
@@ -173,6 +175,9 @@ TBool CPodcastClientSettingsDlg::OkToExitL(TInt aCommandId)
 			iPodcastModel.SettingsEngine().SetDownloadAutomatically(iAutoDownloadCtrl->State() == CEikButtonBase::ESet);
 
 			iPodcastModel.SettingsEngine().SetUpdateFeedInterval(iUpdateIntervalCtrl->Value());
+		    iPodcastModel.SettingsEngine().SetUpdateFeedTime(iUpdateAtCtrl->Time());
+
+
 //			iPodcastModel.SettingsEngine().SetMaxSimultaneousDownloads(iMaxSimDlsCtrl->Value());
 			/*if(iVolumeSlider != NULL)
 			{

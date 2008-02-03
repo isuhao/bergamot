@@ -9,7 +9,7 @@ class CEikCheckBox;
 class CEikChoiceList;
 class CQikNumberEditor;
 class CQikSlider;
-
+class CQikTimeEditor;
 
 /**
  * Dialog (old style) used to do volumd
@@ -76,6 +76,7 @@ private:
 	CEikCheckBox* iAutoDownloadCtrl;
 	CQikNumberEditor* iUpdateIntervalCtrl;
 //	CQikNumberEditor* iMaxSimDlsCtrl;
+	CQikTimeEditor* iUpdateAtCtrl;
 	CEikChoiceList* iConnectionCtrl;
 	CEikChoiceList* iIAPListCtrl;
 

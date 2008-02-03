@@ -306,7 +306,7 @@ void CSettingsEngine::SetDownloadAutomatically(TBool aDownloadAuto)
 	iDownloadAutomatically = aDownloadAuto;
 	}
 
-void CSettingsEngine::SetUpdateFeedTime(TTime& aUpdateTime)
+void CSettingsEngine::SetUpdateFeedTime(TTime aUpdateTime)
 	{
 	iUpdateFeedTime = aUpdateTime;
 	}
