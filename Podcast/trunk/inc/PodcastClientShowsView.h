@@ -21,9 +21,9 @@ protected:
 	void ShowListUpdated();
     void FeedInfoUpdated(CFeedInfo* aFeedInfo);
     void FeedUpdateComplete() {}
-	void FeedDownloadUpdatedL(TInt aPercentOfCurrentDownload){};
+	void FeedDownloadUpdatedL(TInt /*aPercentOfCurrentDownload*/){};
 	void ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt aBytesTotal);
-	void DownloadQueueUpdated(TInt aDownloadingShows, TInt aQueuedShows) {};
+	void DownloadQueueUpdated(TInt /*aDownloadingShows*/, TInt /*aQueuedShows*/) {};
 	void HandleCommandL(CQikCommand& aCommand);
 	void UpdateShowItemL(CShowInfo* aShowInfo, TInt aSizeDownloaded = KErrNotFound);
 	void UpdateShowItemDataL(CShowInfo* aShowInfo, MQikListBoxData* aListboxData, TInt aSizeDownloaded = KErrNotFound);

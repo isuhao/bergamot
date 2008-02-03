@@ -45,7 +45,7 @@ void CFeedParser::ParseFeedL(const TFileName &feedFileName, CFeedInfo *info, TUi
 }
 
 // from MContentHandler
-void CFeedParser::OnStartDocumentL(const RDocumentParameters& aDocParam, TInt aErrorCode)
+void CFeedParser::OnStartDocumentL(const RDocumentParameters& aDocParam, TInt /*aErrorCode*/)
 	{
 	RDebug::Print(_L("OnStartDocumentL()"));
 	TBuf<1024> charset;
@@ -61,13 +61,13 @@ void CFeedParser::OnStartDocumentL(const RDocumentParameters& aDocParam, TInt aE
 	}
 	}
 
-void CFeedParser::OnEndDocumentL(TInt aErrorCode)
+void CFeedParser::OnEndDocumentL(TInt /*aErrorCode*/)
 	{
 	//RDebug::Print(_L("OnEndDocumentL()"));
 	iCallbacks.ParsingComplete(iActiveFeed);
 	}
 
-void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArray& aAttributes, TInt aErrorCode)
+void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArray& aAttributes, TInt /*aErrorCode*/)
 	{
 	if (iStoppedParsing) {
 		iActiveShow = NULL;
@@ -168,7 +168,7 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 //	RDebug::Print(_L("OnStartElementL END state=%d"), iFeedState);
 	}
 
-void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
+void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt /*aErrorCode*/)
 	{
 	
 	if (iStoppedParsing) {
@@ -304,7 +304,7 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt aErrorCode)
 	//RDebug::Print(_L("OnEndElementL END state=%d"), iFeedState);	
 	}
 
-void CFeedParser::OnContentL(const TDesC8& aBytes, TInt aErrorCode)
+void CFeedParser::OnContentL(const TDesC8& aBytes, TInt /*aErrorCode*/)
 	{
 	TBuf<KBufferLength> temp;
 	if (iEncoding == EUtf8) {
@@ -318,27 +318,27 @@ void CFeedParser::OnContentL(const TDesC8& aBytes, TInt aErrorCode)
 	}
 	}
 
-void CFeedParser::OnStartPrefixMappingL(const RString& aPrefix, const RString& aUri, TInt aErrorCode)
+void CFeedParser::OnStartPrefixMappingL(const RString& /*aPrefix*/, const RString& /*aUri*/, TInt /*aErrorCode*/)
 	{
 	RDebug::Print(_L("OnStartPrefixMappingL()"));
 	}
 
-void CFeedParser::OnEndPrefixMappingL(const RString& aPrefix, TInt aErrorCode)
+void CFeedParser::OnEndPrefixMappingL(const RString& /*aPrefix*/, TInt /*aErrorCode*/)
 	{
 	RDebug::Print(_L("OnEndPrefixMappingL()"));
 	}
 
-void CFeedParser::OnIgnorableWhiteSpaceL(const TDesC8& aBytes, TInt aErrorCode)
+void CFeedParser::OnIgnorableWhiteSpaceL(const TDesC8& /*aBytes*/, TInt /*aErrorCode*/)
 	{
 	RDebug::Print(_L("OnIgnorableWhiteSpaceL()"));
 	}
 
-void CFeedParser::OnSkippedEntityL(const RString& aName, TInt aErrorCode)
+void CFeedParser::OnSkippedEntityL(const RString& /*aName*/, TInt /*aErrorCode*/)
 	{
 	RDebug::Print(_L("OnSkippedEntityL()"));
 	}
 
-void CFeedParser::OnProcessingInstructionL(const TDesC8& aTarget, const TDesC8& aData, TInt aErrorCode)
+void CFeedParser::OnProcessingInstructionL(const TDesC8& /*aTarget*/, const TDesC8& /*aData*/, TInt /*aErrorCode*/)
 	{
 	RDebug::Print(_L("OnProcessingInstructionL()"));
 	}
@@ -348,7 +348,7 @@ void CFeedParser::OnError(TInt aErrorCode)
 	RDebug::Print(_L("CFeedParser::OnError %d"), aErrorCode);
 	}
 
-TAny* CFeedParser::GetExtendedInterface(const TInt32 aUid)
+TAny* CFeedParser::GetExtendedInterface(const TInt32 /*aUid*/)
 	{
 	RDebug::Print(_L("GetExtendedInterface()"));
 	return NULL;

@@ -255,7 +255,7 @@ void CFeedEngine::Connected(CHttpClient* /*aClient*/)
 	
 	}
 
-void CFeedEngine::Progress(CHttpClient* /*aHttpClient*/, int aBytes, int aTotalBytes)
+void CFeedEngine::Progress(CHttpClient* /*aHttpClient*/, int /*aBytes*/, int /*aTotalBytes*/)
 {	
 	/*if (iClientState == EFeed) {
 		int percent = -1;

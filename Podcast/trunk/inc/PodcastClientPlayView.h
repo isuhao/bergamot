@@ -49,7 +49,7 @@ public:
     void FeedUpdateComplete() {}
 	void FeedDownloadUpdatedL(TInt /*aPercentOfCurrentDownload*/){};
 	void ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt aBytesTotal);
-	void DownloadQueueUpdated(TInt aDownloadingShows, TInt aQueuedShows) {}
+	void DownloadQueueUpdated(TInt /*aDownloadingShows*/, TInt /*aQueuedShows*/) {}
 	void ImageConverterEventL(TQikImageConverterEvent aMessage, TInt aErrCode);
 
 	TKeyResponse OfferKeyEventL(const TKeyEvent& aKeyEvent,TEventCode aType);

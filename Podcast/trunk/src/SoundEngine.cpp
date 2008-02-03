@@ -33,7 +33,7 @@ void CSoundEngine::SetObserver(MSoundEngineObserver* aObserver)
 	iObserver = aObserver;
 }
 
-void CSoundEngine::MapcPlayComplete(TInt aError) {
+void CSoundEngine::MapcPlayComplete(TInt /*aError*/) {
 //	RDebug::Print(_L("Play Complete: %d"), aError);
 	if (iPodcastModel.PlayingPodcast() != NULL) {
 		iPodcastModel.PlayingPodcast()->SetPlayState(EPlayed);

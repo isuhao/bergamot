@@ -44,7 +44,7 @@ void CPodcastClientIAPDlg::PreLayoutDynInitL()
 }
 
 
-TBool CPodcastClientIAPDlg::OkToExitL(TInt aCommandId)
+TBool CPodcastClientIAPDlg::OkToExitL(TInt /*aCommandId*/)
 {
 	iSelectedIAP = iPodcastModel.IAPIds()[iIAPListCtrl->CurrentItem()].iIapId;
 	return ETrue;
@@ -64,7 +64,7 @@ void CPodcastClientVolumeDlg::PreLayoutDynInitL()
 	iVolumeSlider->SetValue(iPodcastModel.SettingsEngine().Volume()/KVolumeDelta);
 }
 
-TBool CPodcastClientVolumeDlg::OkToExitL(TInt aCommandId)
+TBool CPodcastClientVolumeDlg::OkToExitL(TInt /*aCommandId*/)
 {
 	iPodcastModel.SettingsEngine().SetVolume(iVolumeSlider->CurrentValue()*KVolumeDelta);
 

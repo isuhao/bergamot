@@ -44,12 +44,12 @@ void CMetaDataReader::ParseNextShow()
 	iPlayer->OpenFileL(iShow->FileName());
 	}
 
-void CMetaDataReader::MapcPlayComplete(TInt aError)
+void CMetaDataReader::MapcPlayComplete(TInt /*aError*/)
 {
 	
 }
 
-void CMetaDataReader::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds &aDuration)
+void CMetaDataReader::MapcInitComplete(TInt /*aError*/, const TTimeIntervalMicroSeconds &aDuration)
 {
 	RDebug::Print(_L("MapcInitComplete, file=%S"), &(iShow->FileName()));
 
