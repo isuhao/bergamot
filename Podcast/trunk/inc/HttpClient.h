@@ -28,13 +28,13 @@ private:
 	void SetHeaderL(RHTTPHeaders aHeaders, TInt aHdrField, const TDesC8& aHdrValue);
 
 private:
-	RHTTPSession iSession;
-	MHttpClientObserver& iObserver;
+	RHTTPSession iSession;	
 	TBool iIsActive;
 	RHTTPTransaction iTrans;
 	CHttpEventHandler* iHandler;
 	TBool iResumeEnabled;
 	CPodcastModel& iPodcastModel;
+	MHttpClientObserver& iObserver;
 	TInt iTransactionCount;
 };
 #endif

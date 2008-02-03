@@ -45,11 +45,11 @@ private:
 	RFile iRespBodyFile;
 	TFileName iFileName;
 	TParse iParsedFileName;
-	MHTTPDataSupplier* iRespBody;
-	MHttpClientObserver& iCallbacks;
+	MHTTPDataSupplier* iRespBody;	
 	TInt iBytesDownloaded;
 	TInt iBytesTotal;
 	CHttpClient* iHttpClient;
+	MHttpClientObserver& iCallbacks;
 	TBool iSilent;
 	TBool iContinue;
 };

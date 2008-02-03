@@ -266,7 +266,7 @@ void CShowEngine::LoadShowsL()
 		return;
 	}
 	
-	CFileStore* store;
+	CFileStore* store = NULL;
 	TRAPD(error, store = CDirectFileStore::OpenL(iFs,filestorename.FullName(),EFileRead));
 	CleanupStack::PushL(store);
 	

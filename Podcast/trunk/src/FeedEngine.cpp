@@ -366,7 +366,7 @@ TBool CFeedEngine::LoadFeeds()
 		return EFalse;
 	}
 	
-	CFileStore* store;
+	CFileStore* store = NULL;
 	TRAPD(error, store = CDirectFileStore::OpenL(iFs,filestorename.FullName(),EFileRead));
 	CleanupStack::PushL(store);
 	
@@ -379,7 +379,7 @@ TBool CFeedEngine::LoadFeeds()
 	RStoreReadStream instream;
 	instream.OpenLC(*store, store->Root());
 
-	int version = instream.ReadInt32L();
+	TInt version = instream.ReadInt32L();
 	RDebug::Print(_L("Read version: %d"), version);
 
 	if (version != KFeedInfoVersion) {
@@ -388,11 +388,11 @@ TBool CFeedEngine::LoadFeeds()
 		return EFalse;
 	}
 	
-	int count = instream.ReadInt32L();
+	TInt count = instream.ReadInt32L();
 	RDebug::Print(_L("Read count: %d"), count);
 	CFeedInfo *readData;
 	
-	for (int i=0;i<count;i++) {
+	for (TInt i=0;i<count;i++) {
 		readData = CFeedInfo::NewL();
 		TRAP(error, instream  >> *readData);
 		//RDebug::Print(_L("error: %d"), error);
@@ -423,7 +423,7 @@ void CFeedEngine::SaveFeeds()
 	outstream.WriteInt32L(KFeedInfoVersion);
 	RDebug::Print(_L("Saving %d feeds"), iFeeds.Count());
 	outstream.WriteInt32L(iFeeds.Count());
-	for (int i=0;i<iFeeds.Count();i++) {
+	for (TInt i=0;i<iFeeds.Count();i++) {
 //		RDebug::Print(_L("Storing feed %i"), i);
 		outstream  << *iFeeds[i];
 	}
@@ -438,7 +438,7 @@ void CFeedEngine::SaveFeeds()
 
 CFeedInfo* CFeedEngine::GetFeedInfoByUid(TUint aFeedUid)
 	{
-	for (int i=0;i<iFeeds.Count();i++)
+	for (TInt i=0;i<iFeeds.Count();i++)
 		{
 		if (iFeeds[i]->Uid() == aFeedUid)
 			{
@@ -451,7 +451,7 @@ CFeedInfo* CFeedEngine::GetFeedInfoByUid(TUint aFeedUid)
 
 void CFeedEngine::GetFeeds(RFeedInfoArray& array) 
 {
-	for (int i=0;i<iFeeds.Count();i++) {
+	for (TInt i=0;i<iFeeds.Count();i++) {
 		array.Append(iFeeds[i]);
 	}
 	
@@ -465,8 +465,8 @@ void CFeedEngine::CleanHtml(TDes &str)
 	ReplaceString(str, _L("\n"), _L(""));
 
 //	RDebug::Print(_L("CleanHtml %d, %S"), str.Length(), &str);
-	int startPos = str.Locate('<');
-	int endPos = str.Locate('>');
+	TInt startPos = str.Locate('<');
+	TInt endPos = str.Locate('>');
 	//RDebug::Print(_L("length: %d, startPos: %d, endPos: %d"), str.Length(), startPos, endPos);
 	TBuf<2048> tmp;
 	while (startPos != KErrNotFound && endPos != KErrNotFound && endPos > startPos) {
