@@ -126,8 +126,9 @@ rls_string STRING_r_purge_show_prompt "Kas kustutada valitud lugu?"
 
 rls_string STRING_r_podcast_settings_title "Seaded"
 rls_string STRING_r_podcast_setting_showdir "Podcast kataloog"
-rls_string STRING_r_podcast_setting_autodl "Automaatne allalaadimine"
+rls_string STRING_r_podcast_setting_autoupdate "Automaatne allalaadimine"
 rls_string STRING_r_podcast_setting_checkevery "Allalaadimise intervall"
+rls_string STRING_r_podcast_setting_updateat "Update at"
 rls_string STRING_r_podcast_setting_minutes "minutit"
 
 rls_string STRING_r_podcast_setting_maxsimul "Samaaegseid ühendusi"
@@ -142,8 +143,8 @@ rls_string STRING_r_podcast_setting_showdir_cmd "Vali" // Use to select show dir
 rls_string STRING_r_podcast_setting_volume "Helitugevus"
 
 // Choicelist for autodownload
-rls_string STRING_podcast_autodl_off "Ei"
-rls_string STRING_podcast_audodl_feeds "Ainult vood"
-rls_string STRING_podcast_audodl_feedsandshows "Vood ja lood"
+rls_string STRING_podcast_autoupdate_off "Ei"
+rls_string STRING_podcast_autoupdate_perodical "Ainult vood"
+rls_string STRING_podcast_autoupdate_attime "Vood ja lood"
 
 rls_string STRING_r_podcast_iap_dlg_title "Vali ühendus"

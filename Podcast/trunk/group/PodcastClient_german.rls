@@ -126,8 +126,9 @@ rls_string STRING_r_purge_show_prompt "Sind Sie sich ganz sicher, dass Sie diese
 
 rls_string STRING_r_podcast_settings_title "Einstellungen"
 rls_string STRING_r_podcast_setting_showdir "Podcast Verzeichnis"
-rls_string STRING_r_podcast_setting_autodl "Automatischer Download"
-rls_string STRING_r_podcast_setting_checkevery "Downloadinterval"
+rls_string STRING_r_podcast_setting_autoupdate "Automatischer update"
+rls_string STRING_r_podcast_setting_checkevery "Updateinterval"
+rls_string STRING_r_podcast_setting_updateat "Update at"
 rls_string STRING_r_podcast_setting_minutes "Minuten"
 
 rls_string STRING_r_podcast_setting_maxsimul "Max. Zahl gleichzeitiger Downloads"
@@ -142,8 +143,8 @@ rls_string STRING_r_podcast_setting_showdir_cmd "Auswählen" // Use to select sho
 rls_string STRING_r_podcast_setting_volume "Lautstärke"
 
 // Choicelist for autodownload
-rls_string STRING_podcast_autodl_off "Ausgeschaltet"
-rls_string STRING_podcast_audodl_feeds "Nur Feeds"
-rls_string STRING_podcast_audodl_feedsandshows "Feeds und Shows"
+rls_string STRING_podcast_autoupdate_off "Ausgeschaltet"
+rls_string STRING_podcast_autoupdate_perodical "Every"
+rls_string STRING_podcast_autoupdate_attime "Zu"
 
 rls_string STRING_r_podcast_iap_dlg_title "Internet verbindung wählen"

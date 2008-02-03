@@ -177,7 +177,7 @@ TBool CShowEngine::AddShow(CShowInfo *item)
 		}
 	iShows.Append(item);
 
-	if (!iSuppressAutoDownload && iPodcastModel.SettingsEngine().DownloadAutomatically() == EAutoDownloadFeedsAndShows) 
+	if (!iSuppressAutoDownload && iPodcastModel.SettingsEngine().DownloadAutomatically()) 
 		{
 		AddDownload(item);
 		}

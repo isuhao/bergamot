@@ -126,8 +126,9 @@ rls_string STRING_r_purge_show_prompt "Är du säker på att du vill ta bort progra
 
 rls_string STRING_r_podcast_settings_title "Inställningar"
 rls_string STRING_r_podcast_setting_showdir "Programkatalog"
-rls_string STRING_r_podcast_setting_autodl "Automatisk nedladdning"
-rls_string STRING_r_podcast_setting_checkevery "Nedladdningsintervall"
+rls_string STRING_r_podcast_setting_autoupdate "Automatisk uppdatering"
+rls_string STRING_r_podcast_setting_checkevery "Uppdateringsintervall"
+rls_string STRING_r_podcast_setting_updateat "Uppdatera vid"
 rls_string STRING_r_podcast_setting_minutes "minuter"
 
 rls_string STRING_r_podcast_setting_maxsimul "Max simultaneous downloads"
@@ -142,8 +143,8 @@ rls_string STRING_r_podcast_setting_showdir_cmd "Välj" // Use to select show dir
 rls_string STRING_r_podcast_setting_volume "Volym" 
 
 // Choicelist for autodownload
-rls_string STRING_podcast_autodl_off "Av"
-rls_string STRING_podcast_audodl_feeds "Endast strömmar" 
-rls_string STRING_podcast_audodl_feedsandshows "Strömmar och program"
+rls_string STRING_podcast_autoupdate_off "Av"
+rls_string STRING_podcast_autoupdate_perodical "Periodiskt" 
+rls_string STRING_podcast_autoupdate_attime "Vid klockslag"
 
 rls_string STRING_r_podcast_iap_dlg_title "Välj anslutning"

@@ -126,8 +126,9 @@ rls_string STRING_r_purge_show_prompt "Sei sicuro di voler eliminare questo elem
 
 rls_string STRING_r_podcast_settings_title "Impostazioni"
 rls_string STRING_r_podcast_setting_showdir "Directory di scaricamento"
-rls_string STRING_r_podcast_setting_autodl "Scaricamento automatico"
+rls_string STRING_r_podcast_setting_autoupdate "Scaricamento automatico"
 rls_string STRING_r_podcast_setting_checkevery "Intervallo di scaricamento"
+rls_string STRING_r_podcast_setting_updateat "Update at"
 rls_string STRING_r_podcast_setting_minutes "minuti"
 
 rls_string STRING_r_podcast_setting_maxsimul "Numero massimo di scaricamenti simultanei"
@@ -142,9 +143,9 @@ rls_string STRING_r_podcast_setting_showdir_cmd "Seleziona" // Use to select sho
 rls_string STRING_r_podcast_setting_volume "Volume" 
 
 // Choicelist for autodownload
-rls_string STRING_podcast_autodl_off "Disattivato"
-rls_string STRING_podcast_audodl_feeds "Solo elementi feed" 
-rls_string STRING_podcast_audodl_feedsandshows "Elementi e contenuti feed"
+rls_string STRING_podcast_autoupdate_off "Disattivato"
+rls_string STRING_podcast_autoupdate_perodical "Solo elementi feed" 
+rls_string STRING_podcast_autoupdate_attime "Elementi e contenuti feed"
 
 rls_string STRING_r_podcast_iap_dlg_title "Seleziona un account internet"
 

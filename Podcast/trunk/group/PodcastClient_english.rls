@@ -125,8 +125,11 @@ rls_string STRING_r_purge_show_prompt "Are you really sure you want to delete th
 
 rls_string STRING_r_podcast_settings_title "Settings"
 rls_string STRING_r_podcast_setting_showdir "Podcast Directory"
-rls_string STRING_r_podcast_setting_autodl "Automatic Download"
-rls_string STRING_r_podcast_setting_checkevery "Download Interval"
+rls_string STRING_r_podcast_setting_autoupdate "Automatic update"
+rls_string STRING_r_podcast_setting_autodownload "Automatic download"
+
+rls_string STRING_r_podcast_setting_checkevery "Update Interval"
+rls_string STRING_r_podcast_setting_updateat "Update at"
 rls_string STRING_r_podcast_setting_minutes "minutes"
 
 rls_string STRING_r_podcast_setting_maxsimul "Max simultaneous downloads"
@@ -141,9 +144,9 @@ rls_string STRING_r_podcast_setting_showdir_cmd "Select" // Use to select show d
 rls_string STRING_r_podcast_setting_volume "Volume" 
 
 // Choicelist for autodownload
-rls_string STRING_podcast_autodl_off "Off"
-rls_string STRING_podcast_audodl_feeds "Feeds only" 
-rls_string STRING_podcast_audodl_feedsandshows "Feeds and shows"
+rls_string STRING_podcast_autoupdate_off "Off"
+rls_string STRING_podcast_autoupdate_perodical "Periodical" 
+rls_string STRING_podcast_autoupdate_attime "At"
 
 rls_string STRING_r_podcast_iap_dlg_title "Select internet account"
 

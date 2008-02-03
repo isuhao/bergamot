@@ -19,11 +19,11 @@ _LIT(KFeedDB, "feeds.db");
 const TUint KMaxVolume = 100;
 const TUint KVolumeDelta = 10;
 
-enum TAutoDownloadSetting
+enum TAutoUpdateSetting
 {
-	EAutoDownloadOff,
-	EAutoDownloadFeeds,
-	EAutoDownloadFeedsAndShows
+	EAutoUpdateOff,
+	EAutoUpdatePeridocially,
+	EAutoUpdateAtTime
 };
 
 class CSettingsEngine : public CBase
@@ -43,15 +43,19 @@ public:
 	TFileName& BaseDir();
 	TFileName& FeedListFile();
 	TInt UpdateFeedInterval();
+	TTime UpdateFeedTime();
 	TInt MaxSimultaneousDownloads();
-	TAutoDownloadSetting DownloadAutomatically();	
+	TAutoUpdateSetting UpdateAutomatically();	
+	TBool DownloadAutomatically();
 	TFileName& DefaultFeedsFileName();
 	TInt SpecificIAP();
 	TInt MaxListItems();
 	void SetBaseDir(TFileName& aFileName);
 	void SetUpdateFeedInterval(TInt aInterval);
 	void SetMaxSimultaneousDownloads(TInt aMaxDownloads);
-	void SetDownloadAutomatically(TAutoDownloadSetting aAutoOn);
+	void SetUpdateAutomatically(TAutoUpdateSetting aAutoOn);
+	void SetDownloadAutomatically(TBool aAutoDownloadOn);
+	void SetUpdateFeedTime(TTime& aTime);
 	void SetSpecificIAP(TInt aIap);
 	TFileName PrivatePath();
 	
@@ -65,12 +69,13 @@ private:
 	TFileName iBaseDir;
 	TFileName iDefaultFeedsFile;
 	TInt iUpdateFeedInterval;
-	TAutoDownloadSetting iDownloadAutomatically;
+	TAutoUpdateSetting iUpdateAutomatically;
+	TBool iDownloadAutomatically;
 	TInt iMaxSimultaneousDownloads;
 	TInt iIap;
 	TInt iVolume;
 	TInt iMaxListItems;
-	
+	TTime iUpdateFeedTime;
 	// the file session used to read and write settings
 	RFs iFs;
 	

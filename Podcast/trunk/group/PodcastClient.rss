@@ -511,13 +511,13 @@ RESOURCE ARRAY r_podcast_connection_selection_array
 
 }
 
-RESOURCE ARRAY r_podcast_settings_autodl_array
+RESOURCE ARRAY r_podcast_settings_autoupdate_array
 {
 	items = 
 	{
-	 LBUF {txt = STRING_podcast_autodl_off;},
-	 LBUF {txt = STRING_podcast_audodl_feeds;},
-	 LBUF {txt = STRING_podcast_audodl_feedsandshows;}
+	 LBUF {txt = STRING_podcast_autoupdate_off;},
+	 LBUF {txt = STRING_podcast_autoupdate_perodical;},
+	 LBUF {txt = STRING_podcast_autoupdate_attime;}
 	};
 
 }
@@ -592,13 +592,13 @@ RESOURCE DIALOG r_podcast_settings_dlg
 
 		DLG_LINE
 		{
-			id = EPodcastSettingAutoDL;
+			id = EPodcastSettingAutoUpdate;
 			itemflags = EQikDlgItemCaptionAboveControl;
-			prompt = STRING_r_podcast_setting_autodl;
+			prompt = STRING_r_podcast_setting_autoupdate;
 			type = EEikCtChoiceList;
 			control = CHOICELIST
 			{
-			array_id = r_podcast_settings_autodl_array;
+			array_id = r_podcast_settings_autoupdate_array;
 			};
 		},
 		DLG_LINE
@@ -613,6 +613,37 @@ RESOURCE DIALOG r_podcast_settings_dlg
 				min = 0;
 				max = 1440;
 			};
+		},
+		DLG_LINE
+		{
+			id = EPodcastSettingUpdateTime;
+			itemflags = EQikDlgItemDenselyPacked;//EQikDlgItemCaptionAboveControl;
+			prompt = STRING_r_podcast_setting_updateat;
+			type = EQikCtTimeEditor;		
+			control = QIK_TIME_EDITOR
+			{
+				minTime = TIME
+				{
+				};
+
+				maxTime = TIME
+				{
+				hour = 23;
+				minute = 59;
+				second = 59;
+				};
+			};
+		},
+
+		DLG_LINE
+		{
+		 id = EPodcastSettingAutoDownload;
+		 itemflags = EQikDlgItemCaptionAboveControl; 
+		 prompt = STRING_r_podcast_setting_autodownload;
+		 type = EEikCtCheckBox;
+		 control = CHECKBOX
+		 {
+		 };
 		},
 		/*DLG_LINE
 		{

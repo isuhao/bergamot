@@ -31,7 +31,8 @@ void CSettingsEngine::ConstructL()
 	// default values
 	iUpdateFeedInterval = 60;
 	iMaxSimultaneousDownloads = 1;
-	iDownloadAutomatically = EAutoDownloadOff;
+	iDownloadAutomatically = EFalse;
+	iUpdateAutomatically = EAutoUpdateOff;
 	iIap = 0;
 	iFs.Connect();
 	
@@ -115,9 +116,12 @@ void CSettingsEngine::LoadSettingsL()
 	int len = stream.ReadInt32L();
 	stream.ReadL(iBaseDir, len);
 	iUpdateFeedInterval = stream.ReadInt32L();
-	iDownloadAutomatically = (TAutoDownloadSetting) stream.ReadInt32L();
+	iUpdateAutomatically = (TAutoUpdateSetting) stream.ReadInt32L();
+	iDownloadAutomatically = stream.ReadInt32L();
+
 	iMaxSimultaneousDownloads = stream.ReadInt32L();
 	iIap = stream.ReadInt32L();
+	//iUpdateFeedTime = stream.ReadInt64L();
 
 	iPodcastModel.SetIap(iIap);
 	CleanupStack::PopAndDestroy(2); // readStream and iniFile
@@ -142,10 +146,11 @@ void CSettingsEngine::SaveSettingsL()
 	stream.WriteInt32L(iBaseDir.Length());
 	stream.WriteL(iBaseDir);
 	stream.WriteInt32L(iUpdateFeedInterval);
+	stream.WriteInt32L(iUpdateAutomatically);
 	stream.WriteInt32L(iDownloadAutomatically);
 	stream.WriteInt32L(iMaxSimultaneousDownloads);
 	stream.WriteInt32L(iIap);
-	
+	//stream.WriteInt64L(iUpdateFeedTime.Int64());
 	stream.CommitL();
 	store->SetRootL(id);
 	store->CommitL();
@@ -228,9 +233,19 @@ TInt CSettingsEngine::MaxSimultaneousDownloads()
 	return iMaxSimultaneousDownloads;
 	}
 
-TAutoDownloadSetting CSettingsEngine::DownloadAutomatically() 
+TAutoUpdateSetting CSettingsEngine::UpdateAutomatically() 
+	{
+	return iUpdateAutomatically;
+	}
+
+TBool CSettingsEngine::DownloadAutomatically() 
 	{
 	return iDownloadAutomatically;
+	}
+
+TTime CSettingsEngine::UpdateFeedTime()
+	{
+	return iUpdateFeedTime;
 	}
 
 TInt CSettingsEngine::MaxListItems() 
@@ -281,10 +296,21 @@ void CSettingsEngine::SetMaxSimultaneousDownloads(TInt aMaxDownloads)
 	iMaxSimultaneousDownloads = aMaxDownloads;
 	}
 
-void CSettingsEngine::SetDownloadAutomatically(TAutoDownloadSetting aAutoSetting)
+void CSettingsEngine::SetUpdateAutomatically(TAutoUpdateSetting aAutoSetting)
 	{
-	iDownloadAutomatically = aAutoSetting;
+	iUpdateAutomatically = aAutoSetting;
 	}
+
+void CSettingsEngine::SetDownloadAutomatically(TBool aDownloadAuto)
+	{
+	iDownloadAutomatically = aDownloadAuto;
+	}
+
+void CSettingsEngine::SetUpdateFeedTime(TTime& aUpdateTime)
+	{
+	iUpdateFeedTime = aUpdateTime;
+	}
+
 
 void CSettingsEngine::SetSpecificIAP(TInt aIap)
 	{

@@ -65,12 +65,15 @@ protected:
 	
 	 void HandleControlStateChangeL(TInt aControlId);
 	 void LineChangedL(TInt aControlId);
+
+	 void RefreshUpdateOptions();
 private:
 	/** Reference to the podcast application model */
 	CPodcastModel& iPodcastModel;
 
 	CEikEdwin* iShowBaseDirCtrl;
-	CEikChoiceList* iAutoDLCtrl;
+	CEikChoiceList* iAutoUpdateCtrl;
+	CEikCheckBox* iAutoDownloadCtrl;
 	CQikNumberEditor* iUpdateIntervalCtrl;
 //	CQikNumberEditor* iMaxSimDlsCtrl;
 	CEikChoiceList* iConnectionCtrl;

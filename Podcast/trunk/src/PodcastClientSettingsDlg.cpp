@@ -91,8 +91,8 @@ enum
 enum
 {
 	ENoAutoDownload,
-	EFeedsOnly,
-	EFeedsAndShows
+	EPeriodically,
+	EAtClock
 };
 
 CPodcastClientSettingsDlg::CPodcastClientSettingsDlg(CPodcastModel& aPodcastModel):iPodcastModel(aPodcastModel)
@@ -107,7 +107,8 @@ void CPodcastClientSettingsDlg::PreLayoutDynInitL()
 {
 	// First init control pointers
 	iShowBaseDirCtrl = static_cast<CEikEdwin*> (ControlOrNull(EPodcastSettingShowDir));
-	iAutoDLCtrl = static_cast<CEikChoiceList*> (ControlOrNull(EPodcastSettingAutoDL));
+	iAutoUpdateCtrl = static_cast<CEikChoiceList*> (ControlOrNull(EPodcastSettingAutoUpdate));
+	iAutoDownloadCtrl = static_cast<CEikCheckBox*> (ControlOrNull(EPodcastSettingAutoDownload));
 	iUpdateIntervalCtrl = static_cast<CQikNumberEditor*> (ControlOrNull(EPodcastSettingUpdateInterval));
 //	iMaxSimDlsCtrl = static_cast<CQikNumberEditor*> (ControlOrNull(EPodcastSettingMaxsimdls));
 	iConnectionCtrl = static_cast<CEikChoiceList*> (ControlOrNull(EPodcastSettingConnection));
@@ -120,14 +121,13 @@ void CPodcastClientSettingsDlg::PreLayoutDynInitL()
 	iSelectedPathTemp = iPodcastModel.SettingsEngine().BaseDir();
 	iShowBaseDirCtrl->SetTextL(&iSelectedPathTemp);
 
-	iAutoDLCtrl->SetCurrentItem(iPodcastModel.SettingsEngine().DownloadAutomatically());
+	iAutoUpdateCtrl->SetCurrentItem(iPodcastModel.SettingsEngine().UpdateAutomatically());
+	iAutoDownloadCtrl->SetState(iPodcastModel.SettingsEngine().DownloadAutomatically()?CEikButtonBase::ESet:CEikButtonBase::EClear);
+
 	iUpdateIntervalCtrl->SetValueL(iPodcastModel.SettingsEngine().UpdateFeedInterval());
 
-	if (iPodcastModel.SettingsEngine().DownloadAutomatically() == 0) {
-		SetLineDimmedNow(EPodcastSettingUpdateInterval, ETrue);
-	} else {
-		SetLineDimmedNow(EPodcastSettingUpdateInterval, EFalse);
-	}
+	RefreshUpdateOptions();
+	
 //	iMaxSimDlsCtrl->SetValueL(iPodcastModel.SettingsEngine().MaxSimultaneousDownloads());
 
 	if(iPodcastModel.SettingsEngine().SpecificIAP() == -1)
@@ -169,7 +169,9 @@ TBool CPodcastClientSettingsDlg::OkToExitL(TInt aCommandId)
 		{
 			iShowBaseDirCtrl->GetText(iSelectedPathTemp);
 			iPodcastModel.SettingsEngine().SetBaseDir(iSelectedPathTemp);
-			iPodcastModel.SettingsEngine().SetDownloadAutomatically((TAutoDownloadSetting) iAutoDLCtrl->CurrentItem());
+			iPodcastModel.SettingsEngine().SetUpdateAutomatically((TAutoUpdateSetting) iAutoUpdateCtrl->CurrentItem());
+			iPodcastModel.SettingsEngine().SetDownloadAutomatically(iAutoDownloadCtrl->State() == CEikButtonBase::ESet);
+
 			iPodcastModel.SettingsEngine().SetUpdateFeedInterval(iUpdateIntervalCtrl->Value());
 //			iPodcastModel.SettingsEngine().SetMaxSimultaneousDownloads(iMaxSimDlsCtrl->Value());
 			/*if(iVolumeSlider != NULL)
@@ -214,6 +216,32 @@ TBool CPodcastClientSettingsDlg::OkToExitL(TInt aCommandId)
 	return ETrue;
 }
 
+void CPodcastClientSettingsDlg::RefreshUpdateOptions()
+{
+	switch(iAutoUpdateCtrl->CurrentItem())
+	{
+	case ENoAutoDownload:
+		{
+			SetLineDimmedNow(EPodcastSettingUpdateInterval, ETrue);
+			SetLineDimmedNow(EPodcastSettingUpdateTime, ETrue);
+			//MakeWholeLineVisible(EPodcastSettingIAPList, ETrue);
+		}
+		break;
+	case EPeriodically:
+		{
+			SetLineDimmedNow(EPodcastSettingUpdateInterval, EFalse);
+			SetLineDimmedNow(EPodcastSettingUpdateTime, ETrue);
+		}break;
+	default:
+		{
+			SetLineDimmedNow(EPodcastSettingUpdateInterval, ETrue);
+			SetLineDimmedNow(EPodcastSettingUpdateTime, EFalse);
+			//MakeWholeLineVisible(EPodcastSettingIAPList, EFalse);
+		}break;
+	}
+}
+
+
 void CPodcastClientSettingsDlg::HandleControlStateChangeL(TInt aControlId)
 {
 	CEikDialog::HandleControlStateChangeL(aControlId);
@@ -234,21 +262,8 @@ void CPodcastClientSettingsDlg::HandleControlStateChangeL(TInt aControlId)
 			//MakeWholeLineVisible(EPodcastSettingIAPList, EFalse);
 			}break;
 		}
-	} else if (EPodcastSettingAutoDL == aControlId) {
-		switch(iAutoDLCtrl->CurrentItem())
-		{
-		case ENoAutoDownload:
-			{
-			SetLineDimmedNow(EPodcastSettingUpdateInterval, ETrue);
-			//MakeWholeLineVisible(EPodcastSettingIAPList, ETrue);
-			}
-			break;
-		default:
-			{
-			SetLineDimmedNow(EPodcastSettingUpdateInterval, EFalse);
-			//MakeWholeLineVisible(EPodcastSettingIAPList, EFalse);
-			}break;
-		}
+	} else if (EPodcastSettingAutoUpdate == aControlId) {
+		RefreshUpdateOptions();
 	}
 }
 

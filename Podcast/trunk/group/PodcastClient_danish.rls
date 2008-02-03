@@ -122,8 +122,9 @@ rls_string STRING_r_purge_show_prompt "Er du sikker på at du vil slette dette af
 
 rls_string STRING_r_podcast_settings_title "Indstillinger"
 rls_string STRING_r_podcast_setting_showdir "Podcast placering"
-rls_string STRING_r_podcast_setting_autodl "Automatisk download"
-rls_string STRING_r_podcast_setting_checkevery "Download interval"
+rls_string STRING_r_podcast_setting_autoupdate "Automatisk upd."
+rls_string STRING_r_podcast_setting_checkevery "Update interval"
+rls_string STRING_r_podcast_setting_updateat "Upd. vid"
 rls_string STRING_r_podcast_setting_minutes "minutter"
 
 rls_string STRING_r_podcast_setting_maxsimul "Maks. samtidige downloads"
@@ -138,9 +139,9 @@ rls_string STRING_r_podcast_setting_showdir_cmd "Vælg" // Use to select show dir
 rls_string STRING_r_podcast_setting_volume "Lydstyrke" 
 
 // Choicelist for autodownload
-rls_string STRING_podcast_autodl_off "Fra"
-rls_string STRING_podcast_audodl_feeds "Kun feeds" 
-rls_string STRING_podcast_audodl_feedsandshows "Feeds og afsnit"
+rls_string STRING_podcast_autoupdate_off "Fra"
+rls_string STRING_podcast_autoupdate_perodical "Periodiskt" 
+rls_string STRING_podcast_autoupdate_attime ""
 
 rls_string STRING_r_podcast_iap_dlg_title "Vælg internetkonto"
 

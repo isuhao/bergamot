@@ -65,8 +65,10 @@ enum TPodcatClientCommands
 	EPodcastAddEditFeedDlgUrl,
 	// Settings DLG controls
 	EPodcastSettingShowDir,
-	EPodcastSettingAutoDL,
+	EPodcastSettingAutoDownload,
+	EPodcastSettingAutoUpdate,
 	EPodcastSettingUpdateInterval,
+	EPodcastSettingUpdateTime,
 	EPodcastSettingMaxsimdls,
 	EPodcastSettingConnection,
 	EPodcastSettingIAPList,
