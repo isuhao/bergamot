@@ -455,25 +455,27 @@ RESOURCE DIALOG r_podcast_new_audiobook_dlg
 	{
 	DLG_LINE
 		{
+		id = EPodcastNewAudioBookTitle;
+		itemflags = EQikDlgItemCaptionAboveControl|EQikDlgItemCtlIsEditInPlace|EQikDlgItemHideHighlight;
+		prompt = STRING_r_podcast_new_audiobook_prompt;
+		type = EEikCtEdwin;
+		control = EDWIN
+			{
+			lines = 5;
+			};
+		},
+	DLG_LINE
+		{
 		id = EPodcastNewAudioBookLabel;
 		itemflags = EQikDlgItemCaptionAboveControl;
 		type = EEikCtLabel;
 		control = LABEL
 			{
 			txt = STRING_r_podcast_new_audiobook_label;
-			};
-		},
-	DLG_LINE
-		{
-		id = EPodcastNewAudioBookTitle;
-		itemflags = EQikDlgItemCaptionAboveControl;
-		prompt = STRING_r_podcast_new_audiobook_prompt;
-		type = EEikCtEdwin;
-		control = EDWIN
-			{
-			lines = 1;
+			horiz_align=EEikLabelAlignHLeft;
 			};
 		}
+
 	};
 }
 
