@@ -277,15 +277,7 @@ CQikCommand* CPodcastClientShowsView::DynInitOrDeleteCommandL(CQikCommand* aComm
 		
 
 	switch(aCommand->Id())
-	{
-	case EPodcastAddFeed:
-	case EPodcastEditFeed:
-	case EPodcastDeleteFeed:
-	case EPodcastUpdateAllFeeds:
-		delete aCommand;
-		aCommand = NULL;
-		break;
-		
+	{		
 	case EQikListBoxCmdSelect:
 		{
 			if(iPodcastModel.ActiveShowList().Count() == 0)

@@ -30,6 +30,11 @@ rls_string STRING_r_view_feeds_cmd "Strömmar"
 // Navigation to the player
 rls_string STRING_r_view_player_cmd "Spelare"
 
+// Navigation to the audio books
+rls_string STRING_r_view_audiobooks_cmd "Ljud böcker"
+rls_string STRING_r_view_newaudiobook_cmd "Ny ljudbok"
+
+
 // Actions for the player
 rls_string STRING_r_play_cmd "Spela"
 rls_string STRING_r_stop_cmd "Stoppa"
@@ -108,6 +113,7 @@ rls_string STRING_r_add_feed_title "Lägg till ström"
 rls_string STRING_r_edit_feed_title "Ändra ström"
 
 rls_string STRING_r_add_feed_prompt "URL"
+rls_string STRING_r_add_feed_title_prompt "Title"
 
 rls_string STRING_r_remove_feed_title "Ta bort ström"
 rls_string STRING_r_remove_feed_prompt "Är du säker på att du vill ta bort strömmen?"

@@ -108,6 +108,7 @@ rls_string STRING_r_add_feed_title "Feed hinzufügen"
 rls_string STRING_r_edit_feed_title "Feed bearbeiten"
 
 rls_string STRING_r_add_feed_prompt "Feed URL"
+rls_string STRING_r_add_feed_title_prompt "Feed title"
 
 rls_string STRING_r_remove_feed_title "Feed entfernen"
 rls_string STRING_r_remove_feed_prompt "Sind Sie sicher, dass Sie den Feed entfernen wollen?"

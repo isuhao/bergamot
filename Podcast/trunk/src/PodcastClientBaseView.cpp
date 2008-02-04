@@ -99,6 +99,10 @@ void CPodcastClientBaseView::ViewConstructL()
 	data->SetItemId(EBaseViewFeeds);
 	data->Close();
 
+	data = model.RetrieveDataL(4);	
+	data->SetItemId(EBaseViewAudioBooks);
+	data->Close();
+
 
 	model.ModelEndUpdateL();
 
@@ -120,25 +124,6 @@ CQikCommand* CPodcastClientBaseView::DynInitOrDeleteCommandL(CQikCommand* aComma
 {
 	switch(aCommand->Id())
 	{
-	case EPodcastViewMain:
-	case EPodcastAddFeed:
-	case EPodcastEditFeed:
-	case EPodcastDeleteFeed:
-	case EPodcastPurgeFeed:
-	case EPodcastUpdateFeed:
-	case EPodcastUpdateAllFeeds:
-	case EPodcastPurgeShow:
-	case EPodcastDownloadShow:
-	case EPodcastDeleteAllShows:
-	case EPodcastRemoveDownload:
-	case EPodcastStopDownloads:
-	case EPodcastResumeDownloads:
-	case EPodcastMarkAllPlayed:
-	case EPodcastShowUnplayedOnly:
-	case EPodcastUpdateLibrary:
-		delete aCommand;
-		aCommand = NULL;
-		break;
 	default:
 		break;
 	}
@@ -231,6 +216,9 @@ void CPodcastClientBaseView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQi
 			case EBaseViewFeeds:
 				{
 					newview = KUidPodcastFeedViewID;
+				}break;
+			case EBaseViewAudioBooks:
+				{
 				}break;
 			default:
 				break;

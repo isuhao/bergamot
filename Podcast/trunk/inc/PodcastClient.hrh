@@ -18,15 +18,18 @@ enum TPodcatClientCommands
 	EPodcastViewPendingShows,
     EPodcastViewFeeds,
 	EPodcastViewPlayer,
+	EPodcastViewAudioBooks,
 	EPodcastPlay,
 	EPodcastStop,
 	EPodcastPause,
+	// Feeds commands
 	EPodcastAddFeed,
 	EPodcastEditFeed,
 	EPodcastDeleteFeed,
 	EPodcastPurgeFeed,
 	EPodcastUpdateFeed,
 	EPodcastUpdateAllFeeds,
+	// Show commands
 	EPodcastDownloadShow,
 	EPodcastDeleteAllShows,
 	EPodcastPurgeShow,
@@ -38,6 +41,10 @@ enum TPodcatClientCommands
 	EPodcastMarkAsUnplayed,
 	EPodcastShowUnplayedOnly,
 	EPodcastUpdateLibrary,
+	// Audio book commands
+	EPodcastAddNewAudioBook,
+
+	// Common commands
 	EPodcastZoomSetting,
 	EPodcastSettings,
 	EPodcastSelectShowDir,
@@ -63,6 +70,7 @@ enum TPodcatClientCommands
 	EPodcastPlayViewCoverImage,
 	EPodcastPlayViewScrollContainer,
 	EPodcastAddEditFeedDlgUrl,
+	EPodcastAddEditFeedDlgTitle,
 	// Settings DLG controls
 	EPodcastSettingShowDir,
 	EPodcastSettingAutoDownload,

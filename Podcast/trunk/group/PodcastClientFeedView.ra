@@ -11,32 +11,152 @@ RESOURCE QIK_VIEW_CONFIGURATIONS r_podcast_feedview_ui_configurations
 		QIK_VIEW_CONFIGURATION
 			{
 			ui_config_mode = KQikPenStyleTouchPortrait;
-			command_list = r_podcast_listview_commands;
+			command_list = r_podcast_feedview_commands;
 			view = r_podcast_feedview_layout;
 			},
 		QIK_VIEW_CONFIGURATION
 			{
 			ui_config_mode = KQikPenStyleTouchLandscape;
-			command_list = r_podcast_listview_commands;
+			command_list = r_podcast_feedview_commands;
 			view = r_podcast_feedview_layout;
 			},
 		QIK_VIEW_CONFIGURATION
 			{
 			ui_config_mode = KQikSoftkeyStyleTouchPortrait;
-			command_list = r_podcast_listview_commands;
+			command_list = r_podcast_feedview_commands;
 			view = r_podcast_feedview_layout;
 			},
 		QIK_VIEW_CONFIGURATION
 			{
 			ui_config_mode = KQikSoftkeyStylePortrait;
-			command_list = r_podcast_listview_commands;
+			command_list = r_podcast_feedview_commands;
 			view = r_podcast_feedview_layout;
 			},
 		QIK_VIEW_CONFIGURATION
 			{
 			ui_config_mode = KQikSoftkeyStyleSmallPortrait;
-			command_list = r_podcast_listview_commands;
+			command_list = r_podcast_feedview_commands;
 			view = r_podcast_feedview_layout;
+			}
+		};
+	}
+
+//----------------------------------------------------
+//------------------ VIEW COMMANDS -------------------
+//----------------------------------------------------
+RESOURCE QIK_COMMAND_LIST r_podcast_feedview_commands
+	{
+	items=
+		{
+		// This command shall only be visible in debug mode because it is only
+		// used to find memory leaks during development of the application.	
+		QIK_COMMAND
+			{
+			id = EPodcastView;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_view_cmd;
+			groupId = 10; 
+			namedGroupLinkId= 1;
+			},
+				QIK_COMMAND
+				{
+				id = EPodcastViewMain;
+				type = EQikCommandTypeScreen;
+				text = STRING_r_view_main_cmd;
+				namedGroupId = 1;
+				groupId = 1;
+				},		
+				QIK_COMMAND
+				{
+				id = EPodcastViewDownloadedShows;
+				type = EQikCommandTypeScreen;
+				text = STRING_r_view_dl_shows_cmd;
+				namedGroupId = 1;
+				groupId = 2;
+				},		
+
+				QIK_COMMAND
+				{
+				id = EPodcastViewPendingShows;
+				type = EQikCommandTypeScreen;
+				text = STRING_r_view_dling_shows_cmd;
+				namedGroupId = 1;
+				groupId = 2;
+				},					
+			
+				QIK_COMMAND
+				{
+				id = EPodcastViewAudioBooks;
+				type = EQikCommandTypeScreen;
+				text = STRING_r_view_audiobooks_cmd;
+				namedGroupId = 1;
+				groupId = 2;
+				},
+// Feed handling
+	
+	QIK_COMMAND
+			{
+			groupId = 5;
+			id = EPodcastAddFeed;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_view_add_feed_cmd;
+			},
+	QIK_COMMAND
+			{
+			groupId = 5;
+			id = EPodcastEditFeed;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_view_edit_feed_cmd;
+			},
+		QIK_COMMAND
+			{
+			cpfFlags = EQikCpfFlagDuplicateInMenuPane;
+			type = EQikCommandTypeDelete;//EQikCommandTypeScreen;
+			groupId = 5;
+			id = EPodcastDeleteFeed;
+	
+			text = STRING_r_view_delete_feed_cmd;
+			},		
+	
+		QIK_COMMAND
+			{
+		//	groupId = 5;
+			id = EPodcastUpdateAllFeeds;
+			type = EQikCommandTypeDone;
+			text = STRING_r_update_all_feeds_cmd;
+			shortText = STRING_r_update_all_feeds_short_cmd;
+			},	
+// Other commands
+		QIK_COMMAND
+			{
+			id = EPodcastSettings;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_settings_cmd;
+			groupId = 11;  
+			},
+		QIK_COMMAND
+			{
+			id = EPodcastZoomSetting;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_zoom_cmd;
+			groupId = 11;  
+			},
+	QIK_COMMAND
+			{
+			id = EPodcastAbout;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_view_about_cmd;
+			groupId = 12;  
+			},				
+		QIK_COMMAND
+			{
+			id = EEikCmdExit;
+			type = EQikCommandTypeScreen;
+			// Indicate that it will only be created in debug builds
+			stateFlags = EQikCmdFlagDebugOnly;
+			text = STRING_r_listbox_listview_cmd_close_debug;
+			shortText = STRING_r_listbox_listview_cmd_close_debug_shorttext;
+			groupId = 255;
 			}
 		};
 	}

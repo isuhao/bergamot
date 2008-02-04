@@ -11,35 +11,121 @@ RESOURCE QIK_VIEW_CONFIGURATIONS r_podcast_mainview_ui_configurations
 		QIK_VIEW_CONFIGURATION
 			{
 			ui_config_mode = KQikPenStyleTouchPortrait;
-			command_list = r_podcast_listview_commands;
+			command_list = r_podcast_mainview_commands;
 			view = r_podcast_mainview_layout;
 			},
 		QIK_VIEW_CONFIGURATION
 			{
 			ui_config_mode = KQikPenStyleTouchLandscape;
-			command_list = r_podcast_listview_commands;
+			command_list = r_podcast_mainview_commands;
 			view = r_podcast_mainview_layout;
 			},
 		QIK_VIEW_CONFIGURATION
 			{
 			ui_config_mode = KQikSoftkeyStyleTouchPortrait;
-			command_list = r_podcast_listview_commands;
+			command_list = r_podcast_mainview_commands;
 			view = r_podcast_mainview_layout;
 			},
 		QIK_VIEW_CONFIGURATION
 			{
 			ui_config_mode = KQikSoftkeyStylePortrait;
-			command_list = r_podcast_listview_commands;
+			command_list = r_podcast_mainview_commands;
 			view = r_podcast_mainview_layout;
 			},
 		QIK_VIEW_CONFIGURATION
 			{
 			ui_config_mode = KQikSoftkeyStyleSmallPortrait;
-			command_list = r_podcast_listview_commands;
+			command_list = r_podcast_mainview_commands;
 			view = r_podcast_mainview_layout;
 			}
 		};
 	}
+
+//----------------------------------------------------
+//------------------ VIEW COMMANDS -------------------
+//----------------------------------------------------
+RESOURCE QIK_COMMAND_LIST r_podcast_mainview_commands
+	{
+	items=
+		{
+		// This command shall only be visible in debug mode because it is only
+		// used to find memory leaks during development of the application.	
+		QIK_COMMAND
+			{
+			id = EPodcastView;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_view_cmd;
+			groupId = 10; 
+			namedGroupLinkId= 1;
+			},			
+				QIK_COMMAND
+				{
+				id = EPodcastViewDownloadedShows;
+				type = EQikCommandTypeScreen;
+				text = STRING_r_view_dl_shows_cmd;
+				namedGroupId = 1;
+				groupId = 2;
+				},		
+
+				QIK_COMMAND
+				{
+				id = EPodcastViewPendingShows;
+				type = EQikCommandTypeScreen;
+				text = STRING_r_view_dling_shows_cmd;
+				namedGroupId = 1;
+				groupId = 2;
+				},					
+				QIK_COMMAND
+				{
+				id = EPodcastViewFeeds;
+				type = EQikCommandTypeScreen;
+				text = STRING_r_view_feeds_cmd;
+				namedGroupId = 1;
+				groupId = 2;
+				},
+				QIK_COMMAND
+				{
+				id = EPodcastViewAudioBooks;
+				type = EQikCommandTypeScreen;
+				text = STRING_r_view_audiobooks_cmd;
+				namedGroupId = 1;
+				groupId = 2;
+				},
+// Other commands
+		QIK_COMMAND
+			{
+			id = EPodcastSettings;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_settings_cmd;
+			groupId = 11;  
+			},
+		QIK_COMMAND
+			{
+			id = EPodcastZoomSetting;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_zoom_cmd;
+			groupId = 11;  
+			},
+	QIK_COMMAND
+			{
+			id = EPodcastAbout;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_view_about_cmd;
+			groupId = 12;  
+			},				
+		QIK_COMMAND
+			{
+			id = EEikCmdExit;
+			type = EQikCommandTypeScreen;
+			// Indicate that it will only be created in debug builds
+			stateFlags = EQikCmdFlagDebugOnly;
+			text = STRING_r_listbox_listview_cmd_close_debug;
+			shortText = STRING_r_listbox_listview_cmd_close_debug_shorttext;
+			groupId = 255;
+			}
+		};
+	}
+
 
 //----------------------------------------------------
 //----------------- MAINVIEW LAYOUT ------------------
@@ -204,9 +290,37 @@ RESOURCE QIK_LISTBOX r_podcast_mainview_listbox
 				slot_id = EQikListBoxSlotLeftMediumIcon1;
 				}
 			};
+		},
+		QIK_LISTBOX_DATA
+		{
+			data = 
+			{
+			
+				QIK_LISTBOX_TEXT
+				{
+				txt = STRING_r_view_audiobooks_cmd;
+				slot_id = EQikListBoxSlotText1;
+				},
+				QIK_LISTBOX_ICON_2
+				{
+
+				content=QIK_CONTENT_MBM 
+				{
+					bmpid = EMbmPodcastclientFeeds_40x40;
+					bmpmask = EMbmPodcastclientFeeds_40x40m;
+				};
+
+				slot_id = EQikListBoxSlotLeftMediumIcon1;
+				}
+			};
 		}
 	};
 	}
+
+
+
+
+	
 
 // Layouts are always added in layout pair to the list box. A layout pair 
 // consists of one mandatory normal layout and an optional highlight layout.

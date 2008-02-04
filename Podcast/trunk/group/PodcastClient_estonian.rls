@@ -108,6 +108,7 @@ rls_string STRING_r_add_feed_title "Lisa voog"
 rls_string STRING_r_edit_feed_title "Muuda voogu"
 
 rls_string STRING_r_add_feed_prompt "Voo URL"
+rls_string STRING_r_add_feed_title_prompt "Feed title"
 
 rls_string STRING_r_remove_feed_title "Eemalda voog"
 rls_string STRING_r_remove_feed_prompt "Kas eemaldada valitud voog?"

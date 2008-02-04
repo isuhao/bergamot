@@ -62,232 +62,8 @@ RESOURCE EIK_APP_INFO
 #include "PodcastClientShowsView.ra"
 #include "PodcastClientFeedView.ra"
 
-
-
 //----------------------------------------------------
-//------------------ VIEW COMMANDS -------------------
-//----------------------------------------------------
-RESOURCE QIK_COMMAND_LIST r_podcast_listview_commands
-	{
-	items=
-		{
-		// This command shall only be visible in debug mode because it is only
-		// used to find memory leaks during development of the application.	
-		QIK_COMMAND
-			{
-			id = EPodcastView;
-			type = EQikCommandTypeScreen;
-			text = STRING_r_view_cmd;
-			groupId = 10; 
-			namedGroupLinkId= 1;
-			},
-				QIK_COMMAND
-				{
-				id = EPodcastViewMain;
-				type = EQikCommandTypeScreen;
-				text = STRING_r_view_main_cmd;
-				namedGroupId = 1;
-				groupId = 1;
-				},
-
-			/*	QIK_COMMAND
-				{
-				id = EPodcastViewAllShows;
-				type = EQikCommandTypeScreen;
-				text = STRING_r_view_all_shows_cmd;
-				namedGroupId = 1;
-				groupId = 2;
-				},	
-				QIK_COMMAND
-				{
-				id = EPodcastViewNewShows;
-				type = EQikCommandTypeScreen;
-				text = STRING_r_view_new_shows_cmd;
-				namedGroupId = 1;
-				groupId = 2;
-				},	*/	
-				QIK_COMMAND
-				{
-				id = EPodcastViewDownloadedShows;
-				type = EQikCommandTypeScreen;
-				text = STRING_r_view_dl_shows_cmd;
-				namedGroupId = 1;
-				groupId = 2;
-				},		
-
-				QIK_COMMAND
-				{
-				id = EPodcastViewPendingShows;
-				type = EQikCommandTypeScreen;
-				text = STRING_r_view_dling_shows_cmd;
-				namedGroupId = 1;
-				groupId = 2;
-				},					
-				QIK_COMMAND
-				{
-				id = EPodcastViewFeeds;
-				type = EQikCommandTypeScreen;
-				text = STRING_r_view_feeds_cmd;
-				namedGroupId = 1;
-				groupId = 2;
-				},
-// Feed handling
-		QIK_COMMAND
-			{
-		//	groupId = 5;
-			id = EPodcastUpdateFeed;
-			type = EQikCommandTypeDone;
-			text = STRING_r_update_feed_cmd;
-			shortText = STRING_r_update_feed_short_cmd;
-			priority = 2;
-			},
-	QIK_COMMAND
-			{
-			groupId = 5;
-			id = EPodcastAddFeed;
-			type = EQikCommandTypeScreen;
-			text = STRING_r_view_add_feed_cmd;
-			},
-	QIK_COMMAND
-			{
-			groupId = 5;
-			id = EPodcastEditFeed;
-			type = EQikCommandTypeScreen;
-			text = STRING_r_view_edit_feed_cmd;
-			},
-		QIK_COMMAND
-			{
-			cpfFlags = EQikCpfFlagDuplicateInMenuPane;
-			type = EQikCommandTypeDelete;//EQikCommandTypeScreen;
-			groupId = 5;
-			id = EPodcastDeleteFeed;
-	
-			text = STRING_r_view_delete_feed_cmd;
-			},		
-	
-		QIK_COMMAND
-			{
-		//	groupId = 5;
-			id = EPodcastUpdateAllFeeds;
-			type = EQikCommandTypeDone;
-			text = STRING_r_update_all_feeds_cmd;
-			shortText = STRING_r_update_all_feeds_short_cmd;
-			},
-// Show handling	
-
-	QIK_COMMAND
-			{
-			groupId = 5;
-			id = EPodcastDownloadShow;
-			type = EQikCommandTypeScreen;
-			text = STRING_r_view_download_show_cmd;
-			},		
-	QIK_COMMAND
-			{
-			groupId = 5;
-			id = EPodcastDeleteAllShows;
-			type = EQikCommandTypeScreen;
-			text = STRING_r_view_delete_shows_cmd;
-			},
-		QIK_COMMAND
-			{
-			groupId = 5;
-			id = EPodcastPurgeShow;
-			cpfFlags = EQikCpfFlagDuplicateInMenuPane;
-			type = EQikCommandTypeDelete;//EQikCommandTypeScreen;
-			text = STRING_r_view_purge_show_cmd;
-			},
-	QIK_COMMAND
-			{
-			groupId = 6;
-			id = EPodcastRemoveDownload;
-			cpfFlags = EQikCpfFlagDuplicateInMenuPane;
-			type = EQikCommandTypeDelete;//EQikCommandTypeScreen;
-			text = STRING_r_view_remove_download_cmd;
-			},
-	QIK_COMMAND
-			{
-			groupId = 6;
-			id = EPodcastStopDownloads;
-			type = EQikCommandTypeScreen;
-			text = STRING_r_view_stop_downloads_cmd;
-			},
-		QIK_COMMAND
-			{
-			groupId = 6;
-			id = EPodcastResumeDownloads;
-			type = EQikCommandTypeScreen;
-			text = STRING_r_view_resume_downloads_cmd;
-			},
-// Show filter handling and item marking for this
-	QIK_COMMAND
-			{
-			groupId = 7;
-			id = EPodcastShowUnplayedOnly;
-			type = EQikCommandTypeScreen;
-			text = STRING_r_view_show_unplayed_cmd;
-			stateFlags = EQikCmdFlagCheckBox;
-			},	
-		QIK_COMMAND
-			{
-			groupId = 7;
-			id = EPodcastMarkAllPlayed;
-			type = EQikCommandTypeScreen;
-			text = STRING_r_view_mark_all_played_cmd;
-			},
-	/*	QIK_COMMAND
-			{
-			groupId = 7;
-			id = EPodcastUpdateLibrary;
-			type = EQikCommandTypeScreen;
-			text = STRING_r_view_library_update_cmd;
-			},	*/
-
-	QIK_COMMAND
-			{
-			groupId = 8;
-			id = EPodcastPurgeFeed;
-			type = EQikCommandTypeScreen;
-			text = STRING_r_view_purge_feed_cmd;
-			},	
-// Other commands
-		QIK_COMMAND
-			{
-			id = EPodcastSettings;
-			type = EQikCommandTypeScreen;
-			text = STRING_r_settings_cmd;
-			groupId = 11;  
-			},
-		QIK_COMMAND
-			{
-			id = EPodcastZoomSetting;
-			type = EQikCommandTypeScreen;
-			text = STRING_r_zoom_cmd;
-			groupId = 11;  
-			},
-	QIK_COMMAND
-			{
-			id = EPodcastAbout;
-			type = EQikCommandTypeScreen;
-			text = STRING_r_view_about_cmd;
-			groupId = 12;  
-			},				
-		QIK_COMMAND
-			{
-			id = EEikCmdExit;
-			type = EQikCommandTypeScreen;
-			// Indicate that it will only be created in debug builds
-			stateFlags = EQikCmdFlagDebugOnly;
-			text = STRING_r_listbox_listview_cmd_close_debug;
-			shortText = STRING_r_listbox_listview_cmd_close_debug_shorttext;
-			groupId = 255;
-			}
-		};
-	}
-
-
-//----------------------------------------------------
-//--------------- ROW LAYOUT MANAGER -----------------
+//--------------- DEFAULT ROW LAYOUT MANAGER -----------------
 //----------------------------------------------------
 RESOURCE QIK_ROW_LAYOUT_MANAGER r_podcast_row_layout_manager_default
 	{
@@ -295,7 +71,7 @@ RESOURCE QIK_ROW_LAYOUT_MANAGER r_podcast_row_layout_manager_default
 	}
 
 //----------------------------------------------------
-//----------------- ROW LAYOUT DATA ------------------
+//----------------- DEFAULT ROW LAYOUT DATA ------------------
 //----------------------------------------------------
 RESOURCE QIK_ROW_LAYOUT_DATA r_podcast_row_layout_data_fill
 	{
@@ -462,16 +238,27 @@ RESOURCE DIALOG r_podcast_edit_feed_dlg
 	items = 
 	{
 	DLG_LINE
-	{
-	id = EPodcastAddEditFeedDlgUrl;
-	itemflags = EQikDlgItemCaptionAboveControl|EQikDlgItemCtlIsEditInPlace|EQikDlgItemHideHighlight;
-	prompt = STRING_r_add_feed_prompt;
-	type = EEikCtEdwin;
-	control = EDWIN
-	{
-	lines = 5;
-	};
-	}
+		{
+		id = EPodcastAddEditFeedDlgTitle;
+		itemflags = EQikDlgItemCaptionAboveControl;
+		prompt = STRING_r_add_feed_prompt;
+		type = EEikCtEdwin;
+		control = EDWIN
+			{
+			lines = 1;
+			};
+		},
+	DLG_LINE
+		{
+		id = EPodcastAddEditFeedDlgUrl;
+		itemflags = EQikDlgItemCaptionAboveControl;
+		prompt = STRING_r_add_feed_prompt;
+		type = EEikCtEdwin;
+		control = EDWIN
+			{
+			lines = 5;
+			};
+		}
 	};
 }
 
@@ -573,22 +360,7 @@ RESOURCE DIALOG r_podcast_settings_dlg
 				lines = 3;
 				maxlength = 256;
 			};
-		},
-
-		/*DLG_LINE
-		{
-			id = EPodcastSettingsVolume;
-			itemflags = EQikDlgItemCaptionAboveControl;
-			prompt = STRING_r_podcast_setting_volume;
-			type = EQikCtSlider;
-			control = QIK_SLIDER 
-			{
-				min_value = 0;
-				max_value = 100;
-				num_markers = 10;
-			};
-		},*/
-
+		},	
 
 		DLG_LINE
 		{
