@@ -82,6 +82,9 @@ enum TPodcatClientCommands
 	EPodcastSettingConnection,
 	EPodcastSettingIAPList,
 	EPodcastSettingsVolume,
+	// New audio book dialog
+	EPodcastNewAudioBookLabel,
+	EPodcastNewAudioBookTitle,
 	EPodcastAboutText
 	};
 	

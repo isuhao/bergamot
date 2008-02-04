@@ -50,6 +50,8 @@ SOURCE			PodcastClientPlayView.cpp
 // Dialogs
 SOURCE			PodcastClientAddFeedDlg.cpp
 SOURCE			PodcastClientSettingsDlg.cpp
+SOURCE			PodcastClientAudioBookDlg.cpp
+
 // Engine
 SOURCE			HttpClient.cpp
 SOURCE			HttpEventHandler.cpp 

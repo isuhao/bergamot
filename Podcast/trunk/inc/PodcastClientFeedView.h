@@ -33,7 +33,7 @@ protected:
 	// from MQikCommandModelOwner	
 	CQikCommand* DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& aControlAddingCommands);
 	void HandleCommandL(CQikCommand& aCommand);
-
+	void HandleAddNewAudioBookL();
 private:
     TBool iProgressAdded;
 	TFeedsViewMode iCurrentViewMode;

@@ -158,3 +158,10 @@ rls_string STRING_podcast_autoupdate_perodical "Periodiskt"
 rls_string STRING_podcast_autoupdate_attime "Vid klockslag"
 
 rls_string STRING_r_podcast_iap_dlg_title "Välj anslutning"
+
+// Audio book dialog
+rls_string STRING_r_podcast_new_audiobook_title "Skapa ny audio book"
+rls_string STRING_r_podcast_new_audiobook_prompt "Ljudboks titel"
+rls_string STRING_r_podcast_new_audiobook_label "%d filer valda för den här boken."
+
+rls_string STRING_r_podcast_new_audiobook_select_files "Välj ljudboks filer:" // Max 80 chars

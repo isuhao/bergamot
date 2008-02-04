@@ -419,19 +419,7 @@ RESOURCE DIALOG r_podcast_settings_dlg
 		 control = CHECKBOX
 		 {
 		 };
-		},
-		/*DLG_LINE
-		{
-			id = EPodcastSettingMaxsimdls;
-			itemflags = EQikDlgItemCaptionAboveControl;
-			prompt = STRING_r_podcast_setting_maxsimul;
-			type = EQikCtNumberEditor;
-			control = QIK_NUMBER_EDITOR
-			{
-				min = 1;
-				max = 16;
-			};
-		},*/
+		},	
 		DLG_LINE
 		{
 			id = EPodcastSettingConnection;
@@ -458,3 +446,46 @@ RESOURCE DIALOG r_podcast_settings_dlg
 
 
 
+RESOURCE DIALOG r_podcast_new_audiobook_dlg
+{
+	buttons = R_EIK_BUTTONS_CANCEL_DONE;
+	flags = EEikDialogFlagButtonsBelow|EEikDialogFlagDensePacking|EEikDialogFlagWait;
+	title = STRING_r_podcast_new_audiobook_title;
+	items = 
+	{
+	DLG_LINE
+		{
+		id = EPodcastNewAudioBookLabel;
+		itemflags = EQikDlgItemCaptionAboveControl;
+		type = EEikCtLabel;
+		control = LABEL
+			{
+			txt = STRING_r_podcast_new_audiobook_label;
+			};
+		},
+	DLG_LINE
+		{
+		id = EPodcastNewAudioBookTitle;
+		itemflags = EQikDlgItemCaptionAboveControl;
+		prompt = STRING_r_podcast_new_audiobook_prompt;
+		type = EEikCtEdwin;
+		control = EDWIN
+			{
+			lines = 1;
+			};
+		}
+	};
+}
+
+RESOURCE TBUF r_podcast_new_audiobook_select_files { buf = STRING_r_podcast_new_audiobook_select_files;}
+
+RESOURCE ARRAY r_podcast_new_audiobook_mimearray
+{
+	items = 
+	{
+	 LBUF {txt = "audio/wav";},
+	 LBUF {txt = "audio/mp3";},
+	 LBUF {txt = "audio/mp4";}
+	};
+
+}

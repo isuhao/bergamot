@@ -135,9 +135,6 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastFeedViewID);
 			iQikAppUi.ActivateViewL(podcastsView, TUid::Uid(EFeedsAudioBooksMode), KNullDesC8());
 		}break;
-	case EPodcastAddNewAudioBook:
-		{
-		}break;
 	case EPodcastUpdateAllFeeds:
 		{
 			iPodcastModel.FeedEngine().UpdateAllFeeds();

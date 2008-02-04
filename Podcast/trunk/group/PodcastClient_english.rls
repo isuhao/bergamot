@@ -159,3 +159,8 @@ rls_string STRING_podcast_autoupdate_attime "At"
 
 rls_string STRING_r_podcast_iap_dlg_title "Select internet account"
 
+// Audio book dialog
+rls_string STRING_r_podcast_new_audiobook_title "Create new audiobook"
+rls_string STRING_r_podcast_new_audiobook_prompt "Audiobook tile"
+rls_string STRING_r_podcast_new_audiobook_label "%d files selected for this book."
+rls_string STRING_r_podcast_new_audiobook_select_files "Choose book files:" // Max 80 chars

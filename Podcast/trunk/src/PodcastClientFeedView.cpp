@@ -1,8 +1,11 @@
 #include <qikcommand.h>
 #include <qikcontent.h>
+#include <QikMediaFileFolderUtils.h>
+#include <QikSelectFileDlg.h>
 #include <PodcastClient.mbg>
 #include <PodcastClient.rsg>
 
+#include "PodcastClientAudioBookDlg.h"
 #include "PodcastClientAddFeedDlg.h"
 #include "PodcastClientFeedView.h"
 #include "PodcastModel.h"
@@ -11,6 +14,7 @@
 const TInt KMaxFeedNameLength = 100;
 const TInt KMaxUnplayedFeedsLength =64;
 const TInt KADayInHours = 24;
+const TInt KDefaultGran = 5;
 _LIT(KUnknownUpdateDateString, "?/?");
 /**
 Creates and constructs the view.
@@ -509,20 +513,55 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 		
 		case EPodcastPurgeFeed:
 			{
+				HandleAddNewAudioBookL();
 			/*if(iListbox != NULL)
 				{
 				TInt index = iListbox->CurrentItemIndex();
 				}*/
 			break;
 			}
+
+	case EPodcastAddNewAudioBook:
+		{
+		HandleAddNewAudioBookL();
+		}break;
+	case EPodcastRemoveAudioBook:
+		{
+		}break;
 		default:
 			CPodcastClientView::HandleCommandL(aCommand);
 			break;
 		}
+	
 	}
 
 void CPodcastClientFeedView::FeedUpdateComplete()
 	{
 	RDebug::Print(_L("FeedUpdateComplete"));
+	}
+
+
+void CPodcastClientFeedView::HandleAddNewAudioBookL()
+	{
+	CDesCArrayFlat* mimeArray = iEikonEnv->ReadDesCArrayResourceL(R_PODCAST_NEW_AUDIOBOOK_MIMEARRAY);
+	CleanupStack::PushL(mimeArray);
+	CDesCArrayFlat* fileNameArray = new (ELeave) CDesCArrayFlat(KDefaultGran);
+	CleanupStack::PushL(fileNameArray);
+	HBufC* dialogTitle = iEikonEnv->AllocReadResourceLC(R_PODCAST_NEW_AUDIOBOOK_SELECT_FILES);
+	TQikDefaultFolderDescription defaultFolder;
+	defaultFolder.SetDefaultFolder(EQikFileHandlingDefaultFolderAudio);
+
+	if(CQikSelectFileDlg::RunDlgLD(*mimeArray, *fileNameArray, defaultFolder, dialogTitle, EQikSelectFileDialogEnableMultipleSelect|EQikSelectFileDialogSortByName))
+		{
+		if(fileNameArray->Count() > 0)
+			{
+			CPodcastClientAudioBookDlg* titleDialog = new (ELeave) CPodcastClientAudioBookDlg(iPodcastModel, *fileNameArray);
+			titleDialog->ExecuteLD(R_PODCAST_NEW_AUDIOBOOK_DLG);
+			}
+		}
+
+	CleanupStack::PopAndDestroy(dialogTitle);
+	CleanupStack::PopAndDestroy(fileNameArray);
+	CleanupStack::PopAndDestroy(mimeArray);
 	}
 
