@@ -77,6 +77,8 @@ void CPodcastClientShowsView::ViewConstructL()
 
 void CPodcastClientShowsView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage)
 {
+	TPodcastClientShowCategory previousCategory = iCurrentCategory;
+
 	switch(aCustomMessageId.iUid)
 	{
 	case EShowNewShows:
@@ -96,9 +98,9 @@ void CPodcastClientShowsView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid
 	{
 		SetParentView( TVwsViewId(KUidPodcastClientID, KUidPodcastFeedViewID));
 	}
-	else if(aPrevViewId.iAppUid == KUidPodcastClientID)
+	else if(aPrevViewId.iAppUid == KUidPodcastClientID && iCurrentCategory != EShowFeedShows )
 	{
-		SetParentView( aPrevViewId);
+		SetParentView( TVwsViewId(KUidPodcastClientID, KUidPodcastBaseViewID));
 	}
 
 }
