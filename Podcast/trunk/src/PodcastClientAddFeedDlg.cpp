@@ -52,7 +52,7 @@ TBool CPodcastClientAddFeedDlg::OkToExitL(TInt aCommandId)
 
 	if(titleEdwin != NULL)
 	{
-		HBufC* title = titleEdwin->GetTextInHBufL();
+		title = titleEdwin->GetTextInHBufL();
 	}
 	
 	CleanupStack::PushL(title);
