@@ -95,7 +95,9 @@ rls_string STRING_r_podcast_shows_downloads_suspended "Interrotto, %d in coda";
 rls_string STRING_r_podcast_shows_no_items "Nessun elemento";
 
 // Feeds view status strings
-rls_string STRING_r_podcast_feeds_title_format "%d Feed"
+rls_string STRING_r_podcast_feeds_title_format "%d feed"
+rls_string STRING_r_podcast_books_title_format "%d books"
+
 rls_string STRING_r_podcast_feeds_status_format "%d/%d Elementi"
 rls_string STRING_r_podcast_shows_never_updated "Mai"
 rls_string STRING_r_podcast_no_feeds "Nessun feeds"

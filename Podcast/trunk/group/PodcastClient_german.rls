@@ -95,7 +95,8 @@ rls_string STRING_r_podcast_shows_downloads_suspended "Unterbrochen, %d In Warte
 rls_string STRING_r_podcast_shows_no_items "Keine Elmente/Einträge";
 
 // Feeds view status strings
-rls_string STRING_r_podcast_feeds_title_format "%d Feeds"
+rls_string STRING_r_podcast_feeds_title_format "%d feeds"
+rls_string STRING_r_podcast_books_title_format "%d books"
 rls_string STRING_r_podcast_feeds_status_format "%d/%d Shows"
 rls_string STRING_r_podcast_shows_never_updated "Nie"
 rls_string STRING_r_podcast_no_feeds "Keine feeds"

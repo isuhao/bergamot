@@ -83,7 +83,14 @@ RESOURCE QIK_COMMAND_LIST r_podcast_feedview_commands
 				namedGroupId = 1;
 				groupId = 2;
 				},					
-			
+				QIK_COMMAND
+				{
+				id = EPodcastViewFeeds;
+				type = EQikCommandTypeScreen;
+				text = STRING_r_view_feeds_cmd;
+				namedGroupId = 1;
+				groupId = 2;
+				},			
 				QIK_COMMAND
 				{
 				id = EPodcastViewAudioBooks;
@@ -101,6 +108,14 @@ RESOURCE QIK_COMMAND_LIST r_podcast_feedview_commands
 			type = EQikCommandTypeScreen;
 			text = STRING_r_view_add_feed_cmd;
 			},
+
+	QIK_COMMAND	
+			{
+			groupId = 5;
+			id = EPodcastAddNewAudioBook;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_view_new_audiobook_cmd;
+			},
 	QIK_COMMAND
 			{
 			groupId = 5;
@@ -116,6 +131,16 @@ RESOURCE QIK_COMMAND_LIST r_podcast_feedview_commands
 			id = EPodcastDeleteFeed;
 	
 			text = STRING_r_view_delete_feed_cmd;
+			},		
+
+		QIK_COMMAND
+			{
+			cpfFlags = EQikCpfFlagDuplicateInMenuPane;
+			type = EQikCommandTypeDelete;//EQikCommandTypeScreen;
+			groupId = 5;
+			id = EPodcastRemoveAudioBook;
+	
+			text = STRING_r_view_remove_audiobook_cmd;
 			},		
 	
 		QIK_COMMAND

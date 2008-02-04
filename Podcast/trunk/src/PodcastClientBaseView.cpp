@@ -4,6 +4,7 @@
 #include <PodcastClient.rsg>
 #include "PodcastClientShowsView.h"
 #include "PodcastClientBaseView.h"
+#include "PodcastClientFeedView.h"
 #include "PodcastModel.h"
 #include "SoundEngine.h"
 #include "ShowEngine.h"
@@ -219,6 +220,8 @@ void CPodcastClientBaseView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQi
 				}break;
 			case EBaseViewAudioBooks:
 				{
+					newview = KUidPodcastFeedViewID;
+					messageUid = TUid::Uid(EFeedsAudioBooksMode);				
 				}break;
 			default:
 				break;

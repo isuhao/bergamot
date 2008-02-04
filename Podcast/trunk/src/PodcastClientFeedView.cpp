@@ -54,6 +54,7 @@ TVwsViewId CPodcastClientFeedView::ViewId()const
 void CPodcastClientFeedView::ViewConstructL()
 	{
 	iViewLabel = iEikonEnv->AllocReadResourceL(R_PODCAST_FEEDS_TITLE);
+	iAudioBooksLabel = iEikonEnv->AllocReadResourceL(R_PODCAST_AUDIOBOOKS_TITLE);
     ViewConstructFromResourceL(R_PODCAST_FEEDVIEW_UI_CONFIGURATIONS);
 	CPodcastClientView::ViewConstructL();
 	}
@@ -61,9 +62,22 @@ void CPodcastClientFeedView::ViewConstructL()
 
 void CPodcastClientFeedView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage)
 	{
+	switch(aCustomMessageId.iUid)
+	{
+	case EFeedsAudioBooksMode:
+		{
+		iCurrentViewMode = EFeedsAudioBooksMode;
+		}
+		break;
+	default:
+		{
+		iCurrentViewMode = EFeedsNormalMode;
+		}
+		break;
+	}	
+
 	CPodcastClientView::ViewActivatedL(aPrevViewId, aCustomMessageId, aCustomMessage);
 	SetParentView( TVwsViewId(KUidPodcastClientID, KUidPodcastBaseViewID) );
-	SetAppTitleNameL(*iViewLabel);
 	}
 
 
@@ -320,8 +334,19 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 			}
 		
 		// Update the contextbar so information matches the listbox content
-		HBufC* templateStr = CEikonEnv::Static()->AllocReadResourceAsDes16LC(R_PODCAST_FEEDS_TITLE_FORMAT);
-
+		HBufC* templateStr = NULL;
+		switch(iCurrentViewMode)
+			{
+		case EFeedsAudioBooksMode:
+			{
+			templateStr = iEikonEnv->AllocReadResourceAsDes16LC(R_PODCAST_BOOKS_TITLE_FORMAT);
+			}break;
+		default:
+			{
+			templateStr = iEikonEnv->AllocReadResourceAsDes16LC(R_PODCAST_FEEDS_TITLE_FORMAT);
+			}
+			break;
+			}
 		HBufC* titleBuffer = HBufC::NewLC(templateStr->Length()+8);
 		titleBuffer->Des().Format(*templateStr, len);
 		ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *titleBuffer);
@@ -373,9 +398,24 @@ void CPodcastClientFeedView::UpdateCommandsL()
 	{
 	CQikCommandManager& comMan = CQikCommandManager::Static();
 	
+	
+	switch(iCurrentViewMode)
+	{
+	case EFeedsAudioBooksMode:
+		{
+		SetAppTitleNameL(*iAudioBooksLabel);
+		}
+		break;
+	default:
+		{
+		SetAppTitleNameL(*iViewLabel);
+		}
+		break;
+	}	
+
 	if (iListbox == NULL)
 		return;
-	
+	TBool isBookMode = (iCurrentViewMode == EFeedsAudioBooksMode);
 	RFeedInfoArray feeds;
 	CleanupClosePushL(feeds);
 	iPodcastModel.FeedEngine().GetFeeds(feeds);
@@ -391,10 +431,18 @@ void CPodcastClientFeedView::UpdateCommandsL()
 	else
 		{
 		comMan.SetInvisible(*this, EQikListBoxCmdSelect, EFalse);
-		comMan.SetInvisible(*this, EPodcastDeleteFeed, EFalse);
-		comMan.SetInvisible(*this, EPodcastUpdateAllFeeds, EFalse);
-		comMan.SetInvisible(*this, EPodcastEditFeed, EFalse);
+		comMan.SetInvisible(*this, EPodcastDeleteFeed, isBookMode);
+		comMan.SetInvisible(*this, EPodcastUpdateAllFeeds, isBookMode);
+		comMan.SetInvisible(*this, EPodcastEditFeed, isBookMode);	
+		comMan.SetInvisible(*this, EPodcastRemoveAudioBook, !isBookMode);
 		}
+	
+	comMan.SetInvisible(*this, EPodcastAddNewAudioBook, !isBookMode);
+	comMan.SetInvisible(*this, EPodcastAddFeed, isBookMode);
+
+	comMan.SetInvisible(*this, EPodcastViewAudioBooks, isBookMode);
+	comMan.SetInvisible(*this, EPodcastViewFeeds, !isBookMode);
+
 	CleanupStack::PopAndDestroy(&feeds); 
 	}
 

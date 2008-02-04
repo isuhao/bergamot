@@ -1,6 +1,14 @@
 #ifndef PODCASTCLIENTFEEDVIEW_H
 #define PODCASTCLIENTFEEDVIEW_H
 #include "PodcastClientView.h"
+
+
+enum TFeedsViewMode
+{
+	EFeedsNormalMode = 0,
+	EFeedsAudioBooksMode = 0x100
+};
+
 class CPodcastClientFeedView : public CPodcastClientView, public MFeedEngineObserver
 {
 public:
@@ -28,6 +36,7 @@ protected:
 
 private:
     TBool iProgressAdded;
+	TFeedsViewMode iCurrentViewMode;
 };
 
 

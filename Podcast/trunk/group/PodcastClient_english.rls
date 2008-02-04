@@ -31,7 +31,8 @@ rls_string STRING_r_view_player_cmd "Player"
 
 // Navigation to the audio books
 rls_string STRING_r_view_audiobooks_cmd "Audio books"
-rls_string STRING_r_view_newaudiobook_cmd "New audiobook"
+rls_string STRING_r_view_new_audiobook_cmd "New audiobook"
+rls_string STRING_r_view_remove_audiobook_cmd "Remove audiobook"
 
 // Actions for the player
 rls_string STRING_r_play_cmd "Play"
@@ -90,6 +91,7 @@ rls_string STRING_r_short_caption "Escarpod"
 
 // View titles
 rls_string STRING_r_view_feeds_title "Feeds"
+rls_string STRING_r_view_audiobooks_title "Audio books"
 
 // Shows view status strings
 rls_string STRING_r_podcast_shows_title_format "%d Unplayed, %d Total";
@@ -98,7 +100,9 @@ rls_string STRING_r_podcast_shows_downloads_suspended "Suspended, %d Queued";
 rls_string STRING_r_podcast_shows_no_items "No items";
 
 // Feeds view status strings
-rls_string STRING_r_podcast_feeds_title_format "%d Feeds"
+rls_string STRING_r_podcast_feeds_title_format "%d feeds"
+rls_string STRING_r_podcast_books_title_format "%d books"
+
 rls_string STRING_r_podcast_feeds_status_format "%d/%d Shows"
 rls_string STRING_r_podcast_shows_never_updated "Never"
 rls_string STRING_r_podcast_no_feeds "No feeds"

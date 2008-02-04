@@ -15,6 +15,7 @@
 #include "PodcastClientGlobals.h"
 #include "SoundEngine.h"
 #include "PodcastClientSettingsDlg.h"
+#include "PodcastClientFeedView.h"
 
 /**
 Constructor for the view.
@@ -131,6 +132,8 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 		
 	case EPodcastViewAudioBooks:
 		{
+			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastFeedViewID);
+			iQikAppUi.ActivateViewL(podcastsView, TUid::Uid(EFeedsAudioBooksMode), KNullDesC8());
 		}break;
 	case EPodcastAddNewAudioBook:
 		{

@@ -81,24 +81,23 @@ RESOURCE QIK_ROW_LAYOUT_DATA r_podcast_row_layout_data_fill
 
 // Common string resources
 RESOURCE TBUF r_podcast_feeds_title{buf = STRING_r_view_feeds_title;}
-
 RESOURCE TBUF r_podcast_feeds_category{	buf = STRING_r_view_feeds_cmd;}
-
 RESOURCE TBUF r_podcast_feeds_download_cmd{	buf = STRING_r_view_download_cmd;}
-
 RESOURCE TBUF r_podcast_feeds_download_short_cmd{	buf = STRING_r_view_download_short_cmd;}
-
 RESOURCE TBUF r_podcast_feeds_play_cmd{buf = STRING_r_view_play_cmd;}
 
-RESOURCE TBUF r_podcast_player_pause_cmd{buf = STRING_r_pause_cmd;}
+// Audio books
+RESOURCE TBUF r_podcast_audiobooks_title{ buf = STRING_r_view_audiobooks_title;}
 
+// Player
+RESOURCE TBUF r_podcast_player_pause_cmd{buf = STRING_r_pause_cmd;}
 RESOURCE TBUF r_podcast_player_play_cmd{buf = STRING_r_play_cmd;}
 
+// Main
 RESOURCE TBUF r_podcast_main_player_cmd{buf = STRING_r_view_player_cmd;}
 
 
 RESOURCE TBUF r_podcast_show_cmd{buf = STRING_r_view_show_cmd;}
-
 RESOURCE TBUF r_podcast_update_cmd{buf = STRING_r_update_feeds_cmd;}
 
 RESOURCE TBUF r_podcast_update_all_cmd{buf = STRING_r_update_all_feeds_cmd;}
@@ -121,6 +120,10 @@ RESOURCE TBUF r_podcast_enable_downloads_prompt {buf = STRING_r_enable_downloads
 
 RESOURCE TBUF r_podcast_feeds_title_format {buf = STRING_r_podcast_feeds_title_format;}
 RESOURCE TBUF r_podcast_feeds_status_format {buf = STRING_r_podcast_feeds_status_format;}
+
+// Books
+RESOURCE TBUF r_podcast_books_title_format {buf = STRING_r_podcast_books_title_format;}
+RESOURCE TBUF r_podcast_books_status_format {buf = STRING_r_podcast_books_status_format;}
 
 RESOURCE TBUF r_podcast_feeds_update_message {buf = STRING_r_podcast_feeds_update_message;}
 RESOURCE TBUF r_podcast_feeds_update_error {buf = STRING_r_podcast_feeds_update_error;}
@@ -241,7 +244,7 @@ RESOURCE DIALOG r_podcast_edit_feed_dlg
 		{
 		id = EPodcastAddEditFeedDlgTitle;
 		itemflags = EQikDlgItemCaptionAboveControl;
-		prompt = STRING_r_add_feed_prompt;
+		prompt = STRING_r_add_feed_title_prompt;
 		type = EEikCtEdwin;
 		control = EDWIN
 			{

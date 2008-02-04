@@ -32,7 +32,8 @@ rls_string STRING_r_view_player_cmd "Spelare"
 
 // Navigation to the audio books
 rls_string STRING_r_view_audiobooks_cmd "Ljud böcker"
-rls_string STRING_r_view_newaudiobook_cmd "Ny ljudbok"
+rls_string STRING_r_view_new_audiobook_cmd "Ny ljudbok"
+rls_string STRING_r_view_remove_audiobook_cmd "Radera ljudbok"
 
 
 // Actions for the player
@@ -92,6 +93,7 @@ rls_string STRING_r_short_caption "Podcast"
 
 // View titles
 rls_string STRING_r_view_feeds_title "Strömmar"
+rls_string STRING_r_view_audiobooks_title "Ljud böcker"
 
 // Shows view status strings
 rls_string STRING_r_podcast_shows_title_format "%d ospelade, %d totalt";
@@ -101,6 +103,8 @@ rls_string STRING_r_podcast_shows_no_items "Listan är tom";
 
 // Feeds view status strings
 rls_string STRING_r_podcast_feeds_title_format "%d strömmar"
+rls_string STRING_r_podcast_books_title_format "%d böcker"
+
 rls_string STRING_r_podcast_feeds_status_format "%d/%d program"
 rls_string STRING_r_podcast_shows_never_updated "Aldrig"
 rls_string STRING_r_podcast_no_feeds "Inga strömmar"

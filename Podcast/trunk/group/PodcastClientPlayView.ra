@@ -114,14 +114,6 @@ RESOURCE QIK_COMMAND_LIST r_podcast_playview_commands
 			groupId = 1;
 			},
 
-/*		QIK_COMMAND
-				{
-				id = EPodcastViewNewShows;
-				type = EQikCommandTypeScreen;
-				text = STRING_r_view_new_shows_cmd;
-				namedGroupId = 1;
-				groupId = 2;
-				},		*/
 				QIK_COMMAND
 				{
 				id = EPodcastViewDownloadedShows;
