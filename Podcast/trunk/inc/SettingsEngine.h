@@ -22,7 +22,7 @@ const TUint KVolumeDelta = 10;
 enum TAutoUpdateSetting
 {
 	EAutoUpdateOff,
-	EAutoUpdatePeridocially,
+	EAutoUpdatePeriodically,
 	EAutoUpdateAtTime
 };
 

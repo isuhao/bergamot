@@ -47,13 +47,20 @@ CFeedEngine::~CFeedEngine()
 
 void CFeedEngine::RunFeedTimer()
 	{
-	int interval = iPodcastModel.SettingsEngine().UpdateFeedInterval();
 	iFeedTimer.Cancel();
 
-	if (interval != 0) {
-		iFeedTimer.SetPeriod(interval);
-		iFeedTimer.RunPeriodically();
+	if (iPodcastModel.SettingsEngine().UpdateAutomatically() == EAutoUpdateAtTime) {
+		iFeedTimer.SetPeriod(24*60);
+		iFeedTimer.SetSyncTime(iPodcastModel.SettingsEngine().UpdateFeedTime());
+	} else if (iPodcastModel.SettingsEngine().UpdateAutomatically() == EAutoUpdatePeriodically){
+		int interval = iPodcastModel.SettingsEngine().UpdateFeedInterval();
+	
+		if (interval != 0) {
+			iFeedTimer.SetPeriod(interval);
+			iFeedTimer.RunPeriodically();
+		}
 	}
+	
 	}
 
 void CFeedEngine::UpdateAllFeeds()

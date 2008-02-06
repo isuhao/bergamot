@@ -102,7 +102,7 @@ void CSettingsEngine::LoadSettingsL()
 	TFileName configPath;
 	configPath.Copy(PrivatePath());
 	configPath.Append(KConfigFile);
-	RDebug::Print(_L("Checking settings file: %S"), &configPath);
+
 	if (!BaflUtils::FileExists(iFs, configPath)) {
 		User::Leave(KErrNotFound);
 	}
@@ -121,9 +121,12 @@ void CSettingsEngine::LoadSettingsL()
 
 	iMaxSimultaneousDownloads = stream.ReadInt32L();
 	iIap = stream.ReadInt32L();
-	//iUpdateFeedTime = stream.ReadInt64L();
-
 	iPodcastModel.SetIap(iIap);
+	
+	int low = stream.ReadInt32L();
+	int high = stream.ReadInt32L();
+	iUpdateFeedTime = MAKE_TINT64(high, low);
+
 	CleanupStack::PopAndDestroy(2); // readStream and iniFile
 	}
 
@@ -150,7 +153,10 @@ void CSettingsEngine::SaveSettingsL()
 	stream.WriteInt32L(iDownloadAutomatically);
 	stream.WriteInt32L(iMaxSimultaneousDownloads);
 	stream.WriteInt32L(iIap);
-	//stream.WriteInt64L(iUpdateFeedTime.Int64());
+	
+	stream.WriteInt32L(I64LOW(iUpdateFeedTime.Int64()));
+	stream.WriteInt32L(I64HIGH(iUpdateFeedTime.Int64()));
+
 	stream.CommitL();
 	store->SetRootL(id);
 	store->CommitL();
@@ -309,6 +315,7 @@ void CSettingsEngine::SetDownloadAutomatically(TBool aDownloadAuto)
 void CSettingsEngine::SetUpdateFeedTime(TTime aUpdateTime)
 	{
 	iUpdateFeedTime = aUpdateTime;
+	iPodcastModel.FeedEngine().RunFeedTimer();
 	}
 
 

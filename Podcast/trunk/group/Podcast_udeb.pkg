@@ -3,7 +3,7 @@
 &EN,GE,IT,SW,DA,RU,CS,PL,ET
 :"Bergamot Project"
 %{"Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project"}
-#{"Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod", "Escarpod"}, (0xA00046BD), 0, 92, 0, TYPE=SA
+#{"Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod", "Escarpod"}, (0xA00046BD), 0, 93, 0, TYPE=SA
 
 ;(0x101F6300), 3, 0, 0, {"UIQ30ProductID"}
 
@@ -18,15 +18,15 @@
 "./defaultfeeds.cfg"-"c:\private\A00046ae\defaultfeeds.cfg"
 
 {
-"..\..\..\uiq3/epoc32/data/z/resource/apps/PodcastClient.R01"
-"..\..\..\uiq3/epoc32/data/z/resource/apps/PodcastClient.R03"
-"..\..\..\uiq3/epoc32/data/z/resource/apps/PodcastClient.R05"
-"..\..\..\uiq3/epoc32/data/z/resource/apps/PodcastClient.R06"
-"..\..\..\uiq3/epoc32/data/z/resource/apps/PodcastClient.R07"
-"..\..\..\uiq3/epoc32/data/z/resource/apps/PodcastClient.R16"
-"..\..\..\uiq3/epoc32/data/z/resource/apps/PodcastClient.R25"
-"..\..\..\uiq3/epoc32/data/z/resource/apps/PodcastClient.R27"
-"..\..\..\uiq3/epoc32/data/z/resource/apps/PodcastClient.R49"
+"/epoc32/data/z/resource/apps/PodcastClient.R01"
+"/epoc32/data/z/resource/apps/PodcastClient.R03"
+"/epoc32/data/z/resource/apps/PodcastClient.R05"
+"/epoc32/data/z/resource/apps/PodcastClient.R06"
+"/epoc32/data/z/resource/apps/PodcastClient.R07"
+"/epoc32/data/z/resource/apps/PodcastClient.R16"
+"/epoc32/data/z/resource/apps/PodcastClient.R25"
+"/epoc32/data/z/resource/apps/PodcastClient.R27"
+"/epoc32/data/z/resource/apps/PodcastClient.R49"
 }-"!:\resource\apps\PodcastClient.rsc"
 
 "/epoc32/data/z/resource/apps/PodcastClient_loc.rsc"-"!:\resource\apps\PodcastClient_loc.rsc"

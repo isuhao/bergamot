@@ -34,7 +34,7 @@ void CPodcastClientAppUi::ConstructL()
 /*-----------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------*/
 CPodcastClientAppUi::~CPodcastClientAppUi()
-{
+{	
 	// we shall destruct in reverse order
 	RemoveView(*iPlayView);
 	delete iPlayView;

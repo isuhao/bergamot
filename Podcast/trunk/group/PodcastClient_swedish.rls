@@ -31,7 +31,7 @@ rls_string STRING_r_view_feeds_cmd "Strömmar"
 rls_string STRING_r_view_player_cmd "Spelare"
 
 // Navigation to the audio books
-rls_string STRING_r_view_audiobooks_cmd "Ljud böcker"
+rls_string STRING_r_view_audiobooks_cmd "Ljudböcker"
 rls_string STRING_r_view_new_audiobook_cmd "Ny ljudbok"
 rls_string STRING_r_view_remove_audiobook_cmd "Radera ljudbok"
 
@@ -111,7 +111,7 @@ rls_string STRING_r_podcast_no_feeds "Inga strömmar"
 
 // DIALOG string
 rls_string STRING_r_about_title "Om Escarpod";
-rls_string STRING_r_about_text "Escarpod\n\n Copyright(c) 2007-2008, The Bergamot Project\n\n http://bergamot.googlecode.com"
+rls_string STRING_r_about_text "Escarpod\n\n Copyright (c) 2007-2008, The Bergamot Project\n\n http://bergamot.googlecode.com"
 
 rls_string STRING_r_add_feed_title "Lägg till ström"
 rls_string STRING_r_edit_feed_title "Ändra ström"
@@ -137,6 +137,7 @@ rls_string STRING_r_purge_show_prompt "Är du säker på att du vill ta bort progra
 rls_string STRING_r_podcast_settings_title "Inställningar"
 rls_string STRING_r_podcast_setting_showdir "Programkatalog"
 rls_string STRING_r_podcast_setting_autoupdate "Automatisk uppdatering"
+rls_string STRING_r_podcast_setting_autodownload "Automatisk nedladdning"
 rls_string STRING_r_podcast_setting_checkevery "Uppdateringsintervall"
 rls_string STRING_r_podcast_setting_updateat "Uppdatera vid"
 rls_string STRING_r_podcast_setting_minutes "minuter"

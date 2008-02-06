@@ -3,7 +3,6 @@
 
 #include <e32base.h>
 
-
 class CFeedEngine;
 
 class CFeedTimer : public CTimer {
@@ -14,6 +13,7 @@ public:
 	void RunL();
 	void RunPeriodically();
 	void SetPeriod(int aPeriodMinutes);
+	void SetSyncTime(TTime aTime);
 	
 private:
 	int iPeriodMinutes;

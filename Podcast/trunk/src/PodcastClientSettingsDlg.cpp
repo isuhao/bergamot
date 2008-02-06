@@ -173,9 +173,12 @@ TBool CPodcastClientSettingsDlg::OkToExitL(TInt aCommandId)
 			iPodcastModel.SettingsEngine().SetBaseDir(iSelectedPathTemp);
 			iPodcastModel.SettingsEngine().SetUpdateAutomatically((TAutoUpdateSetting) iAutoUpdateCtrl->CurrentItem());
 			iPodcastModel.SettingsEngine().SetDownloadAutomatically(iAutoDownloadCtrl->State() == CEikButtonBase::ESet);
-
-			iPodcastModel.SettingsEngine().SetUpdateFeedInterval(iUpdateIntervalCtrl->Value());
-		    iPodcastModel.SettingsEngine().SetUpdateFeedTime(iUpdateAtCtrl->Time());
+			
+			if (iPodcastModel.SettingsEngine().UpdateAutomatically() == EAutoUpdatePeriodically) {
+				iPodcastModel.SettingsEngine().SetUpdateFeedInterval(iUpdateIntervalCtrl->Value());
+			} else {
+		    	iPodcastModel.SettingsEngine().SetUpdateFeedTime(iUpdateAtCtrl->Time());
+			}
 
 
 //			iPodcastModel.SettingsEngine().SetMaxSimultaneousDownloads(iMaxSimDlsCtrl->Value());

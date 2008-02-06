@@ -6,7 +6,7 @@
 #include <f32file.h>
 #include <s32strm.h>
 
-const int KShowInfoVersion = 6;
+const int KShowInfoVersion = 7;
 
 enum TPlayState {
 	ENeverPlayed,

@@ -41,7 +41,7 @@ void CShowEngine::ConstructL()
 
 	TRAPD(error, LoadShowsL());
 	//CheckFiles();
-
+	DownloadNextShow();
 	// maybe this is a bad idea?
 	if (iShowsDownloading.Count() == 0) {
 		iDownloadsSuspended = EFalse;
@@ -326,7 +326,7 @@ void CShowEngine::LoadShowsL()
 			iShowsDownloading.Append(readData);
 			}
 			
-		DownloadNextShow();
+
 		}
 
 	iSuppressAutoDownload = EFalse;
