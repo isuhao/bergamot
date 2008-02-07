@@ -102,7 +102,8 @@ void CPodcastClientShowsView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid
 	{
 		SetParentView( TVwsViewId(KUidPodcastClientID, KUidPodcastBaseViewID));
 	}
-
+	
+	UpdateFeedUpdateStateL();
 }
 
 
@@ -218,10 +219,43 @@ void CPodcastClientShowsView::FeedInfoUpdated(CFeedInfo* aFeedInfo)
 	if(iPodcastModel.ActiveFeedInfo() != NULL && aFeedInfo->Uid() == iPodcastModel.ActiveFeedInfo()->Uid())
 	{
 		iPodcastModel.SetActiveFeedInfo(aFeedInfo);
+		UpdateFeedUpdateStateL();
 		// Title might have changed
 		UpdateListboxItemsL();
 	}
 }
+
+void CPodcastClientShowsView::FeedUpdateComplete(TUint aFeedUid)
+{
+	if(iPodcastModel.ActiveFeedInfo() != NULL && iPodcastModel.ActiveFeedInfo()->Uid() == aFeedUid)
+	{
+		UpdateFeedUpdateStateL();		
+	}
+}
+
+void CPodcastClientShowsView::FeedDownloadUpdatedL(TUint aFeedUid, TInt /*aPercentOfCurrentDownload*/)
+	{
+	if(iPodcastModel.ActiveFeedInfo() != NULL && iPodcastModel.ActiveFeedInfo()->Uid() == aFeedUid)
+		{
+			UpdateFeedUpdateStateL();
+		}
+	}
+
+void CPodcastClientShowsView::UpdateFeedUpdateStateL()
+	{
+	TBool listboxDimmed = EFalse;
+
+	if(iPodcastModel.FeedEngine().ClientState() != ENotUpdating && iPodcastModel.FeedEngine().ActiveClientUid() == iPodcastModel.ActiveFeedInfo()->Uid())
+		{
+		listboxDimmed = ETrue;
+		}
+	
+	if((iListbox->IsDimmed() && !listboxDimmed) || (!iListbox->IsDimmed() && listboxDimmed))
+		{
+		iListbox->SetDimmed(listboxDimmed);	
+		UpdateCommandsL();
+		}
+	}
 
 void CPodcastClientShowsView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt /*aBytesTotal*/)
 {
@@ -571,6 +605,8 @@ void CPodcastClientShowsView::UpdateCommandsL()
 	TBool removeDownloadCmd = EFalse;
 	TBool removePurgeShowCmd = ETrue;
 	TBool removeDownloadShowCmd = ETrue;
+	TBool updatingState = (iPodcastModel.FeedEngine().ClientState() != ENotUpdating && iPodcastModel.FeedEngine().ActiveClientUid() == iPodcastModel.ActiveFeedInfo()->Uid());
+
 	if(iListbox != NULL)
 	{
 		TInt index = iListbox->CurrentItemIndex();
@@ -611,6 +647,15 @@ void CPodcastClientShowsView::UpdateCommandsL()
 	comMan.SetInvisible(*this, EPodcastPurgeFeed, (iCurrentCategory == EShowPendingShows || iCurrentCategory == EShowDownloadedShows));
 	comMan.SetInvisible(*this, EPodcastDeleteAllShows, (iCurrentCategory != EShowDownloadedShows));
 	comMan.SetChecked(*this, EPodcastShowUnplayedOnly, iPodcastModel.ShowEngine().SelectUnplayedOnly());
+	
+	
+	comMan.SetAvailable(*this, EPodcastUpdateFeed, !updatingState);
+	comMan.SetAvailable(*this, EPodcastDownloadShow, !updatingState);
+	comMan.SetAvailable(*this, EPodcastShowUnplayedOnly, !updatingState);
+	comMan.SetAvailable(*this, EPodcastMarkAllPlayed, !updatingState);
+	comMan.SetAvailable(*this, EPodcastDeleteAllShows, !updatingState);
+	comMan.SetAvailable(*this, EPodcastPurgeShow, !updatingState);
+	comMan.SetAvailable(*this, EPodcastPurgeFeed, !updatingState);
 
 	switch(iCurrentCategory)
 	{	

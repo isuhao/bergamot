@@ -25,7 +25,7 @@ class CEikImage;
 class CQikGenericBuildingBlock;
 const TInt KActiveShowUIDCmd = 0x1000;
 
-class CPodcastClientPlayView : public CQikViewBase, public MSoundEngineObserver, public MFeedEngineObserver, public MQikImageConverterObserver, public MShowEngineObserver
+class CPodcastClientPlayView : public CQikViewBase, public MSoundEngineObserver, public MQikImageConverterObserver, public MShowEngineObserver
 	{
 public:
 	static CPodcastClientPlayView* NewLC(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel);
@@ -44,10 +44,7 @@ public:
 	static TInt PlayingUpdateStaticCallbackL(TAny* aPlayView);
 	void UpdatePlayStatusL();
 
-	void ShowListUpdated(){};
-    void FeedInfoUpdated(CFeedInfo* /*aFeedInfo*/){}
-    void FeedUpdateComplete() {}
-	void FeedDownloadUpdatedL(TInt /*aPercentOfCurrentDownload*/){};
+	void ShowListUpdated(){};  
 	void ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt aBytesTotal);
 	void DownloadQueueUpdated(TInt /*aDownloadingShows*/, TInt /*aQueuedShows*/) {}
 	void ImageConverterEventL(TQikImageConverterEvent aMessage, TInt aErrCode);

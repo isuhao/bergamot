@@ -20,8 +20,8 @@ protected:
 	void ConstructL();
 	void ShowListUpdated();
     void FeedInfoUpdated(CFeedInfo* aFeedInfo);
-    void FeedUpdateComplete() {}
-	void FeedDownloadUpdatedL(TInt /*aPercentOfCurrentDownload*/){};
+    void FeedUpdateComplete(TUint aFeedUid);
+	void FeedDownloadUpdatedL(TUint /*aFeedUid*/, TInt /*aPercentOfCurrentDownload*/);
 	void ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt aBytesTotal);
 	void DownloadQueueUpdated(TInt /*aDownloadingShows*/, TInt /*aQueuedShows*/) {};
 	void HandleCommandL(CQikCommand& aCommand);
@@ -33,6 +33,7 @@ protected:
 	void UpdateCommandsL();
 	void UpdateSelectCommandL();
 	void GetShowIcons(CShowInfo* aShowInfo, TInt& aImageId, TInt& aMaskId);
+	void UpdateFeedUpdateStateL();
 private:
 	TPodcastClientShowCategory iCurrentCategory;
 	TBool iProgressAdded;

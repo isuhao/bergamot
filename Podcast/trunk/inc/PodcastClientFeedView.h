@@ -26,10 +26,11 @@ protected:
 	void UpdateCommandsL();
 	
 	// from MFeedEngineObserver
-	void UpdateFeedInfoDataL(CFeedInfo* aFeedInfo,  MQikListBoxData* aListboxData); 
+	void UpdateFeedInfoDataL(CFeedInfo* aFeedInfo,  MQikListBoxData* aListboxData, TBool aIsUpdating = EFalse); 
     void FeedInfoUpdated(CFeedInfo* aFeedInfo);
-	void FeedDownloadUpdatedL(TInt aPercentOfCurrentDownload);
-	void FeedUpdateComplete();
+	void UpdateFeedInfoStatusL(TUint aFeedUid, TBool aIsUpdating);
+	void FeedDownloadUpdatedL(TUint aFeedUid, TInt aPercentOfCurrentDownload);
+	void FeedUpdateComplete(TUint aFeeidUid);
 	// from MQikCommandModelOwner	
 	CQikCommand* DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& aControlAddingCommands);
 	void HandleCommandL(CQikCommand& aCommand);

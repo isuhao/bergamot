@@ -70,7 +70,6 @@ CPodcastClientPlayView::~CPodcastClientPlayView()
 	delete iCurrentCoverImage;
 	delete iBitmapConverter;
 	
-	iPodcastModel.FeedEngine().RemoveObserver(this);
 	iPodcastModel.ShowEngine().RemoveObserver(this);
 	}
 
@@ -84,7 +83,6 @@ void CPodcastClientPlayView::ConstructL()
 	BaseConstructL();
 	iPlaybackTicker = CPeriodic::NewL(CActive::EPriorityStandard);
 	iPodcastModel.SoundEngine().SetObserver(this);
-	iPodcastModel.FeedEngine().AddObserver(this);
 	iBitmapConverter = CQikImageConverter::NewL(iEikonEnv->FsSession(), *this);
 	iPodcastModel.ShowEngine().AddObserver(this);
 	}

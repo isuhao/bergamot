@@ -108,7 +108,7 @@ CQikCommand* CPodcastClientFeedView::DynInitOrDeleteCommandL(CQikCommand* aComma
 	return aCommand;
 	}
 
-void CPodcastClientFeedView::UpdateFeedInfoDataL(CFeedInfo* aFeedInfo,  MQikListBoxData* aListboxData)
+void CPodcastClientFeedView::UpdateFeedInfoDataL(CFeedInfo* aFeedInfo,  MQikListBoxData* aListboxData, TBool aIsUpdating )
 	{
 	TBuf<KMaxShortDateFormatSpec*2> updatedDate;
 	aListboxData->SetTextL(aFeedInfo->Title(), EQikListBoxSlotText1);
@@ -118,34 +118,45 @@ void CPodcastClientFeedView::UpdateFeedInfoDataL(CFeedInfo* aFeedInfo,  MQikList
 	TUint showCount = 0;
 	TBuf<KMaxUnplayedFeedsLength> unplayedShows;
 
-	iPodcastModel.ShowEngine().GetStatsByFeed(aFeedInfo->Uid(), showCount, unplayedCount);
-	
-	HBufC* templateStr = CEikonEnv::Static()->AllocReadResourceAsDes16LC(R_PODCAST_FEEDS_STATUS_FORMAT);
-	unplayedShows.Format(*templateStr, unplayedCount, showCount);
-	CleanupStack::PopAndDestroy(templateStr);
-
-	aListboxData->SetEmphasis(unplayedCount > 0);					
-	aListboxData->SetTextL(unplayedShows, EQikListBoxSlotText2);
-	
-	if (aFeedInfo->LastUpdated().Int64() == 0) 
+	if(aIsUpdating)
 		{
-		updatedDate.Zero();
+			iEikonEnv->ReadResourceL(updatedDate, R_PODCAST_FEEDS_IS_UPDATING);
+			unplayedShows = KNullDesC();			
 		}
-	else 
+	else
+	{
+		iPodcastModel.ShowEngine().GetStatsByFeed(aFeedInfo->Uid(), showCount, unplayedCount);
+		
+		HBufC* templateStr = CEikonEnv::Static()->AllocReadResourceAsDes16LC(R_PODCAST_FEEDS_STATUS_FORMAT);
+		unplayedShows.Format(*templateStr, unplayedCount, showCount);
+		CleanupStack::PopAndDestroy(templateStr);
+		
+		aListboxData->SetEmphasis(unplayedCount > 0);					
+				
+		if (aFeedInfo->LastUpdated().Int64() == 0) 
 		{
-		TTime now;
-		TTimeIntervalHours interval;
-		now.HomeTime();
-		now.HoursFrom(aFeedInfo->LastUpdated(), interval);
-		if (interval.Int() < KADayInHours) 
-			{
-			aFeedInfo->LastUpdated().FormatL(updatedDate, KTimeFormat());
-			}
+			updatedDate.Zero();
+		}
 		else 
+		{
+			TTime now;
+			TTimeIntervalHours interval;
+			now.HomeTime();
+			now.HoursFrom(aFeedInfo->LastUpdated(), interval);
+			if (interval.Int() < KADayInHours) 
 			{
-			aFeedInfo->LastUpdated().FormatL(updatedDate, KDateFormat());
+				aFeedInfo->LastUpdated().FormatL(updatedDate, KTimeFormat());
+			}
+			else 
+			{
+				aFeedInfo->LastUpdated().FormatL(updatedDate, KDateFormat());
 			}
 		}
+	}
+	aListboxData->SetDisabled(aIsUpdating);
+	aListboxData->SetDimmed(aIsUpdating);
+
+	aListboxData->SetTextL(unplayedShows, EQikListBoxSlotText2);
 	aListboxData->SetTextL(updatedDate, EQikListBoxSlotText3);
 	}
 
@@ -188,13 +199,60 @@ void CPodcastClientFeedView::FeedInfoUpdated(CFeedInfo* aFeedInfo)
 	CleanupStack::PopAndDestroy(&feeds);
 	}
 
-void CPodcastClientFeedView::FeedDownloadUpdatedL(TInt aPercentOfCurrentDownload)
+void CPodcastClientFeedView::UpdateFeedInfoStatusL(TUint aFeedUid, TBool aIsUpdating)
+	{
+	RFeedInfoArray feeds;
+	CleanupClosePushL(feeds);
+	iPodcastModel.FeedEngine().GetFeeds(feeds);
+	TInt cnt = feeds.Count();
+	TInt index = KErrNotFound;
+	while(index == KErrNotFound && cnt>0)
+	{
+		cnt--;
+		if(feeds[cnt]->Uid() == aFeedUid)
+		{
+			index = cnt;
+			break;
+		}
+	}
+//	TInt index = feeds.Find(aFeedInfo);
+
+	MQikListBoxModel& model(iListbox->Model());
+	
+	if(index != KErrNotFound && index < model.Count())
+	{
+		model.ModelBeginUpdateLC();
+		MQikListBoxData* data = model.RetrieveDataL(index);	
+		
+		if(data != NULL)
+		{
+			CleanupClosePushL(*data);
+			UpdateFeedInfoDataL(feeds[index], data, aIsUpdating);
+			CleanupStack::PopAndDestroy(data);
+			model.DataUpdatedL(index);
+		}
+		model.ModelEndUpdateL();
+	}
+	
+	CleanupStack::PopAndDestroy(&feeds);
+	}
+
+void CPodcastClientFeedView::FeedUpdateComplete(TUint aFeedUid)
+	{
+	RDebug::Print(_L("FeedUpdateComplete"));
+	UpdateFeedInfoStatusL(aFeedUid, EFalse);
+	}
+
+
+void CPodcastClientFeedView::FeedDownloadUpdatedL(TUint aFeedUid, TInt aPercentOfCurrentDownload)
 	{
 	if (ViewContext() == NULL) 
 		{
 		return;
 		}
 	
+	UpdateFeedInfoStatusL(aFeedUid, ETrue);
+
 	if(aPercentOfCurrentDownload>=0 && aPercentOfCurrentDownload<100)
 		{
 		if(!iProgressAdded)
@@ -534,12 +592,6 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 		}
 	
 	}
-
-void CPodcastClientFeedView::FeedUpdateComplete()
-	{
-	RDebug::Print(_L("FeedUpdateComplete"));
-	}
-
 
 void CPodcastClientFeedView::HandleAddNewAudioBookL()
 	{

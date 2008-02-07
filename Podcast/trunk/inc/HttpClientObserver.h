@@ -11,8 +11,8 @@ public:
   virtual void Connected(CHttpClient* aHttpClient) = 0;
   virtual void Disconnected(CHttpClient* aHttpClient) = 0;
   virtual void Complete(CHttpClient* aHttpClient, TBool aSuccessful) = 0;
-  virtual void Progress(CHttpClient* aHttpClient, int aBytes, int aTotalBytes) = 0;
-  virtual void DownloadInfo(CHttpClient* aHttpClient, int aTotalBytes) = 0;
+  virtual void Progress(CHttpClient* aHttpClient, TInt aBytes, TInt aTotalBytes) = 0;
+  virtual void DownloadInfo(CHttpClient* aHttpClient, TInt aTotalBytes) = 0;
 };
 
 #endif

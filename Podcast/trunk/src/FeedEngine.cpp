@@ -32,6 +32,7 @@ void CFeedEngine::ConstructL()
 
 CFeedEngine::CFeedEngine(CPodcastModel& aPodcastModel) : iFeedTimer(this), iPodcastModel(aPodcastModel)
 	{
+	iClientState = ENotUpdating;
 	}
 
 CFeedEngine::~CFeedEngine()
@@ -43,6 +44,28 @@ CFeedEngine::~CFeedEngine()
 	iFs.Close();
 	delete iParser;
 	delete iFeedClient;
+	}
+
+/**
+ * Returns the current internal state of the feed engine4
+ */
+TClientState CFeedEngine::ClientState()
+	{
+	return iClientState;
+	}
+
+
+/**
+ * Returns the current updating client UID if clientstate is != ENotUpdateing
+ * @return TUint
+ */
+TUint CFeedEngine::ActiveClientUid()
+	{
+		if(iActiveFeed != NULL)
+			{
+			return iActiveFeed->Uid();
+			}
+		return 0;	
 	}
 
 void CFeedEngine::RunFeedTimer()
@@ -94,21 +117,26 @@ void CFeedEngine::UpdateNextFeed()
 			//iFeedsUpdating.Reset();
 		}
 	} else {
-		for (int i=0;i<iObservers.Count();i++) {
-			iObservers[i]->FeedUpdateComplete();
+		iClientState = ENotUpdating;		
 		}
-	}
 	}
 
 void CFeedEngine::UpdateFeedL(TUint aFeedUid)
 	{
-	iClientState = EFeed;
+	iClientState = EUpdatingFeed;
 	iActiveFeed = GetFeedInfoByUid(aFeedUid);
+
+	for (TInt i=0;i<iObservers.Count();i++) {
+			iObservers[i]->FeedDownloadUpdatedL(iActiveFeed->Uid(), 0);
+		}
+
 	TFileName filePath;
 	filePath.Copy(iPodcastModel.SettingsEngine().PrivatePath());
 	filePath.Append(_L("feed.xml"));
 	iUpdatingFeedFileName.Copy(filePath);
 	iFeedClient->GetL(iActiveFeed->Url(), iUpdatingFeedFileName, iPodcastModel.SettingsEngine().SpecificIAP());
+	
+
 	RDebug::Print(_L("Update done"));
 	}
 
@@ -128,7 +156,7 @@ void CFeedEngine::NewShow(CShowInfo *item)
 void CFeedEngine::GetFeedImageL(CFeedInfo *aFeedInfo)
 	{
 	RDebug::Print(_L("GetFeedImage"));
-	iClientState = EImage;
+	iClientState = EUpdatingImage;
 	TFileName filePath;
 	filePath.Copy(iPodcastModel.SettingsEngine().BaseDir());
 	
@@ -262,8 +290,12 @@ void CFeedEngine::Connected(CHttpClient* /*aClient*/)
 	
 	}
 
-void CFeedEngine::Progress(CHttpClient* /*aHttpClient*/, int /*aBytes*/, int /*aTotalBytes*/)
+void CFeedEngine::Progress(CHttpClient* /*aHttpClient*/, TInt aBytes, TInt aTotalBytes)
 {	
+
+	for (TInt i=0;i<iObservers.Count();i++) {
+			iObservers[i]->FeedDownloadUpdatedL(iActiveFeed->Uid(), (aBytes*100)/aTotalBytes);
+		}
 	/*if (iClientState == EFeed) {
 		int percent = -1;
 		if (aTotalBytes != -1) {
@@ -276,10 +308,11 @@ void CFeedEngine::Progress(CHttpClient* /*aHttpClient*/, int /*aBytes*/, int /*a
 void CFeedEngine::Complete(CHttpClient* /*aClient*/, TBool aSuccessful)
 {
 	RDebug::Print(_L("Complete, aSuccessful=%d"), aSuccessful);
-	if (iClientState == EFeed) {
-	
-		iParser->ParseFeedL(iUpdatingFeedFileName, iActiveFeed, iPodcastModel.SettingsEngine().MaxListItems());
+	if (iClientState == EUpdatingFeed) {
 		
+		iParser->ParseFeedL(iUpdatingFeedFileName, iActiveFeed, iPodcastModel.SettingsEngine().MaxListItems());
+		iClientState = ENotUpdating;
+
 		if (iActiveFeed->ImageFileName().Length() == 0 || !BaflUtils::FileExists(iFs,iActiveFeed->ImageFileName())) {
 			TRAPD(error, GetFeedImageL(iActiveFeed));
 		}
@@ -290,7 +323,11 @@ void CFeedEngine::Complete(CHttpClient* /*aClient*/, TBool aSuccessful)
 		SaveFeeds();
 		
 		iPodcastModel.ShowEngine().SaveShows();
-		
+
+		for (TInt i=0;i<iObservers.Count();i++) {
+			iObservers[i]->FeedUpdateComplete(iActiveFeed->Uid());
+		}		
+
 		UpdateNextFeed();
 	}
 }
@@ -301,7 +338,7 @@ void CFeedEngine::Disconnected(CHttpClient* /*aClient*/)
 	}
 
 void CFeedEngine::DownloadInfo(CHttpClient* /*aHttpClient */, int /*aTotalBytes*/)
-	{
+	{	
 	/*RDebug::Print(_L("About to download %d bytes"), aTotalBytes);
 	if(aHttpClient == iShowClient && iShowDownloading != NULL && aTotalBytes != -1) {
 		iShowDownloading->iShowSize = aTotalBytes;

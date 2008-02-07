@@ -107,6 +107,7 @@ rls_string STRING_r_podcast_books_title_format "%d böcker"
 
 rls_string STRING_r_podcast_feeds_status_format "%d/%d program"
 rls_string STRING_r_podcast_shows_never_updated "Aldrig"
+rls_string STRING_r_podcast_feeds_is_updating "Uppdaterar"
 rls_string STRING_r_podcast_no_feeds "Inga strömmar"
 
 // DIALOG string

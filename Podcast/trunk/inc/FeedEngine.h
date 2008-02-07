@@ -14,8 +14,9 @@
 class CPodcastModel;
 
 enum TClientState {
-	EFeed,
-	EImage
+	ENotUpdating,
+	EUpdatingFeed,
+	EUpdatingImage
 };
 
 class CFeedEngine : public CBase, public MHttpClientObserver, public MFeedParserObserver
@@ -41,6 +42,16 @@ public:
 	void FileNameFromUrl(TDesC &aUrl, TFileName &aFileName);
 	void EnsureProperPathName(TFileName &aPath);
 	
+	/**
+	 * Returns the current internal state of the feed engine4
+	 */
+	TClientState ClientState();
+
+	/**
+	 * Returns the current updating client UID if clientstate is != ENotUpdateing
+	 * @return TUint
+	 */
+	TUint ActiveClientUid();
 private:
 	void ConstructL();
 	CFeedEngine(CPodcastModel& aPodcastModel);
@@ -52,8 +63,8 @@ private:
 	// from HttpClientObserver
 	void Connected(CHttpClient* aClient);
 	void Disconnected(CHttpClient* aClient);
-	void Progress(CHttpClient* aHttpClient, int aBytes, int aTotalBytes);
-	void DownloadInfo(CHttpClient* aClient, int aSize);
+	void Progress(CHttpClient* aHttpClient, TInt aBytes, TInt aTotalBytes);
+	void DownloadInfo(CHttpClient* aClient, TInt aSize);
 	void Complete(CHttpClient* aClient, TBool aSuccessful);
 
 	// from FeedParser

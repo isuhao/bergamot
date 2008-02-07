@@ -105,6 +105,7 @@ rls_string STRING_r_podcast_books_title_format "%d books"
 
 rls_string STRING_r_podcast_feeds_status_format "%d/%d Shows"
 rls_string STRING_r_podcast_shows_never_updated "Never"
+rls_string STRING_r_podcast_feeds_is_updating "Is updating"
 rls_string STRING_r_podcast_no_feeds "No feeds"
 
 // DIALOG string
