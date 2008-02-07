@@ -27,7 +27,7 @@ void CFeedParser::ParseFeedL(const TFileName &feedFileName, CFeedInfo *info, TUi
 	CParser* parser = CParser::NewLC(KXmlMimeType, *this);
 	iActiveFeed = info;
 	iFeedState = EStateRoot;
-	iActiveShow = CShowInfo::NewL();
+	iActiveShow = NULL;
 	iItemsParsed = 0;
 	iMaxItems = aMaxItems;
 	iStoppedParsing = EFalse;
@@ -91,6 +91,7 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 			//RDebug::Print(_L("New item"));
 			iFeedState=EStateItem;
 
+			iActiveShow = NULL;
 			iActiveShow = CShowInfo::NewL();
 			if (iActiveShow == NULL) {
 				RDebug::Print(_L("Out of memory!"));
