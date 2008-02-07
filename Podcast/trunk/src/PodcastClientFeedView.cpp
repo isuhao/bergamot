@@ -237,9 +237,9 @@ void CPodcastClientFeedView::UpdateFeedInfoStatusL(TUint aFeedUid, TBool aIsUpda
 	CleanupStack::PopAndDestroy(&feeds);
 	}
 
-void CPodcastClientFeedView::FeedUpdateComplete(TUint aFeedUid)
+void CPodcastClientFeedView::FeedUpdateCompleteL(TUint aFeedUid)
 	{
-	RDebug::Print(_L("FeedUpdateComplete"));
+	RDebug::Print(_L("FeedUpdateCompleteL"));
 	UpdateFeedInfoStatusL(aFeedUid, EFalse);
 	}
 

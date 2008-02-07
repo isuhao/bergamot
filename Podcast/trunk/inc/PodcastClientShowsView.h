@@ -20,7 +20,7 @@ protected:
 	void ConstructL();
 	void ShowListUpdated();
     void FeedInfoUpdated(CFeedInfo* aFeedInfo);
-    void FeedUpdateComplete(TUint aFeedUid);
+    void FeedUpdateCompleteL(TUint aFeedUid);
 	void FeedDownloadUpdatedL(TUint /*aFeedUid*/, TInt /*aPercentOfCurrentDownload*/);
 	void ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt aBytesTotal);
 	void DownloadQueueUpdated(TInt /*aDownloadingShows*/, TInt /*aQueuedShows*/) {};

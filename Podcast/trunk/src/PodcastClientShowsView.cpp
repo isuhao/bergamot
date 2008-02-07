@@ -225,7 +225,7 @@ void CPodcastClientShowsView::FeedInfoUpdated(CFeedInfo* aFeedInfo)
 	}
 }
 
-void CPodcastClientShowsView::FeedUpdateComplete(TUint aFeedUid)
+void CPodcastClientShowsView::FeedUpdateCompleteL(TUint aFeedUid)
 {
 	if(iPodcastModel.ActiveFeedInfo() != NULL && iPodcastModel.ActiveFeedInfo()->Uid() == aFeedUid)
 	{

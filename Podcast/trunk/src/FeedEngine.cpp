@@ -105,7 +105,7 @@ void CFeedEngine::UpdateAllFeeds()
 
 void CFeedEngine::UpdateNextFeed()
 	{
-	RDebug::Print(_L("UpdateNextFeed"));
+	RDebug::Print(_L("UpdateNextFeed. %d feeds left to update"), iFeedsUpdating.Count());
 	if (iFeedsUpdating.Count() > 0) {
 		CFeedInfo *info = iFeedsUpdating[0];
 		iFeedsUpdating.Remove(0);
@@ -306,31 +306,63 @@ void CFeedEngine::Progress(CHttpClient* /*aHttpClient*/, TInt aBytes, TInt aTota
 }
 
 void CFeedEngine::Complete(CHttpClient* /*aClient*/, TBool aSuccessful)
-{
+	{
 	RDebug::Print(_L("Complete, aSuccessful=%d"), aSuccessful);
-	if (iClientState == EUpdatingFeed) {
-		
-		iParser->ParseFeedL(iUpdatingFeedFileName, iActiveFeed, iPodcastModel.SettingsEngine().MaxListItems());
-		iClientState = ENotUpdating;
+	if (iClientState == EUpdatingFeed) 
+		{
+		// Parse the feed. We need to trap this call since it could leave and then
+		// the whole update chain will be broken
+		TRAPD(parserErr, iParser->ParseFeedL(iUpdatingFeedFileName, iActiveFeed, iPodcastModel.SettingsEngine().MaxListItems()));
+		if(parserErr)
+			{
+			// we do not need to any special action on this error.
+			RDebug::Print(_L("CFeedEngine::Complete()\t Failed to parse feed. Leave with error code=%d"), parserErr);
+			}
 
-		if (iActiveFeed->ImageFileName().Length() == 0 || !BaflUtils::FileExists(iFs,iActiveFeed->ImageFileName())) {
-			TRAPD(error, GetFeedImageL(iActiveFeed));
-		}
+		// change client state
+		iClientState = ENotUpdating;
 
 		TTime time;
 		time.HomeTime();
 		iActiveFeed->SetLastUpdated(time);
 		SaveFeeds();
-		
 		iPodcastModel.ShowEngine().SaveShows();
 
-		for (TInt i=0;i<iObservers.Count();i++) {
-			iObservers[i]->FeedUpdateComplete(iActiveFeed->Uid());
-		}		
+		// if the feed has specified a image url. download it if we dont already have it
+		if ( iActiveFeed->ImageUrl().Length() > 0 && ((iActiveFeed->ImageFileName().Length() == 0) || (!BaflUtils::FileExists(iFs,iActiveFeed->ImageFileName()) )))
+ 			{
+			TRAPD(error, GetFeedImageL(iActiveFeed));
+			if (error)
+				{
+				// we have failed in a very early stage to fetch the image.
+				// continue with next Feed update
+				NotifyFeedUpdateComplete();
+				UpdateNextFeed();
+				}
+			}
+		else
+			{
+			// we do not have an image file
+			NotifyFeedUpdateComplete();
+			UpdateNextFeed();		
+			}
 
+		// we will wait until the image has been downloaded to start the next feed update.
+		}
+	else	// iClientState == EUpdatingImage
+		{
+		NotifyFeedUpdateComplete();
 		UpdateNextFeed();
+		}
 	}
-}
+
+void CFeedEngine::NotifyFeedUpdateComplete()
+	{
+	for (TInt i=0;i<iObservers.Count();i++) 
+		{
+		TRAP_IGNORE(iObservers[i]->FeedUpdateCompleteL(iActiveFeed->Uid()));
+		}
+	}
 
 void CFeedEngine::Disconnected(CHttpClient* /*aClient*/)
 	{
