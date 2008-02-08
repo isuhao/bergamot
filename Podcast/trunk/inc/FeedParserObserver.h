@@ -7,7 +7,7 @@
 class MFeedParserObserver
 {
 public:
-	virtual void NewShow(CShowInfo *item) = 0;
+	virtual TBool NewShow(CShowInfo *item) = 0;
 	virtual void ParsingComplete(CFeedInfo *item) = 0;
 };
 

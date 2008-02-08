@@ -68,7 +68,7 @@ private:
 	void Complete(CHttpClient* aClient, TBool aSuccessful);
 
 	// from FeedParser
-	void NewShow(CShowInfo *item);
+	TBool NewShow(CShowInfo *item);
 	void ParsingComplete(CFeedInfo *item);
 
 	void GetFeedImageL(CFeedInfo *aFeedInfo);

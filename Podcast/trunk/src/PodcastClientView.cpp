@@ -39,6 +39,7 @@ Destructor for the view
 CPodcastClientView::~CPodcastClientView()
 	{
 	delete iViewLabel;
+	delete iAudioBooksLabel;
 	}
 
 /**

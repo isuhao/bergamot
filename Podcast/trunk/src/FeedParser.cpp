@@ -230,17 +230,27 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt /*aErrorCode*/)
 			}
 			break;
 		case EStateItem:
-			iCallbacks.NewShow(iActiveShow);
-			if (str.CompareF(KTagItem) == 0) {
+			if (str.CompareF(KTagItem) == 0) 
+				{
+				TBool isShowAdded = iCallbacks.NewShow(iActiveShow);
+				if (!isShowAdded)
+					{
+					delete iActiveShow;
+					}
+				
+				// We should now be finished with the show.
+				iActiveShow = NULL;
+				
 				iItemsParsed++;
 				//RDebug::Print(_L("iItemsParsed: %d, iMaxItems: %d"), iItemsParsed, iMaxItems);
-				if (iItemsParsed > iMaxItems) {
+				if (iItemsParsed > iMaxItems) 
+					{
 					iStoppedParsing = ETrue;
 					RDebug::Print(_L("*** Too many items, aborting parsing"));
-				}
+					}
 				
 				iFeedState=EStateChannel;
-			}
+				}
 			break;
 		case EStateItemPubDate:
 			//RDebug::Print(_L("PubDate END"));

@@ -140,7 +140,7 @@ void CFeedEngine::UpdateFeedL(TUint aFeedUid)
 	RDebug::Print(_L("Update done"));
 	}
 
-void CFeedEngine::NewShow(CShowInfo *item)
+TBool CFeedEngine::NewShow(CShowInfo *item)
 	{
 	//RDebug::Print(_L("\nTitle: %S\nURL: %S\nDescription length: %d\nFeed: %d"), &(item->Title()), &(item->Url()), item->Description().Length(), item->FeedUid());
 	TBuf<2048> description;
@@ -150,7 +150,8 @@ void CFeedEngine::NewShow(CShowInfo *item)
 	item->SetDescriptionL(description);
 	//RDebug::Print(_L("Description: %S"), &description);
 	
-	iPodcastModel.ShowEngine().AddShow(item);
+	TBool ret = iPodcastModel.ShowEngine().AddShow(item);
+	return ret;
 	}
 
 void CFeedEngine::GetFeedImageL(CFeedInfo *aFeedInfo)
