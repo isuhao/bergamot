@@ -65,7 +65,7 @@ private:
 	void Disconnected(CHttpClient* aClient);
 	void Progress(CHttpClient* aHttpClient, TInt aBytes, TInt aTotalBytes);
 	void DownloadInfo(CHttpClient* aClient, TInt aSize);
-	void Complete(CHttpClient* aClient, TBool aSuccessful);
+	void CompleteL(CHttpClient* aClient, TBool aSuccessful);
 
 	// from FeedParser
 	TBool NewShow(CShowInfo *item);
@@ -77,7 +77,7 @@ private:
 	
 	static TInt CompareFeedsByTitle(const CFeedInfo &a, const CFeedInfo &b);
 	void UpdateNextFeed();
-	void NotifyFeedUpdateComplete();
+	void NotifyFeedUpdateCompleteL();
 	
 private:
 	CHttpClient* iFeedClient;

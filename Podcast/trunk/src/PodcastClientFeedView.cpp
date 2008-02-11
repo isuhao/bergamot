@@ -243,6 +243,9 @@ void CPodcastClientFeedView::FeedUpdateCompleteL(TUint aFeedUid)
 	UpdateFeedInfoStatusL(aFeedUid, EFalse);
 	}
 
+void CPodcastClientFeedView::FeedUpdateAllCompleteL()
+{
+}
 
 void CPodcastClientFeedView::FeedDownloadUpdatedL(TUint aFeedUid, TInt aPercentOfCurrentDownload)
 	{

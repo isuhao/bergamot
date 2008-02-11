@@ -203,7 +203,7 @@ void CShowEngine::RemoveObserver(MShowEngineObserver *observer)
 		}
 	}
 
-void CShowEngine::Complete(CHttpClient* /*aHttpClient*/, TBool aSuccessful)
+void CShowEngine::CompleteL(CHttpClient* /*aHttpClient*/, TBool aSuccessful)
 	{
 	RDebug::Print(_L("CShowEngine::Complete\tDownload of file: %S is complete"), &iShowDownloading->FileName());
 	

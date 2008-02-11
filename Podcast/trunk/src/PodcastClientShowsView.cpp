@@ -233,6 +233,10 @@ void CPodcastClientShowsView::FeedUpdateCompleteL(TUint aFeedUid)
 	}
 }
 
+void CPodcastClientShowsView::FeedUpdateAllCompleteL()
+{
+}
+
 void CPodcastClientShowsView::FeedDownloadUpdatedL(TUint aFeedUid, TInt /*aPercentOfCurrentDownload*/)
 	{
 	if(iPodcastModel.ActiveFeedInfo() != NULL && iPodcastModel.ActiveFeedInfo()->Uid() == aFeedUid)

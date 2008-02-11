@@ -32,7 +32,7 @@ public:
 	void SelectNewShows();
 	void SelectShowsDownloading();
 	
-	void Complete(CHttpClient* aClient, TBool aSuccessful);
+	void CompleteL(CHttpClient* aClient, TBool aSuccessful);
 	TBool AddShow(CShowInfo *item);
 	void SaveShows();
 

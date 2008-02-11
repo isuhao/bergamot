@@ -117,9 +117,13 @@ void CFeedEngine::UpdateNextFeed()
 			//iFeedsUpdating.Reset();
 		}
 	} else {
-		iClientState = ENotUpdating;		
+		iClientState = ENotUpdating;
+		for (TInt i=0;i<iObservers.Count();i++) 
+		{
+			iObservers[i]->FeedUpdateAllCompleteL();
 		}
 	}
+}
 
 void CFeedEngine::UpdateFeedL(TUint aFeedUid)
 	{
@@ -311,7 +315,7 @@ void CFeedEngine::Progress(CHttpClient* /*aHttpClient*/, TInt aBytes, TInt aTota
 	}*/
 }
 
-void CFeedEngine::Complete(CHttpClient* /*aClient*/, TBool aSuccessful)
+void CFeedEngine::CompleteL(CHttpClient* /*aClient*/, TBool aSuccessful)
 	{
 	RDebug::Print(_L("Complete, aSuccessful=%d"), aSuccessful);
 	if (iClientState == EUpdatingFeed) 
@@ -342,14 +346,14 @@ void CFeedEngine::Complete(CHttpClient* /*aClient*/, TBool aSuccessful)
 				{
 				// we have failed in a very early stage to fetch the image.
 				// continue with next Feed update
-				NotifyFeedUpdateComplete();
+				NotifyFeedUpdateCompleteL();
 				UpdateNextFeed();
 				}
 			}
 		else
 			{
 			// we do not have an image file
-			NotifyFeedUpdateComplete();
+			NotifyFeedUpdateCompleteL();
 			UpdateNextFeed();		
 			}
 
@@ -357,16 +361,16 @@ void CFeedEngine::Complete(CHttpClient* /*aClient*/, TBool aSuccessful)
 		}
 	else	// iClientState == EUpdatingImage
 		{
-		NotifyFeedUpdateComplete();
+		NotifyFeedUpdateCompleteL();
 		UpdateNextFeed();
 		}
 	}
 
-void CFeedEngine::NotifyFeedUpdateComplete()
+void CFeedEngine::NotifyFeedUpdateCompleteL()
 	{
 	for (TInt i=0;i<iObservers.Count();i++) 
 		{
-		TRAP_IGNORE(iObservers[i]->FeedUpdateCompleteL(iActiveFeed->Uid()));
+		iObservers[i]->FeedUpdateCompleteL(iActiveFeed->Uid());
 		}
 	}
 

@@ -31,6 +31,7 @@ protected:
 	void UpdateFeedInfoStatusL(TUint aFeedUid, TBool aIsUpdating);
 	void FeedDownloadUpdatedL(TUint aFeedUid, TInt aPercentOfCurrentDownload);
 	void FeedUpdateCompleteL(TUint aFeeidUid);
+	void FeedUpdateAllCompleteL();
 	// from MQikCommandModelOwner	
 	CQikCommand* DynInitOrDeleteCommandL(CQikCommand* aCommand, const CCoeControl& aControlAddingCommands);
 	void HandleCommandL(CQikCommand& aCommand);

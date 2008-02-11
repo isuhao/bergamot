@@ -139,7 +139,7 @@ void CHttpClient::Stop()
 
 void CHttpClient::ClientRequestCompleteL(TBool aSuccessful) {
 	iIsActive = EFalse;
-	iObserver.Complete(this, aSuccessful);
+	iObserver.CompleteL(this, aSuccessful);
 	RDebug::Print(_L("CHttpClient::Get END"));
 	iTransactionCount--;
 	
