@@ -18,7 +18,6 @@ CHttpClient::~CHttpClient()
   	iHandler->CloseSaveFile();
 	delete iHandler;
   	}
-
   
   iSession.Close();
   }
@@ -48,18 +47,13 @@ void CHttpClient::ConstructL()
 
   }
 
-void CHttpClient::SetHeaderL(RHTTPHeaders aHeaders,
-                             TInt aHdrField,
-                             const TDesC8& aHdrValue)
-  {
-  RStringF valStr = iSession.StringPool().OpenFStringL(aHdrValue);
-  THTTPHdrVal val(valStr);
-  aHeaders.SetFieldL(
-		  iSession.StringPool().StringF(aHdrField,
-				  RHTTPSession::GetTable()),
-                  val);
-  valStr.Close();
-  }
+void CHttpClient::SetHeaderL(RHTTPHeaders aHeaders, TInt aHdrField, const TDesC8& aHdrValue)
+	{
+	RStringF valStr = iSession.StringPool().OpenFStringL(aHdrValue);
+	THTTPHdrVal val(valStr);
+	aHeaders.SetFieldL(iSession.StringPool().StringF(aHdrField, RHTTPSession::GetTable()), val);
+	valStr.Close();
+	}
 
 TBool CHttpClient::IsActive()
 	{
@@ -73,20 +67,32 @@ void CHttpClient::SetResumeEnabled(TBool aEnabled)
 
 void CHttpClient::GetL(TDesC& url, TDesC& fileName,  TBool aSilent) {
 	RDebug::Print(_L("CHttpClient::Get START"));
+	
+	__ASSERT_DEBUG((iIsActive==EFalse), User::Panic(_L("Already active"), -2));
+	
 	iIsActive = ETrue;
 		
 	TBuf8<256> url8;
 	url8.Copy(url);
 	
-	if (iTransactionCount == 0) {
-		RDebug::Print(_L("** Opening session"));
+	if (iTransactionCount == 0) 
+		{
+		RDebug::Print(_L("CHttpClient::GetL\t*** Opening HTTP session ***"));
 		iSession.OpenL();
 		iPodcastModel.ConnectHttpSessionL(iSession);
-	}
+		}
 		
 	TUriParser8 uri; 
 	uri.Parse(url8);
 	RDebug::Print(_L("Getting '%S' to '%S'"), &url, &fileName);
+
+	// since nothing should be downloading now. Delete the handler
+	if (iHandler)
+		{
+		delete iHandler;
+		iHandler = NULL;
+		}
+		
 
 	iHandler = CHttpEventHandler::NewL(this, iObserver);
 	iHandler->SetSilent(aSilent);
@@ -130,22 +136,33 @@ void CHttpClient::Stop()
 	{
 	iIsActive = EFalse;
 	if(iHandler != NULL)
-	{
-		iHandler->CloseSaveFile();
+		{
+		// cancel the ongoing transaction
 		iTrans.Cancel();
-	}
-	//iSession.Close();
+		iTransactionCount = 0;
+		
+		// make sure that we save the file
+		iHandler->CloseSaveFile();
+		
+		// we could now delete the handler since a new will be created
+		delete iHandler;
+		iHandler = NULL;
+		
+		// close the session
+		RDebug::Print(_L("CHttpClient::Stop\t*** Closing HTTP session ***"));
+		iSession.Close();
+		}
 	}
 
 void CHttpClient::ClientRequestCompleteL(TBool aSuccessful) {
 	iIsActive = EFalse;
 	iObserver.CompleteL(this, aSuccessful);
-	RDebug::Print(_L("CHttpClient::Get END"));
+	RDebug::Print(_L("CHttpClient::ClientRequestCompleteL"));
 	iTransactionCount--;
 	
 	if(iTransactionCount == 0) 
 		{
-		RDebug::Print(_L("** Closing session"));
+		RDebug::Print(_L("CHttpClient::ClientRequestCompleteL\t*** Closing HTTP session ***"));
 		delete iHandler;
 		iHandler = NULL;
 		iSession.Close();

@@ -67,7 +67,7 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 			RDebug::Print(_L("Status: %d (%S)"), status, &statusStr16);
 
 			// Dump the headers if we're being verbose
-			DumpRespHeadersL(aTransaction);
+			//DumpRespHeadersL(aTransaction);
 
 			// Determine if the body will be saved to disk
 			iSavingResponseBody = ETrue;
@@ -170,10 +170,9 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 			} break;
 		case THTTPEvent::ESucceeded:
 			{
+			RDebug::Print(_L("Transaction Successful"));
 			aTransaction.Close();
 			iHttpClient->ClientRequestCompleteL(ETrue);
-			RDebug::Print(_L("Transaction Successful"));
-
 			} break;
 		case THTTPEvent::EFailed:
 			{
