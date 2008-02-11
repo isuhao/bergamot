@@ -68,16 +68,15 @@ private:
 	void ConstructL();
 
 	void GetShow(CShowInfo *info);
-	
 	void LoadShowsL();
 
-	static TInt CompareShowsByDate(const CShowInfo &a, const CShowInfo &b);
+	void NotifyDownloadQueueUpdated();
+	void NotifyShowDownloadUpdated(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt aBytesTotal);
 
 	void DownloadNextShow();
-	
-
 	void ListDir(TFileName &folder);
 
+	static TInt CompareShowsByDate(const CShowInfo &a, const CShowInfo &b);
 	static TBool CompareShowsByUid(const CShowInfo &a, const CShowInfo &b);
 private:
 	CHttpClient* iShowClient;
@@ -99,9 +98,6 @@ private:
 	
 	CPodcastModel& iPodcastModel;
 
-	// prevents auto download on files read from DB
-	TBool iSuppressAutoDownload;
-	
 	// observers that will receive callbacks
     RArray<MShowEngineObserver*> iObservers;
 

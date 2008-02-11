@@ -150,8 +150,13 @@ TBool CFeedEngine::NewShow(CShowInfo *item)
 	item->SetDescriptionL(description);
 	//RDebug::Print(_L("Description: %S"), &description);
 	
-	TBool ret = iPodcastModel.ShowEngine().AddShow(item);
-	return ret;
+	TBool isShowAdded = iPodcastModel.ShowEngine().AddShow(item);
+	
+	if (isShowAdded && iPodcastModel.SettingsEngine().DownloadAutomatically()) 
+		{
+		iPodcastModel.ShowEngine().AddDownload(item);
+		}
+	return isShowAdded;
 	}
 
 void CFeedEngine::GetFeedImageL(CFeedInfo *aFeedInfo)
