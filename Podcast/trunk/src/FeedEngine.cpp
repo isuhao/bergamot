@@ -39,6 +39,7 @@ CFeedEngine::~CFeedEngine()
 	{
 	iObservers.Close();
 	
+	iFeedsUpdating.Close();
 	iFeeds.ResetAndDestroy();
 	iFeeds.Close();
 	iFs.Close();
