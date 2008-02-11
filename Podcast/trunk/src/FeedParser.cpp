@@ -22,6 +22,8 @@ void CFeedParser::ParseFeedL(const TFileName &feedFileName, CFeedInfo *info, TUi
 	//RDebug::Print(_L("ParseFeedL BEGIN: %S"), &feedFileName);
 	RFs rfs;
 	rfs.Connect();
+	CleanupClosePushL(rfs);
+	
 	_LIT8(KXmlMimeType, "text/xml");
 	// Contruct the parser object
 	CParser* parser = CParser::NewLC(KXmlMimeType, *this);
@@ -34,15 +36,15 @@ void CFeedParser::ParseFeedL(const TFileName &feedFileName, CFeedInfo *info, TUi
 	iEncoding = ELatin1;
 
 	ParseL(*parser, rfs, feedFileName);
-	rfs.Close(); // this makes sure the file was closed
+
+	CleanupStack::PopAndDestroy(parser);
+	CleanupStack::PopAndDestroy(&rfs); // this makes sure the file was closed
 	
 	rfs.Connect();
 	BaflUtils::DeleteFile(rfs,feedFileName);
 	rfs.Close();
-	// Destroy the parser when done.
-	CleanupStack::PopAndDestroy();
 	//RDebug::Print(_L("ParseFeedL END"));
-}
+	}
 
 // from MContentHandler
 void CFeedParser::OnStartDocumentL(const RDocumentParameters& aDocParam, TInt /*aErrorCode*/)
