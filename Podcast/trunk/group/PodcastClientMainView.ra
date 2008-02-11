@@ -306,8 +306,8 @@ RESOURCE QIK_LISTBOX r_podcast_mainview_listbox
 
 				content=QIK_CONTENT_MBM 
 				{
-					bmpid = EMbmPodcastclientFeeds_40x40;
-					bmpmask = EMbmPodcastclientFeeds_40x40m;
+					bmpid = EMbmPodcastclientAudiobooks_40x40;
+					bmpmask = EMbmPodcastclientAudiobooks_40x40m;
 				};
 
 				slot_id = EQikListBoxSlotLeftMediumIcon1;
