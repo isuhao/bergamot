@@ -39,11 +39,12 @@ void CPodcastClientAddFeedDlg::PreLayoutDynInitL()
 
 
 TBool CPodcastClientAddFeedDlg::OkToExitL(TInt aCommandId)
-{
-	if(aCommandId == EEikBidYes)
 	{
+	
+	if(aCommandId == EEikBidYes)
+		{
 		return ETrue;
-	}
+		}
 
 	CEikEdwin* urlEdwin = static_cast<CEikEdwin*>(ControlOrNull(EPodcastAddEditFeedDlgUrl));
 	CEikEdwin* titleEdwin = static_cast<CEikEdwin*>(ControlOrNull(EPodcastAddEditFeedDlgTitle));
@@ -51,27 +52,27 @@ TBool CPodcastClientAddFeedDlg::OkToExitL(TInt aCommandId)
 	HBufC* title = NULL;
 
 	if(titleEdwin != NULL)
-	{
+		{
 		title = titleEdwin->GetTextInHBufL();
-	}
+		}
 	
 	CleanupStack::PushL(title);
 
-	if(urlEdwin != NULL && titleEdwin != NULL)
-	{
+	if(urlEdwin != NULL)
+		{
 		TBuf<KMaxTextBuffer> buffer;
 		urlEdwin->GetText(buffer);	
 
 		if(iEditFeed)
-		{
+			{
 			iFeedInfo->SetUrlL(buffer);	
 			if(title && title->Length()>0)
 				{
 				iFeedInfo->SetTitleL(*title);
 				}
-		}
+			}
 		else
-		{
+			{
 			CFeedInfo* newFeedInfo = CFeedInfo::NewL();
 			iFeedInfo = newFeedInfo;
 			iFeedInfo->SetUrlL(buffer);
@@ -85,7 +86,7 @@ TBool CPodcastClientAddFeedDlg::OkToExitL(TInt aCommandId)
 				iFeedInfo->SetTitleL(newFeedInfo->Url());
 				}
 			iPodcastModel.FeedEngine().AddFeed(newFeedInfo);
-		}
+			}
 	
 		/*
 		if(iEikonEnv->QueryWinL(R_PODCAST_UPDATE_NEW_FEED_TITLE, R_PODCAST_UPDATE_NEW_FEED_PROMPT))
@@ -96,6 +97,5 @@ TBool CPodcastClientAddFeedDlg::OkToExitL(TInt aCommandId)
 	}
 
 	CleanupStack::PopAndDestroy(title);
-
 	return ETrue;
 }
