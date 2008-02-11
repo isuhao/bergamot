@@ -38,6 +38,7 @@ protected:
 	void HandleAddNewAudioBookL();
 private:
     TBool iProgressAdded;
+	TBool iUpdatingAllRunning;
 	TFeedsViewMode iCurrentViewMode;
 };
 

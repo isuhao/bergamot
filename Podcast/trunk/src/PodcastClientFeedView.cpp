@@ -245,10 +245,19 @@ void CPodcastClientFeedView::FeedUpdateCompleteL(TUint aFeedUid)
 
 void CPodcastClientFeedView::FeedUpdateAllCompleteL()
 {
+	iUpdatingAllRunning = EFalse;
+	UpdateCommandsL();
 }
 
 void CPodcastClientFeedView::FeedDownloadUpdatedL(TUint aFeedUid, TInt aPercentOfCurrentDownload)
 	{
+
+	if(!iUpdatingAllRunning)
+	{
+		iUpdatingAllRunning = ETrue;
+		UpdateCommandsL();
+	}
+
 	if (ViewContext() == NULL) 
 		{
 		return;
@@ -507,6 +516,8 @@ void CPodcastClientFeedView::UpdateCommandsL()
 
 	comMan.SetInvisible(*this, EPodcastViewAudioBooks, isBookMode);
 	comMan.SetInvisible(*this, EPodcastViewFeeds, !isBookMode);
+	
+	comMan.SetDimmed(*this, EPodcastUpdateAllFeeds, iUpdatingAllRunning);
 
 	CleanupStack::PopAndDestroy(&feeds); 
 	}
@@ -571,7 +582,17 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 				}
 			break;	
 			}
-		
+		case EPodcastUpdateAllFeeds:
+		{
+			iUpdatingAllRunning = ETrue;
+			UpdateCommandsL();
+			iPodcastModel.FeedEngine().UpdateAllFeedsL();
+			HBufC* str = CEikonEnv::Static()->AllocReadResourceLC(R_PODCAST_FEEDS_UPDATE_MESSAGE);
+			User::InfoPrint(*str);
+			CleanupStack::PopAndDestroy(str);
+		}
+		break;
+	//
 		case EPodcastPurgeFeed:
 			{
 				HandleAddNewAudioBookL();

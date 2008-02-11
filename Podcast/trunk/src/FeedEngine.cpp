@@ -86,7 +86,7 @@ void CFeedEngine::RunFeedTimer()
 	
 	}
 
-void CFeedEngine::UpdateAllFeeds()
+void CFeedEngine::UpdateAllFeedsL()
 	{
 	if (iFeedsUpdating.Count() > 0) {
 		RDebug::Print(_L("Cancelling update"));
@@ -99,11 +99,10 @@ void CFeedEngine::UpdateAllFeeds()
 		iFeedsUpdating.Append(iFeeds[i]);
 	}
 	
-	UpdateNextFeed();
-	
+	UpdateNextFeedL();
 	}
 
-void CFeedEngine::UpdateNextFeed()
+void CFeedEngine::UpdateNextFeedL()
 	{
 	RDebug::Print(_L("UpdateNextFeed. %d feeds left to update"), iFeedsUpdating.Count());
 	if (iFeedsUpdating.Count() > 0) {
@@ -347,14 +346,14 @@ void CFeedEngine::CompleteL(CHttpClient* /*aClient*/, TBool aSuccessful)
 				// we have failed in a very early stage to fetch the image.
 				// continue with next Feed update
 				NotifyFeedUpdateCompleteL();
-				UpdateNextFeed();
+				UpdateNextFeedL();
 				}
 			}
 		else
 			{
 			// we do not have an image file
 			NotifyFeedUpdateCompleteL();
-			UpdateNextFeed();		
+			UpdateNextFeedL();		
 			}
 
 		// we will wait until the image has been downloaded to start the next feed update.
@@ -362,7 +361,7 @@ void CFeedEngine::CompleteL(CHttpClient* /*aClient*/, TBool aSuccessful)
 	else	// iClientState == EUpdatingImage
 		{
 		NotifyFeedUpdateCompleteL();
-		UpdateNextFeed();
+		UpdateNextFeedL();
 		}
 	}
 

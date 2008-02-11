@@ -29,7 +29,7 @@ public:
 	void AddFeed(CFeedInfo *item);
 	void RemoveFeed(TUint aUid);
 	void UpdateFeedL(TUint aFeedUid);
-	void UpdateAllFeeds();
+	void UpdateAllFeedsL();
 
 	void GetFeeds(RFeedInfoArray& array);
 	CFeedInfo* GetFeedInfoByUid(TUint aFeedUid);	
@@ -76,7 +76,7 @@ private:
 	void CleanHtml(TDes &str);
 	
 	static TInt CompareFeedsByTitle(const CFeedInfo &a, const CFeedInfo &b);
-	void UpdateNextFeed();
+	void UpdateNextFeedL();
 	void NotifyFeedUpdateCompleteL();
 	
 private:

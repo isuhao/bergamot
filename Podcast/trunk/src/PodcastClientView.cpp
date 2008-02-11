@@ -136,14 +136,7 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastFeedViewID);
 			iQikAppUi.ActivateViewL(podcastsView, TUid::Uid(EFeedsAudioBooksMode), KNullDesC8());
 		}break;
-	case EPodcastUpdateAllFeeds:
-		{
-			iPodcastModel.FeedEngine().UpdateAllFeeds();
-			HBufC* str = CEikonEnv::Static()->AllocReadResourceLC(R_PODCAST_FEEDS_UPDATE_MESSAGE);
-			User::InfoPrint(*str);
-			CleanupStack::PopAndDestroy(str);
-		}
-		break;
+
 	case EPodcastSettings:
 		{
 			CPodcastClientSettingsDlg* dlg = new (ELeave) CPodcastClientSettingsDlg(iPodcastModel);
