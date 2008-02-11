@@ -518,6 +518,8 @@ void CPodcastClientFeedView::UpdateCommandsL()
 	comMan.SetInvisible(*this, EPodcastViewFeeds, !isBookMode);
 	
 	comMan.SetDimmed(*this, EPodcastUpdateAllFeeds, iUpdatingAllRunning);
+	comMan.SetDimmed(*this, EPodcastAddFeed, iUpdatingAllRunning);
+	comMan.SetDimmed(*this, EPodcastEditFeed, iUpdatingAllRunning);
 
 	CleanupStack::PopAndDestroy(&feeds); 
 	}
