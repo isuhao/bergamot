@@ -65,6 +65,14 @@ RESOURCE QIK_COMMAND_LIST r_podcast_feedview_commands
 				text = STRING_r_view_main_cmd;
 				namedGroupId = 1;
 				groupId = 1;
+				},	
+				QIK_COMMAND
+				{
+				id = EPodcastViewPlayer;
+				type = EQikCommandTypeScreen;
+				text = STRING_r_view_player_cmd;
+				namedGroupId = 1;
+				groupId = 2;
 				},		
 				QIK_COMMAND
 				{
@@ -72,7 +80,7 @@ RESOURCE QIK_COMMAND_LIST r_podcast_feedview_commands
 				type = EQikCommandTypeScreen;
 				text = STRING_r_view_dl_shows_cmd;
 				namedGroupId = 1;
-				groupId = 2;
+				groupId = 3;
 				},		
 
 				QIK_COMMAND
@@ -81,7 +89,7 @@ RESOURCE QIK_COMMAND_LIST r_podcast_feedview_commands
 				type = EQikCommandTypeScreen;
 				text = STRING_r_view_dling_shows_cmd;
 				namedGroupId = 1;
-				groupId = 2;
+				groupId = 3;
 				},					
 				QIK_COMMAND
 				{
@@ -89,7 +97,7 @@ RESOURCE QIK_COMMAND_LIST r_podcast_feedview_commands
 				type = EQikCommandTypeScreen;
 				text = STRING_r_view_feeds_cmd;
 				namedGroupId = 1;
-				groupId = 2;
+				groupId = 3;
 				},			
 				QIK_COMMAND
 				{
@@ -97,7 +105,7 @@ RESOURCE QIK_COMMAND_LIST r_podcast_feedview_commands
 				type = EQikCommandTypeScreen;
 				text = STRING_r_view_audiobooks_cmd;
 				namedGroupId = 1;
-				groupId = 2;
+				groupId = 3;
 				},
 // Feed handling
 	

@@ -346,16 +346,7 @@ void CPodcastClientPlayView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid 
 {
 	CQikViewBase::ViewActivatedL(aPrevViewId, aCustomMessageId, aCustomMessage);
 	SelectCategoryL(EShowAllShows);
-	
-/*	if(iPodcastModel.PlayingPodcast() == NULL && aPrevViewId.iAppUid != KUidPodcastClientID)
-	{
-		iPodcastModel.SetPlayingPodcast(iLastShowInfo);
-	
-	}
 
-	iLastShowInfo = NULL;
-*/
-	
 	iPlayOnInit = EFalse;
 
 	switch(aCustomMessageId.iUid)
@@ -378,7 +369,12 @@ void CPodcastClientPlayView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid 
 	iShowInfo = iPodcastModel.ShowEngine().GetShowByUidL(iCurrentViewShowUid);
 
 	UpdateViewL();
-	SetParentView( aPrevViewId );
+	
+	if(aPrevViewId.iAppUid == KUidPodcastClientID)
+	{
+		SetParentView( aPrevViewId );
+	}
+
 	iScrollableContainer->ScrollToMakeVisible(iTitleEdwin);
 	RequestFocusL(iScrollableContainer);
 
@@ -652,7 +648,7 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 			comMan.SetDimmed(*this, EPodcastStop, ETrue);
 			iPlayProgressbar->SetDimmed(ETrue);
 
-			if(iShowInfo->PlayTime()>0)
+			if(iShowInfo && iShowInfo->PlayTime()>0)
 			{				
 				TUint duration = iShowInfo->PlayTime();
 				pos = iShowInfo->Position().Int64()/1000000;

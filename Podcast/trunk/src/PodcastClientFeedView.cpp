@@ -10,6 +10,7 @@
 #include "PodcastClientFeedView.h"
 #include "PodcastModel.h"
 #include "ShowEngine.h"
+#include "SoundEngine.h"
 
 const TInt KMaxFeedNameLength = 100;
 const TInt KMaxUnplayedFeedsLength =64;
@@ -486,6 +487,9 @@ void CPodcastClientFeedView::UpdateCommandsL()
 		}
 		break;
 	}	
+
+	TBool playingPodcast = (iPodcastModel.PlayingPodcast() != NULL && (iPodcastModel.SoundEngine().State() == ESoundEnginePlaying || iPodcastModel.SoundEngine().State() == ESoundEnginePaused));
+	comMan.SetInvisible(*this, EPodcastViewPlayer, !playingPodcast);
 
 	if (iListbox == NULL)
 		return;
