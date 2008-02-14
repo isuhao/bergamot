@@ -40,6 +40,13 @@ If your phone supports it, using your own wireless LAN is a great option. Escarp
 == Releases ==
 
 To download binaries of Escarpod to use on your phone, visit our [http://code.google.com/p/bergamot/downloads/list Downloads] page.
+  
+  * Escarpod 0.93 (Feburary 14th)
+    * Update at fixed time of day added
+    * Separated automated update and automated download
+    * Position slider set correctly when returning to a paused show
+    * Lots of minor bug fixes
+    * _Note that this release lacks translations for the new settings_
 
   * Escarpod 0.92 (January 26th) [http://bergamot.googlecode.com/svn/Podcast/tags/v092 code]
     * Bug fixes (should stop the almost-daily crash)
