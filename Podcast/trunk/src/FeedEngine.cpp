@@ -96,8 +96,10 @@ void CFeedEngine::UpdateAllFeedsL()
 		return;
 	}
 	
-	for (int i=0;i<iFeeds.Count();i++) {
-		iFeedsUpdating.Append(iFeeds[i]);
+	RPointerArray<CFeedInfo> sortedFeeds;
+	GetFeeds(sortedFeeds);
+	for (int i=0;i<sortedFeeds.Count();i++) {
+		iFeedsUpdating.Append(sortedFeeds[i]);
 	}
 	
 	UpdateNextFeedL();
