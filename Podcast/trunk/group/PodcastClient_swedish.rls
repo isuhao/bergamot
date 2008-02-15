@@ -93,7 +93,7 @@ rls_string STRING_r_short_caption "Podcast"
 
 // View titles
 rls_string STRING_r_view_feeds_title "Kanaler"
-rls_string STRING_r_view_audiobooks_title "Ljud böcker"
+rls_string STRING_r_view_audiobooks_title "Ljudböcker"
 
 // Shows view status strings
 rls_string STRING_r_podcast_shows_title_format "%d ospelade, %d totalt";
