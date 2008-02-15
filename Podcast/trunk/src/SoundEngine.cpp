@@ -47,35 +47,43 @@ void CSoundEngine::MapcPlayComplete(TInt /*aError*/) {
 }
 
 void CSoundEngine::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds &/*aDuration */) {
-	if (aError != KErrNone) {
+	if (aError != KErrNone)
+		{
 		RDebug::Print(_L("MapcInitComplete error=%d"), aError);	
-
-		iState = ESoundEngineNotInitialized;
-
-		return;
-	}
-
-	iState = ESoundEngineStopped;
-
-	iPlayer->SetVolume((iPodcastModel.SettingsEngine().Volume() * iPlayer->MaxVolume()) / 100);
-
-	if (iPodcastModel.PlayingPodcast() != NULL) {
-		RDebug::Print(_L("Resuming from position: %ld"), iPodcastModel.PlayingPodcast()->Position().Int64());
-		iPodcastModel.PlayingPodcast()->SetPlayTime(iPlayer->Duration().Int64()/1000000);
-		iPlayer->SetPosition(iPodcastModel.PlayingPodcast()->Position());			
-	}
+		
+		iState = ESoundEngineNotInitialized;	
+		}
+	else
+		{
+		iState = ESoundEngineStopped;
+		
+		iPlayer->SetVolume((iPodcastModel.SettingsEngine().Volume() * iPlayer->MaxVolume()) / 100);
+		
+		if (iPodcastModel.PlayingPodcast() != NULL) 
+			{
+			RDebug::Print(_L("Resuming from position: %ld"), iPodcastModel.PlayingPodcast()->Position().Int64());
+			iPodcastModel.PlayingPodcast()->SetPlayTime(iPlayer->Duration().Int64()/1000000);
+			iPlayer->SetPosition(iPodcastModel.PlayingPodcast()->Position());			
+			}
+		}
 
 	if(iObserver != NULL)
-	{
+		{
 		TRAPD(err, iObserver->PlaybackInitializedL());
-	}
+		}
 }
 
 void CSoundEngine::OpenFileL(TDesC& aFileName)
 {
 	iState = ESoundEngineNotInitialized;
+	iLastOpenedFileName= aFileName;
 	iPlayer->Stop();
 	iPlayer->OpenFileL(aFileName);
+}
+
+const TFileName& CSoundEngine::LastFileName()
+{
+	return iLastOpenedFileName;
 }
 
 TTimeIntervalMicroSeconds CSoundEngine::Position()

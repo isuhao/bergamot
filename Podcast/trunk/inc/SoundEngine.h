@@ -48,7 +48,7 @@ public:
 	void SetObserver(MSoundEngineObserver* aObserver);
 
 	void SetVolume(TUint aVolume);
-
+	const TFileName& LastFileName();
 protected:
 	CSoundEngine(CPodcastModel& aPodcastModel);
 	void ConstructL();
@@ -59,6 +59,7 @@ private:
 	CPodcastModel& iPodcastModel;
 	TSoundEngineState iState;
 	MSoundEngineObserver* iObserver;
+	TFileName	iLastOpenedFileName;
 };
 
 #endif // SOUND_ENGINE_H

@@ -13,6 +13,7 @@
 #include <e32keys.h>
 #include <podcastclient.mbg>
 #include <qikgenericbuildingblock.h>
+#include <qikutils.h>
 
 #include "PodcastClientSettingsDlg.h"
 #include "HttpClient.h"
@@ -243,19 +244,30 @@ void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 		{
 			if(iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.PlayingPodcast()->Uid() == iShowInfo->Uid())
 			{
-				if(iPodcastModel.SoundEngine().State() == ESoundEnginePlaying)
-				{
-					iPodcastModel.SoundEngine().Pause();
-					iPlayProgressbar->SetFocusing(EFalse);
-					comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PLAY_CMD);
-					RequestFocusL(iScrollableContainer);
-				}
+				if(iPodcastModel.SoundEngine().State() == ESoundEngineNotInitialized)
+					{
+					RApaLsSession lsSession;
+					lsSession.Connect();
+					CleanupClosePushL(lsSession);
+					QikFileUtils::StartDefaultViewerAppL(iPodcastModel.SoundEngine().LastFileName(), lsSession);
+					CleanupStack::PopAndDestroy();//close
+					}
 				else
-				{
-					iPodcastModel.SoundEngine().Play();
-					iPlayProgressbar->SetFocusing(EFalse);
-					comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PAUSE_CMD);
-				}
+					{
+					if(iPodcastModel.SoundEngine().State() == ESoundEnginePlaying)
+						{
+							iPodcastModel.SoundEngine().Pause();
+							iPlayProgressbar->SetFocusing(EFalse);
+							comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PLAY_CMD);
+							RequestFocusL(iScrollableContainer);
+						}
+						else
+						{
+							iPodcastModel.SoundEngine().Play();
+							iPlayProgressbar->SetFocusing(EFalse);
+							comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PAUSE_CMD);
+						}
+					}
 			}
 			else
 			{
@@ -593,7 +605,7 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 		}
 		
 		
-		comMan.SetDimmed(*this, EPodcastPlay, iPodcastModel.SoundEngine().State() == ESoundEngineNotInitialized);
+	//	comMan.SetDimmed(*this, EPodcastPlay, iPodcastModel.SoundEngine().State() == ESoundEngineNotInitialized);
 		comMan.SetDimmed(*this, EPodcastStop, (iPodcastModel.SoundEngine().State() == ESoundEngineNotInitialized || iPodcastModel.SoundEngine().State() == ESoundEngineStopped));
 		if(iPlayProgressbar != NULL)
 		{
