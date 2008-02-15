@@ -505,7 +505,8 @@ void CShowEngine::PurgeShow(TUint aShowUid)
 
 TUint CShowEngine::GetGrossSelectionLength()
 	{
-	return iGrossSelectionLength;
+	int max = iPodcastModel.SettingsEngine().MaxListItems();
+	return (iGrossSelectionLength < max ? iGrossSelectionLength : max);
 	}
 
 void CShowEngine::SelectShowsByFeed(TUint aFeedUid)

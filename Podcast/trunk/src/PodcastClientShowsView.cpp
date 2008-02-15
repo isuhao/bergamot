@@ -723,27 +723,27 @@ void CPodcastClientShowsView::UpdateCommandsL()
 		CleanupStack::PopAndDestroy(titleBuffer);
 		
 	} else {
+		TUint unplayed = 0;
 		if(cnt == 0)
 		{
 			ViewContext()->ChangeTextL(EPodcastListViewContextLabel, KNullDesC());
 		}
 		else
 		{
-			TUint unplayed = 0;
+			
 		
 			for (TInt loop = 0;loop<cnt;loop++)
 			{
 				unplayed+=(iPodcastModel.ActiveShowList()[loop]->PlayState() == ENeverPlayed);
 			}
-
-			HBufC* titleFormat=  iEikonEnv->AllocReadResourceLC(R_PODCAST_SHOWS_TITLE_FORMAT);
-			HBufC* titleBuffer = HBufC::NewL(titleFormat->Length()+8);
-			titleBuffer->Des().Format(*titleFormat, unplayed, iPodcastModel.ShowEngine().GetGrossSelectionLength());
-			CleanupStack::PopAndDestroy(titleFormat);
-			CleanupStack::PushL(titleBuffer);
-			ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *titleBuffer);
-			CleanupStack::PopAndDestroy(titleBuffer);	
 		}
+		HBufC* titleFormat=  iEikonEnv->AllocReadResourceLC(R_PODCAST_SHOWS_TITLE_FORMAT);
+		HBufC* titleBuffer = HBufC::NewL(titleFormat->Length()+8);
+		titleBuffer->Des().Format(*titleFormat, unplayed, iPodcastModel.ShowEngine().GetGrossSelectionLength());
+		CleanupStack::PopAndDestroy(titleFormat);
+		CleanupStack::PushL(titleBuffer);
+		ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *titleBuffer);
+		CleanupStack::PopAndDestroy(titleBuffer);	
 	}
 }
 
