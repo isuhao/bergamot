@@ -31,7 +31,7 @@ public:
 	void UpdateFeedL(TUint aFeedUid);
 	void UpdateAllFeedsL();
 
-	void GetFeeds(RFeedInfoArray& array);
+	const RFeedInfoArray& GetSortedFeeds() const;
 	CFeedInfo* GetFeedInfoByUid(TUint aFeedUid);	
 
 	void AddObserver(MFeedEngineObserver *observer);
@@ -52,6 +52,9 @@ public:
 	 * @return TUint
 	 */
 	TUint ActiveClientUid();
+protected:
+	static TInt CompareFeedsByTitle(const CFeedInfo &a, const CFeedInfo &b);
+
 private:
 	void ConstructL();
 	CFeedEngine(CPodcastModel& aPodcastModel);
@@ -75,7 +78,6 @@ private:
 	void ReplaceString(TDes & aString, const TDesC& aStringToReplace,const TDesC& aReplacement);
 	void CleanHtml(TDes &str);
 	
-	static TInt CompareFeedsByTitle(const CFeedInfo &a, const CFeedInfo &b);
 	void UpdateNextFeedL();
 	void NotifyFeedUpdateComplete();
 	
@@ -90,7 +92,7 @@ private:
 	CFeedParser* iParser;
 	
 	// the list of feeds
-	RFeedInfoArray iFeeds;
+	RFeedInfoArray iSortedFeeds;
 
 	CFeedInfo *iActiveFeed;
 	TFileName iUpdatingFeedFileName;

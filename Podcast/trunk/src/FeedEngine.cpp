@@ -40,8 +40,8 @@ CFeedEngine::~CFeedEngine()
 	iObservers.Close();
 	
 	iFeedsUpdating.Close();
-	iFeeds.ResetAndDestroy();
-	iFeeds.Close();
+	iSortedFeeds.ResetAndDestroy();
+	iSortedFeeds.Close();
 	iFs.Close();
 	delete iParser;
 	delete iFeedClient;
@@ -95,13 +95,12 @@ void CFeedEngine::UpdateAllFeedsL()
 		iFeedsUpdating.Reset();
 		return;
 	}
-	
-	RPointerArray<CFeedInfo> sortedFeeds;
-	GetFeeds(sortedFeeds);
-	for (int i=0;i<sortedFeeds.Count();i++) {
-		iFeedsUpdating.Append(sortedFeeds[i]);
+
+	TInt cnt = iSortedFeeds.Count();
+	for (int i=0;i<cnt;i++) {
+		iFeedsUpdating.Append(iSortedFeeds[i]);
 	}
-	
+
 	UpdateNextFeedL();
 	}
 
@@ -226,27 +225,27 @@ void CFeedEngine::ReplaceString(TDes & aString, const TDesC& aStringToReplace,co
 		
 	}
 
-void CFeedEngine::AddFeed(CFeedInfo *item) {
-	for (int i=0;i<iFeeds.Count();i++) {
-		if (iFeeds[i]->Uid() == item->Uid()) {
-			RDebug::Print(_L("Already have feed %S, discarding"), &item->Url());
+void CFeedEngine::AddFeed(CFeedInfo *aItem) {
+	for (int i=0;i<iSortedFeeds.Count();i++) {
+		if (iSortedFeeds[i]->Uid() == aItem->Uid()) {
+			RDebug::Print(_L("Already have feed %S, discarding"), &aItem->Url());
 			return;
 		}
 	}
-
-	iFeeds.Append(item);
+	TLinearOrder<CFeedInfo> sortOrder( CFeedEngine::CompareFeedsByTitle);
+	iSortedFeeds.InsertInOrder(aItem, sortOrder);
 	}
 
 void CFeedEngine::RemoveFeed(TUint aUid) 
 	{
-	for (int i=0;i<iFeeds.Count();i++) 
+	for (int i=0;i<iSortedFeeds.Count();i++) 
 		{
-		if (iFeeds[i]->Uid() == aUid) 
+		if (iSortedFeeds[i]->Uid() == aUid) 
 			{
 			iPodcastModel.ShowEngine().RemoveAllShowsByFeed(aUid);
 			iPodcastModel.ShowEngine().SaveShows();
 					
-			CFeedInfo* feedToRemove = iFeeds[i];
+			CFeedInfo* feedToRemove = iSortedFeeds[i];
 			
 			//delete the image file if it exists
 			if ( (feedToRemove->ImageFileName().Length() >0) && BaflUtils::FileExists(iFs, feedToRemove->ImageFileName() ))
@@ -261,7 +260,7 @@ void CFeedEngine::RemoveFeed(TUint aUid)
 			filePath.Append(_L("\\"));
 			iFs.RmDir(filePath);
 
-			iFeeds.Remove(i);
+			iSortedFeeds.Remove(i);
 			delete feedToRemove;
 			
 			RDebug::Print(_L("Removed feed"));
@@ -482,12 +481,12 @@ TBool CFeedEngine::LoadFeeds()
 	TInt count = instream.ReadInt32L();
 	RDebug::Print(_L("Read count: %d"), count);
 	CFeedInfo *readData;
-	
+	TLinearOrder<CFeedInfo> sortOrder( CFeedEngine::CompareFeedsByTitle);
 	for (TInt i=0;i<count;i++) {
 		readData = CFeedInfo::NewL();
 		TRAP(error, instream  >> *readData);
 		//RDebug::Print(_L("error: %d"), error);
-		iFeeds.Append(readData);
+		iSortedFeeds.InsertInOrder(readData, sortOrder);
 	}
 	CleanupStack::PopAndDestroy(2); // instream and store
 	return ETrue;
@@ -512,11 +511,11 @@ void CFeedEngine::SaveFeeds()
 	RStoreWriteStream outstream;
 	TStreamId id = outstream.CreateLC(*store);
 	outstream.WriteInt32L(KFeedInfoVersion);
-	RDebug::Print(_L("Saving %d feeds"), iFeeds.Count());
-	outstream.WriteInt32L(iFeeds.Count());
-	for (TInt i=0;i<iFeeds.Count();i++) {
+	RDebug::Print(_L("Saving %d feeds"), iSortedFeeds.Count());
+	outstream.WriteInt32L(iSortedFeeds.Count());
+	for (TInt i=0;i<iSortedFeeds.Count();i++) {
 //		RDebug::Print(_L("Storing feed %i"), i);
-		outstream  << *iFeeds[i];
+		outstream  << *iSortedFeeds[i];
 	}
 	
 	outstream.CommitL();
@@ -529,25 +528,21 @@ void CFeedEngine::SaveFeeds()
 
 CFeedInfo* CFeedEngine::GetFeedInfoByUid(TUint aFeedUid)
 	{
-	for (TInt i=0;i<iFeeds.Count();i++)
+	TInt cnt = iSortedFeeds.Count();
+	for (TInt i=0;i<cnt;i++)
 		{
-		if (iFeeds[i]->Uid() == aFeedUid)
+		if (iSortedFeeds[i]->Uid() == aFeedUid)
 			{
-			return iFeeds[i];
+			return iSortedFeeds[i];
 			}
 		}
 	
 	return NULL;
 	}
 
-void CFeedEngine::GetFeeds(RFeedInfoArray& array) 
+const RFeedInfoArray& CFeedEngine::GetSortedFeeds() const 
 {
-	for (TInt i=0;i<iFeeds.Count();i++) {
-		array.Append(iFeeds[i]);
-	}
-	
-	TLinearOrder<CFeedInfo> order(CFeedEngine::CompareFeedsByTitle);
-	array.Sort(order);
+	return iSortedFeeds;
 }
 
 

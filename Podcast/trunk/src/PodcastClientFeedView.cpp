@@ -175,9 +175,7 @@ void CPodcastClientFeedView::FeedInfoUpdated(CFeedInfo* aFeedInfo)
 		iProgressAdded = EFalse;
 		}
 
-	RFeedInfoArray feeds;
-	CleanupClosePushL(feeds);
-	iPodcastModel.FeedEngine().GetFeeds(feeds);
+	const RFeedInfoArray& feeds = iPodcastModel.FeedEngine().GetSortedFeeds();
 
 	TInt index = feeds.Find(aFeedInfo);
 	MQikListBoxModel& model(iListbox->Model());
@@ -196,15 +194,12 @@ void CPodcastClientFeedView::FeedInfoUpdated(CFeedInfo* aFeedInfo)
 			}
 		model.ModelEndUpdateL();
 		}
-
-	CleanupStack::PopAndDestroy(&feeds);
 	}
 
 void CPodcastClientFeedView::UpdateFeedInfoStatusL(TUint aFeedUid, TBool aIsUpdating)
 	{
-	RFeedInfoArray feeds;
-	CleanupClosePushL(feeds);
-	iPodcastModel.FeedEngine().GetFeeds(feeds);
+	const RFeedInfoArray& feeds = iPodcastModel.FeedEngine().GetSortedFeeds();
+
 	TInt cnt = feeds.Count();
 	TInt index = KErrNotFound;
 	while(index == KErrNotFound && cnt>0)
@@ -221,21 +216,19 @@ void CPodcastClientFeedView::UpdateFeedInfoStatusL(TUint aFeedUid, TBool aIsUpda
 	MQikListBoxModel& model(iListbox->Model());
 	
 	if(index != KErrNotFound && index < model.Count())
-	{
+		{
 		model.ModelBeginUpdateLC();
 		MQikListBoxData* data = model.RetrieveDataL(index);	
 		
 		if(data != NULL)
-		{
+			{
 			CleanupClosePushL(*data);
 			UpdateFeedInfoDataL(feeds[index], data, aIsUpdating);
 			CleanupStack::PopAndDestroy(data);
 			model.DataUpdatedL(index);
-		}
+			}
 		model.ModelEndUpdateL();
-	}
-	
-	CleanupStack::PopAndDestroy(&feeds);
+		}
 	}
 
 void CPodcastClientFeedView::FeedUpdateCompleteL(TUint aFeedUid)
@@ -288,9 +281,8 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 	{
 	if(IsVisible())
 		{		
-		RFeedInfoArray feeds;
-		CleanupClosePushL(feeds);
-		iPodcastModel.FeedEngine().GetFeeds(feeds);
+		const RFeedInfoArray& feeds = iPodcastModel.FeedEngine().GetSortedFeeds();
+
 		TInt len = feeds.Count();
 		TBool allUidsMatch = EFalse;
 		MQikListBoxModel& model(iListbox->Model());
@@ -428,7 +420,6 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 		CleanupStack::PopAndDestroy(titleBuffer);
 		CleanupStack::PopAndDestroy(templateStr);
 
-		CleanupStack::PopAndDestroy();// close feeds
 		}
 	
 	UpdateCommandsL();
@@ -447,9 +438,7 @@ void CPodcastClientFeedView::HandleListBoxEventL(CQikListBox* /*aListBox*/, TQik
 		case EEventItemConfirmed:
 		case EEventItemTapped:
 			{
-			RFeedInfoArray feeds;
-			CleanupClosePushL(feeds);
-			iPodcastModel.FeedEngine().GetFeeds(feeds);
+			const RFeedInfoArray& feeds = iPodcastModel.FeedEngine().GetSortedFeeds();
 
 			if(aItemIndex >= 0 && aItemIndex < feeds.Count())
 				{
@@ -458,8 +447,6 @@ void CPodcastClientFeedView::HandleListBoxEventL(CQikListBox* /*aListBox*/, TQik
 				TVwsViewId showsView = TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID);
 				iQikAppUi.ActivateViewL(showsView,  TUid::Uid(EShowFeedShows), KNullDesC8());
 				}
-				
-			CleanupStack::PopAndDestroy(&feeds);
 			break;	
 			}
 		
@@ -494,9 +481,8 @@ void CPodcastClientFeedView::UpdateCommandsL()
 	if (iListbox == NULL)
 		return;
 	TBool isBookMode = (iCurrentViewMode == EFeedsAudioBooksMode);
-	RFeedInfoArray feeds;
-	CleanupClosePushL(feeds);
-	iPodcastModel.FeedEngine().GetFeeds(feeds);
+	const RFeedInfoArray& feeds = iPodcastModel.FeedEngine().GetSortedFeeds();
+
 	
 	// hide commands that should not be visible in no feeds
 	if (feeds.Count() == 0)
@@ -524,8 +510,6 @@ void CPodcastClientFeedView::UpdateCommandsL()
 	comMan.SetDimmed(*this, EPodcastUpdateAllFeeds, iUpdatingAllRunning);
 	comMan.SetDimmed(*this, EPodcastAddFeed, iUpdatingAllRunning);
 	comMan.SetDimmed(*this, EPodcastEditFeed, iUpdatingAllRunning);
-
-	CleanupStack::PopAndDestroy(&feeds); 
 	}
 
 
@@ -549,9 +533,8 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 			if(iListbox != NULL)
 				{
 				TInt index = iListbox->CurrentItemIndex();
-				RFeedInfoArray feeds;
-				CleanupClosePushL(feeds);
-				iPodcastModel.FeedEngine().GetFeeds(feeds);
+				const RFeedInfoArray& feeds = iPodcastModel.FeedEngine().GetSortedFeeds();
+
 				TInt cnt = feeds.Count();
 
 				if(index< cnt)
@@ -561,8 +544,7 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 						{
 						UpdateListboxItemsL();
 						}
-					}
-				CleanupStack::PopAndDestroy();//close feeds array
+					}			
 				}
 			break;
 			}
