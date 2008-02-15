@@ -77,7 +77,7 @@ private:
 	
 	static TInt CompareFeedsByTitle(const CFeedInfo &a, const CFeedInfo &b);
 	void UpdateNextFeedL();
-	void NotifyFeedUpdateCompleteL();
+	void NotifyFeedUpdateComplete();
 	
 private:
 	CHttpClient* iFeedClient;
