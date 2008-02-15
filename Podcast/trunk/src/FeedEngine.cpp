@@ -135,11 +135,14 @@ void CFeedEngine::UpdateFeedL(TUint aFeedUid)
 		}
 
 	TFileName filePath;
-	filePath.Copy(iPodcastModel.SettingsEngine().PrivatePath());
-	filePath.Append(_L("feed.xml"));
+	filePath.Copy (iPodcastModel.SettingsEngine().PrivatePath ());
+	TBuf<20> feedUidNum;
+	feedUidNum.Format(_L("%lu"), aFeedUid);
+	filePath.Append(feedUidNum);
+	filePath.Append(_L(".xml"));
+	//filePath.Append(_L("feed.xml"));
 	iUpdatingFeedFileName.Copy(filePath);
-	iFeedClient->GetL(iActiveFeed->Url(), iUpdatingFeedFileName, iPodcastModel.SettingsEngine().SpecificIAP());
-	
+	iFeedClient->GetL(iActiveFeed->Url(), iUpdatingFeedFileName, iPodcastModel.SettingsEngine().SpecificIAP());	
 
 	RDebug::Print(_L("Update done"));
 	}
