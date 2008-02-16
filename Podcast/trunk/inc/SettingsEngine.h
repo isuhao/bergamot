@@ -4,7 +4,6 @@
 #include <e32base.h>
 #include "PodcastModel.h"
 
-const TInt KSettingsUid = 1000;
 _LIT(KInternalPodcastDir, "c:\\Media files\\Podcasts\\");
 _LIT(KFlashPodcastDir, "\\Podcasts\\");
 
@@ -15,73 +14,85 @@ _LIT(KConfigFile, "config.db");
 _LIT(KShowDB, "shows.db");
 _LIT(KFeedDB, "feeds.db");
 
+// constants
+const TInt KSettingsUid = 1000;
+const TInt KMaxVolume = 100;
+const TInt KVolumeDelta = 10;
+const TInt KDefaultUpdateFeedInterval = 60;
+const TInt KDefaultMaxSimultaneousDownloads = 1;
+const TInt KDefaultMaxListItems = 100;
 
-const TUint KMaxVolume = 100;
-const TUint KVolumeDelta = 10;
 
 enum TAutoUpdateSetting
-{
+	{
 	EAutoUpdateOff,
 	EAutoUpdatePeriodically,
 	EAutoUpdateAtTime
-};
+	};
 
 class CSettingsEngine : public CBase
-{
-public:
-	static CSettingsEngine* NewL(CPodcastModel& aPodcastModel);
-	virtual ~CSettingsEngine();
+	{
+	public:
+		static CSettingsEngine* NewL(CPodcastModel& aPodcastModel);
+		virtual ~CSettingsEngine();
 	
-private:
-	void ConstructL();
-	CSettingsEngine(CPodcastModel& aPodcastModel);
-	void ImportSettings();
-	void LoadSettingsL();
-	void GetDefaultBaseDir(TDes &aBaseDir);
 
-public:
-	TFileName& BaseDir();
-	TFileName& FeedListFile();
-	TInt UpdateFeedInterval();
-	TTime UpdateFeedTime();
-	TInt MaxSimultaneousDownloads();
-	TAutoUpdateSetting UpdateAutomatically();	
-	TBool DownloadAutomatically();
-	TFileName& DefaultFeedsFileName();
-	TInt SpecificIAP();
-	TInt MaxListItems();
-	void SetBaseDir(TFileName& aFileName);
-	void SetUpdateFeedInterval(TInt aInterval);
-	void SetMaxSimultaneousDownloads(TInt aMaxDownloads);
-	void SetUpdateAutomatically(TAutoUpdateSetting aAutoOn);
-	void SetDownloadAutomatically(TBool aAutoDownloadOn);
-	void SetUpdateFeedTime(TTime aTime);
-	void SetSpecificIAP(TInt aIap);
-	TFileName PrivatePath();
-	
-	TUint Volume();
-	void SetVolume(TUint aVolume);
+		TFileName DefaultFeedsFileName();
+		TFileName PrivatePath();
 
-	void SaveSettingsL();
+		TInt MaxListItems();
 
-private:
-	// the settings we serialize
-	TFileName iBaseDir;
-	TFileName iDefaultFeedsFile;
-	TInt iUpdateFeedInterval;
-	TAutoUpdateSetting iUpdateAutomatically;
-	TBool iDownloadAutomatically;
-	TInt iMaxSimultaneousDownloads;
-	TInt iIap;
-	TInt iVolume;
-	TInt iMaxListItems;
-	TTime iUpdateFeedTime;
-	// the file session used to read and write settings
-	RFs iFs;
-	
-	// reference to the model
-	CPodcastModel &iPodcastModel;
+		TFileName& BaseDir();
+		void SetBaseDir(TFileName& aFileName);
 
-};
+		TInt UpdateFeedInterval();
+		void SetUpdateFeedInterval(TInt aInterval);
+
+		TInt MaxSimultaneousDownloads();
+		void SetMaxSimultaneousDownloads(TInt aMaxDownloads);
+		
+		TAutoUpdateSetting UpdateAutomatically();	
+		void SetUpdateAutomatically(TAutoUpdateSetting aAutoOn);
+		
+		TBool DownloadAutomatically();
+		void SetDownloadAutomatically(TBool aAutoDownloadOn);
+		
+		TTime UpdateFeedTime();
+		void SetUpdateFeedTime(TTime aTime);
+		
+		TInt SpecificIAP();
+		void SetSpecificIAP(TInt aIap);
+		
+		TInt Volume();
+		void SetVolume(TInt aVolume);
+
+		void SaveSettingsL();
+
+
+	private:
+		CSettingsEngine(CPodcastModel& aPodcastModel);
+		void ConstructL();
+		void ImportSettings();
+		void LoadSettingsL();
+		void GetDefaultBaseDirL(TDes &aBaseDir);
+
+
+	private:
+		// the settings we serialize
+		TFileName iBaseDir;
+		TInt iUpdateFeedInterval;
+		TAutoUpdateSetting iUpdateAutomatically;
+		TBool iDownloadAutomatically;
+		TInt iMaxSimultaneousDownloads;
+		TInt iIap;
+		TInt iVolume;
+		TInt iMaxListItems;
+		TTime iUpdateFeedTime;
+		
+		// Other member variables
+		RFs iFs;						// File system
+		CPodcastModel &iPodcastModel; 	// reference to the model
+
+	};
 
 #endif /*SETTINGSENGINE_H_*/

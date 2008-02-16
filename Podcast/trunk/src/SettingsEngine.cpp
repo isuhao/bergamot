@@ -1,6 +1,4 @@
 #include <bautils.h>
-#include <eikappui.h>
-#include <eikapp.h>
 #include <s32file.h>
 
 #include "SettingsEngine.h"
@@ -8,14 +6,13 @@
 #include "FeedEngine.h"
 
 CSettingsEngine::CSettingsEngine(CPodcastModel& aPodcastModel) : iPodcastModel(aPodcastModel)
-{
-	iVolume = KMaxVolume;
-}
+	{
+	}
 
 CSettingsEngine::~CSettingsEngine()
-{
+	{
 	iFs.Close();
-}
+	}
 
 CSettingsEngine* CSettingsEngine::NewL(CPodcastModel& aPodcastModel)
 	{
@@ -29,41 +26,39 @@ CSettingsEngine* CSettingsEngine::NewL(CPodcastModel& aPodcastModel)
 void CSettingsEngine::ConstructL()
 	{
 	// default values
-	iUpdateFeedInterval = 60;
-	iMaxSimultaneousDownloads = 1;
+	iVolume = KMaxVolume;
+	iUpdateFeedInterval = KDefaultUpdateFeedInterval;
+	iMaxSimultaneousDownloads = KDefaultMaxSimultaneousDownloads;
 	iDownloadAutomatically = EFalse;
 	iUpdateAutomatically = EAutoUpdateOff;
+	iMaxListItems = KDefaultMaxListItems;
 	iIap = 0;
+	
+	// Connect to file system		
 	iFs.Connect();
 	
-	GetDefaultBaseDir(iBaseDir);
+	// Check that our basedir exist. Create it otherwise;
+	GetDefaultBaseDirL(iBaseDir);
 	RDebug::Print(_L("Base dir: %S"), &iBaseDir);
-	iDefaultFeedsFile.Copy(PrivatePath());
-	iDefaultFeedsFile.Append(KDefaultFeedsFile);
-	iMaxListItems = 100;
+	BaflUtils::EnsurePathExistsL(iFs, iBaseDir);
 	
-	TFileName configPath;
-	configPath.Copy(PrivatePath());
-	configPath.Append(KConfigFile);
+	// load settings
+	TRAPD(loadErr, LoadSettingsL());
+	if (loadErr != KErrNone)
+		{
+		RDebug::Print(_L("CSettingsEngine::ConstructL\tLoadSettingsL returned error=%d"), loadErr);
+		RDebug::Print(_L("CSettingsEngine::ConstructL\tImporting default settings instead"));
 	
-	RDebug::Print(_L("Checking settings file: %S"), &configPath);
-	if (BaflUtils::FileExists(iFs, configPath)) {
-		TRAPD(error, LoadSettingsL());
-		RDebug::Print(_L("LoadSettingsL returned error=%d"), error);
-	} else {
-		RDebug::Print(_L("Importing default settings"));
 		ImportSettings();
 		TRAPD(error,SaveSettingsL());
-		if (error != KErrNone) {
+		if (error != KErrNone) 
+			{
 			RDebug::Print(_L("error saving: %d"), error);
-		}
-	
+			}
+		}		
 	}
 
-	BaflUtils::EnsurePathExistsL(iFs, iBaseDir);
-	}
-
-void CSettingsEngine::GetDefaultBaseDir(TDes &aBaseDir)
+void CSettingsEngine::GetDefaultBaseDirL(TDes &aBaseDir)
 	{
 	CDesCArray* disks = new(ELeave) CDesCArrayFlat(10);
 	CleanupStack::PushL(disks);
@@ -76,36 +71,33 @@ void CSettingsEngine::GetDefaultBaseDir(TDes &aBaseDir)
 		return;
 	#endif
 
-	// if only one drive, use C:\Media files\Podcasts
-	if (disks->Count() == 1) 
+	if (disks->Count() == 1)  // if only one drive, use C:\Media files\Podcasts
 		{
 		aBaseDir.Copy(KInternalPodcastDir);
-	// else we use the first flash drive
 		} 
-	else 
+	else // else we use the first flash drive
 		{
 		aBaseDir.Copy((*disks)[1]);
 		aBaseDir.Append(_L(":"));
 		aBaseDir.Append(KFlashPodcastDir);
-	}
-	
+		}
 	CleanupStack::PopAndDestroy(disks);
 	}
 
 void CSettingsEngine::LoadSettingsL()
 	{
-	RDebug::Print(_L("LoadSettingsL"));
-	//CDictionaryStore* iniFile = CEikonEnv::Static()->EikAppUi()->Application()->OpenIniFileLC(iFs);
-	//RDictionaryReadStream stream;
-	//stream.OpenLC(*iniFile, TUid::Uid(KSettingsUid));	
+	RDebug::Print(_L("CSettingsEngine::LoadSettingsL\t Trying to load settings"));
 	
+	// Create path for the config file
 	TFileName configPath;
 	configPath.Copy(PrivatePath());
 	configPath.Append(KConfigFile);
 
-	if (!BaflUtils::FileExists(iFs, configPath)) {
+	RDebug::Print(_L("Checking settings file: %S"), &configPath);
+	if (!BaflUtils::FileExists(iFs, configPath)) 
+		{
 		User::Leave(KErrNotFound);
-	}
+		}
 	
 	CFileStore* store = CDirectFileStore::OpenL(iFs,configPath,EFileRead);
 	CleanupStack::PushL(store);
@@ -113,29 +105,28 @@ void CSettingsEngine::LoadSettingsL()
 	RStoreReadStream stream;
 	stream.OpenLC(*store, store->Root());
 	
-	int len = stream.ReadInt32L();
+	TInt len = stream.ReadInt32L();
 	stream.ReadL(iBaseDir, len);
 	iUpdateFeedInterval = stream.ReadInt32L();
-	iUpdateAutomatically = (TAutoUpdateSetting) stream.ReadInt32L();
+	iUpdateAutomatically = static_cast<TAutoUpdateSetting>(stream.ReadInt32L());
 	iDownloadAutomatically = stream.ReadInt32L();
 
 	iMaxSimultaneousDownloads = stream.ReadInt32L();
 	iIap = stream.ReadInt32L();
 	iPodcastModel.SetIap(iIap);
 	
-	int low = stream.ReadInt32L();
-	int high = stream.ReadInt32L();
+	TInt low = stream.ReadInt32L();
+	TInt high = stream.ReadInt32L();
 	iUpdateFeedTime = MAKE_TINT64(high, low);
 
+	RDebug::Print(_L("CSettingsEngine::LoadSettingsL\t Settings loaded OK"));
 	CleanupStack::PopAndDestroy(2); // readStream and iniFile
 	}
 
 void CSettingsEngine::SaveSettingsL()
 	{
-	RDebug::Print(_L("SaveSettingsL"));
-	//CDictionaryStore* iniFile = CEikonEnv::Static()->EikAppUi()->Application()->OpenIniFileLC(iFs);
-	//RDictionaryWriteStream stream;
-	//stream.AssignLC(*iniFile, TUid::Uid(KSettingsUid));
+	RDebug::Print(_L("CSettingsEngine::SaveSettingsL\tTrying to save settings"));
+
 	TFileName configPath;
 	configPath.Copy(PrivatePath());
 	configPath.Append(KConfigFile);
@@ -165,20 +156,21 @@ void CSettingsEngine::SaveSettingsL()
 
 void CSettingsEngine::ImportSettings()
 	{
-	RDebug::Print(_L("ImportSettings"));
+	RDebug::Print(_L("CSettingsEngine::ImportSettings"));
+
 	TFileName configPath;
 	configPath.Copy(PrivatePath());
 	configPath.Append(KConfigImportFile);
 	
-	BaflUtils::EnsurePathExistsL(iFs, configPath);
 	RDebug::Print(_L("Importing settings from %S"), &configPath);
-	RFile rfile;
-	int error = rfile.Open(iFs, configPath,  EFileRead);
 	
-	if (error != KErrNone) {
-		RDebug::Print(_L("Failed to read settings"));
+	RFile rfile;
+	TInt error = rfile.Open(iFs, configPath,  EFileRead);
+	if (error != KErrNone) 
+		{
+		RDebug::Print(_L("CSettingsEngine::ImportSettings()\tFailed to read settings"));
 		return;
-	}
+		}
 	
 	TFileText tft;
 	tft.Set(rfile);
@@ -186,42 +178,74 @@ void CSettingsEngine::ImportSettings()
 	TBuf<1024> line;
 	error = tft.Read(line);
 	
-	while (error == KErrNone) {
-		if (line.Locate('#') == 0) {
+	while (error == KErrNone) 
+		{
+		if (line.Locate('#') == 0) 
+			{
 			error = tft.Read(line);
 			continue;
-		}
+			}
 		
-		int equalsPos = line.Locate('=');
-		if (equalsPos != KErrNotFound) {
+		TInt equalsPos = line.Locate('=');
+		if (equalsPos != KErrNotFound) 
+			{
 			TPtrC tag = line.Left(equalsPos);
 			TPtrC value = line.Mid(equalsPos+1);
 			RDebug::Print(_L("line: %S, tag: '%S', value: '%S'"), &line, &tag, &value);
-			if (tag.CompareF(_L("BaseDir")) == 0) {
+			if (tag.CompareF(_L("BaseDir")) == 0) 
+				{
 				iBaseDir.Copy(value);
-			} else if (tag.CompareF(_L("UpdateFeedIntervalMinutes")) == 0) {
+				} 
+			else if (tag.CompareF(_L("UpdateFeedIntervalMinutes")) == 0) 
+				{
 				TLex lex(value);
 				lex.Val(iUpdateFeedInterval);
 				RDebug::Print(_L("Updating automatically every %d minutes"), iUpdateFeedInterval);
-			} else if (tag.CompareF(_L("DownloadAutomatically")) == 0) {
+				} 
+			else if (tag.CompareF(_L("DownloadAutomatically")) == 0) 
+				{
 				TLex lex(value);
 				lex.Val((TInt &) iDownloadAutomatically);
 				RDebug::Print(_L("Download automatically: %d"), iDownloadAutomatically);
-			} else if (tag.CompareF(_L("MaxSimultaneousDownloads")) == 0) {
+				} 
+			else if (tag.CompareF(_L("MaxSimultaneousDownloads")) == 0) 
+				{
 				TLex lex(value);
 				lex.Val(iMaxSimultaneousDownloads);
 				RDebug::Print(_L("Max simultaneous downloads: %d"), iMaxSimultaneousDownloads);
-			} else if (tag.CompareF(_L("MaxShowsPerFeed")) == 0) {
+				}
+			else if (tag.CompareF(_L("MaxShowsPerFeed")) == 0) 
+				{
 				TLex lex(value);
 				lex.Val(iMaxListItems);
 				RDebug::Print(_L("Max shows per feed: %d"), iMaxListItems);
+				}
 			}
-		}
 		
 		error = tft.Read(line);
 		}
-	
 	rfile.Close();
+	}
+
+TFileName CSettingsEngine::DefaultFeedsFileName()
+	{
+	TFileName defaultFeeds;
+	defaultFeeds.Append(PrivatePath());
+	defaultFeeds.Append(KDefaultFeedsFile);
+	return defaultFeeds;
+	}
+
+TFileName CSettingsEngine::PrivatePath()
+	{
+	TFileName privatePath;
+	iFs.PrivatePath(privatePath);
+	BaflUtils::EnsurePathExistsL(iFs, privatePath);
+	return privatePath;
+	}
+
+TInt CSettingsEngine::MaxListItems() 
+	{
+	return iMaxListItems;
 	}
 
 TFileName& CSettingsEngine::BaseDir()
@@ -229,66 +253,22 @@ TFileName& CSettingsEngine::BaseDir()
 	return iBaseDir;
 	}
 
+void CSettingsEngine::SetBaseDir(TFileName& aFileName)
+	{
+	TInt length = aFileName.Length();
+	if (length > 0) 
+		{
+		if (aFileName[length-1] != '\\') 
+			{
+			aFileName.Append(_L("\\"));
+			}
+		}
+	iBaseDir = aFileName;
+	}
+
 TInt CSettingsEngine::UpdateFeedInterval() 
 	{
 	return iUpdateFeedInterval;
-	}
-
-TInt CSettingsEngine::MaxSimultaneousDownloads() 
-	{
-	return iMaxSimultaneousDownloads;
-	}
-
-TAutoUpdateSetting CSettingsEngine::UpdateAutomatically() 
-	{
-	return iUpdateAutomatically;
-	}
-
-TBool CSettingsEngine::DownloadAutomatically() 
-	{
-	return iDownloadAutomatically;
-	}
-
-TTime CSettingsEngine::UpdateFeedTime()
-	{
-	return iUpdateFeedTime;
-	}
-
-TInt CSettingsEngine::MaxListItems() 
-	{
-	return iMaxListItems;
-	}
-TFileName CSettingsEngine::PrivatePath()
-	{
-	TFileName privatePath;
-	RFs rfs;
-	rfs.Connect();
-	rfs.PrivatePath(privatePath);
-	BaflUtils::EnsurePathExistsL(rfs, privatePath);
-	rfs.Close();
-	return privatePath;
-	}
-
-TFileName& CSettingsEngine::DefaultFeedsFileName()
-{
-	return iDefaultFeedsFile;
-}
-
-TInt CSettingsEngine::SpecificIAP()
-	{
-	return iIap;
-	}
-
-void CSettingsEngine::SetBaseDir(TFileName& aFileName)
-	{
-	int len = aFileName.Length();
-	if (len > 0) {
-		if (aFileName[len-1] != '\\') {
-			aFileName.Append(_L("\\"));
-		}
-	}
-	iBaseDir = aFileName;
-
 	}
 
 void CSettingsEngine::SetUpdateFeedInterval(TInt aInterval)
@@ -297,9 +277,19 @@ void CSettingsEngine::SetUpdateFeedInterval(TInt aInterval)
 	iPodcastModel.FeedEngine().RunFeedTimer();
 	}
 
+TInt CSettingsEngine::MaxSimultaneousDownloads() 
+	{
+	return iMaxSimultaneousDownloads;
+	}
+
 void CSettingsEngine::SetMaxSimultaneousDownloads(TInt aMaxDownloads)
 	{
 	iMaxSimultaneousDownloads = aMaxDownloads;
+	}
+
+TAutoUpdateSetting CSettingsEngine::UpdateAutomatically() 
+	{
+	return iUpdateAutomatically;
 	}
 
 void CSettingsEngine::SetUpdateAutomatically(TAutoUpdateSetting aAutoSetting)
@@ -307,9 +297,19 @@ void CSettingsEngine::SetUpdateAutomatically(TAutoUpdateSetting aAutoSetting)
 	iUpdateAutomatically = aAutoSetting;
 	}
 
+TBool CSettingsEngine::DownloadAutomatically() 
+	{
+	return iDownloadAutomatically;
+	}
+
 void CSettingsEngine::SetDownloadAutomatically(TBool aDownloadAuto)
 	{
 	iDownloadAutomatically = aDownloadAuto;
+	}
+
+TTime CSettingsEngine::UpdateFeedTime()
+	{
+	return iUpdateFeedTime;
 	}
 
 void CSettingsEngine::SetUpdateFeedTime(TTime aUpdateTime)
@@ -318,23 +318,26 @@ void CSettingsEngine::SetUpdateFeedTime(TTime aUpdateTime)
 	iPodcastModel.FeedEngine().RunFeedTimer();
 	}
 
+TInt CSettingsEngine::SpecificIAP()
+	{
+	return iIap;
+	}
 
 void CSettingsEngine::SetSpecificIAP(TInt aIap)
 	{
-	RDebug::Print(_L("SetSpecificIAP: %d"), aIap);
 	iIap = aIap;
 	}
 
-
-TUint CSettingsEngine::Volume()
-{
+TInt CSettingsEngine::Volume()
+	{
 	return iVolume;
-}
-
-void CSettingsEngine::SetVolume(TUint aVolume)
-{
-	iVolume = aVolume;
-	if(&iPodcastModel.SoundEngine() != NULL) {
-		iPodcastModel.SoundEngine().SetVolume(iVolume);
 	}
-}
+
+void CSettingsEngine::SetVolume(TInt aVolume)
+	{
+	iVolume = aVolume;
+	if(&iPodcastModel.SoundEngine() != NULL) 
+		{
+		iPodcastModel.SoundEngine().SetVolume(iVolume);
+		}
+	}
