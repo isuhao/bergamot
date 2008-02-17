@@ -1,6 +1,5 @@
-#import "FeedInfo.h"
+#include "FeedInfo.h"
 #include <e32hashtab.h>
-
 
 
 CFeedInfo* CFeedInfo::NewL()
@@ -36,45 +35,49 @@ CFeedInfo::~CFeedInfo()
 
 void CFeedInfo::ConstructL()
 	{
-	iUrl = HBufC::NewL(0);
-	iTitle = HBufC::NewL(0);
-	iDescription = HBufC::NewL(0);
-	iImageUrl = HBufC::NewL(0);
-	iImageFileName = HBufC::NewL(0);
-	iLink = HBufC::NewL(0);
 	}
-
 
 void CFeedInfo::ExternalizeL(RWriteStream& aStream) const 
 	{
-
-	if (iTitle == NULL) {
+	if (iTitle == NULL) 
+		{
 		aStream.WriteInt32L(0);		
-	} else {
+		} 
+	else 
+		{
 		aStream.WriteInt32L(iTitle->Length());
 		aStream.WriteL(*iTitle);
-	}
+		}
 
-	if (iUrl == NULL) {
+	if (iUrl == NULL) 
+		{
 		aStream.WriteInt32L(0);		
-	} else {
+		}
+	else 
+		{
 		aStream.WriteInt32L(iUrl->Length());
 		aStream.WriteL(*iUrl);
-	}
+		}
 
-	if (iDescription == NULL) {
+	if (iDescription == NULL) 
+		{
 		aStream.WriteInt32L(0);		
-	} else {
+		} 
+	else 
+		{
 		aStream.WriteInt32L(iDescription->Length());
 		aStream.WriteL(*iDescription);
-	}
+		}
 
-	if (iImageFileName == NULL) {
+	if (iImageFileName == NULL) 
+		{
 		aStream.WriteInt32L(0);		
-	} else {
+		}
+	else 
+		{
 		aStream.WriteInt32L(iImageFileName->Length());
 		aStream.WriteL(*iImageFileName);
-	}
+		}
 
 	aStream.WriteInt32L(I64LOW(iBuildDate.Int64()));
 	aStream.WriteInt32L(I64HIGH(iBuildDate.Int64()));
@@ -87,31 +90,35 @@ void CFeedInfo::ExternalizeL(RWriteStream& aStream) const
 
 void CFeedInfo::InternalizeL(RReadStream& aStream) 
 	{
-	int len = aStream.ReadInt32L(); 
+	TInt len = aStream.ReadInt32L(); 
 	TBuf<2048> buffer;
 	
-	if (len > 0) {
+	if (len > 0) 
+		{
 		aStream.ReadL(buffer, len);
 		SetTitleL(buffer);
-	}
+		}
 	
 	len = aStream.ReadInt32L();
-	if (len > 0) {
+	if (len > 0) 
+		{
 		aStream.ReadL(buffer, len);
 		SetUrlL(buffer);
-	}
+		}
 
 	len = aStream.ReadInt32L();
-	if (len > 0) {
+	if (len > 0) 
+		{
 		aStream.ReadL(buffer, len);
 		SetDescriptionL(buffer);
-	}
+		}
 		
 	len = aStream.ReadInt32L();
-	if (len > 0) {
+	if (len > 0) 
+		{
 		aStream.ReadL(buffer, len);
 		SetImageFileNameL(buffer);
-	}
+		}
 	
 	TInt low = aStream.ReadInt32L();
 	TInt high = aStream.ReadInt32L();
@@ -124,12 +131,12 @@ void CFeedInfo::InternalizeL(RReadStream& aStream)
 	iUid = aStream.ReadInt32L();
 	}
 
-TDesC& CFeedInfo::Url() const
+const TDesC& CFeedInfo::Url() const
 	{
-	return *iUrl;
+	return iUrl ? *iUrl : KNullDesC();
 	}
 
-void CFeedInfo::SetUrlL(TDesC &aUrl) 
+void CFeedInfo::SetUrlL(const TDesC &aUrl) 
 	{
 	if (iUrl)
 		{
@@ -141,12 +148,12 @@ void CFeedInfo::SetUrlL(TDesC &aUrl)
 	iUid = DefaultHash::Des16(Url());
 	}
 
-TDesC& CFeedInfo::Title() const
+const TDesC& CFeedInfo::Title() const
 	{
 	return *iTitle;
 	}
 
-void CFeedInfo::SetTitleL(TDesC &aTitle)
+void CFeedInfo::SetTitleL(const TDesC &aTitle)
 	{
 	if(iTitle)
 		{
@@ -156,12 +163,12 @@ void CFeedInfo::SetTitleL(TDesC &aTitle)
 	iTitle = aTitle.AllocL();
 	}
 
-TDesC& CFeedInfo::Description() const
+const TDesC& CFeedInfo::Description() const
 	{
-	return *iDescription;
+	return iDescription ? *iDescription : KNullDesC();
 	}
 
-void CFeedInfo::SetDescriptionL(TDesC &aDescription)
+void CFeedInfo::SetDescriptionL(const TDesC &aDescription)
 	{
 	if (iDescription)
 		{
@@ -172,12 +179,12 @@ void CFeedInfo::SetDescriptionL(TDesC &aDescription)
 	iDescription = aDescription.AllocL(); 
 	}
 
-TDesC& CFeedInfo::ImageUrl() const
+const TDesC& CFeedInfo::ImageUrl() const
 	{
-	return *iImageUrl;
+	return iImageUrl ? *iImageUrl : KNullDesC();
 	}
 
-void CFeedInfo::SetImageUrlL(TDesC &aImageUrl)
+void CFeedInfo::SetImageUrlL(const TDesC &aImageUrl)
 	{
 	if (iImageUrl)
 		{
@@ -187,16 +194,16 @@ void CFeedInfo::SetImageUrlL(TDesC &aImageUrl)
 	iImageUrl = aImageUrl.AllocL();
 	}
 
-TDesC& CFeedInfo::Link() const
+const TDesC& CFeedInfo::Link() const
 	{
-	return *iLink;
+	return iLink ? *iLink : KNullDesC();
 	}
 
-void CFeedInfo::SetLinkL(TDesC &aLink)
+void CFeedInfo::SetLinkL(const TDesC& aLink)
 	{
 	if (iLink)
-	{
-	delete iLink;
+		{
+		delete iLink;
 		iLink = NULL;
 		}
 	iLink = aLink.AllocL();
@@ -222,18 +229,17 @@ void CFeedInfo::SetLastUpdated(TTime aUpdated)
 	iLastUpdated = aUpdated;
 	}
 
-
 TUint CFeedInfo::Uid()
 	{
 	return iUid;
 	}
 
-TDesC& CFeedInfo::ImageFileName()
+const TDesC& CFeedInfo::ImageFileName() const
 	{
-	return *iImageFileName;
+	return iImageFileName ? *iImageFileName : KNullDesC();
 	}
 
-void CFeedInfo::SetImageFileNameL(TDesC &aFileName)
+void CFeedInfo::SetImageFileNameL(const TDesC& aFileName)
 	{
 	if (iImageFileName)
 		{
