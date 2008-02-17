@@ -208,7 +208,7 @@ TInt CHttpEventHandler::MHFRunError(TInt aError, RHTTPTransaction /*aTransaction
 	return KErrNone;
 	}
 
-void CHttpEventHandler::SetSaveFileName(TDesC &fName, TBool aContinue)
+void CHttpEventHandler::SetSaveFileName(const TDesC &fName, TBool aContinue)
 	{
 	iFileName.Copy(fName);
 	iContinue = aContinue;

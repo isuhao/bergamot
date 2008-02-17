@@ -65,7 +65,7 @@ void CHttpClient::SetResumeEnabled(TBool aEnabled)
 	iResumeEnabled = aEnabled;
 	}
 
-void CHttpClient::GetL(TDesC& url, TDesC& fileName,  TBool aSilent) {
+void CHttpClient::GetL(const TDesC& url, const TDesC& fileName,  TBool aSilent) {
 	RDebug::Print(_L("CHttpClient::Get START"));
 	
 	__ASSERT_DEBUG((iIsActive==EFalse), User::Panic(_L("Already active"), -2));

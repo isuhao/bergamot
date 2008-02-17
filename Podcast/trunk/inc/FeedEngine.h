@@ -39,7 +39,7 @@ public:
 
 	void RunFeedTimer();
 	
-	void FileNameFromUrl(TDesC &aUrl, TFileName &aFileName);
+	void FileNameFromUrl(const TDesC &aUrl, TFileName &aFileName);
 	void EnsureProperPathName(TFileName &aPath);
 	
 	/**
@@ -59,7 +59,7 @@ private:
 	void ConstructL();
 	CFeedEngine(CPodcastModel& aPodcastModel);
 
-	void ImportFeedsL(TFileName &aFile);
+	void ImportFeedsL(const TDesC& aFile);
 	TBool LoadFeeds();
 	void SaveFeeds();
 

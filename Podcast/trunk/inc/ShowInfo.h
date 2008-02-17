@@ -29,16 +29,16 @@ public:
 	void InternalizeL(RReadStream& aStream);
 
 public:
-	TDesC& Title() const;
-	void SetTitleL(TDesC &aTitle);
+	const TDesC& Title() const;
+	void SetTitleL(const TDesC& aTitle);
 
-	TDesC& Url() const;
-	void SetUrlL(TDesC &aUrl);
+	const TDesC& Url() const;
+	void SetUrlL(const TDesC &aUrl);
 	
-	TDesC& Description() const;
-	void SetDescriptionL(TDesC &aDescription);
+	const TDesC& Description() const;
+	void SetDescriptionL(const TDesC &aDescription);
 		
-	TTimeIntervalMicroSeconds& Position();
+	TTimeIntervalMicroSeconds Position() const;
 	void SetPosition(TTimeIntervalMicroSeconds aPosition);
 
 	TUint PlayTime() const;
@@ -62,8 +62,8 @@ public:
 	const TTime PubDate() const;
 	void SetPubDate(TTime aPubDate);
 	
-	TDesC &FileName();
-	void SetFileNameL(TDesC &aFileName);
+	const TDesC &FileName() const;
+	void SetFileNameL(const TDesC &aFileName);
 
 	void SetDelete();
 	TBool Delete();

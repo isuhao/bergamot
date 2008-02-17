@@ -2,65 +2,73 @@
 #include <e32hashtab.h>
 
 CShowInfo* CShowInfo::NewL()
-{
+	{
 	CShowInfo* self = new (ELeave) CShowInfo;
 	CleanupStack::PushL(self);
 	self->ConstructL();
 	CleanupStack::Pop(self);
 	return self;
-}
+	}
 
 void CShowInfo::ConstructL()
-{
-	iTitle = HBufC::NewL(1);
-	iUrl = HBufC::NewL(1);
-	iDescription = HBufC::NewL(1);
-	iFileName = HBufC::NewL(1);
-}
-
-CShowInfo::CShowInfo()
 	{
 	iDownloadState = ENotDownloaded;
 	iDelete = EFalse;
 	}
 
+CShowInfo::CShowInfo()
+	{
+	}
+
 CShowInfo::~CShowInfo()
-{
+	{
 	delete iTitle;
 	delete iUrl;
 	delete iDescription;
 	delete iFileName;
-}
+	}
 
-void CShowInfo::ExternalizeL(RWriteStream& aStream) const {
-
-	if (iTitle == NULL) {
+void CShowInfo::ExternalizeL(RWriteStream& aStream) const 
+	{
+	if (iTitle == NULL) 
+		{
 		aStream.WriteInt32L(0);
-	} else {
+		} 
+	else 
+		{
 		aStream.WriteInt32L(iTitle->Length());
 		aStream.WriteL(*iTitle);
-	}
+		}
 	
-	if (iUrl == NULL) {
+	if (iUrl == NULL) 
+		{
 		aStream.WriteInt32L(0);
-	} else {
+		}
+	else 
+		{
 		aStream.WriteInt32L(iUrl->Length());
 		aStream.WriteL(*iUrl);
-	}
+		}
 
-	if (iDescription == NULL) {
+	if (iDescription == NULL) 
+		{
 		aStream.WriteInt32L(0);
-	} else {
+		} 
+	else 
+		{
 		aStream.WriteInt32L(iDescription->Length());
 		aStream.WriteL(*iDescription);
-	}
+		}
 	
-	if (iFileName == NULL) {
+	if (iFileName == NULL) 
+		{
 		aStream.WriteInt32L(0);
-	} else {
+		} 
+	else 
+		{
 		aStream.WriteInt32L(iFileName->Length());
 		aStream.WriteL(*iFileName);
-	}
+		}
 	
 	aStream.WriteInt32L(iFeedUid);
 	aStream.WriteInt32L(iDownloadState);
@@ -74,31 +82,37 @@ void CShowInfo::ExternalizeL(RWriteStream& aStream) const {
 	aStream.WriteUint32L(iPlayTime);
 	}
 
-void CShowInfo::InternalizeL(RReadStream& aStream) {
+
+void CShowInfo::InternalizeL(RReadStream& aStream) 
+	{
 	TBuf<2048> buffer;
-	int len = aStream.ReadInt32L();
-	if (len > 0) {
+	TInt len = aStream.ReadInt32L();
+	if (len > 0) 
+		{
 		aStream.ReadL(buffer, len);
 		SetTitleL(buffer);
-	}
+		}
 	
 	len = aStream.ReadInt32L();
-	if (len > 0) {
+	if (len > 0) 
+		{
 		aStream.ReadL(buffer, len);
 		SetUrlL(buffer);
-	}
+		}
 	
 	len = aStream.ReadInt32L();
-	if (len > 0) {
+	if (len > 0) 
+		{
 		aStream.ReadL(buffer, len);
 		SetDescriptionL(buffer);
-	}
+		}
 
 	len = aStream.ReadInt32L();
-	if (len > 0) {
+	if (len > 0) 
+		{
 		aStream.ReadL(buffer, len);
 		SetFileNameL(buffer);
-	}
+		}
 	
 	iFeedUid = aStream.ReadInt32L();
 	iDownloadState = (TDownloadState) aStream.ReadInt32L();
@@ -114,14 +128,14 @@ void CShowInfo::InternalizeL(RReadStream& aStream) {
 	high = aStream.ReadInt32L();
 	iPubDate = MAKE_TINT64(high, low);
 	TRAPD(err,iPlayTime = aStream.ReadUint32L());
-}
-
-TDesC& CShowInfo::Title() const
-	{
-	return *iTitle;
 	}
 
-void CShowInfo::SetTitleL(TDesC &aTitle)
+const TDesC& CShowInfo::Title() const
+	{
+	return iTitle ? *iTitle : KNullDesC();
+	}
+
+void CShowInfo::SetTitleL(const TDesC &aTitle)
 	{
 	if (iTitle)
 		{
@@ -131,12 +145,12 @@ void CShowInfo::SetTitleL(TDesC &aTitle)
 	iTitle = aTitle.AllocL();
 	}
 
-TDesC& CShowInfo::Url() const
+const TDesC& CShowInfo::Url() const
 	{
-	return *iUrl;
+	return iUrl ? *iUrl : KNullDesC();
 	}
 
-void CShowInfo::SetUrlL(TDesC &aUrl)
+void CShowInfo::SetUrlL(const TDesC &aUrl)
 	{
 	if (iUrl)
 		{
@@ -147,23 +161,23 @@ void CShowInfo::SetUrlL(TDesC &aUrl)
 	iUid = DefaultHash::Des16(Url());
 	}
 
-TDesC& CShowInfo::Description() const
+const TDesC& CShowInfo::Description() const
 	{
-	return *iDescription;
+	return iDescription ? *iDescription : KNullDesC();
 	}
 
-void CShowInfo::SetDescriptionL(TDesC &aDescription)
+void CShowInfo::SetDescriptionL(const TDesC &aDescription)
 	{
 	if (iDescription)
-	{
-	delete iDescription;
-	iDescription = NULL;
+		{
+		delete iDescription;
+		iDescription = NULL;
 		}
 
 	iDescription = aDescription.AllocL();
 	}
 
-TTimeIntervalMicroSeconds& CShowInfo::Position()
+TTimeIntervalMicroSeconds CShowInfo::Position() const
 	{
 	return iPosition;
 	}
@@ -244,9 +258,9 @@ void CShowInfo::SetPubDate(TTime aPubDate)
 	iPubDate = aPubDate;
 	}
 
-TDesC& CShowInfo::FileName()
+const TDesC& CShowInfo::FileName() const
 	{
-	return *iFileName;
+	return iFileName ? *iFileName : KNullDesC();
 	}
 void CShowInfo::SetDelete()
 	{
@@ -258,13 +272,12 @@ TBool CShowInfo::Delete()
 	return iDelete;
 	}
 
-void CShowInfo::SetFileNameL(TDesC &aFileName)
+void CShowInfo::SetFileNameL(const TDesC &aFileName)
 	{
 	if (iFileName)
-	{
-	delete iFileName;
+		{
+		delete iFileName;
 		iFileName = NULL;
 		}
-
 	iFileName = aFileName.AllocL();
 	}

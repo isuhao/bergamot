@@ -190,19 +190,23 @@ void CFeedEngine::GetFeedImageL(CFeedInfo *aFeedInfo)
 	iFeedClient->GetL(aFeedInfo->ImageUrl(), filePath, ETrue);
 	}
 
-void CFeedEngine::FileNameFromUrl(TDesC &aUrl, TFileName &aFileName)
+void CFeedEngine::FileNameFromUrl(const TDesC& aUrl, TFileName &aFileName)
 	{
-	int pos = aUrl.LocateReverse('/');
+	TInt pos = aUrl.LocateReverse('/');
 	
-	if (pos != KErrNotFound) {	
+	if (pos != KErrNotFound) 
+		{	
 		TPtrC str = aUrl.Mid(pos+1);
 		pos = str.Locate('?');
-		if (pos != KErrNotFound) {			
+		if (pos != KErrNotFound) 
+			{
 			aFileName.Copy(str.Left(pos));
-		} else {
+			} 
+		else 
+			{
 			aFileName.Copy(str);
+			}
 		}
-	}
 	RDebug::Print(_L("FileNameFromUrl in: %S, out: %S"), &aUrl, &aFileName);
 	}
 
@@ -391,7 +395,7 @@ void CFeedEngine::DownloadInfo(CHttpClient* /*aHttpClient */, int /*aTotalBytes*
 		}*/
 	}
 
-void CFeedEngine::ImportFeedsL(TFileName &aFile)
+void CFeedEngine::ImportFeedsL(const TDesC& aFile)
 	{
 	RDebug::Print(_L("Importing default feeds from %S"), &aFile);
 	TFileName configPath;

@@ -15,7 +15,7 @@ class CHttpClient : public CBase
 public:
 	virtual ~CHttpClient();
 	static CHttpClient* NewL(CPodcastModel& aPodcastModel, MHttpClientObserver& aResObs);
-	void GetL(TDesC& url, TDesC& fileName, TBool aSilent = EFalse);
+	void GetL(const TDesC& url, const TDesC& fileName, TBool aSilent = EFalse);
 	void Stop();
   	TBool IsActive();
 	void ClientRequestCompleteL(TBool aSuccessful);

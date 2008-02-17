@@ -73,7 +73,7 @@ void CSoundEngine::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds
 		}
 }
 
-void CSoundEngine::OpenFileL(TDesC& aFileName)
+void CSoundEngine::OpenFileL(const TDesC& aFileName)
 {
 	iState = ESoundEngineNotInitialized;
 	iLastOpenedFileName= aFileName;
