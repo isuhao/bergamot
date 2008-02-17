@@ -5,19 +5,20 @@
 
 class CFeedEngine;
 
-class CFeedTimer : public CTimer {
-public:
-	CFeedTimer(CFeedEngine *aFeedEngine);
-	~CFeedTimer();
-	void ConstructL();
-	void RunL();
-	void RunPeriodically();
-	void SetPeriod(int aPeriodMinutes);
-	void SetSyncTime(TTime aTime);
+class CFeedTimer : public CTimer 
+	{
+	public:
+		CFeedTimer(CFeedEngine *aFeedEngine);
+		~CFeedTimer();
+		void ConstructL();
+		void RunL();
+		void RunPeriodically();
+		void SetPeriod(TInt aPeriodMinutes);
+		void SetSyncTime(TTime aTime);
 	
-private:
-	int iPeriodMinutes;
-	CFeedEngine *iFeedEngine;
-};
+	private:
+		TInt iPeriodMinutes;
+		CFeedEngine *iFeedEngine;
+	};
 #endif
 
