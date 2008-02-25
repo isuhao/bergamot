@@ -6,7 +6,7 @@ NAME HSEM
 #include <qikon.rh>
 #include <QikCommand.rh>
 #include "SyncClient.hrh"
-
+#include <eikon.rsg>
 
 RESOURCE RSS_SIGNATURE { }
 RESOURCE TBUF { buf = ""; }
@@ -83,5 +83,29 @@ RESOURCE QIK_CONTAINER_SETTINGS r_SyncClient_baseview_page_control
       };
 }
 
+RESOURCE DIALOG r_podcast_about_dlg
+{
+	buttons = R_EIK_BUTTONS_DONE;
+
+	flags = EEikDialogFlagWait|EEikDialogFlagButtonsBelow;
+	title = STRING_r_about_title;
+	items = 
+		{
+			DLG_LINE
+			{
+			id = ESwimAboutText;
+			itemflags = EQikDlgItemCaptionAboveControl|EQikDlgItemCtlIsEditInPlace|EQikDlgItemHideHighlight;			
+			type = EEikCtLabel;
+			control = LABEL
+			{
+			
+			};
+			}
+		};
+}
+
+rls_string STRING_r_about_text "About"
+
+RESOURCE TBUF r_swim_about_text { buf = STRING_r_about_text;}
 
 

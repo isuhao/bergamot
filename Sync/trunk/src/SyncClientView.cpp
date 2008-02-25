@@ -14,6 +14,7 @@
 #include "SyncServerTimer.h"
 #include "e32debug.h"
 #include "f32file.h"
+#include "EIKDIALG.H"
 #include <BAUTILS.H>
 
 /**
@@ -230,6 +231,8 @@ void CSyncClientView::ShowSyncProfiles(CQikScrollableContainer* container) {
 
 void CSyncClientView::ViewConstructL()
     {
+    	ViewConstructFromResourceL(R_SYNCCLIENT_BASEVIEW_UI_CONFIGURATIONS);
+
         // Give a layout manager to the view
         CQikGridLayoutManager* gridlayout = CQikGridLayoutManager::NewLC();
         SetLayoutManagerL(gridlayout);
@@ -274,3 +277,28 @@ void CSyncClientView::HandleControlEventL(CCoeControl *aControl, TCoeEvent aEven
 		serverSession.SetTimer(profileId,period);
 	}
 }
+
+
+class CAboutDlg:public CEikDialog
+{
+public:
+  CAboutDlg()
+  {
+  }
+
+  ~CAboutDlg()
+  {
+  }
+
+  void PreLayoutDynInitL()
+  {
+	  CEikLabel* label = static_cast<CEikLabel*>(ControlOrNull(ESwimAboutText));
+	  if(label != NULL)
+	  {
+		  HBufC* aboutText = iEikonEnv->AllocReadResourceLC(R_SWIM_ABOUT_TEXT);
+		  label->SetTextL(*aboutText);
+		  CleanupStack::PopAndDestroy(aboutText);
+	  }
+  }
+
+};

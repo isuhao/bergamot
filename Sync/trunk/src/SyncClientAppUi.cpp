@@ -30,7 +30,7 @@ void CSyncClientAppUi::HandleCommandL(CQikCommand &aCommand)
   {
         case EMyAbout:
         {
-                CEikonEnv::InfoWinL(_L("SyncClient"), _L("Version 1.0"));
+                CEikonEnv::InfoWinL(_L("About Swim"), _L("Swim 0.2\n\n(c) 2008, The Bergamot Project\nhttp://bergamot.googlecode.com"));
         }
         return;
   }
