@@ -23,12 +23,6 @@ You can download the SIS file from Releases below, however Swim makes use of Sym
   # Run Swim, and set up a timer
   # Enjoy your synchronized data!
 
-== Feature Ideas ==
-
-I've been thinking about turning Swim into a generic maintenance tool for UIQ. Features that could be added are for instance
-
-  * [http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/117211 SNTP] support
-
 == Releases ==
 
 The complete source code is found in the [http://bergamot.googlecode.com/svn/Sync/trunk subversion repository]. Compiled binaries for each release can be found on our [http://code.google.com/p/bergamot/downloads/list Downloads page]. Note that the unsigned binaries are unusable without signing them yourself. See "Issues" below.
@@ -36,7 +30,7 @@ The complete source code is found in the [http://bergamot.googlecode.com/svn/Syn
   * 0.20 (2008-02-25) [http://bergamot.googlecode.com/svn/Sync/tags/beta2 Source]
     * Autostart now works on newer firmware
 
-  * Beta2 (2007-11-04)
+  * 0.10 (2007-11-04)
     * Client loads list of sync accounts every time it's shown
     * KitchenSync is now Swim, and KitchenSync.exe is SyncClient.exe, while KitchenSyncServer.exe is SyncServer.exe
     * Note! Since the executable name has changed since last version, while the app ID remains, KitchenSync must be uninstalled before this version can be installed
