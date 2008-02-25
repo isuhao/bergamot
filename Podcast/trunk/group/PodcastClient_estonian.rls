@@ -1,6 +1,5 @@
-// ListBox.rls
+// PodcastClient_estonian.rls
 //
-// © Symbian Software Ltd 2005. All rights reserved.
 //
 
 // Defines localisable strings, for inclusion in the resource source file
@@ -29,6 +28,11 @@ rls_string STRING_r_view_feeds_cmd "Vood"
 
 // Navigation to the player
 rls_string STRING_r_view_player_cmd "Mängija"
+
+// Navigation to the audio books
+rls_string STRING_r_view_audiobooks_cmd "Audio raamatud"
+rls_string STRING_r_view_new_audiobook_cmd "Uus raamat"
+rls_string STRING_r_view_remove_audiobook_cmd "Eemalda raamat"
 
 // Actions for the player
 rls_string STRING_r_play_cmd "Mängi"
@@ -87,6 +91,7 @@ rls_string STRING_r_short_caption "Escarpod"
 
 // View titles
 rls_string STRING_r_view_feeds_title "Vood"
+rls_string STRING_r_view_audiobooks_title "Audio raamatud"
 
 // Shows view status strings
 rls_string STRING_r_podcast_shows_title_format "%d mängimata, %d kokku";
@@ -96,19 +101,22 @@ rls_string STRING_r_podcast_shows_no_items "Tühi";
 
 // Feeds view status strings
 rls_string STRING_r_podcast_feeds_title_format "%d voogu"
-rls_string STRING_r_podcast_books_title_format "%d books"
+rls_string STRING_r_podcast_books_title_format "%d raamatut"
+
 rls_string STRING_r_podcast_feeds_status_format "%d/%d lugu"
 rls_string STRING_r_podcast_shows_never_updated "Mitte kunagi"
-rls_string STRING_r_podcast_no_feeds "Tühi"
+rls_string STRING_r_podcast_feeds_is_updating "Uuendamine"
+rls_string STRING_r_podcast_no_feeds "Vood puuduvad"
 
 // DIALOG string
 rls_string STRING_r_about_title "Info Escarpod:ist";
+
 
 rls_string STRING_r_add_feed_title "Lisa voog"
 rls_string STRING_r_edit_feed_title "Muuda voogu"
 
 rls_string STRING_r_add_feed_prompt "Voo URL"
-rls_string STRING_r_add_feed_title_prompt "Feed title"
+rls_string STRING_r_add_feed_title_prompt "Voo nimi"
 
 rls_string STRING_r_remove_feed_title "Eemalda voog"
 rls_string STRING_r_remove_feed_prompt "Kas eemaldada valitud voog?"
@@ -127,9 +135,11 @@ rls_string STRING_r_purge_show_prompt "Kas kustutada valitud lugu?"
 
 rls_string STRING_r_podcast_settings_title "Seaded"
 rls_string STRING_r_podcast_setting_showdir "Podcast kataloog"
-rls_string STRING_r_podcast_setting_autoupdate "Automaatne allalaadimine"
+rls_string STRING_r_podcast_setting_autoupdate "Automaatne uuendus"
+rls_string STRING_r_podcast_setting_autodownload "Automaatne allalaadimine"
+
 rls_string STRING_r_podcast_setting_checkevery "Allalaadimise intervall"
-rls_string STRING_r_podcast_setting_updateat "Update at"
+rls_string STRING_r_podcast_setting_updateat "Uuendus kell:"
 rls_string STRING_r_podcast_setting_minutes "minutit"
 
 rls_string STRING_r_podcast_setting_maxsimul "Samaaegseid ühendusi"
@@ -144,8 +154,14 @@ rls_string STRING_r_podcast_setting_showdir_cmd "Vali" // Use to select show dir
 rls_string STRING_r_podcast_setting_volume "Helitugevus"
 
 // Choicelist for autodownload
-rls_string STRING_podcast_autoupdate_off "Ei"
-rls_string STRING_podcast_autoupdate_perodical "Ainult vood"
-rls_string STRING_podcast_autoupdate_attime "Vood ja lood"
+rls_string STRING_podcast_autoupdate_off "Väljas"
+rls_string STRING_podcast_autoupdate_perodical "Perioodiline"
+rls_string STRING_podcast_autoupdate_attime "Määratud kellaajal"
 
 rls_string STRING_r_podcast_iap_dlg_title "Vali ühendus"
+
+// Audio book dialog
+rls_string STRING_r_podcast_new_audiobook_title "Lisa uus audio raamat"
+rls_string STRING_r_podcast_new_audiobook_prompt "Raamatu pealkiri"
+rls_string STRING_r_podcast_new_audiobook_label "%d faili on valitud sellele raamatule."
+rls_string STRING_r_podcast_new_audiobook_select_files "Vali raamatu failid:" // Max 80 chars
