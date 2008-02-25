@@ -1,0 +1,25 @@
+TARGET            SyncServer.exe
+TARGETTYPE        exe
+UID 			  0x100039CE 0x2000FED7
+
+VENDORID          0
+
+SYSTEMINCLUDE   \epoc32\include
+
+SOURCEPATH      ..\src
+USERINCLUDE     ..\inc
+
+SOURCE			SyncServerTimer.cpp 
+SOURCE			SyncServer.cpp 
+SOURCE			CSyncServerSession.cpp 
+SOURCE			SyncServerData.cpp
+
+LIBRARY         euser.lib
+LIBRARY         ws32.lib
+LIBRARY         fbscli.lib
+LIBRARY         bafl.lib
+LIBRARY			SmlClient.lib 
+LIBRARY 		estor.lib
+LIBRARY			efsrv.lib
+
+CAPABILITY LocalServices NetworkServices ReadDeviceData
