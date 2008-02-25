@@ -1,8 +1,8 @@
 prj_mmpfiles
 SyncClient.mmp
 SyncServer.mmp
+SyncServerRecognizer.mmp
 
 PRJ_PLATFORMS
 GCCE
 WINSCW
-
