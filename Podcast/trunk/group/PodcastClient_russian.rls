@@ -1,7 +1,5 @@
-CHARACTER_SET UTF8
-// ListBox.rls
+// PodcastClient_english.rls
 //
-// � Symbian Software Ltd 2005. All rights reserved.
 //
 
 // Defines localisable strings, for inclusion in the resource source file
@@ -30,6 +28,11 @@ rls_string STRING_r_view_feeds_cmd "Потоки"
 
 // Navigation to the player
 rls_string STRING_r_view_player_cmd "Проигрыватель"
+
+// Navigation to the audio books
+rls_string STRING_r_view_audiobooks_cmd "Аудио книги"
+rls_string STRING_r_view_new_audiobook_cmd "New audiobook"
+rls_string STRING_r_view_remove_audiobook_cmd "Remove audiobook"
 
 // Actions for the player
 rls_string STRING_r_play_cmd "Слушать"
@@ -87,7 +90,8 @@ rls_string STRING_r_caption "Escarpod"
 rls_string STRING_r_short_caption "Escarpod"
 
 // View titles
-rls_string STRING_r_view_feeds_title "потоков"
+rls_string STRING_r_view_feeds_title "Потоки"
+rls_string STRING_r_view_audiobooks_title "Аудио книги"
 
 // Shows view status strings
 rls_string STRING_r_podcast_shows_title_format "%d новых, %d всего";
@@ -97,19 +101,21 @@ rls_string STRING_r_podcast_shows_no_items "Пусто";
 
 // Feeds view status strings
 rls_string STRING_r_podcast_feeds_title_format "%d потоков"
+rls_string STRING_r_podcast_books_title_format "%d книг"
+
 rls_string STRING_r_podcast_feeds_status_format "%d/%d подкастов"
 rls_string STRING_r_podcast_shows_never_updated "Неизвестно"
+rls_string STRING_r_podcast_feeds_is_updating "Обновляется"
+rls_string STRING_r_podcast_no_feeds "Пусто"
 
 // DIALOG string
 rls_string STRING_r_about_title "О программе";
-rls_string STRING_r_about_text "Escarpod\n\n Copyright(c) 2007-2008, The Bergamot Project\n\n http://bergamot.googlecode.com"
-
-
 
 rls_string STRING_r_add_feed_title "Добавить поток"
 rls_string STRING_r_edit_feed_title "Редактировать поток"
 
 rls_string STRING_r_add_feed_prompt "URL потока"
+rls_string STRING_r_add_feed_title_prompt "Название потока"
 
 rls_string STRING_r_remove_feed_title "Удалить поток"
 rls_string STRING_r_remove_feed_prompt "Вы действительно хотите удалить этот поток?"
@@ -128,9 +134,13 @@ rls_string STRING_r_purge_show_prompt "Вы действительно хоти�
 
 rls_string STRING_r_podcast_settings_title "Настройки"
 rls_string STRING_r_podcast_setting_showdir "Хранить подкасты в"
-rls_string STRING_r_podcast_setting_autodl "Скачивать автоматически"
-rls_string STRING_r_podcast_setting_checkevery "Интервал скачивания"
+rls_string STRING_r_podcast_setting_autoupdate "Обновлять автоматически"
+rls_string STRING_r_podcast_setting_autodownload "Скачивать автоматически"
+
+rls_string STRING_r_podcast_setting_checkevery "Обновлять каждые"
+rls_string STRING_r_podcast_setting_updateat "Обновлять в"
 rls_string STRING_r_podcast_setting_minutes "минут"
+
 
 rls_string STRING_r_podcast_setting_maxsimul "Макс. кол-во одновременных закачек"
 rls_string STRING_r_podcast_setting_connection "Подключение"
@@ -144,9 +154,17 @@ rls_string STRING_r_podcast_setting_showdir_cmd "Выбрать" // Use to selec
 rls_string STRING_r_podcast_setting_volume "Громкость" 
 
 // Choicelist for autodownload
-rls_string STRING_podcast_autodl_off "Отключено"
 rls_string STRING_podcast_audodl_feeds "Только потоки" 
 rls_string STRING_podcast_audodl_feedsandshows "Потоки и подкасты"
 
+rls_string STRING_podcast_autoupdate_off "Отключено"
+rls_string STRING_podcast_autoupdate_perodical "Периодически" 
+rls_string STRING_podcast_autoupdate_attime "Ровно в"
+
 rls_string STRING_r_podcast_iap_dlg_title "Выберите подключение"
 
+// Audio book dialog
+rls_string STRING_r_podcast_new_audiobook_title "Создать аудио книгу"
+rls_string STRING_r_podcast_new_audiobook_prompt "Audiobook tile"
+rls_string STRING_r_podcast_new_audiobook_label "%d файлов включены в эту книгу"
+rls_string STRING_r_podcast_new_audiobook_select_files "Выберите файлы для книги:" // Max 80 chars

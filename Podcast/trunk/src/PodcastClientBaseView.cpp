@@ -169,6 +169,11 @@ void CPodcastClientBaseView::UpdateListboxItemsL()
 		model.ModelEndUpdateL();
 		
 	}
+	/*TBuf<100> titleBuffer;
+	titleBuffer.Format(_L("Wohoo!"));
+	CleanupStack::PushL(titleBuffer);
+	ViewContext()->ChangeTextL(EPodcastListViewContextLabel, *titleBuffer);
+	CleanupStack::PopAndDestroy(titleBuffer);	*/
 }
 
 

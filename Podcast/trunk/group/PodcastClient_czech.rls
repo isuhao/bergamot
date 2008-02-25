@@ -1,7 +1,5 @@
-CHARACTER_SET UTF8
-// ListBox.rls
+// PodcastClient_czech.rls
 //
-// ř Symbian Software Ltd 2005. All rights reserved.
 //
 
 // Defines localisable strings, for inclusion in the resource source file
@@ -16,11 +14,6 @@ rls_string STRING_r_listbox_listview_cmd_close_debug_shorttext "Zavřít"
 
 // Menu commands, view filtering and navigation
 rls_string STRING_r_view_cmd "Zobrazit"
-rls_string STRING_r_view_about_cmd "O programu";
-// Abou Escarpod
-
-rls_string STRING_r_about_title "O programu Escarpod";
-rls_string STRING_r_about_text "Escarpod\n\n Copyright(c) 2007-2008, Projekt Bergamot\n\n http://bergamot.googlecode.com"
 
 // Navigation to shows view
 rls_string STRING_r_view_main_cmd "Hlavní nabídka"
@@ -29,12 +22,18 @@ rls_string STRING_r_view_all_shows_cmd "Všechny šou"
 rls_string STRING_r_view_new_shows_cmd "Nepřehrané"
 rls_string STRING_r_view_dl_shows_cmd "Šou v telefonu"
 rls_string STRING_r_view_dling_shows_cmd "Stahování"
+rls_string STRING_r_view_about_cmd "O programu";
 
 // Navigation to feeds
 rls_string STRING_r_view_feeds_cmd "Zdroje"
 
 // Navigation to the player
 rls_string STRING_r_view_player_cmd "Přehrávač"
+
+// Navigation to the audio books
+rls_string STRING_r_view_audiobooks_cmd "Zvuková kniha"
+rls_string STRING_r_view_new_audiobook_cmd "Nová zvuková kniha"
+rls_string STRING_r_view_remove_audiobook_cmd "Odstranit zvukovou knihu"
 
 // Actions for the player
 rls_string STRING_r_play_cmd "Přehrát"
@@ -93,23 +92,31 @@ rls_string STRING_r_short_caption "Podkast"
 
 // View titles
 rls_string STRING_r_view_feeds_title "Zdroje"
+rls_string STRING_r_view_audiobooks_title "Zvukové knihy"
 
 // Shows view status strings
 rls_string STRING_r_podcast_shows_title_format "%d Nepřehraných, %d Celkem";
 rls_string STRING_r_podcast_shows_title_download "%d Stahuji, %d ve frontě";
 rls_string STRING_r_podcast_shows_downloads_suspended "Pozastaveno, %d fronta";
 rls_string STRING_r_podcast_shows_no_items "Žádné položky";
-rls_string STRING_r_podcast_shows_never_updated "Nikdy";
 
 // Feeds view status strings
 rls_string STRING_r_podcast_feeds_title_format "%d Zdrojů"
+rls_string STRING_r_podcast_books_title_format "%d knih"
+
 rls_string STRING_r_podcast_feeds_status_format "%d/%d Šou"
+rls_string STRING_r_podcast_shows_never_updated "Nikdy";
+rls_string STRING_r_podcast_feeds_is_updating "Aktualizováno"
+rls_string STRING_r_podcast_no_feeds "Žádné zdroje"
 
 // DIALOG string
+rls_string STRING_r_about_title "O programu Escarpod";
+
 rls_string STRING_r_add_feed_title "Přidat zdroj"
 rls_string STRING_r_edit_feed_title "Upravit zdroj"
 
 rls_string STRING_r_add_feed_prompt "URL zdroje"
+rls_string STRING_r_add_feed_title_prompt "Titulek zdroje"
 
 rls_string STRING_r_remove_feed_title "Odstranění zdroje"
 rls_string STRING_r_remove_feed_prompt "Jste si jistý, že chcete odebrat tento zdroj?"
@@ -128,8 +135,11 @@ rls_string STRING_r_purge_show_prompt "Chcete opravdu smazat tuto šou?"
 
 rls_string STRING_r_podcast_settings_title "Nastavení"
 rls_string STRING_r_podcast_setting_showdir "Adresář Podkastů"
-rls_string STRING_r_podcast_setting_autodl "Automatické Stahování"
-rls_string STRING_r_podcast_setting_checkevery "Interval pro stahování"
+rls_string STRING_r_podcast_setting_autoupdate "Automatická aktualizace"
+rls_string STRING_r_podcast_setting_autodownload "Automatické stahování"
+
+rls_string STRING_r_podcast_setting_checkevery "Interval aktualizace"
+rls_string STRING_r_podcast_setting_updateat "Aktualizace v"
 rls_string STRING_r_podcast_setting_minutes "minut"
 
 rls_string STRING_r_podcast_setting_maxsimul "Max souběžné stahování"
@@ -145,8 +155,13 @@ rls_string STRING_r_podcast_setting_volume "Hlasitost"
 
 // Choicelist for autodownload
 rls_string STRING_podcast_autodl_off "Vyp"
-rls_string STRING_podcast_audodl_feeds "Pouze zdroje" 
-rls_string STRING_podcast_audodl_feedsandshows "Zdroje a šou"
+rls_string STRING_podcast_autoupdate_perodical "Pravidelně" 
+rls_string STRING_podcast_autoupdate_attime "V určený čas"
 
 rls_string STRING_r_podcast_iap_dlg_title "Vyberte internetový účet"
 
+// Audio book dialog
+rls_string STRING_r_podcast_new_audiobook_title "Vytvořit novou zvukovou knihu"
+rls_string STRING_r_podcast_new_audiobook_prompt "Titulek zvukové knihy"
+rls_string STRING_r_podcast_new_audiobook_label "%d vybaraných souborů pro zvukovou knihu."
+rls_string STRING_r_podcast_new_audiobook_select_files "Výběr souborů knihy:" // Max 80 chars
