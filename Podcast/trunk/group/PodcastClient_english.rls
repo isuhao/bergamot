@@ -59,6 +59,8 @@ rls_string STRING_r_view_purge_feed_cmd "Delete All"
 rls_string STRING_r_update_feed_cmd "Update Feed"
 rls_string STRING_r_update_feed_short_cmd "Update"
 rls_string STRING_r_update_all_feeds_cmd "Update All"
+rls_string STRING_r_cancel_update_all_feeds_cmd "Cancel update"
+rls_string STRING_r_cancel_update_all_feeds_short_cmd "Cancel"
 rls_string STRING_r_update_all_feeds_short_cmd "Upd. All"
 
 rls_string STRING_r_podcast_feeds_update_message "Updating..."

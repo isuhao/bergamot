@@ -152,6 +152,9 @@ void CHttpClient::Stop()
 		RDebug::Print(_L("CHttpClient::Stop\t*** Closing HTTP session ***"));
 		iSession.Close();
 		}
+
+	iObserver.CompleteL(this, EFalse);
+
 	}
 
 void CHttpClient::ClientRequestCompleteL(TBool aSuccessful) {

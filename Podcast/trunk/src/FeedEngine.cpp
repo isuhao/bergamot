@@ -104,6 +104,15 @@ void CFeedEngine::UpdateAllFeedsL()
 	UpdateNextFeedL();
 	}
 
+void CFeedEngine::CancelUpdateAllFeedsL()
+	{
+	if(iClientState != ENotUpdating)
+	{
+		iFeedsUpdating.Reset();
+		iFeedClient->Stop();
+	}
+}
+
 void CFeedEngine::UpdateNextFeedL()
 	{
 	RDebug::Print(_L("UpdateNextFeed. %d feeds left to update"), iFeedsUpdating.Count());

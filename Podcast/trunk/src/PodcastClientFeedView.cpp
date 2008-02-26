@@ -128,7 +128,7 @@ void CPodcastClientFeedView::UpdateFeedInfoDataL(CFeedInfo* aFeedInfo,  MQikList
 	{
 		iPodcastModel.ShowEngine().GetStatsByFeed(aFeedInfo->Uid(), showCount, unplayedCount);
 		
-		HBufC* templateStr = CEikonEnv::Static()->AllocReadResourceAsDes16LC(R_PODCAST_FEEDS_STATUS_FORMAT);
+		HBufC* templateStr = iEikonEnv->AllocReadResourceLC(R_PODCAST_FEEDS_STATUS_FORMAT);
 		unplayedShows.Format(*templateStr, unplayedCount, showCount);
 		CleanupStack::PopAndDestroy(templateStr);
 		
@@ -172,6 +172,7 @@ void CPodcastClientFeedView::FeedInfoUpdated(CFeedInfo* aFeedInfo)
 	if(iProgressAdded)
 		{
 		ViewContext()->RemoveAndDestroyProgressInfo();
+		ViewContext()->DrawNow();
 		iProgressAdded = EFalse;
 		}
 
@@ -507,7 +508,8 @@ void CPodcastClientFeedView::UpdateCommandsL()
 	comMan.SetInvisible(*this, EPodcastViewAudioBooks, isBookMode);
 	comMan.SetInvisible(*this, EPodcastViewFeeds, !isBookMode);
 	
-	comMan.SetDimmed(*this, EPodcastUpdateAllFeeds, iUpdatingAllRunning);
+	comMan.SetAvailable(*this, EPodcastUpdateAllFeeds, !iUpdatingAllRunning);
+	comMan.SetAvailable(*this, EPodcastCancelUpdateAllFeeds, iUpdatingAllRunning);
 	comMan.SetDimmed(*this, EPodcastAddFeed, iUpdatingAllRunning);
 	comMan.SetDimmed(*this, EPodcastEditFeed, iUpdatingAllRunning);
 	}
@@ -580,7 +582,26 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 			CleanupStack::PopAndDestroy(str);
 		}
 		break;
-	//
+
+		case EPodcastCancelUpdateAllFeeds:
+			{
+				if(iUpdatingAllRunning)
+				{
+					iUpdatingAllRunning = EFalse;
+					
+					iPodcastModel.FeedEngine().CancelUpdateAllFeedsL();
+
+					if(iProgressAdded)
+					{
+						ViewContext()->RemoveAndDestroyProgressInfo();
+						ViewContext()->DrawNow();
+						iProgressAdded = EFalse;
+					}
+
+					UpdateCommandsL();
+				}
+			}break;
+			//
 		case EPodcastPurgeFeed:
 			{
 				HandleAddNewAudioBookL();

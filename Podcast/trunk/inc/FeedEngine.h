@@ -30,7 +30,7 @@ public:
 	void RemoveFeed(TUint aUid);
 	void UpdateFeedL(TUint aFeedUid);
 	void UpdateAllFeedsL();
-
+	void CancelUpdateAllFeedsL();
 	const RFeedInfoArray& GetSortedFeeds() const;
 	CFeedInfo* GetFeedInfoByUid(TUint aFeedUid);	
 
