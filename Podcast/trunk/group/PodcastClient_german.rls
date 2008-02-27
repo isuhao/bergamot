@@ -1,6 +1,7 @@
+CHARACTER_SET UTF8
 // ListBox.rls
 //
-// © Symbian Software Ltd 2005. All rights reserved.
+// Â© Symbian Software Ltd 2005. All rights reserved.
 //
 
 // Defines localisable strings, for inclusion in the resource source file
@@ -34,7 +35,7 @@ rls_string STRING_r_view_player_cmd "Player"
 rls_string STRING_r_play_cmd "Play"
 rls_string STRING_r_stop_cmd "Stop"
 rls_string STRING_r_pause_cmd "Pause"
-rls_string STRING_r_volume_cmd "Lautstärke"
+rls_string STRING_r_volume_cmd "LautstÃ¤rke"
 
 rls_string STRING_r_view_download_cmd "Download"
 rls_string STRING_r_view_download_short_cmd "Get"
@@ -44,14 +45,14 @@ rls_string STRING_r_view_remove_download_cmd "Download entfernen"
 rls_string STRING_r_view_show_cmd "Show"
 rls_string STRING_r_view_cmd "Anzeigen"
 rls_string STRING_r_view_play_cmd "Play"
-rls_string STRING_r_view_mark_as_played_cmd "Als gehört markieren"
-rls_string STRING_r_view_mark_as_unplayed_cmd "Als nicht gehört markieren"
+rls_string STRING_r_view_mark_as_played_cmd "Als gehÃ¶rt markieren"
+rls_string STRING_r_view_mark_as_unplayed_cmd "Als nicht gehÃ¶rt markieren"
 
 // Actions for feeds
-rls_string STRING_r_view_add_feed_cmd "Feed hinzufügen"
+rls_string STRING_r_view_add_feed_cmd "Feed hinzufÃ¼gen"
 rls_string STRING_r_view_edit_feed_cmd "Feed bearbeiten"
 rls_string STRING_r_view_delete_feed_cmd "Feed entfernen"
-rls_string STRING_r_view_purge_feed_cmd "All löschen"
+rls_string STRING_r_view_purge_feed_cmd "All lÃ¶schen"
 rls_string STRING_r_update_feed_cmd "Feed aktualisieren"
 rls_string STRING_r_update_feed_short_cmd "Aktulaisieren"
 rls_string STRING_r_update_all_feeds_cmd "Alle aktualisieren"
@@ -62,14 +63,14 @@ rls_string STRING_r_podcast_feeds_update_error "Aktualisierung fehlgeschlagen!"
 
 // Actions for shows
 rls_string STRING_r_view_download_show_cmd "Download"
-rls_string STRING_r_view_delete_show_cmd "Löschen"
-rls_string STRING_r_view_delete_shows_cmd "Alle löschen"
-rls_string STRING_r_view_purge_show_cmd "Löschen"
+rls_string STRING_r_view_delete_show_cmd "LÃ¶schen"
+rls_string STRING_r_view_delete_shows_cmd "Alle lÃ¶schen"
+rls_string STRING_r_view_purge_show_cmd "LÃ¶schen"
 rls_string STRING_r_view_remove_download_cmd "Aus warteschlange entfernen"
 rls_string STRING_r_view_stop_downloads_cmd "Download unterbrechen"
 rls_string STRING_r_view_resume_downloads_cmd "Download fortsetzen"
-rls_string STRING_r_view_mark_all_played_cmd "Alle als gehört markieren"
-rls_string STRING_r_view_show_unplayed_cmd "Nur nicht gehörte zeigen"
+rls_string STRING_r_view_mark_all_played_cmd "Alle als gehÃ¶rt markieren"
+rls_string STRING_r_view_show_unplayed_cmd "Nur nicht gehÃ¶rte zeigen"
 
 // Common actions
 rls_string STRING_r_zoom_cmd "Zoom"
@@ -77,7 +78,7 @@ rls_string STRING_r_settings_cmd "Einstellungen"
 
 // Categories
 rls_string STRING_r_category_all "Alle Shows"
-rls_string STRING_r_category_new "Nicht gehört"
+rls_string STRING_r_category_new "Nicht gehÃ¶rt"
 rls_string STRING_r_category_dled "Shows auf dem Handy"
 rls_string STRING_r_category_pending "Downloader"
 
@@ -89,10 +90,10 @@ rls_string STRING_r_short_caption "Escarpod"
 rls_string STRING_r_view_feeds_title "Feeds"
 
 // Shows view status strings
-rls_string STRING_r_podcast_shows_title_format "%d Nicht gehört, %d Insgesamt";
+rls_string STRING_r_podcast_shows_title_format "%d Nicht gehÃ¶rt, %d Insgesamt";
 rls_string STRING_r_podcast_shows_title_download "%d Werden downgeloaded, %d In Warteschlange";
 rls_string STRING_r_podcast_shows_downloads_suspended "Unterbrochen, %d In Warteschlange";
-rls_string STRING_r_podcast_shows_no_items "Keine Elmente/Einträge";
+rls_string STRING_r_podcast_shows_no_items "Keine Elmente/EintrÃ¤ge";
 
 // Feeds view status strings
 rls_string STRING_r_podcast_feeds_title_format "%d feeds"
@@ -102,9 +103,9 @@ rls_string STRING_r_podcast_shows_never_updated "Nie"
 rls_string STRING_r_podcast_no_feeds "Keine feeds"
 
 // DIALOG string
-rls_string STRING_r_about_title "Über Escarpod";
+rls_string STRING_r_about_title "Ãœber Escarpod";
 
-rls_string STRING_r_add_feed_title "Feed hinzufügen"
+rls_string STRING_r_add_feed_title "Feed hinzufÃ¼gen"
 rls_string STRING_r_edit_feed_title "Feed bearbeiten"
 
 rls_string STRING_r_add_feed_prompt "Feed URL"
@@ -114,16 +115,16 @@ rls_string STRING_r_remove_feed_title "Feed entfernen"
 rls_string STRING_r_remove_feed_prompt "Sind Sie sicher, dass Sie den Feed entfernen wollen?"
 
 rls_string STRING_r_enable_downloads_title "Download fortsetzen"
-rls_string STRING_r_enable_downloads_prompt "Es befinden sich Shows in der Downloadwarteschlange. Möchten Sie jetzt downloaden?"
+rls_string STRING_r_enable_downloads_prompt "Es befinden sich Shows in der Downloadwarteschlange. MÃ¶chten Sie jetzt downloaden?"
 
 rls_string STRING_r_update_new_feed_title "Feed aktualisieren"
-rls_string STRING_r_update_new_feed_prompt "Möchten Sie den Fedd jetzt aktualisieren?"
+rls_string STRING_r_update_new_feed_prompt "MÃ¶chten Sie den Fedd jetzt aktualisieren?"
 
 rls_string STRING_r_purge_feed_title "Feed bereinigen"
-rls_string STRING_r_purge_feed_prompt "Sind Sie wirklich sicher, dass Sie den Feed jetzt bereinigen und alle gedownloadedeten Shows löschen möchten?"
+rls_string STRING_r_purge_feed_prompt "Sind Sie wirklich sicher, dass Sie den Feed jetzt bereinigen und alle gedownloadedeten Shows lÃ¶schen mÃ¶chten?"
 
 rls_string STRING_r_purge_show_title "Show bereinigen"
-rls_string STRING_r_purge_show_prompt "Sind Sie sich ganz sicher, dass Sie diese Show löschen möchten?"
+rls_string STRING_r_purge_show_prompt "Sind Sie sich ganz sicher, dass Sie diese Show lÃ¶schen mÃ¶chten?"
 
 rls_string STRING_r_podcast_settings_title "Einstellungen"
 rls_string STRING_r_podcast_setting_showdir "Podcast Verzeichnis"
@@ -140,12 +141,12 @@ rls_string STRING_r_podcast_setting_usespecified "Angegebene Einstllunng verwend
 rls_string STRING_r_podcast_setting_iaplist "Verbindungen"
 rls_string STRING_r_podcast_setting_cancel_cmd "Abbrechen" // Cancel command in settings dialog
 rls_string STRING_r_podcast_setting_done_cmd "Weiter" // Done command in settings dialog
-rls_string STRING_r_podcast_setting_showdir_cmd "Auswählen" // Use to select show dir
-rls_string STRING_r_podcast_setting_volume "Lautstärke"
+rls_string STRING_r_podcast_setting_showdir_cmd "AuswÃ¤hlen" // Use to select show dir
+rls_string STRING_r_podcast_setting_volume "LautstÃ¤rke"
 
 // Choicelist for autodownload
 rls_string STRING_podcast_autoupdate_off "Ausgeschaltet"
 rls_string STRING_podcast_autoupdate_perodical "Every"
 rls_string STRING_podcast_autoupdate_attime "Zu"
 
-rls_string STRING_r_podcast_iap_dlg_title "Internet verbindung wählen"
+rls_string STRING_r_podcast_iap_dlg_title "Internet verbindung wÃ¤hlen"

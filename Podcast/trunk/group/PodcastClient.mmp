@@ -97,6 +97,7 @@ LIBRARY			mmfcontrollerframework.lib
 LIBRARY		    qikutils.lib
 LIBRARY			commdb.lib
 LIBRARY			esock.lib
+LIBRARY			etel3rdparty.lib
 
 START BITMAP    PodcastClient.mbm
 TARGETPATH      \resource\apps

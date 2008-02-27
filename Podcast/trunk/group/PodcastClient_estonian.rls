@@ -1,3 +1,4 @@
+CHARACTER_SET UTF8
 // PodcastClient_estonian.rls
 //
 //
@@ -13,11 +14,11 @@ rls_string STRING_r_listbox_listview_cmd_close_debug "Sulge (debug)"
 rls_string STRING_r_listbox_listview_cmd_close_debug_shorttext "Sulge"
 
 // Menu commands, view filtering and navigation
-rls_string STRING_r_view_cmd "Näita"
+rls_string STRING_r_view_cmd "NÃ¤ita"
 // Navigation to shows view
-rls_string STRING_r_view_main_cmd "Peamenüü"
+rls_string STRING_r_view_main_cmd "PeamenÃ¼Ã¼"
 rls_string STRING_r_view_shows_cmd "Telefoni laetud lood"
-rls_string STRING_r_view_all_shows_cmd "Kõik"
+rls_string STRING_r_view_all_shows_cmd "KÃµik"
 rls_string STRING_r_view_new_shows_cmd "Kuulamata"
 rls_string STRING_r_view_dl_shows_cmd "Telefoni laetud lood"
 rls_string STRING_r_view_dling_shows_cmd "Allalaetavad lood"
@@ -27,7 +28,7 @@ rls_string STRING_r_view_about_cmd "Escarpodi info"
 rls_string STRING_r_view_feeds_cmd "Vood"
 
 // Navigation to the player
-rls_string STRING_r_view_player_cmd "Mängija"
+rls_string STRING_r_view_player_cmd "MÃ¤ngija"
 
 // Navigation to the audio books
 rls_string STRING_r_view_audiobooks_cmd "Audio raamatud"
@@ -35,8 +36,8 @@ rls_string STRING_r_view_new_audiobook_cmd "Uus raamat"
 rls_string STRING_r_view_remove_audiobook_cmd "Eemalda raamat"
 
 // Actions for the player
-rls_string STRING_r_play_cmd "Mängi"
-rls_string STRING_r_stop_cmd "Lõpeta"
+rls_string STRING_r_play_cmd "MÃ¤ngi"
+rls_string STRING_r_stop_cmd "LÃµpeta"
 rls_string STRING_r_pause_cmd "Peata"
 rls_string STRING_r_volume_cmd "Helitugevus"
 
@@ -45,43 +46,43 @@ rls_string STRING_r_view_download_short_cmd "Lae"
 rls_string STRING_r_view_remove_download_short_cmd "Eemalda"
 rls_string STRING_r_view_remove_download_cmd "Eemalda allalaetav"
 
-rls_string STRING_r_view_show_cmd "Mängi"
+rls_string STRING_r_view_show_cmd "MÃ¤ngi"
 rls_string STRING_r_view_cmd "Vaata"
-rls_string STRING_r_view_play_cmd "Mängi"
-rls_string STRING_r_view_mark_as_played_cmd "Märgi mängituks"
-rls_string STRING_r_view_mark_as_unplayed_cmd "Märgi mittemängituks"
+rls_string STRING_r_view_play_cmd "MÃ¤ngi"
+rls_string STRING_r_view_mark_as_played_cmd "MÃ¤rgi mÃ¤ngituks"
+rls_string STRING_r_view_mark_as_unplayed_cmd "MÃ¤rgi mittemÃ¤ngituks"
 
 // Actions for feeds
 rls_string STRING_r_view_add_feed_cmd "Lisa voog"
 rls_string STRING_r_view_edit_feed_cmd "Muuda voogu"
 rls_string STRING_r_view_delete_feed_cmd "Eemalda voog"
-rls_string STRING_r_view_purge_feed_cmd "Eemalda kõik"
+rls_string STRING_r_view_purge_feed_cmd "Eemalda kÃµik"
 rls_string STRING_r_update_feed_cmd "Uuenda voog"
 rls_string STRING_r_update_feed_short_cmd "Uuenda"
-rls_string STRING_r_update_all_feeds_cmd "Uuenda kõik"
+rls_string STRING_r_update_all_feeds_cmd "Uuenda kÃµik"
 rls_string STRING_r_update_all_feeds_short_cmd "Uuenda k."
 
 rls_string STRING_r_podcast_feeds_update_message "Uuendan..."
-rls_string STRING_r_podcast_feeds_update_error "Uuendus ebaõnnestus!"
+rls_string STRING_r_podcast_feeds_update_error "Uuendus ebaÃµnnestus!"
 
 // Actions for shows
 rls_string STRING_r_view_download_show_cmd "Lae alla"
 rls_string STRING_r_view_delete_show_cmd "Kustuta"
-rls_string STRING_r_view_delete_shows_cmd "Kustuta kõik"
+rls_string STRING_r_view_delete_shows_cmd "Kustuta kÃµik"
 rls_string STRING_r_view_purge_show_cmd "Kustuta"
 rls_string STRING_r_view_remove_download_cmd "Eemalda laadimiselt"
 rls_string STRING_r_view_stop_downloads_cmd "Peata laadimine"
 rls_string STRING_r_view_resume_downloads_cmd "Taasta laadimine"
-rls_string STRING_r_view_mark_all_played_cmd "Märgi kõik mängituks"
-rls_string STRING_r_view_show_unplayed_cmd "Näita mängimata"
+rls_string STRING_r_view_mark_all_played_cmd "MÃ¤rgi kÃµik mÃ¤ngituks"
+rls_string STRING_r_view_show_unplayed_cmd "NÃ¤ita mÃ¤ngimata"
 
 // Common actions
 rls_string STRING_r_zoom_cmd "Suurendus"
 rls_string STRING_r_settings_cmd "Seaded"
 
 // Categories
-rls_string STRING_r_category_all "Kõik lood"
-rls_string STRING_r_category_new "Mängimata lood"
+rls_string STRING_r_category_all "KÃµik lood"
+rls_string STRING_r_category_new "MÃ¤ngimata lood"
 rls_string STRING_r_category_dled "Telefoni laetud"
 rls_string STRING_r_category_pending "Allalaetavad"
 
@@ -94,10 +95,10 @@ rls_string STRING_r_view_feeds_title "Vood"
 rls_string STRING_r_view_audiobooks_title "Audio raamatud"
 
 // Shows view status strings
-rls_string STRING_r_podcast_shows_title_format "%d mängimata, %d kokku";
+rls_string STRING_r_podcast_shows_title_format "%d mÃ¤ngimata, %d kokku";
 rls_string STRING_r_podcast_shows_title_download "%d allalaetavat, %d ootel";
 rls_string STRING_r_podcast_shows_downloads_suspended "Peatatud, %d ootel";
-rls_string STRING_r_podcast_shows_no_items "Tühi";
+rls_string STRING_r_podcast_shows_no_items "TÃ¼hi";
 
 // Feeds view status strings
 rls_string STRING_r_podcast_feeds_title_format "%d voogu"
@@ -127,8 +128,8 @@ rls_string STRING_r_enable_downloads_prompt "Allalaadimise ootel on lugusid. Kas
 rls_string STRING_r_update_new_feed_title "Uuenda voog"
 rls_string STRING_r_update_new_feed_prompt "Kas uuendada voogu kohe?"
 
-rls_string STRING_r_purge_feed_title "Tühjenda voog"
-rls_string STRING_r_purge_feed_prompt "Kas tühjendada valitud voog ja kustutada kõik allalaetud lood?"
+rls_string STRING_r_purge_feed_title "TÃ¼hjenda voog"
+rls_string STRING_r_purge_feed_prompt "Kas tÃ¼hjendada valitud voog ja kustutada kÃµik allalaetud lood?"
 
 rls_string STRING_r_purge_show_title "Kustuta lugu"
 rls_string STRING_r_purge_show_prompt "Kas kustutada valitud lugu?"
@@ -142,23 +143,23 @@ rls_string STRING_r_podcast_setting_checkevery "Allalaadimise intervall"
 rls_string STRING_r_podcast_setting_updateat "Uuendus kell:"
 rls_string STRING_r_podcast_setting_minutes "minutit"
 
-rls_string STRING_r_podcast_setting_maxsimul "Samaaegseid ühendusi"
-rls_string STRING_r_podcast_setting_connection "Ühendus"
+rls_string STRING_r_podcast_setting_maxsimul "Samaaegseid Ã¼hendusi"
+rls_string STRING_r_podcast_setting_connection "Ãœhendus"
 rls_string STRING_r_podcast_setting_default "Tavaline"
-rls_string STRING_r_podcast_setting_wlanonly "Küsi alati"
-rls_string STRING_r_podcast_setting_usespecified "Määratud"
-rls_string STRING_r_podcast_setting_iaplist "Kasutatav ühendus"
-rls_string STRING_r_podcast_setting_cancel_cmd "Tühista" // Cancel command in settings dialog
+rls_string STRING_r_podcast_setting_wlanonly "KÃ¼si alati"
+rls_string STRING_r_podcast_setting_usespecified "MÃ¤Ã¤ratud"
+rls_string STRING_r_podcast_setting_iaplist "Kasutatav Ã¼hendus"
+rls_string STRING_r_podcast_setting_cancel_cmd "TÃ¼hista" // Cancel command in settings dialog
 rls_string STRING_r_podcast_setting_done_cmd "Valmis" // Done command in settings dialog
 rls_string STRING_r_podcast_setting_showdir_cmd "Vali" // Use to select show dir
 rls_string STRING_r_podcast_setting_volume "Helitugevus"
 
 // Choicelist for autodownload
-rls_string STRING_podcast_autoupdate_off "Väljas"
+rls_string STRING_podcast_autoupdate_off "VÃ¤ljas"
 rls_string STRING_podcast_autoupdate_perodical "Perioodiline"
-rls_string STRING_podcast_autoupdate_attime "Määratud kellaajal"
+rls_string STRING_podcast_autoupdate_attime "MÃ¤Ã¤ratud kellaajal"
 
-rls_string STRING_r_podcast_iap_dlg_title "Vali ühendus"
+rls_string STRING_r_podcast_iap_dlg_title "Vali Ã¼hendus"
 
 // Audio book dialog
 rls_string STRING_r_podcast_new_audiobook_title "Lisa uus audio raamat"

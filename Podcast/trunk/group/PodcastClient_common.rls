@@ -1,3 +1,4 @@
+CHARACTER_SET UTF8
 // Strings common between languages
 
-rls_string STRING_r_about_text "Escarpod 0.93\n\n Copyright (c) 2007-2008, The Bergamot Project\n\n http://bergamot.googlecode.com"
+rls_string STRING_r_about_text "Escarpod 0.94\n\n© 2007-2008, The Bergamot Project\n\n http://bergamot.googlecode.com"
