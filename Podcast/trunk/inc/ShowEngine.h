@@ -107,7 +107,7 @@ private:
     
     TUint iDownloadErrors;
     
-    CMetaDataReader iMetaDataReader;
+    CMetaDataReader* iMetaDataReader;
     
     TUint iGrossSelectionLength;
 };

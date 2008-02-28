@@ -1,3 +1,5 @@
+#include "..\libid3tag\bld.inf"
+
 PRJ_MMPFILES
 PodcastClient.mmp
 

@@ -32,7 +32,8 @@ SYSTEMINCLUDE   \epoc32\include\ecom
 SYSTEMINCLUDE   \epoc32\include
 
 SOURCEPATH      ..\src
-USERINCLUDE     ..\inc
+USERINCLUDE     ..\inc 
+USERINCLUDE		..\libid3tag
 
 SOURCE          PodcastClientAppUi.cpp
 SOURCE          PodcastClientDocument.cpp
@@ -96,8 +97,11 @@ LIBRARY			eikdlg.lib
 LIBRARY			mmfcontrollerframework.lib 
 LIBRARY		    qikutils.lib
 LIBRARY			commdb.lib
-LIBRARY			esock.lib
+LIBRARY			esock.lib 
+LIBRARY			estlib.lib
 LIBRARY			etel3rdparty.lib
+LIBRARY			ezlib.lib
+staticlibrary	libid3tag.lib
 
 START BITMAP    PodcastClient.mbm
 TARGETPATH      \resource\apps

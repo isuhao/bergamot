@@ -491,6 +491,7 @@ int id3_file_close(struct id3_file *file)
     result = -1;
 
   finish_file(file);
+  CloseSTDLIB();
 
   return result;
 }

@@ -6,7 +6,7 @@
 #include "SettingsEngine.h"
 #include <e32hashtab.h>
 
-CShowEngine::CShowEngine(CPodcastModel& aPodcastModel) : iPodcastModel(aPodcastModel), iMetaDataReader(*this)
+CShowEngine::CShowEngine(CPodcastModel& aPodcastModel) : iPodcastModel(aPodcastModel)
 	{
 	iDownloadsSuspended = ETrue;
 	iSelectOnlyUnplayed = ETrue;
@@ -21,6 +21,7 @@ CShowEngine::~CShowEngine()
 	iFs.Close();
 	delete iShowClient;
 	iObservers.Close();
+	delete iMetaDataReader;
 	}
 
 CShowEngine* CShowEngine::NewL(CPodcastModel& aPodcastModel)
@@ -37,7 +38,8 @@ void CShowEngine::ConstructL()
 	iFs.Connect();
 	iShowClient = CHttpClient::NewL(iPodcastModel, *this);
 	iShowClient->SetResumeEnabled(ETrue);
-	iMetaDataReader.ConstructL();
+	iMetaDataReader = new (ELeave) CMetaDataReader(*this);
+	iMetaDataReader->ConstructL();
 
 	// Try to load the database. Continue if we fail.
 	TRAP_IGNORE(LoadShowsL());
@@ -742,7 +744,7 @@ void CShowEngine::ListDir(TFileName &folder) {
 			iShows.Append(info);
 			
 			// submit the file for meta data reading
-			iMetaDataReader.SubmitShow(info);
+			iMetaDataReader->SubmitShow(info);
 		}
 		}
 	}

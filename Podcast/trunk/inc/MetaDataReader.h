@@ -17,7 +17,7 @@ public:
 protected:
 	void MapcPlayComplete(TInt aError);
 	void MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds &aDuration);
-
+	static TInt ParseNextShowL(TAny* aMetaDataReader);
 private:
 	void ParseNextShow();
 	
@@ -26,6 +26,10 @@ private:
 	RShowInfoArray iShowsToParse;
 	CShowInfo *iShow;
 	MMetaDataReaderObserver &iObserver;
+	TBuf8<256> iTempFileName;
+	TBuf8<1024> iTempDataBuffer;
+	TBuf<1024> iStringBuffer;
+	CAsyncCallBack* iParseNextShowCallBack;
 };
 
 #endif /*METADATAREADER_H_*/
