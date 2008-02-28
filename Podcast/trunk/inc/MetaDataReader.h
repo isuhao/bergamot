@@ -29,6 +29,7 @@ private:
 	TBuf8<256> iTempFileName;
 	TBuf8<1024> iTempDataBuffer;
 	TBuf<1024> iStringBuffer;
+	TBuf<1024> iStringBuffer2;
 	CAsyncCallBack* iParseNextShowCallBack;
 };
 

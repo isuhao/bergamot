@@ -75,14 +75,15 @@ void CMetaDataReader::ParseNextShow()
 					ptr = (char*) iTempDataBuffer.Ptr();
 					len = id3_field_render(&frame->fields[cnt], (id3_byte_t**)&ptr, &encoding,0);					
 				}
+
 				iTempDataBuffer.SetLength(len);
 				iStringBuffer.Copy(iTempDataBuffer);
 				iShow->SetTitleL(iStringBuffer);
 			}
-			
-			frame = id3_tag_findframe(tag, ID3_FRAME_ARTIST, 0);
 
 			iStringBuffer.Zero();
+	
+			frame = id3_tag_findframe(tag, ID3_FRAME_ARTIST, 0);
 
 			if(frame != NULL)
 			{
@@ -91,27 +92,29 @@ void CMetaDataReader::ParseNextShow()
 					ptr = (char*) iTempDataBuffer.Ptr();
 					len = id3_field_render(&frame->fields[cnt], (id3_byte_t**)&ptr, &encoding,0);					
 				}
+
 				iTempDataBuffer.SetLength(len);
-				iStringBuffer.Copy(iTempDataBuffer);
-				iShow->SetDescriptionL(iStringBuffer);
-			}
-			
-			if(frame == NULL || iStringBuffer.Length() == 0)
+				iTempDataBuffer.Append(_L("\n"));
+				iStringBuffer.Copy(iTempDataBuffer);		
+			}			
+						
+			frame = id3_tag_findframe(tag, ID3_FRAME_ALBUM, 0);
+
+			if(frame != NULL)
 			{
-				frame = id3_tag_findframe(tag, ID3_FRAME_ALBUM, 0);
-				if(frame != NULL)
+				for( cnt = 0;cnt<frame->nfields;cnt++)
 				{
-					for( cnt = 0;cnt<frame->nfields;cnt++)
-					{
-						ptr = (char*) iTempDataBuffer.Ptr();
-						len = id3_field_render(&frame->fields[cnt], (id3_byte_t**)&ptr, &encoding,0);					
-					}
-					iTempDataBuffer.SetLength(len);
-					iStringBuffer.Copy(iTempDataBuffer);
-					iShow->SetDescriptionL(iStringBuffer);
+					ptr = (char*) iTempDataBuffer.Ptr();
+					len = id3_field_render(&frame->fields[cnt], (id3_byte_t**)&ptr, &encoding,0);					
 				}
-			}
-					 			
+				
+				iTempDataBuffer.SetLength(len);
+				iStringBuffer2.Copy(iTempDataBuffer);
+				
+				iStringBuffer.Append(iStringBuffer2);
+			}			
+			
+			iShow->SetDescriptionL(iStringBuffer);	 			
 			id3_file_close(id3_file);
 		}
 		iObserver.ReadMetaData(iShow);
