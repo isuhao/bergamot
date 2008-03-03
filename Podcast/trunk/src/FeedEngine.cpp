@@ -238,15 +238,22 @@ void CFeedEngine::ReplaceString(TDes & aString, const TDesC& aStringToReplace,co
 		
 	}
 
-void CFeedEngine::AddFeed(CFeedInfo *aItem) {
-	for (int i=0;i<iSortedFeeds.Count();i++) {
-		if (iSortedFeeds[i]->Uid() == aItem->Uid()) {
+void CFeedEngine::AddFeed(CFeedInfo *aItem) 
+	{
+	for (TInt i=0;i<iSortedFeeds.Count();i++) 
+		{
+		if (iSortedFeeds[i]->Uid() == aItem->Uid()) 
+			{
 			RDebug::Print(_L("Already have feed %S, discarding"), &aItem->Url());
 			return;
+			}
 		}
-	}
+	
 	TLinearOrder<CFeedInfo> sortOrder( CFeedEngine::CompareFeedsByTitle);
 	iSortedFeeds.InsertInOrder(aItem, sortOrder);
+
+	// Save the feeds into DB
+	SaveFeeds();
 	}
 
 void CFeedEngine::RemoveFeed(TUint aUid) 
@@ -318,10 +325,17 @@ void CFeedEngine::Connected(CHttpClient* /*aClient*/)
 	}
 
 void CFeedEngine::Progress(CHttpClient* /*aHttpClient*/, TInt aBytes, TInt aTotalBytes)
-{	
-
-	for (TInt i=0;i<iObservers.Count();i++) {
-			TRAP_IGNORE(iObservers[i]->FeedDownloadUpdatedL(iActiveFeed->Uid(), (aBytes*100)/aTotalBytes));
+	{	
+	
+	TInt percent = 0;
+	if (aTotalBytes > 0)
+		{
+		percent = (aBytes*100)/aTotalBytes;		
+		}
+	
+	for (TInt i=0;i<iObservers.Count();i++) 
+		{
+		TRAP_IGNORE(iObservers[i]->FeedDownloadUpdatedL(iActiveFeed->Uid(), percent));
 		}
 	/*if (iClientState == EFeed) {
 		int percent = -1;

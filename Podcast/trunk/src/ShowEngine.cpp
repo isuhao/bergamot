@@ -110,7 +110,7 @@ void CShowEngine::Connected(CHttpClient* /*aClient*/)
 void CShowEngine::Progress(CHttpClient* /*aHttpClient */, int aBytes, int aTotalBytes)
 	{	
 	TInt percent = -1;
-	if (aTotalBytes != -1) 
+	if (aTotalBytes > 0) 
 		{
 		percent = (TInt) ((float)aBytes * 100.0 / (float)aTotalBytes) ;
 		}
