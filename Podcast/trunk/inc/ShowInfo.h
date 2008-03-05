@@ -6,7 +6,7 @@
 #include <f32file.h>
 #include <s32strm.h>
 
-const int KShowInfoVersion = 7;
+const int KShowInfoVersion = 8;
 
 enum TPlayState {
 	ENeverPlayed,
@@ -68,6 +68,8 @@ public:
 	void SetDelete();
 	TBool Delete();
 	
+	void SetIsBookFile(TBool aIsBookFile);
+	TBool IsBookFile();
 private:
 	CShowInfo();
 	void ConstructL();
@@ -86,6 +88,7 @@ private:
 	TUint iShowSize;
 	TTime iPubDate;
 	TBool iDelete;
+	TBool iIsBookFile;
 };
 
 typedef RPointerArray<CShowInfo> RShowInfoArray;

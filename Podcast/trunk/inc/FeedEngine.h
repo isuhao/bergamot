@@ -34,6 +34,11 @@ public:
 	const RFeedInfoArray& GetSortedFeeds() const;
 	CFeedInfo* GetFeedInfoByUid(TUint aFeedUid);	
 
+	void AddBookL(const TDesC& aBookTitle, CDesCArrayFlat* aFileNameArray);
+	void RemoveBookL(TUint aUid);
+	const RFeedInfoArray& GetSortedBooks() const;
+
+
 	void AddObserver(MFeedEngineObserver *observer);
 	void RemoveObserver(MFeedEngineObserver *observer);
 
@@ -63,6 +68,8 @@ private:
 	TBool LoadFeeds();
 	void SaveFeeds();
 
+	TBool LoadBooksL();
+	void SaveBooksL();
 	// from HttpClientObserver
 	void Connected(CHttpClient* aClient);
 	void Disconnected(CHttpClient* aClient);
@@ -93,6 +100,10 @@ private:
 	
 	// the list of feeds
 	RFeedInfoArray iSortedFeeds;
+
+	// the list of Books
+	RFeedInfoArray iSortedBooks;
+
 
 	CFeedInfo *iActiveFeed;
 	TFileName iUpdatingFeedFileName;

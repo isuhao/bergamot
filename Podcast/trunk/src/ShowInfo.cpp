@@ -80,6 +80,7 @@ void CShowInfo::ExternalizeL(RWriteStream& aStream) const
 	aStream.WriteInt32L(I64LOW(iPubDate.Int64()));
 	aStream.WriteInt32L(I64HIGH(iPubDate.Int64()));
 	aStream.WriteUint32L(iPlayTime);
+	aStream.WriteUint32L(iIsBookFile);
 	}
 
 
@@ -127,7 +128,8 @@ void CShowInfo::InternalizeL(RReadStream& aStream)
 	low = aStream.ReadInt32L();
 	high = aStream.ReadInt32L();
 	iPubDate = MAKE_TINT64(high, low);
-	TRAPD(err,iPlayTime = aStream.ReadUint32L());
+	TRAP_IGNORE(iPlayTime = aStream.ReadUint32L());
+	TRAP_IGNORE(iIsBookFile = aStream.ReadUint32L());
 	}
 
 const TDesC& CShowInfo::Title() const
@@ -280,4 +282,14 @@ void CShowInfo::SetFileNameL(const TDesC &aFileName)
 		iFileName = NULL;
 		}
 	iFileName = aFileName.AllocL();
+	}
+
+void CShowInfo::SetIsBookFile(TBool aIsBookFile)
+	{
+	iIsBookFile = aIsBookFile;
+	}
+
+TBool CShowInfo::IsBookFile()
+	{
+	return iIsBookFile;
 	}

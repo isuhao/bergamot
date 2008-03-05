@@ -186,7 +186,12 @@ TBool CShowEngine::AddShow(CShowInfo *item)
 			}
 		}
 	iShows.Append(item);
-	
+
+	if(item->IsBookFile())
+		{
+		iMetaDataReader->SubmitShow(item);
+		}
+
 	return ETrue;
 	}
 

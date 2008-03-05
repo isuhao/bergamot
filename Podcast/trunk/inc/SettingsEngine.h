@@ -13,6 +13,7 @@ _LIT(KDefaultFeedsFile, "defaultfeeds.cfg");
 _LIT(KConfigFile, "config.db");
 _LIT(KShowDB, "shows.db");
 _LIT(KFeedDB, "feeds.db");
+_LIT(KBookDB, "books.db");
 
 // constants
 const TInt KSettingsUid = 1000;

@@ -185,6 +185,10 @@ void CPodcastClientPlayView::PlaybackStoppedL()
 	iShowInfo->SetPosition(0);
 	iPodcastModel.PlayingPodcast()->SetPosition(0);
 	UpdatePlayStatusL();
+
+	if(iShowInfo->IsBookFile())
+	{
+	}
 }
 
 

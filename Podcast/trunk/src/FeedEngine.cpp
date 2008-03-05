@@ -28,6 +28,7 @@ void CFeedEngine::ConstructL()
     if (!LoadFeeds()) {
     	ImportFeedsL(iPodcastModel.SettingsEngine().DefaultFeedsFileName());
     }
+	LoadBooksL();
 	}
 
 CFeedEngine::CFeedEngine(CPodcastModel& aPodcastModel) : iFeedTimer(this), iPodcastModel(aPodcastModel)
@@ -42,6 +43,8 @@ CFeedEngine::~CFeedEngine()
 	iFeedsUpdating.Close();
 	iSortedFeeds.ResetAndDestroy();
 	iSortedFeeds.Close();
+	iSortedBooks.ResetAndDestroy();
+	iSortedBooks.Close();
 	iFs.Close();
 	delete iParser;
 	delete iFeedClient;
@@ -572,6 +575,174 @@ const RFeedInfoArray& CFeedEngine::GetSortedFeeds() const
 	return iSortedFeeds;
 }
 
+void CFeedEngine::AddBookL(const TDesC& aBookTitle, CDesCArrayFlat* aFileNameArray)
+	{
+	
+	if(aFileNameArray && aFileNameArray->Count() > 0)
+		{
+	
+		TParsePtrC parser (aFileNameArray->MdcaPoint(0));
+		CFeedInfo* item = CFeedInfo::NewLC();
+		item->SetUrlL(parser.DriveAndPath());
+	
+		for (TInt i=0;i<iSortedBooks.Count();i++) 
+			{
+			if (iSortedBooks[i]->Uid() == item->Uid()) 
+				{
+				RDebug::Print(_L("Already have book %S, discarding"), &item->Url());
+				CleanupStack::PopAndDestroy(item);
+				return;
+				}
+			}
+		item->SetTitleL(aBookTitle);
+		item->SetDescriptionL(aBookTitle);
+		TTime time;
+		time.HomeTime();
+		item->SetLastUpdated(time);
+	
+		TInt cnt = aFileNameArray->Count();
+		CShowInfo* showInfo = NULL;
+		TEntry fileInfo;
+		for(TInt loop = 0;loop<cnt;loop++)
+		{
+			showInfo = CShowInfo::NewL();
+			CleanupStack::PushL(showInfo);
+			showInfo->SetTitleL(aBookTitle);		
+			showInfo->SetDescriptionL(aBookTitle);	
+			showInfo->SetDownloadState(EDownloaded);
+			showInfo->SetUrlL(aFileNameArray->MdcaPoint(loop));
+			showInfo->SetFeedUid(item->Uid());
+			showInfo->SetPubDate(time);
+			
+			showInfo->SetFileNameL(aFileNameArray->MdcaPoint(loop));
+
+			if(iFs.Entry(aFileNameArray->MdcaPoint(loop), fileInfo) == KErrNone)
+			{
+				showInfo->SetShowSize(fileInfo.iSize);
+			}
+
+			showInfo->SetPlayState(ENeverPlayed);
+			iPodcastModel.ShowEngine().AddShow(showInfo);
+			CleanupStack::Pop(showInfo);
+		}
+
+		TLinearOrder<CFeedInfo> sortOrder( CFeedEngine::CompareFeedsByTitle);
+		iSortedBooks.InsertInOrder(item, sortOrder);
+		CleanupStack::Pop(item);
+		// Save the feeds into DB
+		SaveBooksL();
+		}
+	}
+
+void CFeedEngine::RemoveBookL(TUint aUid)
+	{
+		for (int i=0;i<iSortedBooks.Count();i++) 
+		{
+		if (iSortedBooks[i]->Uid() == aUid) 
+			{
+			iPodcastModel.ShowEngine().RemoveAllShowsByFeed(aUid);
+			iPodcastModel.ShowEngine().SaveShows();
+					
+			CFeedInfo* feedToRemove = iSortedBooks[i];					
+				
+			//delete the folder. It has the same name as the title.
+			TFileName filePath;
+			filePath.Copy(iPodcastModel.SettingsEngine().BaseDir());
+			filePath.Append(feedToRemove->Title());
+			filePath.Append(_L("\\"));
+			iFs.RmDir(filePath);
+
+			iSortedBooks.Remove(i);
+			delete feedToRemove;
+			
+			SaveBooksL();
+			return;
+			}
+		}
+	}
+
+TBool CFeedEngine::LoadBooksL()
+	{
+	TFileName path;
+	TParse	filestorename;
+	
+	TBuf<100> privatePath;
+	iFs.PrivatePath(privatePath);
+	BaflUtils::EnsurePathExistsL(iFs, privatePath);
+	privatePath.Append(KBookDB);
+	iFs.Parse(privatePath, filestorename);
+
+	if (!BaflUtils::FileExists(iFs, privatePath)) {
+		RDebug::Print(_L("No books DB file"));	
+		return EFalse;
+	}
+	
+	CFileStore* store = NULL;
+	TRAPD(error, store = CDirectFileStore::OpenL(iFs,filestorename.FullName(),EFileRead));
+	CleanupStack::PushL(store);
+	
+	if (error != KErrNone) {
+		CleanupStack::Pop(store);
+		return EFalse;
+	}
+	
+	RStoreReadStream instream;
+	instream.OpenLC(*store, store->Root());
+
+	TInt version = instream.ReadInt32L();
+
+	if (version != KFeedInfoVersion) {
+		CleanupStack::PopAndDestroy(2); // instream and store
+		return EFalse;
+	}
+	
+	TInt count = instream.ReadInt32L();
+	CFeedInfo *readData;
+	TLinearOrder<CFeedInfo> sortOrder( CFeedEngine::CompareFeedsByTitle);
+	for (TInt i=0;i<count;i++) {
+		readData = CFeedInfo::NewL();
+		TRAP(error, instream  >> *readData);
+		iSortedBooks.InsertInOrder(readData, sortOrder);
+	}
+	CleanupStack::PopAndDestroy(2); // instream and store
+	return ETrue;
+	}
+
+void CFeedEngine::SaveBooksL()
+	{
+	TFileName path;
+	TParse	filestorename;
+
+	TBuf<100> privatePath;
+	iFs.PrivatePath(privatePath);
+	BaflUtils::EnsurePathExistsL(iFs, privatePath);
+	privatePath.Append(KBookDB);
+	
+	iFs.Parse(privatePath, filestorename);
+	CFileStore* store = CDirectFileStore::ReplaceLC(iFs, filestorename.FullName(), EFileWrite);
+	store->SetTypeL(KDirectFileStoreLayoutUid);
+	
+	RStoreWriteStream outstream;
+	TStreamId id = outstream.CreateLC(*store);
+	outstream.WriteInt32L(KFeedInfoVersion);
+	outstream.WriteInt32L(iSortedBooks.Count());
+	for (TInt i=0;i<iSortedBooks.Count();i++) {
+		outstream  << *iSortedBooks[i];
+	}
+	
+	outstream.CommitL();
+	store->SetRootL(id);
+	store->CommitL();
+	CleanupStack::PopAndDestroy(); // outstream
+	CleanupStack::PopAndDestroy(store);		
+	}
+
+
+
+const RFeedInfoArray& CFeedEngine::GetSortedBooks() const 
+{
+	return iSortedBooks;
+}
 
 void CFeedEngine::CleanHtml(TDes &str)
 {

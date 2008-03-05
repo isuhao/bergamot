@@ -22,7 +22,9 @@ TBool CPodcastClientAudioBookDlg::OkToExitL(TInt aCommandId)
 		{
 			CEikEdwin* titleEdwin = static_cast<CEikEdwin*>(ControlOrNull(EPodcastNewAudioBookTitle));
 			HBufC* title = titleEdwin->GetTextInHBufL();
-			CleanupStack::PushL(title);
+			CleanupStack::PushL(title);		
+			iPodcastModel.FeedEngine().AddBookL(*title, &iSelectedFilenames);
+		
 			CleanupStack::PopAndDestroy(title);
 		}
 

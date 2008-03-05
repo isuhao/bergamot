@@ -282,9 +282,17 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 	{
 	if(IsVisible())
 		{		
-		const RFeedInfoArray& feeds = iPodcastModel.FeedEngine().GetSortedFeeds();
-
-		TInt len = feeds.Count();
+		const RFeedInfoArray* sortedItems = NULL;
+		if(iCurrentViewMode == EFeedsAudioBooksMode)
+			{
+			sortedItems = &iPodcastModel.FeedEngine().GetSortedBooks();
+			}
+		else
+			{
+			sortedItems = &iPodcastModel.FeedEngine().GetSortedFeeds();
+			}
+		
+		TInt len = sortedItems->Count();
 		TBool allUidsMatch = EFalse;
 		MQikListBoxModel& model(iListbox->Model());
 
@@ -296,7 +304,7 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 				MQikListBoxData* data = model.RetrieveDataL(loop);	
 				itemId = data->ItemId();
 				data->Close();
-				if(feeds[loop]->Uid() != itemId)
+				if((*sortedItems)[loop]->Uid() != itemId)
 					{						
 					break;
 					}
@@ -312,7 +320,7 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 				{
 				MQikListBoxData* data = model.RetrieveDataL(loop);	
 				CleanupClosePushL(*data);
-				UpdateFeedInfoDataL(feeds[loop], data);
+				UpdateFeedInfoDataL((*sortedItems)[loop], data);
 				CleanupStack::PopAndDestroy(data);
 				model.DataUpdatedL(loop);
 				}
@@ -337,7 +345,7 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 					listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
 					CleanupClosePushL(*listBoxData);
 					
-					CFeedInfo *fi = feeds[i];
+					CFeedInfo *fi = (*sortedItems)[i];
 					listBoxData->SetItemId(fi->Uid());
 					listBoxData->AddTextL(fi->Title(), EQikListBoxSlotText1);
 					//listBoxData->AddTextL(fi->Description(), EQikListBoxSlotText2);
@@ -438,13 +446,20 @@ void CPodcastClientFeedView::HandleListBoxEventL(CQikListBox* /*aListBox*/, TQik
 	
 		case EEventItemConfirmed:
 		case EEventItemTapped:
-			{
-			const RFeedInfoArray& feeds = iPodcastModel.FeedEngine().GetSortedFeeds();
-
-			if(aItemIndex >= 0 && aItemIndex < feeds.Count())
+			{		
+			const RFeedInfoArray* sortedItems = NULL;
+			if(iCurrentViewMode == EFeedsAudioBooksMode)
+				{
+				sortedItems = &iPodcastModel.FeedEngine().GetSortedBooks();
+				}
+			else
+				{
+				sortedItems = &iPodcastModel.FeedEngine().GetSortedFeeds();
+				}
+			if(aItemIndex >= 0 && aItemIndex < sortedItems->Count())
 				{
 				iPodcastModel.ActiveShowList().Reset();
-				iPodcastModel.SetActiveFeedInfo(feeds[aItemIndex]);
+				iPodcastModel.SetActiveFeedInfo((*sortedItems)[aItemIndex]);
 				TVwsViewId showsView = TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID);
 				iQikAppUi.ActivateViewL(showsView,  TUid::Uid(EShowFeedShows), KNullDesC8());
 				}
@@ -482,11 +497,18 @@ void CPodcastClientFeedView::UpdateCommandsL()
 	if (iListbox == NULL)
 		return;
 	TBool isBookMode = (iCurrentViewMode == EFeedsAudioBooksMode);
-	const RFeedInfoArray& feeds = iPodcastModel.FeedEngine().GetSortedFeeds();
-
+	const RFeedInfoArray* sortedItems = NULL;
+	if(isBookMode)
+			{
+			sortedItems = &iPodcastModel.FeedEngine().GetSortedBooks();
+			}
+		else
+			{
+			sortedItems = &iPodcastModel.FeedEngine().GetSortedFeeds();
+			}
 	
 	// hide commands that should not be visible in no feeds
-	if (feeds.Count() == 0)
+	if (sortedItems->Count() == 0)
 		{
 		comMan.SetInvisible(*this, EQikListBoxCmdSelect, ETrue);
 		comMan.SetInvisible(*this, EPodcastDeleteFeed, ETrue);
@@ -604,7 +626,7 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 			//
 		case EPodcastPurgeFeed:
 			{
-				HandleAddNewAudioBookL();
+				//HandleAddNewAudioBookL();
 			/*if(iListbox != NULL)
 				{
 				TInt index = iListbox->CurrentItemIndex();
@@ -615,9 +637,26 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 	case EPodcastAddNewAudioBook:
 		{
 		HandleAddNewAudioBookL();
+		UpdateListboxItemsL();
 		}break;
 	case EPodcastRemoveAudioBook:
 		{
+			if(iListbox != NULL)
+				{
+				TInt index = iListbox->CurrentItemIndex();
+				MQikListBoxModel& model(iListbox->Model());
+				MQikListBoxData* data = model.RetrieveDataL(index);	
+				if(data != NULL)
+					{
+					if(iEikonEnv->QueryWinL(R_PODCAST_REMOVE_FEED_TITLE, R_PODCAST_REMOVE_FEED_PROMPT))
+						{
+						iPodcastModel.FeedEngine().RemoveBookL(data->ItemId());
+						iListbox->RemoveItemL(index);
+						}
+					data->Close();
+					}
+				UpdateListboxItemsL();
+				}
 		}break;
 		default:
 			CPodcastClientView::HandleCommandL(aCommand);
@@ -641,7 +680,7 @@ void CPodcastClientFeedView::HandleAddNewAudioBookL()
 		if(fileNameArray->Count() > 0)
 			{
 			CPodcastClientAudioBookDlg* titleDialog = new (ELeave) CPodcastClientAudioBookDlg(iPodcastModel, *fileNameArray);
-			titleDialog->ExecuteLD(R_PODCAST_NEW_AUDIOBOOK_DLG);
+			titleDialog->ExecuteLD(R_PODCAST_NEW_AUDIOBOOK_DLG);			
 			}
 		}
 
