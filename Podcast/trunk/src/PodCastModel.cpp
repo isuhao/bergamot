@@ -21,6 +21,10 @@ CPodcastModel* CPodcastModel::NewL()
 
 CPodcastModel::~CPodcastModel()
 {
+#if defined (__WINS__)
+#else
+	delete iTelephonyListener;
+#endif
 	delete iFeedEngine;
 	delete iSoundEngine;
 	delete iSettingsEngine;
@@ -52,7 +56,11 @@ void CPodcastModel::ConstructL()
 	iFeedEngine = CFeedEngine::NewL(*this);
 	iShowEngine = CShowEngine::NewL(*this);
 	iSoundEngine = CSoundEngine::NewL(*this);
-	
+#if defined (__WINS__)
+#else
+	iTelephonyListener = CTelephonyListener::NewL(*this);
+	iTelephonyListener->StartL();
+#endif	
 	User::LeaveIfError(iSocketServ.Connect());
 	User::LeaveIfError(iConnection.Open(iSocketServ));
 }

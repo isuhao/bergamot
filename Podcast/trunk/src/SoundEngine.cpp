@@ -33,8 +33,9 @@ void CSoundEngine::SetObserver(MSoundEngineObserver* aObserver)
 	iObserver = aObserver;
 }
 
-void CSoundEngine::MapcPlayComplete(TInt /*aError*/) {
-//	RDebug::Print(_L("Play Complete: %d"), aError);
+void CSoundEngine::MapcPlayComplete(TInt aError) {
+	RDebug::Print(_L("MapcPlayComplete: %d"), aError);
+		
 	if (iPodcastModel.PlayingPodcast() != NULL) {
 		iPodcastModel.PlayingPodcast()->SetPlayState(EPlayed);
 	}
@@ -136,9 +137,10 @@ void CSoundEngine::Play()
 		iPlayer->Play();
 		iState = ESoundEnginePlaying;
 
-		if (iPodcastModel.PlayingPodcast() != NULL) {
-			iPodcastModel.PlayingPodcast()->SetPlayState(EPlayed);
-		}
+		// better to do this when the file finishes playing
+//		if (iPodcastModel.PlayingPodcast() != NULL) {
+//			iPodcastModel.PlayingPodcast()->SetPlayState(EPlayed);
+//		}
 
 		if(iObserver != NULL)
 		{
@@ -159,14 +161,17 @@ void CSoundEngine::Stop()
 
 void CSoundEngine::Pause()
 {
+	RDebug::Print(_L("Pause"));
 	if(iState > ESoundEngineNotInitialized)
 	{
 		iState = ESoundEnginePaused;
 		iPlayer->Pause();
 		TTimeIntervalMicroSeconds pos = 0;
 		iPlayer->GetPosition(pos);
+		RDebug::Print(_L("Pos: %lu"), pos.Int64());
 		// had a crash here, so we check for NULL first
 		if (iPodcastModel.PlayingPodcast() != NULL) {
+			RDebug::Print(_L("Setting position..."));
 			iPodcastModel.PlayingPodcast()->SetPosition(pos);
 			// really wasteful saving EVERYTHING every time
 			iPodcastModel.ShowEngine().SaveShows();
@@ -186,3 +191,4 @@ void CSoundEngine::SetVolume(TUint aVolume)
 			iPlayer->SetVolume((aVolume*iPlayer->MaxVolume()) / 100);
 		}
 }
+

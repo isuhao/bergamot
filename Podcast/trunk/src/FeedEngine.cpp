@@ -118,6 +118,7 @@ void CFeedEngine::CancelUpdateAllFeedsL()
 
 void CFeedEngine::UpdateNextFeedL()
 	{
+
 	RDebug::Print(_L("UpdateNextFeed. %d feeds left to update"), iFeedsUpdating.Count());
 	if (iFeedsUpdating.Count() > 0) {
 		CFeedInfo *info = iFeedsUpdating[0];

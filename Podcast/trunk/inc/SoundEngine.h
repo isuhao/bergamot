@@ -2,6 +2,7 @@
 #define SOUND_ENGINE_H
 #include <e32base.h>
 #include <mdaaudiosampleplayer.h>
+#include "TelephonyListener.h"
 
 class CPodcastModel;
 
@@ -23,10 +24,11 @@ public:
 	virtual void PlaybackStoppedL() = 0;
 };
 
+
 /**
  * This class handles all playback and audio associated resources that the application/client needs
  */
-class CSoundEngine:public CBase, public MMdaAudioPlayerCallback
+class CSoundEngine : public CBase, public MMdaAudioPlayerCallback
 {
 public:
 	static CSoundEngine* NewL(CPodcastModel& aPodcastModel);

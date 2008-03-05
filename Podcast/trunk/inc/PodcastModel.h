@@ -8,6 +8,7 @@
 #include <http/rhttpsession.h>
 #include "FeedInfo.h"
 #include "ShowInfo.h"
+#include "TelephonyListener.h"
 
 class CFeedEngine;
 class CSoundEngine;
@@ -79,6 +80,8 @@ private:
 
    RConnection iConnection;
    TCommDbConnPref iConnPref;
+   
+   CTelephonyListener *iTelephonyListener;
 };
 
 #endif // PODCASTMODEL_H
