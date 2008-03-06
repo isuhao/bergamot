@@ -143,6 +143,8 @@ void CPodcastClientBaseView::UpdateListboxItemsL()
 		model.ModelBeginUpdateLC();
 		TPtrC descriptionText(KNullDesC());
 		TBool playerActive = EFalse;
+		TBuf<32> formatting;
+		TBuf<64> statusText;
 		if(iPodcastModel.PlayingPodcast() != NULL && (iPodcastModel.SoundEngine().State() == ESoundEnginePlaying || iPodcastModel.SoundEngine().State() == ESoundEnginePaused))
 		{
 			playerActive = ETrue;
@@ -154,13 +156,32 @@ void CPodcastClientBaseView::UpdateListboxItemsL()
 			MQikListBoxData* data = model.RetrieveDataL(loop);	
 			TInt itemId = data->ItemId();
 			
-			if(itemId == EBaseViewPlayer)
+			switch (itemId)
 			{
-				data->SetDimmed(!playerActive);					
-				data->SetTextL(descriptionText, EQikListBoxSlotText2);
-				data->Close();
-				model.DataUpdatedL(loop);
-				break;
+			case EBaseViewPlayer:
+				{
+					data->SetDimmed(!playerActive);					
+					data->SetTextL(descriptionText, EQikListBoxSlotText2);				
+					model.DataUpdatedL(loop);
+					
+				}break;
+			case EBaseViewFeeds:
+				{
+					iEikonEnv->ReadResourceL(formatting, R_PODCAST_FEEDS_STATUS);
+					statusText.Format(formatting, iPodcastModel.FeedEngine().GetSortedFeeds().Count());
+					data->SetTextL(statusText, EQikListBoxSlotText2);				
+					model.DataUpdatedL(loop);
+				}break;
+			case EBaseViewAudioBooks:
+				{
+					iEikonEnv->ReadResourceL(formatting, R_PODCAST_BOOKS_STATUS);
+					statusText.Format(formatting, iPodcastModel.FeedEngine().GetSortedBooks().Count());
+					data->SetTextL(statusText, EQikListBoxSlotText2);				
+					model.DataUpdatedL(loop);
+				}break;
+			default:
+				{
+				}break;
 			}
 			
 			data->Close();
