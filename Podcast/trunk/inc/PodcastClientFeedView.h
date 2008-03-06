@@ -5,8 +5,8 @@
 
 enum TFeedsViewMode
 {
-	EFeedsNormalMode = 0,
-	EFeedsAudioBooksMode = 0x100
+	EFeedsNormalMode = 0x100,
+	EFeedsAudioBooksMode = 0x101
 };
 
 class CPodcastClientFeedView : public CPodcastClientView, public MFeedEngineObserver
