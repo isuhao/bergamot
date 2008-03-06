@@ -394,7 +394,7 @@ void CPodcastClientPlayView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid 
 	iScrollableContainer->ScrollToMakeVisible(iTitleEdwin);
 	RequestFocusL(iScrollableContainer);
 
-	if(iShowInfo != NULL && iPodcastModel.SoundEngine().State() != ESoundEnginePlaying && iPodcastModel.SoundEngine().State() != ESoundEnginePaused 
+	if(iShowInfo != NULL && iPodcastModel.SoundEngine().State() != ESoundEngineOpening && iPodcastModel.SoundEngine().State() != ESoundEnginePlaying && iPodcastModel.SoundEngine().State() != ESoundEnginePaused 
 		&& (iPodcastModel.PlayingPodcast() == NULL || (iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.PlayingPodcast()->Uid() == iShowInfo->Uid())))
 	{
 		iPodcastModel.PlayPausePodcastL(iShowInfo);
