@@ -70,7 +70,7 @@ To download binaries of Escarpod to use on your phone, visit our [http://code.go
 
 The complete list of releases can be found [EscarpodReleases here].
 
-=== FAQ ==
+=== Frequently Asked Questions ==
 
 See [EscarpodFAQ Escarpod FAQ]
 
@@ -111,4 +111,4 @@ There are several sites that list and host podcasts. Some starting points are
 
 == License ==
 
-Escarpod is licensed under the [http://www.gnu.org/licenses/gpl-3.0.html GPL version 3] open source license. The authors retain the right to dual license this program for commercial purposes.
+Escarpod is licensed under the [http://www.gnu.org/licenses/gpl-3.0.html GPL version 3] open source license.
