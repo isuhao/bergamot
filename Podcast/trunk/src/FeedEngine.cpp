@@ -6,6 +6,7 @@
 #include "SettingsEngine.h"
 #include "ShowEngine.h"
 #include <e32hashtab.h>
+#include "OpmlParser.h"
 
 CFeedEngine* CFeedEngine::NewL(CPodcastModel& aPodcastModel)
 	{
@@ -28,6 +29,12 @@ void CFeedEngine::ConstructL()
     if (!LoadFeeds()) {
     	ImportFeedsL(iPodcastModel.SettingsEngine().DefaultFeedsFileName());
     }
+
+    TFileName importFile = iPodcastModel.SettingsEngine().ImportFeedsFileName();
+    if (BaflUtils::FileExists(iFs, importFile)) {
+    	ImportFeedsL(importFile);
+    }
+
 	LoadBooksL();
 	}
 
@@ -244,6 +251,7 @@ void CFeedEngine::ReplaceString(TDes & aString, const TDesC& aStringToReplace,co
 
 void CFeedEngine::AddFeed(CFeedInfo *aItem) 
 	{
+	RDebug::Print(_L("CFeedEngine::AddFeed, title=%S, URL=%S"), &aItem->Title(), &aItem->Url());
 	for (TInt i=0;i<iSortedFeeds.Count();i++) 
 		{
 		if (iSortedFeeds[i]->Uid() == aItem->Uid()) 
@@ -424,50 +432,11 @@ void CFeedEngine::DownloadInfo(CHttpClient* /*aHttpClient */, int /*aTotalBytes*
 
 void CFeedEngine::ImportFeedsL(const TDesC& aFile)
 	{
-	RDebug::Print(_L("Importing default feeds from %S"), &aFile);
-	TFileName configPath;
-	configPath.Copy(aFile);
-	RDebug::Print(_L("Reading feeds from %S"), &configPath);
-	RFile rfile;
-	int error = rfile.Open(iFs, configPath,  EFileRead);
+	TFileName opmlPath;
+	opmlPath.Copy(aFile);
+	COpmlParser opmlParser(*this);
 	
-	if (error != KErrNone) {
-		RDebug::Print(_L("Failed to read feeds"));
-		return;
-	}
-
-	TFileText tft;
-	tft.Set(rfile);
-	
-	TBuf<1024> line;
-	error = tft.Read(line);
-	
-	while (error == KErrNone) {
-		RDebug::Print(_L("Line: %S"), &line);
-		if (line.Locate('#') == 0) {
-			error = tft.Read(line);
-			continue;
-		}
-		CFeedInfo* fi = CFeedInfo::NewLC();
-		line.Trim();
-		int pos = line.Locate('|');
-		if (pos != -1) {
-			TPtrC title = line.Left(pos);
-			TPtrC url = line.Mid(pos+1);
-			//RDebug::Print(_L("url: %S"), &url);
-			//RDebug::Print(_L("title: %S"), &title);
-			fi->SetUrlL(url);
-			fi->SetTitleL(title);
-		} else {
-			fi->SetUrlL(line);
-			fi->SetTitleL(line);
-		}
-		CleanupStack::Pop(fi);
-		
-		AddFeed(fi);
-		error = tft.Read(line);
-		}
-	rfile.Close();
+	opmlParser.ParseOpmlL(opmlPath);
 	}
 	
 TBool CFeedEngine::LoadFeeds()

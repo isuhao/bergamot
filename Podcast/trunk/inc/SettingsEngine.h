@@ -8,7 +8,8 @@ _LIT(KInternalPodcastDir, "c:\\Media files\\Podcasts\\");
 _LIT(KFlashPodcastDir, "\\Podcasts\\");
 
 _LIT(KConfigImportFile, "config.cfg");
-_LIT(KDefaultFeedsFile, "defaultfeeds.cfg");
+_LIT(KDefaultFeedsFile, "defaultfeeds.xml");
+_LIT(KImportFeedsFile, "feeds.xml");
 
 _LIT(KConfigFile, "config.db");
 _LIT(KShowDB, "shows.db");
@@ -39,6 +40,7 @@ class CSettingsEngine : public CBase
 	
 
 		TFileName DefaultFeedsFileName();
+		TFileName ImportFeedsFileName();
 		TFileName PrivatePath();
 
 		TInt MaxListItems();

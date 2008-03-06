@@ -65,7 +65,9 @@ SOURCE			FeedInfo.cpp
 SOURCE			FeedTimer.cpp
 SOURCE			ShowEngine.cpp
 SOURCE			SettingsEngine.cpp
-SOURCE			MetaDataReader.cpp
+SOURCE			MetaDataReader.cpp 
+SOURCE			TelephonyListener.cpp 
+SOURCE			OpmlParser.cpp
 
 LIBRARY         euser.lib
 LIBRARY         apparc.lib

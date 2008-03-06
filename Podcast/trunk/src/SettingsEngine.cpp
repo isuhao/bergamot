@@ -235,6 +235,15 @@ TFileName CSettingsEngine::DefaultFeedsFileName()
 	return defaultFeeds;
 	}
 
+TFileName CSettingsEngine::ImportFeedsFileName()
+	{
+	TFileName importFeeds;
+	importFeeds.Append(BaseDir());
+	importFeeds.Append(KImportFeedsFile);
+	return importFeeds;
+	}
+
+
 TFileName CSettingsEngine::PrivatePath()
 	{
 	TFileName privatePath;
