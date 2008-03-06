@@ -68,7 +68,7 @@ void CSoundEngine::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds
 			}
 		}
 
-	if(iObserver != NULL)
+	if(iObserver != NULL && aError == KErrNone)
 		{
 		TRAPD(err, iObserver->PlaybackInitializedL());
 		}

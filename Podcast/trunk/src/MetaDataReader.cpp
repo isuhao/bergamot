@@ -177,46 +177,51 @@ void CMetaDataReader::MapcPlayComplete(TInt /*aError*/)
 	
 }
 
-void CMetaDataReader::MapcInitComplete(TInt /*aError*/, const TTimeIntervalMicroSeconds &aDuration)
+void CMetaDataReader::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds &aDuration)
 {
 	RDebug::Print(_L("MapcInitComplete, file=%S"), &(iShow->FileName()));
 
-	int numEntries = 0;
-	if (iPlayer->GetNumberOfMetaDataEntries(numEntries) == KErrNone) {
-		RDebug::Print(_L("%d meta data entries"), numEntries);
-		iShow->SetPlayTime((aDuration.Int64()/1000000));
 
-		for (int i=0;i<numEntries;i++) {
-			CMMFMetaDataEntry * entry;
-			TRAPD(error, entry = iPlayer->GetMetaDataEntryL(i));
+	if(aError == KErrNone)
+	{
+		TInt numEntries = 0;
+		if (iPlayer->GetNumberOfMetaDataEntries(numEntries) == KErrNone) {
+			RDebug::Print(_L("%d meta data entries"), numEntries);
+			iShow->SetPlayTime((aDuration.Int64()/1000000));
 			
-			if (error != KErrNone) {
-				continue;
+			for (int i=0;i<numEntries;i++) {
+				CMMFMetaDataEntry * entry;
+				TRAPD(error, entry = iPlayer->GetMetaDataEntryL(i));
+				
+				if (error != KErrNone) {
+					continue;
+				}
+				TBuf<1024> buf;
+				if (entry->Name() == _L("title")) {
+					buf.Copy(entry->Value());
+					iShow->SetTitleL(buf);
+					RDebug::Print(_L("title: %S"), &(iShow->Title()));
+				} else if (entry->Name() == _L("artist")) {
+					if (iShow->Description().Length() > 0) {
+						buf.Copy(iShow->Description());
+					}
+					buf.Append(_L("\n"));
+					buf.Append(entry->Value());
+					
+					iShow->SetDescriptionL(buf);
+				} else if (entry->Name() == _L("album")) {
+					if (iShow->Description().Length() > 0) {
+						buf.Copy(iShow->Description());
+					}
+					buf.Append(_L("\n"));
+					buf.Append(entry->Value());
+					
+					iShow->SetDescriptionL(buf);
+				}			
 			}
-			TBuf<1024> buf;
-			if (entry->Name() == _L("title")) {
-				buf.Copy(entry->Value());
-				iShow->SetTitleL(buf);
-				RDebug::Print(_L("title: %S"), &(iShow->Title()));
-			} else if (entry->Name() == _L("artist")) {
-				if (iShow->Description().Length() > 0) {
-					buf.Copy(iShow->Description());
-				}
-				buf.Append(_L("\n"));
-				buf.Append(entry->Value());
-		
-				iShow->SetDescriptionL(buf);
-			} else if (entry->Name() == _L("album")) {
-				if (iShow->Description().Length() > 0) {
-					buf.Copy(iShow->Description());
-				}
-				buf.Append(_L("\n"));
-				buf.Append(entry->Value());
-
-				iShow->SetDescriptionL(buf);
-			}			
 		}
 	}
+
 	iObserver.ReadMetaData(iShow);
 	iPlayer->Stop();
 	iShow = NULL;
