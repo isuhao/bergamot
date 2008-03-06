@@ -141,6 +141,7 @@ RESOURCE TBUF r_podcast_feeds_is_updating {buf = STRING_r_podcast_feeds_is_updat
 
 RESOURCE TBUF r_podcast_feeds_no_feeds {buf = STRING_r_podcast_no_feeds;}
 RESOURCE TBUF r_podcast_import_feeds_title {buf = STRING_r_view_import_feeds_title;}
+RESOURCE TBUF r_podcast_books_no_books {buf = STRING_r_view_books_no_books;}
 
 RESOURCE ARRAY r_podcast_shows_categories
 	{

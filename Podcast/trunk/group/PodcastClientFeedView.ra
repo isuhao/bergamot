@@ -116,16 +116,6 @@ RESOURCE QIK_COMMAND_LIST r_podcast_feedview_commands
 			type = EQikCommandTypeScreen;
 			text = STRING_r_view_add_feed_cmd;
 			},
-
-	
-	QIK_COMMAND
-			{
-			groupId = 5;
-			id = EPodcastImportFeeds;
-			type = EQikCommandTypeScreen;
-			text = STRING_r_view_import_feeds_cmd;
-			},
-
 	QIK_COMMAND	
 			{
 			groupId = 5;
@@ -158,7 +148,13 @@ RESOURCE QIK_COMMAND_LIST r_podcast_feedview_commands
 			id = EPodcastRemoveAudioBook;
 			text = STRING_r_view_remove_audiobook_cmd;
 			},		
-	
+	QIK_COMMAND
+			{
+			groupId = 5;
+			id = EPodcastImportFeeds;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_view_import_feeds_cmd;
+			},	
 		QIK_COMMAND
 			{
 		//	groupId = 5;

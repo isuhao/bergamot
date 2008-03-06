@@ -212,25 +212,28 @@ void CShowEngine::RemoveObserver(MShowEngineObserver *observer)
 
 void CShowEngine::CompleteL(CHttpClient* /*aHttpClient*/, TBool aSuccessful)
 	{
-	RDebug::Print(_L("CShowEngine::Complete\tDownload of file: %S is complete"), &iShowDownloading->FileName());
-	
-	if (aSuccessful) 
+	if(iShowDownloading != NULL)
+	{
+		RDebug::Print(_L("CShowEngine::Complete\tDownload of file: %S is complete"), &iShowDownloading->FileName());
+		
+		if (aSuccessful) 
 		{
-		iShowDownloading->SetDownloadState(EDownloaded);
-		iShowsDownloading.Remove(0);
-
-		SaveShows();
-		NotifyShowDownloadUpdated(100,0,1);
+			iShowDownloading->SetDownloadState(EDownloaded);
+			iShowsDownloading.Remove(0);
+			
+			SaveShows();
+			NotifyShowDownloadUpdated(100,0,1);
 		}
-	else 
+		else 
 		{
-		iDownloadErrors++;
-		if (iDownloadErrors > 3) 
+			iDownloadErrors++;
+			if (iDownloadErrors > 3) 
 			{
-			RDebug::Print(_L("Too many downloading errors, suspending downloads"));
-			iDownloadsSuspended = ETrue;
+				RDebug::Print(_L("Too many downloading errors, suspending downloads"));
+				iDownloadsSuspended = ETrue;
 			}
 		}
+	}
 	DownloadNextShow();
 	}
 

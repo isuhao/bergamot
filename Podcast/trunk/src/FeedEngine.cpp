@@ -553,8 +553,13 @@ void CFeedEngine::AddBookL(const TDesC& aBookTitle, CDesCArrayFlat* aFileNameArr
 	
 		TParsePtrC parser (aFileNameArray->MdcaPoint(0));
 		CFeedInfo* item = CFeedInfo::NewLC();
-		item->SetUrlL(parser.DriveAndPath());
-	
+		
+		TFileName tempUrl;
+		tempUrl.Copy(parser.DriveAndPath());
+		tempUrl.Append(aBookTitle);
+		item->SetUrlL(tempUrl);
+		item->SetIsBookFeed();
+
 		for (TInt i=0;i<iSortedBooks.Count();i++) 
 			{
 			if (iSortedBooks[i]->Uid() == item->Uid()) 
@@ -672,6 +677,7 @@ TBool CFeedEngine::LoadBooksL()
 	for (TInt i=0;i<count;i++) {
 		readData = CFeedInfo::NewL();
 		TRAP(error, instream  >> *readData);
+		readData->SetIsBookFeed();
 		iSortedBooks.InsertInOrder(readData, sortOrder);
 	}
 	CleanupStack::PopAndDestroy(2); // instream and store

@@ -222,6 +222,7 @@ void CPodcastClientBaseView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQi
 			case EBaseViewFeeds:
 				{
 					newview = KUidPodcastFeedViewID;
+					messageUid = TUid::Uid(EFeedsNormalMode);
 				}break;
 			case EBaseViewAudioBooks:
 				{

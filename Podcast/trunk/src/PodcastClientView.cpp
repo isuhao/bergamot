@@ -128,7 +128,7 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 	case EPodcastViewFeeds:
 		{
 			TVwsViewId podcastsView = TVwsViewId(KUidPodcastClientID, KUidPodcastFeedViewID);
-			iQikAppUi.ActivateViewL(podcastsView);
+			iQikAppUi.ActivateViewL(podcastsView,  TUid::Uid(EFeedsNormalMode), KNullDesC8());
 		}break;
 		
 	case EPodcastViewAudioBooks:

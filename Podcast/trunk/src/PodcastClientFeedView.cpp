@@ -74,9 +74,20 @@ void CPodcastClientFeedView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid 
 		iCurrentViewMode = EFeedsAudioBooksMode;
 		}
 		break;
-	default:
+	case EFeedsNormalMode:
 		{
 		iCurrentViewMode = EFeedsNormalMode;
+		}break;
+	default:
+		{
+		if(aPrevViewId == TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID) &&  iPodcastModel.ActiveFeedInfo() != NULL && iPodcastModel.ActiveFeedInfo()->IsBookFeed())
+			{
+			iCurrentViewMode = EFeedsAudioBooksMode;
+			}
+		else
+			{
+			iCurrentViewMode = EFeedsNormalMode;
+			}
 		}
 		break;
 	}	
@@ -399,7 +410,14 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 				CleanupClosePushL(*listBoxData);
 					
 				TBuf<KMaxFeedNameLength> itemName;
-				iEikonEnv->ReadResourceL(itemName, R_PODCAST_FEEDS_NO_FEEDS);
+				if(iCurrentViewMode == EFeedsAudioBooksMode)
+					{
+					iEikonEnv->ReadResourceL(itemName, R_PODCAST_BOOKS_NO_BOOKS);
+					}
+				else
+					{
+					iEikonEnv->ReadResourceL(itemName, R_PODCAST_FEEDS_NO_FEEDS);
+					}
 				listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
 				
 				CleanupStack::PopAndDestroy(listBoxData);
@@ -526,6 +544,7 @@ void CPodcastClientFeedView::UpdateCommandsL()
 	
 	comMan.SetInvisible(*this, EPodcastAddNewAudioBook, !isBookMode);
 	comMan.SetInvisible(*this, EPodcastAddFeed, isBookMode);
+	comMan.SetInvisible(*this, EPodcastImportFeeds, isBookMode);
 
 	comMan.SetInvisible(*this, EPodcastViewAudioBooks, isBookMode);
 	comMan.SetInvisible(*this, EPodcastViewFeeds, !isBookMode);

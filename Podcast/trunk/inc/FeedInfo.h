@@ -37,7 +37,9 @@ class CFeedInfo : public CBase
 		TUint Uid();
 		const TDesC& ImageFileName() const;
 		void SetImageFileNameL(const TDesC &aFileName);
-
+	
+		TBool IsBookFeed();
+		void SetIsBookFeed();
 	private:
 		CFeedInfo();
 		void ConstructL();
@@ -52,6 +54,7 @@ class CFeedInfo : public CBase
 		TTime iBuildDate;
 		TTime iLastUpdated;
 		TUint iUid;
+		TBool iIsBookFeed;
 	};
 
 typedef RPointerArray<CFeedInfo> RFeedInfoArray;

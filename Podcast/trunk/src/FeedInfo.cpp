@@ -248,3 +248,14 @@ void CFeedInfo::SetImageFileNameL(const TDesC& aFileName)
 		}
 	iImageFileName = aFileName.AllocL();
 	}
+
+
+TBool CFeedInfo::IsBookFeed()
+	{
+	return iIsBookFeed;
+	}
+
+void CFeedInfo::SetIsBookFeed()
+	{
+	iIsBookFeed = ETrue;
+	}
