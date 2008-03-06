@@ -582,6 +582,7 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 					if(fileNames->MdcaCount()>0)
 						{
 						iPodcastModel.FeedEngine().ImportFeedsL(fileNames->MdcaPoint(0));
+						UpdateListboxItemsL();
 						}
 					}
 			
