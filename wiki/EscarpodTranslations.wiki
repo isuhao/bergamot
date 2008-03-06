@@ -1,4 +1,4 @@
-= Help us with translations!
+= Help us with translations!=
 
 Escarpod needs more translations, so if you feel up to it, please help us out by translating it into your language!
 
