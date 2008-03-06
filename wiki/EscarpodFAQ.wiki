@@ -2,3 +2,7 @@
 == Can I use my Bluetooth Headsets with Escarpod? ==
 
 You can use Bluetooth headsets with Escarpod, at least with Sony Ericsson phones. The problem is that there is no known public way to enable the headset. However, if you start the media player and use Transfer sound to redirect your sound to your bluetooth headset, the sound will stay in the headset until you disable it. This includes sound played through Escarpod.
+
+== How do I Import Feeds ==
+
+Escarpod supports OPML lists of feeds from version 0.94 onwards. Use Import feeds from the menu.
