@@ -80,6 +80,7 @@ void CSoundEngine::OpenFileL(const TDesC& aFileName)
 	iLastOpenedFileName= aFileName;
 	iPlayer->Stop();
 	iPlayer->OpenFileL(aFileName);
+	iState = ESoundEngineOpening;
 }
 
 const TFileName& CSoundEngine::LastFileName()
@@ -91,7 +92,7 @@ TTimeIntervalMicroSeconds CSoundEngine::Position()
 {
 	TTimeIntervalMicroSeconds pos = 0;
 	
-	if(iState > ESoundEngineNotInitialized)
+	if(iState > ESoundEngineOpening)
 	{
 		iPlayer->GetPosition(pos);
 	}
@@ -101,7 +102,7 @@ TTimeIntervalMicroSeconds CSoundEngine::Position()
 
 void CSoundEngine::SetPosition(TUint aPos)
 {
-	if(iState > ESoundEngineNotInitialized)
+	if(iState > ESoundEngineOpening)
 	{
 		TTimeIntervalMicroSeconds pos = aPos*1000000;
 		if(iState == ESoundEnginePlaying)
@@ -121,7 +122,7 @@ void CSoundEngine::SetPosition(TUint aPos)
 
 TUint CSoundEngine::PlayTime()
 {
-	if(iState > ESoundEngineNotInitialized)
+	if(iState > ESoundEngineOpening)
 	{
 		return iPlayer->Duration().Int64()/1000000;
 	}
@@ -132,7 +133,7 @@ TUint CSoundEngine::PlayTime()
 
 void CSoundEngine::Play()
 {
-	if(iState > ESoundEngineNotInitialized)
+	if(iState > ESoundEngineOpening)
 	{
 		iPlayer->Play();
 		iState = ESoundEnginePlaying;
@@ -151,7 +152,7 @@ void CSoundEngine::Play()
 
 void CSoundEngine::Stop()
 {
-	if(iState > ESoundEngineNotInitialized)
+	if(iState > ESoundEngineOpening)
 	{
 		iState = ESoundEngineStopped;
 		SetPosition(0);
@@ -162,7 +163,7 @@ void CSoundEngine::Stop()
 void CSoundEngine::Pause()
 {
 	RDebug::Print(_L("Pause"));
-	if(iState > ESoundEngineNotInitialized)
+	if(iState > ESoundEngineOpening)
 	{
 		iState = ESoundEnginePaused;
 		iPlayer->Pause();
@@ -186,7 +187,7 @@ TSoundEngineState CSoundEngine::State()
 
 void CSoundEngine::SetVolume(TUint aVolume)
 {
-	if(iState > ESoundEngineNotInitialized)
+	if(iState > ESoundEngineOpening)
 		{
 			iPlayer->SetVolume((aVolume*iPlayer->MaxVolume()) / 100);
 		}

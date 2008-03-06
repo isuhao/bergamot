@@ -144,7 +144,7 @@ void CPodcastModel::PlayPausePodcastL(CShowInfo* aPodcast)
 	{
 	
 	// special treatment if this podcast is already active
-	if (iPlayingPodcast == aPodcast && SoundEngine().State() > ESoundEngineNotInitialized ) {
+	if (iPlayingPodcast == aPodcast && SoundEngine().State() > ESoundEngineOpening ) {
 		if (aPodcast->PlayState() == EPlaying) {
 			SoundEngine().Pause();
 			aPodcast->SetPosition(iSoundEngine->Position());

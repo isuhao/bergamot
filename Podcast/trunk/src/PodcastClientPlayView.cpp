@@ -395,7 +395,7 @@ void CPodcastClientPlayView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid 
 	RequestFocusL(iScrollableContainer);
 
 	if(iShowInfo != NULL && iPodcastModel.SoundEngine().State() != ESoundEnginePlaying && iPodcastModel.SoundEngine().State() != ESoundEnginePaused 
-		&& (iPodcastModel.PlayingPodcast() == NULL || (iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.PlayingPodcast()->Uid() != iShowInfo->Uid())))
+		&& (iPodcastModel.PlayingPodcast() == NULL || (iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.PlayingPodcast()->Uid() == iShowInfo->Uid())))
 	{
 		iPodcastModel.PlayPausePodcastL(iShowInfo);
 	}
@@ -610,7 +610,7 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 		
 		
 	//	comMan.SetDimmed(*this, EPodcastPlay, iPodcastModel.SoundEngine().State() == ESoundEngineNotInitialized);
-		comMan.SetDimmed(*this, EPodcastStop, (iPodcastModel.SoundEngine().State() == ESoundEngineNotInitialized || iPodcastModel.SoundEngine().State() == ESoundEngineStopped));
+		comMan.SetDimmed(*this, EPodcastStop, (iPodcastModel.SoundEngine().State() <= ESoundEngineOpening || iPodcastModel.SoundEngine().State() == ESoundEngineStopped));
 		if(iPlayProgressbar != NULL)
 		{
 			iPlayProgressbar->SetDimmed(iPodcastModel.SoundEngine().State() == ESoundEngineNotInitialized );

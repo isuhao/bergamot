@@ -10,6 +10,7 @@ class CPodcastModel;
 enum TSoundEngineState
 {
 	ESoundEngineNotInitialized,
+	ESoundEngineOpening,
 	ESoundEnginePlaying,
 	ESoundEnginePaused,
 	ESoundEngineStopped
