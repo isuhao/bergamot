@@ -70,9 +70,14 @@ To download binaries of Escarpod to use on your phone, visit our [http://code.go
 
 The complete list of releases can be found [EscarpodReleases here].
 
+=== FAQ ==
+
+See [EscarpodFAQ Escarpod FAQ]
+
 == Translations ==
 
-We need help translating Escarpod into more languages. If you want to translate it into your language, it is quite simple! For more information, see our [EscarpodTranslations Translations page].
+We need help translating Escarpod into more languages. If you want to translate it into your language, it is quite simple! For m
+ore information, see our [EscarpodTranslations Translations page].
 
 == Supported Phones ==
 
