@@ -551,6 +551,23 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 				}
 			break;
 			}
+		case EPodcastImportFeeds:
+			{			
+				CDesCArrayFlat* mimeTypes = new (ELeave) CDesCArrayFlat(KDefaultGran);
+				CleanupStack::PushL(mimeTypes);
+				CDesCArrayFlat* fileNames = new (ELeave) CDesCArrayFlat(KDefaultGran);
+				CleanupStack::PushL(fileNames);
+				HBufC* import_title = iEikonEnv->AllocReadResourceLC(R_PODCAST_IMPORT_FEEDS_TITLE);
+				if(CQikSelectFileDlg::RunDlgLD(*mimeTypes, *fileNames, import_title))
+					{
+					if(fileNames->MdcaCount()>0)
+						{
+						iPodcastModel.FeedEngine().ImportFeedsL(fileNames->MdcaPoint(0));
+						}
+					}
+			
+				CleanupStack::PopAndDestroy(2,mimeTypes); // title, fileNames, mimeTypes								
+			}break;
 					
 		case EPodcastEditFeed:
 			{

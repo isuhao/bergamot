@@ -144,9 +144,22 @@ void CMetaDataReader::ParseNextShow()
 				iTempDataBuffer.SetLength(len);
 				ConvertToUniCodeL(iStringBuffer2, iTempDataBuffer, encoding);			
 				iStringBuffer.Append(iStringBuffer2);
-			}			
-			
+			}		
+					
 			iShow->SetDescriptionL(iStringBuffer);	 			
+
+			frame = id3_tag_findframe(tag, ID3_FRAME_TRACK, 0);
+			if(frame != NULL)
+			{
+				for( cnt = 0;cnt<frame->nfields;cnt++)
+				{
+					ptr = (char*) iTempDataBuffer.Ptr();
+					len = id3_field_render(&frame->fields[cnt], (id3_byte_t**)&ptr, &encoding,0);					
+				}
+				iTempDataBuffer.SetLength(len);
+				ConvertToUniCodeL(iStringBuffer, iTempDataBuffer, encoding);			
+			}
+			
 			id3_file_close(id3_file);
 		}
 		iObserver.ReadMetaData(iShow);

@@ -30,6 +30,7 @@ enum TPodcatClientCommands
 	EPodcastUpdateFeed,
 	EPodcastUpdateAllFeeds,
 	EPodcastCancelUpdateAllFeeds,
+	EPodcastImportFeeds,
 	// Show commands
 	EPodcastDownloadShow,
 	EPodcastDeleteAllShows,

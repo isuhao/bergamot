@@ -27,6 +27,8 @@ public:
 	
 public:
 	void AddFeed(CFeedInfo *item);
+	void ImportFeedsL(const TDesC& aFile);
+
 	void RemoveFeed(TUint aUid);
 	void UpdateFeedL(TUint aFeedUid);
 	void UpdateAllFeedsL();
@@ -46,7 +48,7 @@ public:
 	
 	void FileNameFromUrl(const TDesC &aUrl, TFileName &aFileName);
 	void EnsureProperPathName(TFileName &aPath);
-	
+
 	/**
 	 * Returns the current internal state of the feed engine4
 	 */
@@ -64,7 +66,6 @@ private:
 	void ConstructL();
 	CFeedEngine(CPodcastModel& aPodcastModel);
 
-	void ImportFeedsL(const TDesC& aFile);
 	TBool LoadFeeds();
 	void SaveFeeds();
 
