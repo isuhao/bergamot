@@ -1,0 +1,18 @@
+#summary One-sentence summary of this page.
+
+= How to translate =
+Download the English [http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_english.rls language file], open it in a text editor such as Emacs or Notepad, and translate all the strings. Then send them to us in an email to bergamot@googlegroups.com.
+
+= Available Translations =
+
+The following translations been done, but they may not be updated for the latest release. If you find errors in the languate you're using, please fix it by downloading the language file and sending us the update at bergamot@googlegroups.com.
+
+|| *Language* || *Translated by (handle)* || *Language file* ||
+|| Czech|| ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_czech.rls PodcastClient_czech.rls] ||
+|| Danish || Michell Bak ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_danish.rls PodcastClient_danish.rls] ||
+|| Estonian || ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_estonian.rls PodcastClient_estonian.rls] |||| German || ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_german.rls PodcastClient_german.rls] ||
+|| Hungarian || Balázs Szücs (Balinov) || [http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_hungarian.rls PodcastClient_hungarian.rls] || 
+|| Italian|| ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_italian.rls PodcastClient_italian.rls] ||
+|| Polish || ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_polish.rls PodcastClient_polish.rls] ||
+|| Russian ||  ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_russian.rls PodcastClient_russian.rls] ||
+|| Swedish || Sebastian Brännström (teknolog) ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_swedish.rls PodcastClient_swedish.rls] ||
