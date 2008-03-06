@@ -8,12 +8,12 @@ Download the English [http://bergamot.googlecode.com/svn/Podcast/trunk/group/Pod
 The following translations been done, but they may not be updated for the latest release. If you find errors in the languate you're using, please fix it by downloading the language file and sending us the update at bergamot@googlegroups.com.
 
 || *Language* || *Translated by (handle)* || *Language file* ||
-|| Czech|| ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_czech.rls PodcastClient_czech.rls] ||
+|| Czech|| Jiří Vyhnálek||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_czech.rls PodcastClient_czech.rls] ||
 || Danish || Michell Bak ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_danish.rls PodcastClient_danish.rls] ||
-|| Estonian || ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_estonian.rls PodcastClient_estonian.rls] ||
+|| Estonian || Valdur Palm ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_estonian.rls PodcastClient_estonian.rls] ||
 || German || ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_german.rls PodcastClient_german.rls] ||
 || Hungarian || Balázs Szücs (Balinov) || [http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_hungarian.rls PodcastClient_hungarian.rls] || 
-|| Italian|| ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_italian.rls PodcastClient_italian.rls] ||
+|| Italian|| ganassa ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_italian.rls PodcastClient_italian.rls] ||
 || Polish || ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_polish.rls PodcastClient_polish.rls] ||
-|| Russian ||  ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_russian.rls PodcastClient_russian.rls] ||
+|| Russian ||  Kirill Uvaev||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_russian.rls PodcastClient_russian.rls] ||
 || Swedish || Sebastian Brännström (teknolog) ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_swedish.rls PodcastClient_swedish.rls] ||
