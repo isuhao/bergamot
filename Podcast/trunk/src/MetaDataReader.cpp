@@ -1,6 +1,8 @@
 #include "MetaDataReader.h"
 #include "id3tag.h"
 #include "field.h"
+#include <utf.h>
+
 _LIT(KMP3Extension, ".MP3");
 CMetaDataReader::CMetaDataReader(MMetaDataReaderObserver& aObserver) : iObserver(aObserver)
 {
@@ -77,8 +79,10 @@ void CMetaDataReader::ParseNextShow()
 				}
 
 				iTempDataBuffer.SetLength(len);
-				iStringBuffer.Copy(iTempDataBuffer);
-				iShow->SetTitleL(iStringBuffer);
+				HBufC* tempBuffer = CnvUtfConverter::ConvertToUnicodeFromUtf8L(iTempDataBuffer);
+				CleanupStack::PushL(tempBuffer);
+				iShow->SetTitleL(*tempBuffer);
+				CleanupStack::PopAndDestroy(tempBuffer);
 			}
 
 			iStringBuffer.Zero();
@@ -95,7 +99,10 @@ void CMetaDataReader::ParseNextShow()
 
 				iTempDataBuffer.SetLength(len);
 				iTempDataBuffer.Append(_L("\n"));
-				iStringBuffer.Copy(iTempDataBuffer);		
+
+				HBufC* tempBuffer = CnvUtfConverter::ConvertToUnicodeFromUtf8L(iTempDataBuffer);			
+				iStringBuffer.Copy(*tempBuffer);		
+				delete tempBuffer;			
 			}			
 						
 			frame = id3_tag_findframe(tag, ID3_FRAME_ALBUM, 0);
@@ -109,9 +116,9 @@ void CMetaDataReader::ParseNextShow()
 				}
 				
 				iTempDataBuffer.SetLength(len);
-				iStringBuffer2.Copy(iTempDataBuffer);
-				
-				iStringBuffer.Append(iStringBuffer2);
+				HBufC* tempBuffer = CnvUtfConverter::ConvertToUnicodeFromUtf8L(iTempDataBuffer);							
+				iStringBuffer.Append(*tempBuffer);
+				delete tempBuffer;
 			}			
 			
 			iShow->SetDescriptionL(iStringBuffer);	 			
