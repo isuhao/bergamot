@@ -2,7 +2,8 @@
 #include "id3tag.h"
 #include "field.h"
 #include <utf.h>
-
+#include <charconv.h>
+#include <eikenv.h>
 _LIT(KMP3Extension, ".MP3");
 CMetaDataReader::CMetaDataReader(MMetaDataReaderObserver& aObserver) : iObserver(aObserver)
 {
@@ -15,6 +16,7 @@ CMetaDataReader::~CMetaDataReader()
 	delete iPlayer;
 	delete iParseNextShowCallBack;
 	iShowsToParse.Close();
+	delete iCharConverter;
 }
 
 void CMetaDataReader::ConstructL()
@@ -24,6 +26,8 @@ void CMetaDataReader::ConstructL()
 
 	TCallBack callback(ParseNextShowL, this);
 	iParseNextShowCallBack = new (ELeave)CAsyncCallBack(callback, CActive::EPriorityStandard);
+	iCharConverter = CCnvCharacterSetConverter::NewL();
+	iCharConverter->PrepareToConvertToOrFromL(KCharacterSetIdentifierIso88591, CEikonEnv::Static()->FsSession()); 
 }
 
 void CMetaDataReader::SubmitShow(CShowInfo *aShowInfo)
@@ -40,6 +44,33 @@ TInt CMetaDataReader::ParseNextShowL(TAny* aMetaDataReader)
 {
 	static_cast<CMetaDataReader*>(aMetaDataReader)->ParseNextShow();
 	return KErrNone;
+}
+
+void CMetaDataReader::ConvertToUniCodeL(TDes& aDestBuffer, TDes8& aInputBuffer, enum id3_field_textencoding aEncoding)
+{
+	switch(aEncoding)
+	{
+	case ID3_FIELD_TEXTENCODING_UTF_8:
+		{
+			HBufC* tempBuffer = CnvUtfConverter::ConvertToUnicodeFromUtf8L(aInputBuffer);
+			aDestBuffer.Copy(*tempBuffer);
+			delete tempBuffer;
+		}break;
+	case ID3_FIELD_TEXTENCODING_UTF_16:
+		{
+			aDestBuffer.Copy(aInputBuffer);
+		}break;
+	case ID3_FIELD_TEXTENCODING_UTF_16BE:
+		{
+		}break;
+	case ID3_FIELD_TEXTENCODING_ISO_8859_1:
+		{
+			TInt unconvertable = 0;
+			TInt state = 0;
+			iCharConverter->ConvertToUnicode(aDestBuffer, aInputBuffer, state, unconvertable);
+		}break;
+	}
+
 }
 
 void CMetaDataReader::ParseNextShow()
@@ -79,10 +110,8 @@ void CMetaDataReader::ParseNextShow()
 				}
 
 				iTempDataBuffer.SetLength(len);
-				HBufC* tempBuffer = CnvUtfConverter::ConvertToUnicodeFromUtf8L(iTempDataBuffer);
-				CleanupStack::PushL(tempBuffer);
-				iShow->SetTitleL(*tempBuffer);
-				CleanupStack::PopAndDestroy(tempBuffer);
+				ConvertToUniCodeL(iStringBuffer, iTempDataBuffer, encoding);
+				iShow->SetTitleL(iStringBuffer);				
 			}
 
 			iStringBuffer.Zero();
@@ -99,10 +128,7 @@ void CMetaDataReader::ParseNextShow()
 
 				iTempDataBuffer.SetLength(len);
 				iTempDataBuffer.Append(_L("\n"));
-
-				HBufC* tempBuffer = CnvUtfConverter::ConvertToUnicodeFromUtf8L(iTempDataBuffer);			
-				iStringBuffer.Copy(*tempBuffer);		
-				delete tempBuffer;			
+				ConvertToUniCodeL(iStringBuffer, iTempDataBuffer, encoding);			
 			}			
 						
 			frame = id3_tag_findframe(tag, ID3_FRAME_ALBUM, 0);
@@ -116,9 +142,8 @@ void CMetaDataReader::ParseNextShow()
 				}
 				
 				iTempDataBuffer.SetLength(len);
-				HBufC* tempBuffer = CnvUtfConverter::ConvertToUnicodeFromUtf8L(iTempDataBuffer);							
-				iStringBuffer.Append(*tempBuffer);
-				delete tempBuffer;
+				ConvertToUniCodeL(iStringBuffer2, iTempDataBuffer, encoding);			
+				iStringBuffer.Append(iStringBuffer2);
 			}			
 			
 			iShow->SetDescriptionL(iStringBuffer);	 			

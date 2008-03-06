@@ -6,6 +6,9 @@
 #include "ShowInfo.h"
 #include "MetaDataReaderObserver.h"
 
+class CCnvCharacterSetConverter;
+#include "id3tag.h"
+
 class CMetaDataReader : public CBase, public MMdaAudioPlayerCallback
 {
 public:
@@ -18,6 +21,7 @@ protected:
 	void MapcPlayComplete(TInt aError);
 	void MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds &aDuration);
 	static TInt ParseNextShowL(TAny* aMetaDataReader);
+	void ConvertToUniCodeL(TDes& aDestBuffer, TDes8& aInputBuffer, enum id3_field_textencoding aEncoding);
 private:
 	void ParseNextShow();
 	
@@ -31,6 +35,7 @@ private:
 	TBuf<1024> iStringBuffer;
 	TBuf<1024> iStringBuffer2;
 	CAsyncCallBack* iParseNextShowCallBack;
+	CCnvCharacterSetConverter* iCharConverter;
 };
 
 #endif /*METADATAREADER_H_*/
