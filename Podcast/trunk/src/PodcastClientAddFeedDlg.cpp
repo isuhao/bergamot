@@ -1,56 +1,62 @@
 #include <eikedwin.h>
-#include <e32hashtab.h>
 
 #include "PodcastClient.hrh"
 #include "PodcastClientAddFeedDlg.h"
 #include "PodcastModel.h"
 #include "FeedEngine.h"
 #include <PodcastClient.rsg>
-const TInt KMaxTextBuffer = 1024;
-CPodcastClientAddFeedDlg::CPodcastClientAddFeedDlg(CPodcastModel& aPodcastModel):iPodcastModel(aPodcastModel)
-{
-	 iEditFeed = EFalse;
-}
 
-CPodcastClientAddFeedDlg::CPodcastClientAddFeedDlg(CPodcastModel& aPodcastModel, CFeedInfo* aFeedInfo):iPodcastModel(aPodcastModel), iFeedInfo(aFeedInfo)
-{
+const TInt KMaxTextBuffer = 1024;
+_LIT(KURLPrefix, "http://");
+
+CPodcastClientAddFeedDlg::CPodcastClientAddFeedDlg(CPodcastModel& aPodcastModel) : iPodcastModel(aPodcastModel)
+	{
+	iEditFeed = EFalse;
+	}
+
+CPodcastClientAddFeedDlg::CPodcastClientAddFeedDlg(CPodcastModel& aPodcastModel, CFeedInfo* aFeedInfo)	
+	: iPodcastModel(aPodcastModel), iFeedInfo(aFeedInfo)
+	{
 	iEditFeed = ETrue;
-}
+	}
 
 CPodcastClientAddFeedDlg::~CPodcastClientAddFeedDlg()
-{
-}
+	{
+	}
 
-_LIT(KURLPrefix, "http://");
 void CPodcastClientAddFeedDlg::PreLayoutDynInitL()
-{
+	{
 	CEikEdwin* edwin = static_cast<CEikEdwin*>(ControlOrNull(EPodcastAddEditFeedDlgUrl));
 	
+	if (!edwin)
+		return;
+	
 	if(iEditFeed)
-	{
+		{
 		edwin->SetTextL(&iFeedInfo->Url());
 		static_cast<CEikEdwin*>(ControlOrNull(EPodcastAddEditFeedDlgTitle))->SetTextL(&iFeedInfo->Title());
-	}
+		}
 	else
-	{
+		{
 		edwin->SetTextL(&KURLPrefix());
+		}
 	}
-}
 
 
 TBool CPodcastClientAddFeedDlg::OkToExitL(TInt aCommandId)
 	{
-	
+	// why are we doing this?
 	if(aCommandId == EEikBidYes)
 		{
 		return ETrue;
 		}
 
+
+
 	CEikEdwin* urlEdwin = static_cast<CEikEdwin*>(ControlOrNull(EPodcastAddEditFeedDlgUrl));
 	CEikEdwin* titleEdwin = static_cast<CEikEdwin*>(ControlOrNull(EPodcastAddEditFeedDlgTitle));
 
 	HBufC* title = NULL;
-
 	if(titleEdwin != NULL)
 		{
 		title = titleEdwin->GetTextInHBufL();
@@ -63,6 +69,13 @@ TBool CPodcastClientAddFeedDlg::OkToExitL(TInt aCommandId)
 		TBuf<KMaxTextBuffer> buffer;
 		urlEdwin->GetText(buffer);	
 
+		// The URL must start with http://, otherwise the HTTP stack fails.
+		TInt pos = buffer.Find(KURLPrefix);
+		if ( pos == KErrNotFound)
+			{
+			buffer.Insert(0,KURLPrefix());
+			}
+		
 		if(iEditFeed)
 			{
 			iFeedInfo->SetUrlL(buffer);	
@@ -98,4 +111,4 @@ TBool CPodcastClientAddFeedDlg::OkToExitL(TInt aCommandId)
 
 	CleanupStack::PopAndDestroy(title);
 	return ETrue;
-}
+	}
