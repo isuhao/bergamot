@@ -33,9 +33,6 @@ void COpmlParser::ParseOpmlL(const TFileName &feedFileName)
 
 	CleanupStack::PopAndDestroy(parser);
 	CleanupStack::PopAndDestroy(&rfs); // this makes sure the file was closed
-	
-	rfs.Connect();
-	rfs.Close();
 	//RDebug::Print(_L("ParseFeedL END"));
 	}
 
