@@ -566,7 +566,7 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 						}
 					}
 			
-				CleanupStack::PopAndDestroy(2,mimeTypes); // title, fileNames, mimeTypes								
+				CleanupStack::PopAndDestroy(3,mimeTypes); // title, fileNames, mimeTypes								
 			}break;
 					
 		case EPodcastEditFeed:
