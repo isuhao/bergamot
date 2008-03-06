@@ -1,14 +1,11 @@
-// PodcastClient_english.rls
+/////////////////////////////////////////////////////////////////////
+// Escarpod language file
 //
-//
-
-// Defines localisable strings, for inclusion in the resource source file
-// Used to localise an application by simply changing the resource file text.
-// Since changes to the text do not change the symbol information in the 
-// generated header file, it is not necessary to recompile the application
-// to use the new file.
+// Language:   English EN/01
+// Translator: -
 
 // list view commands
+
 rls_string STRING_r_listbox_listview_cmd_close_debug "Close (debug)"
 rls_string STRING_r_listbox_listview_cmd_close_debug_shorttext "Close"
 
@@ -81,7 +78,7 @@ rls_string STRING_r_view_show_unplayed_cmd "Show Unplayed Only"
 rls_string STRING_r_zoom_cmd "Zoom"
 rls_string STRING_r_settings_cmd "Settings"
 
-// Categories
+// Categories (strings max 20 character long)
 rls_string STRING_r_category_all "All Shows"
 rls_string STRING_r_category_new "Unplayed"
 rls_string STRING_r_category_dled "Shows on Phone"

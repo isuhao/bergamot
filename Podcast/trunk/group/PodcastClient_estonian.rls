@@ -1,13 +1,9 @@
 CHARACTER_SET UTF8
-// PodcastClient_estonian.rls
+/////////////////////////////////////////////////////////////////////
+// Escarpod language file
 //
-//
-
-// Defines localisable strings, for inclusion in the resource source file
-// Used to localise an application by simply changing the resource file text.
-// Since changes to the text do not change the symbol information in the
-// generated header file, it is not necessary to recompile the application
-// to use the new file.
+// Language:   Estonian ET/49
+// Translator: Valdur Palm
 
 // list view commands
 rls_string STRING_r_listbox_listview_cmd_close_debug "Sulge (debug)"

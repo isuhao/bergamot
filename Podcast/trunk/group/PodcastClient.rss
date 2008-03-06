@@ -29,6 +29,8 @@
 	#include "PodcastClient_danish.rls"
 #elif defined LANGUAGE_16
 	#include "PodcastClient_russian.rls"
+#elif defined LANGUAGE_17
+	#include "PodcastClient_hungarian.rls"
 #elif defined LANGUAGE_25
 	#include "PodcastClient_czech.rls"
 #elif defined LANGUAGE_27

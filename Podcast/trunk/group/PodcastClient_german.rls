@@ -1,14 +1,9 @@
 CHARACTER_SET UTF8
-// ListBox.rls
+/////////////////////////////////////////////////////////////////////
+// Escarpod language file
 //
-// © Symbian Software Ltd 2005. All rights reserved.
-//
-
-// Defines localisable strings, for inclusion in the resource source file
-// Used to localise an application by simply changing the resource file text.
-// Since changes to the text do not change the symbol information in the
-// generated header file, it is not necessary to recompile the application
-// to use the new file.
+// Language:   German GE/03
+// Translator: 
 
 // list view commands
 rls_string STRING_r_listbox_listview_cmd_close_debug "Close (debug)"

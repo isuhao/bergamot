@@ -1,9 +1,9 @@
-; EN=01 GE=03 IT=05 SW=06 DA=07 RU=16 CS=25 PL=27 ET=49; 
+; EN=01 GE=03 IT=05 SW=06 DA=07 RU=16 HU=17 CS=25 PL=27 ET=49; 
 
-&EN,GE,IT,SW,DA,RU,CS,PL,ET
+&EN,GE,IT,SW,DA,RU,HU,CS,PL,ET
 :"Bergamot Project"
-%{"Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project"}
-#{"Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod", "Escarpod"}, (0xA00046BD), 0, 94, 0, TYPE=SA
+%{"Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project"}
+#{"Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod", "Escarpod","Escarpod"}, (0xA00046BD), 0, 94, 0, TYPE=SA
 
 ;(0x101F6300), 3, 0, 0, {"UIQ30ProductID"}
 
@@ -15,7 +15,7 @@
 "/epoc32/data/z/resource/apps/PodcastClient.mbm"-"!:\resource\apps\PodcastClient.mbm"
 "/epoc32/data/z/private/10003A3F/apps/PodcastClient_reg.rsc"-"!:\private\10003a3f\import\apps\PodcastClient_reg.rsc"
 "./config.cfg"-"c:\private\A00046ae\config.cfg"
-"./defaultfeeds.cfg"-"c:\private\A00046ae\defaultfeeds.cfg"
+"./defaultfeeds.xml"-"c:\private\A00046ae\defaultfeeds.xml"
 
 {
 "/epoc32/data/z/resource/apps/PodcastClient.R01"
@@ -24,6 +24,7 @@
 "/epoc32/data/z/resource/apps/PodcastClient.R06"
 "/epoc32/data/z/resource/apps/PodcastClient.R07"
 "/epoc32/data/z/resource/apps/PodcastClient.R16"
+"/epoc32/data/z/resource/apps/PodcastClient.R17"
 "/epoc32/data/z/resource/apps/PodcastClient.R25"
 "/epoc32/data/z/resource/apps/PodcastClient.R27"
 "/epoc32/data/z/resource/apps/PodcastClient.R49"

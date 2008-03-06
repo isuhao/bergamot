@@ -1,13 +1,9 @@
 CHARACTER_SET UTF8
-// PodcastClient_czech.rls
+/////////////////////////////////////////////////////////////////////
+// Escarpod language file
 //
-//
-
-// Defines localisable strings, for inclusion in the resource source file
-// Used to localise an application by simply changing the resource file text.
-// Since changes to the text do not change the symbol information in the 
-// generated header file, it is not necessary to recompile the application
-// to use the new file.
+// Language:   Czech CS/25
+// Translator: Jiří Vyhnálek
 
 // list view commands
 rls_string STRING_r_listbox_listview_cmd_close_debug "Zavřít (debug)"
@@ -112,6 +108,7 @@ rls_string STRING_r_podcast_no_feeds "Žádné zdroje"
 
 // DIALOG string
 rls_string STRING_r_about_title "O programu Escarpod";
+rls_string STRING_r_about_text "Escarpod\n\n Copyright(c) 2007-2008, Projekt Bergamot\n\n http://bergamot.googlecode.com"
 
 rls_string STRING_r_add_feed_title "Přidat zdroj"
 rls_string STRING_r_edit_feed_title "Upravit zdroj"
@@ -155,7 +152,7 @@ rls_string STRING_r_podcast_setting_showdir_cmd "Vybrat" // Use to select show d
 rls_string STRING_r_podcast_setting_volume "Hlasitost" 
 
 // Choicelist for autodownload
-rls_string STRING_podcast_autodl_off "Vyp"
+rls_string STRING_podcast_autoupdate_off "Vyp"
 rls_string STRING_podcast_autoupdate_perodical "Pravidelně" 
 rls_string STRING_podcast_autoupdate_attime "V určený čas"
 

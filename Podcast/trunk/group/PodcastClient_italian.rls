@@ -1,13 +1,9 @@
-// ListBox.rls
+CHARACTER_SET UTF8
+/////////////////////////////////////////////////////////////////////
+// Escarpod language file
 //
-// © Symbian Software Ltd 2005. All rights reserved.
-//
-
-// Defines localisable strings, for inclusion in the resource source file
-// Used to localise an application by simply changing the resource file text.
-// Since changes to the text do not change the symbol information in the 
-// generated header file, it is not necessary to recompile the application
-// to use the new file.
+// Language:   Italien IT/05
+// Translator: ganassa 
 
 // list view commands
 rls_string STRING_r_listbox_listview_cmd_close_debug "Chiudi (debug)"
@@ -44,7 +40,7 @@ rls_string STRING_r_view_remove_download_cmd "Elimina Download"
 rls_string STRING_r_view_show_cmd "Feed"
 rls_string STRING_r_view_cmd "Visualizza"
 rls_string STRING_r_view_play_cmd "Play"
-rls_string STRING_r_view_mark_as_played_cmd "Segna come gi‡ ascoltati"
+rls_string STRING_r_view_mark_as_played_cmd "Segna come gi√† ascoltati"
 rls_string STRING_r_view_mark_as_unplayed_cmd "Segna come da ascoltare"
 
 // Actions for feeds
