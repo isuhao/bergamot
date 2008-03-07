@@ -618,6 +618,10 @@ RShowInfoArray& CShowEngine::GetSelectedShows()
 
 void CShowEngine::AddDownload(CShowInfo *info)
 	{
+	if (iShowsDownloading.Count() > iPodcastModel.SettingsEngine().MaxListItems()) {
+		return;
+	}
+	
 	info->SetDownloadState(EQueued);
 	iShowsDownloading.Append(info);
 	SaveShows();
