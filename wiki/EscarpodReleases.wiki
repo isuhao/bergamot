@@ -22,12 +22,7 @@ This is a complete list of releases of Escarpod.
       * Italian
       * Danish
 
-  * Escarpod 0.90 (Beta 2) (January 1st) [http://bergamot.googlecode.com/svn/Podcast/tags/beta2 code]
-    * New icons
-    * Bug fixes
-    * Swedish translation
-
-  * 0.9 (Beta 2) (January 1st) | [http://bergamot.googlecode.com/svn/Podcast/tags/beta2/group/Podcast_udeb_signed.sis SIS] | [http://bergamot.googlecode.com/svn/Podcast/tags/beta2 code]
+  * Escarpod 0.90 (Beta 2) (January 1st) | [http://bergamot.googlecode.com/svn/Podcast/tags/beta2/group/Podcast_udeb_signed.sis SIS] | [http://bergamot.googlecode.com/svn/Podcast/tags/beta2 code]
     * New icons
     * Bug fixes
     * Swedish translation
