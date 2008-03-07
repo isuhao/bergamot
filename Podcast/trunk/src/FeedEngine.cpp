@@ -472,18 +472,18 @@ TBool CFeedEngine::LoadFeeds()
 	TInt version = instream.ReadInt32L();
 	RDebug::Print(_L("Read version: %d"), version);
 
-	if (version != KFeedInfoVersion) {
-		RDebug::Print(_L("Wrong version, discarding"));
-		CleanupStack::PopAndDestroy(2); // instream and store
-		return EFalse;
-	}
+	//if (version != KFeedInfoVersion) {
+	//	RDebug::Print(_L("Wrong version, discarding"));
+	//	CleanupStack::PopAndDestroy(2); // instream and store
+	//	return EFalse;
+	//}
 	
 	TInt count = instream.ReadInt32L();
 	RDebug::Print(_L("Read count: %d"), count);
 	CFeedInfo *readData;
 	TLinearOrder<CFeedInfo> sortOrder( CFeedEngine::CompareFeedsByTitle);
 	for (TInt i=0;i<count;i++) {
-		readData = CFeedInfo::NewL();
+		readData = CFeedInfo::NewL(version);
 		TRAP(error, instream  >> *readData);
 		//RDebug::Print(_L("error: %d"), error);
 		iSortedFeeds.InsertInOrder(readData, sortOrder);

@@ -2,25 +2,26 @@
 #include <e32hashtab.h>
 
 
-CFeedInfo* CFeedInfo::NewL()
+CFeedInfo* CFeedInfo::NewL(TInt aVersion)
 	{
-	CFeedInfo* self = new (ELeave) CFeedInfo();
+	CFeedInfo* self = new (ELeave) CFeedInfo(aVersion);
 	CleanupStack::PushL(self);
 	self->ConstructL();
 	CleanupStack::Pop();
 	return self;
 	}
 
-CFeedInfo* CFeedInfo::NewLC()
+CFeedInfo* CFeedInfo::NewLC(TInt aVersion)
 	{
-	CFeedInfo* self = new (ELeave) CFeedInfo();
+	CFeedInfo* self = new (ELeave) CFeedInfo(aVersion);
 	CleanupStack::PushL(self);
 	self->ConstructL();
 	return self;
 	}
 
-CFeedInfo::CFeedInfo()
+CFeedInfo::CFeedInfo(TInt aVersion) : iVersion(aVersion)
 	{
+	iCustomTitle = EFalse;
 	}
 
 CFeedInfo::~CFeedInfo()
@@ -86,6 +87,8 @@ void CFeedInfo::ExternalizeL(RWriteStream& aStream) const
 	aStream.WriteInt32L(I64HIGH(iLastUpdated.Int64()));
 	
 	aStream.WriteInt32L(iUid);
+	
+	aStream.WriteInt32L(iCustomTitle);
 	}
 
 void CFeedInfo::InternalizeL(RReadStream& aStream) 
@@ -129,6 +132,11 @@ void CFeedInfo::InternalizeL(RReadStream& aStream)
 	iLastUpdated = MAKE_TINT64(high, low);
 	
 	iUid = aStream.ReadInt32L();
+	
+	if (iVersion < 5) {
+		return;
+	}
+		iCustomTitle = aStream.ReadInt32L();
 	}
 
 const TDesC& CFeedInfo::Url() const
@@ -259,3 +267,14 @@ void CFeedInfo::SetIsBookFeed()
 	{
 	iIsBookFeed = ETrue;
 	}
+
+TBool CFeedInfo::CustomTitle()
+	{
+	return iCustomTitle;
+	}
+
+void CFeedInfo::SetCustomTitle()
+	{
+	iCustomTitle = ETrue;
+	}
+

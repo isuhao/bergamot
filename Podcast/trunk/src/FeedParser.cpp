@@ -187,7 +187,9 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt /*aErrorCode*/)
 	switch (iFeedState) {
 		case EStateChannelTitle:
 			if(str.CompareF(KTagTitle) == 0) {
-				iActiveFeed->SetTitleL(iBuffer);
+				if (iActiveFeed->CustomTitle() == EFalse) {
+					iActiveFeed->SetTitleL(iBuffer);
+				}
 				iFeedState = EStateChannel;
 			}
 			break;

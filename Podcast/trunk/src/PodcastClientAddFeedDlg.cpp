@@ -82,6 +82,7 @@ TBool CPodcastClientAddFeedDlg::OkToExitL(TInt aCommandId)
 			if(title && title->Length()>0)
 				{
 				iFeedInfo->SetTitleL(*title);
+				iFeedInfo->SetCustomTitle();
 				}
 			}
 		else
