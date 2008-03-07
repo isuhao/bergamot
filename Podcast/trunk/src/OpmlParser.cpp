@@ -130,7 +130,7 @@ void COpmlParser::OnEndElementL(const RTagInfo& aElement, TInt /*aErrorCode*/)
 			iOpmlState=EStateOpmlBody;
 			break;
 		case EStateOpmlBody:
-			iOpmlState == EStateOpmlRoot;
+			iOpmlState = EStateOpmlRoot;
 			break;
 		default:
 			// fall back to body level when in doubt
@@ -142,7 +142,7 @@ void COpmlParser::OnEndElementL(const RTagInfo& aElement, TInt /*aErrorCode*/)
 	//RDebug::Print(_L("OnEndElementL END state=%d"), iFeedState);	
 	}
 
-void COpmlParser::OnContentL(const TDesC8& aBytes, TInt /*aErrorCode*/)
+void COpmlParser::OnContentL(const TDesC8& /*aBytes*/, TInt /*aErrorCode*/)
 	{
 	RDebug::Print(_L("OnContentL()"));
 	}
