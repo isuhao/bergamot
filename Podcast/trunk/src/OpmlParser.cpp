@@ -94,6 +94,7 @@ void COpmlParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 				// text=...
 				} else if (attr16.Compare(KTagText) == 0) {
 					newFeed->SetTitleL(val16);
+					newFeed->SetCustomTitle();
 					hasTitle = ETrue;
 				}
 			}
