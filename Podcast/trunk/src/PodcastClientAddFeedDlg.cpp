@@ -8,6 +8,7 @@
 
 const TInt KMaxTextBuffer = 1024;
 _LIT(KURLPrefix, "http://");
+_LIT(KItpcPrefix, "itpc://");
 
 CPodcastClientAddFeedDlg::CPodcastClientAddFeedDlg(CPodcastModel& aPodcastModel) : iPodcastModel(aPodcastModel)
 	{
@@ -69,6 +70,17 @@ TBool CPodcastClientAddFeedDlg::OkToExitL(TInt aCommandId)
 		TBuf<KMaxTextBuffer> buffer;
 		urlEdwin->GetText(buffer);	
 
+		
+		// Some pod links are written in format itpc://mylink.net/podcast.xml
+		// Symbian HTTP stack does not like itpc:// 
+		// Try to use a HTTP instead.
+		TInt p = buffer.Find(KItpcPrefix);
+		if (p >= 0)
+			{
+			buffer.Delete(p, KItpcPrefix().Length());
+			}
+		
+		
 		// The URL must start with http://, otherwise the HTTP stack fails.
 		TInt pos = buffer.Find(KURLPrefix);
 		if ( pos == KErrNotFound)
