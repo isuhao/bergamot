@@ -40,6 +40,13 @@ If your phone supports it, using your own wireless LAN is a great option. Escarp
 == Releases ==
 
 To download binaries of Escarpod to use on your phone, visit our [http://code.google.com/p/bergamot/downloads/list Downloads] page.
+
+  * Escarpod 0.94 (soon)
+    * OPML bulk feed import!
+    * Pause on ring
+    * Cancel update all
+    * Show marked as played on stop, not on play
+    * Hungarian translation
   
   * Escarpod 0.93 (Feburary 14th)
     * Update at fixed time of day added
@@ -51,22 +58,6 @@ To download binaries of Escarpod to use on your phone, visit our [http://code.go
   * Escarpod 0.92 (January 26th) [http://bergamot.googlecode.com/svn/Podcast/tags/v092 code]
     * Bug fixes (should stop the almost-daily crash)
     * Czech language fix
-
-  * Escarpod 0.91 (January 16th) [http://bergamot.googlecode.com/svn/Podcast/tags/v091 code]
-    * Bug fixes
-    * Memory leaks fixed
-    * Several new translations (thanks to all the translators!)
-      * Estonian
-      * Czech
-      * Russian
-      * Italian
-      * Danish
-
-
-  * Escarpod 0.90 (Beta 2) (January 1st) [http://bergamot.googlecode.com/svn/Podcast/tags/beta2 code]
-    * New icons
-    * Bug fixes
-    * Swedish translation
 
 The complete list of releases can be found [EscarpodReleases here].
 
