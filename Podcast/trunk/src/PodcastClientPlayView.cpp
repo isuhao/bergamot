@@ -488,8 +488,7 @@ void CPodcastClientPlayView::UpdateViewL()
 		CQikCommandManager& comMan = CQikCommandManager::Static();
 
 		if(iShowInfo != NULL)
-		{		
-			
+		{					
 			iInformationEdwin->SetTextL(iShowInfo->Description());
 
 			if(iTitleEdwin != NULL)
@@ -539,7 +538,7 @@ void CPodcastClientPlayView::UpdateViewL()
 					{
 						iLastImageFileName = feedInfo->ImageFileName();
 						iCoverImageCtrl->CreatePictureFromFileL(_L("*"), EMbmPodcastclientEmptyimage, EMbmPodcastclientEmptyimage);								
-
+						iCoverImageCtrl->DrawDeferred();
 						if(!iBitmapConverter->IsActive())
 						{
 							TRAPD(err, iBitmapConverter->LoadImageDataL(feedInfo->ImageFileName()));
@@ -561,10 +560,18 @@ void CPodcastClientPlayView::UpdateViewL()
 					iCoverImageCtrl->CreatePictureFromFileL(_L("*"), EMbmPodcastclientEmptyimage, EMbmPodcastclientEmptyimage);
 				}
 				
-			}			
+			}	
+			else
+			{
+				iLastImageFileName = KNullDesC();
+				iCoverImageCtrl->CreatePictureFromFileL(_L("*"), EMbmPodcastclientEmptyimage, EMbmPodcastclientEmptyimage);
+				comMan.SetInvisible(*this, EPodcastDownloadShow, ETrue);
+			}
 		}
 		else
-		{	
+		{				
+			iLastImageFileName = KNullDesC();
+			iCoverImageCtrl->CreatePictureFromFileL(_L("*"), EMbmPodcastclientEmptyimage, EMbmPodcastclientEmptyimage);
 			comMan.SetInvisible(*this, EPodcastDownloadShow, ETrue);
 		}
 
