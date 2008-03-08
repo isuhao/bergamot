@@ -56,8 +56,6 @@ rls_string STRING_r_view_purge_feed_cmd "Delete All"
 rls_string STRING_r_update_feed_cmd "Update Feed"
 rls_string STRING_r_update_feed_short_cmd "Update"
 rls_string STRING_r_update_all_feeds_cmd "Update All"
-rls_string STRING_r_cancel_update_all_feeds_cmd "Cancel update"
-rls_string STRING_r_cancel_update_all_feeds_short_cmd "Cancel"
 rls_string STRING_r_update_all_feeds_short_cmd "Upd. All"
 
 rls_string STRING_r_podcast_feeds_update_message "Updating..."
@@ -126,7 +124,7 @@ rls_string STRING_r_update_new_feed_title "Update Feed"
 rls_string STRING_r_update_new_feed_prompt "Do you want to update the feed now?"
 
 rls_string STRING_r_purge_feed_title "Purge Feed"
-rls_string STRING_r_purge_feed_prompt "Are you really sure you want to purge this feed, and remove all downloaded shows?"
+rls_string STRING_r_purge_feed_prompt "Are you sure you want to remove all downloaded shows?"
 
 rls_string STRING_r_purge_show_title "Purge Show"
 rls_string STRING_r_purge_show_prompt "Are you really sure you want to delete this show?"
@@ -135,12 +133,10 @@ rls_string STRING_r_podcast_settings_title "Settings"
 rls_string STRING_r_podcast_setting_showdir "Podcast Directory"
 rls_string STRING_r_podcast_setting_autoupdate "Automatic update"
 rls_string STRING_r_podcast_setting_autodownload "Automatic download"
-
 rls_string STRING_r_podcast_setting_checkevery "Update Interval"
 rls_string STRING_r_podcast_setting_updateat "Update at"
 rls_string STRING_r_podcast_setting_minutes "minutes"
 
-rls_string STRING_r_podcast_setting_maxsimul "Max simultaneous downloads"
 rls_string STRING_r_podcast_setting_connection "Connection"
 rls_string STRING_r_podcast_setting_default "Use Default"
 rls_string STRING_r_podcast_setting_wlanonly "Always Ask"
@@ -159,16 +155,19 @@ rls_string STRING_podcast_autoupdate_attime "At"
 rls_string STRING_r_podcast_iap_dlg_title "Select internet account"
 
 // Audio book dialog
-rls_string STRING_r_podcast_new_audiobook_title "Create new audiobook"
-rls_string STRING_r_podcast_new_audiobook_prompt "Audiobook tile"
+rls_string STRING_r_podcast_new_audiobook_title "Create new audio book"
+rls_string STRING_r_podcast_new_audiobook_prompt "Audio book title"
 rls_string STRING_r_podcast_new_audiobook_label "%d files selected for this book."
-rls_string STRING_r_podcast_new_audiobook_select_files "Choose book files:" // Max 80 chars
+rls_string STRING_r_podcast_new_audiobook_select_files "Choose book files" // Max 80 chars
 
 // Latest strings here
 rls_string STRING_r_view_books_no_books "No Books" // No Books
 
 rls_string STRING_r_view_import_feeds_cmd "Import Feeds" // Import feeds cmd in feedview
-rls_string STRING_r_view_import_feeds_title "Select file to import!"
+rls_string STRING_r_view_import_feeds_title "Select OPML file"
 
 rls_string STRING_r_view_books_status "%d Books" // Used in base view listbox status text max 32 chars
 rls_string STRING_r_view_feeds_status "%d Feeds" // Used in base view listbox for feeds status text max 32 chars
+
+rls_string STRING_r_cancel_update_all_feeds_cmd "Cancel update"
+rls_string STRING_r_cancel_update_all_feeds_short_cmd "Cancel"

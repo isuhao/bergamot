@@ -31,11 +31,10 @@ rls_string STRING_r_view_audiobooks_cmd "Ljudböcker"
 rls_string STRING_r_view_new_audiobook_cmd "Ny ljudbok"
 rls_string STRING_r_view_remove_audiobook_cmd "Radera ljudbok"
 
-
 // Actions for the player
 rls_string STRING_r_play_cmd "Spela"
 rls_string STRING_r_stop_cmd "Stoppa"
-rls_string STRING_r_pause_cmd "Pause"
+rls_string STRING_r_pause_cmd "Pausa"
 rls_string STRING_r_volume_cmd "Volym"
 
 rls_string STRING_r_view_download_cmd "Ladda ner"
@@ -85,7 +84,7 @@ rls_string STRING_r_category_pending "Nerladdare"
 
 // Application caption
 rls_string STRING_r_caption "Escarpod"
-rls_string STRING_r_short_caption "Podcast"
+rls_string STRING_r_short_caption "Escarpod"
 
 // View titles
 rls_string STRING_r_view_feeds_title "Kanaler"
@@ -113,7 +112,7 @@ rls_string STRING_r_add_feed_title "Lägg till kanal"
 rls_string STRING_r_edit_feed_title "Ändra kanal"
 
 rls_string STRING_r_add_feed_prompt "URL"
-rls_string STRING_r_add_feed_title_prompt "Title"
+rls_string STRING_r_add_feed_title_prompt "Titel"
 
 rls_string STRING_r_remove_feed_title "Ta bort kanal"
 rls_string STRING_r_remove_feed_prompt "Är du säker på att du vill ta bort kanalen?"
@@ -124,8 +123,8 @@ rls_string STRING_r_enable_downloads_prompt "Det finns avsnitt i nerladdningskö
 rls_string STRING_r_update_new_feed_title "Uppdatera kanal"
 rls_string STRING_r_update_new_feed_prompt "Vill du uppdatera kanalen nu?"
 
-rls_string STRING_r_purge_feed_title "Purge Feed"
-rls_string STRING_r_purge_feed_prompt "Are you really sure you want to purge this feed, and remove all downloaded shows?"
+rls_string STRING_r_purge_feed_title "Ta bort alla"
+rls_string STRING_r_purge_feed_prompt "Ta bort alla nerladdade avsnitt?"
 
 rls_string STRING_r_purge_show_title "Ta bort avsnitt"
 rls_string STRING_r_purge_show_prompt "Är du säker på att du vill ta bort avsnittet?"
@@ -138,7 +137,6 @@ rls_string STRING_r_podcast_setting_checkevery "Uppdateringsintervall"
 rls_string STRING_r_podcast_setting_updateat "Uppdatera vid"
 rls_string STRING_r_podcast_setting_minutes "minuter"
 
-rls_string STRING_r_podcast_setting_maxsimul "Max simultaneous downloads"
 rls_string STRING_r_podcast_setting_connection "Anslutning"
 rls_string STRING_r_podcast_setting_default "Använd standard"
 rls_string STRING_r_podcast_setting_wlanonly "Fråga mig"
@@ -160,8 +158,16 @@ rls_string STRING_r_podcast_iap_dlg_title "Välj anslutning"
 rls_string STRING_r_podcast_new_audiobook_title "Skapa ny ljudbok"
 rls_string STRING_r_podcast_new_audiobook_prompt "Titel"
 rls_string STRING_r_podcast_new_audiobook_label "%d filer valda för den här boken."
+rls_string STRING_r_podcast_new_audiobook_select_files "Välj ljudboksfiler" // Max 80 chars
 
-rls_string STRING_r_podcast_new_audiobook_select_files "Välj ljudboksfiler:" // Max 80 chars
+// Latest strings here
+rls_string STRING_r_view_books_no_books "Inga böcker" // No Books
+
+rls_string STRING_r_view_import_feeds_cmd "Importera kanaler" // Import feeds cmd in feedview
+rls_string STRING_r_view_import_feeds_title "Välj OPML-fil"
+
+rls_string STRING_r_view_books_status "%d böcker" // Used in base view listbox status text max 32 chars
+rls_string STRING_r_view_feeds_status "%d kanaler" // Used in base view listbox for feeds status text max 32 chars
 
 rls_string STRING_r_cancel_update_all_feeds_cmd "Avbryt uppdatering"
 rls_string STRING_r_cancel_update_all_feeds_short_cmd "Avbryt"
