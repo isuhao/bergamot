@@ -497,6 +497,7 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 
 			if(len == iListbox->Model().Count())
 			{		
+				allUidsMatch = ETrue;
 				TInt itemId = 0;
 				for(TInt loop = 0;loop< len ;loop++)
 				{
@@ -504,11 +505,10 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 					itemId = data->ItemId();
 					data->Close();
 					if(fItems[loop]->Uid() != itemId)
-					{						
+					{			
+						allUidsMatch = EFalse;
 						break;
-					}
-
-					allUidsMatch = ETrue;
+					}					
 				}
 			}
 

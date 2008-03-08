@@ -28,6 +28,7 @@ void CMetaDataReader::ConstructL()
 	iParseNextShowCallBack = new (ELeave)CAsyncCallBack(callback, CActive::EPriorityStandard);
 	iCharConverter = CCnvCharacterSetConverter::NewL();
 	iCharConverter->PrepareToConvertToOrFromL(KCharacterSetIdentifierIso88591, CEikonEnv::Static()->FsSession()); 
+	iLastConverterCharset = KCharacterSetIdentifierIso88591;
 }
 
 void CMetaDataReader::SubmitShow(CShowInfo *aShowInfo)
@@ -51,20 +52,40 @@ void CMetaDataReader::ConvertToUniCodeL(TDes& aDestBuffer, TDes8& aInputBuffer, 
 	switch(aEncoding)
 	{
 	case ID3_FIELD_TEXTENCODING_UTF_8:
-		{
+		{		
 			HBufC* tempBuffer = CnvUtfConverter::ConvertToUnicodeFromUtf8L(aInputBuffer);
 			aDestBuffer.Copy(*tempBuffer);
 			delete tempBuffer;
 		}break;
 	case ID3_FIELD_TEXTENCODING_UTF_16:
 		{
-			aDestBuffer.Copy(aInputBuffer);
+			if(iLastConverterCharset != KCharacterSetIdentifierUnicodeLittle)
+			{
+				iCharConverter->PrepareToConvertToOrFromL(KCharacterSetIdentifierUnicodeLittle, CEikonEnv::Static()->FsSession()); 
+				iLastConverterCharset = KCharacterSetIdentifierUnicodeLittle;
+			}
+			TInt unconvertable = 0;
+			TInt state = 0;
+			iCharConverter->ConvertToUnicode(aDestBuffer, aInputBuffer, state, unconvertable);
 		}break;
 	case ID3_FIELD_TEXTENCODING_UTF_16BE:
 		{
+			if(iLastConverterCharset != KCharacterSetIdentifierUnicodeBig)
+			{
+				iCharConverter->PrepareToConvertToOrFromL(KCharacterSetIdentifierUnicodeBig, CEikonEnv::Static()->FsSession()); 
+				iLastConverterCharset = KCharacterSetIdentifierUnicodeBig;
+			}
+			TInt unconvertable = 0;
+			TInt state = 0;
+			iCharConverter->ConvertToUnicode(aDestBuffer, aInputBuffer, state, unconvertable);	
 		}break;
 	case ID3_FIELD_TEXTENCODING_ISO_8859_1:
 		{
+			if(iLastConverterCharset != KCharacterSetIdentifierIso88591)
+				{
+				iCharConverter->PrepareToConvertToOrFromL(KCharacterSetIdentifierIso88591, CEikonEnv::Static()->FsSession()); 
+				iLastConverterCharset = KCharacterSetIdentifierIso88591;
+				}
 			TInt unconvertable = 0;
 			TInt state = 0;
 			iCharConverter->ConvertToUnicode(aDestBuffer, aInputBuffer, state, unconvertable);
