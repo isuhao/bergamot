@@ -541,7 +541,7 @@ void CShowEngine::SelectShowsByFeed(TUint aFeedUid)
 	
 	// now purge if more than limit
 	int count = iSelectedShows.Count();
-	while (count > iPodcastModel.SettingsEngine().MaxListItems()) {
+	while (count >= iPodcastModel.SettingsEngine().MaxListItems()) {
 		RDebug::Print(_L("Too many items, Removing"));
 		//delete iSelectedShows[count-1];
 		iSelectedShows[count-1]->SetDelete();
