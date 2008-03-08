@@ -124,6 +124,7 @@ void CMetaDataReader::ParseNextShow()
 			enum id3_field_textencoding encoding = ID3_FIELD_TEXTENCODING_UTF_8;
 			if(frame != NULL)
 			{
+				len = 0;
 				for( cnt = 0;cnt<frame->nfields;cnt++)
 				{
 					ptr = (char*) iTempDataBuffer.Ptr();
@@ -141,6 +142,8 @@ void CMetaDataReader::ParseNextShow()
 
 			if(frame != NULL)
 			{
+				len = 0;
+
 				for( cnt = 0;cnt<frame->nfields;cnt++)
 				{
 					ptr = (char*) iTempDataBuffer.Ptr();
@@ -156,6 +159,8 @@ void CMetaDataReader::ParseNextShow()
 
 			if(frame != NULL)
 			{
+				len = 0;
+
 				for( cnt = 0;cnt<frame->nfields;cnt++)
 				{
 					ptr = (char*) iTempDataBuffer.Ptr();
@@ -172,6 +177,8 @@ void CMetaDataReader::ParseNextShow()
 			frame = id3_tag_findframe(tag, ID3_FRAME_TRACK, 0);
 			if(frame != NULL)
 			{
+				len = 0;
+
 				for( cnt = 0;cnt<frame->nfields;cnt++)
 				{
 					ptr = (char*) iTempDataBuffer.Ptr();
