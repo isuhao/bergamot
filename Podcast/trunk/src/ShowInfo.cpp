@@ -18,6 +18,7 @@ void CShowInfo::ConstructL()
 
 CShowInfo::CShowInfo()
 	{
+	iTrackNo = KMaxTUint; 
 	}
 
 CShowInfo::~CShowInfo()
@@ -81,6 +82,7 @@ void CShowInfo::ExternalizeL(RWriteStream& aStream) const
 	aStream.WriteInt32L(I64HIGH(iPubDate.Int64()));
 	aStream.WriteUint32L(iPlayTime);
 	aStream.WriteUint32L(iIsBookFile);
+	aStream.WriteUint32L(iTrackNo);
 	}
 
 
@@ -130,6 +132,7 @@ void CShowInfo::InternalizeL(RReadStream& aStream)
 	iPubDate = MAKE_TINT64(high, low);
 	TRAP_IGNORE(iPlayTime = aStream.ReadUint32L());
 	TRAP_IGNORE(iIsBookFile = aStream.ReadUint32L());
+	TRAP_IGNORE(iTrackNo = aStream.ReadUint32L());
 	}
 
 const TDesC& CShowInfo::Title() const
@@ -293,3 +296,16 @@ TBool CShowInfo::IsBookFile()
 	{
 	return iIsBookFile;
 	}
+
+void CShowInfo::SetTrackNo(TUint aTrackId)
+	{
+	iTrackNo = aTrackId;
+	}
+
+TUint CShowInfo::TrackNo() const
+	{
+	return iTrackNo;
+	}
+
+
+

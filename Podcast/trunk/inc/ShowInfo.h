@@ -70,6 +70,9 @@ public:
 	
 	void SetIsBookFile(TBool aIsBookFile);
 	TBool IsBookFile();
+
+	void SetTrackNo(TUint aTrackNo);
+	TUint TrackNo() const;
 private:
 	CShowInfo();
 	void ConstructL();
@@ -86,6 +89,7 @@ private:
 	TUint iFeedUid;
 	TUint iUid;
 	TUint iShowSize;
+	TUint iTrackNo;
 	TTime iPubDate;
 	TBool iDelete;
 	TBool iIsBookFile;

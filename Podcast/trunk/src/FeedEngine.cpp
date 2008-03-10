@@ -588,7 +588,9 @@ void CFeedEngine::AddBookL(const TDesC& aBookTitle, CDesCArrayFlat* aFileNameArr
 			showInfo->SetUrlL(aFileNameArray->MdcaPoint(loop));
 			showInfo->SetFeedUid(item->Uid());
 			showInfo->SetPubDate(time);
-			
+			showInfo->SetTrackNo(loop+1);
+			showInfo->SetIsBookFile(ETrue);
+
 			showInfo->SetFileNameL(aFileNameArray->MdcaPoint(loop));
 
 			if(iFs.Entry(aFileNameArray->MdcaPoint(loop), fileInfo) == KErrNone)
@@ -597,10 +599,12 @@ void CFeedEngine::AddBookL(const TDesC& aBookTitle, CDesCArrayFlat* aFileNameArr
 			}
 
 			showInfo->SetPlayState(ENeverPlayed);
-			iPodcastModel.ShowEngine().AddShow(showInfo);
+			iPodcastModel.ShowEngine().AddShow(showInfo);			
+			iPodcastModel.ShowEngine().MetaDataReader().SubmitShow(showInfo);
+			
 			CleanupStack::Pop(showInfo);
 		}
-
+		
 		TLinearOrder<CFeedInfo> sortOrder( CFeedEngine::CompareFeedsByTitle);
 		iSortedBooks.InsertInOrder(item, sortOrder);
 		CleanupStack::Pop(item);

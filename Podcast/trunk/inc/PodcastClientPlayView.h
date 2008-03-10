@@ -50,6 +50,8 @@ public:
 	void ImageConverterEventL(TQikImageConverterEvent aMessage, TInt aErrCode);
 
 	TKeyResponse OfferKeyEventL(const TKeyEvent& aKeyEvent,TEventCode aType);
+
+	void UpdateMaxProgressValueL(TInt aDuration);
 private:
 	void HandleControlEventL(CCoeControl* aControl,TCoeEvent aEventType);
 	CPodcastClientPlayView(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel);
@@ -77,5 +79,6 @@ private:
 	TInt iLastZoomLevel;
 	TInt iCurrentViewShowUid;
 	TBool iPlayOnInit;
+	TUint iMaxProgressValue;
 	};
 #endif // PODCASTPLAYVIEW_H

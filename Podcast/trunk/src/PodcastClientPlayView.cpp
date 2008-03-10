@@ -27,7 +27,6 @@
 
 const TInt KAudioTickerPeriod = 1000000;
 const TInt KMaxCoverImageWidth = 200;
-const TInt KMaxProgressValue = 320;
 const TInt KTimeLabelSize = 32;
 
 _LIT(KZeroTime,"0:00:00");
@@ -58,7 +57,7 @@ default view.
 @param aAppUi Reference to the application UI
 */
 CPodcastClientPlayView::CPodcastClientPlayView(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel) 
-	: CQikViewBase(aAppUi, KNullViewId), iPodcastModel(aPodcastModel)
+	: CQikViewBase(aAppUi, KNullViewId), iPodcastModel(aPodcastModel), iMaxProgressValue(100)
 	{
 	}
 
@@ -111,7 +110,7 @@ void CPodcastClientPlayView::HandleControlEventL(CCoeControl* aControl,TCoeEvent
 			TUint ptime = iPodcastModel.SoundEngine().PlayTime();
 			if(ptime > 0)
 			{
-				iPodcastModel.SoundEngine().SetPosition((value*ptime)/KMaxProgressValue);
+				iPodcastModel.SoundEngine().SetPosition((value*ptime)/iMaxProgressValue);
 			}
 		}
 	}
@@ -167,10 +166,36 @@ void CPodcastClientPlayView::PlaybackInitializedL()
 	if(iPlayOnInit)
 	{
 		iPlayOnInit = EFalse;
+		UpdateMaxProgressValueL(iPodcastModel.SoundEngine().PlayTime());	
+								
 		iPodcastModel.SoundEngine().Play();
 	}
 }
 
+void CPodcastClientPlayView::UpdateMaxProgressValueL(TInt aDuration)
+{
+	iMaxProgressValue = aDuration;
+	
+	if(iMaxProgressValue>120)
+		{
+			iPlayProgressbar->SetNumberOfMarkersL(iMaxProgressValue/60);		
+		}
+		else
+		{
+			if(iMaxProgressValue == 0)
+				{
+				iMaxProgressValue++;
+				}
+
+			iMaxProgressValue = iMaxProgressValue*10;
+
+		
+			iPlayProgressbar->SetNumberOfMarkersL(10);			
+		}
+
+	iPlayProgressbar->SetMaxValueL(iMaxProgressValue);
+	iPlayProgressbar->DrawDeferred();
+}
 
 void CPodcastClientPlayView::PlaybackStartedL()
 {
@@ -188,6 +213,13 @@ void CPodcastClientPlayView::PlaybackStoppedL()
 
 	if(iShowInfo->IsBookFile())
 	{
+		CShowInfo* nextShow = iPodcastModel.ShowEngine().GetNextShowByTrackL(iShowInfo);
+		if(nextShow != NULL)
+			{
+			iShowInfo = nextShow;
+			iPlayOnInit = ETrue;
+			iPodcastModel.PlayPausePodcastL(iShowInfo);
+			}
 	}
 }
 
@@ -584,8 +616,8 @@ void CPodcastClientPlayView::UpdateViewL()
 		}
 
 		
-
 		RequestRelayout(this);
+
 		if(iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.PlayingPodcast()->Uid() == iShowInfo->Uid() && iPodcastModel.SoundEngine().State() == ESoundEnginePlaying)
 		{
 			iPlaybackTicker->Cancel();
@@ -620,7 +652,7 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 		comMan.SetDimmed(*this, EPodcastStop, (iPodcastModel.SoundEngine().State() <= ESoundEngineOpening || iPodcastModel.SoundEngine().State() == ESoundEngineStopped));
 		if(iPlayProgressbar != NULL)
 		{
-			iPlayProgressbar->SetDimmed(iPodcastModel.SoundEngine().State() == ESoundEngineNotInitialized );
+			iPlayProgressbar->SetDimmed(iPodcastModel.SoundEngine().State() <= ESoundEngineOpening );
 			
 			if(iPodcastModel.SoundEngine().PlayTime()>0 )
 			{
@@ -629,7 +661,7 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 				{
 					TUint duration = iPodcastModel.SoundEngine().PlayTime();
 					pos = iPodcastModel.SoundEngine().Position().Int64()/1000000;
-					iPlayProgressbar->SetValue((KMaxProgressValue*pos)/duration);
+					iPlayProgressbar->SetValue((iMaxProgressValue*pos)/duration);
 					iPlayProgressbar->DrawDeferred();		
 				}
 				else if (iPodcastModel.SoundEngine().State() == ESoundEngineStopped)
@@ -638,7 +670,7 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 					{				
 						TUint duration = iShowInfo->PlayTime();
 						pos = iShowInfo->Position().Int64()/1000000;
-						iPlayProgressbar->SetValue((KMaxProgressValue*pos)/duration);
+						iPlayProgressbar->SetValue((iMaxProgressValue*pos)/duration);
 					}
 					else
 					{
@@ -654,7 +686,7 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 				{				
 					TUint duration = iShowInfo->PlayTime();
 					pos = iShowInfo->Position().Int64()/1000000;
-					iPlayProgressbar->SetValue((KMaxProgressValue*pos)/duration);
+					iPlayProgressbar->SetValue((iMaxProgressValue*pos)/duration);
 				}
 				else
 				{
@@ -675,11 +707,14 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 			{				
 				TUint duration = iShowInfo->PlayTime();
 				pos = iShowInfo->Position().Int64()/1000000;
-				iPlayProgressbar->SetValue((KMaxProgressValue*pos)/duration);
+				
+				UpdateMaxProgressValueL(duration);
+				iPlayProgressbar->SetValue((iMaxProgressValue*pos)/duration);
 			}
 			else
 			{
 				iPlayProgressbar->SetValue(0);
+				UpdateMaxProgressValueL(0);
 			}
 
 			iPlayProgressbar->DrawDeferred();

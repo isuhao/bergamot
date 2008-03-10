@@ -187,11 +187,6 @@ TBool CShowEngine::AddShow(CShowInfo *item)
 		}
 	iShows.Append(item);
 
-	if(item->IsBookFile())
-		{
-		iMetaDataReader->SubmitShow(item);
-		}
-
 	return ETrue;
 	}
 
@@ -258,6 +253,27 @@ CShowInfo* CShowEngine::GetShowByUidL(TUint aShowUid)
 
 	return NULL;
 	}
+
+CShowInfo* CShowEngine::GetNextShowByTrackL(CShowInfo* aShowInfo)
+	{
+	TInt cnt = iShows.Count();
+	CShowInfo* nextShow = NULL;
+	TInt diff = KMaxTInt;
+	for(TInt loop = 0; loop<cnt; loop++)
+		{
+			if(aShowInfo->FeedUid() == iShows[loop]->FeedUid() && aShowInfo->TrackNo() < iShows[loop]->TrackNo())
+				{
+				if((iShows[loop]->TrackNo() - aShowInfo->TrackNo()) < diff)
+					{
+					diff = iShows[loop]->TrackNo() - aShowInfo->TrackNo();
+					nextShow = iShows[loop];
+					}
+				}
+		}
+
+	return nextShow;
+	}
+
 
 TBool CShowEngine::CompareShowsByUid(const CShowInfo &a, const CShowInfo &b)
 {
@@ -468,7 +484,27 @@ void CShowEngine::RemoveAllShowsByFeed(TUint aFeedUid)
 			}
 		}
 	}
+
+void CShowEngine::RemoveShow(TUint aShowUid, TBool aRemoveFile)
+	{
+	const TInt count = iShows.Count();
 	
+	for (TInt i=count-1 ; i >= 0; i--)
+		{
+		if (iShows[i]->Uid() == aShowUid)
+			{
+			if (iShows[i]->FileName().Length() > 0 && aRemoveFile) 
+				{
+				BaflUtils::DeleteFile(iFs, iShows[i]->FileName());			
+				}
+
+			CShowInfo* show = iShows[i];
+			iShows.Remove(i);
+			delete show;
+			break;
+			}
+		}
+	}
 
 
 void CShowEngine::PurgePlayedShows()
@@ -798,5 +834,10 @@ void CShowEngine::ReadMetaDataComplete()
 	SaveShows();
 	for (int i=0;i<iObservers.Count();i++) {
 		iObservers[i]->ShowListUpdated();
+		}
 	}
+
+CMetaDataReader& CShowEngine::MetaDataReader()
+	{
+	return *iMetaDataReader;
 	}

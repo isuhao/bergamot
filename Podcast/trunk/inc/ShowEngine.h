@@ -24,6 +24,7 @@ public:
 	
 	CShowInfo* ShowDownloading();
 	CShowInfo* GetShowByUidL(TUint aShowUid);
+	CShowInfo* GetNextShowByTrackL(CShowInfo* aShowInfo);
 
 	// show selection methods
 	void SelectAllShows();
@@ -41,6 +42,7 @@ public:
 	void PurgePlayedShows();
 	void PurgeOldShows();
 	void PurgeShow(TUint aShowUid);
+	void RemoveShow(TUint aShowUid, TBool aRemoveFile = EFalse);
 	
 	RShowInfoArray& GetSelectedShows();
 	void SetSelectionPlayed();
@@ -53,6 +55,7 @@ public:
 	void RemoveObserver(MShowEngineObserver *observer);
 	
 	TUint GetGrossSelectionLength();
+	CMetaDataReader& MetaDataReader();
 protected:
 	// from HttpClientObserver, dont have to be public
 	void Connected(CHttpClient* aClient);

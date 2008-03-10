@@ -125,7 +125,14 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 					TInt index = iListbox->CurrentItemIndex();
 					if(index >= 0 && index < iPodcastModel.ActiveShowList().Count())
 					{
-						iPodcastModel.ShowEngine().PurgeShow(iPodcastModel.ActiveShowList()[index]->Uid());					
+						if(iPodcastModel.ActiveShowList()[index]->IsBookFile())
+							{
+							iPodcastModel.ShowEngine().RemoveShow(iPodcastModel.ActiveShowList()[index]->Uid());	
+							}
+						else
+							{
+							iPodcastModel.ShowEngine().PurgeShow(iPodcastModel.ActiveShowList()[index]->Uid());	
+							}
 						UpdateListboxItemsL();
 					}
 				}

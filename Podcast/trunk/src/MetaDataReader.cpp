@@ -4,6 +4,8 @@
 #include <utf.h>
 #include <charconv.h>
 #include <eikenv.h>
+#include <mmf\common\mmfMeta.h>
+
 _LIT(KMP3Extension, ".MP3");
 CMetaDataReader::CMetaDataReader(MMetaDataReaderObserver& aObserver) : iObserver(aObserver)
 {
@@ -185,7 +187,11 @@ void CMetaDataReader::ParseNextShow()
 					len = id3_field_render(&frame->fields[cnt], (id3_byte_t**)&ptr, &encoding,0);					
 				}
 				iTempDataBuffer.SetLength(len);
-				ConvertToUniCodeL(iStringBuffer, iTempDataBuffer, encoding);			
+				TLex8 lexer(iTempDataBuffer);
+				TUint value = 0;
+				if(lexer.Val(value) == KErrNone) {
+					iShow->SetTrackNo(value);
+				}
 			}
 			
 			id3_file_close(id3_file);
@@ -225,7 +231,7 @@ void CMetaDataReader::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeco
 					continue;
 				}
 				TBuf<1024> buf;
-				if (entry->Name() == _L("title")) {
+				if (entry->Name() == KMMFMetaEntrySongTitle) {
 					buf.Copy(entry->Value());
 					iShow->SetTitleL(buf);
 					RDebug::Print(_L("title: %S"), &(iShow->Title()));
@@ -237,7 +243,7 @@ void CMetaDataReader::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeco
 					buf.Append(entry->Value());
 					
 					iShow->SetDescriptionL(buf);
-				} else if (entry->Name() == _L("album")) {
+				} else if (entry->Name() == KMMFMetaEntryAlbum) {
 					if (iShow->Description().Length() > 0) {
 						buf.Copy(iShow->Description());
 					}
@@ -245,7 +251,14 @@ void CMetaDataReader::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeco
 					buf.Append(entry->Value());
 					
 					iShow->SetDescriptionL(buf);
-				}			
+				}	
+				else if (entry->Name() == KMMFMetaEntryAlbumTrack) {
+					TLex lexer(entry->Value());
+					TUint value = 0;
+					if(lexer.Val(value) == KErrNone) {
+						iShow->SetTrackNo(value);
+					}
+				}
 			}
 		}
 	}
