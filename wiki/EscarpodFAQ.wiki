@@ -6,3 +6,16 @@ You can use Bluetooth headsets with Escarpod, at least with Sony Ericsson phones
 == How do I Import Feeds ==
 
 Escarpod supports OPML lists of feeds from version 0.94 onwards. Use Import feeds from the menu.
+
+An example OPML file may look like this:
+
+{{{
+<?xml version="1.0"?>
+<opml version="1.1">
+<body>
+  <outline text="Stephen Fry's Podgrams" xmlUrl="http://www.stephenfry.com/podcasts/rss.xml" />
+  <outline text="LugRadio" xmlUrl="http://lugradio.org/episodes.rss"/>
+  <outline text="TWiT" xmlUrl="http://leo.am/podcasts/twit" />
+</body>
+</opml>
+}}}
