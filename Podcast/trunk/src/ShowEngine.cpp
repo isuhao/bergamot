@@ -9,7 +9,6 @@
 CShowEngine::CShowEngine(CPodcastModel& aPodcastModel) : iPodcastModel(aPodcastModel)
 	{
 	iDownloadsSuspended = ETrue;
-	iSelectOnlyUnplayed = ETrue;
 	}
 
 CShowEngine::~CShowEngine()
@@ -520,17 +519,6 @@ void CShowEngine::PurgePlayedShows()
 	}
 }
 
-void CShowEngine::SetSelectUnplayedOnly(TBool aOnlyUnplayed)
-	{
-	iSelectOnlyUnplayed = aOnlyUnplayed;
-	}
-
-TBool CShowEngine::SelectUnplayedOnly()
-	{
-	return iSelectOnlyUnplayed;
-	}
-
-
 void CShowEngine::PurgeOldShows()
 	{
 	// TODO: implement
@@ -557,7 +545,7 @@ TUint CShowEngine::GetGrossSelectionLength()
 
 void CShowEngine::SelectShowsByFeed(TUint aFeedUid)
 	{
-	RDebug::Print(_L("SelectShowsByFeed: %u, unplayed only=%d"), aFeedUid, iSelectOnlyUnplayed);
+	RDebug::Print(_L("SelectShowsByFeed: %u, unplayed only=%d"), aFeedUid, iPodcastModel.SettingsEngine().SelectUnplayedOnly());
 	iSelectedShows.Reset();
 	iGrossSelectionLength = 0;
 	for (int i=0;i<iShows.Count();i++)
@@ -565,7 +553,7 @@ void CShowEngine::SelectShowsByFeed(TUint aFeedUid)
 		if (iShows[i]->FeedUid() == aFeedUid)
 			{
 			iGrossSelectionLength++;
-			if (!iSelectOnlyUnplayed || (iSelectOnlyUnplayed && iShows[i]->PlayState() == ENeverPlayed) ) {
+			if (!iPodcastModel.SettingsEngine().SelectUnplayedOnly() || (iPodcastModel.SettingsEngine().SelectUnplayedOnly() && iShows[i]->PlayState() == ENeverPlayed) ) {
 				iSelectedShows.Append(iShows[i]);
 			}
 			}
@@ -612,7 +600,7 @@ void CShowEngine::SelectShowsDownloaded()
 		if (iShows[i]->DownloadState() == EDownloaded)
 			{
 			iGrossSelectionLength++;
-			if (!iSelectOnlyUnplayed || (iSelectOnlyUnplayed && iShows[i]->PlayState() == ENeverPlayed) ) {
+			if (!iPodcastModel.SettingsEngine().SelectUnplayedOnly() || (iPodcastModel.SettingsEngine().SelectUnplayedOnly() && iShows[i]->PlayState() == ENeverPlayed) ) {
 				iSelectedShows.Append(iShows[i]);
 				}
 			}

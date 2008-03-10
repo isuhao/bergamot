@@ -48,8 +48,6 @@ public:
 	void SetSelectionPlayed();
 	void CheckFiles();
 	void GetStatsByFeed(TUint aFeedUid, TUint &aNumShows, TUint &aNumUnplayed );
-	void SetSelectUnplayedOnly(TBool aOnlyUnplayed);
-	TBool SelectUnplayedOnly();
 
 	void AddObserver(MShowEngineObserver *observer);
 	void RemoveObserver(MShowEngineObserver *observer);
@@ -105,9 +103,7 @@ private:
     RArray<MShowEngineObserver*> iObservers;
 
     TBool iDownloadsSuspended;
-    
-    TBool iSelectOnlyUnplayed;
-    
+        
     TUint iDownloadErrors;
     
     CMetaDataReader* iMetaDataReader;

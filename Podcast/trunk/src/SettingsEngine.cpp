@@ -4,9 +4,13 @@
 #include "SettingsEngine.h"
 #include "SoundEngine.h"
 #include "FeedEngine.h"
-
+#include "ShowEngine.h"
+const TUid KMainSettingsStoreUid = {0x1000};
+const TUid KMainSettingsUid = {0x1001};
+const TUid KExtraSettingsUid = {0x2001};
 CSettingsEngine::CSettingsEngine(CPodcastModel& aPodcastModel) : iPodcastModel(aPodcastModel)
 	{
+		iSelectOnlyUnplayed = ETrue;
 	}
 
 CSettingsEngine::~CSettingsEngine()
@@ -94,34 +98,34 @@ void CSettingsEngine::LoadSettingsL()
 	configPath.Append(KConfigFile);
 
 	RDebug::Print(_L("Checking settings file: %S"), &configPath);
-	if (!BaflUtils::FileExists(iFs, configPath)) 
-		{
-		User::Leave(KErrNotFound);
-		}
 	
-	CFileStore* store = CDirectFileStore::OpenL(iFs,configPath,EFileRead);
-	CleanupStack::PushL(store);
-	
-	RStoreReadStream stream;
-	stream.OpenLC(*store, store->Root());
-	
-	TInt len = stream.ReadInt32L();
-	stream.ReadL(iBaseDir, len);
-	iUpdateFeedInterval = stream.ReadInt32L();
-	iUpdateAutomatically = static_cast<TAutoUpdateSetting>(stream.ReadInt32L());
-	iDownloadAutomatically = stream.ReadInt32L();
+	CDictionaryFileStore* store = CDictionaryFileStore::OpenLC(iFs, configPath, KMainSettingsStoreUid);
 
-	iMaxSimultaneousDownloads = stream.ReadInt32L();
-	iIap = stream.ReadInt32L();
-	iPodcastModel.SetIap(iIap);
-	
-	TInt low = stream.ReadInt32L();
-	TInt high = stream.ReadInt32L();
-	iUpdateFeedTime = MAKE_TINT64(high, low);
-
-	RDebug::Print(_L("CSettingsEngine::LoadSettingsL\t Settings loaded OK"));
-	CleanupStack::PopAndDestroy(2); // readStream and iniFile
+	if( store->IsPresentL(KMainSettingsUid) )
+	{
+		RDictionaryReadStream stream;
+		stream.OpenLC(*store, KMainSettingsUid);
+		
+		TInt len = stream.ReadInt32L();
+		stream.ReadL(iBaseDir, len);
+		iUpdateFeedInterval = stream.ReadInt32L();
+		iUpdateAutomatically = static_cast<TAutoUpdateSetting>(stream.ReadInt32L());
+		iDownloadAutomatically = stream.ReadInt32L();
+		
+		iMaxSimultaneousDownloads = stream.ReadInt32L();
+		iIap = stream.ReadInt32L();
+		iPodcastModel.SetIap(iIap);
+		
+		TInt low = stream.ReadInt32L();
+		TInt high = stream.ReadInt32L();
+		iUpdateFeedTime = MAKE_TINT64(high, low);
+					
+		iSelectOnlyUnplayed = stream.ReadInt32L();
+		CleanupStack::PopAndDestroy(1); // readStream and iniFile
+		RDebug::Print(_L("CSettingsEngine::LoadSettingsL\t Settings loaded OK"));
 	}
+	CleanupStack::PopAndDestroy();// close store
+}
 
 void CSettingsEngine::SaveSettingsL()
 	{
@@ -130,12 +134,11 @@ void CSettingsEngine::SaveSettingsL()
 	TFileName configPath;
 	configPath.Copy(PrivatePath());
 	configPath.Append(KConfigFile);
-	
-	CFileStore* store = CDirectFileStore::ReplaceLC(iFs, configPath, EFileWrite);
-	store->SetTypeL(KDirectFileStoreLayoutUid);
 
-	RStoreWriteStream stream;
-	TStreamId id = stream.CreateLC(*store);
+	CDictionaryFileStore* store = CDictionaryFileStore::OpenLC(iFs, configPath, KMainSettingsStoreUid);
+
+	RDictionaryWriteStream stream;
+	stream.AssignLC(*store, KMainSettingsUid);
 		
 	stream.WriteInt32L(iBaseDir.Length());
 	stream.WriteL(iBaseDir);
@@ -147,9 +150,9 @@ void CSettingsEngine::SaveSettingsL()
 	
 	stream.WriteInt32L(I64LOW(iUpdateFeedTime.Int64()));
 	stream.WriteInt32L(I64HIGH(iUpdateFeedTime.Int64()));
+	stream.WriteInt32L(iSelectOnlyUnplayed);
 
 	stream.CommitL();
-	store->SetRootL(id);
 	store->CommitL();
 	CleanupStack::PopAndDestroy(2); // stream and store
 	}
@@ -350,3 +353,15 @@ void CSettingsEngine::SetVolume(TInt aVolume)
 		iPodcastModel.SoundEngine().SetVolume(iVolume);
 		}
 	}
+
+void CSettingsEngine::SetSelectUnplayedOnly(TBool aOnlyUnplayed)
+	{
+	iSelectOnlyUnplayed = aOnlyUnplayed;
+	}
+
+TBool CSettingsEngine::SelectUnplayedOnly()
+	{
+	return iSelectOnlyUnplayed;
+	}
+
+

@@ -38,6 +38,7 @@ void CSoundEngine::MapcPlayComplete(TInt aError) {
 		
 	if (iPodcastModel.PlayingPodcast() != NULL) {
 		iPodcastModel.PlayingPodcast()->SetPlayState(EPlayed);
+		iPodcastModel.PlayingPodcast()->SetPosition(0);
 	}
 
 	iState = ESoundEngineStopped;
@@ -45,7 +46,23 @@ void CSoundEngine::MapcPlayComplete(TInt aError) {
 	{
 		TRAPD(err, iObserver->PlaybackStoppedL());
 	}
+
+	if(iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.PlayingPodcast()->IsBookFile())
+	{
+		CShowInfo* nextShow = iPodcastModel.ShowEngine().GetNextShowByTrackL(iPodcastModel.PlayingPodcast());
+		if(nextShow != NULL)
+		{
+			iPodcastModel.PlayPausePodcastL(nextShow);
+		
+			//iPlayOnInit = ETrue;			
+		}
+	}
 }
+
+
+
+
+	
 
 void CSoundEngine::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds &/*aDuration */) {
 	if (aError != KErrNone)

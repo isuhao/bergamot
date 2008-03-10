@@ -404,6 +404,9 @@ void CFeedEngine::CompleteL(CHttpClient* /*aClient*/, TBool aSuccessful)
 		}
 	else	// iClientState == EUpdatingImage
 		{
+		// change client state to not updating
+		iClientState = ENotUpdating;
+		
 		NotifyFeedUpdateComplete();
 		UpdateNextFeedL();
 		}

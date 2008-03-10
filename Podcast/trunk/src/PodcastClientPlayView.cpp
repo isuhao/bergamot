@@ -27,7 +27,7 @@
 
 const TInt KAudioTickerPeriod = 1000000;
 const TInt KMaxCoverImageWidth = 200;
-const TInt KTimeLabelSize = 32;
+const TInt KTimeLabelSize = 64;
 
 _LIT(KZeroTime,"0:00:00");
 /**
@@ -161,7 +161,10 @@ TInt CPodcastClientPlayView::PlayingUpdateStaticCallbackL(TAny* aPlayView)
 
 void CPodcastClientPlayView::PlaybackInitializedL()
 {
-	UpdateViewL();
+	if(iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.PlayingPodcast()->Uid() == iShowInfo->Uid())
+	{
+		UpdateViewL();
+	}
 
 	if(iPlayOnInit)
 	{
@@ -178,6 +181,7 @@ void CPodcastClientPlayView::UpdateMaxProgressValueL(TInt aDuration)
 	
 	if(iMaxProgressValue>120)
 		{
+			iPlayProgressbar->SetMaxValueL(iMaxProgressValue);
 			iPlayProgressbar->SetNumberOfMarkersL(iMaxProgressValue/60);		
 		}
 		else
@@ -189,38 +193,33 @@ void CPodcastClientPlayView::UpdateMaxProgressValueL(TInt aDuration)
 
 			iMaxProgressValue = iMaxProgressValue*10;
 
-		
+			iPlayProgressbar->SetMaxValueL(iMaxProgressValue);
 			iPlayProgressbar->SetNumberOfMarkersL(10);			
 		}
 
-	iPlayProgressbar->SetMaxValueL(iMaxProgressValue);
 	iPlayProgressbar->DrawDeferred();
 }
 
 void CPodcastClientPlayView::PlaybackStartedL()
 {
 	iPlaybackTicker->Cancel();
-	iPlaybackTicker->Start(KAudioTickerPeriod, KAudioTickerPeriod, TCallBack(PlayingUpdateStaticCallbackL, this));
-	UpdatePlayStatusL();
+
+	if(iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.PlayingPodcast()->Uid() == iShowInfo->Uid())
+		{
+		iPlaybackTicker->Start(KAudioTickerPeriod, KAudioTickerPeriod, TCallBack(PlayingUpdateStaticCallbackL, this));
+		UpdatePlayStatusL();
+		}
 }
 
 void CPodcastClientPlayView::PlaybackStoppedL()
 {
 	iPlaybackTicker->Cancel();
-	iShowInfo->SetPosition(0);
-	iPodcastModel.PlayingPodcast()->SetPosition(0);
-	UpdatePlayStatusL();
 
-	if(iShowInfo->IsBookFile())
-	{
-		CShowInfo* nextShow = iPodcastModel.ShowEngine().GetNextShowByTrackL(iShowInfo);
-		if(nextShow != NULL)
-			{
-			iShowInfo = nextShow;
-			iPlayOnInit = ETrue;
-			iPodcastModel.PlayPausePodcastL(iShowInfo);
-			}
-	}
+	if(iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.PlayingPodcast()->Uid() == iShowInfo->Uid())
+	{	
+		iShowInfo->SetPosition(0);
+		UpdatePlayStatusL();
+	}	
 }
 
 
@@ -452,13 +451,16 @@ void CPodcastClientPlayView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload
 		iDownloadProgressInfo->SetAndDraw(aBytesOfCurrentDownload);
 	}
 
-	if(aPercentOfCurrentDownload == KOneHundredPercent && iPodcastModel.PlayingPodcast() == iPodcastModel.ShowEngine().ShowDownloading())
+	if(aPercentOfCurrentDownload == KOneHundredPercent)
 	{
+		if(iPodcastModel.PlayingPodcast() == iPodcastModel.ShowEngine().ShowDownloading())
+		{
 		// To update icon list status and commands
 		CShowInfo* playingPodcast = iPodcastModel.PlayingPodcast();
 		// Reset current podcast statsus
 		iPodcastModel.PlayPausePodcastL(NULL);
 		iPodcastModel.PlayPausePodcastL(playingPodcast);
+		}
 
 		UpdateViewL();
 	}
@@ -742,7 +744,7 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 			{
 				TUint playtime = 0;
 				TBuf<KTimeLabelSize> totTime = _L("00:00");
-
+			
 				if(showInfo->Uid() == iShowInfo->Uid())
 				{
 					playtime = iPodcastModel.SoundEngine().PlayTime();
@@ -777,6 +779,12 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 				}
 				time.Append(_L("/"));
 				time.Append(totTime);
+
+				if(iShowInfo->TrackNo() != KMaxTUint)
+				{
+					totTime.Format(_L("%02d-"), iShowInfo->TrackNo());
+					time.Insert(0, totTime);
+				}
 			}
 			else if (showInfo == NULL) // No other show playing start to init this one
 			{

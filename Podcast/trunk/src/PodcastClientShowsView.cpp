@@ -11,6 +11,7 @@
 #include "PodcastClientPlayView.h"
 #include "PodcastModel.h"
 #include "ShowEngine.h"
+#include "SettingsEngine.h"
 
 _LIT(KSizeDownloadingOf, "%S/%S");
 
@@ -142,7 +143,7 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 			break;
 		case EPodcastShowUnplayedOnly:
 			{
-			iPodcastModel.ShowEngine().SetSelectUnplayedOnly(!iPodcastModel.ShowEngine().SelectUnplayedOnly());
+			iPodcastModel.SettingsEngine().SetSelectUnplayedOnly(!iPodcastModel.SettingsEngine().SelectUnplayedOnly());
 			UpdateListboxItemsL();
 			}break;
 		case EPodcastMarkAllPlayed:
@@ -661,7 +662,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 	comMan.SetInvisible(*this, EPodcastPurgeShow, removePurgeShowCmd);
 	comMan.SetInvisible(*this, EPodcastPurgeFeed, (iCurrentCategory == EShowPendingShows || iCurrentCategory == EShowDownloadedShows));
 	comMan.SetInvisible(*this, EPodcastDeleteAllShows, (iCurrentCategory != EShowDownloadedShows));
-	comMan.SetChecked(*this, EPodcastShowUnplayedOnly, iPodcastModel.ShowEngine().SelectUnplayedOnly());
+	comMan.SetChecked(*this, EPodcastShowUnplayedOnly, iPodcastModel.SettingsEngine().SelectUnplayedOnly());
 	
 	
 	comMan.SetAvailable(*this, EPodcastUpdateFeed, !updatingState);

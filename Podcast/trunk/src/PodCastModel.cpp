@@ -55,6 +55,7 @@ void CPodcastModel::ConstructL()
 	iSettingsEngine = CSettingsEngine::NewL(*this);
 	iFeedEngine = CFeedEngine::NewL(*this);
 	iShowEngine = CShowEngine::NewL(*this);
+
 	iSoundEngine = CSoundEngine::NewL(*this);
 #if defined (__WINS__)
 #else

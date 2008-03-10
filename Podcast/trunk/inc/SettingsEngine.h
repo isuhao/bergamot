@@ -69,6 +69,9 @@ class CSettingsEngine : public CBase
 		TInt Volume();
 		void SetVolume(TInt aVolume);
 
+		void SetSelectUnplayedOnly(TBool aOnlyUnplayed);
+		TBool SelectUnplayedOnly();
+
 		void SaveSettingsL();
 
 
@@ -96,6 +99,7 @@ class CSettingsEngine : public CBase
 		RFs iFs;						// File system
 		CPodcastModel &iPodcastModel; 	// reference to the model
 
+	    TBool iSelectOnlyUnplayed;
 	};
 
 #endif /*SETTINGSENGINE_H_*/
