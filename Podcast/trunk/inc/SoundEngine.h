@@ -34,7 +34,7 @@ class CSoundEngine : public CBase, public MMdaAudioPlayerCallback
 public:
 	static CSoundEngine* NewL(CPodcastModel& aPodcastModel);
 	~CSoundEngine();
-	void OpenFileL(const TDesC& aFileName);
+	void OpenFileL(const TDesC& aFileName, TBool aPlayOnInit);
 	void Play();
 	void Stop();
 	TTimeIntervalMicroSeconds Position();
@@ -63,6 +63,7 @@ private:
 	TSoundEngineState iState;
 	MSoundEngineObserver* iObserver;
 	TFileName	iLastOpenedFileName;
+	TBool iPlayOnInit;
 };
 
 #endif // SOUND_ENGINE_H

@@ -141,7 +141,7 @@ CSettingsEngine& CPodcastModel::SettingsEngine()
 	return *iSettingsEngine;
 }
 
-void CPodcastModel::PlayPausePodcastL(CShowInfo* aPodcast) 
+void CPodcastModel::PlayPausePodcastL(CShowInfo* aPodcast, TBool aPlayOnInit) 
 	{
 	
 	// special treatment if this podcast is already active
@@ -164,7 +164,7 @@ void CPodcastModel::PlayPausePodcastL(CShowInfo* aPodcast)
 
 		if(aPodcast != NULL) {
 			RDebug::Print(_L("Starting: %S"), &(aPodcast->FileName()));
-			TRAPD(error, iSoundEngine->OpenFileL(aPodcast->FileName()));
+			TRAPD( error, iSoundEngine->OpenFileL(aPodcast->FileName(), aPlayOnInit) );
 			if (error != KErrNone) {
 				RDebug::Print(_L("Error: %d"), error);
 			} else {

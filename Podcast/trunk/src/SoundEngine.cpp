@@ -52,9 +52,7 @@ void CSoundEngine::MapcPlayComplete(TInt aError) {
 		CShowInfo* nextShow = iPodcastModel.ShowEngine().GetNextShowByTrackL(iPodcastModel.PlayingPodcast());
 		if(nextShow != NULL)
 		{
-			iPodcastModel.PlayPausePodcastL(nextShow);
-		
-			//iPlayOnInit = ETrue;			
+			iPodcastModel.PlayPausePodcastL(nextShow, ETrue);
 		}
 	}
 }
@@ -69,7 +67,7 @@ void CSoundEngine::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds
 		{
 		RDebug::Print(_L("MapcInitComplete error=%d"), aError);	
 		
-		iState = ESoundEngineNotInitialized;	
+		iState = ESoundEngineNotInitialized;		
 		}
 	else
 		{
@@ -88,15 +86,23 @@ void CSoundEngine::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds
 	if(iObserver != NULL && aError == KErrNone)
 		{
 		TRAPD(err, iObserver->PlaybackInitializedL());
+		if(iPlayOnInit)
+			{
+			
+			iPodcastModel.PlayPausePodcastL(iPodcastModel.PlayingPodcast());
+			}
 		}
+
+	iPlayOnInit = EFalse;
 }
 
-void CSoundEngine::OpenFileL(const TDesC& aFileName)
+void CSoundEngine::OpenFileL(const TDesC& aFileName, TBool aPlayOnInit)
 {
 	iState = ESoundEngineNotInitialized;
 	iLastOpenedFileName= aFileName;
 	iPlayer->Stop();
 	iPlayer->OpenFileL(aFileName);
+	iPlayOnInit = aPlayOnInit;
 	iState = ESoundEngineOpening;
 }
 

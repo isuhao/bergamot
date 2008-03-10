@@ -164,14 +164,7 @@ void CPodcastClientPlayView::PlaybackInitializedL()
 	if(iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.PlayingPodcast()->Uid() == iShowInfo->Uid())
 	{
 		UpdateViewL();
-	}
-
-	if(iPlayOnInit)
-	{
-		iPlayOnInit = EFalse;
 		UpdateMaxProgressValueL(iPodcastModel.SoundEngine().PlayTime());	
-								
-		iPodcastModel.SoundEngine().Play();
 	}
 }
 
@@ -204,8 +197,17 @@ void CPodcastClientPlayView::PlaybackStartedL()
 {
 	iPlaybackTicker->Cancel();
 
-	if(iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.PlayingPodcast()->Uid() == iShowInfo->Uid())
+	if(iPodcastModel.PlayingPodcast() != NULL && 
+		(
+		 (iPodcastModel.PlayingPodcast()->Uid() == iShowInfo->Uid() ) ||
+		 (iPodcastModel.PlayingPodcast()->IsBookFile() && iPodcastModel.PlayingPodcast()->FeedUid() == iShowInfo->FeedUid())
+		 ))
 		{
+		if(iPodcastModel.PlayingPodcast()->IsBookFile() && iPodcastModel.PlayingPodcast()->FeedUid() == iShowInfo->FeedUid())
+			{
+			iShowInfo = iPodcastModel.PlayingPodcast();
+			}
+
 		iPlaybackTicker->Start(KAudioTickerPeriod, KAudioTickerPeriod, TCallBack(PlayingUpdateStaticCallbackL, this));
 		UpdatePlayStatusL();
 		}
@@ -306,8 +308,7 @@ void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 			}
 			else
 			{
-				iPodcastModel.PlayPausePodcastL(iShowInfo);
-				iPlayOnInit = ETrue;
+				iPodcastModel.PlayPausePodcastL(iShowInfo, ETrue);
 			}
 			UpdateViewL();
 		}break;
@@ -393,8 +394,6 @@ void CPodcastClientPlayView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid 
 {
 	CQikViewBase::ViewActivatedL(aPrevViewId, aCustomMessageId, aCustomMessage);
 	SelectCategoryL(EShowAllShows);
-
-	iPlayOnInit = EFalse;
 
 	switch(aCustomMessageId.iUid)
 	{
