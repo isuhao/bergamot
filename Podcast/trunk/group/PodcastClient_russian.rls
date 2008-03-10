@@ -82,10 +82,6 @@ rls_string STRING_r_category_new "Новые"
 rls_string STRING_r_category_dled "Подкасты"
 rls_string STRING_r_category_pending "Закачки"
 
-// Application caption
-rls_string STRING_r_caption "Escarpod"
-rls_string STRING_r_short_caption "Escarpod"
-
 // View titles
 rls_string STRING_r_view_feeds_title "Потоки"
 rls_string STRING_r_view_audiobooks_title "Аудио книги"
@@ -99,7 +95,6 @@ rls_string STRING_r_podcast_shows_no_items "Пусто";
 // Feeds view status strings
 rls_string STRING_r_podcast_feeds_title_format "%d потоков"
 rls_string STRING_r_podcast_books_title_format "%d книг"
-
 rls_string STRING_r_podcast_feeds_status_format "%d/%d подкастов"
 rls_string STRING_r_podcast_shows_never_updated "Неизвестно"
 rls_string STRING_r_podcast_feeds_is_updating "Обновляется"
@@ -133,13 +128,11 @@ rls_string STRING_r_podcast_settings_title "Настройки"
 rls_string STRING_r_podcast_setting_showdir "Хранить подкасты в"
 rls_string STRING_r_podcast_setting_autoupdate "Обновлять автоматически"
 rls_string STRING_r_podcast_setting_autodownload "Скачивать автоматически"
-
 rls_string STRING_r_podcast_setting_checkevery "Обновлять каждые"
 rls_string STRING_r_podcast_setting_updateat "Обновлять в"
 rls_string STRING_r_podcast_setting_minutes "минут"
 
 
-rls_string STRING_r_podcast_setting_maxsimul "Макс. кол-во одновременных закачек"
 rls_string STRING_r_podcast_setting_connection "Подключение"
 rls_string STRING_r_podcast_setting_default "По умолчанию"
 rls_string STRING_r_podcast_setting_wlanonly "Всегда спрашивать"
@@ -151,8 +144,9 @@ rls_string STRING_r_podcast_setting_showdir_cmd "Выбрать" // Use to selec
 rls_string STRING_r_podcast_setting_volume "Громкость" 
 
 // Choicelist for autodownload
-rls_string STRING_podcast_audodl_feeds "Только потоки" 
-rls_string STRING_podcast_audodl_feedsandshows "Потоки и подкасты"
+rls_string STRING_podcast_autoupdate_off "Off"
+rls_string STRING_podcast_autoupdate_perodical "Periodical" 
+rls_string STRING_podcast_autoupdate_attime "At"
 
 rls_string STRING_podcast_autoupdate_off "Отключено"
 rls_string STRING_podcast_autoupdate_perodical "Периодически" 
@@ -165,3 +159,15 @@ rls_string STRING_r_podcast_new_audiobook_title "Создать аудио кн�
 rls_string STRING_r_podcast_new_audiobook_prompt "Audiobook tile"
 rls_string STRING_r_podcast_new_audiobook_label "%d файлов включены в эту книгу"
 rls_string STRING_r_podcast_new_audiobook_select_files "Выберите файлы для книги:" // Max 80 chars
+
+// Latest strings here
+rls_string STRING_r_view_books_no_books "No Books" // No Books
+
+rls_string STRING_r_view_import_feeds_cmd "Import Feeds" // Import feeds cmd in feedview
+rls_string STRING_r_view_import_feeds_title "Select OPML file"
+
+rls_string STRING_r_view_books_status "%d Books" // Used in base view listbox status text max 32 chars
+rls_string STRING_r_view_feeds_status "%d Feeds" // Used in base view listbox for feeds status text max 32 chars
+
+rls_string STRING_r_cancel_update_all_feeds_cmd "Cancel update"
+rls_string STRING_r_cancel_update_all_feeds_short_cmd "Cancel"

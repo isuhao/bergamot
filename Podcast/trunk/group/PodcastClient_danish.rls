@@ -18,12 +18,18 @@ rls_string STRING_r_view_all_shows_cmd "Alle afsnit"
 rls_string STRING_r_view_new_shows_cmd "Ikke afspillede"
 rls_string STRING_r_view_dl_shows_cmd "Afsnit på telefon"
 rls_string STRING_r_view_dling_shows_cmd "Downloader"
+rls_string STRING_r_view_about_cmd "About"
 
 // Navigation to feeds
 rls_string STRING_r_view_feeds_cmd "Feeds"
 
 // Navigation to the player
-rls_string STRING_r_view_player_cmd "Afspiller"
+rls_string STRING_r_view_player_cmd "Player"
+
+// Navigation to the audio books
+rls_string STRING_r_view_audiobooks_cmd "Audio books"
+rls_string STRING_r_view_new_audiobook_cmd "New audiobook"
+rls_string STRING_r_view_remove_audiobook_cmd "Remove audiobook"
 
 // Actions for the player
 rls_string STRING_r_play_cmd "Afspil"
@@ -76,12 +82,9 @@ rls_string STRING_r_category_new "Uafspillede"
 rls_string STRING_r_category_dled "Afsnit på telefon"
 rls_string STRING_r_category_pending "Downloader"
 
-// Application caption
-rls_string STRING_r_caption "Escarpod"
-rls_string STRING_r_short_caption "Podcast"
-
 // View titles
 rls_string STRING_r_view_feeds_title "Feeds"
+rls_string STRING_r_view_audiobooks_title "Audio books"
 
 // Shows view status strings
 rls_string STRING_r_podcast_shows_title_format "%d uafspillede, %d i alt";
@@ -94,11 +97,14 @@ rls_string STRING_r_podcast_feeds_title_format "%d feeds"
 rls_string STRING_r_podcast_books_title_format "%d books"
 rls_string STRING_r_podcast_feeds_status_format "%d/%d afsnit"
 rls_string STRING_r_podcast_shows_never_updated "Aldrig"
+rls_string STRING_r_podcast_feeds_is_updating "Is updating"
 rls_string STRING_r_podcast_no_feeds "Ingen feed"
 
 // DIALOG string
-rls_string STRING_r_add_feed_title "Tilføj feed"
-rls_string STRING_r_edit_feed_title "Rediger feed"
+rls_string STRING_r_about_title "About Escarpod";
+
+rls_string STRING_r_add_feed_title "Add Feed"
+rls_string STRING_r_edit_feed_title "Edit Feed"
 
 rls_string STRING_r_add_feed_prompt "Feed URL"
 rls_string STRING_r_add_feed_title_prompt "Feed Titel"
@@ -137,9 +143,26 @@ rls_string STRING_r_podcast_setting_showdir_cmd "Vælg" // Use to select show di
 rls_string STRING_r_podcast_setting_volume "Lydstyrke" 
 
 // Choicelist for autodownload
-rls_string STRING_podcast_autoupdate_off "Fra"
-rls_string STRING_podcast_autoupdate_perodical "Periodiskt" 
-rls_string STRING_podcast_autoupdate_attime ""
+rls_string STRING_podcast_autoupdate_off "Off"
+rls_string STRING_podcast_autoupdate_perodical "Periodical" 
+rls_string STRING_podcast_autoupdate_attime "At"
 
 rls_string STRING_r_podcast_iap_dlg_title "Vælg internetkonto"
 
+// Audio book dialog
+rls_string STRING_r_podcast_new_audiobook_title "Create new audio book"
+rls_string STRING_r_podcast_new_audiobook_prompt "Audio book title"
+rls_string STRING_r_podcast_new_audiobook_label "%d files selected for this book."
+rls_string STRING_r_podcast_new_audiobook_select_files "Choose book files" // Max 80 chars
+
+// Latest strings here
+rls_string STRING_r_view_books_no_books "No Books" // No Books
+
+rls_string STRING_r_view_import_feeds_cmd "Import Feeds" // Import feeds cmd in feedview
+rls_string STRING_r_view_import_feeds_title "Select OPML file"
+
+rls_string STRING_r_view_books_status "%d Books" // Used in base view listbox status text max 32 chars
+rls_string STRING_r_view_feeds_status "%d Feeds" // Used in base view listbox for feeds status text max 32 chars
+
+rls_string STRING_r_cancel_update_all_feeds_cmd "Cancel update"
+rls_string STRING_r_cancel_update_all_feeds_short_cmd "Cancel"

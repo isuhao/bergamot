@@ -82,10 +82,6 @@ rls_string STRING_r_category_new "Ospelade"
 rls_string STRING_r_category_dled "Avsnitt på telefonen"
 rls_string STRING_r_category_pending "Nerladdare"
 
-// Application caption
-rls_string STRING_r_caption "Escarpod"
-rls_string STRING_r_short_caption "Escarpod"
-
 // View titles
 rls_string STRING_r_view_feeds_title "Kanaler"
 rls_string STRING_r_view_audiobooks_title "Ljudböcker"

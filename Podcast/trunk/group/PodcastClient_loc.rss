@@ -3,7 +3,7 @@
 #include <appinfo.rh>
 #include <qikon.hrh>
 #include "PodcastClient.hrh"
-#include "PodcastClient_english.rls"
+#include "PodcastClient_common.rls"
 
 
 RESOURCE LOCALISABLE_APP_INFO

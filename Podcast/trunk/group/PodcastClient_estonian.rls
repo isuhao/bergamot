@@ -82,10 +82,6 @@ rls_string STRING_r_category_new "Mängimata lood"
 rls_string STRING_r_category_dled "Telefoni laetud"
 rls_string STRING_r_category_pending "Allalaetavad"
 
-// Application caption
-rls_string STRING_r_caption "Escarpod"
-rls_string STRING_r_short_caption "Escarpod"
-
 // View titles
 rls_string STRING_r_view_feeds_title "Vood"
 rls_string STRING_r_view_audiobooks_title "Audio raamatud"
@@ -99,7 +95,6 @@ rls_string STRING_r_podcast_shows_no_items "Tühi";
 // Feeds view status strings
 rls_string STRING_r_podcast_feeds_title_format "%d voogu"
 rls_string STRING_r_podcast_books_title_format "%d raamatut"
-
 rls_string STRING_r_podcast_feeds_status_format "%d/%d lugu"
 rls_string STRING_r_podcast_shows_never_updated "Mitte kunagi"
 rls_string STRING_r_podcast_feeds_is_updating "Uuendamine"
@@ -107,7 +102,6 @@ rls_string STRING_r_podcast_no_feeds "Vood puuduvad"
 
 // DIALOG string
 rls_string STRING_r_about_title "Info Escarpod:ist";
-
 
 rls_string STRING_r_add_feed_title "Lisa voog"
 rls_string STRING_r_edit_feed_title "Muuda voogu"
@@ -134,7 +128,6 @@ rls_string STRING_r_podcast_settings_title "Seaded"
 rls_string STRING_r_podcast_setting_showdir "Podcast kataloog"
 rls_string STRING_r_podcast_setting_autoupdate "Automaatne uuendus"
 rls_string STRING_r_podcast_setting_autodownload "Automaatne allalaadimine"
-
 rls_string STRING_r_podcast_setting_checkevery "Allalaadimise intervall"
 rls_string STRING_r_podcast_setting_updateat "Uuendus kell:"
 rls_string STRING_r_podcast_setting_minutes "minutit"
@@ -162,3 +155,15 @@ rls_string STRING_r_podcast_new_audiobook_title "Lisa uus audio raamat"
 rls_string STRING_r_podcast_new_audiobook_prompt "Raamatu pealkiri"
 rls_string STRING_r_podcast_new_audiobook_label "%d faili on valitud sellele raamatule."
 rls_string STRING_r_podcast_new_audiobook_select_files "Vali raamatu failid:" // Max 80 chars
+
+// Latest strings here
+rls_string STRING_r_view_books_no_books "No Books" // No Books
+
+rls_string STRING_r_view_import_feeds_cmd "Import Feeds" // Import feeds cmd in feedview
+rls_string STRING_r_view_import_feeds_title "Select OPML file"
+
+rls_string STRING_r_view_books_status "%d Books" // Used in base view listbox status text max 32 chars
+rls_string STRING_r_view_feeds_status "%d Feeds" // Used in base view listbox for feeds status text max 32 chars
+
+rls_string STRING_r_cancel_update_all_feeds_cmd "Cancel update"
+rls_string STRING_r_cancel_update_all_feeds_short_cmd "Cancel"

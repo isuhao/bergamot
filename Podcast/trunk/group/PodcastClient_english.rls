@@ -5,7 +5,6 @@
 // Translator: -
 
 // list view commands
-
 rls_string STRING_r_listbox_listview_cmd_close_debug "Close (debug)"
 rls_string STRING_r_listbox_listview_cmd_close_debug_shorttext "Close"
 
@@ -82,10 +81,6 @@ rls_string STRING_r_category_new "Unplayed"
 rls_string STRING_r_category_dled "Shows on Phone"
 rls_string STRING_r_category_pending "Downloader"
 
-// Application caption
-rls_string STRING_r_caption "Escarpod"
-rls_string STRING_r_short_caption "Escarpod"
-
 // View titles
 rls_string STRING_r_view_feeds_title "Feeds"
 rls_string STRING_r_view_audiobooks_title "Audio books"
@@ -99,7 +94,6 @@ rls_string STRING_r_podcast_shows_no_items "No items";
 // Feeds view status strings
 rls_string STRING_r_podcast_feeds_title_format "%d feeds"
 rls_string STRING_r_podcast_books_title_format "%d books"
-
 rls_string STRING_r_podcast_feeds_status_format "%d/%d Shows"
 rls_string STRING_r_podcast_shows_never_updated "Never"
 rls_string STRING_r_podcast_feeds_is_updating "Is updating"

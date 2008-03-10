@@ -26,6 +26,11 @@ rls_string STRING_r_view_feeds_cmd "Feedek"
 // Navigation to the player
 rls_string STRING_r_view_player_cmd "Lejátszó"
 
+// Navigation to the audio books
+rls_string STRING_r_view_audiobooks_cmd "Audio books"
+rls_string STRING_r_view_new_audiobook_cmd "New audiobook"
+rls_string STRING_r_view_remove_audiobook_cmd "Remove audiobook"
+
 // Actions for the player
 rls_string STRING_r_play_cmd "Lejátszás"
 rls_string STRING_r_stop_cmd "Állj"
@@ -77,12 +82,9 @@ rls_string STRING_r_category_new "Lejátszatlanok"
 rls_string STRING_r_category_dled "Mûsorszámok a telef" //onon" // string too long (teknolog)
 rls_string STRING_r_category_pending "Letöltõ"
 
-// Application caption
-rls_string STRING_r_caption "Escarpod"
-rls_string STRING_r_short_caption "Escarpod"
-
 // View titles
 rls_string STRING_r_view_feeds_title "Feedek"
+rls_string STRING_r_view_audiobooks_title "Audio books"
 
 // Shows view status strings
 rls_string STRING_r_podcast_shows_title_format "%d lejátszatlan, %d összesen";
@@ -92,17 +94,20 @@ rls_string STRING_r_podcast_shows_no_items "Nincsenek elemek";
 
 // Feeds view status strings
 rls_string STRING_r_podcast_feeds_title_format "%d Feedek"
+rls_string STRING_r_podcast_books_title_format "%d books"
 rls_string STRING_r_podcast_feeds_status_format "%d/%d Mûsorszámok"
 rls_string STRING_r_podcast_shows_never_updated "Soha"
+rls_string STRING_r_podcast_feeds_is_updating "Is updating"
+rls_string STRING_r_podcast_no_feeds "No feeds"
 
 // DIALOG string
 rls_string STRING_r_about_title "Az Escarpodról";
-rls_string STRING_r_about_text "Escarpod\n\n Minden jog fenntartva(c) 2007-2008, A Bergamot Projekt\n\n http://bergamot.googlecode.com"
 
 rls_string STRING_r_add_feed_title "Feed hozzáadása"
 rls_string STRING_r_edit_feed_title "Feed szerkesztése"
 
 rls_string STRING_r_add_feed_prompt "Feed URL-je"
+rls_string STRING_r_add_feed_title_prompt "Feed Title"
 
 rls_string STRING_r_remove_feed_title "Feed eltávolítása"
 rls_string STRING_r_remove_feed_prompt "Biztos benne,hogy el kívánja ezt a feedet távolítani?"
@@ -121,7 +126,8 @@ rls_string STRING_r_purge_show_prompt "Biztosan törölni kívánja ezt a mûsor
 
 rls_string STRING_r_podcast_settings_title "Beállítások"
 rls_string STRING_r_podcast_setting_showdir "Podcastok könyvtára"
-rls_string STRING_r_podcast_setting_autodl "Automatikus letöltés"
+rls_string STRING_r_podcast_setting_autoupdate "Automatic update"
+rls_string STRING_r_podcast_setting_autodownload "Automatikus letöltés"
 rls_string STRING_r_podcast_setting_checkevery "Letöltési idõköz"
 rls_string STRING_r_podcast_setting_minutes "percek"
 
@@ -143,3 +149,20 @@ rls_string STRING_podcast_audodl_feedsandshows "Feedek és mûsorszámok"
 
 rls_string STRING_r_podcast_iap_dlg_title "Internetelérés kiválasztása"
 
+// Audio book dialog
+rls_string STRING_r_podcast_new_audiobook_title "Create new audio book"
+rls_string STRING_r_podcast_new_audiobook_prompt "Audio book title"
+rls_string STRING_r_podcast_new_audiobook_label "%d files selected for this book."
+rls_string STRING_r_podcast_new_audiobook_select_files "Choose book files" // Max 80 chars
+
+// Latest strings here
+rls_string STRING_r_view_books_no_books "No Books" // No Books
+
+rls_string STRING_r_view_import_feeds_cmd "Import Feeds" // Import feeds cmd in feedview
+rls_string STRING_r_view_import_feeds_title "Select OPML file"
+
+rls_string STRING_r_view_books_status "%d Books" // Used in base view listbox status text max 32 chars
+rls_string STRING_r_view_feeds_status "%d Feeds" // Used in base view listbox for feeds status text max 32 chars
+
+rls_string STRING_r_cancel_update_all_feeds_cmd "Cancel update"
+rls_string STRING_r_cancel_update_all_feeds_short_cmd "Cancel"

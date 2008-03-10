@@ -501,7 +501,8 @@ RESOURCE ARRAY r_podcast_new_audiobook_mimearray
 	{
 	 LBUF {txt = "audio/wav";},
 	 LBUF {txt = "audio/mp3";},
-	 LBUF {txt = "audio/mp4";}
+	 LBUF {txt = "audio/mp4";},
+	 LBUF {txt = "audio/*";}
 	};
 
 }
