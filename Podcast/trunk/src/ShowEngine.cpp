@@ -78,7 +78,7 @@ TBool CShowEngine::RemoveDownload(TUint aUid)
 	RDebug::Print(_L("CShowEngine::RemoveDownload\t Trying to remove download"));
 
 	// if trying to remove the present download, we first stop it
-	if (iShowDownloading != NULL && iShowDownloading->Uid() == aUid) {
+	if (!iDownloadsSuspended && iShowDownloading != NULL && iShowDownloading->Uid() == aUid) {
 		RDebug::Print(_L("CShowEngine::RemoveDownload\t This is the active download, we suspend downloading"));
 		StopDownloads();
 		return EFalse;
