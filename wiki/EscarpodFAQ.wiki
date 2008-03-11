@@ -19,3 +19,7 @@ An example OPML file may look like this:
 </body>
 </opml>
 }}}
+
+The text field is optional.
+
+Save it as a .xml file, for instance myopml.xml, copy it to your phone and use Import feeds from the menu.
