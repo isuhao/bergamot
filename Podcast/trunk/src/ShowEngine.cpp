@@ -113,6 +113,8 @@ void CShowEngine::Progress(CHttpClient* /*aHttpClient */, int aBytes, int aTotal
 		{
 		percent = (TInt) ((float)aBytes * 100.0 / (float)aTotalBytes) ;
 		}
+	
+	iShowDownloading->SetShowSize(aTotalBytes);
 	NotifyShowDownloadUpdated(percent, aBytes, aTotalBytes);
 	}
 
@@ -565,10 +567,11 @@ void CShowEngine::SelectShowsByFeed(TUint aFeedUid)
 	
 	// now purge if more than limit
 	int count = iSelectedShows.Count();
-	while (count >= iPodcastModel.SettingsEngine().MaxListItems()) {
+	while (count > iPodcastModel.SettingsEngine().MaxListItems()) {
 		RDebug::Print(_L("Too many items, Removing"));
 		//delete iSelectedShows[count-1];
 		iSelectedShows[count-1]->SetDelete();
+		iSelectedShows[count-1]->SetPlayState(EPlayed);
 		iSelectedShows.Remove(count-1);
 		count = iSelectedShows.Count();
 	}

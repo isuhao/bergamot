@@ -63,7 +63,7 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 			TBool cancelling = EFalse;
 			if (resp.HasBody() && (status >= 200) && (status < 300) && (status != 204))
 				{
-				iBytesDownloaded = 0;
+				//iBytesDownloaded = 0;
 				TInt dataSize = resp.Body()->OverallDataSize();
 				if (dataSize >= 0) {
 					RDebug::Print(_L("Response body size is %d"), dataSize);
@@ -109,6 +109,8 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 								User::Leave(err);
 							}
 							iBytesDownloaded = pos;
+							iBytesTotal += iBytesDownloaded;
+							RDebug::Print(_L("Total bytes is now %u"), iBytesTotal);
 							RDebug::Print(_L("Seeking end: %d"), pos);
 							}
 					} else {
