@@ -371,6 +371,9 @@ void CFeedEngine::CompleteL(CHttpClient* /*aClient*/, TBool aSuccessful)
 			// we do not need to any special action on this error.
 			RDebug::Print(_L("CFeedEngine::Complete()\t Failed to parse feed. Leave with error code=%d"), parserErr);
 			}
+			
+		// delete the downloaded XML file as it is no longer needed
+		BaflUtils::DeleteFile(iFs,iUpdatingFeedFileName);
 
 		// change client state
 		iClientState = ENotUpdating;

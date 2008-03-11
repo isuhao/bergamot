@@ -40,9 +40,6 @@ void CFeedParser::ParseFeedL(const TFileName &feedFileName, CFeedInfo *info, TUi
 	CleanupStack::PopAndDestroy(parser);
 	CleanupStack::PopAndDestroy(&rfs); // this makes sure the file was closed
 	
-	rfs.Connect();
-	BaflUtils::DeleteFile(rfs,feedFileName);
-	rfs.Close();
 	//RDebug::Print(_L("ParseFeedL END"));
 	}
 
