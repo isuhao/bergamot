@@ -165,3 +165,6 @@ rls_string STRING_r_view_feeds_status "%d Feeds" // Used in base view listbox fo
 
 rls_string STRING_r_cancel_update_all_feeds_cmd "Cancel update"
 rls_string STRING_r_cancel_update_all_feeds_short_cmd "Cancel"
+
+rls_string STRING_r_suspend_download_cmd "Suspend" // String used for cmd to suspend current download rather than removing it from the que.
+rls_string STRING_r_view_resume_short_dls_cmd "Resume" // Short download cmd

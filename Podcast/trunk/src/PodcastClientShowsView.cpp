@@ -258,7 +258,7 @@ void CPodcastClientShowsView::UpdateFeedUpdateStateL()
 	{
 	TBool listboxDimmed = EFalse;
 
-	if(iPodcastModel.FeedEngine().ClientState() != ENotUpdating && iPodcastModel.FeedEngine().ActiveClientUid() == iPodcastModel.ActiveFeedInfo()->Uid())
+	if(iPodcastModel.FeedEngine().ClientState() != ENotUpdating && iPodcastModel.ActiveFeedInfo() != NULL && iPodcastModel.FeedEngine().ActiveClientUid() == iPodcastModel.ActiveFeedInfo()->Uid())
 		{
 		listboxDimmed = ETrue;
 		}
@@ -619,7 +619,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 	TBool removeDownloadCmd = EFalse;
 	TBool removePurgeShowCmd = ETrue;
 	TBool removeDownloadShowCmd = ETrue;
-	TBool updatingState = (iPodcastModel.FeedEngine().ClientState() != ENotUpdating && iPodcastModel.FeedEngine().ActiveClientUid() == iPodcastModel.ActiveFeedInfo()->Uid());
+	TBool updatingState = (iCurrentCategory != EShowDownloadedShows && iPodcastModel.FeedEngine().ClientState() != ENotUpdating && iPodcastModel.FeedEngine().ActiveClientUid() == iPodcastModel.ActiveFeedInfo()->Uid());
 	TBool playingPodcast = (iPodcastModel.PlayingPodcast() != NULL && (iPodcastModel.SoundEngine().State() == ESoundEnginePlaying || iPodcastModel.SoundEngine().State() == ESoundEnginePaused));
 
 	comMan.SetInvisible(*this, EPodcastViewPlayer, !playingPodcast);

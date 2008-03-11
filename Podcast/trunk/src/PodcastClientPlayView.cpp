@@ -338,6 +338,11 @@ void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 			iPlayProgressbar->SetFocusing(EFalse);
 			iPodcastModel.SoundEngine().Stop();	
 		}break;
+	case EPodcastResumeDownloads:
+		{
+			iPodcastModel.ShowEngine().ResumeDownloads();
+			UpdateViewL();
+		}break;
 	case EPodcastRemoveDownload:
 		{
 			iPodcastModel.ShowEngine().RemoveDownload(iShowInfo->Uid());
@@ -551,6 +556,7 @@ void CPodcastClientPlayView::UpdateViewL()
 
 			comMan.SetInvisible(*this, EPodcastMarkAsPlayed, iShowInfo->PlayState() != ENeverPlayed);
 			comMan.SetInvisible(*this, EPodcastMarkAsUnplayed, iShowInfo->PlayState() == ENeverPlayed);
+			comMan.SetInvisible(*this, EPodcastResumeDownloads, ETrue);
 
 			if(iShowInfo->DownloadState() == ENotDownloaded)
 			{
@@ -566,6 +572,21 @@ void CPodcastClientPlayView::UpdateViewL()
 				comMan.SetInvisible(*this, EPodcastPlay, ETrue);
 				comMan.SetInvisible(*this, EPodcastDownloadShow, ETrue);
 				comMan.SetInvisible(*this, EPodcastRemoveDownload, EFalse);
+				if(iShowInfo->DownloadState() == EDownloading)
+					{
+					comMan.SetTextL(*this, EPodcastRemoveDownload, R_PODCAST_PLAYER_SUSPEND_DL_CMD);
+					comMan.SetShortTextL(*this, EPodcastRemoveDownload, R_PODCAST_PLAYER_SUSPEND_DL_CMD);
+					}
+				else
+					{
+					comMan.SetTextL(*this, EPodcastRemoveDownload, R_PODCAST_PLAYER_REMOVE_DL_CMD);
+					comMan.SetShortTextL(*this, EPodcastRemoveDownload, R_PODCAST_PLAYER_REMOVE_DL_CMD);
+					if(iPodcastModel.ShowEngine().DownloadsStopped())
+						{
+						comMan.SetInvisible(*this, EPodcastResumeDownloads, EFalse);
+						}
+					}
+
 				comMan.SetInvisible(*this, EPodcastSetVolume, ETrue);
 				iDownloadProgressInfo->MakeVisible(iShowInfo->DownloadState() == EDownloading);
 				iPlayProgressbar->MakeVisible(EFalse);

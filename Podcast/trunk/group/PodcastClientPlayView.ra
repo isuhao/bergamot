@@ -69,7 +69,14 @@ RESOURCE QIK_COMMAND_LIST r_podcast_playview_commands
 			type = EQikCommandTypeDone;
 			text = STRING_r_view_remove_download_cmd;
 			shortText = STRING_r_view_remove_download_short_cmd;
-			},			
+			},	
+		QIK_COMMAND
+			{		
+			id = EPodcastResumeDownloads;
+			type = EQikCommandTypeDone;
+			text = STRING_r_view_resume_downloads_cmd;
+			shortText = STRING_r_view_resume_short_dls_cmd;
+			},					
 		QIK_COMMAND
 			{
 			id = EPodcastStop;

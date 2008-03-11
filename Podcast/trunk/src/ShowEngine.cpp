@@ -227,6 +227,7 @@ void CShowEngine::CompleteL(CHttpClient* /*aHttpClient*/, TBool aSuccessful)
 		}
 		else 
 		{
+			iShowDownloading->SetDownloadState(EQueued);
 			iDownloadErrors++;
 			if (iDownloadErrors > 3) 
 			{
