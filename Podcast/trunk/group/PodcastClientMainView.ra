@@ -236,6 +236,11 @@ RESOURCE QIK_LISTBOX r_podcast_mainview_listbox
 					txt = STRING_r_view_dl_shows_cmd;
 					slot_id = EQikListBoxSlotText1;
 					},
+					QIK_LISTBOX_TEXT
+					{
+					txt = "";
+					slot_id = EQikListBoxSlotText2;
+					},
 					QIK_LISTBOX_ICON_2
 					{
 					content=QIK_CONTENT_MBM 
@@ -255,6 +260,11 @@ RESOURCE QIK_LISTBOX r_podcast_mainview_listbox
 					{
 					txt = STRING_r_view_dling_shows_cmd;
 					slot_id = EQikListBoxSlotText1;
+					},
+					QIK_LISTBOX_TEXT
+					{
+					txt = "";
+					slot_id = EQikListBoxSlotText2;
 					},
 					QIK_LISTBOX_ICON_2
 					{

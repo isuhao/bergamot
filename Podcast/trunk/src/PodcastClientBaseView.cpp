@@ -165,6 +165,13 @@ void CPodcastClientBaseView::UpdateListboxItemsL()
 					model.DataUpdatedL(loop);
 					
 				}break;
+			case EBaseViewPendingShows:
+				{
+					iEikonEnv->ReadResourceL(formatting, R_PODCAST_PENDING_STATUS);
+					statusText.Format(formatting, iPodcastModel.ShowEngine().GetNoDownloadingShowsL());
+					data->SetTextL(statusText, EQikListBoxSlotText2);				
+					model.DataUpdatedL(loop);
+				}break;
 			case EBaseViewFeeds:
 				{
 					iEikonEnv->ReadResourceL(formatting, R_PODCAST_FEEDS_STATUS);

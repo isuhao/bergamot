@@ -644,6 +644,12 @@ void CShowEngine::SelectShowsDownloading()
 		}
 	}
 
+TInt CShowEngine::GetNoDownloadingShowsL() const 
+	{
+	return iShowsDownloading.Count();
+	}
+
+
 RShowInfoArray& CShowEngine::GetSelectedShows()
 	{
 	return iSelectedShows;

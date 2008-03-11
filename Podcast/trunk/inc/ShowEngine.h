@@ -21,7 +21,8 @@ public:
 	void StopDownloads();
 	void ResumeDownloads();
 	TBool DownloadsStopped();
-	
+
+	TInt GetNoDownloadingShowsL() const;
 	CShowInfo* ShowDownloading();
 	CShowInfo* GetShowByUidL(TUint aShowUid);
 	CShowInfo* GetNextShowByTrackL(CShowInfo* aShowInfo);
