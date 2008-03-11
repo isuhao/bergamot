@@ -238,8 +238,7 @@ void CPodcastClientPlayView::PlaybackStoppedL()
 	iPlaybackTicker->Cancel();
 
 	if(iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.PlayingPodcast()->Uid() == iShowInfo->Uid())
-	{	
-		iShowInfo->SetPosition(0);
+	{		
 		UpdatePlayStatusL();
 	}	
 }
@@ -449,7 +448,8 @@ void CPodcastClientPlayView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid 
 	iScrollableContainer->ScrollToMakeVisible(iTitleEdwin);
 	RequestFocusL(iScrollableContainer);
 
-	if(iShowInfo != NULL && iPodcastModel.SoundEngine().State() != ESoundEngineOpening && iPodcastModel.SoundEngine().State() != ESoundEnginePlaying && iPodcastModel.SoundEngine().State() != ESoundEnginePaused 
+	TInt sndState = iPodcastModel.SoundEngine().State();
+	if(iShowInfo != NULL && sndState == ESoundEngineNotInitialized 
 		&& (iPodcastModel.PlayingPodcast() == NULL || (iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.PlayingPodcast()->Uid() == iShowInfo->Uid())))
 	{
 		iPodcastModel.PlayPausePodcastL(iShowInfo);
@@ -780,7 +780,7 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 				TUint playtime = 0;
 				TBuf<KTimeLabelSize> totTime = _L("00:00");
 			
-				if(showInfo->Uid() == iShowInfo->Uid())
+				if(showInfo->Uid() == iShowInfo->Uid() && iShowInfo->PlayTime() == 0)
 				{
 					playtime = iPodcastModel.SoundEngine().PlayTime();
 				}

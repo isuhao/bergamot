@@ -229,6 +229,32 @@ TConnPref& CPodcastModel::ConnPref()
 	return iConnPref;
 }
 
+class CConnectionWaiter:public CActive
+{
+public:
+	CConnectionWaiter():CActive(0)
+	{
+		CActiveScheduler::Add(this);
+		iStatus = KRequestPending;
+		SetActive();
+	}
+
+	~CConnectionWaiter()
+	{
+		Cancel();
+	}
+
+	void DoCancel()
+	{
+		TRequestStatus* status = &iStatus;
+		User::RequestComplete(status, KErrCancel);
+	}
+
+	void RunL()
+	{
+		CActiveScheduler::Stop();
+	}
+};
 void CPodcastModel::ConnectHttpSessionL(RHTTPSession &aSession)
 {
 	RDebug::Print(_L("ConnectHttpSessionL START"));
@@ -247,7 +273,13 @@ void CPodcastModel::ConnectHttpSessionL(RHTTPSession &aSession)
 		}
 	}
 
-	User::LeaveIfError(iConnection.Start(iConnPref));
+	CConnectionWaiter* connectionWaiter = new (ELeave) CConnectionWaiter;
+	
+	iConnection.Start(iConnPref, connectionWaiter->iStatus);
+	CActiveScheduler::Start();
+	TInt result = connectionWaiter->iStatus.Int();
+	delete connectionWaiter;
+	User::LeaveIfError(result);
 
 	RHTTPConnectionInfo connInfo = aSession.ConnectionInfo();
 	RStringPool pool = aSession.StringPool();
