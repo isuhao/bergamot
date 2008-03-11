@@ -232,7 +232,7 @@ void CFeedEngine::FileNameFromUrl(const TDesC& aUrl, TFileName &aFileName)
 
 void CFeedEngine::EnsureProperPathName(TFileName &aPath)
 	{
-	ReplaceString(aPath, _L("/"), _L("\\"));
+	ReplaceString(aPath, _L("/"), _L("_")); // better not to add \\ in case we have multiple /
 	ReplaceString(aPath, _L(":"), _L("_"));
 	ReplaceString(aPath, _L("?"), _L("_"));
 	//buf.Append(_L("\\"));

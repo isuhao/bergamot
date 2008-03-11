@@ -687,6 +687,8 @@ void CPodcastClientShowsView::UpdateCommandsL()
 			comMan.SetInvisible(*this, EPodcastResumeDownloads, !iPodcastModel.ShowEngine().DownloadsStopped());			
 			comMan.SetInvisible(*this, EPodcastShowUnplayedOnly, ETrue);
 			comMan.SetInvisible(*this, EPodcastViewPendingShows, ETrue);
+			comMan.SetInvisible(*this, EPodcastDownloadShow, ETrue);
+
 			
 		}break;
 	case EShowDownloadedShows:
@@ -698,6 +700,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 			comMan.SetInvisible(*this, EPodcastResumeDownloads, ETrue);
 			comMan.SetInvisible(*this, EPodcastShowUnplayedOnly, EFalse);
 			comMan.SetInvisible(*this, EPodcastViewDownloadedShows, ETrue);
+			comMan.SetInvisible(*this, EPodcastDeleteAllShows, ETrue);
 		}break;
 	default:
 		{
