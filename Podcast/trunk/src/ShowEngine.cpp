@@ -73,31 +73,36 @@ TBool CShowEngine::DownloadsStopped()
 	return iDownloadsSuspended;
 	}
 
-void CShowEngine::RemoveDownload(TUint aUid) 
+TBool CShowEngine::RemoveDownload(TUint aUid) 
 	{
 	RDebug::Print(_L("CShowEngine::RemoveDownload\t Trying to remove download"));
+
+	// if trying to remove the present download, we first stop it
+	if (iShowDownloading != NULL && iShowDownloading->Uid() == aUid) {
+		RDebug::Print(_L("CShowEngine::RemoveDownload\t This is the active download, we suspend downloading"));
+		StopDownloads();
+		return EFalse;
+	}
 	
 	const TInt count = iShowsDownloading.Count();
 	for (TInt i=0 ; i < count; i++) 
 		{
 		if (iShowsDownloading[i]->Uid() == aUid) 
-			{
-			if (iShowsDownloading[i]->DownloadState() == EDownloading) 
-				{
-				iShowClient->Stop();
-				}
-			
+			{			
 			iShowsDownloading[i]->SetDownloadState(ENotDownloaded);
 			BaflUtils::DeleteFile(iFs, iShowsDownloading[i]->FileName());
 			iShowsDownloading.Remove(i);
+
 			RDebug::Print(_L("CShowEngine::RemoveDownload\tDownload removed."));
 			
 			NotifyShowDownloadUpdated(-1,-1,-1);
 			NotifyDownloadQueueUpdated();
 			DownloadNextShow();
-			return;		
+			return ETrue;		
 			}
 		}
+	
+	return EFalse;
 	RDebug::Print(_L("CShowEngine::RemoveDownload\tCould not find downloading show to remove"));
 	}
 

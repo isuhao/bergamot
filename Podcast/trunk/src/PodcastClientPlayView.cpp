@@ -604,7 +604,9 @@ void CPodcastClientPlayView::UpdateViewL()
 		else
 		{				
 			iLastImageFileName = KNullDesC();
-			iCoverImageCtrl->CreatePictureFromFileL(_L("*"), EMbmPodcastclientEmptyimage, EMbmPodcastclientEmptyimage);
+			if (iCoverImageCtrl != NULL) {
+				iCoverImageCtrl->CreatePictureFromFileL(_L("*"), EMbmPodcastclientEmptyimage, EMbmPodcastclientEmptyimage);
+			}
 			comMan.SetInvisible(*this, EPodcastDownloadShow, ETrue);
 		}
 
@@ -702,6 +704,12 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 			comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PLAY_CMD);
 			comMan.SetDimmed(*this, EPodcastPlay, EFalse);
 			comMan.SetDimmed(*this, EPodcastStop, ETrue);
+			
+			// not sure why we end up here, but this prevents crashing (teknolog)
+			if (iPlayProgressbar == NULL) {
+				return;
+			}
+
 			iPlayProgressbar->SetDimmed(ETrue);
 
 			if(iShowInfo && iShowInfo->PlayTime()>0)
