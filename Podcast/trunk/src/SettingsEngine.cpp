@@ -6,7 +6,7 @@
 #include "FeedEngine.h"
 #include "ShowEngine.h"
 const TUid KMainSettingsStoreUid = {0x1000};
-const TUid KMainSettingsUid = {0x1001};
+const TUid KMainSettingsUid = {0x1002};
 const TUid KExtraSettingsUid = {0x2001};
 CSettingsEngine::CSettingsEngine(CPodcastModel& aPodcastModel) : iPodcastModel(aPodcastModel)
 	{
@@ -15,6 +15,7 @@ CSettingsEngine::CSettingsEngine(CPodcastModel& aPodcastModel) : iPodcastModel(a
 
 CSettingsEngine::~CSettingsEngine()
 	{
+	TRAP_IGNORE(SaveSettingsL());
 	iFs.Close();
 	}
 
@@ -37,7 +38,7 @@ void CSettingsEngine::ConstructL()
 	iUpdateAutomatically = EAutoUpdateOff;
 	iMaxListItems = KDefaultMaxListItems;
 	iIap = 0;
-	
+	iSeekStepTime = KDefaultSeekTime;
 	// Connect to file system		
 	iFs.Connect();
 	
@@ -121,6 +122,8 @@ void CSettingsEngine::LoadSettingsL()
 		iUpdateFeedTime = MAKE_TINT64(high, low);
 					
 		iSelectOnlyUnplayed = stream.ReadInt32L();
+		iSeekStepTime = stream.ReadInt32L();
+
 		CleanupStack::PopAndDestroy(1); // readStream and iniFile
 		RDebug::Print(_L("CSettingsEngine::LoadSettingsL\t Settings loaded OK"));
 	}
@@ -151,6 +154,7 @@ void CSettingsEngine::SaveSettingsL()
 	stream.WriteInt32L(I64LOW(iUpdateFeedTime.Int64()));
 	stream.WriteInt32L(I64HIGH(iUpdateFeedTime.Int64()));
 	stream.WriteInt32L(iSelectOnlyUnplayed);
+	stream.WriteInt32L(iSeekStepTime);
 
 	stream.CommitL();
 	store->CommitL();
@@ -362,6 +366,16 @@ void CSettingsEngine::SetSelectUnplayedOnly(TBool aOnlyUnplayed)
 TBool CSettingsEngine::SelectUnplayedOnly()
 	{
 	return iSelectOnlyUnplayed;
+	}
+
+TInt CSettingsEngine::SeekStepTime()
+	{
+	return iSeekStepTime;
+	}
+
+void CSettingsEngine::SetSeekStepTimek(TInt aSeekStepTime)
+	{
+	iSeekStepTime = aSeekStepTime;
 	}
 
 

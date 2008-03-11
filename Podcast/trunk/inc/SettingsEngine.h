@@ -23,7 +23,7 @@ const TInt KVolumeDelta = 10;
 const TInt KDefaultUpdateFeedInterval = 60;
 const TInt KDefaultMaxSimultaneousDownloads = 1;
 const TInt KDefaultMaxListItems = 100;
-
+const TInt KDefaultSeekTime = 15;
 
 enum TAutoUpdateSetting
 	{
@@ -69,6 +69,9 @@ class CSettingsEngine : public CBase
 		TInt Volume();
 		void SetVolume(TInt aVolume);
 
+		TInt SeekStepTime();
+		void SetSeekStepTimek(TInt aSeekStepTime);
+
 		void SetSelectUnplayedOnly(TBool aOnlyUnplayed);
 		TBool SelectUnplayedOnly();
 
@@ -94,7 +97,8 @@ class CSettingsEngine : public CBase
 		TInt iVolume;
 		TInt iMaxListItems;
 		TTime iUpdateFeedTime;
-		
+		TInt iSeekStepTime;
+
 		// Other member variables
 		RFs iFs;						// File system
 		CPodcastModel &iPodcastModel; 	// reference to the model

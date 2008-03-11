@@ -127,12 +127,32 @@ TKeyResponse CPodcastClientPlayView::OfferKeyEventL(const TKeyEvent& aKeyEvent,T
 		case EKeyRightArrow:
 		case EDeviceKeyFourWayLeft:
 		case EDeviceKeyFourWayRight:
-			if(iPlayProgressbar->IsVisible())
+		case '*':
+		case '#':
 			{
-				iPlayProgressbar->OfferKeyEventL(aKeyEvent, aType);
+			TUint ptime = iPodcastModel.SoundEngine().PlayTime();
+			if(ptime > 0)
+				{
+				TInt stepValue = iPodcastModel.SettingsEngine().SeekStepTime();
+				TUint pos = iPodcastModel.SoundEngine().Position().Int64()/1000000;
+				if(aKeyEvent.iCode == EKeyLeftArrow|| aKeyEvent.iCode == EDeviceKeyFourWayLeft || aKeyEvent.iCode  == '*')
+					{
+					pos-=stepValue;
+					}
+				else
+					{
+					pos+=stepValue;
+					}
+
+				iPodcastModel.SoundEngine().SetPosition(pos);
+				if(!iPlaybackTicker->IsActive())
+					{
+					UpdatePlayStatusL();
+					}
+				}
 			}
 			break;
-		case '*':
+	
 		case '6':	
 			if(iPodcastModel.SettingsEngine().Volume() < KMaxVolume)
 			{
@@ -140,7 +160,7 @@ TKeyResponse CPodcastClientPlayView::OfferKeyEventL(const TKeyEvent& aKeyEvent,T
 			}
 			break;
 		case '4':
-		case '#':
+		
 			if(iPodcastModel.SettingsEngine().Volume() > 0)
 			{
 				iPodcastModel.SettingsEngine().SetVolume(iPodcastModel.SettingsEngine().Volume()-KVolumeDelta);
@@ -660,28 +680,14 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 			if(iPodcastModel.SoundEngine().PlayTime()>0 )
 			{
 				if(iPodcastModel.SoundEngine().State() == ESoundEnginePlaying ||
-				   iPodcastModel.SoundEngine().State() == ESoundEnginePaused)
+				   iPodcastModel.SoundEngine().State() == ESoundEnginePaused || 
+				   iPodcastModel.SoundEngine().State() == ESoundEngineStopped)
 				{
 					TUint duration = iPodcastModel.SoundEngine().PlayTime();
 					pos = iPodcastModel.SoundEngine().Position().Int64()/1000000;
 					iPlayProgressbar->SetValue((iMaxProgressValue*pos)/duration);
 					iPlayProgressbar->DrawDeferred();		
-				}
-				else if (iPodcastModel.SoundEngine().State() == ESoundEngineStopped)
-				{
-					if(iShowInfo->PlayTime()>0)
-					{				
-						TUint duration = iShowInfo->PlayTime();
-						pos = iShowInfo->Position().Int64()/1000000;
-						iPlayProgressbar->SetValue((iMaxProgressValue*pos)/duration);
-					}
-					else
-					{
-						iPlayProgressbar->SetValue(0);
-					}
-
-					iPlayProgressbar->DrawDeferred();
-				}
+				}				
 			}
 			else
 			{
