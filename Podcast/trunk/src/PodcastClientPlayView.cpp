@@ -472,7 +472,8 @@ void CPodcastClientPlayView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload
 			iDownloadProgressInfo->SetFinalValue(aBytesTotal);
 		}
 
-		iDownloadProgressInfo->SetAndDraw(aBytesOfCurrentDownload);
+		iDownloadProgressInfo->SetValue(aBytesOfCurrentDownload);
+		iDownloadProgressInfo->DrawDeferred();
 	}
 
 	if(aPercentOfCurrentDownload == KOneHundredPercent)
