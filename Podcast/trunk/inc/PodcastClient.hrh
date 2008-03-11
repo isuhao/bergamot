@@ -87,7 +87,8 @@ enum TPodcatClientCommands
 	// New audio book dialog
 	EPodcastNewAudioBookLabel,
 	EPodcastNewAudioBookTitle,
-	EPodcastAboutText
+	EPodcastAboutText,
+	EPodcastAboutIcon
 	};
 	
     

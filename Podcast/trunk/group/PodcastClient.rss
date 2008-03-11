@@ -233,6 +233,17 @@ RESOURCE DIALOG r_podcast_about_dlg
 		{
 			DLG_LINE
 			{
+			id = EPodcastAboutIcon;
+			type = EEikCtImage;
+			control = IMAGE
+				{
+			    bmpfile = "z:\\Resource\\Apps\\PodcastClient.mbm";
+			    bmpid = 2;
+			    bmpmask = 3;
+			};
+			},
+			DLG_LINE
+			{
 			id = EPodcastAboutText;
 			itemflags = EQikDlgItemCaptionAboveControl|EQikDlgItemCtlIsEditInPlace|EQikDlgItemHideHighlight;			
 			type = EEikCtLabel;
