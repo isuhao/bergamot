@@ -348,7 +348,6 @@ RESOURCE QIK_LISTBOX r_podcast_mainview_listbox
 // highlighted but has no additional highlight layout.
 RESOURCE QIK_LISTBOX_LAYOUT_PAIR r_podcast_mainview_normal_layout_pair
 	{
-//	standard_normal_layout = EQikListBoxMediumIconTwoLines; //EQikListBoxLine;
 	custom_normal_layout = r_podcast_mainview_listbox_layout;
 	custom_highlight_layout= r_podcast_mainview_listbox_layout;
 	}

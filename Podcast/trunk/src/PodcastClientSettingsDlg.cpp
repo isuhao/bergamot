@@ -7,12 +7,60 @@
 #include <QikCommandManager.h>
 #include <QikSlider.h>
 #include <QikTimeEditor.h>
+#include <eiklabel.h>
+#include <PodCastClient.rsg>
 
 #include "PodcastClient.hrh"
 #include "PodcastClientSettingsDlg.h"
 #include "PodcastModel.h"
 #include "FeedEngine.h"
 #include "SettingsEngine.h"
+
+
+CPodcastClientSetAudioBookOrderDlg::CPodcastClientSetAudioBookOrderDlg(CPodcastModel& aPodcastModel, TUint aFeedId):iPodcastModel(aPodcastModel), iFeedId(aFeedId)
+{
+}
+
+CPodcastClientSetAudioBookOrderDlg::~CPodcastClientSetAudioBookOrderDlg()
+{
+}
+
+TBool CPodcastClientSetAudioBookOrderDlg::OkToExitL(TInt aCommandId)
+{
+	if(aCommandId == EPodcastSetAudioBookPlayOrderSwap)
+	{
+		
+		if(iSwapSet)
+		{
+			iSetLabel->MakeVisible(EFalse);
+		}
+		else
+		{
+			TBuf<64> buf;
+			iEikonEnv->ReadResourceL(buf, R_PODCAST_SORT_AUDIOBOOK_SWAP);
+			iSetLabel->SetTextL(buf);
+			iSetLabel->MakeVisible(ETrue);
+		}
+		iSetLabel->DrawDeferred();
+
+		return EFalse;
+	}
+	
+	return ETrue;
+}
+
+void CPodcastClientSetAudioBookOrderDlg::PreLayoutDynInitL()
+{
+	iSetLabel = static_cast<CEikLabel*>(ControlOrNull(EPodcastSetAudioBookPlayOrderLabel));
+	iSetLabel->MakeVisible(EFalse);
+
+	iListbox = static_cast<CQikListBox*>(ControlOrNull(EPodcastSetAudioBookPlayOrderListbox));
+	PopulateListboxL();
+}
+
+void CPodcastClientSetAudioBookOrderDlg::PopulateListboxL()
+{
+}
 
 
 CPodcastClientIAPDlg::CPodcastClientIAPDlg(CPodcastModel& aPodcastModel, TInt& aSelectedIAP):iPodcastModel(aPodcastModel), iSelectedIAP(aSelectedIAP)

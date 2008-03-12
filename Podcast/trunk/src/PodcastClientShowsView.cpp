@@ -6,13 +6,15 @@
 #include <QikListBoxLayoutElement.h>
 #include <QikListBoxLayout.h>
 #include <QikListBoxLayoutProperties.h>
+#include <eikdialg.h>
+
 #include <podcastclient.mbg>
 #include "PodcastClientShowsView.h"
 #include "PodcastClientPlayView.h"
+#include "PodcastClientSettingsDlg.h"
 #include "PodcastModel.h"
 #include "ShowEngine.h"
 #include "SettingsEngine.h"
-
 _LIT(KSizeDownloadingOf, "%S/%S");
 
 
@@ -119,6 +121,15 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 	{	
 		switch(aCommand.Id())
 		{			
+		case EPodcastSetOrderAudioBook:
+			{
+				if(iPodcastModel.ActiveFeedInfo() != NULL)
+					{
+					CPodcastClientSetAudioBookOrderDlg* dlg = new (ELeave) CPodcastClientSetAudioBookOrderDlg(iPodcastModel, iPodcastModel.ActiveFeedInfo()->Uid());
+					dlg->ExecuteLD(R_PODCAST_AUDIOBOOK_PLAYORDERDLG);
+					UpdateListboxItemsL();
+					}
+			}break;
 		case EPodcastPurgeShow:
 			{				
 				if(iEikonEnv->QueryWinL(R_PODCAST_PURGE_SHOW_TITLE, R_PODCAST_PURGE_SHOW_PROMPT))				
@@ -687,6 +698,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 	comMan.SetAvailable(*this, EPodcastPurgeFeed, !updatingState);
 	comMan.SetInvisible(*this, EPodcastViewPendingShows, EFalse);
 	comMan.SetInvisible(*this, EPodcastViewDownloadedShows, EFalse);
+	comMan.SetInvisible(*this, EPodcastSetOrderAudioBook, iPodcastModel.ActiveFeedInfo()?!iPodcastModel.ActiveFeedInfo()->IsBookFeed(): ETrue);
 
 	switch(iCurrentCategory)
 	{	

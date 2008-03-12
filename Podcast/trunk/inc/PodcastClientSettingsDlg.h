@@ -10,6 +10,24 @@ class CEikChoiceList;
 class CQikNumberEditor;
 class CQikSlider;
 class CQikTimeEditor;
+class CQikListBox;
+
+class CPodcastClientSetAudioBookOrderDlg: public CEikDialog
+{
+public:
+		CPodcastClientSetAudioBookOrderDlg(CPodcastModel& aPodcastModel, TUint aFeedId);
+		~CPodcastClientSetAudioBookOrderDlg();
+protected:
+		TBool OkToExitL(TInt aCommandId);
+		void PreLayoutDynInitL();
+		void PopulateListboxL();
+private:
+		CPodcastModel& iPodcastModel;
+		TInt iFeedId;
+		TBool iSwapSet;
+		CEikLabel* iSetLabel;
+		CQikListBox* iListbox;
+};
 
 /**
  * Dialog (old style) used to do volumd

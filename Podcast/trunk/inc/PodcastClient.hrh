@@ -46,12 +46,13 @@ enum TPodcatClientCommands
 	// Audio book commands
 	EPodcastAddNewAudioBook,
 	EPodcastRemoveAudioBook,
-
+	EPodcastSetOrderAudioBook,
 	// Common commands
 	EPodcastZoomSetting,
 	EPodcastSettings,
 	EPodcastSelectShowDir,
 	EPodcastSetVolume,
+	EPodcastSetAudioBookPlayOrderSwap,
 	EPodcastAbout
 	};
 
@@ -87,8 +88,12 @@ enum TPodcatClientCommands
 	// New audio book dialog
 	EPodcastNewAudioBookLabel,
 	EPodcastNewAudioBookTitle,
+	// Set audiobook sortorder dialog
+	EPodcastSetAudioBookPlayOrderListbox,
+	EPodcastSetAudioBookPlayOrderLabel,
 	EPodcastAboutText,
 	EPodcastAboutIcon
+
 	};
 	
     

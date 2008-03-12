@@ -139,6 +139,15 @@ RESOURCE QIK_COMMAND_LIST r_podcast_showview_commands
 			type = EQikCommandTypeDelete;//EQikCommandTypeScreen;
 			text = STRING_r_view_purge_show_cmd;
 			},
+
+	QIK_COMMAND
+			{
+			groupId = 5;
+			id = EPodcastSetOrderAudioBook;		
+			type = EQikCommandTypeScreen;
+			text = STRING_r_view_books_setorder;
+			},
+
 	QIK_COMMAND
 			{				
 			id = EPodcastRemoveDownload;
@@ -287,7 +296,6 @@ RESOURCE QIK_LISTBOX r_podcast_showsview_listbox
 // highlighted but has no additional highlight layout.
 RESOURCE QIK_LISTBOX_LAYOUT_PAIR r_podcast_showsview_normal_layout_pair
 	{
-	//standard_normal_layout = EQikListBoxIconTwoLines; //EQikListBoxLine;
 	custom_normal_layout = r_podcast_showsview_listbox_layout;
 	custom_highlight_layout= r_podcast_showsview_listbox_layout;
 	}
@@ -379,6 +387,112 @@ RESOURCE QIK_LISTBOX_LAYOUT r_podcast_showsview_listbox_layout
 	};
 }
 
+
+// DIALOGS
+
+
+RESOURCE TBUF r_podcast_sort_audioBook_swap { buf = STRING_r_view_books_setorder_dlg_label;}
+
+RESOURCE DLG_BUTTONS r_podcast_setplayorder_buttons
+    {
+    buttons=
+        {
+        DLG_BUTTON { id=EEikBidCancel; button=CMBUT {txt=STRING_r_podcast_setting_cancel_cmd;}; hotkey=EEikBidCancel; flags=0; },
+		DLG_BUTTON { id=EPodcastSetAudioBookPlayOrderSwap; button=CMBUT {txt=STRING_r_view_books_setorder_dlg_swapcmd;};  flags=0; },     
+        DLG_BUTTON { id=EEikBidOk; button=CMBUT {txt=STRING_r_podcast_setting_done_cmd;}; hotkey=EEikBidOk; flags=EEikLabeledButtonIsDefault; }
+        };
+    }
+
+RESOURCE QIK_LISTBOX_LAYOUT r_podcast_playorder_listbox_layout
+{
+	columns = 
+	{
+
+	QIK_LISTBOX_COLUMN
+			{
+				width_type = EQikListBoxColWidthFromContentType;
+				slot_id = EQikListBoxSlotLeftMediumIcon1;
+				type = QIK_LISTBOX_ICON_TYPE
+				{
+					size = EQikListBoxSizeMediumIcon;
+				};
+			},
+	QIK_LISTBOX_COLUMN
+	{
+		width_type = EQikListBoxColWidthGrab;
+        width_value = 1;
+		slot_id = EQikListBoxSlotParent1;
+		type = QIK_LISTBOX_PARENT_TYPE;
+	
+		rows = 
+		{
+			QIK_LISTBOX_ROW
+			{					
+				slot_id = EQikListBoxSlotText1;
+				type = QIK_LISTBOX_TEXT_TYPE
+				{
+					emphasis_font_style = EQikListBoxFontBold;
+					font_size = EQikListBoxFontMedium;
+					emphasis_font_size = EQikListBoxFontMedium;
+					scroll = EQikListBoxTextScrollWhenHighlighted;
+				};				
+			},
+			QIK_LISTBOX_ROW
+			{
+
+				slot_id = EQikListBoxSlotText2;
+				type = QIK_LISTBOX_TEXT_TYPE
+				{
+					emphasis_font_style = EQikListBoxFontBold;
+					font_size = EQikListBoxFontExtraSmall;
+					emphasis_font_size = EQikListBoxFontExtraSmall;
+					scroll = EQikListBoxTextScrollWhenHighlighted;
+				};						
+			}
+
+		};
+	}
+	};
+}
+
+
+RESOURCE QIK_LISTBOX_LAYOUT_PAIR r_podcast_setplayorder_normal_layout_pair
+	{
+	custom_normal_layout = r_podcast_playorder_listbox_layout;
+	custom_highlight_layout= r_podcast_playorder_listbox_layout;
+	}
+
+RESOURCE DIALOG r_podcast_audiobook_playorderdlg
+{
+	buttons = r_podcast_setplayorder_buttons;
+
+	flags = EEikDialogFlagWait|EEikDialogFlagButtonsBelow;
+	title = STRING_r_view_books_setorder_dlgtitle;
+	items = 
+	{
+		DLG_LINE
+		{
+			id = EPodcastSetAudioBookPlayOrderListbox;
+			itemflags = EQikDlgItemCaptionAboveControl|EQikDlgItemCtlIsEditInPlace|EQikDlgItemHideHighlight;			
+			type = EQikCtListBox;
+			control = QIK_LISTBOX 
+			{
+				layouts = { r_podcast_setplayorder_normal_layout_pair };
+			};
+		},
+		DLG_LINE
+		{
+			id = EPodcastSetAudioBookPlayOrderLabel;
+			itemflags = EQikDlgItemCaptionAboveControl|EQikDlgItemCtlIsEditInPlace|EQikDlgItemHideHighlight;
+			type = EEikCtLabel;
+			control = LABEL
+			{		
+			horiz_align=EEikLabelAlignHLeft;
+			txt ="help";
+			};
+		}
+	};
+}
 
 // Shows view status strings
 RESOURCE TBUF r_podcast_shows_title_format { buf =  STRING_r_podcast_shows_title_format;}
