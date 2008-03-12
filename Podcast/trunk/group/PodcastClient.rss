@@ -128,6 +128,10 @@ RESOURCE TBUF r_podcast_enable_downloads_prompt {buf = STRING_r_enable_downloads
 RESOURCE TBUF r_podcast_feeds_title_format {buf = STRING_r_podcast_feeds_title_format;}
 RESOURCE TBUF r_podcast_feeds_status_format {buf = STRING_r_podcast_feeds_status_format;}
 
+RESOURCE TBUF r_podcast_onphone_status {buf = STRING_r_view_onphone_status;}
+RESOURCE TBUF r_podcast_onphone_status_unknown {buf = STRING_r_view_onphone_status_unknown;}
+
+
 // Books
 RESOURCE TBUF r_podcast_books_title_format {buf = STRING_r_podcast_books_title_format;}
 RESOURCE TBUF r_podcast_books_status_format {buf = STRING_r_podcast_books_status_format;}

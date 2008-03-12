@@ -8,6 +8,7 @@
 
 CShowEngine::CShowEngine(CPodcastModel& aPodcastModel) : iPodcastModel(aPodcastModel)
 	{
+	iLastShowsOnPhoneCount = -1;
 	iDownloadsSuspended = ETrue;
 	}
 
@@ -636,6 +637,10 @@ TInt CShowEngine::GetNoDownloadingShowsL() const
 	return iShowsDownloading.Count();
 	}
 
+TInt CShowEngine::GetLastShowsOnPhoneCountL() const 
+	{
+	return iLastShowsOnPhoneCount;
+	}
 
 RShowInfoArray& CShowEngine::GetSelectedShows()
 	{
@@ -761,6 +766,7 @@ void CShowEngine::ListDir(TFileName &folder) {
 				}
 			}
 			
+			iLastShowsOnPhoneCount++;
 			if (exists) {
 				continue;
 			}
@@ -806,6 +812,7 @@ void CShowEngine::CheckFiles()
 		}
 	}
 
+	iLastShowsOnPhoneCount = 0;
 	// check if any new files were added
 	ListDir(iPodcastModel.SettingsEngine().BaseDir());	
 }

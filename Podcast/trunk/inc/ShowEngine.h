@@ -23,6 +23,7 @@ public:
 	TBool DownloadsStopped();
 
 	TInt GetNoDownloadingShowsL() const;
+	TInt GetLastShowsOnPhoneCountL() const;
 	CShowInfo* ShowDownloading();
 	CShowInfo* GetShowByUidL(TUint aShowUid);
 	CShowInfo* GetNextShowByTrackL(CShowInfo* aShowInfo);
@@ -110,6 +111,8 @@ private:
     CMetaDataReader* iMetaDataReader;
     
     TUint iGrossSelectionLength;
+    
+    TUint iLastShowsOnPhoneCount;
 };
 
 #endif /*SHOWENGINE_H_*/

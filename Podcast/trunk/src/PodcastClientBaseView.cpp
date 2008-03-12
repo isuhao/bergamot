@@ -165,6 +165,20 @@ void CPodcastClientBaseView::UpdateListboxItemsL()
 					model.DataUpdatedL(loop);
 					
 				}break;
+			case EBaseViewDownloadedShows:
+				{
+					int count = iPodcastModel.ShowEngine().GetLastShowsOnPhoneCountL();
+					if (count == -1) {
+						iEikonEnv->ReadResourceL(formatting, R_PODCAST_ONPHONE_STATUS_UNKNOWN);
+						statusText.Copy(formatting);
+					} else {
+						iEikonEnv->ReadResourceL(formatting, R_PODCAST_ONPHONE_STATUS);
+						statusText.Format(formatting, count);
+					}
+					data->SetTextL(statusText, EQikListBoxSlotText2);				
+					model.DataUpdatedL(loop);
+					
+				}break;				
 			case EBaseViewPendingShows:
 				{
 					iEikonEnv->ReadResourceL(formatting, R_PODCAST_PENDING_STATUS);
