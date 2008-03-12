@@ -4,6 +4,10 @@
 
 Escarpod needs URLs to RSS files to access feeds. If Escarpod fails to load a feed, make sure you entered the URL of an RSS file, and not an HTML file. RSS files commonly end with .rss or .xml.
 
+== Feeds work, but downloads fail silently or seem to be broken ==
+
+Strange behavior occurs when the disk is full. Make sure you didn't fill up your flash card with podcasts, as can easily happen with Escarpod. Use the purge feed option to clean a folder from within the program, or remove your downloaded files manually through the file manager.
+
 == Can I use my Bluetooth Headsets with Escarpod? ==
 
 You can use Bluetooth headsets with Escarpod, at least with Sony Ericsson phones. The problem is that there is no known public way to enable the headset. However, if you start the media player and use Transfer sound to redirect your sound to your bluetooth headset, the sound will stay in the headset until you disable it. This includes sound played through Escarpod.
