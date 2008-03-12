@@ -27,9 +27,9 @@ rls_string STRING_r_view_feeds_cmd "Feeds"
 rls_string STRING_r_view_player_cmd "Ascolta"
 
 // Navigation to the audio books
-rls_string STRING_r_view_audiobooks_cmd "Audio books"
-rls_string STRING_r_view_new_audiobook_cmd "New audiobook"
-rls_string STRING_r_view_remove_audiobook_cmd "Remove audiobook"
+rls_string STRING_r_view_audiobooks_cmd "Audiolibri"
+rls_string STRING_r_view_new_audiobook_cmd "Nuovo audiolibro"
+rls_string STRING_r_view_remove_audiobook_cmd "Rimuovi audiolibro"
 
 // Actions for the player
 rls_string STRING_r_play_cmd "Play"
@@ -45,7 +45,7 @@ rls_string STRING_r_view_remove_download_cmd "Elimina Download"
 rls_string STRING_r_view_show_cmd "Feed"
 rls_string STRING_r_view_cmd "Visualizza"
 rls_string STRING_r_view_play_cmd "Play"
-rls_string STRING_r_view_mark_as_played_cmd "Segna come già ascoltati"
+rls_string STRING_r_view_mark_as_played_cmd "Segna come già ascoltati"
 rls_string STRING_r_view_mark_as_unplayed_cmd "Segna come da ascoltare"
 
 // Actions for feeds
@@ -84,7 +84,7 @@ rls_string STRING_r_category_pending "Scaricamento"
 
 // View titles
 rls_string STRING_r_view_feeds_title "Feeds"
-rls_string STRING_r_view_audiobooks_title "Audio books"
+rls_string STRING_r_view_audiobooks_title "Audio libri"
 
 // Shows view status strings
 rls_string STRING_r_podcast_shows_title_format "%d da ascoltare, %d totale";
@@ -97,7 +97,7 @@ rls_string STRING_r_podcast_feeds_title_format "%d feed"
 rls_string STRING_r_podcast_books_title_format "%d books"
 rls_string STRING_r_podcast_feeds_status_format "%d/%d Elementi"
 rls_string STRING_r_podcast_shows_never_updated "Mai"
-rls_string STRING_r_podcast_feeds_is_updating "Is updating"
+rls_string STRING_r_podcast_feeds_is_updating "In aggiornamento"
 rls_string STRING_r_podcast_no_feeds "Nessun feeds"
 
 // DIALOG string
@@ -107,7 +107,7 @@ rls_string STRING_r_add_feed_title "Aggiungi Feed"
 rls_string STRING_r_edit_feed_title "Modifica Feed"
 
 rls_string STRING_r_add_feed_prompt "Indirizzo Feed"
-rls_string STRING_r_add_feed_title_prompt "Feed Title"
+rls_string STRING_r_add_feed_title_prompt "Titolo feed"
 
 rls_string STRING_r_remove_feed_title "Elimina Feed"
 rls_string STRING_r_remove_feed_prompt "Sicuro di voler rimuovere questo feed?"
@@ -128,7 +128,7 @@ rls_string STRING_r_podcast_settings_title "Impostazioni"
 rls_string STRING_r_podcast_setting_showdir "Directory di scaricamento"
 rls_string STRING_r_podcast_setting_autoupdate "Scaricamento automatico"
 rls_string STRING_r_podcast_setting_checkevery "Intervallo di scaricamento"
-rls_string STRING_r_podcast_setting_updateat "Update at"
+rls_string STRING_r_podcast_setting_updateat "Aggiornamento a"
 rls_string STRING_r_podcast_setting_minutes "minuti"
 
 rls_string STRING_r_podcast_setting_maxsimul "Numero massimo di scaricamenti simultanei"
@@ -150,19 +150,19 @@ rls_string STRING_podcast_autoupdate_attime "Elementi e contenuti feed"
 rls_string STRING_r_podcast_iap_dlg_title "Seleziona un account internet"
 
 // Audio book dialog
-rls_string STRING_r_podcast_new_audiobook_title "Create new audio book"
-rls_string STRING_r_podcast_new_audiobook_prompt "Audio book title"
-rls_string STRING_r_podcast_new_audiobook_label "%d files selected for this book."
-rls_string STRING_r_podcast_new_audiobook_select_files "Choose book files" // Max 80 chars
+rls_string STRING_r_podcast_new_audiobook_title "Crea nuovo audiolibro"
+rls_string STRING_r_podcast_new_audiobook_prompt "Titolo audiolibro"
+rls_string STRING_r_podcast_new_audiobook_label "%d file selezionati per questo audiolibro."
+rls_string STRING_r_podcast_new_audiobook_select_files "Scegli file per audiolibro" // Max 80 chars
 
 // Latest strings here
-rls_string STRING_r_view_books_no_books "No Books" // No Books
+rls_string STRING_r_view_books_no_books "Nessuno audiolibro" // No Books
 
-rls_string STRING_r_view_import_feeds_cmd "Import Feeds" // Import feeds cmd in feedview
-rls_string STRING_r_view_import_feeds_title "Select OPML file"
+rls_string STRING_r_view_import_feeds_cmd "Importa Feed" // Import feeds cmd in feedview
+rls_string STRING_r_view_import_feeds_title "Seleziona file OPML"
 
-rls_string STRING_r_view_books_status "%d Books" // Used in base view listbox status text max 32 chars
-rls_string STRING_r_view_feeds_status "%d Feeds" // Used in base view listbox for feeds status text max 32 chars
+rls_string STRING_r_view_books_status "%d Audiolibri" // Used in base view listbox status text max 32 chars
+rls_string STRING_r_view_feeds_status "%d Feed" // Used in base view listbox for feeds status text max 32 chars
 
-rls_string STRING_r_cancel_update_all_feeds_cmd "Cancel update"
-rls_string STRING_r_cancel_update_all_feeds_short_cmd "Cancel"
+rls_string STRING_r_cancel_update_all_feeds_cmd "Annulla aggiornamento"
+rls_string STRING_r_cancel_update_all_feeds_short_cmd "Annulla"
