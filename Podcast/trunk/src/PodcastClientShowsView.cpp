@@ -637,6 +637,20 @@ void CPodcastClientShowsView::UpdateCommandsL()
 			{			
 				removeDownloadCmd = ETrue;
 			}
+			else
+			{
+				if(fItems[index]->DownloadState() == EQueued)
+				{
+					comMan.SetTextL(*this, EPodcastRemoveDownload, R_PODCAST_PLAYER_REMOVE_DL_CMD);
+					comMan.SetShortTextL(*this, EPodcastRemoveDownload, R_PODCAST_PLAYER_REMOVE_DL_CMD);
+				}
+				else
+				{					
+					comMan.SetTextL(*this, EPodcastRemoveDownload, R_PODCAST_PLAYER_SUSPEND_DL_CMD);
+					comMan.SetShortTextL(*this, EPodcastRemoveDownload, R_PODCAST_PLAYER_SUSPEND_DL_CMD);
+				}
+			}
+
 			removePurgeShowCmd = fItems[index]->DownloadState() != EDownloaded;
 
 			if(fItems[index]->DownloadState() == ENotDownloaded)
