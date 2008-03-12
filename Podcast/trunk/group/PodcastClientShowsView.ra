@@ -473,7 +473,7 @@ RESOURCE DIALOG r_podcast_audiobook_playorderdlg
 		DLG_LINE
 		{
 			id = EPodcastSetAudioBookPlayOrderListbox;
-			itemflags = EQikDlgItemCaptionAboveControl|EQikDlgItemCtlIsEditInPlace|EQikDlgItemHideHighlight;			
+			itemflags = EQikDlgItemCaptionAboveControl|EQikDlgItemCtlIsEditInPlace|EQikDlgItemHideHighlight|EQikDlgItemShareAvailableHeight;			
 			type = EQikCtListBox;
 			control = QIK_LISTBOX 
 			{
