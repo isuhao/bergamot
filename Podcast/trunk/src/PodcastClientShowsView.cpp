@@ -616,9 +616,9 @@ void CPodcastClientShowsView::UpdateCommandsL()
 {
 	CQikCommandManager& comMan = CQikCommandManager::Static();
 	RShowInfoArray &fItems = iPodcastModel.ActiveShowList();
-	TBool removeDownloadCmd = EFalse;
 	TBool removePurgeShowCmd = ETrue;
 	TBool removeDownloadShowCmd = ETrue;
+	TBool removeRemoveSuspendCmd = EFalse;
 	TBool updatingState = (iCurrentCategory != EShowDownloadedShows && iPodcastModel.FeedEngine().ClientState() != ENotUpdating && iPodcastModel.FeedEngine().ActiveClientUid() == iPodcastModel.ActiveFeedInfo()->Uid());
 	TBool playingPodcast = (iPodcastModel.PlayingPodcast() != NULL && (iPodcastModel.SoundEngine().State() == ESoundEnginePlaying || iPodcastModel.SoundEngine().State() == ESoundEnginePaused));
 
@@ -635,7 +635,6 @@ void CPodcastClientShowsView::UpdateCommandsL()
 			comMan.SetShortTextL(*this, EQikListBoxCmdSelect, R_PODCAST_VIEW_CMD);
 			if(fItems[index]->DownloadState() != EQueued &&  fItems[index]->DownloadState() != EDownloading)
 			{			
-				removeDownloadCmd = ETrue;
 			}
 			else
 			{
@@ -648,6 +647,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 				{					
 					comMan.SetTextL(*this, EPodcastRemoveDownload, R_PODCAST_PLAYER_SUSPEND_DL_CMD);
 					comMan.SetShortTextL(*this, EPodcastRemoveDownload, R_PODCAST_PLAYER_SUSPEND_DL_CMD);
+					removeRemoveSuspendCmd = ETrue;
 				}
 			}
 
@@ -662,13 +662,11 @@ void CPodcastClientShowsView::UpdateCommandsL()
 		else
 		{
 			comMan.SetInvisible(*this, EQikListBoxCmdSelect, ETrue);		
-			removeDownloadCmd = ETrue; 		
 		}
 	}
 	else
 	{
 		comMan.SetInvisible(*this, EQikListBoxCmdSelect, ETrue);
-		removeDownloadCmd = ETrue;
 	}
 
 	comMan.SetInvisible(*this, EPodcastUpdateFeed, (iCurrentCategory != EShowFeedShows || iPodcastModel.ActiveFeedInfo()->IsBookFeed()));
@@ -696,7 +694,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 		{
 			comMan.SetInvisible(*this, EPodcastMarkAllPlayed, ETrue);
 			comMan.SetInvisible(*this, EPodcastUpdateLibrary, ETrue);
-			comMan.SetInvisible(*this, EPodcastRemoveDownload, EFalse);
+			comMan.SetInvisible(*this, EPodcastRemoveDownload, removeRemoveSuspendCmd);
 			comMan.SetInvisible(*this, EPodcastStopDownloads, iPodcastModel.ShowEngine().DownloadsStopped());
 			comMan.SetInvisible(*this, EPodcastResumeDownloads, !iPodcastModel.ShowEngine().DownloadsStopped());			
 			comMan.SetInvisible(*this, EPodcastShowUnplayedOnly, ETrue);
