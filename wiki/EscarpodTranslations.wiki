@@ -13,6 +13,7 @@ If you use UTF 8 encoding, and please do, your file should start with the line
 The following translations been done, but they may not be updated for the latest release. If you find errors in the languate you're using, please fix it by downloading the language file and sending us the update at bergamot@googlegroups.com.
 
 || *Language* || *Translated by (handle)* || *Language file* ||
+|| *English* || - || *[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_english.rls PodcastClient_english.rls]*||
 || Czech|| Jiří Vyhnálek||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_czech.rls PodcastClient_czech.rls] ||
 || Danish || Michell Bak ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_danish.rls PodcastClient_danish.rls] ||
 || Estonian || Valdur Palm ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_estonian.rls PodcastClient_estonian.rls] ||
