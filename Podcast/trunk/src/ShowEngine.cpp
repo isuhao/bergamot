@@ -321,6 +321,7 @@ void CShowEngine::LoadShowsL()
 	TInt version = instream.ReadInt32L();
 	RDebug::Print(_L("CShowEngine::LoadShowsL\tVersion of database file = %d"), version);
 
+	
 	if (version != KShowInfoVersion) 
 		{
 		RDebug::Print(_L("CShowEngine::LoadShowsL\tWrong version, discarding"));
@@ -335,23 +336,9 @@ void CShowEngine::LoadShowsL()
 		
 	for (TInt i=0 ; i < count ; i++) 
 		{
-		readData = CShowInfo::NewL();
+		readData = CShowInfo::NewL(version);
 		instream  >> *readData;
 		
-		//CFeedInfo *feedInfo = NULL;
-		//if (readData->FeedUid() != lastUid) 
-		//	{
-		//	lastUid = readData->FeedUid();
-		//	feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(readData->FeedUid());
-		//	}
-		
-		// might be useful to keep these shows after all...
-		/*if (feedInfo == NULL) {
-			// if this show does not have a valid feed, we don't bother
-			RDebug::Print(_L("Discarding show since it has no feed!"));
-			continue;
-		}*/
-		//RDebug::Print(_L("error: %d"), error);
 		TBool isAdded = AddShow(readData);
 		
 		if (isAdded == EFalse)

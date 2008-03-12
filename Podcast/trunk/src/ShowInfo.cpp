@@ -1,9 +1,9 @@
 #include "ShowInfo.h"
 #include <e32hashtab.h>
 
-CShowInfo* CShowInfo::NewL()
+CShowInfo* CShowInfo::NewL(TUint aVersion)
 	{
-	CShowInfo* self = new (ELeave) CShowInfo;
+	CShowInfo* self = new (ELeave) CShowInfo(aVersion);
 	CleanupStack::PushL(self);
 	self->ConstructL();
 	CleanupStack::Pop(self);
@@ -16,7 +16,7 @@ void CShowInfo::ConstructL()
 	iDelete = EFalse;
 	}
 
-CShowInfo::CShowInfo()
+CShowInfo::CShowInfo(TUint aVersion) : iVersion(aVersion)
 	{
 	iTrackNo = KMaxTUint; 
 	}
@@ -130,6 +130,10 @@ void CShowInfo::InternalizeL(RReadStream& aStream)
 	low = aStream.ReadInt32L();
 	high = aStream.ReadInt32L();
 	iPubDate = MAKE_TINT64(high, low);
+	
+	if (iVersion < 8) {
+		return;
+	}
 	TRAP_IGNORE(iPlayTime = aStream.ReadUint32L());
 	TRAP_IGNORE(iIsBookFile = aStream.ReadUint32L());
 	TRAP_IGNORE(iTrackNo = aStream.ReadUint32L());

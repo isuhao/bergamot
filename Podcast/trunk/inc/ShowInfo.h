@@ -23,7 +23,7 @@ enum TDownloadState {
 
 class CShowInfo: public CBase {
 public:
-	static CShowInfo* NewL();
+	static CShowInfo* NewL(TUint aVersion=KShowInfoVersion);
 	~CShowInfo();
 	void ExternalizeL(RWriteStream& aStream) const;
 	void InternalizeL(RReadStream& aStream);
@@ -74,7 +74,7 @@ public:
 	void SetTrackNo(TUint aTrackNo);
 	TUint TrackNo() const;
 private:
-	CShowInfo();
+	CShowInfo(TUint aVersion);
 	void ConstructL();
 
 private:
@@ -93,6 +93,7 @@ private:
 	TTime iPubDate;
 	TBool iDelete;
 	TBool iIsBookFile;
+	TUint iVersion;
 };
 
 typedef RPointerArray<CShowInfo> RShowInfoArray;
