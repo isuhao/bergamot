@@ -33,6 +33,7 @@ TBool CPodcastClientSetAudioBookOrderDlg::OkToExitL(TInt aCommandId)
 		if(iSwapSet)
 		{
 			iSetLabel->MakeVisible(EFalse);
+			iSwapSet = EFalse;
 		}
 		else
 		{
@@ -40,6 +41,7 @@ TBool CPodcastClientSetAudioBookOrderDlg::OkToExitL(TInt aCommandId)
 			iEikonEnv->ReadResourceL(buf, R_PODCAST_SORT_AUDIOBOOK_SWAP);
 			iSetLabel->SetTextL(buf);
 			iSetLabel->MakeVisible(ETrue);
+			iSwapSet = ETrue;
 		}
 		iSetLabel->DrawDeferred();
 
