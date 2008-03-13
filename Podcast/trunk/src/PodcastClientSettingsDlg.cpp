@@ -9,7 +9,10 @@
 #include <QikTimeEditor.h>
 #include <eiklabel.h>
 #include <PodCastClient.rsg>
+#include <MQikListBoxModel.h>
+#include <MQikListBoxData.h>
 
+#include "ShowEngine.h"
 #include "PodcastClient.hrh"
 #include "PodcastClientSettingsDlg.h"
 #include "PodcastModel.h"
@@ -23,25 +26,50 @@ CPodcastClientSetAudioBookOrderDlg::CPodcastClientSetAudioBookOrderDlg(CPodcastM
 
 CPodcastClientSetAudioBookOrderDlg::~CPodcastClientSetAudioBookOrderDlg()
 {
+	iShowInfoArray.Close();
 }
 
 TBool CPodcastClientSetAudioBookOrderDlg::OkToExitL(TInt aCommandId)
 {
-	if(aCommandId == EPodcastSetAudioBookPlayOrderSwap)
+	if(aCommandId == EPodcastSetAudioBookPlayOrderSwap) 
 	{
+		TBuf<64> buf;
+		MQikListBoxModel& model(iListbox->Model());
 		
 		if(iSwapSet)
 		{
-			iSetLabel->MakeVisible(EFalse);
+			iEikonEnv->ReadResourceL(buf, R_PODCAST_SORT_AUDIOBOOK_SELECT);
+			iSetLabel->SetTextL(buf);
 			iSwapSet = EFalse;
+
+			model.ModelBeginUpdateLC();													
+			MQikListBoxData* data = model.RetrieveDataL(iSwapIndex);	
+			CleanupClosePushL(*data);
+			data->SetEmphasis(EFalse);								
+			CleanupStack::PopAndDestroy();//close data
+			model.DataUpdatedL(iSwapIndex);					
+			model.ModelEndUpdateL();
+			TInt newIndex = iListbox->CurrentItemIndex();
+			TInt trackNo1 = iShowInfoArray[iSwapIndex]->TrackNo();
+			TInt trackNo2 = iShowInfoArray[newIndex]->TrackNo();
+			iShowInfoArray[iSwapIndex]->SetTrackNo(trackNo2);
+			iShowInfoArray[newIndex]->SetTrackNo(trackNo1);
+			PopulateListboxL();
 		}
 		else
-		{
-			TBuf<64> buf;
+		{			
 			iEikonEnv->ReadResourceL(buf, R_PODCAST_SORT_AUDIOBOOK_SWAP);
 			iSetLabel->SetTextL(buf);
-			iSetLabel->MakeVisible(ETrue);
 			iSwapSet = ETrue;
+			iSwapIndex = iListbox->CurrentItemIndex();
+
+			model.ModelBeginUpdateLC();													
+			MQikListBoxData* data = model.RetrieveDataL(iSwapIndex);	
+			CleanupClosePushL(*data);
+			data->SetEmphasis(ETrue);								
+			CleanupStack::PopAndDestroy();//close data
+			model.DataUpdatedL(iSwapIndex);					
+			model.ModelEndUpdateL();
 		}
 		iSetLabel->DrawDeferred();
 
@@ -51,17 +79,57 @@ TBool CPodcastClientSetAudioBookOrderDlg::OkToExitL(TInt aCommandId)
 	return ETrue;
 }
 
+TInt CPodcastClientSetAudioBookOrderDlg::CompareShowsByTrack(const CShowInfo &a, const CShowInfo &b)
+	{
+	return a.TrackNo()-b.TrackNo();
+	}
+
+
 void CPodcastClientSetAudioBookOrderDlg::PreLayoutDynInitL()
 {
 	iSetLabel = static_cast<CEikLabel*>(ControlOrNull(EPodcastSetAudioBookPlayOrderLabel));
-	iSetLabel->MakeVisible(EFalse);
 
 	iListbox = static_cast<CQikListBox*>(ControlOrNull(EPodcastSetAudioBookPlayOrderListbox));
+	iPodcastModel.ShowEngine().GetShowsForFeed(iShowInfoArray, iFeedId); 
+
 	PopulateListboxL();
 }
 
+_LIT(KNumberFormat,"%03d:");
 void CPodcastClientSetAudioBookOrderDlg::PopulateListboxL()
 {
+	TInt cnt = iShowInfoArray.Count();
+
+	TLinearOrder<CShowInfo> sortOrder(CompareShowsByTrack);
+	iShowInfoArray.Sort(sortOrder);
+	
+	TInt lastIndex = iListbox->CurrentItemIndex();
+	TInt lastTopIndex = iListbox->TopItemIndex();
+	iListbox->RemoveAllItemsL();
+
+	MQikListBoxModel& model(iListbox->Model());
+	model.ModelBeginUpdateLC();
+	MQikListBoxData* listBoxData = NULL;
+	TBuf<32> numberFormatBuf;
+	
+	for(TInt loop = 0;loop<cnt;loop++)
+	{
+		listBoxData = model.NewDataL(MQikListBoxModel::EDataNormal);
+		CleanupClosePushL(*listBoxData);
+		numberFormatBuf.Format(KNumberFormat(), iShowInfoArray[loop]->TrackNo());
+		listBoxData->AddTextL(numberFormatBuf, EQikListBoxSlotText1);
+		listBoxData->AddTextL(iShowInfoArray[loop]->Title(), EQikListBoxSlotText3);
+		TParsePtrC parser(iShowInfoArray[loop]->FileName());
+		listBoxData->AddTextL(parser.NameAndExt(), EQikListBoxSlotText2);
+		CleanupStack::PopAndDestroy(listBoxData); // close listbox data
+	}
+
+	model.ModelEndUpdateL();
+
+	if(lastIndex >= 0 && lastIndex<cnt)
+		{
+		iListbox->SetCurrentAndTopItemIndexL(lastIndex, lastTopIndex, EDrawNow);
+		}
 }
 
 

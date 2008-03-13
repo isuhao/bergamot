@@ -176,4 +176,5 @@ rls_string STRING_r_view_onphone_status_unknown "Unknown" // Used for unknown st
 rls_string STRING_r_view_books_setorder "Set playorder" // cmd for set audio book playorder
 rls_string STRING_r_view_books_setorder_dlgtitle "Set the play order"
 rls_string STRING_r_view_books_setorder_dlg_swapcmd "Swap"
-rls_string STRING_r_view_books_setorder_dlg_label "Select file to swap with"
+rls_string STRING_r_view_books_setorder_dlg_label "Select entry to swap with"
+rls_string STRING_r_view_books_setorder_dlg_selectlabel "Select entry to move"

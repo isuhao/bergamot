@@ -632,6 +632,20 @@ void CShowEngine::SelectShowsDownloading()
 		}
 	}
 
+void CShowEngine::GetShowsForFeed(RShowInfoArray& aShowArray, TUint aFeedUid)
+	{
+	TInt cnt = iShows.Count();
+	aShowArray.Reset();
+
+	for(TInt loop = 0;loop<cnt;loop++)
+		{
+		if(iShows[loop]->FeedUid() == aFeedUid)
+			{
+			aShowArray.AppendL(iShows[loop]);
+			}
+		}	
+	}
+
 TInt CShowEngine::GetNoDownloadingShowsL() const 
 	{
 	return iShowsDownloading.Count();

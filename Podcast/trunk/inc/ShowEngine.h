@@ -27,14 +27,15 @@ public:
 	CShowInfo* ShowDownloading();
 	CShowInfo* GetShowByUidL(TUint aShowUid);
 	CShowInfo* GetNextShowByTrackL(CShowInfo* aShowInfo);
-
+	
 	// show selection methods
 	void SelectAllShows();
 	void SelectShowsByFeed(TUint aFeedUid);
 	void SelectShowsDownloaded();
 	void SelectNewShows();
 	void SelectShowsDownloading();
-	
+	void GetShowsForFeed(RShowInfoArray& aShowArray, TUint aFeedUid);
+
 	void CompleteL(CHttpClient* aClient, TBool aSuccessful);
 	TBool AddShow(CShowInfo *item);
 	void SaveShows();

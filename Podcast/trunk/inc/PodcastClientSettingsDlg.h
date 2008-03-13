@@ -3,6 +3,8 @@
 #include <eikdialg.h>
 
 #include "FeedInfo.h"
+#include "ShowInfo.h"
+
 class CPodcastModel;
 class CEikEdwin;
 class CEikCheckBox;
@@ -21,12 +23,16 @@ protected:
 		TBool OkToExitL(TInt aCommandId);
 		void PreLayoutDynInitL();
 		void PopulateListboxL();
+		static TInt CompareShowsByTrack(const CShowInfo &a, const CShowInfo &b);
+
 private:
 		CPodcastModel& iPodcastModel;
 		TInt iFeedId;
 		TBool iSwapSet;
+		TInt iSwapIndex;
 		CEikLabel* iSetLabel;
 		CQikListBox* iListbox;
+		RShowInfoArray iShowInfoArray;
 };
 
 /**

@@ -390,6 +390,7 @@ RESOURCE QIK_LISTBOX_LAYOUT r_podcast_showsview_listbox_layout
 
 // DIALOGS
 
+RESOURCE TBUF r_podcast_sort_audioBook_select { buf = STRING_r_view_books_setorder_dlg_selectlabel;}
 
 RESOURCE TBUF r_podcast_sort_audioBook_swap { buf = STRING_r_view_books_setorder_dlg_label;}
 
@@ -397,9 +398,8 @@ RESOURCE DLG_BUTTONS r_podcast_setplayorder_buttons
     {
     buttons=
         {
-        DLG_BUTTON { id=EEikBidCancel; button=CMBUT {txt=STRING_r_podcast_setting_cancel_cmd;}; hotkey=EEikBidCancel; flags=0; },
-		DLG_BUTTON { id=EPodcastSetAudioBookPlayOrderSwap; button=CMBUT {txt=STRING_r_view_books_setorder_dlg_swapcmd;};  flags=0; },     
-        DLG_BUTTON { id=EEikBidOk; button=CMBUT {txt=STRING_r_podcast_setting_done_cmd;}; hotkey=EEikBidOk; flags=EEikLabeledButtonIsDefault; }
+		DLG_BUTTON { id=EPodcastSetAudioBookPlayOrderSwap; button=CMBUT {txt=STRING_r_view_books_setorder_dlg_swapcmd;};  flags=EEikLabeledButtonIsDefault; },     
+        DLG_BUTTON { id=EEikBidOk; button=CMBUT {txt=STRING_r_podcast_setting_done_cmd;}; hotkey=EEikBidOk; flags=0; }
         };
     }
 
@@ -408,15 +408,6 @@ RESOURCE QIK_LISTBOX_LAYOUT r_podcast_playorder_listbox_layout
 	columns = 
 	{
 
-	QIK_LISTBOX_COLUMN
-			{
-				width_type = EQikListBoxColWidthFromContentType;
-				slot_id = EQikListBoxSlotLeftMediumIcon1;
-				type = QIK_LISTBOX_ICON_TYPE
-				{
-					size = EQikListBoxSizeMediumIcon;
-				};
-			},
 	QIK_LISTBOX_COLUMN
 	{
 		width_type = EQikListBoxColWidthGrab;
@@ -427,26 +418,47 @@ RESOURCE QIK_LISTBOX_LAYOUT r_podcast_playorder_listbox_layout
 		rows = 
 		{
 			QIK_LISTBOX_ROW
-			{					
-				slot_id = EQikListBoxSlotText1;
-				type = QIK_LISTBOX_TEXT_TYPE
-				{
-					emphasis_font_style = EQikListBoxFontBold;
-					font_size = EQikListBoxFontMedium;
-					emphasis_font_size = EQikListBoxFontMedium;
-					scroll = EQikListBoxTextScrollWhenHighlighted;
-				};				
+			{		
+				slot_id = EQikListBoxSlotParent2;
+				type = QIK_LISTBOX_PARENT_TYPE;
+				columns = 
+				{			
+					QIK_LISTBOX_COLUMN
+					{
+						slot_id = EQikListBoxSlotText1;
+						width_type = EQikListBoxColWidthFromContentType;
+						type = QIK_LISTBOX_TEXT_TYPE
+						{
+							emphasis_font_style = EQikListBoxFontBold;
+							font_size = EQikListBoxFontMedium;
+							emphasis_font_size = EQikListBoxFontMedium;							
+						};				
+					},
+					QIK_LISTBOX_COLUMN
+					{
+						slot_id = EQikListBoxSlotText2;
+						interlacing_grab_priority = 100;
+						interlacing = EQikInterlacingExpandPrevious;
+						width_type = EQikListBoxColWidthGrab;
+						type = QIK_LISTBOX_TEXT_TYPE
+						{
+							emphasis_font_style = EQikListBoxFontBold;
+							font_size = EQikListBoxFontMedium;
+							emphasis_font_size = EQikListBoxFontMedium;	
+							scroll = EQikListBoxTextScrollWhenHighlighted;					
+						};				
+					}
+				};
 			},
 			QIK_LISTBOX_ROW
 			{
 
-				slot_id = EQikListBoxSlotText2;
+				slot_id = EQikListBoxSlotText3;
 				type = QIK_LISTBOX_TEXT_TYPE
 				{
 					emphasis_font_style = EQikListBoxFontBold;
 					font_size = EQikListBoxFontExtraSmall;
-					emphasis_font_size = EQikListBoxFontExtraSmall;
-					scroll = EQikListBoxTextScrollWhenHighlighted;
+					emphasis_font_size = EQikListBoxFontExtraSmall;				
 				};						
 			}
 
@@ -488,7 +500,7 @@ RESOURCE DIALOG r_podcast_audiobook_playorderdlg
 			control = LABEL
 			{		
 			horiz_align=EEikLabelAlignHLeft;
-			txt ="help";
+			txt =STRING_r_view_books_setorder_dlg_selectlabel;
 			};
 		}
 	};
