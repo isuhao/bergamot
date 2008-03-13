@@ -53,7 +53,6 @@ TBool CPodcastClientAddFeedDlg::OkToExitL(TInt aCommandId)
 		}
 
 
-
 	CEikEdwin* urlEdwin = static_cast<CEikEdwin*>(ControlOrNull(EPodcastAddEditFeedDlgUrl));
 	CEikEdwin* titleEdwin = static_cast<CEikEdwin*>(ControlOrNull(EPodcastAddEditFeedDlgTitle));
 
@@ -100,17 +99,19 @@ TBool CPodcastClientAddFeedDlg::OkToExitL(TInt aCommandId)
 		else
 			{
 			CFeedInfo* newFeedInfo = CFeedInfo::NewL();
-			iFeedInfo = newFeedInfo;
-			iFeedInfo->SetUrlL(buffer);
+			CleanupStack::PushL(newFeedInfo);
+			
+			newFeedInfo->SetUrlL(buffer);
 
 			if(title && title->Length()>0)
 				{
-				iFeedInfo->SetTitleL(*title);
+				newFeedInfo->SetTitleL(*title);
 				}
 			else
 				{
-				iFeedInfo->SetTitleL(newFeedInfo->Url());
+				newFeedInfo->SetTitleL(newFeedInfo->Url());
 				}
+			CleanupStack::Pop(newFeedInfo);
 			iPodcastModel.FeedEngine().AddFeed(newFeedInfo);
 			}
 	
