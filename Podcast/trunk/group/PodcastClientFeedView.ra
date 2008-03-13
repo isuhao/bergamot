@@ -298,8 +298,7 @@ RESOURCE QIK_LISTBOX_LAYOUT r_podcast_feedview_listbox_layout
 				slot_id = EQikListBoxSlotText1;
 				type = QIK_LISTBOX_TEXT_TYPE
 				{
-					emphasis_font_style = EQikListBoxFontBold;
-					font_style = EQikListBoxFontBold;
+					emphasis_font_style = EQikListBoxFontBold;					
 					font_size = EQikListBoxFontMedium;
 					emphasis_font_size = EQikListBoxFontMedium;
 					scroll = EQikListBoxTextScrollWhenHighlighted;
