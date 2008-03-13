@@ -16,7 +16,7 @@ http://bergamot.googlecode.com/svn/wiki/swim2.jpg
 
 You can download the SIS file from Releases below, however Swim makes use of Symbian features that require signing. As I have not deemed it good enough to send for signing yet, you basically have these two options:
 
-  * Get a developer certificate from symbiansigned.com and sign it yourself in a complicated manner.
+  * Get a developer certificate from symbiansigned.com and sign it yourself in a complicated manner, possibly using [http://www.barakharel.com/signme/ SignMe!]
   * Wait until I have it signed for everybody to enjoy, which I will do soon!
 
 == Usage ==
