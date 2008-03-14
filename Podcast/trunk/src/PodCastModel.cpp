@@ -36,11 +36,13 @@ CPodcastModel::~CPodcastModel()
 	delete iCommDB;
 	iConnection.Close();
 	iSocketServ.Close();
+	delete iRemConListener;
 }
 
 CPodcastModel::CPodcastModel()
 {
 	 iZoomState =  EQikCmdZoomLevel2;
+	 iRemConListener = CRemoteControlListener::NewL(*this);
 }
 
 void CPodcastModel::ConstructL()

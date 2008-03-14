@@ -67,7 +67,7 @@ SOURCE			ShowEngine.cpp
 SOURCE			SettingsEngine.cpp
 SOURCE			MetaDataReader.cpp 
 SOURCE			TelephonyListener.cpp 
-SOURCE			OpmlParser.cpp
+SOURCE			OpmlParser.cpp RemoteControlListener.cpp
 
 LIBRARY         euser.lib
 LIBRARY         apparc.lib
@@ -104,6 +104,8 @@ LIBRARY			estlib.lib
 LIBRARY			etel3rdparty.lib
 LIBRARY			ezlib.lib
 staticlibrary	libid3tag.lib
+LIBRARY         remconcoreapi.lib
+LIBRARY 		remconinterfacebase.lib
 
 START BITMAP    PodcastClient.mbm
 TARGETPATH      \resource\apps

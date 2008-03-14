@@ -9,6 +9,7 @@
 #include "FeedInfo.h"
 #include "ShowInfo.h"
 #include "TelephonyListener.h"
+#include "RemoteControlListener.h"
 
 class CFeedEngine;
 class CSoundEngine;
@@ -82,6 +83,7 @@ private:
    TCommDbConnPref iConnPref;
    
    CTelephonyListener *iTelephonyListener;
+   CRemoteControlListener *iRemConListener;
 };
 
 #endif // PODCASTMODEL_H
