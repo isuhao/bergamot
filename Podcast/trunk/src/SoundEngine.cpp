@@ -175,6 +175,9 @@ void CSoundEngine::Stop()
 {
 	if(iState > ESoundEngineOpening)
 	{
+		// seem to need to do this here, even though we do it in MapcPlayComplete
+		iPodcastModel.PlayingPodcast()->SetPlayState(EPlayed);
+
 		iState = ESoundEngineStopped;
 		SetPosition(0);
 		iPlayer->Stop();
