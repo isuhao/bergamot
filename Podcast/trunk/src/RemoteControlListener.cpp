@@ -25,6 +25,7 @@ CRemoteControlListener::~CRemoteControlListener()
 void CRemoteControlListener::MrccatoPlay(TRemConCoreApiPlaybackSpeed aSpeed, TRemConCoreApiButtonAction aButtonAct)
 	{
 	RDebug::Print(_L("Play Command received"));
+	iModel.SoundEngine().Play();
 	}
 
 void CRemoteControlListener::MrccatoTuneFunction()
