@@ -42,7 +42,6 @@ CPodcastModel::~CPodcastModel()
 CPodcastModel::CPodcastModel()
 {
 	 iZoomState =  EQikCmdZoomLevel2;
-	 iRemConListener = CRemoteControlListener::NewL(*this);
 }
 
 void CPodcastModel::ConstructL()
@@ -63,6 +62,8 @@ void CPodcastModel::ConstructL()
 #else
 	iTelephonyListener = CTelephonyListener::NewL(*this);
 	iTelephonyListener->StartL();
+	// Crashing on WINS
+    iRemConListener = CRemoteControlListener::NewL(*this);
 #endif	
 	User::LeaveIfError(iSocketServ.Connect());
 	User::LeaveIfError(iConnection.Open(iSocketServ));

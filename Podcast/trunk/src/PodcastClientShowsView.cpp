@@ -627,6 +627,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 {
 	CQikCommandManager& comMan = CQikCommandManager::Static();
 	RShowInfoArray &fItems = iPodcastModel.ActiveShowList();
+	TInt itemCnt = fItems.Count();
 	TBool removePurgeShowCmd = ETrue;
 	TBool removeDownloadShowCmd = ETrue;
 	TBool removeRemoveSuspendCmd = EFalse;
@@ -639,7 +640,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 	{
 		TInt index = iListbox->CurrentItemIndex();
 
-		if(index>= 0 && index < fItems.Count())
+		if(index>= 0 && index < itemCnt)
 		{		
 			comMan.SetInvisible(*this, EQikListBoxCmdSelect, EFalse);
 			comMan.SetTextL(*this, EQikListBoxCmdSelect, R_PODCAST_VIEW_CMD);
@@ -684,7 +685,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 	comMan.SetInvisible(*this, EPodcastDownloadShow, removeDownloadShowCmd);
 
 	comMan.SetInvisible(*this, EPodcastPurgeShow, removePurgeShowCmd);
-	comMan.SetInvisible(*this, EPodcastPurgeFeed, (iCurrentCategory == EShowPendingShows || iCurrentCategory == EShowDownloadedShows));
+	comMan.SetInvisible(*this, EPodcastPurgeFeed, (iCurrentCategory == EShowPendingShows || iCurrentCategory == EShowDownloadedShows || (iPodcastModel.ActiveFeedInfo()?iPodcastModel.ActiveFeedInfo()->IsBookFeed():EFalse)));
 	comMan.SetInvisible(*this, EPodcastDeleteAllShows, (iCurrentCategory != EShowDownloadedShows));
 	comMan.SetChecked(*this, EPodcastShowUnplayedOnly, iPodcastModel.SettingsEngine().SelectUnplayedOnly());
 	
@@ -698,7 +699,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 	comMan.SetAvailable(*this, EPodcastPurgeFeed, !updatingState);
 	comMan.SetInvisible(*this, EPodcastViewPendingShows, EFalse);
 	comMan.SetInvisible(*this, EPodcastViewDownloadedShows, EFalse);
-	comMan.SetInvisible(*this, EPodcastSetOrderAudioBook, iPodcastModel.ActiveFeedInfo()?!iPodcastModel.ActiveFeedInfo()->IsBookFeed(): ETrue);
+	comMan.SetInvisible(*this, EPodcastSetOrderAudioBook, !(EShowFeedShows == iCurrentCategory && (iPodcastModel.ActiveFeedInfo()?iPodcastModel.ActiveFeedInfo()->IsBookFeed(): ETrue)));
 
 	switch(iCurrentCategory)
 	{	
@@ -706,9 +707,9 @@ void CPodcastClientShowsView::UpdateCommandsL()
 		{
 			comMan.SetInvisible(*this, EPodcastMarkAllPlayed, ETrue);
 			comMan.SetInvisible(*this, EPodcastUpdateLibrary, ETrue);
-			comMan.SetInvisible(*this, EPodcastRemoveDownload, removeRemoveSuspendCmd);
-			comMan.SetInvisible(*this, EPodcastStopDownloads, iPodcastModel.ShowEngine().DownloadsStopped());
-			comMan.SetInvisible(*this, EPodcastResumeDownloads, !iPodcastModel.ShowEngine().DownloadsStopped());			
+			comMan.SetInvisible(*this, EPodcastRemoveDownload, (removeRemoveSuspendCmd || !itemCnt));
+			comMan.SetInvisible(*this, EPodcastStopDownloads, (!itemCnt ||iPodcastModel.ShowEngine().DownloadsStopped()));
+			comMan.SetInvisible(*this, EPodcastResumeDownloads, (!itemCnt ||!iPodcastModel.ShowEngine().DownloadsStopped()));			
 			comMan.SetInvisible(*this, EPodcastShowUnplayedOnly, ETrue);
 			comMan.SetInvisible(*this, EPodcastViewPendingShows, ETrue);
 			comMan.SetInvisible(*this, EPodcastDownloadShow, ETrue);
@@ -735,8 +736,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 			comMan.SetInvisible(*this, EPodcastUpdateLibrary, ETrue);
 			comMan.SetInvisible(*this, EPodcastShowUnplayedOnly, EFalse);
 		}break;
-	}
-	TInt cnt = iPodcastModel.ActiveShowList().Count();
+	}	
 
 	if (iCurrentCategory == EShowPendingShows) {
 		HBufC* titleBuffer = NULL;
@@ -744,7 +744,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 		if (iPodcastModel.ShowEngine().DownloadsStopped()) {
 			HBufC* titleFormat=  iEikonEnv->AllocReadResourceLC(R_PODCAST_SHOWS_DOWNLOADS_SUSPENDED);
 			titleBuffer = HBufC::NewL(titleFormat->Length()+8);
-			titleBuffer->Des().Format(*titleFormat, cnt);			
+			titleBuffer->Des().Format(*titleFormat, itemCnt);			
 			CleanupStack::PopAndDestroy(titleFormat);
 			CleanupStack::PushL(titleBuffer);
 		} else {
@@ -752,9 +752,9 @@ void CPodcastClientShowsView::UpdateCommandsL()
 			titleBuffer = HBufC::NewL(titleFormat->Length()+8);
 			int numDownloading = 0;
 			int numQueued = 0;
-			if (cnt > 0) {
+			if (itemCnt > 0) {
 				numDownloading = 1;
-				numQueued = cnt - 1;
+				numQueued = itemCnt - 1;
 			}
 			titleBuffer->Des().Format(*titleFormat, numDownloading, numQueued);			
 			CleanupStack::PopAndDestroy(titleFormat);
@@ -765,7 +765,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 		
 	} else {
 		TUint unplayed = 0;
-		if(cnt == 0)
+		if(itemCnt == 0)
 		{
 			ViewContext()->ChangeTextL(EPodcastListViewContextLabel, KNullDesC());
 		}
@@ -773,7 +773,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 		{
 			
 		
-			for (TInt loop = 0;loop<cnt;loop++)
+			for (TInt loop = 0;loop<itemCnt;loop++)
 			{
 				unplayed+=(iPodcastModel.ActiveShowList()[loop]->PlayState() == ENeverPlayed);
 			}
