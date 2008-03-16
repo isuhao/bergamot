@@ -1,0 +1,187 @@
+CHARACTER_SET UTF8
+/////////////////////////////////////////////////////////////////////
+// Escarpod language file
+//
+// Language:   Russian RU/16
+// Translator: Kirill Uvaev
+
+// list view commands
+rls_string STRING_r_listbox_listview_cmd_close_debug "Закрыть (отладка)"
+rls_string STRING_r_listbox_listview_cmd_close_debug_shorttext "Закрыть"
+
+// Menu commands, view filtering and navigation
+rls_string STRING_r_view_cmd "Перейти"
+// Navigation to shows view
+rls_string STRING_r_view_main_cmd "Главная"
+rls_string STRING_r_view_shows_cmd "Хранилище"
+rls_string STRING_r_view_all_shows_cmd "Все подкасты"
+rls_string STRING_r_view_new_shows_cmd "Новые"
+rls_string STRING_r_view_dl_shows_cmd "Хранилище"
+rls_string STRING_r_view_dling_shows_cmd "Закачки"
+rls_string STRING_r_view_about_cmd "О программе"
+
+// Navigation to feeds
+rls_string STRING_r_view_feeds_cmd "Потоки"
+
+// Navigation to the player
+rls_string STRING_r_view_player_cmd "Проигрыватель"
+
+// Navigation to the audio books
+rls_string STRING_r_view_audiobooks_cmd "Аудио книги"
+rls_string STRING_r_view_new_audiobook_cmd "New audiobook"
+rls_string STRING_r_view_remove_audiobook_cmd "Remove audiobook"
+
+// Actions for the player
+rls_string STRING_r_play_cmd "Слушать"
+rls_string STRING_r_stop_cmd "Стоп"
+rls_string STRING_r_pause_cmd "Пауза"
+rls_string STRING_r_volume_cmd "Громкость"
+
+rls_string STRING_r_view_download_cmd "Скачать"
+rls_string STRING_r_view_download_short_cmd "Скачать"
+rls_string STRING_r_view_remove_download_short_cmd "Удалить"
+rls_string STRING_r_view_remove_download_cmd "Удалить закачку"
+
+rls_string STRING_r_view_show_cmd "Обзор"
+rls_string STRING_r_view_cmd "Перейти"
+rls_string STRING_r_view_play_cmd "Слушать"
+rls_string STRING_r_view_mark_as_played_cmd "Отм. как прослушанный"
+rls_string STRING_r_view_mark_as_unplayed_cmd "Отм. как новый"
+
+// Actions for feeds
+rls_string STRING_r_view_add_feed_cmd "Добавить поток"
+rls_string STRING_r_view_edit_feed_cmd "Редактировать поток"
+rls_string STRING_r_view_delete_feed_cmd "Удалить поток"
+rls_string STRING_r_view_purge_feed_cmd "Удалить все"
+rls_string STRING_r_update_feed_cmd "Обновить поток"
+rls_string STRING_r_update_feed_short_cmd "Обновить"
+rls_string STRING_r_update_all_feeds_cmd "Обновить все"
+rls_string STRING_r_update_all_feeds_short_cmd "Обн. все"
+
+rls_string STRING_r_podcast_feeds_update_message "Обновляю..."
+rls_string STRING_r_podcast_feeds_update_error "Ошибка при обновлении!"
+
+// Actions for shows
+rls_string STRING_r_view_download_show_cmd "Скачать"
+rls_string STRING_r_view_delete_show_cmd "Удалить"
+rls_string STRING_r_view_delete_shows_cmd "Удалить все"
+rls_string STRING_r_view_purge_show_cmd "Удалить"
+rls_string STRING_r_view_remove_download_cmd "Удалить закачку"
+rls_string STRING_r_view_stop_downloads_cmd "Приостановить скачивание"
+rls_string STRING_r_view_resume_downloads_cmd "Возобновить скачивание"
+rls_string STRING_r_view_mark_all_played_cmd "Отм. все как прослуш."
+rls_string STRING_r_view_show_unplayed_cmd "Показ. только новые"
+
+// Common actions
+rls_string STRING_r_zoom_cmd "Масштаб"
+rls_string STRING_r_settings_cmd "Настройки"
+
+// Categories
+rls_string STRING_r_category_all "Все подкасты"
+rls_string STRING_r_category_new "Новые"
+rls_string STRING_r_category_dled "Подкасты"
+rls_string STRING_r_category_pending "Закачки"
+
+// View titles
+rls_string STRING_r_view_feeds_title "Потоки"
+rls_string STRING_r_view_audiobooks_title "Аудио книги"
+
+// Shows view status strings
+rls_string STRING_r_podcast_shows_title_format "%d новых, %d всего";
+rls_string STRING_r_podcast_shows_title_download "%d скач., %d ожидают";
+rls_string STRING_r_podcast_shows_downloads_suspended "Приост., %d ожидают";
+rls_string STRING_r_podcast_shows_no_items "Пусто";
+
+// Feeds view status strings
+rls_string STRING_r_podcast_feeds_title_format "%d потоков"
+rls_string STRING_r_podcast_books_title_format "%d книг"
+rls_string STRING_r_podcast_feeds_status_format "%d/%d подкастов"
+rls_string STRING_r_podcast_shows_never_updated "Неизвестно"
+rls_string STRING_r_podcast_feeds_is_updating "Обновляется"
+rls_string STRING_r_podcast_no_feeds "Пусто"
+
+// DIALOG string
+rls_string STRING_r_about_title "О программе";
+
+rls_string STRING_r_add_feed_title "Добавить поток"
+rls_string STRING_r_edit_feed_title "Редактировать поток"
+
+rls_string STRING_r_add_feed_prompt "URL потока"
+rls_string STRING_r_add_feed_title_prompt "Название потока"
+
+rls_string STRING_r_remove_feed_title "Удалить поток"
+rls_string STRING_r_remove_feed_prompt "Вы действительно хотите удалить этот поток?"
+
+rls_string STRING_r_enable_downloads_title "Возобновить скачивание"
+rls_string STRING_r_enable_downloads_prompt "В очереди на скачивание присутствуют подкасты. Хотите начать скачивание сейчас?"
+
+rls_string STRING_r_update_new_feed_title "Обновить поток"
+rls_string STRING_r_update_new_feed_prompt "Вы хотите обновить поток сейчас?"
+
+rls_string STRING_r_purge_feed_title "Очистить поток"
+rls_string STRING_r_purge_feed_prompt "Вы действительно хотите очистить этот поток и удалить все закачанные подкасты?"
+
+rls_string STRING_r_purge_show_title "Удалить подкаст"
+rls_string STRING_r_purge_show_prompt "Вы действительно хотите удалить этот подкаст?"
+
+rls_string STRING_r_podcast_settings_title "Настройки"
+rls_string STRING_r_podcast_setting_showdir "Хранить подкасты в"
+rls_string STRING_r_podcast_setting_autoupdate "Обновлять автоматически"
+rls_string STRING_r_podcast_setting_autodownload "Скачивать автоматически"
+rls_string STRING_r_podcast_setting_checkevery "Обновлять каждые"
+rls_string STRING_r_podcast_setting_updateat "Обновлять в"
+rls_string STRING_r_podcast_setting_minutes "минут"
+
+
+rls_string STRING_r_podcast_setting_connection "Подключение"
+rls_string STRING_r_podcast_setting_default "По умолчанию"
+rls_string STRING_r_podcast_setting_wlanonly "Всегда спрашивать"
+rls_string STRING_r_podcast_setting_usespecified "Использовать указанный"
+rls_string STRING_r_podcast_setting_iaplist "Подключения"
+rls_string STRING_r_podcast_setting_cancel_cmd "Отмена" // Cancel command in settings dialog
+rls_string STRING_r_podcast_setting_done_cmd "Готово" // Done command in settings dialog
+rls_string STRING_r_podcast_setting_showdir_cmd "Выбрать" // Use to select show dir
+rls_string STRING_r_podcast_setting_volume "Громкость" 
+
+// Choicelist for autodownload
+rls_string STRING_podcast_autoupdate_off "Off"
+rls_string STRING_podcast_autoupdate_perodical "Periodical" 
+rls_string STRING_podcast_autoupdate_attime "At"
+
+rls_string STRING_podcast_autoupdate_off "Отключено"
+rls_string STRING_podcast_autoupdate_perodical "Периодически" 
+rls_string STRING_podcast_autoupdate_attime "Ровно в"
+
+rls_string STRING_r_podcast_iap_dlg_title "Выберите подключение"
+
+// Audio book dialog
+rls_string STRING_r_podcast_new_audiobook_title "Создать аудио книгу"
+rls_string STRING_r_podcast_new_audiobook_prompt "Audiobook tile"
+rls_string STRING_r_podcast_new_audiobook_label "%d файлов включены в эту книгу"
+rls_string STRING_r_podcast_new_audiobook_select_files "Выберите файлы для книги:" // Max 80 chars
+
+// Latest strings here
+rls_string STRING_r_view_books_no_books "No Books" // No Books
+
+rls_string STRING_r_view_import_feeds_cmd "Import Feeds" // Import feeds cmd in feedview
+rls_string STRING_r_view_import_feeds_title "Select OPML file"
+
+rls_string STRING_r_view_books_status "%d Books" // Used in base view listbox status text max 32 chars
+rls_string STRING_r_view_feeds_status "%d Feeds" // Used in base view listbox for feeds status text max 32 chars
+
+rls_string STRING_r_cancel_update_all_feeds_cmd "Cancel update"
+rls_string STRING_r_cancel_update_all_feeds_short_cmd "Cancel"
+
+rls_string STRING_r_suspend_download_cmd "Suspend" // String used for cmd to suspend current download rather than removing it from the que.
+rls_string STRING_r_view_resume_short_dls_cmd "Resume" // Short download cmd
+rls_string STRING_r_view_pending_status "%d Shows queued" // Used in base view listbox status for downloading/qued shows text max 32 chars
+rls_string STRING_r_view_onphone_status "%d Shows" // Used in base view listbox status for shows on phone text max 32 chars
+rls_string STRING_r_view_onphone_status_unknown "Unknown" // Used for unknown status event
+
+// Strings used to set the playorder of an audio book
+rls_string STRING_r_view_books_setorder "Set playorder" // cmd for set audio book playorder
+rls_string STRING_r_view_books_setorder_dlgtitle "Set the play order"
+rls_string STRING_r_view_books_setorder_dlg_swapcmd "Swap"
+rls_string STRING_r_view_books_setorder_dlg_label "Select entry to swap with"
+rls_string STRING_r_view_books_setorder_dlg_selectlabel "Select entry to move"
+

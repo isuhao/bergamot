@@ -1,0 +1,181 @@
+CHARACTER_SET UTF8
+/////////////////////////////////////////////////////////////////////
+// Escarpod language file
+//
+// Language:   German GE/03
+// Translator: 
+
+// list view commands
+rls_string STRING_r_listbox_listview_cmd_close_debug "Close (debug)"
+rls_string STRING_r_listbox_listview_cmd_close_debug_shorttext "Close"
+
+// Menu commands, view filtering and navigation
+rls_string STRING_r_view_cmd "View"
+// Navigation to shows view
+rls_string STRING_r_view_main_cmd "Main"
+rls_string STRING_r_view_shows_cmd "Shows on Phone"
+rls_string STRING_r_view_all_shows_cmd "All Shows"
+rls_string STRING_r_view_new_shows_cmd "Unplayed"
+rls_string STRING_r_view_dl_shows_cmd "Shows on Phone"
+rls_string STRING_r_view_dling_shows_cmd "Downloader"
+rls_string STRING_r_view_about_cmd "About"
+
+// Navigation to feeds
+rls_string STRING_r_view_feeds_cmd "Feeds"
+
+// Navigation to the player
+rls_string STRING_r_view_player_cmd "Player"
+
+// Navigation to the audio books
+rls_string STRING_r_view_audiobooks_cmd "Audio books"
+rls_string STRING_r_view_new_audiobook_cmd "New audiobook"
+rls_string STRING_r_view_remove_audiobook_cmd "Remove audiobook"
+
+// Actions for the player
+rls_string STRING_r_play_cmd "Play"
+rls_string STRING_r_stop_cmd "Stop"
+rls_string STRING_r_pause_cmd "Pause"
+rls_string STRING_r_volume_cmd "Lautstärke"
+
+rls_string STRING_r_view_download_cmd "Download"
+rls_string STRING_r_view_download_short_cmd "Get"
+rls_string STRING_r_view_remove_download_short_cmd "Enfernen"
+rls_string STRING_r_view_remove_download_cmd "Download entfernen"
+
+rls_string STRING_r_view_show_cmd "Show"
+rls_string STRING_r_view_cmd "Anzeigen"
+rls_string STRING_r_view_play_cmd "Play"
+rls_string STRING_r_view_mark_as_played_cmd "Als gehört markieren"
+rls_string STRING_r_view_mark_as_unplayed_cmd "Als nicht gehört markieren"
+
+// Actions for feeds
+rls_string STRING_r_view_add_feed_cmd "Feed hinzufügen"
+rls_string STRING_r_view_edit_feed_cmd "Feed bearbeiten"
+rls_string STRING_r_view_delete_feed_cmd "Feed entfernen"
+rls_string STRING_r_view_purge_feed_cmd "All löschen"
+rls_string STRING_r_update_feed_cmd "Feed aktualisieren"
+rls_string STRING_r_update_feed_short_cmd "Aktulaisieren"
+rls_string STRING_r_update_all_feeds_cmd "Alle aktualisieren"
+rls_string STRING_r_update_all_feeds_short_cmd "Alle akt."
+
+rls_string STRING_r_podcast_feeds_update_message "Aktulisiert..."
+rls_string STRING_r_podcast_feeds_update_error "Aktualisierung fehlgeschlagen!"
+
+// Actions for shows
+rls_string STRING_r_view_download_show_cmd "Download"
+rls_string STRING_r_view_delete_show_cmd "Löschen"
+rls_string STRING_r_view_delete_shows_cmd "Alle löschen"
+rls_string STRING_r_view_purge_show_cmd "Löschen"
+rls_string STRING_r_view_remove_download_cmd "Aus warteschlange entfernen"
+rls_string STRING_r_view_stop_downloads_cmd "Download unterbrechen"
+rls_string STRING_r_view_resume_downloads_cmd "Download fortsetzen"
+rls_string STRING_r_view_mark_all_played_cmd "Alle als gehört markieren"
+rls_string STRING_r_view_show_unplayed_cmd "Nur nicht gehörte zeigen"
+
+// Common actions
+rls_string STRING_r_zoom_cmd "Zoom"
+rls_string STRING_r_settings_cmd "Einstellungen"
+
+// Categories
+rls_string STRING_r_category_all "Alle Shows"
+rls_string STRING_r_category_new "Nicht gehört"
+rls_string STRING_r_category_dled "Shows auf dem Handy"
+rls_string STRING_r_category_pending "Downloader"
+
+// View titles
+rls_string STRING_r_view_feeds_title "Feeds"
+rls_string STRING_r_view_audiobooks_title "Audio books"
+
+// Shows view status strings
+rls_string STRING_r_podcast_shows_title_format "%d Nicht gehört, %d Insgesamt";
+rls_string STRING_r_podcast_shows_title_download "%d Werden downgeloaded, %d In Warteschlange";
+rls_string STRING_r_podcast_shows_downloads_suspended "Unterbrochen, %d In Warteschlange";
+rls_string STRING_r_podcast_shows_no_items "Keine Elmente/Einträge";
+
+// Feeds view status strings
+rls_string STRING_r_podcast_feeds_title_format "%d feeds"
+rls_string STRING_r_podcast_books_title_format "%d books"
+rls_string STRING_r_podcast_feeds_status_format "%d/%d Shows"
+rls_string STRING_r_podcast_shows_never_updated "Never"
+rls_string STRING_r_podcast_feeds_is_updating "Is updating"
+rls_string STRING_r_podcast_no_feeds "No feeds"
+
+// DIALOG string
+rls_string STRING_r_about_title "Über Escarpod";
+
+rls_string STRING_r_add_feed_title "Feed hinzufügen"
+rls_string STRING_r_edit_feed_title "Feed bearbeiten"
+
+rls_string STRING_r_add_feed_prompt "Feed URL"
+rls_string STRING_r_add_feed_title_prompt "Feed title"
+
+rls_string STRING_r_remove_feed_title "Feed entfernen"
+rls_string STRING_r_remove_feed_prompt "Sind Sie sicher, dass Sie den Feed entfernen wollen?"
+
+rls_string STRING_r_enable_downloads_title "Download fortsetzen"
+rls_string STRING_r_enable_downloads_prompt "Es befinden sich Shows in der Downloadwarteschlange. Möchten Sie jetzt downloaden?"
+
+rls_string STRING_r_update_new_feed_title "Feed aktualisieren"
+rls_string STRING_r_update_new_feed_prompt "Möchten Sie den Fedd jetzt aktualisieren?"
+
+rls_string STRING_r_purge_feed_title "Feed bereinigen"
+rls_string STRING_r_purge_feed_prompt "Sind Sie wirklich sicher, dass Sie den Feed jetzt bereinigen und alle gedownloadedeten Shows löschen möchten?"
+
+rls_string STRING_r_purge_show_title "Show bereinigen"
+rls_string STRING_r_purge_show_prompt "Sind Sie sich ganz sicher, dass Sie diese Show löschen möchten?"
+
+rls_string STRING_r_podcast_settings_title "Einstellungen"
+rls_string STRING_r_podcast_setting_showdir "Podcast Verzeichnis"
+rls_string STRING_r_podcast_setting_autoupdate "Automatischer update"
+rls_string STRING_r_podcast_setting_checkevery "Updateinterval"
+rls_string STRING_r_podcast_setting_updateat "Update at"
+rls_string STRING_r_podcast_setting_minutes "Minuten"
+
+rls_string STRING_r_podcast_setting_maxsimul "Max. Zahl gleichzeitiger Downloads"
+rls_string STRING_r_podcast_setting_connection "Verbindung"
+rls_string STRING_r_podcast_setting_default "Standardeinstellung verwenden"
+rls_string STRING_r_podcast_setting_wlanonly "Immer fragen"
+rls_string STRING_r_podcast_setting_usespecified "Angegebene Einstllunng verwenden"
+rls_string STRING_r_podcast_setting_iaplist "Verbindungen"
+rls_string STRING_r_podcast_setting_cancel_cmd "Abbrechen" // Cancel command in settings dialog
+rls_string STRING_r_podcast_setting_done_cmd "Weiter" // Done command in settings dialog
+rls_string STRING_r_podcast_setting_showdir_cmd "Auswählen" // Use to select show dir
+rls_string STRING_r_podcast_setting_volume "Lautstärke"
+
+// Choicelist for autodownload
+rls_string STRING_podcast_autoupdate_off "Ausgeschaltet"
+rls_string STRING_podcast_autoupdate_perodical "Periodical" 
+rls_string STRING_podcast_autoupdate_attime "Zu"
+
+rls_string STRING_r_podcast_iap_dlg_title "Internet verbindung wählen"
+
+// Audio book dialog
+rls_string STRING_r_podcast_new_audiobook_title "Create new audio book"
+rls_string STRING_r_podcast_new_audiobook_prompt "Audio book title"
+rls_string STRING_r_podcast_new_audiobook_label "%d files selected for this book."
+rls_string STRING_r_podcast_new_audiobook_select_files "Choose book files" // Max 80 chars
+
+// Latest strings here
+rls_string STRING_r_view_books_no_books "No Books" // No Books
+
+rls_string STRING_r_view_import_feeds_cmd "Import Feeds" // Import feeds cmd in feedview
+rls_string STRING_r_view_import_feeds_title "Select OPML file"
+
+rls_string STRING_r_view_books_status "%d Books" // Used in base view listbox status text max 32 chars
+rls_string STRING_r_view_feeds_status "%d Feeds" // Used in base view listbox for feeds status text max 32 chars
+
+rls_string STRING_r_cancel_update_all_feeds_cmd "Cancel update"
+rls_string STRING_r_cancel_update_all_feeds_short_cmd "Cancel"
+
+rls_string STRING_r_suspend_download_cmd "Suspend" // String used for cmd to suspend current download rather than removing it from the que.
+rls_string STRING_r_view_resume_short_dls_cmd "Resume" // Short download cmd
+rls_string STRING_r_view_pending_status "%d Shows queued" // Used in base view listbox status for downloading/qued shows text max 32 chars
+rls_string STRING_r_view_onphone_status "%d Shows" // Used in base view listbox status for shows on phone text max 32 chars
+rls_string STRING_r_view_onphone_status_unknown "Unknown" // Used for unknown status event
+
+// Strings used to set the playorder of an audio book
+rls_string STRING_r_view_books_setorder "Set playorder" // cmd for set audio book playorder
+rls_string STRING_r_view_books_setorder_dlgtitle "Set the play order"
+rls_string STRING_r_view_books_setorder_dlg_swapcmd "Swap"
+rls_string STRING_r_view_books_setorder_dlg_label "Select entry to swap with"
+rls_string STRING_r_view_books_setorder_dlg_selectlabel "Select entry to move"

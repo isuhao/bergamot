@@ -1,0 +1,182 @@
+CHARACTER_SET UTF8
+/////////////////////////////////////////////////////////////////////
+// Escarpod language file
+//
+// Language:   Estonian ET/49
+// Translator: Valdur Palm
+
+// list view commands
+rls_string STRING_r_listbox_listview_cmd_close_debug "Sulge (debug)"
+rls_string STRING_r_listbox_listview_cmd_close_debug_shorttext "Sulge"
+
+// Menu commands, view filtering and navigation
+rls_string STRING_r_view_cmd "Näita"
+// Navigation to shows view
+rls_string STRING_r_view_main_cmd "Peamenüü"
+rls_string STRING_r_view_shows_cmd "Telefoni laetud lood"
+rls_string STRING_r_view_all_shows_cmd "Kõik"
+rls_string STRING_r_view_new_shows_cmd "Kuulamata"
+rls_string STRING_r_view_dl_shows_cmd "Telefoni laetud lood"
+rls_string STRING_r_view_dling_shows_cmd "Allalaetavad lood"
+rls_string STRING_r_view_about_cmd "Escarpodi info"
+
+// Navigation to feeds
+rls_string STRING_r_view_feeds_cmd "Vood"
+
+// Navigation to the player
+rls_string STRING_r_view_player_cmd "Mängija"
+
+// Navigation to the audio books
+rls_string STRING_r_view_audiobooks_cmd "Audio raamatud"
+rls_string STRING_r_view_new_audiobook_cmd "Uus raamat"
+rls_string STRING_r_view_remove_audiobook_cmd "Eemalda raamat"
+
+// Actions for the player
+rls_string STRING_r_play_cmd "Mängi"
+rls_string STRING_r_stop_cmd "Lõpeta"
+rls_string STRING_r_pause_cmd "Peata"
+rls_string STRING_r_volume_cmd "Helitugevus"
+
+rls_string STRING_r_view_download_cmd "Lae alla"
+rls_string STRING_r_view_download_short_cmd "Lae"
+rls_string STRING_r_view_remove_download_short_cmd "Eemalda"
+rls_string STRING_r_view_remove_download_cmd "Eemalda allalaetav"
+
+rls_string STRING_r_view_show_cmd "Mängi"
+rls_string STRING_r_view_cmd "Vaata"
+rls_string STRING_r_view_play_cmd "Mängi"
+rls_string STRING_r_view_mark_as_played_cmd "Märgi mängituks"
+rls_string STRING_r_view_mark_as_unplayed_cmd "Märgi mittemängituks"
+
+// Actions for feeds
+rls_string STRING_r_view_add_feed_cmd "Lisa voog"
+rls_string STRING_r_view_edit_feed_cmd "Muuda voogu"
+rls_string STRING_r_view_delete_feed_cmd "Eemalda voog"
+rls_string STRING_r_view_purge_feed_cmd "Eemalda kõik"
+rls_string STRING_r_update_feed_cmd "Uuenda voog"
+rls_string STRING_r_update_feed_short_cmd "Uuenda"
+rls_string STRING_r_update_all_feeds_cmd "Uuenda kõik"
+rls_string STRING_r_update_all_feeds_short_cmd "Uuenda k."
+
+rls_string STRING_r_podcast_feeds_update_message "Uuendan..."
+rls_string STRING_r_podcast_feeds_update_error "Uuendus ebaõnnestus!"
+
+// Actions for shows
+rls_string STRING_r_view_download_show_cmd "Lae alla"
+rls_string STRING_r_view_delete_show_cmd "Kustuta"
+rls_string STRING_r_view_delete_shows_cmd "Kustuta kõik"
+rls_string STRING_r_view_purge_show_cmd "Kustuta"
+rls_string STRING_r_view_remove_download_cmd "Eemalda laadimiselt"
+rls_string STRING_r_view_stop_downloads_cmd "Peata laadimine"
+rls_string STRING_r_view_resume_downloads_cmd "Taasta laadimine"
+rls_string STRING_r_view_mark_all_played_cmd "Märgi kõik mängituks"
+rls_string STRING_r_view_show_unplayed_cmd "Näita mängimata"
+
+// Common actions
+rls_string STRING_r_zoom_cmd "Suurendus"
+rls_string STRING_r_settings_cmd "Seaded"
+
+// Categories
+rls_string STRING_r_category_all "Kõik lood"
+rls_string STRING_r_category_new "Mängimata lood"
+rls_string STRING_r_category_dled "Telefoni laetud"
+rls_string STRING_r_category_pending "Allalaetavad"
+
+// View titles
+rls_string STRING_r_view_feeds_title "Vood"
+rls_string STRING_r_view_audiobooks_title "Audio raamatud"
+
+// Shows view status strings
+rls_string STRING_r_podcast_shows_title_format "%d mängimata, %d kokku";
+rls_string STRING_r_podcast_shows_title_download "%d allalaetavat, %d ootel";
+rls_string STRING_r_podcast_shows_downloads_suspended "Peatatud, %d ootel";
+rls_string STRING_r_podcast_shows_no_items "Tühi";
+
+// Feeds view status strings
+rls_string STRING_r_podcast_feeds_title_format "%d voogu"
+rls_string STRING_r_podcast_books_title_format "%d raamatut"
+rls_string STRING_r_podcast_feeds_status_format "%d/%d lugu"
+rls_string STRING_r_podcast_shows_never_updated "Mitte kunagi"
+rls_string STRING_r_podcast_feeds_is_updating "Uuendamine"
+rls_string STRING_r_podcast_no_feeds "Vood puuduvad"
+
+// DIALOG string
+rls_string STRING_r_about_title "Info Escarpod:ist";
+
+rls_string STRING_r_add_feed_title "Lisa voog"
+rls_string STRING_r_edit_feed_title "Muuda voogu"
+
+rls_string STRING_r_add_feed_prompt "Voo URL"
+rls_string STRING_r_add_feed_title_prompt "Voo nimi"
+
+rls_string STRING_r_remove_feed_title "Eemalda voog"
+rls_string STRING_r_remove_feed_prompt "Kas eemaldada valitud voog?"
+
+rls_string STRING_r_enable_downloads_title "Taasta allalaadimine"
+rls_string STRING_r_enable_downloads_prompt "Allalaadimise ootel on lugusid. Kas alustada allalaadmist kohe?"
+
+rls_string STRING_r_update_new_feed_title "Uuenda voog"
+rls_string STRING_r_update_new_feed_prompt "Kas uuendada voogu kohe?"
+
+rls_string STRING_r_purge_feed_title "Tühjenda voog"
+rls_string STRING_r_purge_feed_prompt "Kas tühjendada valitud voog ja kustutada kõik allalaetud lood?"
+
+rls_string STRING_r_purge_show_title "Kustuta lugu"
+rls_string STRING_r_purge_show_prompt "Kas kustutada valitud lugu?"
+
+rls_string STRING_r_podcast_settings_title "Seaded"
+rls_string STRING_r_podcast_setting_showdir "Podcast kataloog"
+rls_string STRING_r_podcast_setting_autoupdate "Automaatne uuendus"
+rls_string STRING_r_podcast_setting_autodownload "Automaatne allalaadimine"
+rls_string STRING_r_podcast_setting_checkevery "Allalaadimise intervall"
+rls_string STRING_r_podcast_setting_updateat "Uuendus kell:"
+rls_string STRING_r_podcast_setting_minutes "minutit"
+
+rls_string STRING_r_podcast_setting_maxsimul "Samaaegseid ühendusi"
+rls_string STRING_r_podcast_setting_connection "Ühendus"
+rls_string STRING_r_podcast_setting_default "Tavaline"
+rls_string STRING_r_podcast_setting_wlanonly "Küsi alati"
+rls_string STRING_r_podcast_setting_usespecified "Määratud"
+rls_string STRING_r_podcast_setting_iaplist "Kasutatav ühendus"
+rls_string STRING_r_podcast_setting_cancel_cmd "Tühista" // Cancel command in settings dialog
+rls_string STRING_r_podcast_setting_done_cmd "Valmis" // Done command in settings dialog
+rls_string STRING_r_podcast_setting_showdir_cmd "Vali" // Use to select show dir
+rls_string STRING_r_podcast_setting_volume "Helitugevus"
+
+// Choicelist for autodownload
+rls_string STRING_podcast_autoupdate_off "Väljas"
+rls_string STRING_podcast_autoupdate_perodical "Perioodiline"
+rls_string STRING_podcast_autoupdate_attime "Määratud kellaajal"
+
+rls_string STRING_r_podcast_iap_dlg_title "Vali ühendus"
+
+// Audio book dialog
+rls_string STRING_r_podcast_new_audiobook_title "Lisa uus audio raamat"
+rls_string STRING_r_podcast_new_audiobook_prompt "Raamatu pealkiri"
+rls_string STRING_r_podcast_new_audiobook_label "%d faili on valitud sellele raamatule."
+rls_string STRING_r_podcast_new_audiobook_select_files "Vali raamatu failid:" // Max 80 chars
+
+// Latest strings here
+rls_string STRING_r_view_books_no_books "No Books" // No Books
+
+rls_string STRING_r_view_import_feeds_cmd "Import Feeds" // Import feeds cmd in feedview
+rls_string STRING_r_view_import_feeds_title "Select OPML file"
+
+rls_string STRING_r_view_books_status "%d Books" // Used in base view listbox status text max 32 chars
+rls_string STRING_r_view_feeds_status "%d Feeds" // Used in base view listbox for feeds status text max 32 chars
+
+rls_string STRING_r_cancel_update_all_feeds_cmd "Cancel update"
+rls_string STRING_r_cancel_update_all_feeds_short_cmd "Cancel"
+
+rls_string STRING_r_suspend_download_cmd "Suspend" // String used for cmd to suspend current download rather than removing it from the que.
+rls_string STRING_r_view_resume_short_dls_cmd "Resume" // Short download cmd
+rls_string STRING_r_view_pending_status "%d Shows queued" // Used in base view listbox status for downloading/qued shows text max 32 chars
+rls_string STRING_r_view_onphone_status "%d Shows" // Used in base view listbox status for shows on phone text max 32 chars
+rls_string STRING_r_view_onphone_status_unknown "Unknown" // Used for unknown status event
+
+// Strings used to set the playorder of an audio book
+rls_string STRING_r_view_books_setorder "Set playorder" // cmd for set audio book playorder
+rls_string STRING_r_view_books_setorder_dlgtitle "Set the play order"
+rls_string STRING_r_view_books_setorder_dlg_swapcmd "Swap"
+rls_string STRING_r_view_books_setorder_dlg_label "Select entry to swap with"
+rls_string STRING_r_view_books_setorder_dlg_selectlabel "Select entry to move"
