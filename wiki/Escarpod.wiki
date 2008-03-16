@@ -47,7 +47,7 @@ To download binaries of Escarpod to use on your phone, visit our [http://code.go
     * Cancel update all
     * Show marked as played on stop, not on play
     * Hungarian translation
-    * Headset control support for play, pause and volume (Bluetooth and wired)
+    * Headset control support for play, pause ~~and volume~~ (Bluetooth and wired)
   
   * Escarpod 0.93 (Feburary 14th)
     * Update at fixed time of day added
