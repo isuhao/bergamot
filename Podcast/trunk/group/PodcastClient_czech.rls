@@ -163,3 +163,16 @@ rls_string STRING_r_podcast_new_audiobook_title "Vytvořit novou zvukovou knihu"
 rls_string STRING_r_podcast_new_audiobook_prompt "Titulek zvukové knihy"
 rls_string STRING_r_podcast_new_audiobook_label "%d vybaraných souborů pro zvukovou knihu."
 rls_string STRING_r_podcast_new_audiobook_select_files "Výběr souborů knihy:" // Max 80 chars
+
+rls_string STRING_r_suspend_download_cmd "Suspend" // String used for cmd to suspend current download rather than removing it from the que.
+rls_string STRING_r_view_resume_short_dls_cmd "Resume" // Short download cmd
+rls_string STRING_r_view_pending_status "%d Shows queued" // Used in base view listbox status for downloading/qued shows text max 32 chars
+rls_string STRING_r_view_onphone_status "%d Shows" // Used in base view listbox status for shows on phone text max 32 chars
+rls_string STRING_r_view_onphone_status_unknown "Unknown" // Used for unknown status event
+
+// Strings used to set the playorder of an audio book
+rls_string STRING_r_view_books_setorder "Set playorder" // cmd for set audio book playorder
+rls_string STRING_r_view_books_setorder_dlgtitle "Set the play order"
+rls_string STRING_r_view_books_setorder_dlg_swapcmd "Swap"
+rls_string STRING_r_view_books_setorder_dlg_label "Select entry to swap with"
+rls_string STRING_r_view_books_setorder_dlg_selectlabel "Select entry to move"

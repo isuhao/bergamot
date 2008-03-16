@@ -17,7 +17,7 @@ rls_string STRING_r_view_shows_cmd "Avsnitt på telefonen"
 rls_string STRING_r_view_all_shows_cmd "Alla avsnitt"
 rls_string STRING_r_view_new_shows_cmd "Ospelade"
 rls_string STRING_r_view_dl_shows_cmd "Avsnitt på telefonen"
-rls_string STRING_r_view_dling_shows_cmd "Nerladdare"
+rls_string STRING_r_view_dling_shows_cmd "Nedladdare"
 rls_string STRING_r_view_about_cmd "Om"
 
 // Navigation to feeds
@@ -37,10 +37,10 @@ rls_string STRING_r_stop_cmd "Stoppa"
 rls_string STRING_r_pause_cmd "Pausa"
 rls_string STRING_r_volume_cmd "Volym"
 
-rls_string STRING_r_view_download_cmd "Ladda ner"
+rls_string STRING_r_view_download_cmd "Ladda ned"
 rls_string STRING_r_view_download_short_cmd "Hämta"
 rls_string STRING_r_view_remove_download_short_cmd "Ta bort"
-rls_string STRING_r_view_remove_download_cmd "Ta bort nerladdning"
+rls_string STRING_r_view_remove_download_cmd "Ta bort nedladdning"
 
 rls_string STRING_r_view_show_cmd "Visa"
 rls_string STRING_r_view_cmd "Visa"
@@ -62,13 +62,13 @@ rls_string STRING_r_podcast_feeds_update_message "Uppdaterar..."
 rls_string STRING_r_podcast_feeds_update_error "Misslyckades!"
 
 // Actions for shows
-rls_string STRING_r_view_download_show_cmd "Ladda ner"
+rls_string STRING_r_view_download_show_cmd "Ladda ned"
 rls_string STRING_r_view_delete_show_cmd "Ta bort"
 rls_string STRING_r_view_delete_shows_cmd "Ta bort alla"
 rls_string STRING_r_view_purge_show_cmd "Ta bort"
 rls_string STRING_r_view_remove_download_cmd "Unqueue"
-rls_string STRING_r_view_stop_downloads_cmd "Pausa nerladdningar"
-rls_string STRING_r_view_resume_downloads_cmd "Fortsätt nerladdningar"
+rls_string STRING_r_view_stop_downloads_cmd "Stoppa nedladdningar"
+rls_string STRING_r_view_resume_downloads_cmd "Fortsätt nedladdningar"
 rls_string STRING_r_view_mark_all_played_cmd "Markera alla som spelade"
 rls_string STRING_r_view_show_unplayed_cmd "Visa endast ospelade"
 
@@ -80,7 +80,7 @@ rls_string STRING_r_settings_cmd "Inställningar"
 rls_string STRING_r_category_all "Alla avsnitt"
 rls_string STRING_r_category_new "Ospelade"
 rls_string STRING_r_category_dled "Avsnitt på telefonen"
-rls_string STRING_r_category_pending "Nerladdare"
+rls_string STRING_r_category_pending "Nedladdare"
 
 // View titles
 rls_string STRING_r_view_feeds_title "Kanaler"
@@ -88,7 +88,7 @@ rls_string STRING_r_view_audiobooks_title "Ljudböcker"
 
 // Shows view status strings
 rls_string STRING_r_podcast_shows_title_format "%d ospelade, %d totalt";
-rls_string STRING_r_podcast_shows_title_download "%d laddas ner, %d i kö";
+rls_string STRING_r_podcast_shows_title_download "%d laddas ned, %d i kö";
 rls_string STRING_r_podcast_shows_downloads_suspended "Pausad, %d i kö";
 rls_string STRING_r_podcast_shows_no_items "Listan är tom";
 
@@ -113,14 +113,14 @@ rls_string STRING_r_add_feed_title_prompt "Titel"
 rls_string STRING_r_remove_feed_title "Ta bort kanal"
 rls_string STRING_r_remove_feed_prompt "Är du säker på att du vill ta bort kanalen?"
 
-rls_string STRING_r_enable_downloads_title "Fortsätt nerladdning"
-rls_string STRING_r_enable_downloads_prompt "Det finns avsnitt i nerladdningskön. Vill du ladda ner nu?"
+rls_string STRING_r_enable_downloads_title "Fortsätt nedladdning"
+rls_string STRING_r_enable_downloads_prompt "Det finns avsnitt i nedladdningskön. Vill du ladda ned nu?"
 
 rls_string STRING_r_update_new_feed_title "Uppdatera kanal"
 rls_string STRING_r_update_new_feed_prompt "Vill du uppdatera kanalen nu?"
 
 rls_string STRING_r_purge_feed_title "Rensa kanal"
-rls_string STRING_r_purge_feed_prompt "Vill du ta bort alla nerladdade avsnitt?"
+rls_string STRING_r_purge_feed_prompt "Vill du ta bort alla nedladdade avsnitt?"
 
 rls_string STRING_r_purge_show_title "Ta bort avsnitt"
 rls_string STRING_r_purge_show_prompt "Är du säker på att du vill ta bort avsnittet?"
@@ -128,7 +128,7 @@ rls_string STRING_r_purge_show_prompt "Är du säker på att du vill ta bort avs
 rls_string STRING_r_podcast_settings_title "Inställningar"
 rls_string STRING_r_podcast_setting_showdir "Programkatalog"
 rls_string STRING_r_podcast_setting_autoupdate "Automatisk uppdatering"
-rls_string STRING_r_podcast_setting_autodownload "Automatisk nerladdning"
+rls_string STRING_r_podcast_setting_autodownload "Automatisk nedladdning"
 rls_string STRING_r_podcast_setting_checkevery "Uppdateringsintervall"
 rls_string STRING_r_podcast_setting_updateat "Uppdatera vid"
 rls_string STRING_r_podcast_setting_minutes "minuter"
@@ -167,3 +167,15 @@ rls_string STRING_r_view_feeds_status "%d kanaler" // Used in base view listbox 
 
 rls_string STRING_r_cancel_update_all_feeds_cmd "Avbryt uppdatering"
 rls_string STRING_r_cancel_update_all_feeds_short_cmd "Avbryt"
+
+rls_string STRING_r_suspend_download_cmd "Stoppa" // String used for cmd to suspend current download rather than removing it from the que.
+rls_string STRING_r_view_resume_short_dls_cmd "Fortsätt" // Short download cmd
+rls_string STRING_r_view_pending_status "%d avsnitt i kö" // Used in base view listbox status for downloading/qued shows text max 32 chars
+rls_string STRING_r_view_onphone_status "%d avsitt" // Used in base view listbox status for shows on phone text max 32 chars
+rls_string STRING_r_view_onphone_status_unknown "Okänt" // Used for unknown status event
+
+// Strings used to set the playorder of an audio book
+rls_string STRING_r_view_books_setorder "Ändra ordning" // cmd for set audio book playorder
+rls_string STRING_r_view_books_setorder_dlgtitle "Välj ordning"
+rls_string STRING_r_view_books_setorder_dlg_swapcmd "Växla"
+rls_string STRING_r_view_books_setorder_dlg_label "Välj kapitel att växla med"
