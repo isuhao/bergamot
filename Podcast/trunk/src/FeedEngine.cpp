@@ -249,7 +249,7 @@ void CFeedEngine::ReplaceString(TDes & aString, const TDesC& aStringToReplace,co
 		
 	}
 
-void CFeedEngine::AddFeed(CFeedInfo *aItem) 
+TBool CFeedEngine::AddFeed(CFeedInfo *aItem) 
 	{
 	RDebug::Print(_L("CFeedEngine::AddFeed, title=%S, URL=%S"), &aItem->Title(), &aItem->Url());
 	for (TInt i=0;i<iSortedFeeds.Count();i++) 
@@ -257,7 +257,9 @@ void CFeedEngine::AddFeed(CFeedInfo *aItem)
 		if (iSortedFeeds[i]->Uid() == aItem->Uid()) 
 			{
 			RDebug::Print(_L("Already have feed %S, discarding"), &aItem->Url());
-			return;
+			delete aItem;
+			aItem = NULL;
+			return EFalse;
 			}
 		}
 	
@@ -266,6 +268,7 @@ void CFeedEngine::AddFeed(CFeedInfo *aItem)
 
 	// Save the feeds into DB
 	SaveFeeds();
+	return ETrue;
 	}
 
 void CFeedEngine::RemoveFeed(TUint aUid) 
@@ -275,7 +278,6 @@ void CFeedEngine::RemoveFeed(TUint aUid)
 		if (iSortedFeeds[i]->Uid() == aUid) 
 			{
 			iPodcastModel.ShowEngine().RemoveAllShowsByFeed(aUid);
-			iPodcastModel.ShowEngine().SaveShows();
 					
 			CFeedInfo* feedToRemove = iSortedFeeds[i];
 			
@@ -626,7 +628,6 @@ void CFeedEngine::RemoveBookL(TUint aUid)
 		if (iSortedBooks[i]->Uid() == aUid) 
 			{
 			iPodcastModel.ShowEngine().RemoveAllShowsByFeed(aUid);
-			iPodcastModel.ShowEngine().SaveShows();
 					
 			CFeedInfo* feedToRemove = iSortedBooks[i];					
 				

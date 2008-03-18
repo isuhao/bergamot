@@ -26,7 +26,7 @@ public:
 	virtual ~CFeedEngine();
 	
 public:
-	void AddFeed(CFeedInfo *item);
+	TBool AddFeed(CFeedInfo *item);
 	void ImportFeedsL(const TDesC& aFile);
 
 	void RemoveFeed(TUint aUid);

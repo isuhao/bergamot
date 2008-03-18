@@ -478,6 +478,7 @@ void CShowEngine::RemoveAllShowsByFeed(TUint aFeedUid)
 			delete show;
 			}
 		}
+	SaveShows();
 	}
 
 void CShowEngine::RemoveShow(TUint aShowUid, TBool aRemoveFile)

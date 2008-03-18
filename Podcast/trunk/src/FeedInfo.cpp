@@ -158,7 +158,7 @@ void CFeedInfo::SetUrlL(const TDesC &aUrl)
 
 const TDesC& CFeedInfo::Title() const
 	{
-	return *iTitle;
+	return iTitle ? *iTitle : KNullDesC();
 	}
 
 void CFeedInfo::SetTitleL(const TDesC &aTitle)
