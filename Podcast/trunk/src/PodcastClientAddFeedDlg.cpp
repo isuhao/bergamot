@@ -4,6 +4,7 @@
 #include "PodcastClientAddFeedDlg.h"
 #include "PodcastModel.h"
 #include "FeedEngine.h"
+#include "ShowEngine.h"
 #include <PodcastClient.rsg>
 
 const TInt KMaxTextBuffer = 1024;
@@ -52,77 +53,112 @@ TBool CPodcastClientAddFeedDlg::OkToExitL(TInt aCommandId)
 		return ETrue;
 		}
 
+	TBool exitDialog = ETrue;
 
 	CEikEdwin* urlEdwin = static_cast<CEikEdwin*>(ControlOrNull(EPodcastAddEditFeedDlgUrl));
 	CEikEdwin* titleEdwin = static_cast<CEikEdwin*>(ControlOrNull(EPodcastAddEditFeedDlgTitle));
 
-	HBufC* title = NULL;
-	if(titleEdwin != NULL)
+	// url is always present so access that
+	HBufC* url = urlEdwin->GetTextInHBufL();
+	CleanupStack::PushL(url);
+	TPtr urlPtr = url->Des();
+
+	// Some pod links are written in format itpc://mylink.net/podcast.xml
+	// Symbian HTTP stack does not like itpc:// 
+	// Try to use a HTTP instead.
+	TInt p = urlPtr.Find(KItpcPrefix);
+	if (p >= 0)
 		{
-		title = titleEdwin->GetTextInHBufL();
+		urlPtr.Delete(p, KItpcPrefix().Length());
 		}
-	
-	CleanupStack::PushL(title);
 
-	if(urlEdwin != NULL)
+	// The URL must start with http://, otherwise the HTTP stack fails.
+	TInt pos = urlPtr.Find(KURLPrefix);
+	if (pos == KErrNotFound)
 		{
-		TBuf<KMaxTextBuffer> buffer;
-		urlEdwin->GetText(buffer);	
+		HBufC* newUrl = HBufC::NewL(url->Length() + KURLPrefix().Length());
+		TPtr ptr = newUrl->Des();
+		ptr.Append(KURLPrefix());
+		ptr.Append(*url);
+		
+		// replace the url buffer
+		CleanupStack::PopAndDestroy(url);
+		url = newUrl;
+		CleanupStack::PushL(url);
+		}
 
+	// check which mode we are in.
+	if (iEditFeed == EFalse)
+		{
+		// we are creating a new feed
+		CFeedInfo* newFeedInfo = CFeedInfo::NewL();
+		CleanupStack::PushL(newFeedInfo);
+		newFeedInfo->SetUrlL(*url);
+		newFeedInfo->SetTitleL(newFeedInfo->Url());
+		CleanupStack::Pop(newFeedInfo);
 		
-		// Some pod links are written in format itpc://mylink.net/podcast.xml
-		// Symbian HTTP stack does not like itpc:// 
-		// Try to use a HTTP instead.
-		TInt p = buffer.Find(KItpcPrefix);
-		if (p >= 0)
+		TBool added = iPodcastModel.FeedEngine().AddFeed(newFeedInfo); // takes ownership
+		if (!added)
 			{
-			buffer.Delete(p, KItpcPrefix().Length());
+			CEikonEnv::Static()->InfoWinL(_L("Information"), _L("A feed to this URL already exists") );
+			exitDialog = EFalse;
 			}
+		}
+	else
+		{
+		// editing an existing feed
 		
-		
-		// The URL must start with http://, otherwise the HTTP stack fails.
-		TInt pos = buffer.Find(KURLPrefix);
-		if ( pos == KErrNotFound)
+		// we need to check if the URL has changed
+		if(iFeedInfo->Url().Compare(*url) != 0)
 			{
-			buffer.Insert(0,KURLPrefix());
-			}
-		
-		if(iEditFeed)
-			{
-			iFeedInfo->SetUrlL(buffer);	
-			if(title && title->Length()>0)
+			// Ask the user if it is OK to remove all shows
+			if ( CEikonEnv::Static()->QueryWinL(_L("Remove all shows?"), _L("All shows in this feed will be deleted. Continue?") ))
 				{
-				iFeedInfo->SetTitleL(*title);
-				iFeedInfo->SetCustomTitle();
-				}
-			}
-		else
-			{
-			CFeedInfo* newFeedInfo = CFeedInfo::NewL();
-			CleanupStack::PushL(newFeedInfo);
-			
-			newFeedInfo->SetUrlL(buffer);
+				
+				//----- HACK ---- //
+				CFeedInfo* temp = CFeedInfo::NewL();
+				temp->SetUrlL(*url);
+				TBool added = iPodcastModel.FeedEngine().AddFeed(temp);
+				if (added)
+					{
+					// The Feed URL did not exist
+					// Remove the temp entry so that the correct entry could be changed
+					iPodcastModel.FeedEngine().RemoveFeed(temp->Uid());	
+					
+					// user has accepted that shows will be deleted
+					iPodcastModel.ShowEngine().RemoveAllShowsByFeed(iFeedInfo->Uid());
 
-			if(title && title->Length()>0)
-				{
-				newFeedInfo->SetTitleL(*title);
+					// update URL
+					iFeedInfo->SetUrlL(*url);	
+				
+					// Update the title
+					HBufC* title = titleEdwin->GetTextInHBufL();
+					CleanupStack::PushL(title);		
+							
+					if (iFeedInfo->Url().Compare(*title) != 0)
+						{
+						iFeedInfo->SetTitleL(*title);
+						iFeedInfo->SetCustomTitle();	
+						}
+					CleanupStack::PopAndDestroy(title);
+					exitDialog = ETrue;	
+					}
+				else
+					{
+					// the feed existed. Object deleted in AddFeed.	
+					CEikonEnv::Static()->InfoWinL(_L("Information"), _L("A feed to this URL already exists") );
+					exitDialog = EFalse;
+					}
+				// --- END HACK ---
 				}
 			else
 				{
-				newFeedInfo->SetTitleL(newFeedInfo->Url());
+				// abort
+				exitDialog = EFalse;
 				}
-			CleanupStack::Pop(newFeedInfo);
-			iPodcastModel.FeedEngine().AddFeed(newFeedInfo);
 			}
-	
-		/*
-		if(iEikonEnv->QueryWinL(R_PODCAST_UPDATE_NEW_FEED_TITLE, R_PODCAST_UPDATE_NEW_FEED_PROMPT))
-			{
-				iPodcastModel.FeedEngine().UpdateFeed(iFeedInfo->Uid());
-			}
-		*/
-	}
-
-	CleanupStack::PopAndDestroy(title);
-	return ETrue;
+		}
+		
+	CleanupStack::PopAndDestroy(url);
+	return exitDialog;
 	}
