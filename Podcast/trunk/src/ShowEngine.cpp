@@ -8,7 +8,7 @@
 
 CShowEngine::CShowEngine(CPodcastModel& aPodcastModel) : iPodcastModel(aPodcastModel)
 	{
-	iLastShowsOnPhoneCount = -1;
+	iLastShowsOnPhoneTotalCount = -1;
 	iDownloadsSuspended = ETrue;
 	}
 
@@ -422,7 +422,7 @@ void CShowEngine::SelectAllShows()
 	const TInt count = iShows.Count();
 	for (TInt i=0;i<count;i++)
 		{
-		iSelectedShows.Append(iShows[i]);
+			iSelectedShows.Append(iShows[i]);
 		}
 	}
 
@@ -593,16 +593,25 @@ void CShowEngine::SelectShowsDownloaded()
 	
 	iSelectedShows.Reset();
 	iGrossSelectionLength = 0;
+	iLastShowsOnPhoneTotalCount = 0;
+	iLastShowsOnPhoneUnplayedCount = 0;
 	for (int i=0;i<iShows.Count();i++)
 		{
-		if (iShows[i]->DownloadState() == EDownloaded)
+		if (iShows[i]->DownloadState() == EDownloaded && !iShows[i]->IsBookFile())
 			{
 			iGrossSelectionLength++;
+			iLastShowsOnPhoneTotalCount++;
 			if (!iPodcastModel.SettingsEngine().SelectUnplayedOnly() || (iPodcastModel.SettingsEngine().SelectUnplayedOnly() && iShows[i]->PlayState() == ENeverPlayed) ) {
 				iSelectedShows.Append(iShows[i]);
 				}
+			
+			if (iShows[i]->PlayState() == ENeverPlayed) {
+				iLastShowsOnPhoneUnplayedCount++;
+			}
+
 			}
 		}
+	
 	}
 
 
@@ -647,14 +656,15 @@ void CShowEngine::GetShowsForFeed(RShowInfoArray& aShowArray, TUint aFeedUid)
 		}	
 	}
 
-TInt CShowEngine::GetNoDownloadingShowsL() const 
+TInt CShowEngine::GetNumDownloadingShowsL() const 
 	{
 	return iShowsDownloading.Count();
 	}
 
-TInt CShowEngine::GetLastShowsOnPhoneCountL() const 
+void CShowEngine::GetLastShowsOnPhoneCountL(TInt &aTotal, TInt &aUnplayed) const 
 	{
-	return iLastShowsOnPhoneCount;
+		aTotal = iLastShowsOnPhoneTotalCount;
+		aUnplayed = iLastShowsOnPhoneUnplayedCount;
 	}
 
 RShowInfoArray& CShowEngine::GetSelectedShows()
@@ -781,7 +791,6 @@ void CShowEngine::ListDir(TFileName &folder) {
 				}
 			}
 			
-			iLastShowsOnPhoneCount++;
 			if (exists) {
 				continue;
 			}
@@ -827,7 +836,6 @@ void CShowEngine::CheckFiles()
 		}
 	}
 
-	iLastShowsOnPhoneCount = 0;
 	// check if any new files were added
 	ListDir(iPodcastModel.SettingsEngine().BaseDir());	
 }
@@ -852,4 +860,10 @@ void CShowEngine::ReadMetaDataComplete()
 CMetaDataReader& CShowEngine::MetaDataReader()
 	{
 	return *iMetaDataReader;
+	}
+
+void CShowEngine::FileError(TUint aError)
+	{
+	//TODO: Error dialog
+	StopDownloads();
 	}

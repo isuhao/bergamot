@@ -369,29 +369,34 @@ CQikCommand* CPodcastClientShowsView::DynInitOrDeleteCommandL(CQikCommand* aComm
 
 void CPodcastClientShowsView::GetShowIcons(CShowInfo* aShowInfo, TInt& aImageId, TInt& aMaskId)
 {	
-	switch(aShowInfo->DownloadState())
-	{
-	case EDownloaded:
-		if (aShowInfo->PlayState() == EPlaying) {
-			aImageId = EMbmPodcastclientShow_playing_40x40;
-			aMaskId = EMbmPodcastclientShow_playing_40x40m;
-		} else {
-			aImageId = EMbmPodcastclientShow_40x40;
-			aMaskId = EMbmPodcastclientShow_40x40m;
+	if (aShowInfo->IsBookFile()) {
+		aImageId = EMbmPodcastclientAudiobookchapter_40x40;
+		aMaskId = EMbmPodcastclientAudiobookchapter_40x40m;
+	} else {
+		switch(aShowInfo->DownloadState())
+		{
+		case EDownloaded:
+			if (aShowInfo->PlayState() == EPlaying) {
+				aImageId = EMbmPodcastclientShow_playing_40x40;
+				aMaskId = EMbmPodcastclientShow_playing_40x40m;
+			} else {
+				aImageId = EMbmPodcastclientShow_40x40;
+				aMaskId = EMbmPodcastclientShow_40x40m;
+			}
+			break;	
+		case ENotDownloaded:
+			aImageId = EMbmPodcastclientNew_40x40;
+			aMaskId = EMbmPodcastclientNew_40x40m;
+			break;
+		case EQueued:
+			aImageId = EMbmPodcastclientQueued_40x40;
+			aMaskId = EMbmPodcastclientQueued_40x40m;
+			break;
+		case EDownloading:
+			aImageId = EMbmPodcastclientDownloading_40x40;
+			aMaskId = EMbmPodcastclientDownloading_40x40m;
+			break;
 		}
-		break;	
-	case ENotDownloaded:
-		aImageId = EMbmPodcastclientNew_40x40;
-		aMaskId = EMbmPodcastclientNew_40x40m;
-		break;
-	case EQueued:
-		aImageId = EMbmPodcastclientQueued_40x40;
-		aMaskId = EMbmPodcastclientQueued_40x40m;
-		break;
-	case EDownloading:
-		aImageId = EMbmPodcastclientDownloading_40x40;
-		aMaskId = EMbmPodcastclientDownloading_40x40m;
-		break;
 	}
 }
 
@@ -750,13 +755,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 		} else {
 			HBufC* titleFormat=  iEikonEnv->AllocReadResourceLC(R_PODCAST_SHOWS_TITLE_DOWNLOAD);
 			titleBuffer = HBufC::NewL(titleFormat->Length()+8);
-			int numDownloading = 0;
-			int numQueued = 0;
-			if (itemCnt > 0) {
-				numDownloading = 1;
-				numQueued = itemCnt - 1;
-			}
-			titleBuffer->Des().Format(*titleFormat, numDownloading, numQueued);			
+			titleBuffer->Des().Format(*titleFormat, itemCnt);			
 			CleanupStack::PopAndDestroy(titleFormat);
 			CleanupStack::PushL(titleBuffer);
 		}

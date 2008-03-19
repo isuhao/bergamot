@@ -22,8 +22,8 @@ public:
 	void ResumeDownloads();
 	TBool DownloadsStopped();
 
-	TInt GetNoDownloadingShowsL() const;
-	TInt GetLastShowsOnPhoneCountL() const;
+	TInt GetNumDownloadingShowsL() const;
+	void GetLastShowsOnPhoneCountL(TInt &aTotal, TInt &aUnplayed) const;
 	CShowInfo* ShowDownloading();
 	CShowInfo* GetShowByUidL(TUint aShowUid);
 	CShowInfo* GetNextShowByTrackL(CShowInfo* aShowInfo);
@@ -63,7 +63,7 @@ protected:
 	void Disconnected(CHttpClient* aClient);
 	void Progress(CHttpClient* aHttpClient, int aBytes, int aTotalBytes);
 	void DownloadInfo(CHttpClient* aClient, int aSize);
-	
+	void FileError(TUint aError);
 	// from MetaDataReaderObserver
 	void ReadMetaData(CShowInfo *aShowInfo);
 	void ReadMetaDataComplete();
@@ -113,7 +113,8 @@ private:
     
     TUint iGrossSelectionLength;
     
-    TUint iLastShowsOnPhoneCount;
+    TInt iLastShowsOnPhoneTotalCount;
+    TInt iLastShowsOnPhoneUnplayedCount;
 };
 
 #endif /*SHOWENGINE_H_*/

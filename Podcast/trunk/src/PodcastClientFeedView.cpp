@@ -396,7 +396,15 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 					listBoxData->AddTextL(unplayedShows, EQikListBoxSlotText2);
 					listBoxData->AddTextL(updatedDate, EQikListBoxSlotText3);
 					
-					CQikContent* content = CQikContent::NewL(this, _L("*"), EMbmPodcastclientFeed_40x40, EMbmPodcastclientFeed_40x40m);
+					
+					CQikContent* content;
+					
+					if (fi->IsBookFeed()) {
+						content = CQikContent::NewL(this, _L("*"), EMbmPodcastclientAudiobookindividual_40x40, EMbmPodcastclientAudiobookindividual_40x40m);
+					} else {
+						content = CQikContent::NewL(this, _L("*"), EMbmPodcastclientFeed_40x40, EMbmPodcastclientFeed_40x40m);
+					}
+					
 					CleanupStack::PushL(content);
 					listBoxData->AddIconL(content,EQikListBoxSlotLeftMediumIcon1);
 					CleanupStack::Pop(content);

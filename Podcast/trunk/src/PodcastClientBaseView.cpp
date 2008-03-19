@@ -167,13 +167,14 @@ void CPodcastClientBaseView::UpdateListboxItemsL()
 				}break;
 			case EBaseViewDownloadedShows:
 				{
-					int count = iPodcastModel.ShowEngine().GetLastShowsOnPhoneCountL();
-					if (count == -1) {
+					TInt unplayed, total;
+					iPodcastModel.ShowEngine().GetLastShowsOnPhoneCountL(total, unplayed);
+					if (total == -1) {
 						iEikonEnv->ReadResourceL(formatting, R_PODCAST_ONPHONE_STATUS_UNKNOWN);
 						statusText.Copy(formatting);
 					} else {
 						iEikonEnv->ReadResourceL(formatting, R_PODCAST_ONPHONE_STATUS);
-						statusText.Format(formatting, count);
+						statusText.Format(formatting, unplayed, total);
 					}
 					data->SetTextL(statusText, EQikListBoxSlotText2);				
 					model.DataUpdatedL(loop);
@@ -181,8 +182,13 @@ void CPodcastClientBaseView::UpdateListboxItemsL()
 				}break;				
 			case EBaseViewPendingShows:
 				{
-					iEikonEnv->ReadResourceL(formatting, R_PODCAST_PENDING_STATUS);
-					statusText.Format(formatting, iPodcastModel.ShowEngine().GetNoDownloadingShowsL());
+					if(iPodcastModel.ShowEngine().DownloadsStopped()) {
+						iEikonEnv->ReadResourceL(formatting, R_PODCAST_PENDING_STATUS_SUSPENDED);
+										
+					} else {
+						iEikonEnv->ReadResourceL(formatting, R_PODCAST_PENDING_STATUS_ACTIVE);				
+					}
+					statusText.Format(formatting, iPodcastModel.ShowEngine().GetNumDownloadingShowsL());
 					data->SetTextL(statusText, EQikListBoxSlotText2);				
 					model.DataUpdatedL(loop);
 				}break;
