@@ -88,7 +88,7 @@ rls_string STRING_r_view_audiobooks_title "Ljudböcker"
 
 // Shows view status strings
 rls_string STRING_r_podcast_shows_title_format "%d ospelade, %d totalt";
-rls_string STRING_r_podcast_shows_title_download "%d laddas ned, %d i kö";
+rls_string STRING_r_podcast_shows_title_download "Laddar ner, %d i kö";
 rls_string STRING_r_podcast_shows_downloads_suspended "Pausad, %d i kö";
 rls_string STRING_r_podcast_shows_no_items "Listan är tom";
 
@@ -171,7 +171,7 @@ rls_string STRING_r_cancel_update_all_feeds_short_cmd "Avbryt"
 rls_string STRING_r_suspend_download_cmd "Stoppa" // String used for cmd to suspend current download rather than removing it from the que.
 rls_string STRING_r_view_resume_short_dls_cmd "Fortsätt" // Short download cmd
 rls_string STRING_r_view_pending_status "%d avsnitt i kö" // Used in base view listbox status for downloading/qued shows text max 32 chars
-rls_string STRING_r_view_onphone_status "%d avsitt" // Used in base view listbox status for shows on phone text max 32 chars
+rls_string STRING_r_view_onphone_status "%d avsnitt" // Used in base view listbox status for shows on phone text max 32 chars
 rls_string STRING_r_view_onphone_status_unknown "Okänt" // Used for unknown status event
 
 // Strings used to set the playorder of an audio book
@@ -179,3 +179,5 @@ rls_string STRING_r_view_books_setorder "Ändra ordning" // cmd for set audio bo
 rls_string STRING_r_view_books_setorder_dlgtitle "Välj ordning"
 rls_string STRING_r_view_books_setorder_dlg_swapcmd "Växla"
 rls_string STRING_r_view_books_setorder_dlg_label "Välj kapitel att växla med"
+rls_string STRING_r_view_books_setorder_dlg_selectlabel "Välj kapitel att flytta"
+

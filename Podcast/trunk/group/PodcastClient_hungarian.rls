@@ -27,9 +27,9 @@ rls_string STRING_r_view_feeds_cmd "Feedek"
 rls_string STRING_r_view_player_cmd "Lejátszó"
 
 // Navigation to the audio books
-rls_string STRING_r_view_audiobooks_cmd "Audio books"
-rls_string STRING_r_view_new_audiobook_cmd "New audiobook"
-rls_string STRING_r_view_remove_audiobook_cmd "Remove audiobook"
+rls_string STRING_r_view_audiobooks_cmd "Hangoskönyvek"
+rls_string STRING_r_view_new_audiobook_cmd "Új hangoskönyv"
+rls_string STRING_r_view_remove_audiobook_cmd "Hangoskönyv eltávolítása"
 
 // Actions for the player
 rls_string STRING_r_play_cmd "Lejátszás"
@@ -84,7 +84,7 @@ rls_string STRING_r_category_pending "Letöltõ"
 
 // View titles
 rls_string STRING_r_view_feeds_title "Feedek"
-rls_string STRING_r_view_audiobooks_title "Audio books"
+rls_string STRING_r_view_audiobooks_title "Hangoskönyvek"
 
 // Shows view status strings
 rls_string STRING_r_podcast_shows_title_format "%d lejátszatlan, %d összesen";
@@ -94,11 +94,11 @@ rls_string STRING_r_podcast_shows_no_items "Nincsenek elemek";
 
 // Feeds view status strings
 rls_string STRING_r_podcast_feeds_title_format "%d Feedek"
-rls_string STRING_r_podcast_books_title_format "%d books"
+rls_string STRING_r_podcast_books_title_format "%d könyvek"
 rls_string STRING_r_podcast_feeds_status_format "%d/%d Mûsorszámok"
 rls_string STRING_r_podcast_shows_never_updated "Soha"
-rls_string STRING_r_podcast_feeds_is_updating "Is updating"
-rls_string STRING_r_podcast_no_feeds "No feeds"
+rls_string STRING_r_podcast_feeds_is_updating "Frissítés alatt"
+rls_string STRING_r_podcast_no_feeds "Nincsenek feedek"
 
 // DIALOG string
 rls_string STRING_r_about_title "Az Escarpodról";
@@ -107,7 +107,7 @@ rls_string STRING_r_add_feed_title "Feed hozzáadása"
 rls_string STRING_r_edit_feed_title "Feed szerkesztése"
 
 rls_string STRING_r_add_feed_prompt "Feed URL-je"
-rls_string STRING_r_add_feed_title_prompt "Feed Title"
+rls_string STRING_r_add_feed_title_prompt "Feed Címer"
 
 rls_string STRING_r_remove_feed_title "Feed eltávolítása"
 rls_string STRING_r_remove_feed_prompt "Biztos benne,hogy el kívánja ezt a feedet távolítani?"
@@ -126,7 +126,7 @@ rls_string STRING_r_purge_show_prompt "Biztosan törölni kívánja ezt a mûsor
 
 rls_string STRING_r_podcast_settings_title "Beállítások"
 rls_string STRING_r_podcast_setting_showdir "Podcastok könyvtára"
-rls_string STRING_r_podcast_setting_autoupdate "Automatic update"
+rls_string STRING_r_podcast_setting_autoupdate "Automatikus frissítés"
 rls_string STRING_r_podcast_setting_autodownload "Automatikus letöltés"
 rls_string STRING_r_podcast_setting_checkevery "Letöltési idõköz"
 rls_string STRING_r_podcast_setting_minutes "percek"
@@ -150,33 +150,33 @@ rls_string STRING_podcast_audodl_feedsandshows "Feedek és mûsorszámok"
 rls_string STRING_r_podcast_iap_dlg_title "Internetelérés kiválasztása"
 
 // Audio book dialog
-rls_string STRING_r_podcast_new_audiobook_title "Create new audio book"
-rls_string STRING_r_podcast_new_audiobook_prompt "Audio book title"
-rls_string STRING_r_podcast_new_audiobook_label "%d files selected for this book."
-rls_string STRING_r_podcast_new_audiobook_select_files "Choose book files" // Max 80 chars
+rls_string STRING_r_podcast_new_audiobook_title "Új hangoskönyv készítése"
+rls_string STRING_r_podcast_new_audiobook_prompt "Hangoskönyv címe"
+rls_string STRING_r_podcast_new_audiobook_label "%d fájlok kiválasztva ehez a könyvhöz."
+rls_string STRING_r_podcast_new_audiobook_select_files "Könyv fájlok kiválasztása" // Max 80 chars
 
 // Latest strings here
-rls_string STRING_r_view_books_no_books "No Books" // No Books
+rls_string STRING_r_view_books_no_books "Nincsenek könyvek" // No Books
 
-rls_string STRING_r_view_import_feeds_cmd "Import Feeds" // Import feeds cmd in feedview
-rls_string STRING_r_view_import_feeds_title "Select OPML file"
+rls_string STRING_r_view_import_feeds_cmd "Feedek importálása" // Import feeds cmd in feedview
+rls_string STRING_r_view_import_feeds_title "OPML fájl kiválasztása itt"
 
-rls_string STRING_r_view_books_status "%d Books" // Used in base view listbox status text max 32 chars
-rls_string STRING_r_view_feeds_status "%d Feeds" // Used in base view listbox for feeds status text max 32 chars
+rls_string STRING_r_view_books_status "%d Könyvek" // Used in base view listbox status text max 32 chars
+rls_string STRING_r_view_feeds_status "%d Feedek" // Used in base view listbox for feeds status text max 32 chars
 
-rls_string STRING_r_cancel_update_all_feeds_cmd "Cancel update"
-rls_string STRING_r_cancel_update_all_feeds_short_cmd "Cancel"
+rls_string STRING_r_cancel_update_all_feeds_cmd "Frissítés megszakítása"
+rls_string STRING_r_cancel_update_all_feeds_short_cmd "Mégsem"
 
-rls_string STRING_r_suspend_download_cmd "Suspend" // String used for cmd to suspend current download rather than removing it from the que.
-rls_string STRING_r_view_resume_short_dls_cmd "Resume" // Short download cmd
-rls_string STRING_r_view_pending_status "%d Shows queued" // Used in base view listbox status for downloading/qued shows text max 32 chars
-rls_string STRING_r_view_onphone_status "%d Shows" // Used in base view listbox status for shows on phone text max 32 chars
-rls_string STRING_r_view_onphone_status_unknown "Unknown" // Used for unknown status event
+rls_string STRING_r_suspend_download_cmd "Felfüggeszt" // String used for cmd to suspend current download rather than removing it from the que.
+rls_string STRING_r_view_resume_short_dls_cmd "Folytat" // Short download cmd
+rls_string STRING_r_view_pending_status "%d Sorbaállított műsorszámok" // Used in base view listbox status for downloading/qued shows text max 32 chars
+rls_string STRING_r_view_onphone_status "%d Műsorszámok" // Used in base view listbox status for shows on phone text max 32 chars
+rls_string STRING_r_view_onphone_status_unknown "Ismeretlen" // Used for unknown status event
 
 // Strings used to set the playorder of an audio book
-rls_string STRING_r_view_books_setorder "Set playorder" // cmd for set audio book playorder
-rls_string STRING_r_view_books_setorder_dlgtitle "Set the play order"
-rls_string STRING_r_view_books_setorder_dlg_swapcmd "Swap"
-rls_string STRING_r_view_books_setorder_dlg_label "Select entry to swap with"
-rls_string STRING_r_view_books_setorder_dlg_selectlabel "Select entry to move"
+rls_string STRING_r_view_books_setorder "Lejátszási sorrend beállítása" // cmd for set audio book playorder
+rls_string STRING_r_view_books_setorder_dlgtitle "Lejátszási sorrend beállítása"
+rls_string STRING_r_view_books_setorder_dlg_swapcmd "Felcserél"
+rls_string STRING_r_view_books_setorder_dlg_label "Válassza ki a felcserélendő bejegyzést"
+rls_string STRING_r_view_books_setorder_dlg_selectlabel "Válassza ki a mozgatni kívánt bejegyzést"
 

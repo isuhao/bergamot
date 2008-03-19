@@ -87,7 +87,7 @@ rls_string STRING_r_view_audiobooks_title "Audio books"
 
 // Shows view status strings
 rls_string STRING_r_podcast_shows_title_format "%d Unplayed, %d Total";
-rls_string STRING_r_podcast_shows_title_download "%d Downloading, %d Queued";
+rls_string STRING_r_podcast_shows_title_download "Downloading, %d Queued";
 rls_string STRING_r_podcast_shows_downloads_suspended "Suspended, %d Queued";
 rls_string STRING_r_podcast_shows_no_items "No items";
 
@@ -168,8 +168,9 @@ rls_string STRING_r_cancel_update_all_feeds_short_cmd "Cancel"
 
 rls_string STRING_r_suspend_download_cmd "Suspend" // String used for cmd to suspend current download rather than removing it from the que.
 rls_string STRING_r_view_resume_short_dls_cmd "Resume" // Short download cmd
-rls_string STRING_r_view_pending_status "%d Shows queued" // Used in base view listbox status for downloading/qued shows text max 32 chars
-rls_string STRING_r_view_onphone_status "%d Shows" // Used in base view listbox status for shows on phone text max 32 chars
+rls_string STRING_r_view_pending_status_active "%d Queued" // Used in base view listbox status for downloading/qued shows text max 32 chars
+rls_string STRING_r_view_pending_status_suspended "%d Queued, Suspended" // Used in base view listbox status for downloading/qued shows text max 32 chars
+rls_string STRING_r_view_onphone_status "%d Unplayed, %d Total" // Used in base view listbox status for shows on phone text max 32 chars
 rls_string STRING_r_view_onphone_status_unknown "Unknown" // Used for unknown status event
 
 // Strings used to set the playorder of an audio book

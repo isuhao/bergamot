@@ -42,8 +42,8 @@ rls_string STRING_r_view_download_short_cmd "Lae"
 rls_string STRING_r_view_remove_download_short_cmd "Eemalda"
 rls_string STRING_r_view_remove_download_cmd "Eemalda allalaetav"
 
-rls_string STRING_r_view_show_cmd "Mängi"
-rls_string STRING_r_view_cmd "Vaata"
+rls_string STRING_r_view_show_cmd "Näita"
+rls_string STRING_r_view_cmd "Sisu..."
 rls_string STRING_r_view_play_cmd "Mängi"
 rls_string STRING_r_view_mark_as_played_cmd "Märgi mängituks"
 rls_string STRING_r_view_mark_as_unplayed_cmd "Märgi mittemängituks"
@@ -70,7 +70,7 @@ rls_string STRING_r_view_remove_download_cmd "Eemalda laadimiselt"
 rls_string STRING_r_view_stop_downloads_cmd "Peata laadimine"
 rls_string STRING_r_view_resume_downloads_cmd "Taasta laadimine"
 rls_string STRING_r_view_mark_all_played_cmd "Märgi kõik mängituks"
-rls_string STRING_r_view_show_unplayed_cmd "Näita mängimata"
+rls_string STRING_r_view_show_unplayed_cmd "Peida mängitud lood"
 
 // Common actions
 rls_string STRING_r_zoom_cmd "Suurendus"
@@ -157,26 +157,26 @@ rls_string STRING_r_podcast_new_audiobook_label "%d faili on valitud sellele raa
 rls_string STRING_r_podcast_new_audiobook_select_files "Vali raamatu failid:" // Max 80 chars
 
 // Latest strings here
-rls_string STRING_r_view_books_no_books "No Books" // No Books
+rls_string STRING_r_view_books_no_books "Raamatud puuduvad" // No Books
 
-rls_string STRING_r_view_import_feeds_cmd "Import Feeds" // Import feeds cmd in feedview
-rls_string STRING_r_view_import_feeds_title "Select OPML file"
+rls_string STRING_r_view_import_feeds_cmd "Lae voogude andmed" // Import feeds cmd in feedview
+rls_string STRING_r_view_import_feeds_title "Vali OPML fail"
 
-rls_string STRING_r_view_books_status "%d Books" // Used in base view listbox status text max 32 chars
-rls_string STRING_r_view_feeds_status "%d Feeds" // Used in base view listbox for feeds status text max 32 chars
+rls_string STRING_r_view_books_status "%d raamatut" // Used in base view listbox status text max 32 chars
+rls_string STRING_r_view_feeds_status "%d voogu" // Used in base view listbox for feeds status text max 32 chars
 
-rls_string STRING_r_cancel_update_all_feeds_cmd "Cancel update"
-rls_string STRING_r_cancel_update_all_feeds_short_cmd "Cancel"
+rls_string STRING_r_cancel_update_all_feeds_cmd "Katkesta uuendus"
+rls_string STRING_r_cancel_update_all_feeds_short_cmd "Katkesta"
 
-rls_string STRING_r_suspend_download_cmd "Suspend" // String used for cmd to suspend current download rather than removing it from the que.
-rls_string STRING_r_view_resume_short_dls_cmd "Resume" // Short download cmd
-rls_string STRING_r_view_pending_status "%d Shows queued" // Used in base view listbox status for downloading/qued shows text max 32 chars
-rls_string STRING_r_view_onphone_status "%d Shows" // Used in base view listbox status for shows on phone text max 32 chars
-rls_string STRING_r_view_onphone_status_unknown "Unknown" // Used for unknown status event
+rls_string STRING_r_suspend_download_cmd "Peata" // String used for cmd to suspend current download rather than removing it from the que.
+rls_string STRING_r_view_resume_short_dls_cmd "Taasta" // Short download cmd
+rls_string STRING_r_view_pending_status "%d lugu ootel" // Used in base view listbox status for downloading/qued shows text max 32 chars
+rls_string STRING_r_view_onphone_status "%d lugu" // Used in base view listbox status for shows on phone text max 32 chars
+rls_string STRING_r_view_onphone_status_unknown "Tundmatu" // Used for unknown status event
 
 // Strings used to set the playorder of an audio book
-rls_string STRING_r_view_books_setorder "Set playorder" // cmd for set audio book playorder
-rls_string STRING_r_view_books_setorder_dlgtitle "Set the play order"
-rls_string STRING_r_view_books_setorder_dlg_swapcmd "Swap"
-rls_string STRING_r_view_books_setorder_dlg_label "Select entry to swap with"
-rls_string STRING_r_view_books_setorder_dlg_selectlabel "Select entry to move"
+rls_string STRING_r_view_books_setorder "Mängimise järjestus" // cmd for set audio book playorder
+rls_string STRING_r_view_books_setorder_dlgtitle "Vali mangimise järjestus"
+rls_string STRING_r_view_books_setorder_dlg_swapcmd "Vaheta"
+rls_string STRING_r_view_books_setorder_dlg_label "Vali lugu millega vahetada"
+rls_string STRING_r_view_books_setorder_dlg_selectlabel "Vali lugu mida liigutada"
