@@ -67,7 +67,8 @@ SOURCE			ShowEngine.cpp
 SOURCE			SettingsEngine.cpp
 SOURCE			MetaDataReader.cpp 
 SOURCE			TelephonyListener.cpp 
-SOURCE			OpmlParser.cpp RemoteControlListener.cpp
+SOURCE			OpmlParser.cpp 
+SOURCE			RemoteControlListener.cpp
 
 LIBRARY         euser.lib
 LIBRARY         apparc.lib
@@ -139,8 +140,11 @@ SOURCE			C16 audiobooks_40x40.bmp
 SOURCE			8   audiobooks_40x40m.bmp
 SOURCE			C16 new_40x40.bmp
 SOURCE			8   new_40x40m.bmp
+SOURCE			C16 AudioBookChapter_40x40.bmp
+SOURCE			8   AudioBookChapter_40x40m.bmp
+SOURCE			C16 AudioBookIndividual_40x40.bmp
+SOURCE			8   AudioBookIndividual_40x40m.bmp
 SOURCE			8   emptyimage.bmp
-
 END
 
 CAPABILITY NetworkServices UserEnvironment
