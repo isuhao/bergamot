@@ -219,6 +219,7 @@ void CRemoteControlListener::MrccatoCommand(TRemConCoreApiOperationId aOperation
 	/** Stop. */
 		case ERemConCoreApiStop:
 			RDebug::Print(_L("ERemConCoreApiStop"));
+			iModel.SoundEngine().Stop();
 			break;						
 	/** Pause. */
 		case ERemConCoreApiPause: 
@@ -283,6 +284,11 @@ void CRemoteControlListener::MrccatoCommand(TRemConCoreApiOperationId aOperation
 			break;	
 	/** F1. */
 		case ERemConCoreApiF1:
+			if (iModel.SoundEngine().State() == ESoundEnginePlaying) {
+				iModel.SoundEngine().Pause();
+			} else if (iModel.SoundEngine().State() == ESoundEnginePaused) {
+				iModel.SoundEngine().Play();
+			}
 			RDebug::Print(_L("ERemConCoreApiF1"));
 			break;							
 	/** F2. */
