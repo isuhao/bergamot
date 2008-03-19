@@ -142,7 +142,15 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 				TPtrC8 bodyData;
 				iRespBody->GetNextDataPart(bodyData);
 				iBytesDownloaded += bodyData.Length();
-				iRespBodyFile.Write(bodyData);
+				TInt error = iRespBodyFile.Write(bodyData);
+				
+				// on writing error we close connection 
+				if (error != KErrNone) {
+					aTransaction.Close();
+					iCallbacks.FileError(error);
+					iHttpClient->ClientRequestCompleteL(EFalse);
+				}
+				
 				if (!iSilent) {
 					iCallbacks.Progress(iHttpClient, iBytesDownloaded, iBytesTotal);
 				}

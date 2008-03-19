@@ -13,6 +13,7 @@ public:
   virtual void CompleteL(CHttpClient* aHttpClient, TBool aSuccessful) = 0;
   virtual void Progress(CHttpClient* aHttpClient, TInt aBytes, TInt aTotalBytes) = 0;
   virtual void DownloadInfo(CHttpClient* aHttpClient, TInt aTotalBytes) = 0;
+  virtual void FileError(TUint aError) = 0;
 };
 
 #endif
