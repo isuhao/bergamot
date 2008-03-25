@@ -597,7 +597,7 @@ void CFeedEngine::AddBookL(const TDesC& aBookTitle, CDesCArrayFlat* aFileNameArr
 			showInfo->SetFeedUid(item->Uid());
 			showInfo->SetPubDate(time);
 			showInfo->SetTrackNo(loop+1);
-			showInfo->SetIsBookFile(ETrue);
+			showInfo->SetShowType(EAudioBook);
 
 			showInfo->SetFileNameL(aFileNameArray->MdcaPoint(loop));
 

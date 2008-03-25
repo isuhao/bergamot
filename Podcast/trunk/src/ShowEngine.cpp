@@ -597,7 +597,7 @@ void CShowEngine::SelectShowsDownloaded()
 	iLastShowsOnPhoneUnplayedCount = 0;
 	for (int i=0;i<iShows.Count();i++)
 		{
-		if (iShows[i]->DownloadState() == EDownloaded && !iShows[i]->IsBookFile())
+		if (iShows[i]->DownloadState() == EDownloaded && !iShows[i]->ShowType() == EAudioBook)
 			{
 			iGrossSelectionLength++;
 			iLastShowsOnPhoneTotalCount++;
@@ -775,7 +775,8 @@ void CShowEngine::ListDir(TFileName &folder) {
 		} else {
 		if (entry.iName.Right(3).CompareF(_L("mp3")) == 0 ||
 			entry.iName.Right(3).CompareF(_L("aac")) == 0 ||
-			entry.iName.Right(3).CompareF(_L("wav")) == 0) {
+			entry.iName.Right(3).CompareF(_L("wav")) == 0 ||
+			entry.iName.Right(3).CompareF(_L("mp4")) == 0) {
 			TFileName fileName;
 			fileName.Copy(entry.iName);
 			TFileName pathName;
@@ -809,10 +810,14 @@ void CShowEngine::ListDir(TFileName &folder) {
 			info->SetPubDate(entry.iModified);
 			info->SetDelete();  			// so that we do not save the entry in the DB.
 			
+			if(entry.iName.Right(3).CompareF(_L("mp4")) == 0) {
+				info->SetShowType(EVideoPodcast);
+			} else {
+				// submit the file for meta data reading
+				iMetaDataReader->SubmitShow(info);
+			}
 			iShows.Append(info);
-			
-			// submit the file for meta data reading
-			iMetaDataReader->SubmitShow(info);
+
 		}
 		}
 	}

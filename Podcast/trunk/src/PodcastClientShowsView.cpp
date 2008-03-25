@@ -137,7 +137,7 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 					TInt index = iListbox->CurrentItemIndex();
 					if(index >= 0 && index < iPodcastModel.ActiveShowList().Count())
 					{
-						if(iPodcastModel.ActiveShowList()[index]->IsBookFile())
+						if(iPodcastModel.ActiveShowList()[index]->ShowType() == EAudioBook)
 							{
 							iPodcastModel.ShowEngine().RemoveShow(iPodcastModel.ActiveShowList()[index]->Uid());	
 							}
@@ -369,7 +369,7 @@ CQikCommand* CPodcastClientShowsView::DynInitOrDeleteCommandL(CQikCommand* aComm
 
 void CPodcastClientShowsView::GetShowIcons(CShowInfo* aShowInfo, TInt& aImageId, TInt& aMaskId)
 {	
-	if (aShowInfo->IsBookFile()) {
+	if (aShowInfo->ShowType() == EAudioBook) {
 		aImageId = EMbmPodcastclientAudiobookchapter_40x40;
 		aMaskId = EMbmPodcastclientAudiobookchapter_40x40m;
 	} else {

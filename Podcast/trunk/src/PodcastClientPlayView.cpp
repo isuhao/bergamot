@@ -220,10 +220,10 @@ void CPodcastClientPlayView::PlaybackStartedL()
 	if(iPodcastModel.PlayingPodcast() != NULL && 
 		(
 		 (iPodcastModel.PlayingPodcast()->Uid() == iShowInfo->Uid() ) ||
-		 (iPodcastModel.PlayingPodcast()->IsBookFile() && iPodcastModel.PlayingPodcast()->FeedUid() == iShowInfo->FeedUid())
+		 (iPodcastModel.PlayingPodcast()->ShowType() == EAudioBook && iPodcastModel.PlayingPodcast()->FeedUid() == iShowInfo->FeedUid())
 		 ))
 		{
-		if(iPodcastModel.PlayingPodcast()->IsBookFile() && iPodcastModel.PlayingPodcast()->FeedUid() == iShowInfo->FeedUid())
+		if(iPodcastModel.PlayingPodcast()->ShowType() == EAudioBook && iPodcastModel.PlayingPodcast()->FeedUid() == iShowInfo->FeedUid())
 			{
 			iShowInfo = iPodcastModel.PlayingPodcast();
 			}
@@ -300,7 +300,7 @@ void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 		{
 			if(iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.PlayingPodcast()->Uid() == iShowInfo->Uid())
 			{
-				if(iPodcastModel.SoundEngine().State() == ESoundEngineNotInitialized)
+				if(iPodcastModel.PlayingPodcast()->ShowType() == EVideoPodcast || iPodcastModel.SoundEngine().State() == ESoundEngineNotInitialized)
 					{
 					RApaLsSession lsSession;
 					lsSession.Connect();

@@ -50,7 +50,7 @@ void CSoundEngine::MapcPlayComplete(TInt aError) {
 		TRAPD(err, iObserver->PlaybackStoppedL());
 	}
 
-	if(iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.PlayingPodcast()->IsBookFile())
+	if(iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.PlayingPodcast()->ShowType() == EAudioBook)
 	{
 		CShowInfo* nextShow = iPodcastModel.ShowEngine().GetNextShowByTrackL(iPodcastModel.PlayingPodcast());
 		if(nextShow != NULL)

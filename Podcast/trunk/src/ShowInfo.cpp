@@ -14,6 +14,7 @@ void CShowInfo::ConstructL()
 	{
 	iDownloadState = ENotDownloaded;
 	iDelete = EFalse;
+	iShowType = EAudioPodcast;
 	}
 
 CShowInfo::CShowInfo(TUint aVersion) : iVersion(aVersion)
@@ -81,7 +82,7 @@ void CShowInfo::ExternalizeL(RWriteStream& aStream) const
 	aStream.WriteInt32L(I64LOW(iPubDate.Int64()));
 	aStream.WriteInt32L(I64HIGH(iPubDate.Int64()));
 	aStream.WriteUint32L(iPlayTime);
-	aStream.WriteUint32L(iIsBookFile);
+	aStream.WriteUint32L(iShowType);
 	aStream.WriteUint32L(iTrackNo);
 	}
 
@@ -135,7 +136,7 @@ void CShowInfo::InternalizeL(RReadStream& aStream)
 		return;
 	}
 	TRAP_IGNORE(iPlayTime = aStream.ReadUint32L());
-	TRAP_IGNORE(iIsBookFile = aStream.ReadUint32L());
+	TRAP_IGNORE(iShowType = (TShowType) aStream.ReadUint32L());
 	TRAP_IGNORE(iTrackNo = aStream.ReadUint32L());
 	}
 
@@ -289,16 +290,20 @@ void CShowInfo::SetFileNameL(const TDesC &aFileName)
 		iFileName = NULL;
 		}
 	iFileName = aFileName.AllocL();
+	
+	if (aFileName.Right(3).CompareF(_L("mp4")) == 0) {
+		SetShowType(EVideoPodcast);
+	}
 	}
 
-void CShowInfo::SetIsBookFile(TBool aIsBookFile)
+void CShowInfo::SetShowType(TShowType aShowType)
 	{
-	iIsBookFile = aIsBookFile;
+	iShowType = aShowType;
 	}
 
-TBool CShowInfo::IsBookFile()
+TShowType CShowInfo::ShowType()
 	{
-	return iIsBookFile;
+	return iShowType;
 	}
 
 void CShowInfo::SetTrackNo(TUint aTrackId)

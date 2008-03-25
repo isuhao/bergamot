@@ -21,6 +21,12 @@ enum TDownloadState {
 	EDownloaded
 };
 
+enum TShowType {
+	EAudioPodcast = 0,
+	EAudioBook = 1, // this was previously a boolean IsAudioBook
+	EVideoPodcast
+};
+
 class CShowInfo: public CBase {
 public:
 	static CShowInfo* NewL(TUint aVersion=KShowInfoVersion);
@@ -68,8 +74,8 @@ public:
 	void SetDelete();
 	TBool Delete();
 	
-	void SetIsBookFile(TBool aIsBookFile);
-	TBool IsBookFile();
+	void SetShowType(TShowType aShowType);
+	TShowType ShowType();
 
 	void SetTrackNo(TUint aTrackNo);
 	TUint TrackNo() const;
@@ -92,7 +98,7 @@ private:
 	TUint iTrackNo;
 	TTime iPubDate;
 	TBool iDelete;
-	TBool iIsBookFile;
+	TShowType iShowType;
 	TUint iVersion;
 };
 
