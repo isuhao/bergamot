@@ -26,11 +26,12 @@ void CFeedEngine::ConstructL()
 	
 	RunFeedTimer();
 	
-    if (!LoadFeeds()) {
-    	ImportFeedsL(iPodcastModel.SettingsEngine().DefaultFeedsFileName());
+    TFileName importFile = iPodcastModel.SettingsEngine().DefaultFeedsFileName();
+    if (!LoadFeeds() && BaflUtils::FileExists(iFs, importFile)) {
+    	ImportFeedsL(importFile);
     }
 
-    TFileName importFile = iPodcastModel.SettingsEngine().ImportFeedsFileName();
+    importFile = iPodcastModel.SettingsEngine().ImportFeedsFileName();
     if (BaflUtils::FileExists(iFs, importFile)) {
     	ImportFeedsL(importFile);
     }
