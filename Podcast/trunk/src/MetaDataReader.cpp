@@ -70,7 +70,10 @@ void CMetaDataReader::ConvertToUniCodeL(TDes& aDestBuffer, TDes8& aInputBuffer, 
 			TInt state = 0;
 			if(iCharConverter->ConvertToUnicode(aDestBuffer, aInputBuffer, state, unconvertable) == KErrNone)
 			{
+				if(aDestBuffer.Length()>0 && (aDestBuffer[0] == CEditableText::EZeroWidthNoBreakSpace || aDestBuffer[0] == CEditableText::EReversedByteOrderMark) )
+				{
 				aDestBuffer = aDestBuffer.Right(aDestBuffer.Length()-1);
+				}
 			}
 		}break;
 	case ID3_FIELD_TEXTENCODING_UTF_16BE:
@@ -84,7 +87,10 @@ void CMetaDataReader::ConvertToUniCodeL(TDes& aDestBuffer, TDes8& aInputBuffer, 
 			TInt state = 0;
 			if(iCharConverter->ConvertToUnicode(aDestBuffer, aInputBuffer, state, unconvertable) == KErrNone)
 			{
+				if(aDestBuffer.Length()>0 && (aDestBuffer[0] == CEditableText::EZeroWidthNoBreakSpace || aDestBuffer[0] == CEditableText::EReversedByteOrderMark) )
+				{
 				aDestBuffer = aDestBuffer.Right(aDestBuffer.Length()-1);
+				}
 			}
 		}break;
 	case ID3_FIELD_TEXTENCODING_ISO_8859_1:
