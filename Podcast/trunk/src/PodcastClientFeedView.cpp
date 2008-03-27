@@ -187,59 +187,67 @@ void CPodcastClientFeedView::FeedInfoUpdated(CFeedInfo* aFeedInfo)
 		iProgressAdded = EFalse;
 		}
 
-	const RFeedInfoArray& feeds = iPodcastModel.FeedEngine().GetSortedFeeds();
 
-	TInt index = feeds.Find(aFeedInfo);
-	MQikListBoxModel& model(iListbox->Model());
-
-	if(index != KErrNotFound && index<model.Count())
+	if(iCurrentViewMode == EFeedsNormalMode)
+	{				
+		const RFeedInfoArray& feeds = iPodcastModel.FeedEngine().GetSortedFeeds();
+		
+		TInt index = feeds.Find(aFeedInfo);
+		MQikListBoxModel& model(iListbox->Model());
+		
+		if(index != KErrNotFound && index<model.Count())
 		{
-		model.ModelBeginUpdateLC();
-		MQikListBoxData* data = model.RetrieveDataL(index);	
-
-		if(data != NULL)
+			model.ModelBeginUpdateLC();
+			MQikListBoxData* data = model.RetrieveDataL(index);	
+			
+			if(data != NULL)
 			{
-			CleanupClosePushL(*data);
-			UpdateFeedInfoDataL(aFeedInfo, data);
-			CleanupStack::PopAndDestroy(data);
-			model.DataUpdatedL(index);
+				CleanupClosePushL(*data);
+				UpdateFeedInfoDataL(aFeedInfo, data);
+				CleanupStack::PopAndDestroy(data);
+				model.DataUpdatedL(index);
 			}
-		model.ModelEndUpdateL();
+			model.ModelEndUpdateL();
 		}
+	}
 	}
 
 void CPodcastClientFeedView::UpdateFeedInfoStatusL(TUint aFeedUid, TBool aIsUpdating)
 	{
-	const RFeedInfoArray& feeds = iPodcastModel.FeedEngine().GetSortedFeeds();
-
-	TInt cnt = feeds.Count();
-	TInt index = KErrNotFound;
-	while(index == KErrNotFound && cnt>0)
-	{
-		cnt--;
-		if(feeds[cnt]->Uid() == aFeedUid)
-		{
-			index = cnt;
-			break;
-		}
-	}
-//	TInt index = feeds.Find(aFeedInfo);
-
-	MQikListBoxModel& model(iListbox->Model());
 	
-	if(index != KErrNotFound && index < model.Count())
+	if(iCurrentViewMode == EFeedsNormalMode)
+		{	
+		const RFeedInfoArray& feeds = iPodcastModel.FeedEngine().GetSortedFeeds();
+
+		TInt cnt = feeds.Count();
+		TInt index = KErrNotFound;
+		while(index == KErrNotFound && cnt>0)
 		{
-		model.ModelBeginUpdateLC();
-		MQikListBoxData* data = model.RetrieveDataL(index);	
-		
-		if(data != NULL)
+			cnt--;
+			if(feeds[cnt]->Uid() == aFeedUid)
 			{
-			CleanupClosePushL(*data);
-			UpdateFeedInfoDataL(feeds[index], data, aIsUpdating);
-			CleanupStack::PopAndDestroy(data);
-			model.DataUpdatedL(index);
+				index = cnt;
+				break;
 			}
-		model.ModelEndUpdateL();
+		}
+	//	TInt index = feeds.Find(aFeedInfo);
+
+		MQikListBoxModel& model(iListbox->Model());
+		
+		if(index != KErrNotFound && index < model.Count())
+			{
+			model.ModelBeginUpdateLC();
+			MQikListBoxData* data = model.RetrieveDataL(index);	
+			
+			if(data != NULL)
+				{
+				CleanupClosePushL(*data);
+				UpdateFeedInfoDataL(feeds[index], data, aIsUpdating);
+				CleanupStack::PopAndDestroy(data);
+				model.DataUpdatedL(index);
+				}
+			model.ModelEndUpdateL();
+			}
 		}
 	}
 
@@ -482,6 +490,7 @@ void CPodcastClientFeedView::HandleListBoxEventL(CQikListBox* /*aListBox*/, TQik
 				{
 				sortedItems = &iPodcastModel.FeedEngine().GetSortedFeeds();
 				}
+
 			if(aItemIndex >= 0 && aItemIndex < sortedItems->Count())
 				{
 				iPodcastModel.ActiveShowList().Reset();
@@ -602,6 +611,7 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 			if(iListbox != NULL)
 				{
 				TInt index = iListbox->CurrentItemIndex();
+
 				const RFeedInfoArray& feeds = iPodcastModel.FeedEngine().GetSortedFeeds();
 
 				TInt cnt = feeds.Count();

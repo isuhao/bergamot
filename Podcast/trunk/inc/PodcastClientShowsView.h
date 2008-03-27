@@ -1,5 +1,7 @@
 #ifndef PODCASTCLIENTPODCASTSVIEW_H
 #define PODCASTCLIENTPODCASTSVIEW_H
+#include <videoplayer.h>
+
 #include "PodcastClientView.h"
 #include "ShowEngineObserver.h"
 
@@ -38,6 +40,7 @@ protected:
 private:
 	TPodcastClientShowCategory iCurrentCategory;
 	TBool iProgressAdded;
+	CVideoPlayerUtility* iVideoPlayer;
 };
 
 

@@ -16,9 +16,9 @@
 #include "ShowEngine.h"
 #include "SettingsEngine.h"
 _LIT(KSizeDownloadingOf, "%S/%S");
+_LIT(KChapterFormatting, "%03d");
 
-
-const TInt KSizeBufLen = 16;
+const TInt KSizeBufLen = 64;
 
 /**
 Creates and constructs the view.
@@ -414,44 +414,50 @@ void CPodcastClientShowsView::UpdateShowItemDataL(CShowInfo* aShowInfo, MQikList
 	aListboxData->SetIconL(content, EQikListBoxSlotLeftMediumIcon1);
 	CleanupStack::Pop(content);
 	
-	if(aSizeDownloaded > 0)
+	if(aShowInfo->ShowType() == EAudioBook)
 	{
-		TBuf<KSizeBufLen> dlSize;
-		TBuf<KSizeBufLen> totSize;
-		
-		if(aShowInfo->ShowSize() < KSizeMb)
-		{
-			totSize.Format(KShowsSizeFormatKb(), aShowInfo->ShowSize() / KSizeKb);
-		}
-		else
-		{
-			totSize.Format(KShowsSizeFormatMb(), aShowInfo->ShowSize() / KSizeMb);
-		}
-		
-		if(aSizeDownloaded < KSizeMb)
-		{
-			dlSize.Format(KShowsSizeFormatKb(), aSizeDownloaded / KSizeKb);
-		}
-		else
-		{
-			dlSize.Format(KShowsSizeFormatMb(), aSizeDownloaded / KSizeMb);
-		}
-		infoSize.Format(KSizeDownloadingOf(), &dlSize, &totSize);
-		
+		infoSize.Format(KChapterFormatting(), aShowInfo->TrackNo());															
 	}
 	else
 	{
-		if(aShowInfo->ShowSize() < KSizeMb)
+		if(aSizeDownloaded > 0)
 		{
-			infoSize.Format(KShowsSizeFormatKb(), aShowInfo->ShowSize() / KSizeKb);
+			TBuf<KSizeBufLen> dlSize;
+			TBuf<KSizeBufLen> totSize;
+			
+			if(aShowInfo->ShowSize() < KSizeMb)
+			{
+				totSize.Format(KShowsSizeFormatKb(), aShowInfo->ShowSize() / KSizeKb);
+			}
+			else
+			{
+				totSize.Format(KShowsSizeFormatMb(), aShowInfo->ShowSize() / KSizeMb);
+			}
+			
+			if(aSizeDownloaded < KSizeMb)
+			{
+				dlSize.Format(KShowsSizeFormatKb(), aSizeDownloaded / KSizeKb);
+			}
+			else
+			{
+				dlSize.Format(KShowsSizeFormatMb(), aSizeDownloaded / KSizeMb);
+			}
+			infoSize.Format(KSizeDownloadingOf(), &dlSize, &totSize);
+			
 		}
 		else
 		{
-			infoSize.Format(KShowsSizeFormatMb(), aShowInfo->ShowSize() / KSizeMb);
+			if(aShowInfo->ShowSize() < KSizeMb)
+			{
+				infoSize.Format(KShowsSizeFormatKb(), aShowInfo->ShowSize() / KSizeKb);
+			}
+			else
+			{
+				infoSize.Format(KShowsSizeFormatMb(), aShowInfo->ShowSize() / KSizeMb);
+			}
+			
 		}
-		
 	}
-	
 	aListboxData->SetTextL(aShowInfo->Title(), EQikListBoxSlotText1);
 	aListboxData->SetTextL(infoSize, EQikListBoxSlotText4);
 	aListboxData->SetEmphasis(aShowInfo->PlayState() == ENeverPlayed);					
@@ -574,25 +580,51 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 						CleanupClosePushL(*listBoxData);
 						CShowInfo *si = fItems[i];
 						listBoxData->SetItemId(si->Uid());
-						listBoxData->AddTextL(si->Title(), EQikListBoxSlotText1);
-						//listBoxData->AddTextL(si->iDescription, EQikListBoxSlotText2);
-						if(si->ShowSize() == 0) {
-							showSize.Format(_L("Unknown"));
-						} else if(si->ShowSize() < KSizeMb)
-						{
-							showSize.Format(KShowsSizeFormatKb(), si->ShowSize() / KSizeKb);
-						}
+						listBoxData->AddTextL(si->Title(), EQikListBoxSlotText1);						
+						if(si->ShowType() == EAudioBook)
+							{
+							showSize.Format(KChapterFormatting(), si->TrackNo());
+							if(si->PlayTime() != 0)
+								{
+								TInt playtime = si->PlayTime();
+								TInt hour = playtime/3600;
+								playtime = playtime-(hour*3600);
+								
+								TInt sec = (playtime%60);
+								TInt min = (playtime/60);
+								showDate.Format(_L("%01d:%02d:%02d"),hour, min, sec);
+								}
+							else
+								{								
+									showDate = KNullDesC();								
+								}
+							}
 						else
-						{
-							showSize.Format(KShowsSizeFormatMb(), si->ShowSize() / KSizeMb);
-						}
-						listBoxData->AddTextL(showSize, EQikListBoxSlotText4);
-						
-						if(si->PubDate().Int64() == 0) {
-							showDate.Format(_L("Unknown"));
-						} else {
-							si->PubDate().FormatL(showDate, KDateFormat());
-						}
+							{
+							if(si->ShowSize() == 0) 
+								{
+								showSize = KNullDesC();
+								} 
+							else if(si->ShowSize() < KSizeMb)
+								{
+								showSize.Format(KShowsSizeFormatKb(), si->ShowSize() / KSizeKb);
+								}
+							else
+								{
+								showSize.Format(KShowsSizeFormatMb(), si->ShowSize() / KSizeMb);
+								}
+
+							if(si->PubDate().Int64() == 0) 
+								{
+								showDate = KNullDesC();
+								} 
+								else 
+								{
+								si->PubDate().FormatL(showDate, KDateFormat());
+								}
+							}					
+
+						listBoxData->AddTextL(showSize, EQikListBoxSlotText4);												
 						listBoxData->AddTextL(showDate, EQikListBoxSlotText3);
 						
 						listBoxData->SetEmphasis(si->PlayState() == ENeverPlayed);										
