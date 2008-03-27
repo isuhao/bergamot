@@ -748,8 +748,8 @@ void CPodcastClientShowsView::UpdateCommandsL()
 			comMan.SetInvisible(*this, EPodcastUpdateLibrary, ETrue);
 			comMan.SetInvisible(*this, EPodcastRemoveDownload, (removeRemoveSuspendCmd || !itemCnt));
 			comMan.SetInvisible(*this, EPodcastRemoveDownloadHardware, (removeRemoveSuspendCmd || !itemCnt));
-			comMan.SetInvisible(*this, EPodcastStopDownloads, (!itemCnt ||iPodcastModel.ShowEngine().DownloadsStopped()));
-			comMan.SetInvisible(*this, EPodcastResumeDownloads, (!itemCnt ||!iPodcastModel.ShowEngine().DownloadsStopped()));			
+			comMan.SetInvisible(*this, EPodcastStopDownloads, (iPodcastModel.ShowEngine().DownloadsStopped()));
+			comMan.SetInvisible(*this, EPodcastResumeDownloads, (!iPodcastModel.ShowEngine().DownloadsStopped()));			
 			comMan.SetInvisible(*this, EPodcastShowUnplayedOnly, ETrue);
 			comMan.SetInvisible(*this, EPodcastViewPendingShows, ETrue);
 			comMan.SetInvisible(*this, EPodcastDownloadShow, ETrue);
