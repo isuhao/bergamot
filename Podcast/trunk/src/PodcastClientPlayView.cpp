@@ -302,11 +302,7 @@ void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 			{
 				if(iPodcastModel.PlayingPodcast()->ShowType() == EVideoPodcast || iPodcastModel.SoundEngine().State() == ESoundEngineNotInitialized)
 					{
-					RApaLsSession lsSession;
-					lsSession.Connect();
-					CleanupClosePushL(lsSession);
-					QikFileUtils::StartDefaultViewerAppL(iPodcastModel.SoundEngine().LastFileName(), lsSession);
-					CleanupStack::PopAndDestroy();//close
+					QikFileUtils::StartAppL(iPodcastModel.PlayingPodcast()->FileName());//, lsSession);
 					}
 				else
 					{

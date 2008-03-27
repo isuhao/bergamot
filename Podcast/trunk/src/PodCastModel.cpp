@@ -165,7 +165,8 @@ void CPodcastModel::PlayPausePodcastL(CShowInfo* aPodcast, TBool aPlayOnInit)
 		
 		iSoundEngine->Stop();
 
-		if(aPodcast != NULL) {
+		// we play video podcasts through the external player
+		if(aPodcast != NULL && aPodcast->ShowType() != EVideoPodcast) {
 			RDebug::Print(_L("Starting: %S"), &(aPodcast->FileName()));
 			TRAPD( error, iSoundEngine->OpenFileL(aPodcast->FileName(), aPlayOnInit) );
 			if (error != KErrNone) {

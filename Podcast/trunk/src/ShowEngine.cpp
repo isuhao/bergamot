@@ -22,6 +22,7 @@ CShowEngine::~CShowEngine()
 	delete iShowClient;
 	iObservers.Close();
 	delete iMetaDataReader;
+	delete iMediaFileFolderUtils;
 	}
 
 CShowEngine* CShowEngine::NewL(CPodcastModel& aPodcastModel)
@@ -40,7 +41,8 @@ void CShowEngine::ConstructL()
 	iShowClient->SetResumeEnabled(ETrue);
 	iMetaDataReader = new (ELeave) CMetaDataReader(*this);
 	iMetaDataReader->ConstructL();
-
+	iMediaFileFolderUtils = CQikMediaFileFolderUtils::NewL(*CEikonEnv::Static());
+	
 	// Try to load the database. Continue if we fail.
 	TRAP_IGNORE(LoadShowsL());
 	
@@ -77,6 +79,7 @@ TBool CShowEngine::DownloadsStopped()
 TBool CShowEngine::RemoveDownload(TUint aUid) 
 	{
 	RDebug::Print(_L("CShowEngine::RemoveDownload\t Trying to remove download"));
+	RDebug::Print(_L("Title: %S"), &iPodcastModel.ShowEngine().GetShowByUidL(aUid)->Title());
 
 	// if trying to remove the present download, we first stop it
 	if (!iDownloadsSuspended && iShowDownloading != NULL && iShowDownloading->Uid() == aUid) {
@@ -88,8 +91,10 @@ TBool CShowEngine::RemoveDownload(TUint aUid)
 	const TInt count = iShowsDownloading.Count();
 	for (TInt i=0 ; i < count; i++) 
 		{
+		RDebug::Print(_L("Comparing %u (%S) to %u"), iShowsDownloading[i]->Uid(), &iShowsDownloading[i]->Title(), aUid );
 		if (iShowsDownloading[i]->Uid() == aUid) 
-			{			
+			{
+			RDebug::Print(_L("Removing by title: %S"), &iShowsDownloading[i]->Title());
 			iShowsDownloading[i]->SetDownloadState(ENotDownloaded);
 			BaflUtils::DeleteFile(iFs, iShowsDownloading[i]->FileName());
 			iShowsDownloading.Remove(i);
@@ -179,6 +184,7 @@ void CShowEngine::GetShow(CShowInfo *info)
 	// complete file path is base dir + rel path
 	filePath.Append(relPath);
 	info->SetFileNameL(filePath);
+	
 	iShowClient->GetL(info->Url(), filePath);
 	}
 
@@ -217,6 +223,16 @@ void CShowEngine::CompleteL(CHttpClient* /*aHttpClient*/, TBool aSuccessful)
 	if(iShowDownloading != NULL)
 	{
 		RDebug::Print(_L("CShowEngine::Complete\tDownload of file: %S is complete"), &iShowDownloading->FileName());
+			
+		// decide what kind of file this is
+		TBuf<100> mimeType;
+		iMediaFileFolderUtils->GetMimeType(iShowDownloading->FileName(), mimeType);
+		
+		if (mimeType.Left(5) == _L("audio")) {
+			iShowDownloading->SetShowType(EAudioPodcast);
+		} else if (mimeType.Left(5) == _L("video")) {
+			iShowDownloading->SetShowType(EVideoPodcast);		
+		}
 		
 		if (aSuccessful) 
 		{
@@ -597,7 +613,7 @@ void CShowEngine::SelectShowsDownloaded()
 	iLastShowsOnPhoneUnplayedCount = 0;
 	for (int i=0;i<iShows.Count();i++)
 		{
-		if (iShows[i]->DownloadState() == EDownloaded && !iShows[i]->ShowType() == EAudioBook)
+		if (iShows[i]->DownloadState() == EDownloaded && !(iShows[i]->ShowType() == EAudioBook))
 			{
 			iGrossSelectionLength++;
 			iLastShowsOnPhoneTotalCount++;
@@ -773,20 +789,32 @@ void CShowEngine::ListDir(TFileName &folder) {
 			subFolder.Append(_L("\\"));
 			ListDir(subFolder);
 		} else {
-		if (entry.iName.Right(3).CompareF(_L("mp3")) == 0 ||
-			entry.iName.Right(3).CompareF(_L("aac")) == 0 ||
-			entry.iName.Right(3).CompareF(_L("wav")) == 0 ||
-			entry.iName.Right(3).CompareF(_L("mp4")) == 0) {
 			TFileName fileName;
 			fileName.Copy(entry.iName);
 			TFileName pathName;
 			pathName.Copy(folder);
 			pathName.Append(entry.iName);
 
+			TShowType showType;
+			
+			// decide what kind of file this is
+			TBuf<100> mimeType;
+			iMediaFileFolderUtils->GetMimeType(pathName, mimeType);
+			RDebug::Print(_L("'%S' has mime: '%S'"), &pathName, &mimeType);
+
+			if (mimeType.Left(5) == _L("audio")) {
+				showType = EAudioPodcast;
+			} else if (mimeType.Left(5) == _L("video")) {
+				showType = EVideoPodcast;
+			} else {
+				continue;
+			}
+
+
 			TBool exists = EFalse;
 			for (int i=0;i<iShows.Count();i++) {
 				if (iShows[i]->FileName().Compare(pathName) == 0) {
-					//RDebug::Print(_L("Already listed %S"), &pathName);
+					RDebug::Print(_L("Already listed %S"), &pathName);
 					exists = ETrue;
 					break;
 				}
@@ -803,6 +831,7 @@ void CShowEngine::ListDir(TFileName &folder) {
 			info->SetTitleL(fileName);
 			info->SetDownloadState(EDownloaded);
 			info->SetUid(DefaultHash::Des16(fileName));
+			info->SetShowType(showType);
 			info->SetFeedUid(0);
 			TEntry entry;
 			iFs.Entry(pathName, entry);
@@ -810,15 +839,8 @@ void CShowEngine::ListDir(TFileName &folder) {
 			info->SetPubDate(entry.iModified);
 			info->SetDelete();  			// so that we do not save the entry in the DB.
 			
-			if(entry.iName.Right(3).CompareF(_L("mp4")) == 0) {
-				info->SetShowType(EVideoPodcast);
-			} else {
-				// submit the file for meta data reading
-				iMetaDataReader->SubmitShow(info);
-			}
+			iMetaDataReader->SubmitShow(info);
 			iShows.Append(info);
-
-		}
 		}
 	}
 	delete dirPtr;

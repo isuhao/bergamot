@@ -7,6 +7,7 @@
 #include "HttpClient.h"
 #include "ShowEngineObserver.h"
 #include "MetaDataReader.h"
+#include <QikMediaFileFolderUtils.h>
 
 class CShowEngine : public CBase, public MHttpClientObserver, public MMetaDataReaderObserver
 {
@@ -115,6 +116,8 @@ private:
     
     TInt iLastShowsOnPhoneTotalCount;
     TInt iLastShowsOnPhoneUnplayedCount;
+    
+    CQikMediaFileFolderUtils *iMediaFileFolderUtils;
 };
 
 #endif /*SHOWENGINE_H_*/

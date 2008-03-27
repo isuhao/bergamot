@@ -290,10 +290,6 @@ void CShowInfo::SetFileNameL(const TDesC &aFileName)
 		iFileName = NULL;
 		}
 	iFileName = aFileName.AllocL();
-	
-	if (aFileName.Right(3).CompareF(_L("mp4")) == 0) {
-		SetShowType(EVideoPodcast);
-	}
 	}
 
 void CShowInfo::SetShowType(TShowType aShowType)
