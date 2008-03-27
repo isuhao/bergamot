@@ -618,7 +618,7 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 			break;
 			}
 			
-
+		case EPodcastDeleteFeedHardware:
 		case EPodcastDeleteFeed:
 			{
 			if(iListbox != NULL)
@@ -684,6 +684,8 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 		HandleAddNewAudioBookL();
 		UpdateListboxItemsL();
 		}break;
+		
+	case EPodcastRemoveAudioBookHardware:
 	case EPodcastRemoveAudioBook:
 		{
 			if(iListbox != NULL)

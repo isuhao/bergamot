@@ -130,7 +130,8 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 					UpdateListboxItemsL();
 					}
 			}break;
-		case EPodcastPurgeShow:
+		case EPodcastDeleteShowHardware:
+		case EPodcastDeleteShow:
 			{				
 				if(iEikonEnv->QueryWinL(R_PODCAST_PURGE_SHOW_TITLE, R_PODCAST_PURGE_SHOW_PROMPT))				
 				{
@@ -197,6 +198,7 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 				} 
 			}
 			break;
+		case EPodcastRemoveDownloadHardware:
 		case EPodcastRemoveDownload:
 			{
 				TInt index = iListbox->CurrentItemIndex();
@@ -689,9 +691,9 @@ void CPodcastClientShowsView::UpdateCommandsL()
 	comMan.SetInvisible(*this, EPodcastUpdateFeed, (iCurrentCategory != EShowFeedShows || iPodcastModel.ActiveFeedInfo()->IsBookFeed()));
 	comMan.SetInvisible(*this, EPodcastDownloadShow, removeDownloadShowCmd);
 
-	comMan.SetInvisible(*this, EPodcastPurgeShow, removePurgeShowCmd);
+	comMan.SetInvisible(*this, EPodcastDeleteShow, removePurgeShowCmd);
+	comMan.SetInvisible(*this, EPodcastDeleteShowHardware, removePurgeShowCmd);
 	comMan.SetInvisible(*this, EPodcastPurgeFeed, (iCurrentCategory == EShowPendingShows || iCurrentCategory == EShowDownloadedShows || (iPodcastModel.ActiveFeedInfo()?iPodcastModel.ActiveFeedInfo()->IsBookFeed():EFalse)));
-	comMan.SetInvisible(*this, EPodcastDeleteAllShows, (iCurrentCategory != EShowDownloadedShows));
 	comMan.SetChecked(*this, EPodcastShowUnplayedOnly, iPodcastModel.SettingsEngine().SelectUnplayedOnly());
 	
 	
@@ -699,8 +701,8 @@ void CPodcastClientShowsView::UpdateCommandsL()
 	comMan.SetAvailable(*this, EPodcastDownloadShow, !updatingState);
 	comMan.SetAvailable(*this, EPodcastShowUnplayedOnly, !updatingState);
 	comMan.SetAvailable(*this, EPodcastMarkAllPlayed, !updatingState);
-	comMan.SetAvailable(*this, EPodcastDeleteAllShows, !updatingState);
-	comMan.SetAvailable(*this, EPodcastPurgeShow, !updatingState);
+	comMan.SetAvailable(*this, EPodcastDeleteShow, !updatingState);
+	comMan.SetAvailable(*this, EPodcastDeleteShowHardware, !updatingState);
 	comMan.SetAvailable(*this, EPodcastPurgeFeed, !updatingState);
 	comMan.SetInvisible(*this, EPodcastViewPendingShows, EFalse);
 	comMan.SetInvisible(*this, EPodcastViewDownloadedShows, EFalse);
@@ -713,6 +715,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 			comMan.SetInvisible(*this, EPodcastMarkAllPlayed, ETrue);
 			comMan.SetInvisible(*this, EPodcastUpdateLibrary, ETrue);
 			comMan.SetInvisible(*this, EPodcastRemoveDownload, (removeRemoveSuspendCmd || !itemCnt));
+			comMan.SetInvisible(*this, EPodcastRemoveDownloadHardware, (removeRemoveSuspendCmd || !itemCnt));
 			comMan.SetInvisible(*this, EPodcastStopDownloads, (!itemCnt ||iPodcastModel.ShowEngine().DownloadsStopped()));
 			comMan.SetInvisible(*this, EPodcastResumeDownloads, (!itemCnt ||!iPodcastModel.ShowEngine().DownloadsStopped()));			
 			comMan.SetInvisible(*this, EPodcastShowUnplayedOnly, ETrue);
@@ -726,15 +729,16 @@ void CPodcastClientShowsView::UpdateCommandsL()
 			comMan.SetInvisible(*this, EPodcastMarkAllPlayed, EFalse);
 			comMan.SetInvisible(*this, EPodcastUpdateLibrary, EFalse);
 			comMan.SetInvisible(*this, EPodcastRemoveDownload, ETrue);
+			comMan.SetInvisible(*this, EPodcastRemoveDownloadHardware, ETrue);
 			comMan.SetInvisible(*this, EPodcastStopDownloads, ETrue);
 			comMan.SetInvisible(*this, EPodcastResumeDownloads, ETrue);
 			comMan.SetInvisible(*this, EPodcastShowUnplayedOnly, EFalse);
 			comMan.SetInvisible(*this, EPodcastViewDownloadedShows, ETrue);
-			comMan.SetInvisible(*this, EPodcastDeleteAllShows, ETrue);
 		}break;
 	default:
 		{
 			comMan.SetInvisible(*this, EPodcastRemoveDownload, ETrue);
+			comMan.SetInvisible(*this, EPodcastRemoveDownloadHardware, ETrue);
 			comMan.SetInvisible(*this, EPodcastStopDownloads, ETrue);
 			comMan.SetInvisible(*this, EPodcastResumeDownloads, ETrue);
 			comMan.SetInvisible(*this, EPodcastMarkAllPlayed, EFalse);

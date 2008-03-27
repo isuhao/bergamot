@@ -132,22 +132,32 @@ RESOURCE QIK_COMMAND_LIST r_podcast_feedview_commands
 			},
 		QIK_COMMAND
 			{
-			cpfFlags = EQikCpfFlagDuplicateInMenuPane;
-			type = EQikCommandTypeDelete;//EQikCommandTypeScreen;
+			type = EQikCommandTypeScreen;
 			groupId = 5;
 			id = EPodcastDeleteFeed;
-	
 			text = STRING_r_view_delete_feed_cmd;
-			},		
-
+			},
 		QIK_COMMAND
 			{
-			cpfFlags = EQikCpfFlagDuplicateInMenuPane;
-			type = EQikCommandTypeDelete;//EQikCommandTypeScreen;
+			cpfFlags = EQikCpfFlagHardwarekeyOnly;
+			type = EQikCommandTypeDelete;
+			groupId = 5;
+			id = EPodcastDeleteFeedHardware;
+			},	
+		QIK_COMMAND
+			{
+			type = EQikCommandTypeScreen;
 			groupId = 5;
 			id = EPodcastRemoveAudioBook;
 			text = STRING_r_view_remove_audiobook_cmd;
-			},		
+			},
+		QIK_COMMAND
+			{
+			cpfFlags = EQikCpfFlagHardwarekeyOnly;
+			type = EQikCommandTypeDelete;
+			groupId = 5;
+			id = EPodcastRemoveAudioBookHardware;
+			},	
 	QIK_COMMAND
 			{
 			groupId = 5;
@@ -186,13 +196,6 @@ RESOURCE QIK_COMMAND_LIST r_podcast_feedview_commands
 			text = STRING_r_zoom_cmd;
 			groupId = 11;  
 			},
-	QIK_COMMAND
-			{
-			id = EPodcastAbout;
-			type = EQikCommandTypeScreen;
-			text = STRING_r_view_about_cmd;
-			groupId = 12;  
-			},				
 		QIK_COMMAND
 			{
 			id = EEikCmdExit;

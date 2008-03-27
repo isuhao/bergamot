@@ -4,9 +4,9 @@
 #define KOneHundredPercent 100
 
 enum TPodcatClientPages
-    {
-    EPodcastClientBaseViewPage = 1
-    };
+	{
+	EPodcastClientBaseViewPage = 1
+	};
 
 enum TPodcatClientCommands
 	{
@@ -16,7 +16,7 @@ enum TPodcatClientCommands
 	EPodcastViewNewShows,
 	EPodcastViewDownloadedShows,
 	EPodcastViewPendingShows,
-    EPodcastViewFeeds,
+	EPodcastViewFeeds,
 	EPodcastViewPlayer,
 	EPodcastViewAudioBooks,
 	EPodcastPlay,
@@ -26,6 +26,7 @@ enum TPodcatClientCommands
 	EPodcastAddFeed,
 	EPodcastEditFeed,
 	EPodcastDeleteFeed,
+	EPodcastDeleteFeedHardware,
 	EPodcastPurgeFeed,
 	EPodcastUpdateFeed,
 	EPodcastUpdateAllFeeds,
@@ -33,9 +34,10 @@ enum TPodcatClientCommands
 	EPodcastImportFeeds,
 	// Show commands
 	EPodcastDownloadShow,
-	EPodcastDeleteAllShows,
-	EPodcastPurgeShow,
+	EPodcastDeleteShow,
+	EPodcastDeleteShowHardware,
 	EPodcastRemoveDownload,
+	EPodcastRemoveDownloadHardware,
 	EPodcastStopDownloads,
 	EPodcastResumeDownloads,
 	EPodcastMarkAllPlayed,
@@ -46,6 +48,7 @@ enum TPodcatClientCommands
 	// Audio book commands
 	EPodcastAddNewAudioBook,
 	EPodcastRemoveAudioBook,
+	EPodcastRemoveAudioBookHardware,
 	EPodcastSetOrderAudioBook,
 	// Common commands
 	EPodcastZoomSetting,
@@ -54,9 +57,9 @@ enum TPodcatClientCommands
 	EPodcastSetVolume,
 	EPodcastSetAudioBookPlayOrderSwap,
 	EPodcastAbout
-	};
+};
 
-    enum TPodcastControl
+enum TPodcastControl
 	{
 	EPodcastListViewListCtrl= 0x1000,
 	EPodcastListViewPage,
@@ -95,8 +98,7 @@ enum TPodcatClientCommands
 	EPodcastAboutIcon
 
 	};
-	
-    
+
 enum TPodcastClientDefines
 	{
 	EMyViewBuildingBlockBase,
@@ -105,27 +107,26 @@ enum TPodcastClientDefines
 	EMyWebCommand = 3000
 	};
 
-	enum TMyViewControls
-    {
-    EMyViewScrollBar,
-    EMyViewScrollableContainer,
-    EMyViewBuildingBlock,
-    EMyViewNumberOfControls
-    };
+enum TMyViewControls
+	{
+	EMyViewScrollBar,
+	EMyViewScrollableContainer,
+	EMyViewBuildingBlock,
+	EMyViewNumberOfControls
+	};
 
 enum TPodcastClientShowCategory
-{
+	{
 	EShowAllShows = 0x4000,
 	EShowNewShows,
 	EShowFeedShows,
 	EShowDownloadedShows,
 	EShowPendingShows
-};
+	};
 
 #define EMyQikScrollableContainerDefaultFlags (EQikContainerHandleRelayoutRequests | EQikContainerPersistsAfterRelayout\
 		| EQikContainerScrollHorizontalOff | EQikContainerScrollHorizontalNormal\
 		| EQikContainerScrollVerticalAuto | EQikContainerScrollVerticalNormal)
-    
-#endif
 
+#endif
 

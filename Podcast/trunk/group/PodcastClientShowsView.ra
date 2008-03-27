@@ -123,23 +123,28 @@ RESOURCE QIK_COMMAND_LIST r_podcast_showview_commands
 			id = EPodcastDownloadShow;
 			type = EQikCommandTypeScreen;
 			text = STRING_r_view_download_show_cmd;
-			},		
-	QIK_COMMAND
+			},	
+		QIK_COMMAND
 			{
-			groupId = 5;
-			id = EPodcastDeleteAllShows;
+			groupId = 8;
+			id = EPodcastDeleteShow;
 			type = EQikCommandTypeScreen;
-			text = STRING_r_view_delete_shows_cmd;
+			text = STRING_r_view_purge_show_cmd;
 			},
 		QIK_COMMAND
 			{
-			groupId = 5;
-			id = EPodcastPurgeShow;
-			cpfFlags = EQikCpfFlagDuplicateInMenuPane;
-			type = EQikCommandTypeDelete;//EQikCommandTypeScreen;
-			text = STRING_r_view_purge_show_cmd;
+			groupId = 8;
+			id = EPodcastPurgeFeed;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_view_purge_feed_cmd;
+			},	
+		QIK_COMMAND
+			{
+			groupId = 8;
+			id = EPodcastDeleteShowHardware;
+			type = EQikCommandTypeDelete;
+			cpfFlags = EQikCpfFlagHardwarekeyOnly;
 			},
-
 	QIK_COMMAND
 			{
 			groupId = 5;
@@ -147,14 +152,18 @@ RESOURCE QIK_COMMAND_LIST r_podcast_showview_commands
 			type = EQikCommandTypeScreen;
 			text = STRING_r_view_books_setorder;
 			},
-
 	QIK_COMMAND
 			{				
 			id = EPodcastRemoveDownload;
-			cpfFlags = EQikCpfFlagDuplicateInMenuPane;
-			type = EQikCommandTypeDelete;//EQikCommandTypeScreen;
+			type = EQikCommandTypeScreen;
 			text = STRING_r_view_remove_download_cmd;
 			shortText = STRING_r_view_remove_download_cmd;
+			},
+	QIK_COMMAND
+			{				
+			id = EPodcastRemoveDownloadHardware;
+			type = EQikCommandTypeDelete;
+			cpfFlags = EQikCpfFlagHardwarekeyOnly;
 			},
 	QIK_COMMAND
 			{		
@@ -193,14 +202,6 @@ RESOURCE QIK_COMMAND_LIST r_podcast_showview_commands
 			type = EQikCommandTypeScreen;
 			text = STRING_r_view_library_update_cmd;
 			},	*/
-
-	QIK_COMMAND
-			{
-			groupId = 8;
-			id = EPodcastPurgeFeed;
-			type = EQikCommandTypeScreen;
-			text = STRING_r_view_purge_feed_cmd;
-			},	
 // Other commands
 		QIK_COMMAND
 			{
@@ -216,13 +217,6 @@ RESOURCE QIK_COMMAND_LIST r_podcast_showview_commands
 			text = STRING_r_zoom_cmd;
 			groupId = 11;  
 			},
-	QIK_COMMAND
-			{
-			id = EPodcastAbout;
-			type = EQikCommandTypeScreen;
-			text = STRING_r_view_about_cmd;
-			groupId = 12;  
-			},			
 		// This command shall only be visible in debug mode because it is only
 		// used to find memory leaks during development of the application.					
 		QIK_COMMAND
