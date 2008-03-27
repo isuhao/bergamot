@@ -801,7 +801,13 @@ void CShowEngine::ListDir(TFileName &folder) {
 			TBuf<100> mimeType;
 			iMediaFileFolderUtils->GetMimeType(pathName, mimeType);
 			RDebug::Print(_L("'%S' has mime: '%S'"), &pathName, &mimeType);
-
+#ifdef __WINS__
+			if(mimeType.Length() == 0)
+			{
+				mimeType = _L("audio");
+			}
+			
+#endif
 			if (mimeType.Left(5) == _L("audio")) {
 				showType = EAudioPodcast;
 			} else if (mimeType.Left(5) == _L("video")) {

@@ -61,17 +61,6 @@ void CMetaDataReader::ConvertToUniCodeL(TDes& aDestBuffer, TDes8& aInputBuffer, 
 		}break;
 	case ID3_FIELD_TEXTENCODING_UTF_16:
 		{
-			if(iLastConverterCharset != KCharacterSetIdentifierUnicodeLittle)
-			{
-				iCharConverter->PrepareToConvertToOrFromL(KCharacterSetIdentifierUnicodeLittle, CEikonEnv::Static()->FsSession()); 
-				iLastConverterCharset = KCharacterSetIdentifierUnicodeLittle;
-			}
-			TInt unconvertable = 0;
-			TInt state = 0;
-			iCharConverter->ConvertToUnicode(aDestBuffer, aInputBuffer, state, unconvertable);
-		}break;
-	case ID3_FIELD_TEXTENCODING_UTF_16BE:
-		{
 			if(iLastConverterCharset != KCharacterSetIdentifierUnicodeBig)
 			{
 				iCharConverter->PrepareToConvertToOrFromL(KCharacterSetIdentifierUnicodeBig, CEikonEnv::Static()->FsSession()); 
@@ -79,7 +68,24 @@ void CMetaDataReader::ConvertToUniCodeL(TDes& aDestBuffer, TDes8& aInputBuffer, 
 			}
 			TInt unconvertable = 0;
 			TInt state = 0;
-			iCharConverter->ConvertToUnicode(aDestBuffer, aInputBuffer, state, unconvertable);	
+			if(iCharConverter->ConvertToUnicode(aDestBuffer, aInputBuffer, state, unconvertable) == KErrNone)
+			{
+				aDestBuffer = aDestBuffer.Right(aDestBuffer.Length()-1);
+			}
+		}break;
+	case ID3_FIELD_TEXTENCODING_UTF_16BE:
+		{
+			if(iLastConverterCharset != KCharacterSetIdentifierUnicodeLittle)
+			{
+				iCharConverter->PrepareToConvertToOrFromL(KCharacterSetIdentifierUnicodeLittle, CEikonEnv::Static()->FsSession()); 
+				iLastConverterCharset = KCharacterSetIdentifierUnicodeLittle;
+			}
+			TInt unconvertable = 0;
+			TInt state = 0;
+			if(iCharConverter->ConvertToUnicode(aDestBuffer, aInputBuffer, state, unconvertable) == KErrNone)
+			{
+				aDestBuffer = aDestBuffer.Right(aDestBuffer.Length()-1);
+			}
 		}break;
 	case ID3_FIELD_TEXTENCODING_ISO_8859_1:
 		{
@@ -153,8 +159,9 @@ void CMetaDataReader::ParseNextShow()
 				}
 
 				iTempDataBuffer.SetLength(len);
-				iTempDataBuffer.Append(_L("\n"));
-				ConvertToUniCodeL(iStringBuffer, iTempDataBuffer, encoding);			
+		
+				ConvertToUniCodeL(iStringBuffer, iTempDataBuffer, encoding);
+				//	iStringBuffer.Append(_L("\n"));
 			}			
 						
 			frame = id3_tag_findframe(tag, ID3_FRAME_ALBUM, 0);
