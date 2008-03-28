@@ -160,7 +160,7 @@ RESOURCE QIK_COMMAND_LIST r_podcast_feedview_commands
 			},	
 	QIK_COMMAND
 			{
-			groupId = 5;
+			groupId = 6;
 			id = EPodcastImportFeeds;
 			type = EQikCommandTypeScreen;
 			text = STRING_r_view_import_feeds_cmd;
