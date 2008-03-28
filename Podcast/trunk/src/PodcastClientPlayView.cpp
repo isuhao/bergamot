@@ -670,7 +670,7 @@ void CPodcastClientPlayView::UpdateViewL()
 void CPodcastClientPlayView::UpdatePlayStatusL()
 {
 	CQikCommandManager& comMan = CQikCommandManager::Static();
-	TBuf<KTimeLabelSize> time = _L("0:00:00/0:00:00");
+	TBuf<KTimeLabelSize> time = _L("?:??:??/?:??:??");
 	TUint pos = 0;
 
 	if(iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.PlayingPodcast()->Uid() == iShowInfo->Uid())
@@ -729,6 +729,8 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 			comMan.SetDimmed(*this, EPodcastPlay, EFalse);
 			comMan.SetDimmed(*this, EPodcastStop, ETrue);
 			
+			comMan.SetInvisible(*this, EPodcastStop, !(iShowInfo->DownloadState() == EDownloaded));
+
 			// not sure why we end up here, but this prevents crashing (teknolog)
 			if (iPlayProgressbar == NULL) {
 				return;
