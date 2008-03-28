@@ -195,13 +195,14 @@ RESOURCE QIK_COMMAND_LIST r_podcast_showview_commands
 			type = EQikCommandTypeScreen;
 			text = STRING_r_view_mark_all_played_cmd;
 			},
-	/*	QIK_COMMAND
+		QIK_COMMAND
 			{
-			groupId = 7;
+			//groupId = 7;
 			id = EPodcastUpdateLibrary;
-			type = EQikCommandTypeScreen;
-			text = STRING_r_view_library_update_cmd;
-			},	*/
+			type = EQikCommandTypeDone;
+			text = STRING_r_update_feed_short_cmd;
+			shortText = STRING_r_update_feed_short_cmd;
+			},
 // Other commands
 		QIK_COMMAND
 			{

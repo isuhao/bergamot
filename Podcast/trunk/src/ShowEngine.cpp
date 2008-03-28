@@ -60,7 +60,9 @@ void CShowEngine::StopDownloads()
 	{
 	RDebug::Print(_L("StopDownloads"));
 	iDownloadsSuspended = ETrue;
-	iShowClient->Stop();
+	if (iShowClient != NULL) {
+		iShowClient->Stop();
+	}
 	}
 
 void CShowEngine::ResumeDownloads() 
@@ -605,7 +607,7 @@ void CShowEngine::SelectNewShows()
 
 void CShowEngine::SelectShowsDownloaded()
 	{
-	CheckFiles();
+	//CheckFiles();
 	
 	iSelectedShows.Reset();
 	iGrossSelectionLength = 0;
