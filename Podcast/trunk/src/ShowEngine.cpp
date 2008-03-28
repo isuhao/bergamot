@@ -78,10 +78,20 @@ TBool CShowEngine::DownloadsStopped()
 	return iDownloadsSuspended;
 	}
 
+void CShowEngine::RemoveAllDownloads() {
+	if (!iDownloadsSuspended) {
+		return;
+	}
+	
+	iShowsDownloading.Reset();
+	
+}
+
+
 TBool CShowEngine::RemoveDownload(TUint aUid) 
 	{
-	RDebug::Print(_L("CShowEngine::RemoveDownload\t Trying to remove download"));
-	RDebug::Print(_L("Title: %S"), &iPodcastModel.ShowEngine().GetShowByUidL(aUid)->Title());
+	//RDebug::Print(_L("CShowEngine::RemoveDownload\t Trying to remove download"));
+	//RDebug::Print(_L("Title: %S"), &iPodcastModel.ShowEngine().GetShowByUidL(aUid)->Title());
 
 	// if trying to remove the present download, we first stop it
 	if (!iDownloadsSuspended && iShowDownloading != NULL && iShowDownloading->Uid() == aUid) {
@@ -93,10 +103,10 @@ TBool CShowEngine::RemoveDownload(TUint aUid)
 	const TInt count = iShowsDownloading.Count();
 	for (TInt i=0 ; i < count; i++) 
 		{
-		RDebug::Print(_L("Comparing %u (%S) to %u"), iShowsDownloading[i]->Uid(), &iShowsDownloading[i]->Title(), aUid );
+		//RDebug::Print(_L("Comparing %u (%S) to %u"), iShowsDownloading[i]->Uid(), &iShowsDownloading[i]->Title(), aUid );
 		if (iShowsDownloading[i]->Uid() == aUid) 
 			{
-			RDebug::Print(_L("Removing by title: %S"), &iShowsDownloading[i]->Title());
+			//RDebug::Print(_L("Removing by title: %S"), &iShowsDownloading[i]->Title());
 			iShowsDownloading[i]->SetDownloadState(ENotDownloaded);
 			BaflUtils::DeleteFile(iFs, iShowsDownloading[i]->FileName());
 			iShowsDownloading.Remove(i);

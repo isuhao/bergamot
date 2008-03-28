@@ -177,3 +177,5 @@ rls_string STRING_r_view_books_setorder_dlgtitle "Set Chapter Order"
 rls_string STRING_r_view_books_setorder_dlg_swapcmd "Swap"
 rls_string STRING_r_view_books_setorder_dlg_label "Select Chapter to Swap With"
 rls_string STRING_r_view_books_setorder_dlg_selectlabel "Select Chapter to Swap"
+
+rls_string STRING_r_view_remove_all_downloads_cmd "Remove All"

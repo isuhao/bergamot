@@ -18,6 +18,7 @@ public:
 public:
 	void AddDownload(CShowInfo *info);
 	TBool RemoveDownload(TUint aUid);
+	void RemoveAllDownloads();
 
 	void StopDownloads();
 	void ResumeDownloads();

@@ -198,6 +198,15 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 				} 
 			}
 			break;
+		case EPodcastRemoveAllDownloads:
+			{
+			iPodcastModel.ShowEngine().RemoveAllDownloads();
+			UpdateListboxItemsL();
+			if (iProgressAdded) {
+				ViewContext()->RemoveAndDestroyProgressInfo();
+			}
+			}
+			break;
 		case EPodcastRemoveDownloadHardware:
 		case EPodcastRemoveDownload:
 			{
@@ -206,7 +215,9 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 				{
 					if (iPodcastModel.ShowEngine().RemoveDownload(iPodcastModel.ActiveShowList()[index]->Uid())) {
 						UpdateListboxItemsL();
-
+						if (index > 0) {
+							iListbox->SetItemSelectedL(index-1,ETrue,ETrue);
+						}
 						/*MQikListBoxModel& model(iListbox->Model());
 						model.ModelBeginUpdateLC();
 						model.RemoveDataL(index);
@@ -741,7 +752,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 	comMan.SetInvisible(*this, EPodcastViewPendingShows, EFalse);
 	comMan.SetInvisible(*this, EPodcastViewDownloadedShows, EFalse);
 	comMan.SetInvisible(*this, EPodcastSetOrderAudioBook, !(EShowFeedShows == iCurrentCategory && (iPodcastModel.ActiveFeedInfo()?iPodcastModel.ActiveFeedInfo()->IsBookFeed(): ETrue)));
-
+	comMan.SetInvisible(*this, EPodcastRemoveAllDownloads, ETrue);
 	switch(iCurrentCategory)
 	{	
 	case EShowPendingShows:
@@ -750,6 +761,8 @@ void CPodcastClientShowsView::UpdateCommandsL()
 			comMan.SetInvisible(*this, EPodcastUpdateLibrary, ETrue);
 			comMan.SetInvisible(*this, EPodcastRemoveDownload, (removeRemoveSuspendCmd || !itemCnt));
 			comMan.SetInvisible(*this, EPodcastRemoveDownloadHardware, (removeRemoveSuspendCmd || !itemCnt));
+			comMan.SetInvisible(*this, EPodcastRemoveAllDownloads, !itemCnt);
+			comMan.SetAvailable(*this, EPodcastRemoveAllDownloads, iPodcastModel.ShowEngine().DownloadsStopped());
 			comMan.SetInvisible(*this, EPodcastStopDownloads, (iPodcastModel.ShowEngine().DownloadsStopped()));
 			comMan.SetInvisible(*this, EPodcastResumeDownloads, (!iPodcastModel.ShowEngine().DownloadsStopped()));			
 			comMan.SetInvisible(*this, EPodcastShowUnplayedOnly, ETrue);

@@ -161,6 +161,13 @@ RESOURCE QIK_COMMAND_LIST r_podcast_showview_commands
 			},
 	QIK_COMMAND
 			{				
+			id = EPodcastRemoveAllDownloads;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_view_remove_all_downloads_cmd;
+			shortText = STRING_r_view_remove_all_downloads_cmd;
+			},
+	QIK_COMMAND
+			{				
 			id = EPodcastRemoveDownloadHardware;
 			type = EQikCommandTypeDelete;
 			cpfFlags = EQikCpfFlagHardwarekeyOnly;

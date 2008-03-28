@@ -38,6 +38,7 @@ enum TPodcatClientCommands
 	EPodcastDeleteShowHardware,
 	EPodcastRemoveDownload,
 	EPodcastRemoveDownloadHardware,
+	EPodcastRemoveAllDownloads,
 	EPodcastStopDownloads,
 	EPodcastResumeDownloads,
 	EPodcastMarkAllPlayed,
