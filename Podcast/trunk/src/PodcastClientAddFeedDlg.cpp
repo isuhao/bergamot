@@ -119,8 +119,7 @@ TBool CPodcastClientAddFeedDlg::OkToExitL(TInt aCommandId)
 				CFeedInfo* temp = CFeedInfo::NewL();
 				temp->SetUrlL(*url);
 				TBool added = iPodcastModel.FeedEngine().AddFeed(temp);
-				if (added)
-					{
+				if (added) {
 					// The Feed URL did not exist
 					// Remove the temp entry so that the correct entry could be changed
 					iPodcastModel.FeedEngine().RemoveFeed(temp->Uid());	
@@ -135,29 +134,35 @@ TBool CPodcastClientAddFeedDlg::OkToExitL(TInt aCommandId)
 					HBufC* title = titleEdwin->GetTextInHBufL();
 					CleanupStack::PushL(title);		
 							
-					if (iFeedInfo->Url().Compare(*title) != 0)
+					if (iFeedInfo->Title().Compare(*title) != 0)
 						{
 						iFeedInfo->SetTitleL(*title);
 						iFeedInfo->SetCustomTitle();	
 						}
 					CleanupStack::PopAndDestroy(title);
-					exitDialog = ETrue;	
-					}
-				else
-					{
+					exitDialog = ETrue;
+				} else {
 					// the feed existed. Object deleted in AddFeed.	
 					CEikonEnv::Static()->InfoWinL(_L("Information"), _L("A feed to this URL already exists") );
 					exitDialog = EFalse;
-					}
-				// --- END HACK ---
-				}
-			else
-				{
-				// abort
-				exitDialog = EFalse;
+								
 				}
 			}
+		} else { // no url change, maybe title?
+			// Update the title
+			HBufC* title = titleEdwin->GetTextInHBufL();
+			CleanupStack::PushL(title);		
+
+			if (iFeedInfo->Title().Compare(*title) != 0)
+			{
+				iFeedInfo->SetTitleL(*title);
+				iFeedInfo->SetCustomTitle();	
+			}
+			CleanupStack::PopAndDestroy(title);
+										
+			exitDialog = ETrue;
 		}
+		} // end edit an existing feed
 		
 	CleanupStack::PopAndDestroy(url);
 	return exitDialog;
