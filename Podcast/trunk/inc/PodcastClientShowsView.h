@@ -37,6 +37,8 @@ protected:
 	void UpdateSelectCommandL();
 	void GetShowIcons(CShowInfo* aShowInfo, TInt& aImageId, TInt& aMaskId);
 	void UpdateFeedUpdateStateL();
+	TKeyResponse OfferKeyEventL(const TKeyEvent& aKeyEvent,TEventCode aType);
+
 private:
 	TPodcastClientShowCategory iCurrentCategory;
 	TBool iProgressAdded;

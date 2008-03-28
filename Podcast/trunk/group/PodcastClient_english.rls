@@ -44,8 +44,8 @@ rls_string STRING_r_view_remove_download_cmd "Remove Download"
 rls_string STRING_r_view_show_cmd "Show"
 rls_string STRING_r_view_cmd "View"
 rls_string STRING_r_view_play_cmd "Play"
-rls_string STRING_r_view_mark_as_played_cmd "Mark Played"
-rls_string STRING_r_view_mark_as_unplayed_cmd "Mark Unplayed"
+rls_string STRING_r_view_mark_as_played_cmd "Mark as Played"
+rls_string STRING_r_view_mark_as_unplayed_cmd "Mark as Unplayed"
 
 // Actions for feeds
 rls_string STRING_r_view_add_feed_cmd "Add Feed"
@@ -68,7 +68,7 @@ rls_string STRING_r_view_purge_show_cmd "Delete"
 rls_string STRING_r_view_remove_download_cmd "Unqueue"
 rls_string STRING_r_view_stop_downloads_cmd "Suspend Downloading"
 rls_string STRING_r_view_resume_downloads_cmd "Resume Downloading"
-rls_string STRING_r_view_mark_all_played_cmd "Mark All Played"
+rls_string STRING_r_view_mark_all_played_cmd "Mark All as Played"
 rls_string STRING_r_view_show_unplayed_cmd "Show Unplayed Only"
 
 // Common actions
@@ -118,7 +118,7 @@ rls_string STRING_r_update_new_feed_title "Update Feed"
 rls_string STRING_r_update_new_feed_prompt "Do you want to update the feed now?"
 
 rls_string STRING_r_purge_feed_title "Delete All"
-rls_string STRING_r_purge_feed_prompt "Are you sure you want to delete all downloaded shows?"
+rls_string STRING_r_purge_feed_prompt "Are you sure you want to delete all downloaded shows from this feed?"
 
 rls_string STRING_r_purge_show_title "Delete Show"
 rls_string STRING_r_purge_show_prompt "Are you really sure you want to delete the selected show?"

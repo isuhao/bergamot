@@ -872,3 +872,32 @@ void CPodcastClientShowsView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQ
 		break;
 	}
 }
+
+TKeyResponse CPodcastClientShowsView::OfferKeyEventL(const TKeyEvent& aKeyEvent,TEventCode aType)
+	{
+	//RDebug::Print(_L("CPodcastClientShowsView::OfferKeyEventL"));
+	CQikViewBase::OfferKeyEventL(aKeyEvent, aType);
+	
+	if(aType == EEventKey)
+		{
+			switch(aKeyEvent.iCode)
+			{
+			case '*':
+				RDebug::Print(_L("CPodcastClientShowsView::OfferKeyEventL switching play state"));
+				TInt index = iListbox->CurrentItemIndex();
+				if(index >= 0 && index < iPodcastModel.ActiveShowList().Count())
+				{
+					if (iPodcastModel.ActiveShowList()[index]->PlayState() == EPlayed) {
+						iPodcastModel.ActiveShowList()[index]->SetPlayState(ENeverPlayed);
+					} else {
+						iPodcastModel.ActiveShowList()[index]->SetPlayState(EPlayed);
+					}
+
+				UpdateListboxItemsL();
+				return EKeyWasConsumed;
+				}
+			}
+		}
+	
+	return EKeyWasNotConsumed;
+	}
