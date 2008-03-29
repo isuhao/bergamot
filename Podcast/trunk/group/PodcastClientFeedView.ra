@@ -182,13 +182,13 @@ RESOURCE QIK_COMMAND_LIST r_podcast_feedview_commands
 			shortText = STRING_r_cancel_update_all_feeds_short_cmd;
 			},	
 // Other commands
-		QIK_COMMAND
+		/*QIK_COMMAND
 			{
 			id = EPodcastSettings;
 			type = EQikCommandTypeScreen;
 			text = STRING_r_settings_cmd;
 			groupId = 11;  
-			},
+			},*/
 		QIK_COMMAND
 			{
 			id = EPodcastZoomSetting;

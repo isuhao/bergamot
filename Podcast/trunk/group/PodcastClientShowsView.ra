@@ -123,7 +123,21 @@ RESOURCE QIK_COMMAND_LIST r_podcast_showview_commands
 			id = EPodcastDownloadShow;
 			type = EQikCommandTypeScreen;
 			text = STRING_r_view_download_show_cmd;
-			},	
+			},
+	QIK_COMMAND
+			{
+			id = EPodcastMarkAsPlayed;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_view_mark_as_played_cmd;
+			groupId = 5;
+			},
+	QIK_COMMAND
+			{
+			id = EPodcastMarkAsUnplayed;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_view_mark_as_unplayed_cmd;
+			groupId = 5;
+			},
 		QIK_COMMAND
 			{
 			groupId = 8;
@@ -211,13 +225,13 @@ RESOURCE QIK_COMMAND_LIST r_podcast_showview_commands
 			shortText = STRING_r_update_feed_short_cmd;
 			},
 // Other commands
-		QIK_COMMAND
+		/*QIK_COMMAND
 			{
 			id = EPodcastSettings;
 			type = EQikCommandTypeScreen;
 			text = STRING_r_settings_cmd;
 			groupId = 11;  
-			},
+			},*/
 		QIK_COMMAND
 			{
 			id = EPodcastZoomSetting;
