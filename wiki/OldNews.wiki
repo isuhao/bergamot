@@ -1,5 +1,10 @@
 #summary Older news postings, for tracking purposes.
 
+  * 2008-01-01 - Podcast Player is now [Escarpod], and has reached beta 2.
+  * 2007-12-17 - [PodcastPlayer Podcast Player] has reached beta 1!
+  * 2007-12-01 - Get your updated [PodcastPlayer Podcast Player] alpha 4!
+  * 2007-11-25 - [PodcastPlayer Podcast Player] alpha 3 is [http://bergamot.googlecode.com/svn/Podcast/tags/alpha3/group/Podcast_udeb_signed.sis available] with lots of improvements!
+  * 2007-11-18 - The much improved [PodcastPlayer Podcast Player] alpha 2 has been [http://bergamot.googlecode.com/svn/Podcast/tags/alpha2/group/Podcast_udeb_signed.sis released]!
   * 2007-11-14 - Lars has joined the project.
   * 2007-11-11 - [PodcastPlayer Podcast Player] alpha 1 is [http://bergamot.googlecode.com/svn/Podcast/tags/alpha1/group/Podcast_udeb_signed.sis available]!
   * 2007-11-04 - Beta 2 of [Swim] is out.
