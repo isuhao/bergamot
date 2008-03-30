@@ -84,6 +84,8 @@ private:
 
 	static TInt CompareShowsByDate(const CShowInfo &a, const CShowInfo &b);
 	static TBool CompareShowsByUid(const CShowInfo &a, const CShowInfo &b);
+	static TInt CompareShowsByTitle(const CShowInfo &a, const CShowInfo &b);
+	static TInt CompareShowsByTrackNo(const CShowInfo &a, const CShowInfo &b);
 private:
 	CHttpClient* iShowClient;
 

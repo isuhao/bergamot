@@ -473,6 +473,41 @@ TInt CShowEngine::CompareShowsByDate(const CShowInfo &a, const CShowInfo &b)
 		}
 	}
 
+TInt CShowEngine::CompareShowsByTrackNo(const CShowInfo &a, const CShowInfo &b)
+	{
+	if (a.TrackNo() < b.TrackNo()) 
+		{
+		return -1;
+		} 
+	else if (a.TrackNo() == b.TrackNo()) 
+		{
+		return 0;
+		}
+	else 
+		{
+		return 1;
+		}
+	}
+
+TInt CShowEngine::CompareShowsByTitle(const CShowInfo &a, const CShowInfo &b)
+	{
+	if (a.Title() < b.Title()) 
+		{
+//		RDebug::Print(_L("Sorting %S less than %S"), &a.iTitle, &b.iTitle);
+		return -1;
+		} 
+	else if (a.Title() == b.Title()) 
+		{
+//		RDebug::Print(_L("Sorting %S equal to %S"), &a.iTitle, &b.iTitle);
+		return 0;
+		}
+	else 
+		{
+//		RDebug::Print(_L("Sorting %S greater than %S"), &a.iTitle, &b.iTitle);
+		return 1;
+		}
+	}
+
 void CShowEngine::PurgeShowsByFeed(TUint aFeedUid)
 	{
 	for (int i=0;i<iShows.Count();i++)
@@ -584,19 +619,31 @@ void CShowEngine::SelectShowsByFeed(TUint aFeedUid)
 			}
 		}
 	
-	// sort by date falling
-	TLinearOrder<CShowInfo> sortOrder(CShowEngine::CompareShowsByDate);
-	iSelectedShows.Sort(sortOrder);
+	//CFeedInfo *feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(aFeedUid);
 	
-	// now purge if more than limit
-	int count = iSelectedShows.Count();
-	while (count > iPodcastModel.SettingsEngine().MaxListItems()) {
-		RDebug::Print(_L("Too many items, Removing"));
-		//delete iSelectedShows[count-1];
-		iSelectedShows[count-1]->SetDelete();
-		iSelectedShows[count-1]->SetPlayState(EPlayed);
-		iSelectedShows.Remove(count-1);
-		count = iSelectedShows.Count();
+	if (iShows.Count() == 0) {
+		return;
+	}
+	
+	if (iShows[0]->ShowType() == EAudioBook) {
+		// sort by track number
+		TLinearOrder<CShowInfo> sortOrder(CShowEngine::CompareShowsByTrackNo);
+		iSelectedShows.Sort(sortOrder);	 
+	} else {
+		// sort by date falling
+		TLinearOrder<CShowInfo> sortOrder(CShowEngine::CompareShowsByDate);
+		iSelectedShows.Sort(sortOrder);
+	
+		// now purge if more than limit
+		int count = iSelectedShows.Count();
+		while (count > iPodcastModel.SettingsEngine().MaxListItems()) {
+			RDebug::Print(_L("Too many items, Removing"));
+			//delete iSelectedShows[count-1];
+			iSelectedShows[count-1]->SetDelete();
+			iSelectedShows[count-1]->SetPlayState(EPlayed);
+			iSelectedShows.Remove(count-1);
+			count = iSelectedShows.Count();
+		}
 	}
 }
 
@@ -640,6 +687,8 @@ void CShowEngine::SelectShowsDownloaded()
 			}
 		}
 	
+	TLinearOrder<CShowInfo> sortOrder(CShowEngine::CompareShowsByTitle);
+	iSelectedShows.Sort(sortOrder);
 	}
 
 
