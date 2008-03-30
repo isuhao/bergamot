@@ -64,6 +64,7 @@ void CPodcastClientBaseView::CheckForQuedDownloadsL()
 		} else {
 			iPodcastModel.ShowEngine().StopDownloads();
 		}
+		UpdateListboxItemsL();
 	}
 }
 
