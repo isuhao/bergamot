@@ -1,0 +1,191 @@
+CHARACTER_SET UTF8
+/////////////////////////////////////////////////////////////////////
+// Escarpod language file
+//
+// Language:   Danish DA/07
+// Translator: Michell Bak
+
+// list view commands
+rls_string STRING_r_listbox_listview_cmd_close_debug "Afslut (debug)"
+rls_string STRING_r_listbox_listview_cmd_close_debug_shorttext "Afslut"
+
+// Menu commands, view filtering and navigation
+rls_string STRING_r_view_cmd "Vis"
+// Navigation to shows view
+rls_string STRING_r_view_main_cmd "Menu"
+rls_string STRING_r_view_shows_cmd "Afsnit på telefon"
+rls_string STRING_r_view_all_shows_cmd "Alle afsnit"
+rls_string STRING_r_view_new_shows_cmd "Ikke afspillede"
+rls_string STRING_r_view_dl_shows_cmd "Afsnit på telefon"
+rls_string STRING_r_view_dling_shows_cmd "Downloader"
+rls_string STRING_r_view_about_cmd "About"
+
+// Navigation to feeds
+rls_string STRING_r_view_feeds_cmd "Feeds"
+
+// Navigation to the player
+rls_string STRING_r_view_player_cmd "Player"
+
+// Navigation to the audio books
+rls_string STRING_r_view_audiobooks_cmd "Audio Books"
+rls_string STRING_r_view_new_audiobook_cmd "New Book"
+rls_string STRING_r_view_remove_audiobook_cmd "Remove Book"
+
+// Actions for the player
+rls_string STRING_r_play_cmd "Afspil"
+rls_string STRING_r_stop_cmd "Stop"
+rls_string STRING_r_pause_cmd "Pause"
+rls_string STRING_r_volume_cmd "Lydstyrke"
+
+rls_string STRING_r_view_download_cmd "Download"
+rls_string STRING_r_view_download_short_cmd "Hent"
+rls_string STRING_r_view_remove_download_short_cmd "Fjern"
+rls_string STRING_r_view_remove_download_cmd "Fjern download"
+
+rls_string STRING_r_view_show_cmd "Afsnit"
+rls_string STRING_r_view_cmd "Vis"
+rls_string STRING_r_view_play_cmd "Afspil"
+rls_string STRING_r_view_mark_as_played_cmd "Marker som afspillet"
+rls_string STRING_r_view_mark_as_unplayed_cmd "Marker som uafspillet"
+
+// Actions for feeds
+rls_string STRING_r_view_add_feed_cmd "Tilføj feed"
+rls_string STRING_r_view_edit_feed_cmd "Rediger feed"
+rls_string STRING_r_view_delete_feed_cmd "Fjern feed"
+rls_string STRING_r_view_purge_feed_cmd "Fjern alle"
+rls_string STRING_r_update_feed_cmd "Opdater feed"
+rls_string STRING_r_update_feed_short_cmd "Opdater"
+rls_string STRING_r_update_all_feeds_cmd "Opdater alle"
+rls_string STRING_r_update_all_feeds_short_cmd "Opdt. alle"
+
+rls_string STRING_r_podcast_feeds_update_message "Opdaterer..."
+rls_string STRING_r_podcast_feeds_update_error "Opdatering mislykkedes!"
+
+// Actions for shows
+rls_string STRING_r_view_download_show_cmd "Download"
+rls_string STRING_r_view_delete_show_cmd "Slet"
+rls_string STRING_r_view_delete_shows_cmd "Slet alle"
+rls_string STRING_r_view_purge_show_cmd "Slet"
+rls_string STRING_r_view_remove_download_cmd "Ikke i kø"
+rls_string STRING_r_view_stop_downloads_cmd "Suspender downloading"
+rls_string STRING_r_view_resume_downloads_cmd "Genoptag downloading"
+rls_string STRING_r_view_mark_all_played_cmd "Marker alle som afspillet"
+rls_string STRING_r_view_show_unplayed_cmd "Vis kun uafspillede"
+
+// Common actions
+rls_string STRING_r_zoom_cmd "Zoom"
+rls_string STRING_r_settings_cmd "Indstillinger"
+
+// Categories
+rls_string STRING_r_category_all "Alle shows"
+rls_string STRING_r_category_new "Uafspillede"
+rls_string STRING_r_category_dled "Afsnit på telefon"
+rls_string STRING_r_category_pending "Downloader"
+
+// View titles
+rls_string STRING_r_view_feeds_title "Feeds"
+rls_string STRING_r_view_audiobooks_title "Audio books"
+
+// Shows view status strings
+rls_string STRING_r_podcast_shows_title_format "%d uafspillede, %d i alt";
+rls_string STRING_r_podcast_shows_title_download "%d Queued"
+rls_string STRING_r_podcast_shows_downloads_suspended "%d Queued (Suspended)"
+rls_string STRING_r_podcast_shows_no_items "Ingen afsnit";
+
+// Feeds view status strings
+rls_string STRING_r_podcast_feeds_title_format "%d feeds"
+rls_string STRING_r_podcast_books_title_format "%d books"
+rls_string STRING_r_podcast_feeds_status_format "%d/%d afsnit"
+rls_string STRING_r_podcast_shows_never_updated "Aldrig"
+rls_string STRING_r_podcast_feeds_is_updating "Is updating"
+rls_string STRING_r_podcast_no_feeds "Ingen feed"
+
+// DIALOG string
+rls_string STRING_r_about_title "About Escarpod";
+
+rls_string STRING_r_add_feed_title "Add Feed"
+rls_string STRING_r_edit_feed_title "Edit Feed"
+
+rls_string STRING_r_add_feed_prompt "Feed URL"
+rls_string STRING_r_add_feed_title_prompt "Feed Titel"
+
+rls_string STRING_r_remove_feed_title "Fjern feed"
+rls_string STRING_r_remove_feed_prompt "Er du helt sikker på at du vil fjerne dette fed?"
+
+rls_string STRING_r_enable_downloads_title "Genoptag downloading"
+rls_string STRING_r_enable_downloads_prompt "Der er afsnit i download-køen. Vil du downloade nu?"
+
+rls_string STRING_r_update_new_feed_title "Opdater feed"
+rls_string STRING_r_update_new_feed_prompt "Vil du opdatere dette feed nu?"
+
+rls_string STRING_r_purge_feed_title "Slet feed"
+rls_string STRING_r_purge_feed_prompt "Er du helt sikker på at du vil slette dette feed og alle downloadede afsnit?"
+
+rls_string STRING_r_purge_show_title "Slet afsnit"
+rls_string STRING_r_purge_show_prompt "Er du sikker på at du vil slette dette afsnit?"
+
+rls_string STRING_r_podcast_settings_title "Settings"
+rls_string STRING_r_podcast_setting_showdir "Podcast Directory"
+rls_string STRING_r_podcast_setting_autoupdate "Automatic Update"
+rls_string STRING_r_podcast_setting_autodownload "Automatic Download"
+rls_string STRING_r_podcast_setting_checkevery "Update Interval"
+rls_string STRING_r_podcast_setting_updateat "Update at"
+rls_string STRING_r_podcast_setting_minutes "Minutes"
+
+rls_string STRING_r_podcast_setting_connection "Forbindelse"
+rls_string STRING_r_podcast_setting_default "Brug standard"
+rls_string STRING_r_podcast_setting_wlanonly "Spørg altid"
+rls_string STRING_r_podcast_setting_usespecified "Brug specificeret"
+rls_string STRING_r_podcast_setting_iaplist "Forbindelser"
+rls_string STRING_r_podcast_setting_cancel_cmd "Tilbage" // Cancel command in settings dialog
+rls_string STRING_r_podcast_setting_done_cmd "Færdig" // Done command in settings dialog
+rls_string STRING_r_podcast_setting_showdir_cmd "Vælg" // Use to select show dir
+rls_string STRING_r_podcast_setting_volume "Lydstyrke" 
+
+// Choicelist for autodownload
+rls_string STRING_podcast_autoupdate_off "Off"
+rls_string STRING_podcast_autoupdate_perodical "Periodical" 
+rls_string STRING_podcast_autoupdate_attime "At"
+
+rls_string STRING_r_podcast_iap_dlg_title "Vælg internetkonto"
+
+// Audio book dialog
+rls_string STRING_r_podcast_new_audiobook_title "Create new audio book"
+rls_string STRING_r_podcast_new_audiobook_prompt "Audio book title"
+rls_string STRING_r_podcast_new_audiobook_label "%d files selected for this book."
+rls_string STRING_r_podcast_new_audiobook_select_files "Choose book files" // Max 80 chars
+
+// Latest strings here
+rls_string STRING_r_view_books_no_books "No Books" // No Books
+
+rls_string STRING_r_view_import_feeds_cmd "Import Feeds" // Import feeds cmd in feedview
+rls_string STRING_r_view_import_feeds_title "Select OPML file"
+
+rls_string STRING_r_view_books_status "%d Books" // Used in base view listbox status text max 32 chars
+rls_string STRING_r_view_feeds_status "%d Feeds" // Used in base view listbox for feeds status text max 32 chars
+
+rls_string STRING_r_cancel_update_all_feeds_cmd "Cancel update"
+rls_string STRING_r_cancel_update_all_feeds_short_cmd "Cancel"
+
+rls_string STRING_r_suspend_download_cmd "Suspend" // String used for cmd to suspend current download rather than removing it from the que.
+rls_string STRING_r_view_resume_short_dls_cmd "Resume" // Short download cmd
+rls_string STRING_r_view_onphone_status "%d Unplayed, %d Total" // Used in base view listbox status for shows on phone text max 32 chars
+rls_string STRING_r_view_onphone_status_unknown "Unknown" // Used for unknown status event
+
+// Strings used to set the playorder of an audio book
+rls_string STRING_r_view_books_setorder "Set playorder" // cmd for set audio book playorder
+rls_string STRING_r_view_books_setorder_dlgtitle "Set the play order"
+rls_string STRING_r_view_books_setorder_dlg_swapcmd "Swap"
+rls_string STRING_r_view_books_setorder_dlg_label "Select entry to swap with"
+rls_string STRING_r_view_books_setorder_dlg_selectlabel "Select entry to move"
+
+rls_string STRING_r_view_remove_all_downloads_cmd "Remove All"
+
+rls_string STRING_r_podcast_subtitle "The UIQ Podcatcher" // shown beneath main view title
+
+rls_string STRING_r_add_feed_exists "A feed with this URL already exists!" // shown when adding or changing a feed to a URL that already exists
+rls_string STRING_r_add_feed_exists_title "Duplicate Feed" // title of error dialogs when adding feeds
+
+rls_string STRING_r_add_feed_replace "All existing shows in this feed will be deleted! Continue?" // shown when changing an existing feed URL
+rls_string STRING_r_add_feed_replace_title "Warning" // title to dialog
+
