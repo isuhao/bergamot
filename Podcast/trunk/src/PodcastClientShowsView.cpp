@@ -912,6 +912,7 @@ TKeyResponse CPodcastClientShowsView::OfferKeyEventL(const TKeyEvent& aKeyEvent,
 			switch(aKeyEvent.iCode)
 			{
 			case '*':
+			case EKeyLeftArrow:
 				RDebug::Print(_L("CPodcastClientShowsView::OfferKeyEventL switching play state"));
 				TInt index = iListbox->CurrentItemIndex();
 				if(index >= 0 && index < iPodcastModel.ActiveShowList().Count())
