@@ -27,9 +27,9 @@ rls_string STRING_r_view_feeds_cmd "Feeds"
 rls_string STRING_r_view_player_cmd "Player"
 
 // Navigation to the audio books
-rls_string STRING_r_view_audiobooks_cmd "Audio books"
-rls_string STRING_r_view_new_audiobook_cmd "New audiobook"
-rls_string STRING_r_view_remove_audiobook_cmd "Remove audiobook"
+rls_string STRING_r_view_audiobooks_cmd "Audio Books"
+rls_string STRING_r_view_new_audiobook_cmd "New Book"
+rls_string STRING_r_view_remove_audiobook_cmd "Remove Book"
 
 // Actions for the player
 rls_string STRING_r_play_cmd "Afspil"
@@ -88,8 +88,8 @@ rls_string STRING_r_view_audiobooks_title "Audio books"
 
 // Shows view status strings
 rls_string STRING_r_podcast_shows_title_format "%d uafspillede, %d i alt";
-rls_string STRING_r_podcast_shows_title_download "%d downloading, %d i kø";
-rls_string STRING_r_podcast_shows_downloads_suspended "Suspenderet, %d sat i kø";
+rls_string STRING_r_podcast_shows_title_download "%d Queued"
+rls_string STRING_r_podcast_shows_downloads_suspended "%d Queued (Suspended)"
 rls_string STRING_r_podcast_shows_no_items "Ingen afsnit";
 
 // Feeds view status strings
@@ -124,14 +124,14 @@ rls_string STRING_r_purge_feed_prompt "Er du helt sikker på at du vil slette de
 rls_string STRING_r_purge_show_title "Slet afsnit"
 rls_string STRING_r_purge_show_prompt "Er du sikker på at du vil slette dette afsnit?"
 
-rls_string STRING_r_podcast_settings_title "Indstillinger"
-rls_string STRING_r_podcast_setting_showdir "Podcast placering"
-rls_string STRING_r_podcast_setting_autoupdate "Automatisk upd."
-rls_string STRING_r_podcast_setting_checkevery "Update interval"
-rls_string STRING_r_podcast_setting_updateat "Upd. vid"
-rls_string STRING_r_podcast_setting_minutes "minutter"
+rls_string STRING_r_podcast_settings_title "Settings"
+rls_string STRING_r_podcast_setting_showdir "Podcast Directory"
+rls_string STRING_r_podcast_setting_autoupdate "Automatic Update"
+rls_string STRING_r_podcast_setting_autodownload "Automatic Download"
+rls_string STRING_r_podcast_setting_checkevery "Update Interval"
+rls_string STRING_r_podcast_setting_updateat "Update at"
+rls_string STRING_r_podcast_setting_minutes "Minutes"
 
-rls_string STRING_r_podcast_setting_maxsimul "Maks. samtidige downloads"
 rls_string STRING_r_podcast_setting_connection "Forbindelse"
 rls_string STRING_r_podcast_setting_default "Brug standard"
 rls_string STRING_r_podcast_setting_wlanonly "Spørg altid"
@@ -169,8 +169,7 @@ rls_string STRING_r_cancel_update_all_feeds_short_cmd "Cancel"
 
 rls_string STRING_r_suspend_download_cmd "Suspend" // String used for cmd to suspend current download rather than removing it from the que.
 rls_string STRING_r_view_resume_short_dls_cmd "Resume" // Short download cmd
-rls_string STRING_r_view_pending_status "%d Shows queued" // Used in base view listbox status for downloading/qued shows text max 32 chars
-rls_string STRING_r_view_onphone_status "%d Shows" // Used in base view listbox status for shows on phone text max 32 chars
+rls_string STRING_r_view_onphone_status "%d Unplayed, %d Total" // Used in base view listbox status for shows on phone text max 32 chars
 rls_string STRING_r_view_onphone_status_unknown "Unknown" // Used for unknown status event
 
 // Strings used to set the playorder of an audio book
@@ -179,3 +178,14 @@ rls_string STRING_r_view_books_setorder_dlgtitle "Set the play order"
 rls_string STRING_r_view_books_setorder_dlg_swapcmd "Swap"
 rls_string STRING_r_view_books_setorder_dlg_label "Select entry to swap with"
 rls_string STRING_r_view_books_setorder_dlg_selectlabel "Select entry to move"
+
+rls_string STRING_r_view_remove_all_downloads_cmd "Remove All"
+
+rls_string STRING_r_podcast_subtitle "The UIQ Podcatcher" // shown beneath main view title
+
+rls_string STRING_r_add_feed_exists "A feed with this URL already exists!" // shown when adding or changing a feed to a URL that already exists
+rls_string STRING_r_add_feed_exists_title "Duplicate Feed" // title of error dialogs when adding feeds
+
+rls_string STRING_r_add_feed_replace "All existing shows in this feed will be deleted! Continue?" // shown when changing an existing feed URL
+rls_string STRING_r_add_feed_replace_title "Warning" // title to dialog
+

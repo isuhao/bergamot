@@ -1,3 +1,4 @@
+
 /////////////////////////////////////////////////////////////////////
 // Escarpod language file
 //
@@ -10,6 +11,7 @@ rls_string STRING_r_listbox_listview_cmd_close_debug_shorttext "Close"
 
 // Menu commands, view filtering and navigation
 rls_string STRING_r_view_cmd "View"
+
 // Navigation to shows view
 rls_string STRING_r_view_main_cmd "Main"
 rls_string STRING_r_view_shows_cmd "Shows on Phone"

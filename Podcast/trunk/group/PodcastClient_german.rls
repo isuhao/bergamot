@@ -11,6 +11,7 @@ rls_string STRING_r_listbox_listview_cmd_close_debug_shorttext "Close"
 
 // Menu commands, view filtering and navigation
 rls_string STRING_r_view_cmd "View"
+
 // Navigation to shows view
 rls_string STRING_r_view_main_cmd "Main"
 rls_string STRING_r_view_shows_cmd "Shows on Phone"
@@ -88,8 +89,8 @@ rls_string STRING_r_view_audiobooks_title "Audio books"
 
 // Shows view status strings
 rls_string STRING_r_podcast_shows_title_format "%d Nicht gehört, %d Insgesamt";
-rls_string STRING_r_podcast_shows_title_download "%d Werden downgeloaded, %d In Warteschlange";
-rls_string STRING_r_podcast_shows_downloads_suspended "Unterbrochen, %d In Warteschlange";
+rls_string STRING_r_podcast_shows_title_download "%d Queued"
+rls_string STRING_r_podcast_shows_downloads_suspended "%d Queued (Suspended)"
 rls_string STRING_r_podcast_shows_no_items "Keine Elmente/Einträge";
 
 // Feeds view status strings
@@ -97,7 +98,7 @@ rls_string STRING_r_podcast_feeds_title_format "%d feeds"
 rls_string STRING_r_podcast_books_title_format "%d books"
 rls_string STRING_r_podcast_feeds_status_format "%d/%d Shows"
 rls_string STRING_r_podcast_shows_never_updated "Never"
-rls_string STRING_r_podcast_feeds_is_updating "Is updating"
+rls_string STRING_r_podcast_feeds_is_updating "Is updating..."
 rls_string STRING_r_podcast_no_feeds "No feeds"
 
 // DIALOG string
@@ -131,7 +132,6 @@ rls_string STRING_r_podcast_setting_checkevery "Updateinterval"
 rls_string STRING_r_podcast_setting_updateat "Update at"
 rls_string STRING_r_podcast_setting_minutes "Minuten"
 
-rls_string STRING_r_podcast_setting_maxsimul "Max. Zahl gleichzeitiger Downloads"
 rls_string STRING_r_podcast_setting_connection "Verbindung"
 rls_string STRING_r_podcast_setting_default "Standardeinstellung verwenden"
 rls_string STRING_r_podcast_setting_wlanonly "Immer fragen"
@@ -169,8 +169,7 @@ rls_string STRING_r_cancel_update_all_feeds_short_cmd "Cancel"
 
 rls_string STRING_r_suspend_download_cmd "Suspend" // String used for cmd to suspend current download rather than removing it from the que.
 rls_string STRING_r_view_resume_short_dls_cmd "Resume" // Short download cmd
-rls_string STRING_r_view_pending_status "%d Shows queued" // Used in base view listbox status for downloading/qued shows text max 32 chars
-rls_string STRING_r_view_onphone_status "%d Shows" // Used in base view listbox status for shows on phone text max 32 chars
+rls_string STRING_r_view_onphone_status "%d Unplayed, %d Total" // Used in base view listbox status for shows on phone text max 32 chars
 rls_string STRING_r_view_onphone_status_unknown "Unknown" // Used for unknown status event
 
 // Strings used to set the playorder of an audio book
@@ -179,3 +178,13 @@ rls_string STRING_r_view_books_setorder_dlgtitle "Set the play order"
 rls_string STRING_r_view_books_setorder_dlg_swapcmd "Swap"
 rls_string STRING_r_view_books_setorder_dlg_label "Select entry to swap with"
 rls_string STRING_r_view_books_setorder_dlg_selectlabel "Select entry to move"
+
+rls_string STRING_r_view_remove_all_downloads_cmd "Remove All"
+
+rls_string STRING_r_podcast_subtitle "The UIQ Podcatcher" // shown beneath main view title
+
+rls_string STRING_r_add_feed_exists "A feed with this URL already exists!" // shown when adding or changing a feed to a URL that already exists
+rls_string STRING_r_add_feed_exists_title "Duplicate Feed" // title of error dialogs when adding feeds
+
+rls_string STRING_r_add_feed_replace "All existing shows in this feed will be deleted! Continue?" // shown when changing an existing feed URL
+rls_string STRING_r_add_feed_replace_title "Warning" // title to dialog
