@@ -608,7 +608,7 @@ void CPodcastClientPlayView::UpdateViewL()
 					if(feedInfo->ImageFileName() != iLastImageFileName)
 					{
 						iLastImageFileName = feedInfo->ImageFileName();
-						iCoverImageCtrl->CreatePictureFromFileL(_L("*"), EMbmPodcastclientEmptyimage, EMbmPodcastclientEmptyimage);								
+						iCoverImageCtrl->CreatePictureFromFileL(_L("*"), EMbmPodcastclientEmptyimage, EMbmPodcastclientEmptyimage);
 						iCoverImageCtrl->DrawDeferred();
 						if(!iBitmapConverter->IsActive())
 						{
@@ -625,21 +625,29 @@ void CPodcastClientPlayView::UpdateViewL()
 						}
 					}
 				}
-				else
+				else // no cover art file
 				{
 					iLastImageFileName = KNullDesC();
-					iCoverImageCtrl->CreatePictureFromFileL(_L("*"), EMbmPodcastclientEmptyimage, EMbmPodcastclientEmptyimage);
+					if (iShowInfo->ShowType() == EAudioBook) {
+						iCoverImageCtrl->CreatePictureFromFileL(_L("*"), EMbmPodcastclientAudiobooklarge, EMbmPodcastclientAudiobooklarge_mask);							
+					} else {
+						iCoverImageCtrl->CreatePictureFromFileL(_L("*"), EMbmPodcastclientAudiobooklarge, EMbmPodcastclientAudiobooklarge_mask);
+					}
 				}
 				
 			}	
-			else
+			else // no feed info => manually added file
 			{
 				iLastImageFileName = KNullDesC();
-				iCoverImageCtrl->CreatePictureFromFileL(_L("*"), EMbmPodcastclientEmptyimage, EMbmPodcastclientEmptyimage);
+				if (iShowInfo->ShowType() == EAudioBook) {
+					iCoverImageCtrl->CreatePictureFromFileL(_L("*"), EMbmPodcastclientAudiobooklarge, EMbmPodcastclientAudiobooklarge_mask);							
+				} else {
+					iCoverImageCtrl->CreatePictureFromFileL(_L("*"), EMbmPodcastclientAudiobooklarge, EMbmPodcastclientAudiobooklarge_mask);
+				}
 				comMan.SetInvisible(*this, EPodcastDownloadShow, ETrue);
 			}
 		}
-		else
+		else // no show info, we should never get here
 		{				
 			iLastImageFileName = KNullDesC();
 			if (iCoverImageCtrl != NULL) {
