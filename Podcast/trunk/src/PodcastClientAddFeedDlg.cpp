@@ -100,7 +100,11 @@ TBool CPodcastClientAddFeedDlg::OkToExitL(TInt aCommandId)
 		TBool added = iPodcastModel.FeedEngine().AddFeed(newFeedInfo); // takes ownership
 		if (!added)
 			{
-			CEikonEnv::Static()->InfoWinL(_L("Information"), _L("A feed to this URL already exists") );
+			TBuf<200> message;
+			TBuf<100> title;
+			CEikonEnv::Static()->ReadResourceL(message, R_ADD_FEED_EXISTS);
+			CEikonEnv::Static()->ReadResourceL(title, R_ADD_FEED_EXISTS_TITLE);
+			CEikonEnv::Static()->InfoWinL(title, message);
 			exitDialog = EFalse;
 			}
 		}
@@ -111,8 +115,13 @@ TBool CPodcastClientAddFeedDlg::OkToExitL(TInt aCommandId)
 		// we need to check if the URL has changed
 		if(iFeedInfo->Url().Compare(*url) != 0)
 			{
+			TBuf<200> message;
+			TBuf<100> title;
+			CEikonEnv::Static()->ReadResourceL(message, R_ADD_FEED_REPLACE);
+			CEikonEnv::Static()->ReadResourceL(title, R_ADD_FEED_REPLACE_TITLE);
+
 			// Ask the user if it is OK to remove all shows
-			if ( CEikonEnv::Static()->QueryWinL(_L("Remove all shows?"), _L("All shows in this feed will be deleted. Continue?") ))
+			if ( CEikonEnv::Static()->QueryWinL(title, message))
 				{
 				
 				//----- HACK ---- //
@@ -143,7 +152,11 @@ TBool CPodcastClientAddFeedDlg::OkToExitL(TInt aCommandId)
 					exitDialog = ETrue;
 				} else {
 					// the feed existed. Object deleted in AddFeed.	
-					CEikonEnv::Static()->InfoWinL(_L("Information"), _L("A feed to this URL already exists") );
+					TBuf<200> message;
+					TBuf<100> title;
+					CEikonEnv::Static()->ReadResourceL(message, R_ADD_FEED_EXISTS);
+					CEikonEnv::Static()->ReadResourceL(title, R_ADD_FEED_EXISTS_TITLE);
+					CEikonEnv::Static()->InfoWinL(title, message);
 					exitDialog = EFalse;
 								
 				}

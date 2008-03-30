@@ -179,3 +179,11 @@ rls_string STRING_r_view_books_setorder_dlg_label "Select Chapter to Swap With"
 rls_string STRING_r_view_books_setorder_dlg_selectlabel "Select Chapter to Swap"
 
 rls_string STRING_r_view_remove_all_downloads_cmd "Remove All"
+
+rls_string STRING_r_podcast_subtitle "The UIQ Podcatcher" // shown beneath main view title
+
+rls_string STRING_r_add_feed_exists "A feed with this URL already exists!" // shown when adding or changing a feed to a URL that already exists
+rls_string STRING_r_add_feed_exists_title "Duplicate Feed" // title of error dialogs when adding feeds
+
+rls_string STRING_r_add_feed_replace "All existing shows in this feed will be deleted! Continue?" // shown when changing an existing feed URL
+rls_string STRING_r_add_feed_replace_title "Warning" // title to dialog
