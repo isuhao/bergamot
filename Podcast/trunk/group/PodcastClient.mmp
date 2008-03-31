@@ -144,8 +144,10 @@ SOURCE			C16 AudioBookChapter_40x40.bmp
 SOURCE			8   AudioBookChapter_40x40m.bmp
 SOURCE			C16 AudioBookIndividual_40x40.bmp
 SOURCE			8   AudioBookIndividual_40x40m.bmp
-SOURCE			C16 AudioBookLarge.bmp
-SOURCE			8   AudioBookLarge_mask.bmp
+SOURCE			C16 AudioBook_120.bmp
+SOURCE			8   AudioBook_120m.bmp
+SOURCE			C16 Show_120.bmp
+SOURCE			8   Show_120m.bmp
 SOURCE			8   emptyimage.bmp
 END
 

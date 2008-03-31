@@ -629,9 +629,9 @@ void CPodcastClientPlayView::UpdateViewL()
 				{
 					iLastImageFileName = KNullDesC();
 					if (iShowInfo->ShowType() == EAudioBook) {
-						iCoverImageCtrl->CreatePictureFromFileL(_L("*"), EMbmPodcastclientAudiobooklarge, EMbmPodcastclientAudiobooklarge_mask);							
+						iCoverImageCtrl->CreatePictureFromFileL(_L("*"), EMbmPodcastclientAudiobook_120, EMbmPodcastclientAudiobook_120m);							
 					} else {
-						iCoverImageCtrl->CreatePictureFromFileL(_L("*"), EMbmPodcastclientAudiobooklarge, EMbmPodcastclientAudiobooklarge_mask);
+						iCoverImageCtrl->CreatePictureFromFileL(_L("*"), EMbmPodcastclientShow_120, EMbmPodcastclientShow_120m);
 					}
 				}
 				
@@ -640,9 +640,9 @@ void CPodcastClientPlayView::UpdateViewL()
 			{
 				iLastImageFileName = KNullDesC();
 				if (iShowInfo->ShowType() == EAudioBook) {
-					iCoverImageCtrl->CreatePictureFromFileL(_L("*"), EMbmPodcastclientAudiobooklarge, EMbmPodcastclientAudiobooklarge_mask);							
+					iCoverImageCtrl->CreatePictureFromFileL(_L("*"), EMbmPodcastclientAudiobook_120, EMbmPodcastclientAudiobook_120m);							
 				} else {
-					iCoverImageCtrl->CreatePictureFromFileL(_L("*"), EMbmPodcastclientAudiobooklarge, EMbmPodcastclientAudiobooklarge_mask);
+					iCoverImageCtrl->CreatePictureFromFileL(_L("*"), EMbmPodcastclientShow_120, EMbmPodcastclientShow_120m);
 				}
 				comMan.SetInvisible(*this, EPodcastDownloadShow, ETrue);
 			}
@@ -678,7 +678,7 @@ void CPodcastClientPlayView::UpdateViewL()
 void CPodcastClientPlayView::UpdatePlayStatusL()
 {
 	CQikCommandManager& comMan = CQikCommandManager::Static();
-	TBuf<KTimeLabelSize> time = _L("?:??:??/?:??:??");
+	TBuf<KTimeLabelSize> time = _L("0:00:00/0:00:00");
 	TUint pos = 0;
 
 	if(iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.PlayingPodcast()->Uid() == iShowInfo->Uid())
