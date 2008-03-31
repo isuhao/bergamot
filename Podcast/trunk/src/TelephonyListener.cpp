@@ -49,27 +49,21 @@ void CTelephonyListener::RunL()
 	RDebug::Print(_L("CTelephonyListener::RunL: iStatus: %u"),iLineStatus.iStatus );
 
 	// seems to be too late to do this at EStatusAnswering...
-	iPodcastModel.SoundEngine().Pause();
 
 	switch (iLineStatus.iStatus) {
 	case CTelephony::EStatusRinging:
-		RDebug::Print(_L("CTelephony::EStatusRinging"));
+	case CTelephony::EStatusConnecting:
+	case CTelephony::EStatusConnected:
 		break;
 	case CTelephony::EStatusDialling:
-		RDebug::Print(_L("CTelephony::EStatusDialling"));
-		break;
 	case CTelephony::EStatusAnswering:
-		RDebug::Print(_L("CTelephony::EStatusAnswering"));
+		iPodcastModel.SoundEngine().Pause(ETrue);
 		break;
 	case CTelephony::EStatusDisconnecting:
-		RDebug::Print(_L("CTelephony::EStatusDisconnecting"));
+	case CTelephony::EStatusIdle:
+		iPodcastModel.SoundEngine().Play();
 		break;
-	case CTelephony::EStatusConnecting:
-		RDebug::Print(_L("CTelephony::EStatusConnecting:"));
-		break;
-	case CTelephony::EStatusConnected:
-		RDebug::Print(_L("CTelephony::EStatusConnected"));
-		break;
+
 	default:
 		RDebug::Print(_L("CTelephony:: Other (unhandled)"));
 		break;

@@ -45,7 +45,7 @@ public:
 	 * @return Value in a TUint
 	 */
 	TUint PlayTime();
-	void Pause();
+	void Pause(TBool aOverrideState = EFalse);
 
 	TSoundEngineState State();
 	void SetObserver(MSoundEngineObserver* aObserver);
@@ -64,6 +64,7 @@ private:
 	MSoundEngineObserver* iObserver;
 	TFileName	iLastOpenedFileName;
 	TBool iPlayOnInit;
+	TTimeIntervalMicroSeconds iMaxPos;
 };
 
 #endif // SOUND_ENGINE_H

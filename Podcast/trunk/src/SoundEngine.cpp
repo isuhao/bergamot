@@ -97,6 +97,7 @@ void CSoundEngine::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds
 void CSoundEngine::OpenFileL(const TDesC& aFileName, TBool aPlayOnInit)
 {
 	iState = ESoundEngineNotInitialized;
+	iMaxPos = 0;
 	iLastOpenedFileName= aFileName;
 	iPlayer->Stop();
 	iPlayer->OpenFileL(aFileName);
@@ -118,7 +119,11 @@ TTimeIntervalMicroSeconds CSoundEngine::Position()
 		iPlayer->GetPosition(pos);
 	}
 
-	return pos;
+	// store maximum position, we need this if we get interrupted by a phone call
+	if (pos > iMaxPos) {
+		iMaxPos = pos;
+	}
+	return iMaxPos;
 }
 
 void CSoundEngine::SetPosition(TUint aPos)
@@ -131,6 +136,7 @@ void CSoundEngine::SetPosition(TUint aPos)
 			iPlayer->Pause();
 		}
 
+		iMaxPos = pos;
 		iPlayer->SetPosition(pos);
 		
 		if(iState == ESoundEnginePlaying)
@@ -156,6 +162,7 @@ void CSoundEngine::Play()
 {
 	if(iState > ESoundEngineOpening)
 	{
+		iPlayer->SetPosition(iMaxPos);
 		iPlayer->Play();
 		iState = ESoundEnginePlaying;
 
@@ -181,23 +188,24 @@ void CSoundEngine::Stop()
 		iState = ESoundEngineStopped;
 		SetPosition(0);
 		iPlayer->Stop();
+		iMaxPos = 0;
 	}
 }
 
-void CSoundEngine::Pause()
+void CSoundEngine::Pause(TBool aOverrideState)
 {
 	RDebug::Print(_L("Pause"));
-	if(iState > ESoundEngineOpening)
+	if(iState > ESoundEngineOpening || aOverrideState)
 	{
 		iState = ESoundEnginePaused;
 		iPlayer->Pause();
-		TTimeIntervalMicroSeconds pos = 0;
-		iPlayer->GetPosition(pos);
-		RDebug::Print(_L("Pos: %lu"), pos.Int64());
+		//TTimeIntervalMicroSeconds pos = 0;
+		//iPlayer->GetPosition(pos);
+		//RDebug::Print(_L("Pos: %lu"), pos.Int64());
 		// had a crash here, so we check for NULL first
 		if (iPodcastModel.PlayingPodcast() != NULL) {
 			RDebug::Print(_L("Setting position..."));
-			iPodcastModel.PlayingPodcast()->SetPosition(pos);
+			iPodcastModel.PlayingPodcast()->SetPosition(iMaxPos);
 			// really wasteful saving EVERYTHING every time
 			iPodcastModel.ShowEngine().SaveShows();
 		}
