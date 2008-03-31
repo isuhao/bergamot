@@ -321,7 +321,21 @@ void CPodcastClientShowsView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownloa
 {
 	if(ViewContext() != NULL)
 	{
-		if(aPercentOfCurrentDownload>=0 && aPercentOfCurrentDownload < KOneHundredPercent)
+		CShowInfo *showInfo = NULL;
+		TInt index = iListbox->CurrentItemIndex();
+		if(index >= 0 && index < iPodcastModel.ActiveShowList().Count())
+		{
+					showInfo = iPodcastModel.ActiveShowList()[index];
+		}
+
+		// we show progress bar only for pending shows and inside the feed to which
+	    // the active download belongs
+		// (iCurrentCategory == EShowPendingShows ||
+		//iPodcastModel.ShowEngine().ShowDownloading()->FeedUid() == iPodcastModel.ActiveFeedInfo()->Uid()) &&
+
+		// now we only show when the active downloa has focus in a list
+		if(showInfo != NULL && showInfo->Uid() == iPodcastModel.ShowEngine().ShowDownloading()->Uid() &&				
+				aPercentOfCurrentDownload>=0 && aPercentOfCurrentDownload < KOneHundredPercent)
 		{
 			if(!iProgressAdded)
 			{
