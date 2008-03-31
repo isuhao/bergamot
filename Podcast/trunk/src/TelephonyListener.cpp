@@ -54,13 +54,13 @@ void CTelephonyListener::RunL()
 	case CTelephony::EStatusRinging:
 	case CTelephony::EStatusConnecting:
 	case CTelephony::EStatusConnected:
-		break;
 	case CTelephony::EStatusDialling:
 	case CTelephony::EStatusAnswering:
 		iPodcastModel.SoundEngine().Pause(ETrue);
 		break;
 	case CTelephony::EStatusDisconnecting:
 	case CTelephony::EStatusIdle:
+		User::After(1000000*2);
 		iPodcastModel.SoundEngine().Play();
 		break;
 
