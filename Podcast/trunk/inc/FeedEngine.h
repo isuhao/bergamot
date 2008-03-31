@@ -28,7 +28,7 @@ public:
 public:
 	TBool AddFeed(CFeedInfo *item);
 	void ImportFeedsL(const TDesC& aFile);
-
+	TBool ExportFeedsL(TFileName& aFile);
 	void RemoveFeed(TUint aUid);
 	void UpdateFeedL(TUint aFeedUid);
 	void UpdateAllFeedsL();

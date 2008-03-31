@@ -2,6 +2,7 @@
 #include <qikcontent.h>
 #include <QikMediaFileFolderUtils.h>
 #include <QikSelectFileDlg.h>
+#include <QikSaveFileDlg.h>
 #include <PodcastClient.mbg>
 #include <PodcastClient.rsg>
 
@@ -588,24 +589,32 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 			break;
 			}
 		case EPodcastImportFeeds:
-			{			
-				CDesCArrayFlat* mimeTypes = new (ELeave) CDesCArrayFlat(KDefaultGran);
-				CleanupStack::PushL(mimeTypes);
-				CDesCArrayFlat* fileNames = new (ELeave) CDesCArrayFlat(KDefaultGran);
-				CleanupStack::PushL(fileNames);
-				HBufC* import_title = iEikonEnv->AllocReadResourceLC(R_PODCAST_IMPORT_FEEDS_TITLE);
-				if(CQikSelectFileDlg::RunDlgLD(*mimeTypes, *fileNames, import_title))
+			{		
+			CDesCArrayFlat* mimeTypes = new (ELeave) CDesCArrayFlat(KDefaultGran);
+			CleanupStack::PushL(mimeTypes);
+			CDesCArrayFlat* fileNames = new (ELeave) CDesCArrayFlat(KDefaultGran);
+			CleanupStack::PushL(fileNames);
+			HBufC* import_title = iEikonEnv->AllocReadResourceLC(R_PODCAST_IMPORT_FEEDS_TITLE);
+			if(CQikSelectFileDlg::RunDlgLD(*mimeTypes, *fileNames, import_title))
+				{
+				if(fileNames->MdcaCount()>0)
 					{
-					if(fileNames->MdcaCount()>0)
-						{
-						iPodcastModel.FeedEngine().ImportFeedsL(fileNames->MdcaPoint(0));
-						UpdateListboxItemsL();
-						}
+					iPodcastModel.FeedEngine().ImportFeedsL(fileNames->MdcaPoint(0));
+					UpdateListboxItemsL();
 					}
-			
-				CleanupStack::PopAndDestroy(3,mimeTypes); // title, fileNames, mimeTypes								
+				}
+		
+			CleanupStack::PopAndDestroy(3,mimeTypes); // title, fileNames, mimeTypes								
 			}break;
-					
+		case EPodcastExportFeeds:
+			{
+			TFileName fileName;
+			iPodcastModel.FeedEngine().ExportFeedsL(fileName);
+			TBuf<1024> fName;
+			TFileName newName;
+			newName.Copy(_L("feeds.xml"));
+			CQikSaveFileDlg::RunDlgLD(fileName, newName, NULL,ESaveFileUsingMove);
+			}break;
 		case EPodcastEditFeed:
 			{
 			if(iListbox != NULL)

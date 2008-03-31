@@ -36,7 +36,7 @@ void CFeedEngine::ConstructL()
     	ImportFeedsL(importFile);
     }
 
-	LoadBooksL();
+    LoadBooksL();
 	}
 
 CFeedEngine::CFeedEngine(CPodcastModel& aPodcastModel) : iFeedTimer(this), iPodcastModel(aPodcastModel)
@@ -446,6 +446,38 @@ void CFeedEngine::ImportFeedsL(const TDesC& aFile)
 	COpmlParser opmlParser(*this);
 	
 	opmlParser.ParseOpmlL(opmlPath);
+	}
+
+TBool CFeedEngine::ExportFeedsL(TFileName& aFile)
+	{
+	RFile rfile;
+	TBuf<1024> privatePath;
+	iFs.PrivatePath(privatePath);
+	TInt error = rfile.Temp(iFs, privatePath, aFile, EFileWrite);
+	if (error != KErrNone) 
+		{
+		RDebug::Print(_L("CFeedEngine::ExportFeedsL()\tFailed to open file"));
+		return EFalse;
+		}
+	
+	TFileText tft;
+	tft.Set(rfile);
+	
+	TBuf<1024> templ;
+	templ.Copy(_L("  <outline text=\"%S\" xmlUrl=\"%S\"/>"));
+	TBuf<1024> line;
+			
+	
+	tft.Write(_L("<?xml version=\"1.0\" encoding=\"UTF-16\"?>\n<opml version=\"1.1\"><head>\n  <title>Escarpod Feed List</title>\n</head>\n<body>"));
+	for (int i=0;i<iSortedFeeds.Count();i++) {
+		line.Format(templ, &iSortedFeeds[i]->Title(), &iSortedFeeds[i]->Url());
+		tft.Write(line);
+	}
+	tft.Write(_L("</body>\n</opml>"));
+		
+	rfile.Close();
+	
+	return ETrue;
 	}
 	
 TBool CFeedEngine::LoadFeeds()
