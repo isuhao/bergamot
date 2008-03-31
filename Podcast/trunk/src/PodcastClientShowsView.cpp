@@ -205,6 +205,10 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 			}break;
 		case EPodcastUpdateFeed:
 			{
+			// flag to know whether to disable catchup mode here or not,
+			// otherwise we might disable an Update All initiated from
+			// the feed view
+			iDisableCatchupMode = EFalse;
 			if (iPodcastModel.ActiveFeedInfo()->LastUpdated().Int64() == 0) {
 					TBuf<200> message;
 					TBuf<100> title;
@@ -212,6 +216,7 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 					CEikonEnv::Static()->ReadResourceL(title, R_CATCHUP_FEED_TITLE);
 					if (CEikonEnv::Static()->QueryWinL(title, message)) {
 						iPodcastModel.FeedEngine().SetCatchupMode(ETrue);
+						iDisableCatchupMode = ETrue;
 					}
 			}
 				
@@ -228,7 +233,7 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 					}
 			}
 						
-			UpdateListboxItemsL();
+			//UpdateListboxItemsL();
 			}
 			break;
 		case EPodcastRemoveAllDownloads:
@@ -299,7 +304,9 @@ void CPodcastClientShowsView::FeedUpdateCompleteL(TUint aFeedUid)
 	{
 		UpdateFeedUpdateStateL();		
 	}
-	iPodcastModel.FeedEngine().SetCatchupMode(EFalse);
+	if (iDisableCatchupMode) {
+		iPodcastModel.FeedEngine().SetCatchupMode(EFalse);
+	}
 }
 
 void CPodcastClientShowsView::FeedUpdateAllCompleteL()

@@ -43,6 +43,7 @@ private:
 	TPodcastClientShowCategory iCurrentCategory;
 	TBool iProgressAdded;
 	CVideoPlayerUtility* iVideoPlayer;
+	TBool iDisableCatchupMode;
 };
 
 
