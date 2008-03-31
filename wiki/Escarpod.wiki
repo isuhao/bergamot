@@ -54,6 +54,8 @@ To download binaries of Escarpod to use on your phone, visit our [http://code.go
   * Escarpod 0.96 (April 6th)
     * UI fixes
     * Export feed function
+    * Improved auto-pause on ring and dial, with resume after call has ended
+    * Mark all as played when adding new feed
 
   * Escarpod 0.95 (March 30th) [http://bergamot.googlecode.com/svn/Podcast/tags/v095 code]
     * Video support through external player
