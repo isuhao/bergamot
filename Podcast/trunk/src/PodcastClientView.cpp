@@ -16,7 +16,7 @@
 #include "SoundEngine.h"
 #include "PodcastClientSettingsDlg.h"
 #include "PodcastClientFeedView.h"
-
+#include "SettingsEngine.h"
 /**
 Constructor for the view.
 Passes the application UI reference to the construction of the super class.
@@ -152,6 +152,9 @@ void CPodcastClientView::HandleCommandL(CQikCommand& aCommand)
 			// storage and a relayout will be performed
 			if(iPodcastModel.SetZoomState(zoomFactor))
 			{
+				// save the new zoom setting
+				iPodcastModel.SettingsEngine().SaveSettingsL();
+			
 				// Sets the zoom factor for the view
 				iLastZoomLevel = zoomFactor;
 				SetZoomFactorL(CQikAppUi::ZoomFactorL(zoomFactor , *iEikonEnv));

@@ -123,7 +123,12 @@ void CSettingsEngine::LoadSettingsL()
 					
 		iSelectOnlyUnplayed = stream.ReadInt32L();
 		iSeekStepTime = stream.ReadInt32L();
-
+		
+		TInt zoomState;
+		TRAPD(err, zoomState = stream.ReadInt32L());
+		if (err == KErrNone) {
+			iPodcastModel.SetZoomState(zoomState);
+		}
 		CleanupStack::PopAndDestroy(1); // readStream and iniFile
 		RDebug::Print(_L("CSettingsEngine::LoadSettingsL\t Settings loaded OK"));
 	}
@@ -156,6 +161,7 @@ void CSettingsEngine::SaveSettingsL()
 	stream.WriteInt32L(iSelectOnlyUnplayed);
 	stream.WriteInt32L(iSeekStepTime);
 
+	stream.WriteInt32L(iPodcastModel.ZoomState());
 	stream.CommitL();
 	store->CommitL();
 	CleanupStack::PopAndDestroy(2); // stream and store
