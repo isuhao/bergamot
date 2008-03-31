@@ -778,8 +778,8 @@ void CPodcastClientShowsView::UpdateCommandsL()
 	comMan.SetInvisible(*this, EPodcastViewDownloadedShows, EFalse);
 	comMan.SetInvisible(*this, EPodcastSetOrderAudioBook, !(EShowFeedShows == iCurrentCategory && (iPodcastModel.ActiveFeedInfo()?iPodcastModel.ActiveFeedInfo()->IsBookFeed(): ETrue)));
 	comMan.SetInvisible(*this, EPodcastRemoveAllDownloads, ETrue);
-	comMan.SetInvisible(*this, EPodcastMarkAsPlayed, removeSetPlayed);
-	comMan.SetInvisible(*this, EPodcastMarkAsUnplayed, !removeSetPlayed);
+	comMan.SetInvisible(*this, EPodcastMarkAsPlayed, removeSetPlayed || !itemCnt);
+	comMan.SetInvisible(*this, EPodcastMarkAsUnplayed, !removeSetPlayed || !itemCnt);
 
 	switch(iCurrentCategory)
 	{	
