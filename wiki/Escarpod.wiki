@@ -25,7 +25,7 @@ These screenshots are from Escarpod 0.90.
 
 http://bergamot.googlecode.com/svn/wiki/capture0000.png
 http://bergamot.googlecode.com/svn/wiki/capture0001.png
-http://bergamot.googlecode.com/svn/wiki/capture0001.png
+http://bergamot.googlecode.com/svn/wiki/capture0002.png
 
 == Credits ==
 
