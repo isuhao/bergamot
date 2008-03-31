@@ -21,7 +21,7 @@ You can see some screenshots below, and download the latest version from the [ht
 
 == Screenshots ==
 
-These screenshots are from Escarpod 0.90.
+These screenshots are from Escarpod 0.95.
 
 http://bergamot.googlecode.com/svn/wiki/capture0000.png
 http://bergamot.googlecode.com/svn/wiki/capture0001.png
