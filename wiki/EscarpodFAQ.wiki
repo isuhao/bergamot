@@ -38,3 +38,5 @@ An example OPML file may look like this:
 The text field is optional.
 
 Save it as a .xml file, for instance myopml.xml, copy it to your phone and use Import feeds from the menu.
+
+_Tip! If you place an OPML file named feeds.xml in your podcasts directory, it will be automatically imported when Escarpod starts!_
