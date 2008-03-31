@@ -161,7 +161,6 @@ rls_string STRING_r_view_books_no_books "No Books" // No Books
 
 rls_string STRING_r_view_import_feeds_cmd "Import Feeds" // Import feeds cmd in feedview
 rls_string STRING_r_view_import_feeds_title "Select OPML File"
-rls_string STRING_r_view_export_feeds_cmd "Export Feeds" // Export feeds cmd in feedview
 
 rls_string STRING_r_view_books_status "%d Books" // Used in base view listbox status text max 32 chars
 rls_string STRING_r_view_feeds_status "%d Feeds" // Used in base view listbox for feeds status text max 32 chars
@@ -190,3 +189,7 @@ rls_string STRING_r_add_feed_exists_title "Duplicate Feed" // title of error dia
 
 rls_string STRING_r_add_feed_replace "All existing shows in this feed will be deleted! Continue?" // shown when changing an existing feed URL
 rls_string STRING_r_add_feed_replace_title "Warning" // title to dialog
+rls_string STRING_r_view_export_feeds_cmd "Export Feeds" // Export feeds cmd in feedview
+
+rls_string STRING_r_catchup_feed "Mark all existing shows as played?" // shown when first updating a new feed
+rls_string STRING_r_catchup_feed_title "Catch up" // title to dialog

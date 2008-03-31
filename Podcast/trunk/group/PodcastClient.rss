@@ -162,6 +162,10 @@ RESOURCE TBUF r_add_feed_exists_title {buf = STRING_r_add_feed_exists_title;}
 RESOURCE TBUF r_add_feed_replace {buf = STRING_r_add_feed_replace;}
 RESOURCE TBUF r_add_feed_replace_title {buf = STRING_r_add_feed_replace_title;}
 
+RESOURCE TBUF r_catchup_feed {buf = STRING_r_catchup_feed;}
+RESOURCE TBUF r_catchup_feed_title {buf = STRING_r_catchup_feed_title;}
+
+
 RESOURCE ARRAY r_podcast_shows_categories
 	{
 	items=

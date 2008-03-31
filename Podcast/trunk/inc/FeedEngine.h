@@ -49,6 +49,8 @@ public:
 	void FileNameFromUrl(const TDesC &aUrl, TFileName &aFileName);
 	void EnsureProperPathName(TFileName &aPath);
 
+	void SetCatchupMode(TBool aCatchup);
+	
 	/**
 	 * Returns the current internal state of the feed engine4
 	 */
@@ -115,5 +117,8 @@ private:
 	
 	// observers that will receive callbacks
     RArray<MFeedEngineObserver*> iObservers;
+    
+    // flag to set all new shows played, and not to auto download 
+    TBool iCatchupMode;
 };
 #endif /*FEEDENGINE_H_*/

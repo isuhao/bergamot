@@ -205,7 +205,17 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 			}break;
 		case EPodcastUpdateFeed:
 			{
-				if (iPodcastModel.ActiveFeedInfo()->Url().Length()>0) {
+			if(iListbox->Model().Count() == 0) {
+					TBuf<200> message;
+					TBuf<100> title;
+					CEikonEnv::Static()->ReadResourceL(message, R_CATCHUP_FEED);
+					CEikonEnv::Static()->ReadResourceL(title, R_CATCHUP_FEED_TITLE);
+					if (CEikonEnv::Static()->QueryWinL(title, message)) {
+						iPodcastModel.FeedEngine().SetCatchupMode(ETrue);
+					}
+			}
+				
+			if (iPodcastModel.ActiveFeedInfo()->Url().Length()>0) {
 					HBufC* str = CEikonEnv::Static()->AllocReadResourceLC(R_PODCAST_FEEDS_UPDATE_MESSAGE);
 					User::InfoPrint(*str);
 					CleanupStack::PopAndDestroy(str);
@@ -216,7 +226,9 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 						User::InfoPrint(*str);
 						CleanupStack::PopAndDestroy(str);
 					}
-				} 
+			}
+						
+			UpdateListboxItemsL();
 			}
 			break;
 		case EPodcastRemoveAllDownloads:
@@ -287,6 +299,7 @@ void CPodcastClientShowsView::FeedUpdateCompleteL(TUint aFeedUid)
 	{
 		UpdateFeedUpdateStateL();		
 	}
+	iPodcastModel.FeedEngine().SetCatchupMode(EFalse);
 }
 
 void CPodcastClientShowsView::FeedUpdateAllCompleteL()

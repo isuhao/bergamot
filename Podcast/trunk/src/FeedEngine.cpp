@@ -178,13 +178,18 @@ TBool CFeedEngine::NewShow(CShowInfo *item)
 	//RDebug::Print(_L("New show has feed ID: %u"), item->FeedUid());
 	item->SetDescriptionL(description);
 	//RDebug::Print(_L("Description: %S"), &description);
+
+	if (iCatchupMode) {
+		item->SetPlayState(EPlayed);
+	}
 	
 	TBool isShowAdded = iPodcastModel.ShowEngine().AddShow(item);
-	
-	if (isShowAdded && iPodcastModel.SettingsEngine().DownloadAutomatically()) 
+
+	if (!iCatchupMode && isShowAdded && iPodcastModel.SettingsEngine().DownloadAutomatically()) 
 		{
 		iPodcastModel.ShowEngine().AddDownload(item);
 		}
+
 	return isShowAdded;
 	}
 
@@ -811,3 +816,9 @@ TInt CFeedEngine::CompareFeedsByTitle(const CFeedInfo &a, const CFeedInfo &b)
 		//RDebug::Print(_L("Comparing %S to %S"), &a.Title(), &b.Title());
 		return a.Title().CompareF(b.Title());
 	}
+
+void CFeedEngine::SetCatchupMode(TBool aCatchup)
+	{
+	iCatchupMode = aCatchup;
+	}
+
