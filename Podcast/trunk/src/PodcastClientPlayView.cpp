@@ -737,7 +737,9 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 			comMan.SetDimmed(*this, EPodcastPlay, EFalse);
 			comMan.SetDimmed(*this, EPodcastStop, ETrue);
 			
-			comMan.SetInvisible(*this, EPodcastStop, !(iShowInfo->DownloadState() == EDownloaded));
+			if (iShowInfo) {
+				comMan.SetInvisible(*this, EPodcastStop, !(iShowInfo->DownloadState() == EDownloaded));
+			}
 
 			// not sure why we end up here, but this prevents crashing (teknolog)
 			if (iPlayProgressbar == NULL) {
