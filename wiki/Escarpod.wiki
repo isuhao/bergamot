@@ -117,6 +117,7 @@ There are several sites that list and host podcasts. Some starting points are
 
   * [http://podshow.com Podshow]
   * [http://podcastalley.com Podcast Alley]
+  * [http://podcast.cnet.com CNET Podcast Central]
   * [http://podhead.se Podhead] (Swedish)
 
 == License ==
