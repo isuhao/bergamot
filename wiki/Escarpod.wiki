@@ -5,7 +5,7 @@ http://bergamot.googlecode.com/svn/wiki/escarpod_large.jpg
 
 = Escarpod =
 
-Escarpod is a podcatcher (downloader and player of podcasts) for cell phones that run the UIQ graphical environment. This includes all newer phones in the Sony Ericsson P- and M-series, as well as W950 and W960 and Motorola Z8 and Z10. See supported phones below for a list of phones Escarpod is known to work on.
+Escarpod is a podcatcher (downloader and player of podcasts) for cell phones that run the UIQ graphical environment. This includes all newer phones in the Sony Ericsson P-, M- and G-series, as well as W950 and W960 and Motorola Z8 and Z10. See supported phones below for a list of phones Escarpod is known to work on.
 
 Notable features include:
   
