@@ -1,6 +1,7 @@
 #ifndef PODCASTCLIENTBASEVIEW_H
 #define PODCASTCLIENTBASEVIEW_H
 #include "PodcastClientView.h"
+#include "ShowEngineObserver.h"
 
 enum TBaseViewSelections
 {
@@ -12,7 +13,7 @@ enum TBaseViewSelections
 	EBaseViewAudioBooks = 0x105
 };
 
-class CPodcastClientBaseView : public CPodcastClientView
+class CPodcastClientBaseView : public CPodcastClientView, MShowEngineObserver
 {
 public:
 	static CPodcastClientBaseView* NewLC(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel);
@@ -29,6 +30,13 @@ protected:
 	void ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage);
 	static TInt StaticCheckForQuedDownloadsL(TAny* aBaseView);
 	void CheckForQuedDownloadsL();
+	
+	// from MShwoEngineObserver
+	
+	void ShowListUpdated() { }
+	void DownloadQueueUpdated(TInt aDownloadingShows, TInt aQueuedShows);
+	void ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt aBytesTotal) { }
+
 private:
 	TBool iCheckForQuedDownloads;
 	CAsyncCallBack* iStartupCallBack;

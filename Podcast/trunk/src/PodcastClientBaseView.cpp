@@ -115,6 +115,7 @@ void CPodcastClientBaseView::ViewConstructL()
 CPodcastClientBaseView::CPodcastClientBaseView(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel):CPodcastClientView(aAppUi, aPodcastModel)
 {
 	iCheckForQuedDownloads = ETrue;
+	iPodcastModel.ShowEngine().AddObserver(this);
 }
 
 CPodcastClientBaseView::~CPodcastClientBaseView()
@@ -290,3 +291,11 @@ void CPodcastClientBaseView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQi
 	}
 	
 }
+
+void CPodcastClientBaseView::DownloadQueueUpdated(TInt aDownloadingShows, TInt aQueuedShows)
+	{
+	UpdateListboxItemsL();
+	}
+
+
+

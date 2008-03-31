@@ -769,6 +769,9 @@ void CShowEngine::DownloadNextShow()
 	RDebug::Print(_L("CShowEngine::DownloadNextShow\tTrying to start new download"));
 	RDebug::Print(_L("CShowEngine::DownloadNextShow\tShows in download queue %d"), count);
 	
+	// Inform the observers
+	NotifyDownloadQueueUpdated();
+	
 	if (count > 0)
 		{
 		if (iDownloadsSuspended)
@@ -783,8 +786,6 @@ void CShowEngine::DownloadNextShow()
 			}
 		else
 			{
-			// Inform the observers
-			NotifyDownloadQueueUpdated();
 			
 			// Start the download
 			CShowInfo *info = iShowsDownloading[0];
