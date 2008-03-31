@@ -47,6 +47,10 @@ To download binaries of Escarpod to use on your phone, visit our [http://code.go
     * Audio book improvements
     * Bug fixes
 
+  * Escarpod 0.96 (April 6th)
+    * UI fixes
+    * Export feed function
+
   * Escarpod 0.95 (March 30th) [http://bergamot.googlecode.com/svn/Podcast/tags/v095 code]
     * Video support through external player
     * Audio book improvements
