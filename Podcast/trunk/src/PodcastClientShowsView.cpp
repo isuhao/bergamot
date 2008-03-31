@@ -205,7 +205,7 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 			}break;
 		case EPodcastUpdateFeed:
 			{
-			if(iListbox->Model().Count() == 0) {
+			if (iPodcastModel.ActiveFeedInfo()->LastUpdated().Int64() == 0) {
 					TBuf<200> message;
 					TBuf<100> title;
 					CEikonEnv::Static()->ReadResourceL(message, R_CATCHUP_FEED);

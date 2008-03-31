@@ -191,5 +191,5 @@ rls_string STRING_r_add_feed_replace "Alla avsnitt i denna kanal kommer tas bort
 rls_string STRING_r_add_feed_replace_title "Varning" // title to dialog
 rls_string STRING_r_view_export_feeds_cmd "Exportera kanaler" // Export feeds cmd in feedview
 
-rls_string STRING_r_catchup_feed "Markera alla nya avsnitt i kanalen som spelade?" // shown when first updating a new feed
-rls_string STRING_r_catchup_feed_title "Uppdaterar ny kanal" // title to dialog
+rls_string STRING_r_catchup_feed "Markera alla avsnitt som spelade?" // shown when first updating a new feed
+rls_string STRING_r_catchup_feed_title "Första uppdateringen" // title to dialog

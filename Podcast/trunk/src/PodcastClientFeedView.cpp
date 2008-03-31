@@ -260,6 +260,7 @@ void CPodcastClientFeedView::FeedUpdateCompleteL(TUint aFeedUid)
 
 void CPodcastClientFeedView::FeedUpdateAllCompleteL()
 {
+	iPodcastModel.FeedEngine().SetCatchupMode(EFalse);
 	iUpdatingAllRunning = EFalse;
 	UpdateCommandsL();
 }
@@ -660,6 +661,25 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 			}
 		case EPodcastUpdateAllFeeds:
 		{
+			const RFeedInfoArray& array = iPodcastModel.FeedEngine().GetSortedFeeds();
+			TBool hasNewFeed = EFalse;
+			for (int i=0;i<array.Count();i++) {
+				if (array[i]->LastUpdated().Int64() == 0) {
+					hasNewFeed = ETrue;
+					break;
+				}
+			}
+			
+			if (hasNewFeed) {
+					TBuf<200> message;
+					TBuf<100> title;
+					CEikonEnv::Static()->ReadResourceL(message, R_CATCHUP_FEED);
+					CEikonEnv::Static()->ReadResourceL(title, R_CATCHUP_FEED_TITLE);
+					if (CEikonEnv::Static()->QueryWinL(title, message)) {
+						iPodcastModel.FeedEngine().SetCatchupMode(ETrue);
+					}
+			}
+
 			iUpdatingAllRunning = ETrue;
 			UpdateCommandsL();
 			iPodcastModel.FeedEngine().UpdateAllFeedsL();
