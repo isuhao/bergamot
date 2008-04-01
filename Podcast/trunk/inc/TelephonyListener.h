@@ -32,5 +32,6 @@ private:
 	CTelephony* iTelephony;
     CTelephony::TCallStatusV1 iLineStatus;
     CTelephony::TCallStatusV1Pckg iLineStatusPckg;
+    TBool iPaused;
 };
 #endif
