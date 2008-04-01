@@ -39,6 +39,7 @@ void CSoundEngine::MapcPlayComplete(TInt aError) {
 	if (iPodcastModel.PlayingPodcast() != NULL) {
 		if(aError == KErrNone) // normal ending
 			{
+			iMaxPos = 0;
 			iPodcastModel.PlayingPodcast()->SetPlayState(EPlayed);
 			iPodcastModel.PlayingPodcast()->SetPosition(0);
 			}
