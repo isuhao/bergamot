@@ -12,6 +12,14 @@ Strange behavior occurs when the disk is full. Make sure you didn't fill up your
 
 You can use Bluetooth headsets with Escarpod, at least with Sony Ericsson phones. The problem is that there is no known public way to enable the headset. However, if you start the media player and use Transfer sound to redirect your sound to your bluetooth headset, the sound will stay in the headset until you disable it. This includes sound played through Escarpod.
 
+== Are There any Hardware Key Shortcuts? ==
+
+Yes, you can:
+
+  * _Delete shows_ using the backspace/clear button on your phone.
+  * _Jump back and ahead_ while playing a show using sideways buttons.
+  * _Mark played/unplayed_ using the asterisk (star)
+
 == Can I use a Remote Control? ==
 
 From version 0.94, Escarpod supports remote control for pause and playback, both for wired and Bluetooth headsets.
