@@ -8,6 +8,15 @@ Download the English [http://bergamot.googlecode.com/svn/Podcast/trunk/group/Pod
 If you use UTF 8 encoding, and please do, your file should start with the line
 {{{CHARACTER_SET UTF8}}}
 
+= A Note About Wording =
+
+Escarpod uses some terms that have not yet been standardized in many languages. If you don't know how to translate a word into your language, you might want to look at other similar applications, such as Apple iTunes.
+
+If you still can't find a good word, I suggest you do one of the following
+
+  * Leave the english word ('Feeds' might sound ok in your language)
+  * Use a similar word, for instance i translate Feeds as the equivalent of Channel in Swedish
+
 = Available Translations =
 
 The following translations been done, but they may not be updated for the latest release. If you find errors in the languate you're using, please fix it by downloading the language file and sending us the update at bergamot@googlegroups.com.
