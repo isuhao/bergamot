@@ -129,3 +129,11 @@ There are several sites that list and host podcasts. Some starting points are
 == License ==
 
 Escarpod is licensed under the [http://www.gnu.org/licenses/gpl-3.0.html GPL version 3] open source license.
+
+== Donations ==
+
+(Just testing this out for now)
+
+You can donate using PayPal:
+
+[https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=teknolog%40gmail%2ecom&item_name=The%20Bergamot%20Project&no_shipping=0&no_note=1&tax=0&currency_code=EUR&lc=SE&bn=PP%2dDonationsBF&charset=UTF%2d8 https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif]
