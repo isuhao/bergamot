@@ -299,7 +299,9 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt /*aErrorCode*/)
 			iFeedState = EStateItem;
 			break;
 		case EStateItemLink:
-			iActiveShow->SetUrlL(iBuffer);
+			if (iActiveShow->Url().Length() == 0) {
+				iActiveShow->SetUrlL(iBuffer);
+			}
 			iFeedState = EStateItem;
 			break;
 		case EStateItemDescription:
