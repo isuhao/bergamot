@@ -79,7 +79,7 @@ private:
 	void Progress(CHttpClient* aHttpClient, TInt aBytes, TInt aTotalBytes);
 	void DownloadInfo(CHttpClient* aClient, TInt aSize);
 	void CompleteL(CHttpClient* aClient, TBool aSuccessful);
-	void FileError(TUint aError) { }
+	void FileError(TUint /*aError*/) { }
 	// from FeedParser
 	TBool NewShow(CShowInfo *item);
 	void ParsingComplete(CFeedInfo *item);

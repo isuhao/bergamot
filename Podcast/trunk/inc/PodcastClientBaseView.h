@@ -35,7 +35,7 @@ protected:
 	
 	void ShowListUpdated() { }
 	void DownloadQueueUpdated(TInt aDownloadingShows, TInt aQueuedShows);
-	void ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt aBytesTotal) { }
+	void ShowDownloadUpdatedL(TInt /*aPercentOfCurrentDownload*/, TInt /*aBytesOfCurrentDownload*/, TInt /*aBytesTotal*/) { }
 
 private:
 	TBool iCheckForQuedDownloads;

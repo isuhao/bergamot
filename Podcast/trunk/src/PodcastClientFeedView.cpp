@@ -734,7 +734,7 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 				MQikListBoxData* data = model.RetrieveDataL(index);	
 				if(data != NULL)
 					{
-					if(iEikonEnv->QueryWinL(R_PODCAST_REMOVE_FEED_TITLE, R_PODCAST_REMOVE_FEED_PROMPT))
+					if(iEikonEnv->QueryWinL(R_PODCAST_REMOVE_BOOK_TITLE, R_PODCAST_REMOVE_BOOK_PROMPT))
 						{
 						iPodcastModel.FeedEngine().RemoveBookL(data->ItemId());
 						iListbox->RemoveItemL(index);

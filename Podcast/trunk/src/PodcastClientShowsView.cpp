@@ -151,22 +151,26 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 		case EPodcastDeleteShowHardware:
 		case EPodcastDeleteShow:
 			{				
-				if(iEikonEnv->QueryWinL(R_PODCAST_DELETE_SHOW_TITLE, R_PODCAST_DELETE_SHOW_PROMPT))				
-				{
-					TInt index = iListbox->CurrentItemIndex();
-					if(index >= 0 && index < iPodcastModel.ActiveShowList().Count())
+				TInt index = iListbox->CurrentItemIndex();
+
+				if(index >= 0 && index < iPodcastModel.ActiveShowList().Count())
 					{
-						if(iPodcastModel.ActiveShowList()[index]->ShowType() == EAudioBook)
-							{
-							iPodcastModel.ShowEngine().DeleteShow(iPodcastModel.ActiveShowList()[index]->Uid(), EFalse);	
-							}
-						else
-							{
-							iPodcastModel.ShowEngine().DeleteShow(iPodcastModel.ActiveShowList()[index]->Uid());	
-							}
-						UpdateListboxItemsL();
+					TBool isBook = (iPodcastModel.ActiveShowList()[index]->ShowType() == EAudioBook);
+					if(iEikonEnv->QueryWinL(isBook?R_PODCAST_REMOVE_CHAPTER_TITLE:R_PODCAST_DELETE_SHOW_TITLE, 
+											isBook?R_PODCAST_REMOVE_CHAPTER_PROMPT:R_PODCAST_DELETE_SHOW_PROMPT))				
+						{											
+							if(isBook)
+								{
+								iPodcastModel.ShowEngine().DeleteShow(iPodcastModel.ActiveShowList()[index]->Uid(), EFalse);	
+								}
+							else
+								{
+								iPodcastModel.ShowEngine().DeleteShow(iPodcastModel.ActiveShowList()[index]->Uid());	
+								}
+
+							UpdateListboxItemsL();						
+						}
 					}
-				}
 			}break;
 		case EPodcastUpdateLibrary:
 			HBufC* str = CEikonEnv::Static()->AllocReadResourceLC(R_PODCAST_FEEDS_UPDATE_MESSAGE);
