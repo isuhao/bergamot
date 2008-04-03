@@ -423,6 +423,13 @@ void CPodcastClientPlayView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid 
 			showUidPkg.Copy(aCustomMessage);
 		}break;
 	default:
+		{
+			if(iPodcastModel.PlayingPodcast() != NULL )
+			{
+				iCurrentViewShowUid = iPodcastModel.PlayingPodcast()->Uid();
+			}
+
+		}
 		break;
 	}
 
