@@ -151,18 +151,18 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 		case EPodcastDeleteShowHardware:
 		case EPodcastDeleteShow:
 			{				
-				if(iEikonEnv->QueryWinL(R_PODCAST_PURGE_SHOW_TITLE, R_PODCAST_PURGE_SHOW_PROMPT))				
+				if(iEikonEnv->QueryWinL(R_PODCAST_DELETE_SHOW_TITLE, R_PODCAST_DELETE_SHOW_PROMPT))				
 				{
 					TInt index = iListbox->CurrentItemIndex();
 					if(index >= 0 && index < iPodcastModel.ActiveShowList().Count())
 					{
 						if(iPodcastModel.ActiveShowList()[index]->ShowType() == EAudioBook)
 							{
-							iPodcastModel.ShowEngine().RemoveShow(iPodcastModel.ActiveShowList()[index]->Uid());	
+							iPodcastModel.ShowEngine().DeleteShow(iPodcastModel.ActiveShowList()[index]->Uid(), EFalse);	
 							}
 						else
 							{
-							iPodcastModel.ShowEngine().PurgeShow(iPodcastModel.ActiveShowList()[index]->Uid());	
+							iPodcastModel.ShowEngine().DeleteShow(iPodcastModel.ActiveShowList()[index]->Uid());	
 							}
 						UpdateListboxItemsL();
 					}
@@ -193,12 +193,12 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 				
 				}
 			}break;
-		case EPodcastPurgeFeed:
+		case EPodcastDeleteAllPlayed:
 			{
-				if(iEikonEnv->QueryWinL(R_PODCAST_PURGE_FEED_TITLE, R_PODCAST_PURGE_FEED_PROMPT))				
+				if(iEikonEnv->QueryWinL(R_PODCAST_DELETE_PLAYED_TITLE, R_PODCAST_DELETE_PLAYED_PROMPT))				
 				{
 					if (iPodcastModel.ActiveFeedInfo()->Url().Length()>0) {
-						iPodcastModel.ShowEngine().PurgeShowsByFeed(iPodcastModel.ActiveFeedInfo()->Uid());
+						iPodcastModel.ShowEngine().DeletePlayedShowsByFeed(iPodcastModel.ActiveFeedInfo()->Uid());
 						UpdateListboxItemsL();
 					} 
 				}
@@ -797,7 +797,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 
 	comMan.SetInvisible(*this, EPodcastDeleteShow, removePurgeShowCmd);
 	comMan.SetInvisible(*this, EPodcastDeleteShowHardware, removePurgeShowCmd);
-	comMan.SetInvisible(*this, EPodcastPurgeFeed, (iCurrentCategory == EShowPendingShows || iCurrentCategory == EShowDownloadedShows || (iPodcastModel.ActiveFeedInfo()?iPodcastModel.ActiveFeedInfo()->IsBookFeed():EFalse)));
+	comMan.SetInvisible(*this, EPodcastDeleteAllPlayed, (iCurrentCategory == EShowPendingShows || iCurrentCategory == EShowDownloadedShows || (iPodcastModel.ActiveFeedInfo()?iPodcastModel.ActiveFeedInfo()->IsBookFeed():EFalse)));
 	comMan.SetChecked(*this, EPodcastShowUnplayedOnly, iPodcastModel.SettingsEngine().SelectUnplayedOnly());
 	
 	
@@ -807,7 +807,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 	comMan.SetAvailable(*this, EPodcastMarkAllPlayed, !updatingState);
 	comMan.SetAvailable(*this, EPodcastDeleteShow, !updatingState);
 	comMan.SetAvailable(*this, EPodcastDeleteShowHardware, !updatingState);
-	comMan.SetAvailable(*this, EPodcastPurgeFeed, !updatingState);
+	comMan.SetAvailable(*this, EPodcastDeleteAllPlayed, !updatingState);
 	comMan.SetInvisible(*this, EPodcastViewPendingShows, EFalse);
 	comMan.SetInvisible(*this, EPodcastViewDownloadedShows, EFalse);
 	comMan.SetInvisible(*this, EPodcastSetOrderAudioBook, !(EShowFeedShows == iCurrentCategory && (iPodcastModel.ActiveFeedInfo()?iPodcastModel.ActiveFeedInfo()->IsBookFeed(): ETrue)));

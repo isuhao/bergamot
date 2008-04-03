@@ -708,7 +708,7 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 				}
 			}break;
 			//
-		case EPodcastPurgeFeed:
+		case EPodcastDeleteAllPlayed:
 			{
 				//HandleAddNewAudioBookL();
 			/*if(iListbox != NULL)

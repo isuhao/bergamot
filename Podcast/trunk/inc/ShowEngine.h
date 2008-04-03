@@ -42,12 +42,9 @@ public:
 	TBool AddShow(CShowInfo *item);
 	void SaveShows();
 
-	void PurgeShowsByFeed(TUint aFeedUid);
-	void RemoveAllShowsByFeed(TUint aFeedUid);
-	void PurgePlayedShows();
-	void PurgeOldShows();
-	void PurgeShow(TUint aShowUid);
-	void RemoveShow(TUint aShowUid, TBool aRemoveFile = EFalse);
+	void DeletePlayedShowsByFeed(TUint aFeedUid);
+	void DeleteAllShowsByFeed(TUint aFeedUid,TBool aDeleteFiles=ETrue);
+	void DeleteShow(TUint aShowUid, TBool aRemoveFile=ETrue);
 	
 	RShowInfoArray& GetSelectedShows();
 	void SetSelectionPlayed();

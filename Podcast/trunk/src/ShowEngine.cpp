@@ -508,22 +508,22 @@ TInt CShowEngine::CompareShowsByTitle(const CShowInfo &a, const CShowInfo &b)
 		}
 	}
 
-void CShowEngine::PurgeShowsByFeed(TUint aFeedUid)
+void CShowEngine::DeletePlayedShowsByFeed(TUint aFeedUid)
 	{
 	for (int i=0;i<iShows.Count();i++)
 		{
 		if (iShows[i]->FeedUid() == aFeedUid)
 			{
-			//if (iShows[i]->DownloadState() == EDownloaded) {
-			if (iShows[i]->FileName().Length() > 0) {
+			if (iShows[i]->PlayState() == EPlayed && iShows[i]->FileName().Length() > 0) {
 				BaflUtils::DeleteFile(iFs, iShows[i]->FileName());
 				iShows[i]->SetDownloadState(ENotDownloaded);
+				iShows[i]->SetPlayState(ENeverPlayed);
 			}
 			}
 		}
 	}
 
-void CShowEngine::RemoveAllShowsByFeed(TUint aFeedUid)
+void CShowEngine::DeleteAllShowsByFeed(TUint aFeedUid, TBool aDeleteFiles)
 	{
 	const TInt count = iShows.Count();
 	
@@ -533,7 +533,9 @@ void CShowEngine::RemoveAllShowsByFeed(TUint aFeedUid)
 			{
 			if (iShows[i]->FileName().Length() > 0) 
 				{
-				BaflUtils::DeleteFile(iFs, iShows[i]->FileName());
+				if (aDeleteFiles) {
+					BaflUtils::DeleteFile(iFs, iShows[i]->FileName());
+				}
 				iShows[i]->SetDownloadState(ENotDownloaded);
 				}
 			CShowInfo* show = iShows[i];
@@ -544,7 +546,7 @@ void CShowEngine::RemoveAllShowsByFeed(TUint aFeedUid)
 	SaveShows();
 	}
 
-void CShowEngine::RemoveShow(TUint aShowUid, TBool aRemoveFile)
+void CShowEngine::DeleteShow(TUint aShowUid, TBool aRemoveFile)
 	{
 	const TInt count = iShows.Count();
 	
@@ -561,38 +563,6 @@ void CShowEngine::RemoveShow(TUint aShowUid, TBool aRemoveFile)
 			iShows.Remove(i);
 			delete show;
 			break;
-			}
-		}
-	}
-
-
-void CShowEngine::PurgePlayedShows()
-	{
-	for (int i=0;i<iShows.Count();i++)
-	{
-		if (iShows[i]->PlayState() == EPlayed) {
-			BaflUtils::DeleteFile(iFs, iShows[i]->FileName());
-			iShows[i]->SetDownloadState(ENotDownloaded);
-			// do we want this?
-			//iShows[i]->iPlayState = ENeverPlayed;
-		}
-	}
-}
-
-void CShowEngine::PurgeOldShows()
-	{
-	// TODO: implement
-	}
-
-void CShowEngine::PurgeShow(TUint aShowUid)
-	{
-	const TInt count = iShows.Count();
-	for (TInt i=0; i < count ; i++)
-		{
-		if (iShows[i]->Uid() == aShowUid) 
-			{
-			BaflUtils::DeleteFile(iFs, iShows[i]->FileName());
-			iShows[i]->SetDownloadState(ENotDownloaded);
 			}
 		}
 	}

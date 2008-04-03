@@ -283,7 +283,7 @@ void CFeedEngine::RemoveFeed(TUint aUid)
 		{
 		if (iSortedFeeds[i]->Uid() == aUid) 
 			{
-			iPodcastModel.ShowEngine().RemoveAllShowsByFeed(aUid);
+			iPodcastModel.ShowEngine().DeleteAllShowsByFeed(aUid);
 					
 			CFeedInfo* feedToRemove = iSortedFeeds[i];
 			
@@ -665,7 +665,7 @@ void CFeedEngine::RemoveBookL(TUint aUid)
 		{
 		if (iSortedBooks[i]->Uid() == aUid) 
 			{
-			iPodcastModel.ShowEngine().RemoveAllShowsByFeed(aUid);
+			iPodcastModel.ShowEngine().DeleteAllShowsByFeed(aUid, EFalse);
 					
 			CFeedInfo* feedToRemove = iSortedBooks[i];					
 				

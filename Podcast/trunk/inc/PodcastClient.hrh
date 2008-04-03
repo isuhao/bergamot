@@ -27,7 +27,7 @@ enum TPodcatClientCommands
 	EPodcastEditFeed,
 	EPodcastDeleteFeed,
 	EPodcastDeleteFeedHardware,
-	EPodcastPurgeFeed,
+	EPodcastDeleteAllPlayed,
 	EPodcastUpdateFeed,
 	EPodcastUpdateAllFeeds,
 	EPodcastCancelUpdateAllFeeds,

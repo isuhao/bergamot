@@ -134,7 +134,7 @@ TBool CPodcastClientAddFeedDlg::OkToExitL(TInt aCommandId)
 					iPodcastModel.FeedEngine().RemoveFeed(temp->Uid());	
 					
 					// user has accepted that shows will be deleted
-					iPodcastModel.ShowEngine().RemoveAllShowsByFeed(iFeedInfo->Uid());
+					iPodcastModel.ShowEngine().DeleteAllShowsByFeed(iFeedInfo->Uid());
 
 					// update URL
 					iFeedInfo->SetUrlL(*url);	
