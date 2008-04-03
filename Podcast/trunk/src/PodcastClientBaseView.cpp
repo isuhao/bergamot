@@ -150,7 +150,7 @@ void CPodcastClientBaseView::UpdateListboxItemsL()
 		if(iPodcastModel.PlayingPodcast() != NULL && (iPodcastModel.SoundEngine().State() == ESoundEnginePlaying || iPodcastModel.SoundEngine().State() == ESoundEnginePaused))
 		{
 			playerActive = ETrue;
-			descriptionText.Set(iPodcastModel.PlayingPodcast()->Description());	
+			descriptionText.Set(iPodcastModel.PlayingPodcast()->Title());
 		}
 		
 		for(TInt loop = 0;loop <cnt;loop++)
