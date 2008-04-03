@@ -167,6 +167,11 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 								{
 								iPodcastModel.ShowEngine().DeleteShow(iPodcastModel.ActiveShowList()[index]->Uid());	
 								}
+						
+							MQikListBoxModel& model(iListbox->Model());
+							model.ModelBeginUpdateLC();
+							model.RemoveDataL(index);
+							model.ModelEndUpdateL();
 
 							UpdateListboxItemsL();						
 						}
@@ -235,9 +240,7 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 						User::InfoPrint(*str);
 						CleanupStack::PopAndDestroy(str);
 					}
-			}
-						
-			//UpdateListboxItemsL();
+				}									
 			}
 			break;
 		case EPodcastRemoveAllDownloads:
@@ -256,14 +259,14 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 				if(index >= 0 && index < iPodcastModel.ActiveShowList().Count())
 				{
 					if (iPodcastModel.ShowEngine().RemoveDownload(iPodcastModel.ActiveShowList()[index]->Uid())) {
-						UpdateListboxItemsL();
 						if (index > 0) {
-							iListbox->SetItemSelectedL(index-1,ETrue,ETrue);
+							MQikListBoxModel& model(iListbox->Model());
+							model.ModelBeginUpdateLC();
+							model.RemoveDataL(index);
+							model.ModelEndUpdateL();
 						}
-						/*MQikListBoxModel& model(iListbox->Model());
-						model.ModelBeginUpdateLC();
-						model.RemoveDataL(index);
-						model.ModelEndUpdateL();*/
+
+						UpdateListboxItemsL();												
 					}
 				}
 			}break;

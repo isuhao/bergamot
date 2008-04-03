@@ -584,14 +584,12 @@ void CShowEngine::SelectShowsByFeed(TUint aFeedUid)
 			}
 			}
 		}
-	
-	//CFeedInfo *feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(aFeedUid);
-	
-	if (iShows.Count() == 0) {
+		
+	if (iSelectedShows.Count() == 0) {
 		return;
 	}
 	
-	if (iShows[0]->ShowType() == EAudioBook) {
+	if (iSelectedShows[0]->ShowType() == EAudioBook) {
 		// sort by track number
 		TLinearOrder<CShowInfo> sortOrder(CShowEngine::CompareShowsByTrackNo);
 		iSelectedShows.Sort(sortOrder);	 
@@ -608,6 +606,7 @@ void CShowEngine::SelectShowsByFeed(TUint aFeedUid)
 			iSelectedShows[count-1]->SetDelete();
 			iSelectedShows[count-1]->SetPlayState(EPlayed);
 			iSelectedShows.Remove(count-1);
+			iGrossSelectionLength--;
 			count = iSelectedShows.Count();
 		}
 	}
@@ -626,6 +625,8 @@ void CShowEngine::SelectNewShows()
 	
 	TLinearOrder<CShowInfo> sortOrder(CShowEngine::CompareShowsByDate);
 	iSelectedShows.Sort(sortOrder);
+
+	iGrossSelectionLength = iSelectedShows.Count();
 	}
 
 void CShowEngine::SelectShowsDownloaded()
@@ -683,6 +684,7 @@ void CShowEngine::SelectShowsDownloading()
 		{
 		iSelectedShows.Append(iShowsDownloading[i]);
 		}
+	iGrossSelectionLength = iSelectedShows.Count();
 	}
 
 void CShowEngine::GetShowsForFeed(RShowInfoArray& aShowArray, TUint aFeedUid)
