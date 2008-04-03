@@ -783,7 +783,7 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 			}
 			else
 			{
-				time.Format(KShowsSizeFormatMb(), iShowInfo->ShowSize() / KSizeMb);
+				time.Format(KShowsSizeFormatMb(),  (iShowInfo->ShowSize()+KSizeMb/2) / KSizeMb);
 			}
 		}
 		else

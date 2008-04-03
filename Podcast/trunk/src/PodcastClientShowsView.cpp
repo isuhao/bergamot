@@ -499,7 +499,7 @@ void CPodcastClientShowsView::UpdateShowItemDataL(CShowInfo* aShowInfo, MQikList
 			}
 			else
 			{
-				totSize.Format(KShowsSizeFormatMb(), aShowInfo->ShowSize() / KSizeMb);
+				totSize.Format(KShowsSizeFormatMb(), (aShowInfo->ShowSize()+KSizeMb/2) / KSizeMb);
 			}
 			
 			if(aSizeDownloaded < KSizeMb)
@@ -508,7 +508,7 @@ void CPodcastClientShowsView::UpdateShowItemDataL(CShowInfo* aShowInfo, MQikList
 			}
 			else
 			{
-				dlSize.Format(KShowsSizeFormatMb(), aSizeDownloaded / KSizeMb);
+				dlSize.Format(KShowsSizeFormatMb(), (aSizeDownloaded+KSizeMb/2) / KSizeMb);
 			}
 			infoSize.Format(KSizeDownloadingOf(), &dlSize, &totSize);
 			
@@ -521,7 +521,7 @@ void CPodcastClientShowsView::UpdateShowItemDataL(CShowInfo* aShowInfo, MQikList
 			}
 			else
 			{
-				infoSize.Format(KShowsSizeFormatMb(), aShowInfo->ShowSize() / KSizeMb);
+				infoSize.Format(KShowsSizeFormatMb(), (aShowInfo->ShowSize()+KSizeMb/2) / KSizeMb);
 			}
 			
 		}
@@ -679,7 +679,7 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 								}
 							else
 								{
-								showSize.Format(KShowsSizeFormatMb(), si->ShowSize() / KSizeMb);
+								showSize.Format(KShowsSizeFormatMb(), (si->ShowSize()+KSizeMb/2)/ KSizeMb);
 								}
 
 							if(si->PubDate().Int64() == 0) 
