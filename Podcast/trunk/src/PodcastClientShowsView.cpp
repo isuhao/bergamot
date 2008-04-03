@@ -797,9 +797,8 @@ void CPodcastClientShowsView::UpdateCommandsL()
 
 	comMan.SetInvisible(*this, EPodcastDeleteShow, removePurgeShowCmd);
 	comMan.SetInvisible(*this, EPodcastDeleteShowHardware, removePurgeShowCmd);
-	comMan.SetInvisible(*this, EPodcastDeleteAllPlayed, (iCurrentCategory == EShowPendingShows || iCurrentCategory == EShowDownloadedShows || (iPodcastModel.ActiveFeedInfo()?iPodcastModel.ActiveFeedInfo()->IsBookFeed():EFalse)));
+	comMan.SetInvisible(*this, EPodcastDeleteAllPlayed, (iCurrentCategory == EShowPendingShows || (iPodcastModel.ActiveFeedInfo()?iPodcastModel.ActiveFeedInfo()->IsBookFeed():EFalse) || iPodcastModel.SettingsEngine().SelectUnplayedOnly()));
 	comMan.SetChecked(*this, EPodcastShowUnplayedOnly, iPodcastModel.SettingsEngine().SelectUnplayedOnly());
-	
 	
 	comMan.SetAvailable(*this, EPodcastUpdateFeed, !updatingState);
 	comMan.SetAvailable(*this, EPodcastDownloadShow, !updatingState);
