@@ -129,7 +129,7 @@ void CShowEngine::Connected(CHttpClient* /*aClient*/)
 	
 	}
 
-void CShowEngine::Progress(CHttpClient* /*aHttpClient */, int aBytes, int aTotalBytes)
+void CShowEngine::Progress(CHttpClient* /*aHttpClient */, TInt aBytes, TInt aTotalBytes)
 	{	
 	TInt percent = -1;
 	if (aTotalBytes > 0) 
@@ -145,7 +145,7 @@ void CShowEngine::Disconnected(CHttpClient* /*aClient */)
 	{
 	}
 
-void CShowEngine::DownloadInfo(CHttpClient* aHttpClient, int aTotalBytes)
+void CShowEngine::DownloadInfo(CHttpClient* aHttpClient, TInt aTotalBytes)
 	{
 	RDebug::Print(_L("About to download %d bytes"), aTotalBytes);
 	if(aHttpClient == iShowClient && iShowDownloading != NULL && aTotalBytes != -1) {
@@ -155,10 +155,10 @@ void CShowEngine::DownloadInfo(CHttpClient* aHttpClient, int aTotalBytes)
 
 void CShowEngine::GetStatsByFeed(TUint aFeedUid, TUint &aNumShows, TUint &aNumUnplayed )
 	{
-	int showsCount = 0;
-	int unplayedCount = 0;
+	TInt showsCount = 0;
+	TInt unplayedCount = 0;
 	
-	for (int i=0;i<iShows.Count();i++) {
+	for (TInt i=0;i<iShows.Count();i++) {
 		if (iShows[i]->FeedUid() == aFeedUid)
 			{
 			showsCount++;
@@ -166,10 +166,7 @@ void CShowEngine::GetStatsByFeed(TUint aFeedUid, TUint &aNumShows, TUint &aNumUn
 				unplayedCount++;
 			}
 			}
-	}
-	int maxItems = iPodcastModel.SettingsEngine().MaxListItems();
-	aNumShows = showsCount < maxItems ? showsCount : maxItems;
-	aNumUnplayed = unplayedCount < maxItems ? unplayedCount : maxItems;
+		}
 	}
 
 void CShowEngine::GetShow(CShowInfo *info)
@@ -510,7 +507,7 @@ TInt CShowEngine::CompareShowsByTitle(const CShowInfo &a, const CShowInfo &b)
 
 void CShowEngine::DeletePlayedShowsByFeed(TUint aFeedUid)
 	{
-	for (int i=0;i<iShows.Count();i++)
+	for (TInt i=0;i<iShows.Count();i++)
 		{
 		if (iShows[i]->FeedUid() == aFeedUid)
 			{
@@ -569,8 +566,7 @@ void CShowEngine::DeleteShow(TUint aShowUid, TBool aRemoveFile)
 
 TUint CShowEngine::GetGrossSelectionLength()
 	{
-	int max = iPodcastModel.SettingsEngine().MaxListItems();
-	return (iGrossSelectionLength < max ? iGrossSelectionLength : max);
+	return iGrossSelectionLength;
 	}
 
 void CShowEngine::SelectShowsByFeed(TUint aFeedUid)
@@ -578,7 +574,7 @@ void CShowEngine::SelectShowsByFeed(TUint aFeedUid)
 	RDebug::Print(_L("SelectShowsByFeed: %u, unplayed only=%d"), aFeedUid, iPodcastModel.SettingsEngine().SelectUnplayedOnly());
 	iSelectedShows.Reset();
 	iGrossSelectionLength = 0;
-	for (int i=0;i<iShows.Count();i++)
+	for (TInt i=0;i<iShows.Count();i++)
 		{
 		if (iShows[i]->FeedUid() == aFeedUid)
 			{
@@ -605,7 +601,7 @@ void CShowEngine::SelectShowsByFeed(TUint aFeedUid)
 		iSelectedShows.Sort(sortOrder);
 	
 		// now purge if more than limit
-		int count = iSelectedShows.Count();
+		TInt count = iSelectedShows.Count();
 		while (count > iPodcastModel.SettingsEngine().MaxListItems()) {
 			RDebug::Print(_L("Too many items, Removing"));
 			//delete iSelectedShows[count-1];
@@ -620,7 +616,7 @@ void CShowEngine::SelectShowsByFeed(TUint aFeedUid)
 void CShowEngine::SelectNewShows()
 	{
 	iSelectedShows.Reset();
-	for (int i=0;i<iShows.Count();i++)
+	for (TInt i=0;i<iShows.Count();i++)
 		{
 		if (iShows[i]->PlayState() == ENeverPlayed)
 			{
@@ -640,7 +636,7 @@ void CShowEngine::SelectShowsDownloaded()
 	iGrossSelectionLength = 0;
 	iLastShowsOnPhoneTotalCount = 0;
 	iLastShowsOnPhoneUnplayedCount = 0;
-	for (int i=0;i<iShows.Count();i++)
+	for (TInt i=0;i<iShows.Count();i++)
 		{
 		if (iShows[i]->DownloadState() == EDownloaded && !(iShows[i]->ShowType() == EAudioBook))
 			{
@@ -666,7 +662,7 @@ void CShowEngine::SelectShowsDownloading()
 	{
 	iSelectedShows.Reset();
 	
-	/*for (int i=0;i<iShows.Count();i++)
+	/*for (TInt i=0;i<iShows.Count();i++)
 		{
 		if (iShows[i]->DownloadState() == EDownloading)
 				{
@@ -674,7 +670,7 @@ void CShowEngine::SelectShowsDownloading()
 				}
 		}
 
-	for (int i=0;i<iShows.Count();i++)
+	for (TInt i=0;i<iShows.Count();i++)
 		{
 		if (iShows[i]->DownloadState() == EQueued)
 				{
@@ -812,7 +808,7 @@ void CShowEngine::ListDir(TFileName &folder) {
 	
 	CDir *dirPtr;
 	dirScan->NextL(dirPtr);
-	for (int i=0;i<dirPtr->Count();i++) {
+	for (TInt i=0;i<dirPtr->Count();i++) {
 		const TEntry &entry = (TEntry) (*dirPtr)[i];
 		if (entry.IsDir())  {
 			TFileName subFolder;
@@ -850,7 +846,7 @@ void CShowEngine::ListDir(TFileName &folder) {
 
 
 			TBool exists = EFalse;
-			for (int i=0;i<iShows.Count();i++) {
+			for (TInt i=0;i<iShows.Count();i++) {
 				if (iShows[i]->FileName().Compare(pathName) == 0) {
 					RDebug::Print(_L("Already listed %S"), &pathName);
 					exists = ETrue;
@@ -889,7 +885,7 @@ void CShowEngine::CheckFiles()
 	{
 
 	// check to see if any files were removed
-	for (int i=0;i<iShows.Count();i++) {
+	for (TInt i=0;i<iShows.Count();i++) {
 		if(iShows[i]->DownloadState() == EDownloaded) {
 			if(!BaflUtils::FileExists(iFs, iShows[i]->FileName())) {
 				RDebug::Print(_L("%S was removed, delisting"), &iShows[i]->FileName());
@@ -909,7 +905,7 @@ void CShowEngine::ReadMetaData(CShowInfo *aShowInfo)
 	{
 	RDebug::Print(_L("Read %S"), &(aShowInfo->Title()));
 	
-	//for (int i=0;i<iObservers.Count();i++) {
+	//for (TInt i=0;i<iObservers.Count();i++) {
 	//	iObservers[i]->ShowListUpdated();
 	//}
 	}
@@ -917,7 +913,7 @@ void CShowEngine::ReadMetaData(CShowInfo *aShowInfo)
 void CShowEngine::ReadMetaDataComplete()
 	{
 	SaveShows();
-	for (int i=0;i<iObservers.Count();i++) {
+	for (TInt i=0;i<iObservers.Count();i++) {
 		iObservers[i]->ShowListUpdated();
 		}
 	}

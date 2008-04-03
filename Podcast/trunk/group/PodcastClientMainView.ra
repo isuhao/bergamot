@@ -394,8 +394,7 @@ RESOURCE QIK_LISTBOX_LAYOUT r_podcast_mainview_listbox_layout
 				{
 					emphasis_font_style = EQikListBoxFontBold;
 					font_size = EQikListBoxFontExtraSmall;
-					emphasis_font_size = EQikListBoxFontExtraSmall;
-					scroll = EQikListBoxTextScrollWhenHighlighted;
+					emphasis_font_size = EQikListBoxFontExtraSmall;				
 				};						
 			}
 
