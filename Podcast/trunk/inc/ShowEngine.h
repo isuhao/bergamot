@@ -42,7 +42,7 @@ public:
 	TBool AddShow(CShowInfo *item);
 	void SaveShows();
 
-	void DeletePlayedShowsByFeed(TUint aFeedUid);
+	void DeletePlayedShows();
 	void DeleteAllShowsByFeed(TUint aFeedUid,TBool aDeleteFiles=ETrue);
 	void DeleteShow(TUint aShowUid, TBool aRemoveFile=ETrue);
 	
