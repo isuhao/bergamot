@@ -564,6 +564,7 @@ void CPodcastClientFeedView::UpdateCommandsL()
 	comMan.SetInvisible(*this, EPodcastAddNewAudioBook, !isBookMode);
 	comMan.SetInvisible(*this, EPodcastAddFeed, isBookMode);
 	comMan.SetInvisible(*this, EPodcastImportFeeds, isBookMode);
+	comMan.SetInvisible(*this, EPodcastExportFeeds, isBookMode);
 
 	comMan.SetInvisible(*this, EPodcastViewAudioBooks, isBookMode);
 	comMan.SetInvisible(*this, EPodcastViewFeeds, !isBookMode);
