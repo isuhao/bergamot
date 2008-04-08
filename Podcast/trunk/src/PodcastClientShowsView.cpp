@@ -668,8 +668,10 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 								showDate.Format(_L("%01d:%02d:%02d"),hour, min, sec);
 								}
 							else
-								{								
-									showDate = KNullDesC();								
+								{
+									HBufC* unknown =  iEikonEnv->AllocReadResourceLC(R_PODCAST_ONPHONE_STATUS_UNKNOWN);
+									showDate = *unknown;
+									CleanupStack::PopAndDestroy(unknown);
 								}
 							}
 						else
