@@ -77,11 +77,15 @@ rls_string STRING_r_view_show_unplayed_cmd "Nezobrazovat přehrané"
 rls_string STRING_r_zoom_cmd "Lupa"
 rls_string STRING_r_settings_cmd "Nastavení"
 
-// Categories (strings max 20 character long)
+// Categories
 rls_string STRING_r_category_all "Všechny šou"
 rls_string STRING_r_category_new "Nepřehrané"
 rls_string STRING_r_category_dled "Šou v telefonu"
 rls_string STRING_r_category_pending "Stahování"
+
+// Application caption
+rls_string STRING_r_caption "Escarpod"
+rls_string STRING_r_short_caption "Podkast"
 
 // View titles
 rls_string STRING_r_view_feeds_title "Zdroje"
@@ -89,13 +93,14 @@ rls_string STRING_r_view_audiobooks_title "Zvukové knihy"
 
 // Shows view status strings
 rls_string STRING_r_podcast_shows_title_format "%d Nepřehraných, %d Celkem";
-rls_string STRING_r_podcast_shows_title_download "%d Queued"
-rls_string STRING_r_podcast_shows_downloads_suspended "%d Queued (Suspended)"
+rls_string STRING_r_podcast_shows_title_download "%d Stahuji, %d ve frontě";
+rls_string STRING_r_podcast_shows_downloads_suspended "Pozastaveno, %d fronta";
 rls_string STRING_r_podcast_shows_no_items "Žádné položky";
 
 // Feeds view status strings
 rls_string STRING_r_podcast_feeds_title_format "%d Zdrojů"
 rls_string STRING_r_podcast_books_title_format "%d knih"
+
 rls_string STRING_r_podcast_feeds_status_format "%d/%d Šou"
 rls_string STRING_r_podcast_shows_never_updated "Nikdy";
 rls_string STRING_r_podcast_feeds_is_updating "Aktualizováno"
@@ -103,6 +108,7 @@ rls_string STRING_r_podcast_no_feeds "Žádné zdroje"
 
 // DIALOG string
 rls_string STRING_r_about_title "O programu Escarpod";
+rls_string STRING_r_about_text "Escarpod\n\n Copyright(c) 2007-2008, Projekt Bergamot\n\n http://bergamot.googlecode.com"
 
 rls_string STRING_r_add_feed_title "Přidat zdroj"
 rls_string STRING_r_edit_feed_title "Upravit zdroj"
@@ -129,10 +135,12 @@ rls_string STRING_r_podcast_settings_title "Nastavení"
 rls_string STRING_r_podcast_setting_showdir "Adresář Podkastů"
 rls_string STRING_r_podcast_setting_autoupdate "Automatická aktualizace"
 rls_string STRING_r_podcast_setting_autodownload "Automatické stahování"
+
 rls_string STRING_r_podcast_setting_checkevery "Interval aktualizace"
 rls_string STRING_r_podcast_setting_updateat "Aktualizace v"
 rls_string STRING_r_podcast_setting_minutes "minut"
 
+rls_string STRING_r_podcast_setting_maxsimul "Max souběžné stahování"
 rls_string STRING_r_podcast_setting_connection "Připojení"
 rls_string STRING_r_podcast_setting_default "Použít výchozí"
 rls_string STRING_r_podcast_setting_wlanonly "Vždy se zeptat"
@@ -156,36 +164,39 @@ rls_string STRING_r_podcast_new_audiobook_prompt "Titulek zvukové knihy"
 rls_string STRING_r_podcast_new_audiobook_label "%d vybaraných souborů pro zvukovou knihu."
 rls_string STRING_r_podcast_new_audiobook_select_files "Výběr souborů knihy:" // Max 80 chars
 
-// Latest strings here
-rls_string STRING_r_view_books_no_books "Žádné knihy" // No Books
-
-rls_string STRING_r_view_import_feeds_cmd "Imporovat zdroje" // Import feeds cmd in feedview
-rls_string STRING_r_view_import_feeds_title "Vyberte soubor OPML"
-
-rls_string STRING_r_view_books_status "%d Knih" // Used in base view listbox status text max 32 chars
-rls_string STRING_r_view_feeds_status "%d Zdrojů" // Used in base view listbox for feeds status text max 32 chars
-
-rls_string STRING_r_cancel_update_all_feeds_cmd "Zrušit synchr."
-rls_string STRING_r_cancel_update_all_feeds_short_cmd "Zrušit"
-
 rls_string STRING_r_suspend_download_cmd "Přerušit" // String used for cmd to suspend current download rather than removing it from the que.
 rls_string STRING_r_view_resume_short_dls_cmd "Obnovit" // Short download cmd
-rls_string STRING_r_view_onphone_status "%d Šou" // Used in base view listbox status for shows on phone text max 32 chars
-rls_string STRING_r_view_onphone_status_unknown "Neznámí" // Used for unknown status event
+rls_string STRING_r_view_pending_status "%d Šou ve frontě" // Used in base view listbox status for downloading/qued shows text max 32 chars
+rls_string STRING_r_view_onphone_status "%d Nepřehraných, %d Celkem" // Used in base view listbox status for shows on phone text max 32 chars
+rls_string STRING_r_view_onphone_status_unknown "Neznámý" // Used for unknown status event
 
 // Strings used to set the playorder of an audio book
-rls_string STRING_r_view_books_setorder "Pořadí" // cmd for set audio book playorder
+rls_string STRING_r_view_books_setorder "Pořadí kapitol" // cmd for set audio book playorder
 rls_string STRING_r_view_books_setorder_dlgtitle "Pořadí přehrávání"
 rls_string STRING_r_view_books_setorder_dlg_swapcmd "Přeskočit"
 rls_string STRING_r_view_books_setorder_dlg_label "Vyberte položku k přeskočení"
 rls_string STRING_r_view_books_setorder_dlg_selectlabel "Vybrete položku k přesunutí"
+rls_string STRING_r_view_remove_all_downloads_cmd "Odebrat vše"
+rls_string STRING_r_podcast_subtitle "UIQ Podcaster" // shown beneath main view title
+rls_string STRING_r_add_feed_exists "Zdroj s tímto URL již existuje!" // shown when adding or changing a feed to a URL that already exists
+rls_string STRING_r_add_feed_exists_title "Duplikátní zdroj" // title of error dialogs when adding feeds
+rls_string STRING_r_add_feed_replace "Všechny šou v tomto zdroji budou smazány! Chcete pokračovat?" // shown when changing an existing feed URL
+rls_string STRING_r_add_feed_replace_title "Varování" // title to dialog
+rls_string STRING_r_view_export_feeds_cmd "Export Zdrojů" // Export feeds cmd in feedview
+rls_string STRING_r_catchup_feed "Označit všechny šou jako přehrané?" // shown when first updating a new feed
+rls_string STRING_r_catchup_feed_title "První Update" // title to dialog
+rls_string STRING_r_remove_book_title "Odebrat knihu"
+rls_string STRING_r_remove_book_prompt "Opravdu chcete odebrat tuto knihu?"
+rls_string STRING_r_remove_chapter_title "Odebrat kapitolu"
+rls_string STRING_r_remove_chapter_prompt "Opravdu chcete odebrat tuto kapitolu?"
 
-rls_string STRING_r_view_remove_all_downloads_cmd "Remove All"
 
-rls_string STRING_r_podcast_subtitle "The UIQ Podcatcher" // shown beneath main view title
+// Naposledy pridane polozky
 
-rls_string STRING_r_add_feed_exists "A feed with this URL already exists!" // shown when adding or changing a feed to a URL that already exists
-rls_string STRING_r_add_feed_exists_title "Duplicate Feed" // title of error dialogs when adding feeds
-
-rls_string STRING_r_add_feed_replace "All existing shows in this feed will be deleted! Continue?" // shown when changing an existing feed URL
-rls_string STRING_r_add_feed_replace_title "Warning" // title to dialog
+rls_string STRING_r_view_books_no_books "Žádné knihy" // No Books
+rls_string STRING_r_view_import_feeds_cmd "Imporovat zdroje" // Import feeds cmd in feedview
+rls_string STRING_r_view_import_feeds_title "Vyberte soubor OPML"
+rls_string STRING_r_view_books_status "%d Knih" // Used in base view listbox status text max 32 chars
+rls_string STRING_r_view_feeds_status "%d Zdrojů" // Used in base view listbox for feeds status text max 32 chars
+rls_string STRING_r_cancel_update_all_feeds_cmd "Zrušit synchr."
+rls_string STRING_r_cancel_update_all_feeds_short_cmd "Zrušit"

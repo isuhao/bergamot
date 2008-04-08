@@ -119,7 +119,7 @@ rls_string STRING_r_update_new_feed_title "Update Feed"
 rls_string STRING_r_update_new_feed_prompt "Do you want to update the feed now?"
 
 rls_string STRING_r_delete_played_title "Delete All Played"
-rls_string STRING_r_delete_played_prompt "Are you sure you want to delete all played shows from this feed?"
+rls_string STRING_r_delete_played_prompt "Are you sure you want to delete all played shows?"
 
 rls_string STRING_r_delete_show_title "Delete Show"
 rls_string STRING_r_delete_show_prompt "Are you really sure you want to delete the selected show?"

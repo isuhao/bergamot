@@ -28,9 +28,9 @@ rls_string STRING_r_view_feeds_cmd "Потоки"
 rls_string STRING_r_view_player_cmd "Проигрыватель"
 
 // Navigation to the audio books
-rls_string STRING_r_view_audiobooks_cmd "Аудио книги"
-rls_string STRING_r_view_new_audiobook_cmd "New audiobook"
-rls_string STRING_r_view_remove_audiobook_cmd "Remove audiobook"
+rls_string STRING_r_view_audiobooks_cmd "Аудиокниги"
+rls_string STRING_r_view_new_audiobook_cmd "Создать аудиокнигу"
+rls_string STRING_r_view_remove_audiobook_cmd "Удалить аудиокнигу"
 
 // Actions for the player
 rls_string STRING_r_play_cmd "Слушать"
