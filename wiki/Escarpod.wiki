@@ -51,7 +51,7 @@ To download binaries of Escarpod to use on your phone, visit our [http://code.go
     * Audio book improvements
     * Bug fixes
 
-  * Escarpod 0.96 (April 6th)
+  * Escarpod 0.96 (April 8th)
     * UI fixes
     * Export feed function
     * Improved auto-pause on ring and dial, with resume after call has ended
