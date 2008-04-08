@@ -167,6 +167,10 @@ void CShowEngine::GetStatsByFeed(TUint aFeedUid, TUint &aNumShows, TUint &aNumUn
 			}
 			}
 		}
+	
+	aNumShows = showsCount;
+	aNumUnplayed = unplayedCount;
+	
 	}
 
 void CShowEngine::GetShow(CShowInfo *info)
