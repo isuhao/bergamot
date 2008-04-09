@@ -192,3 +192,11 @@ rls_string STRING_r_view_export_feeds_cmd "Exportera kanaler" // Export feeds cm
 
 rls_string STRING_r_catchup_feed "Markera alla avsnitt som spelade?" // shown when first updating a new feed
 rls_string STRING_r_catchup_feed_title "Första uppdateringen" // title to dialog
+
+rls_string STRING_r_remove_book_title "Ta bort ljudbok"
+rls_string STRING_r_remove_book_prompt "Vill du ta bort ljudboken?"
+
+rls_string STRING_r_remove_chapter_title "Ta bort kapitel"
+rls_string STRING_r_remove_chapter_prompt "Vill du ta bort kapitlet?"
+
+rls_string STRING_r_podcast_books_status_format "%d/%d kapitel"

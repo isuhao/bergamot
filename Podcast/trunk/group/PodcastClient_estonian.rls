@@ -89,8 +89,8 @@ rls_string STRING_r_view_audiobooks_title "Audio raamatud"
 
 // Shows view status strings
 rls_string STRING_r_podcast_shows_title_format "%d mängimata, %d kokku";
-rls_string STRING_r_podcast_shows_title_download "%d Queued"
-rls_string STRING_r_podcast_shows_downloads_suspended "%d Queued (Suspended)"
+rls_string STRING_r_podcast_shows_title_download "%d ootel"
+rls_string STRING_r_podcast_shows_downloads_suspended "%d ootel (Peatatud)"
 rls_string STRING_r_podcast_shows_no_items "Tühi";
 
 // Feeds view status strings
@@ -169,10 +169,10 @@ rls_string STRING_r_view_feeds_status "%d voogu" // Used in base view listbox fo
 rls_string STRING_r_cancel_update_all_feeds_cmd "Katkesta uuendus"
 rls_string STRING_r_cancel_update_all_feeds_short_cmd "Katkesta"
 
-rls_string STRING_r_suspend_download_cmd "Suspend" // String used for cmd to suspend current download rather than removing it from the que.
-rls_string STRING_r_view_resume_short_dls_cmd "Resume" // Short download cmd
-rls_string STRING_r_view_onphone_status "%d Unplayed, %d Total" // Used in base view listbox status for shows on phone text max 32 chars
-rls_string STRING_r_view_onphone_status_unknown "Unknown" // Used for unknown status event
+rls_string STRING_r_suspend_download_cmd "Peata" // String used for cmd to suspend current download rather than removing it from the que.
+rls_string STRING_r_view_resume_short_dls_cmd "Alusta" // Short download cmd
+rls_string STRING_r_view_onphone_status "%d mängimata, %d kokku" // Used in base view listbox status for shows on phone text max 32 chars
+rls_string STRING_r_view_onphone_status_unknown "Määramatu" // Used for unknown status event
 
 // Strings used to set the playorder of an audio book
 rls_string STRING_r_view_books_setorder "Mängimise järjestus" // cmd for set audio book playorder
@@ -181,12 +181,12 @@ rls_string STRING_r_view_books_setorder_dlg_swapcmd "Vaheta"
 rls_string STRING_r_view_books_setorder_dlg_label "Vali lugu millega vahetada"
 rls_string STRING_r_view_books_setorder_dlg_selectlabel "Vali lugu mida liigutada"
 
-rls_string STRING_r_view_remove_all_downloads_cmd "Remove All"
+rls_string STRING_r_view_remove_all_downloads_cmd "Eemalda kõik"
 
 rls_string STRING_r_podcast_subtitle "The UIQ Podcatcher" // shown beneath main view title
 
-rls_string STRING_r_add_feed_exists "A feed with this URL already exists!" // shown when adding or changing a feed to a URL that already exists
-rls_string STRING_r_add_feed_exists_title "Duplicate Feed" // title of error dialogs when adding feeds
+rls_string STRING_r_add_feed_exists "Antud URL:iga voog on juba olemas!" // shown when adding or changing a feed to a URL that already exists
+rls_string STRING_r_add_feed_exists_title "Korduv voog" // title of error dialogs when adding feeds
 
-rls_string STRING_r_add_feed_replace "All existing shows in this feed will be deleted! Continue?" // shown when changing an existing feed URL
-rls_string STRING_r_add_feed_replace_title "Warning" // title to dialog
+rls_string STRING_r_add_feed_replace "Kõik lood selles voos kustutatkse! Oled kindel?" // shown when changing an existing feed URL
+rls_string STRING_r_add_feed_replace_title "Tähelepanu!" // title to dialog

@@ -33,10 +33,10 @@ rls_string STRING_r_view_new_audiobook_cmd "Neues Hörbuch"
 rls_string STRING_r_view_remove_audiobook_cmd "Hörbuch entfernen"
 
 // Actions for the player
-rls_string STRING_r_play_cmd "Start"
+rls_string STRING_r_play_cmd "Wiederg."
 rls_string STRING_r_stop_cmd "Stop"
 rls_string STRING_r_pause_cmd "Pause"
-rls_string STRING_r_volume_cmd "Lautstärke"
+rls_string STRING_r_volume_cmd "Lautst."
 
 rls_string STRING_r_view_download_cmd "Download"
 rls_string STRING_r_view_download_short_cmd "Holen"
@@ -67,7 +67,6 @@ rls_string STRING_r_view_download_show_cmd "Download"
 rls_string STRING_r_view_delete_show_cmd "Löschen"
 rls_string STRING_r_view_delete_shows_cmd "Alle löschen"
 rls_string STRING_r_view_purge_show_cmd "Löschen"
-rls_string STRING_r_view_remove_download_cmd "Aus Warteschlange entfernen"
 rls_string STRING_r_view_stop_downloads_cmd "Download unterbrechen"
 rls_string STRING_r_view_resume_downloads_cmd "Download fortsetzen"
 rls_string STRING_r_view_mark_all_played_cmd "Alle als gehört markieren"
@@ -94,7 +93,7 @@ rls_string STRING_r_podcast_shows_downloads_suspended "%d anstehend (angehalten)
 rls_string STRING_r_podcast_shows_no_items "Keine Elemente/Einträge";
 
 // Feeds view status strings
-rls_string STRING_r_podcast_feeds_title_format "%d Abonnenments"
+rls_string STRING_r_podcast_feeds_title_format "%d Abonnements"
 rls_string STRING_r_podcast_books_title_format "%d Hörbücher"
 rls_string STRING_r_podcast_feeds_status_format "%d/%d Episoden"
 rls_string STRING_r_podcast_shows_never_updated "Nie"
@@ -128,6 +127,7 @@ rls_string STRING_r_purge_show_prompt "Sind Sie sich ganz sicher, dass Sie diese
 rls_string STRING_r_podcast_settings_title "Einstellungen"
 rls_string STRING_r_podcast_setting_showdir "Podcast Verzeichnis"
 rls_string STRING_r_podcast_setting_autoupdate "Automatisches Update"
+rls_string STRING_r_podcast_setting_autodownload "Automatischer Download"
 rls_string STRING_r_podcast_setting_checkevery "Updateintervall"
 rls_string STRING_r_podcast_setting_updateat "Updatezeitpunkt"
 rls_string STRING_r_podcast_setting_minutes "Minuten"
@@ -181,12 +181,20 @@ rls_string STRING_r_view_books_setorder_dlg_selectlabel "Zu verschiebenden Eintr
 
 rls_string STRING_r_view_remove_all_downloads_cmd "Alle Entfernen"
 
-rls_string STRING_r_podcast_subtitle "The UIQ Podcatcher" // shown beneath main view title
+rls_string STRING_r_podcast_subtitle "Der UIQ Podcatcher" // shown beneath main view title
 
 rls_string STRING_r_add_feed_exists "Ein Abonnement mit dieser URL existiert bereits!" // shown when adding or changing a feed to a URL that already exists
 rls_string STRING_r_add_feed_exists_title "Dupliziertes Abonnement" // title of error dialogs when adding feeds
 
 rls_string STRING_r_add_feed_replace "Alle Shows dieses Abonnements werden gelöscht! Fortsetzen?" // shown when changing an existing feed URL
 rls_string STRING_r_add_feed_replace_title "Warnung" // title to dialog
+rls_string STRING_r_view_export_feeds_cmd "Abonnements exportieren" // Export feeds cmd in feedview
 
-rls_string STRING_r_podcast_setting_autodownload "Automatischer Download"
+rls_string STRING_r_catchup_feed "Alle Episoden als gehört markieren?" // shown when first updating a new feed
+rls_string STRING_r_catchup_feed_title "Erste Aktualisierung" // title to dialog
+
+rls_string STRING_r_remove_book_title "Hörbuch entfernen"
+rls_string STRING_r_remove_book_prompt "Wollen Sie dieses Hörbuch entfernen?"
+
+rls_string STRING_r_remove_chapter_title "Kapitel entfernen"
+rls_string STRING_r_remove_chapter_prompt "Wollen Sie dieses Kapitel entfernen?"
