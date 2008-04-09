@@ -48,8 +48,6 @@ void CTelephonyListener::RunL()
 	{
 	RDebug::Print(_L("CTelephonyListener::RunL: iStatus: %u"),iLineStatus.iStatus );
 
-	// seems to be too late to do this at EStatusAnswering...
-
 	switch (iLineStatus.iStatus) {
 	case CTelephony::EStatusRinging:
 	case CTelephony::EStatusConnecting:
@@ -65,7 +63,7 @@ void CTelephonyListener::RunL()
 	case CTelephony::EStatusIdle:
 		if (iPaused) {
 			iPaused = EFalse;
-			User::After(1000000*2);
+			User::After(1000000*5);
 			iPodcastModel.SoundEngine().Play();
 		}
 		break;
