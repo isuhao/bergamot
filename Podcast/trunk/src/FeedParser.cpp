@@ -254,7 +254,7 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt /*aErrorCode*/)
 				}
 			break;
 		case EStateItemPubDate:
-			//RDebug::Print(_L("PubDate END"));
+			RDebug::Print(_L("PubDate END: iBuffer='%S'"), &iBuffer);
 			if (str.CompareF(KTagPubDate) == 0) {
 				// hack for feeds that don't always write day as two digits
 				TChar five(iBuffer[5]);
@@ -268,6 +268,26 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt /*aErrorCode*/)
 					iBuffer.Copy(fix);
 				}
 				// end hack
+				
+				
+				// hack for feeds that write out months in full
+				
+				if (iBuffer[11] != ' ') {
+					TPtrC midPtr = iBuffer.Mid(8);
+					
+					int spacePos = midPtr.Find(_L(" "));
+					
+					if (spacePos != KErrNotFound) {
+						//RDebug::Print(_L("Month: %S"), &midPtr.Left(spacePos));
+						
+						TBuf16<KBufferLength> newBuffer;
+						newBuffer.Copy(iBuffer.Left(11));
+						newBuffer.Append(_L(" "));
+						newBuffer.Append(iBuffer.Mid(11+spacePos));
+						//RDebug::Print(_L("newBuffer: %S"), &newBuffer);
+						iBuffer.Copy(newBuffer);
+					}
+				}
 				
 				TBuf8<128> temp;
 				temp.Copy(iBuffer);
