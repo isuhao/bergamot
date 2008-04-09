@@ -399,6 +399,10 @@ void CPodcastClientShowsView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownloa
 		{
 			UpdateShowItemL(iPodcastModel.ShowEngine().ShowDownloading(), aBytesOfCurrentDownload);
 		}
+		
+		if (aPercentOfCurrentDownload == -1) {
+			UpdateCommandsL();
+		}
 	}
 }
 
@@ -444,6 +448,7 @@ CQikCommand* CPodcastClientShowsView::DynInitOrDeleteCommandL(CQikCommand* aComm
 
 void CPodcastClientShowsView::GetShowIcons(CShowInfo* aShowInfo, TInt& aImageId, TInt& aMaskId)
 {	
+	TBool dlStop = iPodcastModel.ShowEngine().DownloadsStopped();
 	if (aShowInfo->ShowType() == EAudioBook) {
 		aImageId = EMbmPodcastclientAudiobookchapter_40x40;
 		aMaskId = EMbmPodcastclientAudiobookchapter_40x40m;
@@ -464,11 +469,11 @@ void CPodcastClientShowsView::GetShowIcons(CShowInfo* aShowInfo, TInt& aImageId,
 			aMaskId = EMbmPodcastclientNew_40x40m;
 			break;
 		case EQueued:
-			aImageId = EMbmPodcastclientQueued_40x40;
+			aImageId = dlStop ? EMbmPodcastclientSuspended_40x40 : EMbmPodcastclientQueued_40x40;
 			aMaskId = EMbmPodcastclientQueued_40x40m;
 			break;
 		case EDownloading:
-			aImageId = EMbmPodcastclientDownloading_40x40;
+			aImageId = dlStop ? EMbmPodcastclientSuspended_40x40 : EMbmPodcastclientDownloading_40x40;
 			aMaskId = EMbmPodcastclientDownloading_40x40m;
 			break;
 		}
