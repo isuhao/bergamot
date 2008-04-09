@@ -6,6 +6,8 @@
 #include "SettingsEngine.h"
 #include <e32hashtab.h>
 
+const TInt KMaxDownloadErrors=3;
+
 CShowEngine::CShowEngine(CPodcastModel& aPodcastModel) : iPodcastModel(aPodcastModel)
 	{
 	iLastShowsOnPhoneTotalCount = -1;
@@ -259,10 +261,11 @@ void CShowEngine::CompleteL(CHttpClient* /*aHttpClient*/, TBool aSuccessful)
 		{
 			iShowDownloading->SetDownloadState(EQueued);
 			iDownloadErrors++;
-			if (iDownloadErrors > 3) 
+			if (iDownloadErrors > KMaxDownloadErrors) 
 			{
 				RDebug::Print(_L("Too many downloading errors, suspending downloads"));
 				iDownloadsSuspended = ETrue;
+				NotifyShowDownloadUpdated(-1,-1,-1);
 			}
 		}
 	}
@@ -929,5 +932,6 @@ CMetaDataReader& CShowEngine::MetaDataReader()
 void CShowEngine::FileError(TUint aError)
 	{
 	//TODO: Error dialog
-	StopDownloads();
+	//StopDownloads();
+	iDownloadErrors=KMaxDownloadErrors;
 	}

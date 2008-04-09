@@ -146,11 +146,12 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 				
 				// on writing error we close connection 
 				if (error != KErrNone) {
-					aTransaction.Close();
+					//aTransaction.Close();
 					iCallbacks.FileError(error);
 					iHttpClient->ClientRequestCompleteL(EFalse);
+					return;
 				}
-				
+
 				if (!iSilent) {
 					iCallbacks.Progress(iHttpClient, iBytesDownloaded, iBytesTotal);
 				}
