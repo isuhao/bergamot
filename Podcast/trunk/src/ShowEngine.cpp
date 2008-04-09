@@ -511,7 +511,7 @@ TInt CShowEngine::CompareShowsByTitle(const CShowInfo &a, const CShowInfo &b)
 
 void CShowEngine::DeletePlayedShows()
 	{
-	for (TInt i=0;i<iShows.Count();i++)
+	for (TInt i=0;i<iSelectedShows.Count();i++)
 		{
 		if (iSelectedShows[i]->PlayState() == EPlayed && iSelectedShows[i]->FileName().Length() > 0) {
 			BaflUtils::DeleteFile(iFs, iSelectedShows[i]->FileName());
