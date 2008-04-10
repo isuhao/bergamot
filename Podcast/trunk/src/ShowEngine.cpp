@@ -535,7 +535,7 @@ void CShowEngine::DeletePlayedShows()
 	{
 	for (TInt i=0;i<iSelectedShows.Count();i++)
 		{
-		if (iSelectedShows[i]->PlayState() == EPlayed && iSelectedShows[i]->FileName().Length() > 0) {
+		if (iSelectedShows[i]->PlayState() == EPlayed && iPodcastModel.PlayingPodcast() != iSelectedShows[i] && iSelectedShows[i]->FileName().Length() > 0) {
 			BaflUtils::DeleteFile(iFs, iSelectedShows[i]->FileName());
 			iSelectedShows[i]->SetDownloadState(ENotDownloaded);
 			iSelectedShows[i]->SetPlayState(ENeverPlayed);

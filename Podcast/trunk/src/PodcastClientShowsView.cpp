@@ -359,7 +359,7 @@ void CPodcastClientShowsView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownloa
 		//iPodcastModel.ShowEngine().ShowDownloading()->FeedUid() == iPodcastModel.ActiveFeedInfo()->Uid()) &&
 
 		// now we only show when the active downloa has focus in a list
-		if(showInfo != NULL && showInfo->Uid() == iPodcastModel.ShowEngine().ShowDownloading()->Uid() &&				
+		if(!iPodcastModel.ShowEngine().DownloadsStopped() && showInfo != NULL && showInfo->Uid() == iPodcastModel.ShowEngine().ShowDownloading()->Uid() &&				
 				aPercentOfCurrentDownload>=0 && aPercentOfCurrentDownload < KOneHundredPercent)
 		{
 			if(!iProgressAdded)
@@ -816,8 +816,8 @@ void CPodcastClientShowsView::UpdateCommandsL()
 	comMan.SetAvailable(*this, EPodcastDownloadShow, !updatingState);
 	comMan.SetAvailable(*this, EPodcastShowUnplayedOnly, !updatingState);
 	comMan.SetAvailable(*this, EPodcastMarkAllPlayed, !updatingState);
-	comMan.SetAvailable(*this, EPodcastDeleteShow, !updatingState);
-	comMan.SetAvailable(*this, EPodcastDeleteShowHardware, !updatingState);
+	comMan.SetAvailable(*this, EPodcastDeleteShow, !updatingState && !playingPodcast);
+	comMan.SetAvailable(*this, EPodcastDeleteShowHardware, !updatingState && !playingPodcast);
 	comMan.SetAvailable(*this, EPodcastDeleteAllPlayed, !updatingState);
 	comMan.SetInvisible(*this, EPodcastViewPendingShows, EFalse);
 	comMan.SetInvisible(*this, EPodcastViewDownloadedShows, EFalse);
