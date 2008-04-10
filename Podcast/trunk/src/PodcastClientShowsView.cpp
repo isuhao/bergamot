@@ -271,10 +271,12 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 		case EPodcastStopDownloads:
 			{
 				iPodcastModel.ShowEngine().StopDownloads();
+				UpdateListboxItemsL();	
 			}break;
 		case EPodcastResumeDownloads:
 			{
 				iPodcastModel.ShowEngine().ResumeDownloads();
+				UpdateListboxItemsL();	
 			}break;
 		default:
 			CPodcastClientView::HandleCommandL(aCommand);
