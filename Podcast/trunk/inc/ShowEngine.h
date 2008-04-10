@@ -25,7 +25,6 @@ public:
 	TBool DownloadsStopped();
 
 	TInt GetNumDownloadingShowsL() const;
-	void GetLastShowsOnPhoneCountL(TInt &aTotal, TInt &aUnplayed) const;
 	CShowInfo* ShowDownloading();
 	CShowInfo* GetShowByUidL(TUint aShowUid);
 	CShowInfo* GetNextShowByTrackL(CShowInfo* aShowInfo);
@@ -50,7 +49,7 @@ public:
 	void SetSelectionPlayed();
 	void CheckFiles();
 	void GetStatsByFeed(TUint aFeedUid, TUint &aNumShows, TUint &aNumUnplayed );
-
+	void GetStatsForDownloaded(TUint &aNumShows, TUint &aNumUnplayed );
 	void AddObserver(MShowEngineObserver *observer);
 	void RemoveObserver(MShowEngineObserver *observer);
 	
@@ -113,9 +112,6 @@ private:
     CMetaDataReader* iMetaDataReader;
     
     TUint iGrossSelectionLength;
-    
-    TInt iLastShowsOnPhoneTotalCount;
-    TInt iLastShowsOnPhoneUnplayedCount;
     
     CQikMediaFileFolderUtils *iMediaFileFolderUtils;
 };

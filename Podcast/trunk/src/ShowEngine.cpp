@@ -10,7 +10,6 @@ const TInt KMaxDownloadErrors=3;
 
 CShowEngine::CShowEngine(CPodcastModel& aPodcastModel) : iPodcastModel(aPodcastModel)
 	{
-	iLastShowsOnPhoneTotalCount = -1;
 	iDownloadsSuspended = ETrue;
 	}
 
@@ -162,6 +161,26 @@ void CShowEngine::GetStatsByFeed(TUint aFeedUid, TUint &aNumShows, TUint &aNumUn
 	
 	for (TInt i=0;i<iShows.Count();i++) {
 		if (iShows[i]->FeedUid() == aFeedUid)
+			{
+			showsCount++;
+			if (iShows[i]->PlayState() == ENeverPlayed) {
+				unplayedCount++;
+			}
+			}
+		}
+	
+	aNumShows = showsCount;
+	aNumUnplayed = unplayedCount;
+	
+	}
+
+void CShowEngine::GetStatsForDownloaded(TUint &aNumShows, TUint &aNumUnplayed )
+	{
+	TInt showsCount = 0;
+	TInt unplayedCount = 0;
+	
+	for (TInt i=0;i<iShows.Count();i++) {
+		if (iShows[i]->DownloadState() == EDownloaded)
 			{
 			showsCount++;
 			if (iShows[i]->PlayState() == ENeverPlayed) {
@@ -639,22 +658,14 @@ void CShowEngine::SelectShowsDownloaded()
 	
 	iSelectedShows.Reset();
 	iGrossSelectionLength = 0;
-	iLastShowsOnPhoneTotalCount = 0;
-	iLastShowsOnPhoneUnplayedCount = 0;
 	for (TInt i=0;i<iShows.Count();i++)
 		{
 		if (iShows[i]->DownloadState() == EDownloaded && !(iShows[i]->ShowType() == EAudioBook))
 			{
 			iGrossSelectionLength++;
-			iLastShowsOnPhoneTotalCount++;
 			if (!iPodcastModel.SettingsEngine().SelectUnplayedOnly() || (iPodcastModel.SettingsEngine().SelectUnplayedOnly() && iShows[i]->PlayState() == ENeverPlayed) ) {
 				iSelectedShows.Append(iShows[i]);
-				}
-			
-			if (iShows[i]->PlayState() == ENeverPlayed) {
-				iLastShowsOnPhoneUnplayedCount++;
-			}
-
+				}			
 			}
 		}
 	
@@ -708,12 +719,6 @@ void CShowEngine::GetShowsForFeed(RShowInfoArray& aShowArray, TUint aFeedUid)
 TInt CShowEngine::GetNumDownloadingShowsL() const 
 	{
 	return iShowsDownloading.Count();
-	}
-
-void CShowEngine::GetLastShowsOnPhoneCountL(TInt &aTotal, TInt &aUnplayed) const 
-	{
-		aTotal = iLastShowsOnPhoneTotalCount;
-		aUnplayed = iLastShowsOnPhoneUnplayedCount;
 	}
 
 RShowInfoArray& CShowEngine::GetSelectedShows()
