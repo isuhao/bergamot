@@ -163,7 +163,12 @@ void CSoundEngine::Play()
 {
 	if(iState > ESoundEngineOpening)
 	{
-		iPlayer->SetPosition(iMaxPos);
+		TUint skipBack = 5000000; // 5 seconds
+		TTimeIntervalMicroSeconds newPos;
+		
+		newPos = (iMaxPos.Int64() - skipBack > 0 ? iMaxPos.Int64() - skipBack : 0) ;
+		
+		iPlayer->SetPosition(newPos);
 		iPlayer->Play();
 		iState = ESoundEnginePlaying;
 
@@ -179,13 +184,14 @@ void CSoundEngine::Play()
 	}
 }
 
-void CSoundEngine::Stop()
+void CSoundEngine::Stop(TBool aMarkPlayed)
 {
 	if(iState > ESoundEngineOpening)
 	{
-		// seem to need to do this here, even though we do it in MapcPlayComplete
-		iPodcastModel.PlayingPodcast()->SetPlayState(EPlayed);
-
+		if (aMarkPlayed) {
+			// seem to need to do this here, even though we do it in MapcPlayComplete
+			iPodcastModel.PlayingPodcast()->SetPlayState(EPlayed);
+		}
 		iState = ESoundEngineStopped;
 		SetPosition(0);
 		iPlayer->Stop();

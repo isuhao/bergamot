@@ -163,7 +163,7 @@ void CPodcastModel::PlayPausePodcastL(CShowInfo* aPodcast, TBool aPlayOnInit)
 			iPlayingPodcast->SetPosition(iSoundEngine->Position());
 		}
 		
-		iSoundEngine->Stop();
+		iSoundEngine->Stop(EFalse);
 
 		// we play video podcasts through the external player
 		if(aPodcast != NULL && aPodcast->ShowType() != EVideoPodcast) {

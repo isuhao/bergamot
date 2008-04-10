@@ -36,7 +36,7 @@ public:
 	~CSoundEngine();
 	void OpenFileL(const TDesC& aFileName, TBool aPlayOnInit);
 	void Play();
-	void Stop();
+	void Stop(TBool aMarkPlayed=ETrue);
 	TTimeIntervalMicroSeconds Position();
 	void SetPosition(TUint aPos);
 
