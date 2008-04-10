@@ -1,4 +1,7 @@
 == Complete list of releases ==
+
+This is a complete list of releases of Escarpod.
+
   * Escarpod 0.94 (March 16th) [http://bergamot.googlecode.com/svn/Podcast/tags/v094 code]
     * OPML bulk feed import!
     * Pause on ring
@@ -8,7 +11,6 @@
     * Headset control support for play, pause ~~and volume~~ (Bluetooth and wired)
     * *This version will require any previous version to be uninstalled*
   
-This is a complete list of releases of Escarpod.
   * Escarpod 0.93 (Feburary 14th)
     * Update at fixed time of day added
     * Separated automated update and automated download
