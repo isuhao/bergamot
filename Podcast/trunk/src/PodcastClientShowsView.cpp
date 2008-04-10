@@ -453,29 +453,29 @@ void CPodcastClientShowsView::GetShowIcons(CShowInfo* aShowInfo, TInt& aImageId,
 		aImageId = EMbmPodcastclientAudiobookchapter_40x40;
 		aMaskId = EMbmPodcastclientAudiobookchapter_40x40m;
 	} else {
-		switch(aShowInfo->DownloadState())
-		{
-		case EDownloaded:
-			if (aShowInfo->PlayState() == EPlaying) {
-				aImageId = EMbmPodcastclientShow_playing_40x40;
-				aMaskId = EMbmPodcastclientShow_playing_40x40m;
-			} else {
+		if (iPodcastModel.PlayingPodcast() == aShowInfo) {
+					aImageId = EMbmPodcastclientShow_playing_40x40;
+					aMaskId = EMbmPodcastclientShow_playing_40x40m;
+		} else {
+			switch(aShowInfo->DownloadState())
+			{
+			case EDownloaded:
 				aImageId = EMbmPodcastclientShow_40x40;
 				aMaskId = EMbmPodcastclientShow_40x40m;
+				break;	
+			case ENotDownloaded:
+				aImageId = EMbmPodcastclientNew_40x40;
+				aMaskId = EMbmPodcastclientNew_40x40m;
+				break;
+			case EQueued:
+				aImageId = dlStop ? EMbmPodcastclientSuspended_40x40 : EMbmPodcastclientQueued_40x40;
+				aMaskId = EMbmPodcastclientQueued_40x40m;
+				break;
+			case EDownloading:
+				aImageId = dlStop ? EMbmPodcastclientSuspended_40x40 : EMbmPodcastclientDownloading_40x40;
+				aMaskId = EMbmPodcastclientDownloading_40x40m;
+				break;
 			}
-			break;	
-		case ENotDownloaded:
-			aImageId = EMbmPodcastclientNew_40x40;
-			aMaskId = EMbmPodcastclientNew_40x40m;
-			break;
-		case EQueued:
-			aImageId = dlStop ? EMbmPodcastclientSuspended_40x40 : EMbmPodcastclientQueued_40x40;
-			aMaskId = EMbmPodcastclientQueued_40x40m;
-			break;
-		case EDownloading:
-			aImageId = dlStop ? EMbmPodcastclientSuspended_40x40 : EMbmPodcastclientDownloading_40x40;
-			aMaskId = EMbmPodcastclientDownloading_40x40m;
-			break;
 		}
 	}
 }
