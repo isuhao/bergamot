@@ -321,6 +321,8 @@ void CFeedEngine::ParsingComplete(CFeedInfo *item)
 		iObservers[i]->FeedInfoUpdated(item);
 //		iObservers[i]->ShowListUpdated();
 	}
+	
+	iPodcastModel.ShowEngine().SaveShows();
 	}
 
 
