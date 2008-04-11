@@ -180,7 +180,7 @@ void CShowEngine::GetStatsForDownloaded(TUint &aNumShows, TUint &aNumUnplayed )
 	TInt unplayedCount = 0;
 	
 	for (TInt i=0;i<iShows.Count();i++) {
-		if (iShows[i]->DownloadState() == EDownloaded)
+		if (iShows[i]->DownloadState() == EDownloaded && !(iShows[i]->ShowType() == EAudioBook))
 			{
 			showsCount++;
 			if (iShows[i]->PlayState() == ENeverPlayed) {
