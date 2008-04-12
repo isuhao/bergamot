@@ -578,6 +578,10 @@ void CPodcastClientFeedView::UpdateCommandsL()
 	comMan.SetAvailable(*this, EPodcastCancelUpdateAllFeeds, iUpdatingAllRunning);
 	comMan.SetDimmed(*this, EPodcastAddFeed, iUpdatingAllRunning);
 	comMan.SetDimmed(*this, EPodcastEditFeed, iUpdatingAllRunning);
+	
+	comMan.SetAvailable(*this, EPodcastRemoveAudioBookHardware,iCurrentViewMode==EFeedsAudioBooksMode);
+	comMan.SetAvailable(*this, EPodcastDeleteFeedHardware,!(iCurrentViewMode==EFeedsAudioBooksMode));
+		
 	}
 
 

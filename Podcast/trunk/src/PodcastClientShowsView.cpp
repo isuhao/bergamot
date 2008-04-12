@@ -455,7 +455,7 @@ void CPodcastClientShowsView::GetShowIcons(CShowInfo* aShowInfo, TInt& aImageId,
 		aImageId = EMbmPodcastclientAudiobookchapter_40x40;
 		aMaskId = EMbmPodcastclientAudiobookchapter_40x40m;
 	} else {
-		if (iPodcastModel.PlayingPodcast() == aShowInfo) {
+		if (iPodcastModel.PlayingPodcast() == aShowInfo && iPodcastModel.SoundEngine().State() == ESoundEnginePlaying) {
 					aImageId = EMbmPodcastclientShow_playing_40x40;
 					aMaskId = EMbmPodcastclientShow_playing_40x40m;
 		} else {
