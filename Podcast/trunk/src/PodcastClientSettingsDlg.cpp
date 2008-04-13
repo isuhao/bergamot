@@ -203,7 +203,7 @@ void CPodcastClientVolumeDlg::HandleControlStateChangeL(TInt aControlId)
 enum
 {
 	EUseDefaultAccount,
-	EUseWLANOnly,
+	EUseAskMeAccount,
 	EUseSpecifiedIAP
 };
 
@@ -252,7 +252,7 @@ void CPodcastClientSettingsDlg::PreLayoutDynInitL()
 
 	if(iPodcastModel.SettingsEngine().SpecificIAP() == -1)
 	{
-		iConnectionCtrl->SetCurrentItem(EUseWLANOnly);
+		iConnectionCtrl->SetCurrentItem(EUseAskMeAccount);
 		SetLineDimmedNow(EPodcastSettingIAPList, ETrue);
 		//MakeWholeLineVisible(EPodcastSettingIAPList, EFalse);
 	}
@@ -312,7 +312,7 @@ TBool CPodcastClientSettingsDlg::OkToExitL(TInt aCommandId)
 					iPodcastModel.SettingsEngine().SetSpecificIAP(0);
 					iPodcastModel.SetIap(0);
 				}break;
-			case EUseWLANOnly:
+			case EUseAskMeAccount:
 				{
 					iPodcastModel.SettingsEngine().SetSpecificIAP(-1);
 					iPodcastModel.SetIap(-1);
@@ -379,12 +379,24 @@ void CPodcastClientSettingsDlg::HandleControlStateChangeL(TInt aControlId)
 		case EUseSpecifiedIAP:
 			{
 			SetLineDimmedNow(EPodcastSettingIAPList, EFalse);
+			SetLineDimmedNow(EPodcastSettingAutoDownload, EFalse);
+			SetLineDimmedNow(EPodcastSettingAutoUpdate, EFalse);
 			//MakeWholeLineVisible(EPodcastSettingIAPList, ETrue);
 			}
 			break;
+		case EUseAskMeAccount: 
+			{
+			// we don't allow auto update or download when user wants IAP selection dialog
+			SetLineDimmedNow(EPodcastSettingAutoUpdate, ETrue);
+			SetLineDimmedNow(EPodcastSettingAutoDownload, ETrue);
+			iAutoUpdateCtrl->SetCurrentItem(0);
+			iAutoDownloadCtrl->SetState(CEikButtonBase::EClear);
+			} break;
 		default:
 			{
 			SetLineDimmedNow(EPodcastSettingIAPList, ETrue);
+			SetLineDimmedNow(EPodcastSettingAutoDownload, EFalse);
+			SetLineDimmedNow(EPodcastSettingAutoUpdate, EFalse);
 			//MakeWholeLineVisible(EPodcastSettingIAPList, EFalse);
 			}break;
 		}
