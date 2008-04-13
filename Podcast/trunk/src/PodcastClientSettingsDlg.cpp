@@ -153,7 +153,7 @@ void CPodcastClientIAPDlg::PreLayoutDynInitL()
 	TInt cnt = iPodcastModel.IAPIds().Count();
 	for(TInt loop = 0;loop<cnt;loop++)
 	{
-		if(iPodcastModel.IAPIds()[loop].iIapId == iSelectedIAP)
+		if(iPodcastModel.IAPIds()[loop].iIapId == (TUint32) iSelectedIAP)
 		{
 			iIAPListCtrl->SetCurrentItem(loop);
 			break;
@@ -254,6 +254,9 @@ void CPodcastClientSettingsDlg::PreLayoutDynInitL()
 	{
 		iConnectionCtrl->SetCurrentItem(EUseAskMeAccount);
 		SetLineDimmedNow(EPodcastSettingIAPList, ETrue);
+		SetLineDimmedNow(EPodcastSettingAutoUpdate, ETrue);
+		SetLineDimmedNow(EPodcastSettingAutoDownload, ETrue);
+
 		//MakeWholeLineVisible(EPodcastSettingIAPList, EFalse);
 	}
 	else if(iPodcastModel.SettingsEngine().SpecificIAP() > 0)
@@ -264,7 +267,7 @@ void CPodcastClientSettingsDlg::PreLayoutDynInitL()
 		TInt cnt = iPodcastModel.IAPIds().Count();
 		for(TInt loop = 0;loop<cnt;loop++)
 		{
-			if(iPodcastModel.IAPIds()[loop].iIapId == iPodcastModel.SettingsEngine().SpecificIAP())
+			if(iPodcastModel.IAPIds()[loop].iIapId == (TUint32) iPodcastModel.SettingsEngine().SpecificIAP())
 			{
 				iIAPListCtrl->SetCurrentItem(loop);
 				break;
