@@ -198,3 +198,5 @@ rls_string STRING_r_remove_book_prompt "Wollen Sie dieses Hörbuch entfernen?"
 
 rls_string STRING_r_remove_chapter_title "Kapitel entfernen"
 rls_string STRING_r_remove_chapter_prompt "Wollen Sie dieses Kapitel entfernen?"
+
+rls_string STRING_r_podcast_books_status_format "%d/%d Kapitel"
