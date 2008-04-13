@@ -926,6 +926,7 @@ void CPodcastClientShowsView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQ
 			UpdateCommandsL();
 		}
 		break;
+	case EEventItemHighlighted:
 	case EEventItemConfirmed:
 	case EEventItemTapped:
 		{

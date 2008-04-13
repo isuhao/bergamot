@@ -236,6 +236,7 @@ void CPodcastClientBaseView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQi
 		break;
 	case EEventHighlightMoved:
 		break;
+	case EEventItemHighlighted:
 	case EEventItemConfirmed:
 	case EEventItemTapped:
 		{

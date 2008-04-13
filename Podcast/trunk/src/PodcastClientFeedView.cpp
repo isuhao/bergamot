@@ -484,7 +484,7 @@ void CPodcastClientFeedView::HandleListBoxEventL(CQikListBox* /*aListBox*/, TQik
 		{
 		case EEventHighlightMoved:
 			break;
-	
+		case EEventItemHighlighted:
 		case EEventItemConfirmed:
 		case EEventItemTapped:
 			{		
