@@ -51,6 +51,8 @@ To download binaries of Escarpod to use on your phone, visit our [http://code.go
     * Audio book improvements
     * Bug fixes
 
+  * Escarpod 0.98 (April 20th)
+
   * Escarpod 0.97 (April 13th) [http://bergamot.googlecode.com/svn/Podcast/tags/v097 code]
     * Changed downloading icons, now yellow is queued, all are red when suspended
     * Shows on phone now updates better
