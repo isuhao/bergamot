@@ -52,6 +52,7 @@ To download binaries of Escarpod to use on your phone, visit our [http://code.go
     * Bug fixes
 
   * Escarpod 0.98 (April 20th)
+    * "Loss of random shows" bug fixed
 
   * Escarpod 0.97 (April 13th) [http://bergamot.googlecode.com/svn/Podcast/tags/v097 code]
     * Changed downloading icons, now yellow is queued, all are red when suspended
