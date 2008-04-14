@@ -238,9 +238,18 @@ void CFeedEngine::FileNameFromUrl(const TDesC& aUrl, TFileName &aFileName)
 
 void CFeedEngine::EnsureProperPathName(TFileName &aPath)
 	{
+	
+	// from the SDK: The following characters cannot occur in the path: < >: " / |*
+	
 	ReplaceString(aPath, _L("/"), _L("_")); // better not to add \\ in case we have multiple /
 	ReplaceString(aPath, _L(":"), _L("_"));
 	ReplaceString(aPath, _L("?"), _L("_"));
+	ReplaceString(aPath, _L("|"), _L("_"));
+	ReplaceString(aPath, _L("*"), _L("_"));
+	ReplaceString(aPath, _L("<"), _L("_"));
+	ReplaceString(aPath, _L(">"), _L("_"));
+	ReplaceString(aPath, _L("\""), _L("_"));
+
 	//buf.Append(_L("\\"));
 	}
 
