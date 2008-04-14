@@ -421,7 +421,7 @@ void CShowEngine::SaveShows()
 	BaflUtils::EnsurePathExistsL(iFs, privatePath);
 	privatePath.Append(KShowDB);
 	
-	RDebug::Print(_L("File: %S"), &privatePath);
+	//RDebug::Print(_L("File: %S"), &privatePath);
 	iFs.Parse(privatePath, filestorename);
 	CFileStore* store = CDirectFileStore::ReplaceLC(iFs, filestorename.FullName(), EFileWrite);
 	store->SetTypeL(KDirectFileStoreLayoutUid);
@@ -441,7 +441,7 @@ void CShowEngine::SaveShows()
 	// Move all non delete entries into the new array
 	for (TInt j = 0; j < numberOfShows ; j++)
 		{
-		if (!iShows[j]->Delete())
+		if (!iShows[j]->Delete() && iPodcastModel.FeedEngine().GetFeedInfoByUid(iShows[j]->FeedUid()) != NULL)
 			{
 			tempArray.Append(iShows[j]);
 			}
@@ -454,7 +454,7 @@ void CShowEngine::SaveShows()
 	outstream.WriteInt32L(countTempArray);
 	for (TInt i=0 ; i < countTempArray ; i++) 
 		{
-		outstream  << *iShows[i];
+		outstream  << *tempArray[i];
 		}
 	
 	CleanupStack::PopAndDestroy(&tempArray);
