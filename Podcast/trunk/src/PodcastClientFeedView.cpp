@@ -556,6 +556,7 @@ void CPodcastClientFeedView::UpdateCommandsL()
 		comMan.SetInvisible(*this, EPodcastDeleteFeed, ETrue);
 		comMan.SetInvisible(*this, EPodcastUpdateAllFeeds, ETrue);
 		comMan.SetInvisible(*this, EPodcastEditFeed, ETrue);
+		comMan.SetInvisible(*this, EPodcastRemoveAudioBook, ETrue);
 		}
 	else
 		{
