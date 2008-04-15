@@ -31,9 +31,9 @@ protected:
 	static TInt StaticCheckForQuedDownloadsL(TAny* aBaseView);
 	void CheckForQuedDownloadsL();
 	
-	// from MShwoEngineObserver
+	// from MShowEngineObserver
 	
-	void ShowListUpdated() { }
+	void ShowListUpdated();
 	void DownloadQueueUpdated(TInt aDownloadingShows, TInt aQueuedShows);
 	void ShowDownloadUpdatedL(TInt /*aPercentOfCurrentDownload*/, TInt /*aBytesOfCurrentDownload*/, TInt /*aBytesTotal*/) { }
 

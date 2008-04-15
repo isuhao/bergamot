@@ -52,6 +52,8 @@ public:
 	void GetStatsForDownloaded(TUint &aNumShows, TUint &aNumUnplayed );
 	void AddObserver(MShowEngineObserver *observer);
 	void RemoveObserver(MShowEngineObserver *observer);
+
+	void NotifyShowListUpdated();
 	
 	TUint GetGrossSelectionLength();
 	CMetaDataReader& MetaDataReader();
