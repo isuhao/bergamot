@@ -127,6 +127,13 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 			if(index >= 0 && index < iPodcastModel.ActiveShowList().Count())
 			{
 				iPodcastModel.ActiveShowList()[index]->SetPlayState(EPlayed);
+				if (iPodcastModel.SettingsEngine().SelectUnplayedOnly()) {
+					MQikListBoxModel& model(iListbox->Model());
+					model.ModelBeginUpdateLC();
+					model.RemoveDataL(index);
+					model.ModelEndUpdateL();
+				}
+				
 				UpdateListboxItemsL();
 			}
 			}break;
@@ -784,7 +791,8 @@ void CPodcastClientShowsView::UpdateCommandsL()
 				}
 			}
 
-			removeDeleteShowCmd = fItems[index]->DownloadState() != EDownloaded || updatingState || fItems[index]->PlayState() == EPlaying;
+			removeDeleteShowCmd = fItems[index]->DownloadState() != EDownloaded || updatingState || 
+				(iPodcastModel.PlayingPodcast() != NULL && fItems[index] == iPodcastModel.PlayingPodcast());
 
 			if(fItems[index]->DownloadState() == ENotDownloaded)
 			{
@@ -820,7 +828,8 @@ void CPodcastClientShowsView::UpdateCommandsL()
 	comMan.SetAvailable(*this, EPodcastDeleteShow, !removeDeleteShowCmd);
 	comMan.SetAvailable(*this, EPodcastDeleteShowHardware, !removeDeleteShowCmd);
 	comMan.SetAvailable(*this, EPodcastDeleteAllPlayed, !updatingState && !iPodcastModel.SettingsEngine().SelectUnplayedOnly());
-	comMan.SetInvisible(*this, EPodcastDeleteAllPlayed, (iCurrentCategory == EShowPendingShows || !(iCurrentCategory == EShowDownloadedShows) || (iPodcastModel.ActiveFeedInfo()?iPodcastModel.ActiveFeedInfo()->IsBookFeed():EFalse)));
+	TBool isOrdinaryList = iCurrentCategory != EShowPendingShows && !(iPodcastModel.ActiveFeedInfo()?iPodcastModel.ActiveFeedInfo()->IsBookFeed():EFalse);
+	comMan.SetInvisible(*this, EPodcastDeleteAllPlayed, !isOrdinaryList);
 
 	comMan.SetInvisible(*this, EPodcastViewPendingShows, EFalse);
 	comMan.SetInvisible(*this, EPodcastViewDownloadedShows, EFalse);
