@@ -594,6 +594,15 @@ CFeedInfo* CFeedEngine::GetFeedInfoByUid(TUint aFeedUid)
 			}
 		}
 	
+	cnt = iSortedBooks.Count();
+	for (TInt i=0;i<cnt;i++)
+		{
+		if (iSortedBooks[i]->Uid() == aFeedUid)
+			{
+			return iSortedBooks[i];
+			}
+		}
+	
 	return NULL;
 	}
 
@@ -665,6 +674,9 @@ void CFeedEngine::AddBookL(const TDesC& aBookTitle, CDesCArrayFlat* aFileNameArr
 		TLinearOrder<CFeedInfo> sortOrder( CFeedEngine::CompareFeedsByTitle);
 		iSortedBooks.InsertInOrder(item, sortOrder);
 		CleanupStack::Pop(item);
+		// Save the shows
+		
+		iPodcastModel.ShowEngine().SaveShows();
 		// Save the feeds into DB
 		SaveBooksL();
 		}
@@ -685,7 +697,8 @@ void CFeedEngine::RemoveBookL(TUint aUid)
 			filePath.Copy(iPodcastModel.SettingsEngine().BaseDir());
 			filePath.Append(feedToRemove->Title());
 			filePath.Append(_L("\\"));
-			iFs.RmDir(filePath);
+			// not sure we should do this... files are added manually after all
+			//iFs.RmDir(filePath);
 
 			iSortedBooks.Remove(i);
 			delete feedToRemove;
