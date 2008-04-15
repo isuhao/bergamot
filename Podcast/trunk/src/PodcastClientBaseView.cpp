@@ -293,6 +293,11 @@ void CPodcastClientBaseView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQi
 	
 }
 
+void CPodcastClientBaseView::ShowListUpdated()
+	{
+	UpdateListboxItemsL();	
+	}
+
 void CPodcastClientBaseView::DownloadQueueUpdated(TInt aDownloadingShows, TInt aQueuedShows)
 	{
 	UpdateListboxItemsL();

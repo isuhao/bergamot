@@ -46,6 +46,7 @@ void CSoundEngine::MapcPlayComplete(TInt aError) {
 	}
 
 	iState = ESoundEngineStopped;
+	iPodcastModel.ShowEngine().NotifyShowListUpdated();
 	if(iObserver != NULL)
 	{
 		TRAPD(err, iObserver->PlaybackStoppedL());
@@ -167,7 +168,7 @@ void CSoundEngine::Play()
 		TTimeIntervalMicroSeconds newPos;
 		
 		newPos = (iMaxPos.Int64() - skipBack > 0 ? iMaxPos.Int64() - skipBack : 0) ;
-		
+		iMaxPos = newPos;
 		iPlayer->SetPosition(newPos);
 		iPlayer->Play();
 		iState = ESoundEnginePlaying;

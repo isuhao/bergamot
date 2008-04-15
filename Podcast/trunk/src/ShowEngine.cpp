@@ -169,8 +169,9 @@ void CShowEngine::GetStatsByFeed(TUint aFeedUid, TUint &aNumShows, TUint &aNumUn
 			}
 		}
 	
-	aNumShows = showsCount;
-	aNumUnplayed = unplayedCount;
+	int max = iPodcastModel.SettingsEngine().MaxListItems();
+	aNumShows = showsCount < max ? showsCount : max;
+	aNumUnplayed = unplayedCount < max ? unplayedCount : max;
 	
 	}
 
@@ -799,6 +800,13 @@ void CShowEngine::NotifyShowDownloadUpdated(TInt aPercentOfCurrentDownload, TInt
 		}
 	}
 
+void CShowEngine::NotifyShowListUpdated()
+	{
+	for (TInt i=0;i<iObservers.Count();i++) {
+		iObservers[i]->ShowListUpdated();
+		}
+	}
+
 void CShowEngine::SetSelectionPlayed()
 	{
 	RDebug::Print(_L("CShowEngine::SetSelectionPlayed"));
@@ -915,18 +923,12 @@ void CShowEngine::CheckFiles()
 void CShowEngine::ReadMetaData(CShowInfo *aShowInfo)
 	{
 	RDebug::Print(_L("Read %S"), &(aShowInfo->Title()));
-	
-	//for (TInt i=0;i<iObservers.Count();i++) {
-	//	iObservers[i]->ShowListUpdated();
-	//}
 	}
 
 void CShowEngine::ReadMetaDataComplete()
 	{
 	SaveShows();
-	for (TInt i=0;i<iObservers.Count();i++) {
-		iObservers[i]->ShowListUpdated();
-		}
+	NotifyShowListUpdated();
 	}
 
 CMetaDataReader& CShowEngine::MetaDataReader()
