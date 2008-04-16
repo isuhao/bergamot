@@ -115,6 +115,14 @@ RESOURCE QIK_COMMAND_LIST r_podcast_showview_commands
 			shortText = STRING_r_update_feed_short_cmd;
 			priority = 2;
 			},
+		QIK_COMMAND
+			{
+		//	groupId = 5;
+			id = EPodcastCancelUpdateAllFeeds;
+			type = EQikCommandTypeDone;
+			text = STRING_r_cancel_update_all_feeds_cmd;
+			shortText = STRING_r_cancel_update_all_feeds_short_cmd;
+			},	
 // Show handling	
 
 	QIK_COMMAND
@@ -154,7 +162,7 @@ RESOURCE QIK_COMMAND_LIST r_podcast_showview_commands
 			},
 	QIK_COMMAND
 			{
-			groupId = 5;
+			groupId = 6;
 			id = EPodcastSetOrderAudioBook;		
 			type = EQikCommandTypeScreen;
 			text = STRING_r_view_books_setorder;
