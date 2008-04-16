@@ -49,6 +49,7 @@ enum TPodcatClientCommands
 	EPodcastUpdateLibrary,
 	// Audio book commands
 	EPodcastAddNewAudioBook,
+	EPodcastAddAudioBookChapter,
 	EPodcastRemoveAudioBook,
 	EPodcastRemoveAudioBookHardware,
 	EPodcastSetOrderAudioBook,

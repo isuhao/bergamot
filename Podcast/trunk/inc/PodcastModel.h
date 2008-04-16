@@ -56,7 +56,7 @@ public:
 	void SetIap(TInt aIap);
 	RConnection& Connection();
 	TConnPref& ConnPref();
-	void ConnectHttpSessionL(RHTTPSession& aSession);
+	TBool ConnectHttpSessionL(RHTTPSession& aSession);
 protected:
 	CPodcastModel();
 	void ConstructL();

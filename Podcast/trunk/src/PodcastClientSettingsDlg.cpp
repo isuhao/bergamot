@@ -163,9 +163,13 @@ void CPodcastClientIAPDlg::PreLayoutDynInitL()
 }
 
 
-TBool CPodcastClientIAPDlg::OkToExitL(TInt /*aCommandId*/)
+TBool CPodcastClientIAPDlg::OkToExitL(TInt aCommandId)
 {
-	iSelectedIAP = iPodcastModel.IAPIds()[iIAPListCtrl->CurrentItem()].iIapId;
+	if(aCommandId != EEikBidCancel)
+	{
+		iSelectedIAP = iPodcastModel.IAPIds()[iIAPListCtrl->CurrentItem()].iIapId;
+	}
+
 	return ETrue;
 }
 

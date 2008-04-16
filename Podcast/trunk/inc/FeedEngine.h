@@ -30,13 +30,14 @@ public:
 	void ImportFeedsL(const TDesC& aFile);
 	TBool ExportFeedsL(TFileName& aFile);
 	void RemoveFeed(TUint aUid);
-	void UpdateFeedL(TUint aFeedUid);
+	TBool UpdateFeedL(TUint aFeedUid);
 	void UpdateAllFeedsL();
 	void CancelUpdateAllFeedsL();
 	const RFeedInfoArray& GetSortedFeeds() const;
 	CFeedInfo* GetFeedInfoByUid(TUint aFeedUid);	
 
 	void AddBookL(const TDesC& aBookTitle, CDesCArrayFlat* aFileNameArray);
+	void AddBookChaptersL(CFeedInfo& aFeedInfo, CDesCArrayFlat* aFileNameArray);
 	void RemoveBookL(TUint aUid);
 	const RFeedInfoArray& GetSortedBooks() const;
 
@@ -62,6 +63,7 @@ public:
 	 */
 	TUint ActiveClientUid();
 protected:
+	
 	static TInt CompareFeedsByTitle(const CFeedInfo &a, const CFeedInfo &b);
 
 private:

@@ -173,7 +173,7 @@ rls_string STRING_r_view_onphone_status "%d Unplayed, %d Total" // Used in base 
 rls_string STRING_r_view_onphone_status_unknown "Unknown" // Used for unknown status event
 
 // Strings used to set the playorder of an audio book
-rls_string STRING_r_view_books_setorder "Change Chapter Order" // cmd for set audio book playorder
+rls_string STRING_r_view_books_setorder "Change Order" // cmd for set audio book playorder
 rls_string STRING_r_view_books_setorder_dlgtitle "Set Chapter Order"
 rls_string STRING_r_view_books_setorder_dlg_swapcmd "Swap"
 rls_string STRING_r_view_books_setorder_dlg_label "Select Chapter to Swap With"
@@ -200,3 +200,6 @@ rls_string STRING_r_remove_chapter_title "Remove chapter"
 rls_string STRING_r_remove_chapter_prompt "Are you sure to remove this chapter?"
 
 rls_string STRING_r_podcast_books_status_format "%d/%d Chapters"
+
+// New string
+rls_string STRING_r_podcast_books_add_chapter "Add Chapter(s)"

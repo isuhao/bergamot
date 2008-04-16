@@ -7,6 +7,9 @@
 #include <QikListBoxLayout.h>
 #include <QikListBoxLayoutProperties.h>
 #include <eikdialg.h>
+#include <QikMediaFileFolderUtils.h>
+#include <QikSelectFileDlg.h>
+#include <QikSaveFileDlg.h>
 
 #include <podcastclient.mbg>
 #include "PodcastClientShowsView.h"
@@ -19,6 +22,7 @@ _LIT(KSizeDownloadingOf, "%S/%S");
 _LIT(KChapterFormatting, "%03d");
 
 const TInt KSizeBufLen = 64;
+const TInt KDefaultGran = 5;
 
 /**
 Creates and constructs the view.
@@ -154,6 +158,32 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 					dlg->ExecuteLD(R_PODCAST_AUDIOBOOK_PLAYORDERDLG);
 					UpdateListboxItemsL();
 					}
+			}break;
+		case EPodcastAddAudioBookChapter:
+			{
+				if(iPodcastModel.ActiveFeedInfo() != NULL)
+				{
+					
+					CDesCArrayFlat* mimeArray = iEikonEnv->ReadDesCArrayResourceL(R_PODCAST_NEW_AUDIOBOOK_MIMEARRAY);
+					CleanupStack::PushL(mimeArray);
+					CDesCArrayFlat* fileNameArray = new (ELeave) CDesCArrayFlat(KDefaultGran);
+					CleanupStack::PushL(fileNameArray);
+					HBufC* dialogTitle = iEikonEnv->AllocReadResourceLC(R_PODCAST_NEW_AUDIOBOOK_SELECT_FILES);
+					TQikDefaultFolderDescription defaultFolder;
+					defaultFolder.SetDefaultFolder(EQikFileHandlingDefaultFolderAudio);
+					
+					if(CQikSelectFileDlg::RunDlgLD(*mimeArray, *fileNameArray, defaultFolder, dialogTitle, EQikSelectFileDialogEnableMultipleSelect|EQikSelectFileDialogSortByName))
+					{
+						if(fileNameArray->Count() > 0)
+						{
+							iPodcastModel.FeedEngine().AddBookChaptersL(*iPodcastModel.ActiveFeedInfo(), fileNameArray);			
+						}
+					}
+					
+					CleanupStack::PopAndDestroy(dialogTitle);
+					CleanupStack::PopAndDestroy(fileNameArray);
+					CleanupStack::PopAndDestroy(mimeArray);
+				}
 			}break;
 		case EPodcastDeleteShowHardware:
 		case EPodcastDeleteShow:
@@ -841,7 +871,10 @@ void CPodcastClientShowsView::UpdateCommandsL()
 
 	comMan.SetInvisible(*this, EPodcastViewPendingShows, EFalse);
 	comMan.SetInvisible(*this, EPodcastViewDownloadedShows, EFalse);
+
 	comMan.SetInvisible(*this, EPodcastSetOrderAudioBook, !(EShowFeedShows == iCurrentCategory && (iPodcastModel.ActiveFeedInfo()?iPodcastModel.ActiveFeedInfo()->IsBookFeed(): ETrue)));
+	comMan.SetInvisible(*this, EPodcastAddAudioBookChapter, !(EShowFeedShows == iCurrentCategory && (iPodcastModel.ActiveFeedInfo()?iPodcastModel.ActiveFeedInfo()->IsBookFeed(): ETrue)));
+	
 	comMan.SetInvisible(*this, EPodcastRemoveAllDownloads, ETrue);
 	comMan.SetInvisible(*this, EPodcastMarkAsPlayed, removeSetPlayed || !itemCnt);
 	comMan.SetInvisible(*this, EPodcastMarkAsUnplayed, !removeSetPlayed || !itemCnt);

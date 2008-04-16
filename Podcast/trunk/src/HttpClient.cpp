@@ -10,6 +10,7 @@
 #include <es_sock.h>
 #include <bautils.h>
 #include <CommDbConnPref.h>
+const TInt KTempBufferSize = 100;
 
 CHttpClient::~CHttpClient()
   {
@@ -65,13 +66,11 @@ void CHttpClient::SetResumeEnabled(TBool aEnabled)
 	iResumeEnabled = aEnabled;
 	}
 
-void CHttpClient::GetL(const TDesC& url, const TDesC& fileName,  TBool aSilent) {
+TBool CHttpClient::GetL(const TDesC& url, const TDesC& fileName,  TBool aSilent) {
 	RDebug::Print(_L("CHttpClient::Get START"));
 	
 	__ASSERT_DEBUG((iIsActive==EFalse), User::Panic(_L("Already active"), -2));
-	
-	iIsActive = ETrue;
-		
+			
 	TBuf8<256> url8;
 	url8.Copy(url);
 	
@@ -79,9 +78,13 @@ void CHttpClient::GetL(const TDesC& url, const TDesC& fileName,  TBool aSilent) 
 		{
 		RDebug::Print(_L("CHttpClient::GetL\t*** Opening HTTP session ***"));
 		iSession.OpenL();
-		iPodcastModel.ConnectHttpSessionL(iSession);
+		if(!iPodcastModel.ConnectHttpSessionL(iSession)) // Returns false if not connected
+			{
+			iSession.Close();
+			return EFalse;
+			}
 		}
-		
+	
 	TUriParser8 uri; 
 	uri.Parse(url8);
 	RDebug::Print(_L("Getting '%S' to '%S'"), &url, &fileName);
@@ -93,25 +96,22 @@ void CHttpClient::GetL(const TDesC& url, const TDesC& fileName,  TBool aSilent) 
 		iHandler = NULL;
 		}
 		
-
 	iHandler = CHttpEventHandler::NewL(this, iObserver);
 	iHandler->SetSilent(aSilent);
 
-	RFs rfs;
-	rfs.Connect();
 	TEntry entry;
-	TBuf8<100> rangeText;
-	if (iResumeEnabled && rfs.Entry(fileName, entry) == KErrNone) {
+	TBuf8<KTempBufferSize> rangeText;
+
+	if (iResumeEnabled && iPodcastModel.EikonEnv()->FsSession().Entry(fileName, entry) == KErrNone) {
 		RDebug::Print(_L("Found file, with size=%d"), entry.iSize);
 		// file exists, so we should probably resume
 		rangeText.Format(_L8("bytes=%d-"), entry.iSize-KByteOverlap);
 		iHandler->SetSaveFileName(fileName, ETrue);
 	} else {
 		// otherwise just make sure the directory exists
-		BaflUtils::EnsurePathExistsL(rfs,fileName);
+		BaflUtils::EnsurePathExistsL(iPodcastModel.EikonEnv()->FsSession(),fileName);
 		iHandler->SetSaveFileName(fileName);
 	}
-	rfs.Close();
 	
 	RStringPool strP = iSession.StringPool();
 	RStringF method;
@@ -122,14 +122,17 @@ void CHttpClient::GetL(const TDesC& url, const TDesC& fileName,  TBool aSilent) 
 	// Add headers appropriate to all methods
 	SetHeaderL(hdr, HTTP::EUserAgent, KUserAgent);
 	SetHeaderL(hdr, HTTP::EAccept, KAccept);
-	TBuf<100> range16;
+	TBuf<KTempBufferSize> range16;
 	range16.Copy(rangeText);
 	RDebug::Print(_L("range text: %S"), &range16);
 	SetHeaderL(hdr, HTTP::ERange, rangeText);
 	iTransactionCount++;
 	// submit the transaction
 	iTrans.SubmitL();
+	iIsActive = ETrue;	
 	RDebug::Print(_L("CHttpClient::Get END"));
+	
+	return ETrue;
 }
 
 void CHttpClient::Stop()

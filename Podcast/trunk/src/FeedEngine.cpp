@@ -131,12 +131,16 @@ void CFeedEngine::UpdateNextFeedL()
 	if (iFeedsUpdating.Count() > 0) {
 		CFeedInfo *info = iFeedsUpdating[0];
 		iFeedsUpdating.Remove(0);
+		TBool result = EFalse;
 		//RDebug::Print(_L("** UpdateNextFeed: %S, ID: %u"), &(info->Url()), info->Uid());
-		TRAPD(error, UpdateFeedL(info->Uid()));
+		TRAPD(error, result = UpdateFeedL(info->Uid()));
 		
-		if (error != KErrNone) {
+		if (error != KErrNone || !result) {
 			RDebug::Print(_L("Error while updating all feeds"));
-			//iFeedsUpdating.Reset();
+			for (TInt i=0;i<iObservers.Count();i++) 
+				{
+				TRAP_IGNORE(iObservers[i]->FeedUpdateAllCompleteL());
+				}
 		}
 	} else {
 		iClientState = ENotUpdating;
@@ -147,14 +151,9 @@ void CFeedEngine::UpdateNextFeedL()
 	}
 }
 
-void CFeedEngine::UpdateFeedL(TUint aFeedUid)
+TBool CFeedEngine::UpdateFeedL(TUint aFeedUid)
 	{
-	iClientState = EUpdatingFeed;
 	iActiveFeed = GetFeedInfoByUid(aFeedUid);
-
-	for (TInt i=0;i<iObservers.Count();i++) {
-			TRAP_IGNORE(iObservers[i]->FeedDownloadUpdatedL(iActiveFeed->Uid(), 0));
-		}
 
 	TFileName filePath;
 	filePath.Copy (iPodcastModel.SettingsEngine().PrivatePath ());
@@ -164,9 +163,22 @@ void CFeedEngine::UpdateFeedL(TUint aFeedUid)
 	filePath.Append(_L(".xml"));
 	//filePath.Append(_L("feed.xml"));
 	iUpdatingFeedFileName.Copy(filePath);
-	iFeedClient->GetL(iActiveFeed->Url(), iUpdatingFeedFileName, iPodcastModel.SettingsEngine().SpecificIAP());	
 
-	RDebug::Print(_L("Update done"));
+	if(iFeedClient->GetL(iActiveFeed->Url(), iUpdatingFeedFileName, iPodcastModel.SettingsEngine().SpecificIAP()))
+	{
+		iClientState = EUpdatingFeed;
+		
+		for (TInt i=0;i<iObservers.Count();i++) {
+			TRAP_IGNORE(iObservers[i]->FeedDownloadUpdatedL(iActiveFeed->Uid(), 0));
+		}
+		RDebug::Print(_L("Update done"));
+		return ETrue;
+	}
+	else
+	{
+		return EFalse;
+	}
+
 	}
 
 TBool CFeedEngine::NewShow(CShowInfo *item)
@@ -196,7 +208,7 @@ TBool CFeedEngine::NewShow(CShowInfo *item)
 void CFeedEngine::GetFeedImageL(CFeedInfo *aFeedInfo)
 	{
 	RDebug::Print(_L("GetFeedImage"));
-	iClientState = EUpdatingImage;
+
 	TFileName filePath;
 	filePath.Copy(iPodcastModel.SettingsEngine().BaseDir());
 	
@@ -213,7 +225,11 @@ void CFeedEngine::GetFeedImageL(CFeedInfo *aFeedInfo)
 	// complete file path is base dir + rel path
 	filePath.Append(relPath);
 	aFeedInfo->SetImageFileNameL(filePath);
-	iFeedClient->GetL(aFeedInfo->ImageUrl(), filePath, ETrue);
+
+	if(iFeedClient->GetL(aFeedInfo->ImageUrl(), filePath, ETrue))
+		{
+			iClientState = EUpdatingImage;
+		}
 	}
 
 void CFeedEngine::FileNameFromUrl(const TDesC& aUrl, TFileName &aFileName)
@@ -611,6 +627,50 @@ const RFeedInfoArray& CFeedEngine::GetSortedFeeds() const
 	return iSortedFeeds;
 }
 
+void CFeedEngine::AddBookChaptersL(CFeedInfo& aFeedInfo, CDesCArrayFlat* aFileNameArray)
+{
+	TInt cnt = aFileNameArray->Count();
+	CShowInfo* showInfo = NULL;
+	TEntry fileInfo;
+	RShowInfoArray showArray;
+	CleanupClosePushL(showArray);
+	iPodcastModel.ShowEngine().GetShowsForFeed(showArray, aFeedInfo.Uid());
+	TInt offset = showArray.Count();
+	CleanupStack::PopAndDestroy();// close showArray
+
+	for(TInt loop = 0;loop<cnt;loop++)
+	{	
+		showInfo = CShowInfo::NewL();
+		CleanupStack::PushL(showInfo);
+		showInfo->SetTitleL(aFeedInfo.Title());		
+		showInfo->SetDescriptionL(aFeedInfo.Title());	
+		showInfo->SetDownloadState(EDownloaded);
+		showInfo->SetUrlL(aFileNameArray->MdcaPoint(loop));
+		showInfo->SetFeedUid(aFeedInfo.Uid());
+		showInfo->SetPubDate(aFeedInfo.LastUpdated());
+		showInfo->SetTrackNo(offset+loop+1);
+		showInfo->SetShowType(EAudioBook);
+		
+		showInfo->SetFileNameL(aFileNameArray->MdcaPoint(loop));
+		
+		if(iFs.Entry(aFileNameArray->MdcaPoint(loop), fileInfo) == KErrNone)
+		{
+			showInfo->SetShowSize(fileInfo.iSize);
+		}
+		
+		showInfo->SetPlayState(ENeverPlayed);
+		iPodcastModel.ShowEngine().AddShow(showInfo);			
+		iPodcastModel.ShowEngine().MetaDataReader().SubmitShow(showInfo);
+		
+		CleanupStack::Pop(showInfo);
+		showInfo = NULL;
+	}
+
+	// Save the shows	
+	iPodcastModel.ShowEngine().SaveShows();
+}
+
+
 void CFeedEngine::AddBookL(const TDesC& aBookTitle, CDesCArrayFlat* aFileNameArray)
 	{
 	
@@ -634,51 +694,21 @@ void CFeedEngine::AddBookL(const TDesC& aBookTitle, CDesCArrayFlat* aFileNameArr
 				CleanupStack::PopAndDestroy(item);
 				return;
 				}
-			}
+		}
 		item->SetTitleL(aBookTitle);
 		item->SetDescriptionL(aBookTitle);
 		TTime time;
 		time.HomeTime();
 		item->SetLastUpdated(time);
-	
-		TInt cnt = aFileNameArray->Count();
-		CShowInfo* showInfo = NULL;
-		TEntry fileInfo;
-		for(TInt loop = 0;loop<cnt;loop++)
-		{
-			showInfo = CShowInfo::NewL();
-			CleanupStack::PushL(showInfo);
-			showInfo->SetTitleL(aBookTitle);		
-			showInfo->SetDescriptionL(aBookTitle);	
-			showInfo->SetDownloadState(EDownloaded);
-			showInfo->SetUrlL(aFileNameArray->MdcaPoint(loop));
-			showInfo->SetFeedUid(item->Uid());
-			showInfo->SetPubDate(time);
-			showInfo->SetTrackNo(loop+1);
-			showInfo->SetShowType(EAudioBook);
-
-			showInfo->SetFileNameL(aFileNameArray->MdcaPoint(loop));
-
-			if(iFs.Entry(aFileNameArray->MdcaPoint(loop), fileInfo) == KErrNone)
-			{
-				showInfo->SetShowSize(fileInfo.iSize);
-			}
-
-			showInfo->SetPlayState(ENeverPlayed);
-			iPodcastModel.ShowEngine().AddShow(showInfo);			
-			iPodcastModel.ShowEngine().MetaDataReader().SubmitShow(showInfo);
-			
-			CleanupStack::Pop(showInfo);
-		}
 		
 		TLinearOrder<CFeedInfo> sortOrder( CFeedEngine::CompareFeedsByTitle);
 		iSortedBooks.InsertInOrder(item, sortOrder);
 		CleanupStack::Pop(item);
-		// Save the shows
-		
-		iPodcastModel.ShowEngine().SaveShows();
+	    
 		// Save the feeds into DB
 		SaveBooksL();
+		
+		AddBookChaptersL(*item, aFileNameArray);				
 		}
 	}
 

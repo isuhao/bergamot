@@ -378,7 +378,7 @@ RESOURCE DLG_BUTTONS r_podcast_settings_buttons
 RESOURCE DIALOG r_podcast_iap_dlg
 {
 	buttons = R_EIK_BUTTONS_CANCEL_DONE;
-	flags = EEikDialogFlagButtonsBelow|EEikDialogFlagDensePacking|EEikDialogFlagWait;
+	flags = EEikDialogFlagButtonsBelow|EEikDialogFlagDensePacking|EEikDialogFlagWait|EEikDialogFlagNotifyEsc;
     title = STRING_r_podcast_iap_dlg_title;
 	items = 
 	{

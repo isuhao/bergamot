@@ -259,7 +259,8 @@ public:
 		CActiveScheduler::Stop();
 	}
 };
-void CPodcastModel::ConnectHttpSessionL(RHTTPSession &aSession)
+
+TBool CPodcastModel::ConnectHttpSessionL(RHTTPSession &aSession)
 {
 	RDebug::Print(_L("ConnectHttpSessionL START"));
 	iConnection.Stop();
@@ -273,7 +274,7 @@ void CPodcastModel::ConnectHttpSessionL(RHTTPSession &aSession)
 		}
 		else
 		{
-			return;
+			return EFalse;
 		}
 	}
 
@@ -293,6 +294,7 @@ void CPodcastModel::ConnectHttpSessionL(RHTTPSession &aSession)
 	TInt connPtr = REINTERPRET_CAST(TInt, &iConnection);
 	connInfo.SetPropertyL(pool.StringF(HTTP::EHttpSocketConnection, RHTTPSession::GetTable()), THTTPHdrVal(connPtr));
 	RDebug::Print(_L("ConnectHttpSessionL END"));
+	return ETrue;
 }
 
 void CPodcastModel::SetIap(TInt aIap)

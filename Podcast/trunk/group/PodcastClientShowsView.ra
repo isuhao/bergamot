@@ -123,8 +123,7 @@ RESOURCE QIK_COMMAND_LIST r_podcast_showview_commands
 			text = STRING_r_cancel_update_all_feeds_cmd;
 			shortText = STRING_r_cancel_update_all_feeds_short_cmd;
 			},	
-// Show handling	
-
+// Show handling		
 	QIK_COMMAND
 			{
 			groupId = 5;
@@ -160,6 +159,14 @@ RESOURCE QIK_COMMAND_LIST r_podcast_showview_commands
 			type = EQikCommandTypeDelete;
 			cpfFlags = EQikCpfFlagHardwarekeyOnly;
 			},
+
+	QIK_COMMAND
+			{
+			groupId = 6;
+			id = EPodcastAddAudioBookChapter;		
+			type = EQikCommandTypeScreen;
+			text = STRING_r_podcast_books_add_chapter;
+			},	
 	QIK_COMMAND
 			{
 			groupId = 6;
