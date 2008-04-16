@@ -384,6 +384,7 @@ void CPodcastClientSettingsDlg::HandleControlStateChangeL(TInt aControlId)
 			SetLineDimmedNow(EPodcastSettingIAPList, EFalse);
 			SetLineDimmedNow(EPodcastSettingAutoDownload, EFalse);
 			SetLineDimmedNow(EPodcastSettingAutoUpdate, EFalse);
+			SetLineDimmedNow(EPodcastSettingUpdateInterval, EFalse);
 			//MakeWholeLineVisible(EPodcastSettingIAPList, ETrue);
 			}
 			break;
@@ -392,6 +393,7 @@ void CPodcastClientSettingsDlg::HandleControlStateChangeL(TInt aControlId)
 			// we don't allow auto update or download when user wants IAP selection dialog
 			SetLineDimmedNow(EPodcastSettingAutoUpdate, ETrue);
 			SetLineDimmedNow(EPodcastSettingAutoDownload, ETrue);
+			SetLineDimmedNow(EPodcastSettingUpdateInterval, ETrue);
 			iAutoUpdateCtrl->SetCurrentItem(0);
 			iAutoDownloadCtrl->SetState(CEikButtonBase::EClear);
 			} break;
@@ -400,6 +402,7 @@ void CPodcastClientSettingsDlg::HandleControlStateChangeL(TInt aControlId)
 			SetLineDimmedNow(EPodcastSettingIAPList, ETrue);
 			SetLineDimmedNow(EPodcastSettingAutoDownload, EFalse);
 			SetLineDimmedNow(EPodcastSettingAutoUpdate, EFalse);
+			SetLineDimmedNow(EPodcastSettingUpdateInterval, EFalse);
 			//MakeWholeLineVisible(EPodcastSettingIAPList, EFalse);
 			}break;
 		}
