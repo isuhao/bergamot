@@ -400,6 +400,7 @@ void CPodcastClientShowsView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownloa
 				{
 					iListbox->RemoveItemL(index);
 					iPodcastModel.ActiveShowList().Remove(index);
+					UpdateListboxItemsL();
 				}
 			}
 		}
@@ -512,36 +513,36 @@ void CPodcastClientShowsView::UpdateShowItemDataL(CShowInfo* aShowInfo, MQikList
 			TBuf<KSizeBufLen> dlSize;
 			TBuf<KSizeBufLen> totSize;
 			
-			if(aShowInfo->ShowSize() < KSizeMb)
+			/*if(aShowInfo->ShowSize() < KSizeMb)
 			{
-				totSize.Format(KShowsSizeFormatKb(), aShowInfo->ShowSize() / KSizeKb);
+				totSize.Format(KShowsSizeFormatKb(), (float)aShowInfo->ShowSize() / (float)KSizeKb);
 			}
 			else
-			{
-				totSize.Format(KShowsSizeFormatMb(), (aShowInfo->ShowSize()+KSizeMb/2) / KSizeMb);
-			}
+			{*/
+				totSize.Format(KShowsSizeFormatMb(), (float)(aShowInfo->ShowSize()+KSizeMb/2) / (float)KSizeMb);
+			//}
 			
-			if(aSizeDownloaded < KSizeMb)
+			/*if(aSizeDownloaded < KSizeMb)
 			{
-				dlSize.Format(KShowsSizeFormatKb(), aSizeDownloaded / KSizeKb);
+				dlSize.Format(KShowsSizeFormatKb(), (float)aSizeDownloaded / (float)KSizeKb);
 			}
 			else
-			{
-				dlSize.Format(KShowsSizeFormatMb(), (aSizeDownloaded+KSizeMb/2) / KSizeMb);
-			}
+			{*/
+				dlSize.Format(KShowsSizeFormatMb(), (float) (aSizeDownloaded+KSizeMb/2) / (float) KSizeMb);
+			//}
 			infoSize.Format(KSizeDownloadingOf(), &dlSize, &totSize);
 			
 		}
 		else
 		{
-			if(aShowInfo->ShowSize() < KSizeMb)
+			/*if(aShowInfo->ShowSize() < KSizeMb)
 			{
 				infoSize.Format(KShowsSizeFormatKb(), aShowInfo->ShowSize() / KSizeKb);
 			}
 			else
-			{
-				infoSize.Format(KShowsSizeFormatMb(), (aShowInfo->ShowSize()+KSizeMb/2) / KSizeMb);
-			}
+			{*/
+				infoSize.Format(KShowsSizeFormatMb(), (float)(aShowInfo->ShowSize()+KSizeMb/2) / (float)KSizeMb);
+			//}
 			
 		}
 	}
@@ -694,13 +695,13 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 								{
 								showSize = KNullDesC();
 								} 
-							else if(si->ShowSize() < KSizeMb)
+							/*else if(si->ShowSize() < KSizeMb)
 								{
 								showSize.Format(KShowsSizeFormatKb(), si->ShowSize() / KSizeKb);
-								}
+								}*/
 							else
 								{
-								showSize.Format(KShowsSizeFormatMb(), (si->ShowSize()+KSizeMb/2)/ KSizeMb);
+								showSize.Format(KShowsSizeFormatMb(), ((float)(si->ShowSize()+KSizeMb/2))/ (float)KSizeMb);
 								}
 
 							if(si->PubDate().Int64() == 0) 

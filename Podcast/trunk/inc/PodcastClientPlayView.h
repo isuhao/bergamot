@@ -79,5 +79,6 @@ private:
 	TInt iLastZoomLevel;
 	TInt iCurrentViewShowUid;
 	TUint iMaxProgressValue;
+	TUint iBytesDownloaded;
 	};
 #endif // PODCASTPLAYVIEW_H
