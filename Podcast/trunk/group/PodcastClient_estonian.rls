@@ -22,7 +22,7 @@ rls_string STRING_r_view_dling_shows_cmd "Allalaetavad lood"
 rls_string STRING_r_view_about_cmd "Escarpodi info"
 
 // Navigation to feeds
-rls_string STRING_r_view_feeds_cmd "Vood"
+rls_string STRING_r_view_feeds_cmd "Kanalid"
 
 // Navigation to the player
 rls_string STRING_r_view_player_cmd "Mängija"
@@ -50,11 +50,11 @@ rls_string STRING_r_view_mark_as_played_cmd "Märgi mängituks"
 rls_string STRING_r_view_mark_as_unplayed_cmd "Märgi mittemängituks"
 
 // Actions for feeds
-rls_string STRING_r_view_add_feed_cmd "Lisa voog"
-rls_string STRING_r_view_edit_feed_cmd "Muuda voogu"
-rls_string STRING_r_view_delete_feed_cmd "Eemalda voog"
-rls_string STRING_r_view_purge_feed_cmd "Eemalda kõik"
-rls_string STRING_r_update_feed_cmd "Uuenda voog"
+rls_string STRING_r_view_add_feed_cmd "Lisa kanal"
+rls_string STRING_r_view_edit_feed_cmd "Muuda kanalit"
+rls_string STRING_r_view_delete_feed_cmd "Eemalda kanal"
+rls_string STRING_r_view_delete_played_cmd "Eemalda kõik" //was STRING_r_view_purge_feed_cmd
+rls_string STRING_r_update_feed_cmd "Uuenda kanal"
 rls_string STRING_r_update_feed_short_cmd "Uuenda"
 rls_string STRING_r_update_all_feeds_cmd "Uuenda kõik"
 rls_string STRING_r_update_all_feeds_short_cmd "Uuenda k."
@@ -65,9 +65,8 @@ rls_string STRING_r_podcast_feeds_update_error "Uuendus ebaõnnestus!"
 // Actions for shows
 rls_string STRING_r_view_download_show_cmd "Lae alla"
 rls_string STRING_r_view_delete_show_cmd "Kustuta"
-rls_string STRING_r_view_delete_shows_cmd "Kustuta kõik"
-rls_string STRING_r_view_purge_show_cmd "Kustuta"
-rls_string STRING_r_view_remove_download_cmd "Eemalda laadimiselt"
+rls_string STRING_r_view_delete_shows_cmd "Kustuta kõik" // removed: rls_string STRING_r_view_purge_show_cmd "Kustuta"
+rls_string STRING_r_view_delete_show_cmd "Kustuta" // replaced with left one: rls_string STRING_r_view_remove_download_cmd "Eemalda laadimiselt"
 rls_string STRING_r_view_stop_downloads_cmd "Peata laadimine"
 rls_string STRING_r_view_resume_downloads_cmd "Taasta laadimine"
 rls_string STRING_r_view_mark_all_played_cmd "Märgi kõik mängituks"
@@ -84,7 +83,7 @@ rls_string STRING_r_category_dled "Telefoni laetud"
 rls_string STRING_r_category_pending "Allalaetavad"
 
 // View titles
-rls_string STRING_r_view_feeds_title "Vood"
+rls_string STRING_r_view_feeds_title "Kanalid"
 rls_string STRING_r_view_audiobooks_title "Audio raamatud"
 
 // Shows view status strings
@@ -94,36 +93,36 @@ rls_string STRING_r_podcast_shows_downloads_suspended "%d ootel (Peatatud)"
 rls_string STRING_r_podcast_shows_no_items "Tühi";
 
 // Feeds view status strings
-rls_string STRING_r_podcast_feeds_title_format "%d voogu"
+rls_string STRING_r_podcast_feeds_title_format "%d kanalit"
 rls_string STRING_r_podcast_books_title_format "%d raamatut"
 rls_string STRING_r_podcast_feeds_status_format "%d/%d lugu"
 rls_string STRING_r_podcast_shows_never_updated "Mitte kunagi"
 rls_string STRING_r_podcast_feeds_is_updating "Uuendamine"
-rls_string STRING_r_podcast_no_feeds "Vood puuduvad"
+rls_string STRING_r_podcast_no_feeds "Kanalid puuduvad"
 
 // DIALOG string
 rls_string STRING_r_about_title "Info Escarpod:ist";
 
-rls_string STRING_r_add_feed_title "Lisa voog"
-rls_string STRING_r_edit_feed_title "Muuda voogu"
+rls_string STRING_r_add_feed_title "Lisa kanal"
+rls_string STRING_r_edit_feed_title "Muuda kanalit"
 
-rls_string STRING_r_add_feed_prompt "Voo URL"
-rls_string STRING_r_add_feed_title_prompt "Voo nimi"
+rls_string STRING_r_add_feed_prompt "Kanali URL"
+rls_string STRING_r_add_feed_title_prompt "Kanali nimi"
 
-rls_string STRING_r_remove_feed_title "Eemalda voog"
-rls_string STRING_r_remove_feed_prompt "Kas eemaldada valitud voog?"
+rls_string STRING_r_remove_feed_title "Kanali kustutamine"
+rls_string STRING_r_remove_feed_prompt "Kas eemaldada valitud kanal?"
 
 rls_string STRING_r_enable_downloads_title "Taasta allalaadimine"
 rls_string STRING_r_enable_downloads_prompt "Allalaadimise ootel on lugusid. Kas alustada allalaadmist kohe?"
 
-rls_string STRING_r_update_new_feed_title "Uuenda voog"
-rls_string STRING_r_update_new_feed_prompt "Kas uuendada voogu kohe?"
+rls_string STRING_r_update_new_feed_title "Uuenda kanal"
+rls_string STRING_r_update_new_feed_prompt "Kas uuendada kanal kohe?"
 
-rls_string STRING_r_purge_feed_title "Tühjenda voog"
-rls_string STRING_r_purge_feed_prompt "Kas tühjendada valitud voog ja kustutada kõik allalaetud lood?"
+rls_string STRING_r_delete_played_title "Tühjenda kanal" // was: STRING_r_purge_feed_title
+rls_string STRING_r_delete_played_prompt "Kas tühjendada valitud kanal ja kustutada kõik allalaetud lood?" // was: STRING_r_purge_feed_prompt
 
-rls_string STRING_r_purge_show_title "Kustuta lugu"
-rls_string STRING_r_purge_show_prompt "Kas kustutada valitud lugu?"
+rls_string STRING_r_delete_show_title "Kustuta lugu" // was: STRING_r_purge_show_title
+rls_string STRING_r_delete_show_prompt "Kas kustutada valitud lugu?" // was: STRING_r_purge_show_prompt
 
 rls_string STRING_r_podcast_settings_title "Seaded"
 rls_string STRING_r_podcast_setting_showdir "Podcast kataloog"
@@ -132,8 +131,7 @@ rls_string STRING_r_podcast_setting_autodownload "Automaatne allalaadimine"
 rls_string STRING_r_podcast_setting_checkevery "Allalaadimise intervall"
 rls_string STRING_r_podcast_setting_updateat "Uuendus kell:"
 rls_string STRING_r_podcast_setting_minutes "minutit"
-
-rls_string STRING_r_podcast_setting_maxsimul "Samaaegseid ühendusi"
+                       // deleted this: rls_string STRING_r_podcast_setting_maxsimul "Samaaegseid ühendusi"
 rls_string STRING_r_podcast_setting_connection "Ühendus"
 rls_string STRING_r_podcast_setting_default "Tavaline"
 rls_string STRING_r_podcast_setting_wlanonly "Küsi alati"
@@ -160,11 +158,11 @@ rls_string STRING_r_podcast_new_audiobook_select_files "Vali raamatu failid:" //
 // Latest strings here
 rls_string STRING_r_view_books_no_books "Raamatud puuduvad" // No Books
 
-rls_string STRING_r_view_import_feeds_cmd "Lae voogude andmed" // Import feeds cmd in feedview
+rls_string STRING_r_view_import_feeds_cmd "Lae kanalite andmed" // Import feeds cmd in feedview
 rls_string STRING_r_view_import_feeds_title "Vali OPML fail"
 
 rls_string STRING_r_view_books_status "%d raamatut" // Used in base view listbox status text max 32 chars
-rls_string STRING_r_view_feeds_status "%d voogu" // Used in base view listbox for feeds status text max 32 chars
+rls_string STRING_r_view_feeds_status "%d kanalit" // Used in base view listbox for feeds status text max 32 chars
 
 rls_string STRING_r_cancel_update_all_feeds_cmd "Katkesta uuendus"
 rls_string STRING_r_cancel_update_all_feeds_short_cmd "Katkesta"
@@ -176,7 +174,7 @@ rls_string STRING_r_view_onphone_status_unknown "Määramatu" // Used for unknow
 
 // Strings used to set the playorder of an audio book
 rls_string STRING_r_view_books_setorder "Mängimise järjestus" // cmd for set audio book playorder
-rls_string STRING_r_view_books_setorder_dlgtitle "Vali mangimise järjestus"
+rls_string STRING_r_view_books_setorder_dlgtitle "Vali mängimise järjestus"
 rls_string STRING_r_view_books_setorder_dlg_swapcmd "Vaheta"
 rls_string STRING_r_view_books_setorder_dlg_label "Vali lugu millega vahetada"
 rls_string STRING_r_view_books_setorder_dlg_selectlabel "Vali lugu mida liigutada"
@@ -185,20 +183,20 @@ rls_string STRING_r_view_remove_all_downloads_cmd "Eemalda kõik"
 
 rls_string STRING_r_podcast_subtitle "The UIQ Podcatcher" // shown beneath main view title
 
-rls_string STRING_r_add_feed_exists "Antud URL:iga voog on juba olemas!" // shown when adding or changing a feed to a URL that already exists
-rls_string STRING_r_add_feed_exists_title "Korduv voog" // title of error dialogs when adding feeds
+rls_string STRING_r_add_feed_exists "Antud URL:iga kanal on juba olemas!" // shown when adding or changing a feed to a URL that already exists
+rls_string STRING_r_add_feed_exists_title "Korduv kanal" // title of error dialogs when adding feeds
 
-rls_string STRING_r_add_feed_replace "Kõik lood selles voos kustutatkse! Oled kindel?" // shown when changing an existing feed URL
+rls_string STRING_r_add_feed_replace "Kõik lood selles kanalis kustutatkse! Oled kindel?" // shown when changing an existing feed URL
 rls_string STRING_r_add_feed_replace_title "Tähelepanu!" // title to dialog
-rls_string STRING_r_view_export_feeds_cmd "Export Feeds" // Export feeds cmd in feedview
+rls_string STRING_r_view_export_feeds_cmd "Salvesta kanalite andmed" // Export feeds cmd in feedview
 
-rls_string STRING_r_catchup_feed "Mark all shows as played?" // shown when first updating a new feed
-rls_string STRING_r_catchup_feed_title "First Update" // title to dialog
+rls_string STRING_r_catchup_feed "Kas märkida kõik lood mängituks?" // shown when first updating a new feed
+rls_string STRING_r_catchup_feed_title "Uue kanali lisamine" // title to dialog
 
-rls_string STRING_r_remove_book_title "Remove audiobook"
-rls_string STRING_r_remove_book_prompt "Are you sure to remove this audiobook?"
+rls_string STRING_r_remove_book_title "Eemalda audio raamat"
+rls_string STRING_r_remove_book_prompt "kas eemaldada valitud audio raamat?"
 
-rls_string STRING_r_remove_chapter_title "Remove chapter"
-rls_string STRING_r_remove_chapter_prompt "Are you sure to remove this chapter?"
+rls_string STRING_r_remove_chapter_title "Peatüki eemaldamine"
+rls_string STRING_r_remove_chapter_prompt "Kas eemaldada valitud peatükk?"
 
-rls_string STRING_r_podcast_books_status_format "%d/%d Chapters"
+rls_string STRING_r_podcast_books_status_format "%d/%d peatükki"
