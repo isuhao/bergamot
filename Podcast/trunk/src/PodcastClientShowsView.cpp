@@ -248,6 +248,9 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 				}									
 			}
 			break;
+		case EPodcastCancelUpdateAllFeeds:
+			iPodcastModel.FeedEngine().CancelUpdateAllFeedsL();
+			break;
 		case EPodcastRemoveAllDownloads:
 			{
 			iPodcastModel.ShowEngine().RemoveAllDownloads();
@@ -736,6 +739,7 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 					HBufC* noItems=  iEikonEnv->AllocReadResourceLC(R_PODCAST_SHOWS_NO_ITEMS);
 
 					listBoxData->AddTextL(*noItems, EQikListBoxSlotText1);
+					listBoxData->SetDimmed(ETrue);
 					CleanupStack::PopAndDestroy(noItems);
 					CleanupStack::PopAndDestroy();
 				}
@@ -793,7 +797,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 			}
 
 			removeDeleteShowCmd = fItems[index]->DownloadState() != EDownloaded || updatingState || 
-				(iPodcastModel.PlayingPodcast() != NULL && fItems[index] == iPodcastModel.PlayingPodcast());
+				(iPodcastModel.PlayingPodcast() != NULL && fItems[index] == iPodcastModel.PlayingPodcast() && iPodcastModel.SoundEngine().State() >= ESoundEngineOpening);
 
 			if(fItems[index]->DownloadState() == ENotDownloaded)
 			{
@@ -815,12 +819,15 @@ void CPodcastClientShowsView::UpdateCommandsL()
 		comMan.SetInvisible(*this, EQikListBoxCmdSelect, ETrue);
 	}
 
-	comMan.SetInvisible(*this, EPodcastUpdateFeed, (iCurrentCategory != EShowFeedShows || iPodcastModel.ActiveFeedInfo()->IsBookFeed()));
+	TBool iUpdateRunning = iPodcastModel.FeedEngine().ClientState() != ENotUpdating && iPodcastModel.ActiveFeedInfo() != NULL && iPodcastModel.FeedEngine().ActiveClientUid() == iPodcastModel.ActiveFeedInfo()->Uid();
+
+	comMan.SetInvisible(*this, EPodcastUpdateFeed, iUpdateRunning || (iCurrentCategory != EShowFeedShows || iPodcastModel.ActiveFeedInfo()->IsBookFeed()));
+	comMan.SetInvisible(*this, EPodcastCancelUpdateAllFeeds, !iUpdateRunning);
+
 	comMan.SetInvisible(*this, EPodcastDownloadShow, removeDownloadShowCmd);
 
 	comMan.SetChecked(*this, EPodcastShowUnplayedOnly, iPodcastModel.SettingsEngine().SelectUnplayedOnly());
 	
-	comMan.SetAvailable(*this, EPodcastUpdateFeed, !updatingState);
 	comMan.SetAvailable(*this, EPodcastDownloadShow, !updatingState);
 	comMan.SetAvailable(*this, EPodcastShowUnplayedOnly, !updatingState);
 	comMan.SetAvailable(*this, EPodcastMarkAllPlayed, !updatingState);
@@ -838,6 +845,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 	comMan.SetInvisible(*this, EPodcastRemoveAllDownloads, ETrue);
 	comMan.SetInvisible(*this, EPodcastMarkAsPlayed, removeSetPlayed || !itemCnt);
 	comMan.SetInvisible(*this, EPodcastMarkAsUnplayed, !removeSetPlayed || !itemCnt);
+
 
 	switch(iCurrentCategory)
 	{	
@@ -877,7 +885,6 @@ void CPodcastClientShowsView::UpdateCommandsL()
 			comMan.SetInvisible(*this, EPodcastMarkAllPlayed, EFalse);
 			comMan.SetInvisible(*this, EPodcastUpdateLibrary, ETrue);
 			comMan.SetInvisible(*this, EPodcastShowUnplayedOnly, EFalse);
-			
 		}break;
 	}	
 

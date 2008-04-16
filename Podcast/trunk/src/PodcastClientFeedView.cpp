@@ -442,6 +442,7 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 					iEikonEnv->ReadResourceL(itemName, R_PODCAST_FEEDS_NO_FEEDS);
 					}
 				listBoxData->AddTextL(itemName, EQikListBoxSlotText1);
+				listBoxData->SetDimmed(ETrue);
 				
 				CleanupStack::PopAndDestroy(listBoxData);
 				}
@@ -593,6 +594,8 @@ void CPodcastClientFeedView::UpdateCommandsL()
 
 void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 	{
+	
+	ViewContext()->RemoveAndDestroyProgressInfo();
 	switch(aCommand.Id())
 		{
 		case EPodcastAddFeed:
