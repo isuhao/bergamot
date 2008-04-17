@@ -827,7 +827,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 			}
 
 			removeDeleteShowCmd = fItems[index]->DownloadState() != EDownloaded || updatingState || 
-				(iPodcastModel.PlayingPodcast() != NULL && fItems[index] == iPodcastModel.PlayingPodcast() && iPodcastModel.SoundEngine().State() >= ESoundEngineOpening);
+				(iPodcastModel.PlayingPodcast() != NULL && fItems[index] == iPodcastModel.PlayingPodcast());
 
 			if(fItems[index]->DownloadState() == ENotDownloaded)
 			{
