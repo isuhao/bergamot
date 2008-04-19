@@ -27,7 +27,15 @@ void CFeedEngine::ConstructL()
 	RunFeedTimer();
 	
     TFileName importFile = iPodcastModel.SettingsEngine().DefaultFeedsFileName();
-    if (!LoadFeeds() && BaflUtils::FileExists(iFs, importFile)) {
+    
+    TRAPD(err, LoadFeedsL());
+    
+    if (err != KErrNone) {
+    
+    	TRAP(err, LoadFeedsL(ETrue));
+    }
+    
+    if (err != KErrNone && BaflUtils::FileExists(iFs, importFile)) {
     	ImportFeedsL(importFile);
     }
 
@@ -36,7 +44,14 @@ void CFeedEngine::ConstructL()
     	ImportFeedsL(importFile);
     }
 
-    LoadBooksL();
+    
+    TRAP(err, LoadBooksL());
+    
+    if (err != KErrNone) {
+    
+    	TRAP(err,LoadBooksL(ETrue));
+    }
+    
 	}
 
 CFeedEngine::CFeedEngine(CPodcastModel& aPodcastModel) : iFeedTimer(this), iPodcastModel(aPodcastModel)
@@ -298,7 +313,7 @@ TBool CFeedEngine::AddFeed(CFeedInfo *aItem)
 	iSortedFeeds.InsertInOrder(aItem, sortOrder);
 
 	// Save the feeds into DB
-	SaveFeeds();
+	SaveFeedsL();
 	return ETrue;
 	}
 
@@ -329,7 +344,7 @@ void CFeedEngine::RemoveFeed(TUint aUid)
 			delete feedToRemove;
 			
 			RDebug::Print(_L("Removed feed"));
-			SaveFeeds();
+			SaveFeedsL();
 			return;
 		}
 	}
@@ -347,7 +362,7 @@ void CFeedEngine::ParsingComplete(CFeedInfo *item)
 //		iObservers[i]->ShowListUpdated();
 	}
 	
-	iPodcastModel.ShowEngine().SaveShows();
+	iPodcastModel.ShowEngine().SaveShowsL();
 	}
 
 
@@ -416,8 +431,8 @@ void CFeedEngine::CompleteL(CHttpClient* /*aClient*/, TBool aSuccessful)
 		TTime time;
 		time.HomeTime();
 		iActiveFeed->SetLastUpdated(time);
-		SaveFeeds();
-		iPodcastModel.ShowEngine().SaveShows();
+		SaveFeedsL();
+		iPodcastModel.ShowEngine().SaveShowsL();
 
 		// if the feed has specified a image url. download it if we dont already have it
 		if ( iActiveFeed->ImageUrl().Length() > 0 && ((iActiveFeed->ImageFileName().Length() == 0) || (!BaflUtils::FileExists(iFs,iActiveFeed->ImageFileName()) )))
@@ -512,9 +527,9 @@ TBool CFeedEngine::ExportFeedsL(TFileName& aFile)
 	return ETrue;
 	}
 	
-TBool CFeedEngine::LoadFeeds()
+void CFeedEngine::LoadFeedsL(TBool aUseBackup)
 	{
-	RDebug::Print(_L("LoadFeeds"));
+	RDebug::Print(_L("LoadFeedsL"));
 	TFileName path;
 	TParse	filestorename;
 	
@@ -526,7 +541,7 @@ TBool CFeedEngine::LoadFeeds()
 
 	if (!BaflUtils::FileExists(iFs, privatePath)) {
 		RDebug::Print(_L("No feed DB file"));	
-		return EFalse;
+		User::Leave(KErrNotFound);
 	}
 	
 	CFileStore* store = NULL;
@@ -536,7 +551,7 @@ TBool CFeedEngine::LoadFeeds()
 	if (error != KErrNone) {
 		RDebug::Print(_L("error=%d"), error);
 		CleanupStack::Pop(store);
-		return EFalse;
+		User::Leave(error);
 	}
 	
 	RStoreReadStream instream;
@@ -562,10 +577,9 @@ TBool CFeedEngine::LoadFeeds()
 		iSortedFeeds.InsertInOrder(readData, sortOrder);
 	}
 	CleanupStack::PopAndDestroy(2); // instream and store
-	return ETrue;
 	}
 
-void CFeedEngine::SaveFeeds()
+void CFeedEngine::SaveFeedsL()
 	{
 	RDebug::Print(_L("SaveFeeds"));
 	TFileName path;
@@ -578,6 +592,12 @@ void CFeedEngine::SaveFeeds()
 	
 	RDebug::Print(_L("File: %S"), &privatePath);
 	iFs.Parse(privatePath, filestorename);
+	RDebug::Print(_L("Saving backup..."));
+	TFileName backupFile;
+	backupFile.Copy(filestorename.FullName());
+	backupFile.Append(_L(".old"));
+	BaflUtils::CopyFile(iFs,filestorename.FullName(),backupFile);
+
 	CFileStore* store = CDirectFileStore::ReplaceLC(iFs, filestorename.FullName(), EFileWrite);
 	store->SetTypeL(KDirectFileStoreLayoutUid);
 	
@@ -667,7 +687,7 @@ void CFeedEngine::AddBookChaptersL(CFeedInfo& aFeedInfo, CDesCArrayFlat* aFileNa
 	}
 
 	// Save the shows	
-	iPodcastModel.ShowEngine().SaveShows();
+	iPodcastModel.ShowEngine().SaveShowsL();
 }
 
 
@@ -739,7 +759,7 @@ void CFeedEngine::RemoveBookL(TUint aUid)
 		}
 	}
 
-TBool CFeedEngine::LoadBooksL()
+void CFeedEngine::LoadBooksL(TBool aUseBackup)
 	{
 	TFileName path;
 	TParse	filestorename;
@@ -752,7 +772,7 @@ TBool CFeedEngine::LoadBooksL()
 
 	if (!BaflUtils::FileExists(iFs, privatePath)) {
 		RDebug::Print(_L("No books DB file"));	
-		return EFalse;
+		User::Leave(KErrNotFound);
 	}
 	
 	CFileStore* store = NULL;
@@ -761,7 +781,7 @@ TBool CFeedEngine::LoadBooksL()
 	
 	if (error != KErrNone) {
 		CleanupStack::Pop(store);
-		return EFalse;
+		User::Leave(error);
 	}
 	
 	RStoreReadStream instream;
@@ -771,7 +791,7 @@ TBool CFeedEngine::LoadBooksL()
 
 	if (version != KFeedInfoVersion) {
 		CleanupStack::PopAndDestroy(2); // instream and store
-		return EFalse;
+		User::Leave(KErrCorrupt);
 	}
 	
 	TInt count = instream.ReadInt32L();
@@ -784,7 +804,6 @@ TBool CFeedEngine::LoadBooksL()
 		iSortedBooks.InsertInOrder(readData, sortOrder);
 	}
 	CleanupStack::PopAndDestroy(2); // instream and store
-	return ETrue;
 	}
 
 void CFeedEngine::SaveBooksL()

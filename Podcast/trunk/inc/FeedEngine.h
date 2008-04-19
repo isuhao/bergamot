@@ -70,10 +70,10 @@ private:
 	void ConstructL();
 	CFeedEngine(CPodcastModel& aPodcastModel);
 
-	TBool LoadFeeds();
-	void SaveFeeds();
+	void LoadFeedsL(TBool aUseBackup=EFalse);
+	void SaveFeedsL();
 
-	TBool LoadBooksL();
+	void LoadBooksL(TBool aUseBackup=EFalse);
 	void SaveBooksL();
 	// from HttpClientObserver
 	void Connected(CHttpClient* aClient);

@@ -39,7 +39,7 @@ public:
 
 	void CompleteL(CHttpClient* aClient, TBool aSuccessful);
 	TBool AddShow(CShowInfo *item);
-	void SaveShows();
+	void SaveShowsL();
 
 	void DeletePlayedShows();
 	void DeleteAllShowsByFeed(TUint aFeedUid,TBool aDeleteFiles=ETrue);
@@ -72,7 +72,7 @@ private:
 	void ConstructL();
 
 	void GetShow(CShowInfo *info);
-	void LoadShowsL();
+	void LoadShowsL(TBool aUseBackup = EFalse);
 
 	void NotifyDownloadQueueUpdated();
 	void NotifyShowDownloadUpdated(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt aBytesTotal);

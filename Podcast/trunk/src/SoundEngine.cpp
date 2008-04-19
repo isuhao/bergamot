@@ -215,7 +215,7 @@ void CSoundEngine::Pause(TBool aOverrideState)
 			RDebug::Print(_L("Setting position..."));
 			iPodcastModel.PlayingPodcast()->SetPosition(iMaxPos);
 			// really wasteful saving EVERYTHING every time
-			iPodcastModel.ShowEngine().SaveShows();
+			iPodcastModel.ShowEngine().SaveShowsL();
 		}
 	}
 }

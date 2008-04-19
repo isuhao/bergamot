@@ -44,8 +44,16 @@ void CShowEngine::ConstructL()
 	iMetaDataReader->ConstructL();
 	iMediaFileFolderUtils = CQikMediaFileFolderUtils::NewL(*CEikonEnv::Static());
 	
-	// Try to load the database. Continue if we fail.
-	TRAP_IGNORE(LoadShowsL());
+	// Try to load the database.
+	TRAPD(err, LoadShowsL());
+	
+	// if failure, try to load backup
+	if (err != KErrNone) {
+		RDebug::Print(_L("Loading show database backup"));
+		LoadShowsL(ETrue);
+		// and save the backup as the real thing
+		SaveShowsL();
+	}
 	
 	//CheckFiles();
 	DownloadNextShow();
@@ -274,7 +282,7 @@ void CShowEngine::CompleteL(CHttpClient* /*aHttpClient*/, TBool aSuccessful)
 			iShowDownloading->SetDownloadState(EDownloaded);
 			iShowsDownloading.Remove(0);
 			
-			SaveShows();
+			SaveShowsL();
 			NotifyShowDownloadUpdated(100,0,1);
 		}
 		else 
@@ -340,7 +348,7 @@ TBool CShowEngine::CompareShowsByUid(const CShowInfo &a, const CShowInfo &b)
 	return a.Uid() == b.Uid();
 }
 
-void CShowEngine::LoadShowsL()
+void CShowEngine::LoadShowsL(TBool aUseBackup)
 	{
 	RDebug::Print(_L("CShowEngine::LoadShowsL\tLoad shows from database file"));
 	TFileName path;
@@ -350,12 +358,17 @@ void CShowEngine::LoadShowsL()
 	iFs.PrivatePath(privatePath);
 	BaflUtils::EnsurePathExistsL(iFs, privatePath);
 	privatePath.Append(KShowDB);
+	
+	if (aUseBackup) {
+		privatePath.Append(_L(".old"));
+	}
+	
 	iFs.Parse(privatePath, filestorename);
 
 	if (!BaflUtils::FileExists(iFs, privatePath)) 
 		{
 		RDebug::Print(_L("The show database does not exist"));	
-		return;
+		User::Leave(KErrNotFound);
 		}
 	
 	CFileStore* store = NULL;
@@ -411,7 +424,7 @@ void CShowEngine::LoadShowsL()
 	CleanupStack::PopAndDestroy(2); // instream and store
 	}
 
-void CShowEngine::SaveShows()
+void CShowEngine::SaveShowsL()
 	{
 	RDebug::Print(_L("void CShowEngine::SaveShows\tAttempt to store shows to db."));
 	
@@ -421,6 +434,11 @@ void CShowEngine::SaveShows()
 	iFs.PrivatePath(privatePath);
 	BaflUtils::EnsurePathExistsL(iFs, privatePath);
 	privatePath.Append(KShowDB);
+	
+	RDebug::Print(_L("Saving backup..."));
+	TFileName backupFile;
+	backupFile.Copy(filestorename.FullName());
+	backupFile.Append(_L(".old"));
 	
 	//RDebug::Print(_L("File: %S"), &privatePath);
 	iFs.Parse(privatePath, filestorename);
@@ -564,7 +582,7 @@ void CShowEngine::DeleteAllShowsByFeed(TUint aFeedUid, TBool aDeleteFiles)
 			delete show;
 			}
 		}
-	SaveShows();
+	SaveShowsL();
 	}
 
 void CShowEngine::DeleteShow(TUint aShowUid, TBool aRemoveFile)
@@ -735,7 +753,7 @@ void CShowEngine::AddDownload(CShowInfo *info)
 	
 	info->SetDownloadState(EQueued);
 	iShowsDownloading.Append(info);
-	SaveShows();
+	SaveShowsL();
 	DownloadNextShow();
 	}
 
@@ -816,7 +834,7 @@ void CShowEngine::SetSelectionPlayed()
 		//RDebug::Print(_L("Setting %d played"), iSelectedShows[i]->Uid());
 		iSelectedShows[i]->SetPlayState(EPlayed);
 		}
-	SaveShows();
+	SaveShowsL();
 	}
 
 
@@ -927,7 +945,7 @@ void CShowEngine::ReadMetaData(CShowInfo *aShowInfo)
 
 void CShowEngine::ReadMetaDataComplete()
 	{
-	SaveShows();
+	SaveShowsL();
 	NotifyShowListUpdated();
 	}
 
