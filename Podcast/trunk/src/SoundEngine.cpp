@@ -132,7 +132,7 @@ void CSoundEngine::SetPosition(TUint aPos)
 {
 	if(iState > ESoundEngineOpening)
 	{
-		TTimeIntervalMicroSeconds pos = aPos*1000000;
+		TTimeIntervalMicroSeconds pos = ((TUint64)aPos)*1000000;
 		if(iState == ESoundEnginePlaying)
 		{
 			iPlayer->Pause();
