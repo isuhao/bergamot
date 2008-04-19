@@ -200,3 +200,4 @@ rls_string STRING_r_remove_chapter_title "Peatüki eemaldamine"
 rls_string STRING_r_remove_chapter_prompt "Kas eemaldada valitud peatükk?"
 
 rls_string STRING_r_podcast_books_status_format "%d/%d peatükki"
+rls_string STRING_r_podcast_books_add_chapter "Add Chapters"

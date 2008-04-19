@@ -200,3 +200,4 @@ rls_string STRING_r_view_books_status "%d Knih" // Used in base view listbox sta
 rls_string STRING_r_view_feeds_status "%d Zdrojů" // Used in base view listbox for feeds status text max 32 chars
 rls_string STRING_r_cancel_update_all_feeds_cmd "Zrušit synchr."
 rls_string STRING_r_cancel_update_all_feeds_short_cmd "Zrušit"
+rls_string STRING_r_podcast_books_add_chapter "Add Chapters"

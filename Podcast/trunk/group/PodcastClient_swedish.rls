@@ -200,3 +200,4 @@ rls_string STRING_r_remove_chapter_title "Ta bort kapitel"
 rls_string STRING_r_remove_chapter_prompt "Vill du ta bort kapitlet?"
 
 rls_string STRING_r_podcast_books_status_format "%d/%d kapitel"
+rls_string STRING_r_podcast_books_add_chapter "Lägg till kapitel"

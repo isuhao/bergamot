@@ -200,6 +200,4 @@ rls_string STRING_r_remove_chapter_title "Remove chapter"
 rls_string STRING_r_remove_chapter_prompt "Are you sure to remove this chapter?"
 
 rls_string STRING_r_podcast_books_status_format "%d/%d Chapters"
-
-// New string
-rls_string STRING_r_podcast_books_add_chapter "Add Chapter(s)"
+rls_string STRING_r_podcast_books_add_chapter "Add Chapters"
