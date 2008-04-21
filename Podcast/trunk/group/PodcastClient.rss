@@ -19,6 +19,8 @@
 
 #ifdef LANGUAGE_01
 	#include "PodcastClient_english.rls"
+#elif defined LANGUAGE_02
+	#include "PodcastClient_french.rls"
 #elif defined LANGUAGE_03
 	#include "PodcastClient_german.rls"
 #elif defined LANGUAGE_05

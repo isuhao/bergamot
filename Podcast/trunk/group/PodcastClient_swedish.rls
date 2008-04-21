@@ -134,7 +134,7 @@ rls_string STRING_r_podcast_setting_minutes "minuter"
 
 rls_string STRING_r_podcast_setting_connection "Anslutning"
 rls_string STRING_r_podcast_setting_default "Använd standard"
-rls_string STRING_r_podcast_setting_wlanonly "Fråga mig"
+rls_string STRING_r_podcast_setting_wlanonly "Fråga varje gång"
 rls_string STRING_r_podcast_setting_usespecified "Använd förvald"
 rls_string STRING_r_podcast_setting_iaplist "Anslutningar"
 rls_string STRING_r_podcast_setting_cancel_cmd "Avbryt" // Cancel command in settings dialog
