@@ -17,6 +17,8 @@ enum TCallState
     EAnswering
 };
 
+const TUint KHangupInProcessTimeout = 12; // 12 seconds, enough for bluetooth
+
 class CTelephonyListener : CActive
 {
 public:

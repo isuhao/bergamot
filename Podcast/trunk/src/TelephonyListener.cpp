@@ -4,7 +4,7 @@
 #include "SoundEngine.h"
 
 CTelephonyListener::CTelephonyListener(CPodcastModel &aPodcastModel) : 
-	iPodcastModel(aPodcastModel), CActive(EPriorityStandard),
+	CActive(EPriorityStandard), iPodcastModel(aPodcastModel), 
 	iLineStatusPckg(iLineStatus)
 	{
 	iLineStatus.iStatus = CTelephony::EStatusUnknown;
@@ -63,7 +63,7 @@ void CTelephonyListener::RunL()
 	case CTelephony::EStatusIdle:
 		if (iPaused) {
 			iPaused = EFalse;
-			User::After(1000000*5);
+			User::After(1000000*KHangupInProcessTimeout);
 			iPodcastModel.SoundEngine().Play();
 		}
 		break;
