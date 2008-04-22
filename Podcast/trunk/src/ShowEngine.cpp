@@ -598,9 +598,11 @@ void CShowEngine::DeleteShow(TUint aShowUid, TBool aRemoveFile)
 				BaflUtils::DeleteFile(iFs, iShows[i]->FileName());			
 				}
 
-			CShowInfo* show = iShows[i];
-			iShows.Remove(i);
-			delete show;
+			iShows[i]->SetDownloadState(ENotDownloaded);
+			iShows[i]->SetPlayState(EPlayed);
+			//CShowInfo* show = iShows[i];
+			//iShows.Remove(i);
+			//delete show;
 			break;
 			}
 		}

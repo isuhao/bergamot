@@ -553,37 +553,16 @@ void CPodcastClientShowsView::UpdateShowItemDataL(CShowInfo* aShowInfo, MQikList
 			TBuf<KSizeBufLen> dlSize;
 			TBuf<KSizeBufLen> totSize;
 			
-			/*if(aShowInfo->ShowSize() < KSizeMb)
-			{
-				totSize.Format(KShowsSizeFormatKb(), (float)aShowInfo->ShowSize() / (float)KSizeKb);
-			}
-			else
-			{*/
-				totSize.Format(KShowsSizeFormatMb(), (float)(aShowInfo->ShowSize()) / (float)KSizeMb);
-			//}
-			
-			/*if(aSizeDownloaded < KSizeMb)
-			{
-				dlSize.Format(KShowsSizeFormatKb(), (float)aSizeDownloaded / (float)KSizeKb);
-			}
-			else
-			{*/
-				dlSize.Format(KShowsSizeFormatMb(), (float) (aSizeDownloaded) / (float) KSizeMb);
-			//}
+			totSize.Format(KShowsSizeFormat(), (float)aShowInfo->ShowSize() / (float)KSizeMb);
+			dlSize.Format(KShowsSizeFormat(), (float) aSizeDownloaded / (float) KSizeMb);
 			infoSize.Format(KSizeDownloadingOf(), &dlSize, &totSize);
-			
+			infoSize.Append(KShowsSizeUnit());
 		}
 		else
 		{
-			/*if(aShowInfo->ShowSize() < KSizeMb)
-			{
-				infoSize.Format(KShowsSizeFormatKb(), aShowInfo->ShowSize() / KSizeKb);
-			}
-			else
-			{*/
-				infoSize.Format(KShowsSizeFormatMb(), (float)(aShowInfo->ShowSize()) / (float)KSizeMb);
-			//}
-			
+			infoSize.Format(KShowsSizeFormat(), (float)aShowInfo->ShowSize() / (float)KSizeMb);
+			infoSize.Append(KShowsSizeUnit());
+
 		}
 	}
 	aListboxData->SetTextL(aShowInfo->Title(), EQikListBoxSlotText1);
@@ -735,13 +714,10 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 								{
 								showSize = KNullDesC();
 								} 
-							/*else if(si->ShowSize() < KSizeMb)
-								{
-								showSize.Format(KShowsSizeFormatKb(), si->ShowSize() / KSizeKb);
-								}*/
 							else
 								{
-								showSize.Format(KShowsSizeFormatMb(), (float)(si->ShowSize())/ (float)KSizeMb);
+								showSize.Format(KShowsSizeFormat(), (float)si->ShowSize()/ (float)KSizeMb);
+								showSize.Append(KShowsSizeUnit());
 								}
 
 							if(si->PubDate().Int64() == 0) 

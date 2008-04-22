@@ -859,13 +859,6 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 		{
 		if (iShowInfo->DownloadState() != EDownloaded)
 			{
-			/*if(iShowInfo->ShowSize() < KSizeMb)
-			 {
-			 time.Format(KShowsSizeFormatKb(), iShowInfo->ShowSize() / KSizeKb);
-			 }
-			 else
-			 {*/
-
 			if (iBytesDownloaded > 0)
 				{
 				const TInt KSizeBufLen = 64;
@@ -873,15 +866,15 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 				TBuf<KSizeBufLen> totSize;
 				_LIT(KSizeDownloadingOf, "%S/%S");
 
-				totSize.Format(KShowsSizeFormatMb(),
-						(float)(iShowInfo->ShowSize())
-								/ (float)KSizeMb);
-				dlSize.Format(KShowsSizeFormatMb(), (float) (iBytesDownloaded) / (float) KSizeMb);
+				totSize.Format(KShowsSizeFormat(), (float)iShowInfo->ShowSize()	/ (float) KSizeMb);
+				dlSize.Format(KShowsSizeFormat(), (float) iBytesDownloaded / (float) KSizeMb);
 				time.Format(KSizeDownloadingOf(), &dlSize, &totSize);
+				time.Append(KShowsSizeUnit());
 				}
 			else
 				{
-				time.Format(KShowsSizeFormatMb(), (float)(iShowInfo->ShowSize()) / (float)KSizeMb);
+				time.Format(KShowsSizeFormat(), (float)iShowInfo->ShowSize() / (float)KSizeMb);
+				time.Append(KShowsSizeUnit());
 				}
 			//}
 			}
