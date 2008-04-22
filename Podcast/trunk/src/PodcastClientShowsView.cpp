@@ -84,7 +84,7 @@ void CPodcastClientShowsView::ViewConstructL()
 
 void CPodcastClientShowsView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage)
 {
-	TPodcastClientShowCategory previousCategory = iCurrentCategory;
+	//TPodcastClientShowCategory previousCategory = iCurrentCategory;
 
 	switch(aCustomMessageId.iUid)
 	{
@@ -633,7 +633,7 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 			if(len == iListbox->Model().Count())
 			{		
 				allUidsMatch = ETrue;
-				TInt itemId = 0;
+				TUint itemId = 0;
 				for(TInt loop = 0;loop< len ;loop++)
 				{
 					MQikListBoxData* data = model.RetrieveDataL(loop);	

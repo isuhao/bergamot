@@ -22,7 +22,7 @@ CRemoteControlListener::~CRemoteControlListener()
 	delete iSelector;
 	}
 	
-void CRemoteControlListener::MrccatoPlay(TRemConCoreApiPlaybackSpeed aSpeed, TRemConCoreApiButtonAction aButtonAct)
+void CRemoteControlListener::MrccatoPlay(TRemConCoreApiPlaybackSpeed /*aSpeed*/, TRemConCoreApiButtonAction /*aButtonAct*/)
 	{
 	RDebug::Print(_L("Play Command received"));
 	iModel.SoundEngine().Play();
@@ -38,17 +38,17 @@ void CRemoteControlListener::MrccatoSelectDiskFunction()
 	RDebug::Print(_L("Select disc function received"));
 	}
 	
-void CRemoteControlListener::MrccatoSelectAvInputFunction(TUint8 aAvInputSignalNumber, TRemConCoreApiButtonAction aButtonAct)
+void CRemoteControlListener::MrccatoSelectAvInputFunction(TUint8 /*aAvInputSignalNumber*/, TRemConCoreApiButtonAction /*aButtonAct*/)
 	{
 	RDebug::Print(_L("Select AV input function received"));
 	}
 	
-void CRemoteControlListener::MrccatoSelectAudioInputFunction(TUint8 aAudioInputSignalNumber, TRemConCoreApiButtonAction aButtonAct)
+void CRemoteControlListener::MrccatoSelectAudioInputFunction(TUint8 /*aAudioInputSignalNumber*/, TRemConCoreApiButtonAction /*aButtonAct*/)
 	{
 	RDebug::Print(_L("Select audio input function received"));
 	}
 	
-void CRemoteControlListener::MrccatoCommand(TRemConCoreApiOperationId aOperationId, TRemConCoreApiButtonAction aButtonAct)
+void CRemoteControlListener::MrccatoCommand(TRemConCoreApiOperationId aOperationId, TRemConCoreApiButtonAction /*aButtonAct*/)
 	{
 	switch(aOperationId)
 		{

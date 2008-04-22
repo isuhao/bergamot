@@ -171,13 +171,13 @@ void CPodcastClientBaseView::UpdateListboxItemsL()
 				{
 					TUint unplayed, total;
 					iPodcastModel.ShowEngine().GetStatsForDownloaded(total, unplayed);
-					if (total == -1) {
+					/*if (total == -1) {
 						iEikonEnv->ReadResourceL(formatting, R_PODCAST_ONPHONE_STATUS_UNKNOWN);
 						statusText.Copy(formatting);
-					} else {
+					} else {*/
 						iEikonEnv->ReadResourceL(formatting, R_PODCAST_ONPHONE_STATUS);
 						statusText.Format(formatting, unplayed, total);
-					}
+					//}
 					data->SetTextL(statusText, EQikListBoxSlotText2);				
 					model.DataUpdatedL(loop);
 					
@@ -298,7 +298,8 @@ void CPodcastClientBaseView::ShowListUpdated()
 	TRAP_IGNORE(UpdateListboxItemsL());	
 	}
 
-void CPodcastClientBaseView::DownloadQueueUpdated(TInt aDownloadingShows, TInt aQueuedShows)
+void CPodcastClientBaseView::DownloadQueueUpdated(TInt /*aDownloadingShows*/, TInt /*aQueuedShows*/)
+
 	{
 	TRAP_IGNORE(UpdateListboxItemsL());
 	}

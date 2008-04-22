@@ -36,7 +36,7 @@ private:
 	TBuf<1024> iStringBuffer2;
 	CAsyncCallBack* iParseNextShowCallBack;
 	CCnvCharacterSetConverter* iCharConverter;
-	TInt iLastConverterCharset;
+	TUint iLastConverterCharset;
 };
 
 #endif /*METADATAREADER_H_*/

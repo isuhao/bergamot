@@ -6,7 +6,7 @@
 #include "SettingsEngine.h"
 #include <e32hashtab.h>
 
-const TInt KMaxDownloadErrors=3;
+const TUint KMaxDownloadErrors=3;
 
 CShowEngine::CShowEngine(CPodcastModel& aPodcastModel) : iPodcastModel(aPodcastModel)
 	{
@@ -50,9 +50,11 @@ void CShowEngine::ConstructL()
 	// if failure, try to load backup
 	if (err != KErrNone) {
 		RDebug::Print(_L("Loading show database backup"));
-		LoadShowsL(ETrue);
-		// and save the backup as the real thing
-		SaveShowsL();
+		TRAP(err,LoadShowsL(ETrue));
+		if( err == KErrNone) {
+			// and if successfull, save the backup as the real thing
+			SaveShowsL();
+		}
 	}
 
 	DownloadNextShow();
@@ -324,7 +326,7 @@ CShowInfo* CShowEngine::GetNextShowByTrackL(CShowInfo* aShowInfo)
 	{
 	TInt cnt = iShows.Count();
 	CShowInfo* nextShow = NULL;
-	TInt diff = KMaxTInt;
+	TUint diff = KMaxTInt;
 	for(TInt loop = 0; loop<cnt; loop++)
 		{
 			if(aShowInfo->FeedUid() == iShows[loop]->FeedUid() && aShowInfo->TrackNo() < iShows[loop]->TrackNo())
@@ -959,7 +961,7 @@ CMetaDataReader& CShowEngine::MetaDataReader()
 	return *iMetaDataReader;
 	}
 
-void CShowEngine::FileError(TUint aError)
+void CShowEngine::FileError(TUint /*aError*/)
 	{
 	//TODO: Error dialog
 	//StopDownloads();

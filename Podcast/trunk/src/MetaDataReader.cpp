@@ -133,7 +133,7 @@ void CMetaDataReader::ParseNextShowL()
 			id3_tag * tag = id3_file_tag(id3_file);
 			id3_length_t len;
 			id3_frame * frame = id3_tag_findframe(tag, ID3_FRAME_TITLE, 0);
-			TInt cnt;
+			TUint cnt;
 			char* ptr = NULL;
 			enum id3_field_textencoding encoding = ID3_FIELD_TEXTENCODING_UTF_8;
 			if(frame != NULL)
