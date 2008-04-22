@@ -345,6 +345,8 @@ void CPodcastClientPlayView::HandleCommandL(CQikCommand& aCommand)
 			comMan.SetTextL(*this, EPodcastPlay, R_PODCAST_PLAYER_PLAY_CMD);
 			iPlayProgressbar->SetFocusing(EFalse);
 			iPodcastModel.SoundEngine().Stop();
+			iPodcastModel.PlayingPodcast()->SetPosition(0);
+			iPodcastModel.SetPlayingPodcast(NULL);
 			}
 			break;
 		case EPodcastResumeDownloads:
@@ -513,6 +515,13 @@ void CPodcastClientPlayView::ShowDownloadUpdatedL(
 		TInt aBytesTotal)
 
 	{
+
+	if (iShowInfo != iPodcastModel.ShowEngine().ShowDownloading()) {
+		iBytesDownloaded = 0;
+		UpdateViewL();
+		return;
+	}
+	
 	if (iDownloadProgressInfo != NULL)
 		{
 		if (iDownloadProgressInfo->Info().iFinalValue != aBytesTotal)
@@ -775,7 +784,8 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 			}
 
 		//	comMan.SetDimmed(*this, EPodcastPlay, iPodcastModel.SoundEngine().State() == ESoundEngineNotInitialized);
-		comMan.SetDimmed(*this, EPodcastStop, (iPodcastModel.SoundEngine().State() <= ESoundEngineOpening || iPodcastModel.SoundEngine().State() == ESoundEngineStopped));
+		comMan.SetDimmed(*this, EPodcastStop, (iPodcastModel.SoundEngine().State() == ESoundEngineNotInitialized || 
+												iPodcastModel.SoundEngine().State() == ESoundEngineStopped && iPodcastModel.PlayingPodcast()->Position() == 0));
 		if (iPlayProgressbar != NULL)
 			{
 			iPlayProgressbar->SetDimmed(iPodcastModel.SoundEngine().State() <= ESoundEngineOpening);
@@ -864,16 +874,14 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 				_LIT(KSizeDownloadingOf, "%S/%S");
 
 				totSize.Format(KShowsSizeFormatMb(),
-						(float)(iShowInfo->ShowSize()+KSizeMb/2)
+						(float)(iShowInfo->ShowSize())
 								/ (float)KSizeMb);
-				dlSize.Format(KShowsSizeFormatMb(), (float) (iBytesDownloaded
-						+KSizeMb/2) / (float) KSizeMb);
+				dlSize.Format(KShowsSizeFormatMb(), (float) (iBytesDownloaded) / (float) KSizeMb);
 				time.Format(KSizeDownloadingOf(), &dlSize, &totSize);
 				}
 			else
 				{
-				time.Format(KShowsSizeFormatMb(), (float)(iShowInfo->ShowSize()
-						+KSizeMb/2) / (float)KSizeMb);
+				time.Format(KShowsSizeFormatMb(), (float)(iShowInfo->ShowSize()) / (float)KSizeMb);
 				}
 			//}
 			}

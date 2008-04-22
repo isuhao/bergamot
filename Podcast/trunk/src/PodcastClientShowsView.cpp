@@ -110,6 +110,9 @@ void CPodcastClientShowsView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid
 		SetParentView( TVwsViewId(KUidPodcastClientID, KUidPodcastBaseViewID));
 	}
 	
+	iProgressAdded = EFalse;
+	ViewContext()->RemoveAndDestroyProgressInfo();
+	
 	UpdateFeedUpdateStateL();
 }
 
@@ -192,6 +195,10 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 
 				if(index >= 0 && index < iPodcastModel.ActiveShowList().Count())
 					{
+					//if (iPodcastModel.PlayingPodcast() == iPodcastModel.ActiveShowList()[index] && iPodcastModel.SoundEngine().State() > ESoundEngineOpening) {
+					//	iPodcastModel.SoundEngine().Stop();
+					//}
+					                               
 					TBool isBook = (iPodcastModel.ActiveShowList()[index]->ShowType() == EAudioBook);
 					if(iEikonEnv->QueryWinL(isBook?R_PODCAST_REMOVE_CHAPTER_TITLE:R_PODCAST_DELETE_SHOW_TITLE, 
 											isBook?R_PODCAST_REMOVE_CHAPTER_PROMPT:R_PODCAST_DELETE_SHOW_PROMPT))				
@@ -413,7 +420,7 @@ void CPodcastClientShowsView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownloa
 			
 			ViewContext()->SetAndDrawProgressInfo(aPercentOfCurrentDownload);
 		}
-		else if(iProgressAdded)
+		else
 		{
 			ViewContext()->RemoveAndDestroyProgressInfo();
 			ViewContext()->DrawNow();
@@ -552,7 +559,7 @@ void CPodcastClientShowsView::UpdateShowItemDataL(CShowInfo* aShowInfo, MQikList
 			}
 			else
 			{*/
-				totSize.Format(KShowsSizeFormatMb(), (float)(aShowInfo->ShowSize()+KSizeMb/2) / (float)KSizeMb);
+				totSize.Format(KShowsSizeFormatMb(), (float)(aShowInfo->ShowSize()) / (float)KSizeMb);
 			//}
 			
 			/*if(aSizeDownloaded < KSizeMb)
@@ -561,7 +568,7 @@ void CPodcastClientShowsView::UpdateShowItemDataL(CShowInfo* aShowInfo, MQikList
 			}
 			else
 			{*/
-				dlSize.Format(KShowsSizeFormatMb(), (float) (aSizeDownloaded+KSizeMb/2) / (float) KSizeMb);
+				dlSize.Format(KShowsSizeFormatMb(), (float) (aSizeDownloaded) / (float) KSizeMb);
 			//}
 			infoSize.Format(KSizeDownloadingOf(), &dlSize, &totSize);
 			
@@ -574,7 +581,7 @@ void CPodcastClientShowsView::UpdateShowItemDataL(CShowInfo* aShowInfo, MQikList
 			}
 			else
 			{*/
-				infoSize.Format(KShowsSizeFormatMb(), (float)(aShowInfo->ShowSize()+KSizeMb/2) / (float)KSizeMb);
+				infoSize.Format(KShowsSizeFormatMb(), (float)(aShowInfo->ShowSize()) / (float)KSizeMb);
 			//}
 			
 		}
@@ -667,7 +674,7 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 				}
 			}
 
-			if(allUidsMatch)
+			if(allUidsMatch && len > 0)
 			{
 				model.ModelBeginUpdateLC();
 				for(TInt loop = 0;loop< len ;loop++)
@@ -734,7 +741,7 @@ void CPodcastClientShowsView::UpdateListboxItemsL()
 								}*/
 							else
 								{
-								showSize.Format(KShowsSizeFormatMb(), ((float)(si->ShowSize()+KSizeMb/2))/ (float)KSizeMb);
+								showSize.Format(KShowsSizeFormatMb(), (float)(si->ShowSize())/ (float)KSizeMb);
 								}
 
 							if(si->PubDate().Int64() == 0) 
