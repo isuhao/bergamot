@@ -13,17 +13,17 @@ class CMetaDataReader : public CBase, public MMdaAudioPlayerCallback
 {
 public:
 	CMetaDataReader(MMetaDataReaderObserver &aObserver);
-	void SubmitShow(CShowInfo *aShowInfo);
+	void SubmitShowL(CShowInfo *aShowInfo);
 	virtual ~CMetaDataReader();
 	void ConstructL();
 	
 protected:
 	void MapcPlayComplete(TInt aError);
 	void MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds &aDuration);
-	static TInt ParseNextShowL(TAny* aMetaDataReader);
+	static TInt ParseNextShowCallbackL(TAny* aMetaDataReader);
 	void ConvertToUniCodeL(TDes& aDestBuffer, TDes8& aInputBuffer, enum id3_field_textencoding aEncoding);
 private:
-	void ParseNextShow();
+	void ParseNextShowL();
 	
 private:
 	CMdaAudioPlayerUtility *iPlayer;

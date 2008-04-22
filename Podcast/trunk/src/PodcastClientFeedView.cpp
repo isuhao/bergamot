@@ -175,6 +175,11 @@ void CPodcastClientFeedView::UpdateFeedInfoDataL(CFeedInfo* aFeedInfo,  MQikList
 
 void CPodcastClientFeedView::FeedInfoUpdated(CFeedInfo* aFeedInfo)
 	{
+	TRAP_IGNORE(FeedInfoUpdatedL(aFeedInfo))
+	}
+
+void CPodcastClientFeedView::FeedInfoUpdatedL(CFeedInfo* aFeedInfo)
+	{
 	if (ViewContext() == NULL) 
 		{
 		return;
@@ -199,7 +204,7 @@ void CPodcastClientFeedView::FeedInfoUpdated(CFeedInfo* aFeedInfo)
 		if(index != KErrNotFound && index<model.Count())
 		{
 			model.ModelBeginUpdateLC();
-			MQikListBoxData* data = model.RetrieveDataL(index);	
+			MQikListBoxData* data = model.RetrieveDataL(index);
 			
 			if(data != NULL)
 			{

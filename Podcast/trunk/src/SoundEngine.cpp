@@ -54,10 +54,12 @@ void CSoundEngine::MapcPlayComplete(TInt aError) {
 
 	if(iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.PlayingPodcast()->ShowType() == EAudioBook)
 	{
-		CShowInfo* nextShow = iPodcastModel.ShowEngine().GetNextShowByTrackL(iPodcastModel.PlayingPodcast());
+		CShowInfo* nextShow = NULL;
+		
+		TRAP_IGNORE(iPodcastModel.ShowEngine().GetNextShowByTrackL(iPodcastModel.PlayingPodcast()));
 		if(nextShow != NULL)
 		{
-			iPodcastModel.PlayPausePodcastL(nextShow, ETrue);
+			TRAP_IGNORE(iPodcastModel.PlayPausePodcastL(nextShow, ETrue));
 		}
 	}
 }	
@@ -89,7 +91,7 @@ void CSoundEngine::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds
 		if(iPlayOnInit)
 			{
 			
-			iPodcastModel.PlayPausePodcastL(iPodcastModel.PlayingPodcast());
+			TRAP_IGNORE(iPodcastModel.PlayPausePodcastL(iPodcastModel.PlayingPodcast()));
 			}
 		}
 
@@ -207,15 +209,13 @@ void CSoundEngine::Pause(TBool aOverrideState)
 	{
 		iState = ESoundEnginePaused;
 		iPlayer->Pause();
-		//TTimeIntervalMicroSeconds pos = 0;
-		//iPlayer->GetPosition(pos);
-		//RDebug::Print(_L("Pos: %lu"), pos.Int64());
+
 		// had a crash here, so we check for NULL first
 		if (iPodcastModel.PlayingPodcast() != NULL) {
 			RDebug::Print(_L("Setting position..."));
 			iPodcastModel.PlayingPodcast()->SetPosition(iMaxPos);
 			// really wasteful saving EVERYTHING every time
-			iPodcastModel.ShowEngine().SaveShowsL();
+			TRAP_IGNORE(iPodcastModel.ShowEngine().SaveShowsL());
 		}
 	}
 }

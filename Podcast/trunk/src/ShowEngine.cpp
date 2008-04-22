@@ -54,8 +54,7 @@ void CShowEngine::ConstructL()
 		// and save the backup as the real thing
 		SaveShowsL();
 	}
-	
-	//CheckFiles();
+
 	DownloadNextShow();
 	
 	// maybe this is a bad idea?
@@ -93,44 +92,43 @@ void CShowEngine::RemoveAllDownloads() {
 	}
 	
 	iShowsDownloading.Reset();
-	
+	SaveShows();
 }
-
 
 TBool CShowEngine::RemoveDownload(TUint aUid) 
 	{
 	//RDebug::Print(_L("CShowEngine::RemoveDownload\t Trying to remove download"));
 	//RDebug::Print(_L("Title: %S"), &iPodcastModel.ShowEngine().GetShowByUidL(aUid)->Title());
-
+	TBool retVal = EFalse;
 	// if trying to remove the present download, we first stop it
 	if (!iDownloadsSuspended && iShowDownloading != NULL && iShowDownloading->Uid() == aUid) {
 		RDebug::Print(_L("CShowEngine::RemoveDownload\t This is the active download, we suspend downloading"));
 		StopDownloads();
-		return EFalse;
-	}
-	
-	const TInt count = iShowsDownloading.Count();
-	for (TInt i=0 ; i < count; i++) 
-		{
-		//RDebug::Print(_L("Comparing %u (%S) to %u"), iShowsDownloading[i]->Uid(), &iShowsDownloading[i]->Title(), aUid );
-		if (iShowsDownloading[i]->Uid() == aUid) 
+	} else {
+		const TInt count = iShowsDownloading.Count();
+		for (TInt i=0 ; i < count; i++) 
 			{
-			//RDebug::Print(_L("Removing by title: %S"), &iShowsDownloading[i]->Title());
-			iShowsDownloading[i]->SetDownloadState(ENotDownloaded);
-			BaflUtils::DeleteFile(iFs, iShowsDownloading[i]->FileName());
-			iShowsDownloading.Remove(i);
-
-			RDebug::Print(_L("CShowEngine::RemoveDownload\tDownload removed."));
-			
-			NotifyShowDownloadUpdated(-1,-1,-1);
-			NotifyDownloadQueueUpdated();
-			DownloadNextShow();
-			return ETrue;		
-			}
-		}
+			//RDebug::Print(_L("Comparing %u (%S) to %u"), iShowsDownloading[i]->Uid(), &iShowsDownloading[i]->Title(), aUid );
+			if (iShowsDownloading[i]->Uid() == aUid) 
+				{
+				//RDebug::Print(_L("Removing by title: %S"), &iShowsDownloading[i]->Title());
+				iShowsDownloading[i]->SetDownloadState(ENotDownloaded);
+				BaflUtils::DeleteFile(iFs, iShowsDownloading[i]->FileName());
+				iShowsDownloading.Remove(i);
 	
-	return EFalse;
+				RDebug::Print(_L("CShowEngine::RemoveDownload\tDownload removed."));
+				
+				NotifyShowDownloadUpdated(-1,-1,-1);
+				NotifyDownloadQueueUpdated();
+				SaveShows();
+				DownloadNextShow();
+				retVal = ETrue;		
+				}
+			}
+	}
+
 	RDebug::Print(_L("CShowEngine::RemoveDownload\tCould not find downloading show to remove"));
+	return retVal;
 	}
 
 void CShowEngine::Connected(CHttpClient* /*aClient*/)
@@ -203,7 +201,7 @@ void CShowEngine::GetStatsForDownloaded(TUint &aNumShows, TUint &aNumUnplayed )
 	
 	}
 
-void CShowEngine::GetShow(CShowInfo *info)
+void CShowEngine::GetShowL(CShowInfo *info)
 	{
 	CFeedInfo *feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(info->FeedUid());
 	if (feedInfo == NULL) {
@@ -424,6 +422,11 @@ void CShowEngine::LoadShowsL(TBool aUseBackup)
 	CleanupStack::PopAndDestroy(2); // instream and store
 	}
 
+void CShowEngine::SaveShows()
+	{
+	TRAP_IGNORE(SaveShowsL());
+	}
+
 void CShowEngine::SaveShowsL()
 	{
 	RDebug::Print(_L("void CShowEngine::SaveShows\tAttempt to store shows to db."));
@@ -559,6 +562,7 @@ void CShowEngine::DeletePlayedShows()
 			iSelectedShows[i]->SetDownloadState(ENotDownloaded);
 			}
 		}
+	SaveShows();
 	}
 
 void CShowEngine::DeleteAllShowsByFeed(TUint aFeedUid, TBool aDeleteFiles)
@@ -581,7 +585,7 @@ void CShowEngine::DeleteAllShowsByFeed(TUint aFeedUid, TBool aDeleteFiles)
 			delete show;
 			}
 		}
-	SaveShowsL();
+	SaveShows();
 	}
 
 void CShowEngine::DeleteShow(TUint aShowUid, TBool aRemoveFile)
@@ -599,12 +603,11 @@ void CShowEngine::DeleteShow(TUint aShowUid, TBool aRemoveFile)
 
 			iShows[i]->SetDownloadState(ENotDownloaded);
 			iShows[i]->SetPlayState(EPlayed);
-			//CShowInfo* show = iShows[i];
-			//iShows.Remove(i);
-			//delete show;
 			break;
 			}
 		}
+	
+	SaveShows();
 	}
 
 TUint CShowEngine::GetGrossSelectionLength()
@@ -674,8 +677,6 @@ void CShowEngine::SelectNewShows()
 
 void CShowEngine::SelectShowsDownloaded()
 	{
-	//CheckFiles();
-	
 	iSelectedShows.Reset();
 	iGrossSelectionLength = 0;
 	for (TInt i=0;i<iShows.Count();i++)
@@ -722,7 +723,7 @@ void CShowEngine::SelectShowsDownloading()
 	iGrossSelectionLength = iSelectedShows.Count();
 	}
 
-void CShowEngine::GetShowsForFeed(RShowInfoArray& aShowArray, TUint aFeedUid)
+void CShowEngine::GetShowsForFeedL(RShowInfoArray& aShowArray, TUint aFeedUid)
 	{
 	TInt cnt = iShows.Count();
 	aShowArray.Reset();
@@ -754,7 +755,7 @@ void CShowEngine::AddDownload(CShowInfo *info)
 	
 	info->SetDownloadState(EQueued);
 	iShowsDownloading.Append(info);
-	SaveShowsL();
+	SaveShows();
 	DownloadNextShow();
 	}
 
@@ -789,7 +790,10 @@ void CShowEngine::DownloadNextShow()
 			RDebug::Print(_L("CShowEngine::DownloadNextShow\tDownloading: %S"), &(info->Title()));
 			info->SetDownloadState(EDownloading);
 			iShowDownloading = info;
-			GetShow(info);
+			TRAPD(error,GetShowL(info));
+			if (error != KErrNone) {
+				iDownloadsSuspended = ETrue;
+			}
 			}
 		}
 	else
@@ -835,11 +839,11 @@ void CShowEngine::SetSelectionPlayed()
 		//RDebug::Print(_L("Setting %d played"), iSelectedShows[i]->Uid());
 		iSelectedShows[i]->SetPlayState(EPlayed);
 		}
-	SaveShowsL();
+	SaveShows();
 	}
 
 
-void CShowEngine::ListDir(TFileName &folder) {
+void CShowEngine::ListDirL(TFileName &folder) {
 	CDirScan *dirScan = CDirScan::NewLC(iFs);
 	//RDebug::Print(_L("Listing dir: %S"), &folder);
 	dirScan ->SetScanDataL(folder, KEntryAttDir, ESortByName);
@@ -853,7 +857,7 @@ void CShowEngine::ListDir(TFileName &folder) {
 			subFolder.Copy(folder);
 			subFolder.Append(entry.iName);
 			subFolder.Append(_L("\\"));
-			ListDir(subFolder);
+			ListDirL(subFolder);
 		} else {
 			TFileName fileName;
 			fileName.Copy(entry.iName);
@@ -911,7 +915,7 @@ void CShowEngine::ListDir(TFileName &folder) {
 			info->SetPubDate(entry.iModified);
 			info->SetDelete();  			// so that we do not save the entry in the DB.
 			
-			iMetaDataReader->SubmitShow(info);
+			iMetaDataReader->SubmitShowL(info);
 			iShows.Append(info);
 		}
 	}
@@ -919,9 +923,8 @@ void CShowEngine::ListDir(TFileName &folder) {
 	CleanupStack::PopAndDestroy(dirScan);
 }
 
-void CShowEngine::CheckFiles()
+void CShowEngine::CheckFilesL()
 	{
-
 	// check to see if any files were removed
 	for (TInt i=0;i<iShows.Count();i++) {
 		if(iShows[i]->DownloadState() == EDownloaded) {
@@ -936,7 +939,8 @@ void CShowEngine::CheckFiles()
 	}
 
 	// check if any new files were added
-	ListDir(iPodcastModel.SettingsEngine().BaseDir());	
+	ListDirL(iPodcastModel.SettingsEngine().BaseDir());	
+	SaveShows();
 }
 
 void CShowEngine::ReadMetaData(CShowInfo *aShowInfo)
@@ -946,7 +950,7 @@ void CShowEngine::ReadMetaData(CShowInfo *aShowInfo)
 
 void CShowEngine::ReadMetaDataComplete()
 	{
-	SaveShowsL();
+	SaveShows();
 	NotifyShowListUpdated();
 	}
 

@@ -156,7 +156,7 @@ void CHttpClient::Stop()
 		iSession.Close();
 		}
 
-	iObserver.CompleteL(this, EFalse);
+	TRAP_IGNORE(iObserver.CompleteL(this, EFalse));
 
 	}
 

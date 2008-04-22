@@ -295,12 +295,12 @@ void CPodcastClientBaseView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQi
 
 void CPodcastClientBaseView::ShowListUpdated()
 	{
-	UpdateListboxItemsL();	
+	TRAP_IGNORE(UpdateListboxItemsL());	
 	}
 
 void CPodcastClientBaseView::DownloadQueueUpdated(TInt aDownloadingShows, TInt aQueuedShows)
 	{
-	UpdateListboxItemsL();
+	TRAP_IGNORE(UpdateListboxItemsL());
 	}
 
 

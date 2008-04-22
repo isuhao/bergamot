@@ -203,7 +203,7 @@ TBool CFeedEngine::NewShow(CShowInfo *item)
 	description.Copy(item->Description());
 	CleanHtml(description);
 	//RDebug::Print(_L("New show has feed ID: %u"), item->FeedUid());
-	item->SetDescriptionL(description);
+	TRAP_IGNORE(item->SetDescriptionL(description));
 	//RDebug::Print(_L("Description: %S"), &description);
 
 	if (iCatchupMode) {
@@ -313,7 +313,7 @@ TBool CFeedEngine::AddFeed(CFeedInfo *aItem)
 	iSortedFeeds.InsertInOrder(aItem, sortOrder);
 
 	// Save the feeds into DB
-	SaveFeedsL();
+	SaveFeeds();
 	return ETrue;
 	}
 
@@ -344,7 +344,7 @@ void CFeedEngine::RemoveFeed(TUint aUid)
 			delete feedToRemove;
 			
 			RDebug::Print(_L("Removed feed"));
-			SaveFeedsL();
+			SaveFeeds();
 			return;
 		}
 	}
@@ -355,14 +355,12 @@ void CFeedEngine::ParsingComplete(CFeedInfo *item)
 	TBuf<1024> title;
 	title.Copy(item->Title());
 	CleanHtml(title);
-	item->SetTitleL(title);
-	//RDebug::Print(_L("feed image url: %S"), &item->ImageUrl());
+	TRAP_IGNORE(item->SetTitleL(title));
+
 	for (int i=0;i<iObservers.Count();i++) {
 		iObservers[i]->FeedInfoUpdated(item);
-//		iObservers[i]->ShowListUpdated();
 	}
 	
-	iPodcastModel.ShowEngine().SaveShowsL();
 	}
 
 
@@ -511,16 +509,16 @@ TBool CFeedEngine::ExportFeedsL(TFileName& aFile)
 	tft.Set(rfile);
 	
 	TBuf<1024> templ;
-	templ.Copy(_L("  <outline text=\"%S\" xmlUrl=\"%S\"/>"));
+	templ.Copy(KOpmlHeader());
 	TBuf<1024> line;
 			
 	
-	tft.Write(_L("<?xml version=\"1.0\" encoding=\"UTF-16\"?>\n<opml version=\"1.1\"><head>\n  <title>Escarpod Feed List</title>\n</head>\n<body>"));
+	tft.Write(KOpmlHeader());
 	for (int i=0;i<iSortedFeeds.Count();i++) {
 		line.Format(templ, &iSortedFeeds[i]->Title(), &iSortedFeeds[i]->Url());
 		tft.Write(line);
 	}
-	tft.Write(_L("</body>\n</opml>"));
+	tft.Write(KOpmlFooter());
 		
 	rfile.Close();
 	
@@ -537,6 +535,11 @@ void CFeedEngine::LoadFeedsL(TBool aUseBackup)
 	iFs.PrivatePath(privatePath);
 	BaflUtils::EnsurePathExistsL(iFs, privatePath);
 	privatePath.Append(KFeedDB);
+	
+	if (aUseBackup) {
+		privatePath.Append(_L(".old"));
+	}
+	
 	iFs.Parse(privatePath, filestorename);
 
 	if (!BaflUtils::FileExists(iFs, privatePath)) {
@@ -577,6 +580,11 @@ void CFeedEngine::LoadFeedsL(TBool aUseBackup)
 		iSortedFeeds.InsertInOrder(readData, sortOrder);
 	}
 	CleanupStack::PopAndDestroy(2); // instream and store
+	}
+
+void CFeedEngine::SaveFeeds()
+	{
+	TRAP_IGNORE(SaveFeedsL());
 	}
 
 void CFeedEngine::SaveFeedsL()
@@ -654,7 +662,7 @@ void CFeedEngine::AddBookChaptersL(CFeedInfo& aFeedInfo, CDesCArrayFlat* aFileNa
 	TEntry fileInfo;
 	RShowInfoArray showArray;
 	CleanupClosePushL(showArray);
-	iPodcastModel.ShowEngine().GetShowsForFeed(showArray, aFeedInfo.Uid());
+	iPodcastModel.ShowEngine().GetShowsForFeedL(showArray, aFeedInfo.Uid());
 	TInt offset = showArray.Count();
 	CleanupStack::PopAndDestroy();// close showArray
 
@@ -680,7 +688,7 @@ void CFeedEngine::AddBookChaptersL(CFeedInfo& aFeedInfo, CDesCArrayFlat* aFileNa
 		
 		showInfo->SetPlayState(ENeverPlayed);
 		iPodcastModel.ShowEngine().AddShow(showInfo);			
-		iPodcastModel.ShowEngine().MetaDataReader().SubmitShow(showInfo);
+		iPodcastModel.ShowEngine().MetaDataReader().SubmitShowL(showInfo);
 		
 		CleanupStack::Pop(showInfo);
 		showInfo = NULL;
@@ -768,6 +776,11 @@ void CFeedEngine::LoadBooksL(TBool aUseBackup)
 	iFs.PrivatePath(privatePath);
 	BaflUtils::EnsurePathExistsL(iFs, privatePath);
 	privatePath.Append(KBookDB);
+	
+	if (aUseBackup) {
+		privatePath.Append(_L(".old"));
+	}
+	
 	iFs.Parse(privatePath, filestorename);
 
 	if (!BaflUtils::FileExists(iFs, privatePath)) {
@@ -804,6 +817,11 @@ void CFeedEngine::LoadBooksL(TBool aUseBackup)
 		iSortedBooks.InsertInOrder(readData, sortOrder);
 	}
 	CleanupStack::PopAndDestroy(2); // instream and store
+	}
+
+void CFeedEngine::SaveBooks()
+	{
+	TRAP_IGNORE(SaveBooksL());
 	}
 
 void CFeedEngine::SaveBooksL()

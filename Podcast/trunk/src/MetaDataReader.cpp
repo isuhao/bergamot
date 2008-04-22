@@ -26,26 +26,26 @@ void CMetaDataReader::ConstructL()
 	RDebug::Print(_L("ConstructL"));
 	iPlayer = CMdaAudioPlayerUtility::NewL(*this);
 
-	TCallBack callback(ParseNextShowL, this);
+	TCallBack callback(ParseNextShowCallbackL, this);
 	iParseNextShowCallBack = new (ELeave)CAsyncCallBack(callback, CActive::EPriorityStandard);
 	iCharConverter = CCnvCharacterSetConverter::NewL();
 	iCharConverter->PrepareToConvertToOrFromL(KCharacterSetIdentifierIso88591, CEikonEnv::Static()->FsSession()); 
 	iLastConverterCharset = KCharacterSetIdentifierIso88591;
 }
 
-void CMetaDataReader::SubmitShow(CShowInfo *aShowInfo)
+void CMetaDataReader::SubmitShowL(CShowInfo *aShowInfo)
 {
 	RDebug::Print(_L("SubmitShow"));
 	iShowsToParse.Append(aShowInfo);
 	
 	if (iShow == NULL) {
-		ParseNextShow();
+		ParseNextShowL();
 	}
 }
 
-TInt CMetaDataReader::ParseNextShowL(TAny* aMetaDataReader)
+TInt CMetaDataReader::ParseNextShowCallbackL(TAny* aMetaDataReader)
 {
-	static_cast<CMetaDataReader*>(aMetaDataReader)->ParseNextShow();
+	static_cast<CMetaDataReader*>(aMetaDataReader)->ParseNextShowL();
 	return KErrNone;
 }
 
@@ -108,7 +108,7 @@ void CMetaDataReader::ConvertToUniCodeL(TDes& aDestBuffer, TDes8& aInputBuffer, 
 
 }
 
-void CMetaDataReader::ParseNextShow()
+void CMetaDataReader::ParseNextShowL()
 	{
 	RDebug::Print(_L("ParseNextShow"));
 	iPlayer->Close();
@@ -246,7 +246,7 @@ void CMetaDataReader::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeco
 				TBuf<1024> buf;
 				if (entry->Name() == KMMFMetaEntrySongTitle) {
 					buf.Copy(entry->Value());
-					iShow->SetTitleL(buf);
+					TRAP_IGNORE(iShow->SetTitleL(buf));
 					RDebug::Print(_L("title: %S"), &(iShow->Title()));
 				} else if (entry->Name() == _L("artist")) {
 					if (iShow->Description().Length() > 0) {
@@ -255,7 +255,7 @@ void CMetaDataReader::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeco
 					buf.Append(_L("\n"));
 					buf.Append(entry->Value());
 					
-					iShow->SetDescriptionL(buf);
+					TRAP_IGNORE(iShow->SetDescriptionL(buf));
 				} else if (entry->Name() == KMMFMetaEntryAlbum) {
 					if (iShow->Description().Length() > 0) {
 						buf.Copy(iShow->Description());
@@ -263,7 +263,7 @@ void CMetaDataReader::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeco
 					buf.Append(_L("\n"));
 					buf.Append(entry->Value());
 					
-					iShow->SetDescriptionL(buf);
+					TRAP_IGNORE(iShow->SetDescriptionL(buf));
 				}	
 				else if (entry->Name() == KMMFMetaEntryAlbumTrack) {
 					TLex lexer(entry->Value());
@@ -279,5 +279,5 @@ void CMetaDataReader::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeco
 	iObserver.ReadMetaData(iShow);
 	iPlayer->Stop();
 	iShow = NULL;
-	ParseNextShow();
+	TRAP_IGNORE(ParseNextShowL());
 }

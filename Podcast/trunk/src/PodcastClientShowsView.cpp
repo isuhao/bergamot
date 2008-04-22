@@ -211,12 +211,6 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 								{
 								iPodcastModel.ShowEngine().DeleteShow(iPodcastModel.ActiveShowList()[index]->Uid());	
 								}
-						
-							//MQikListBoxModel& model(iListbox->Model());
-							//model.ModelBeginUpdateLC();
-							//model.RemoveDataL(index);
-							//model.ModelEndUpdateL();
-
 							UpdateListboxItemsL();						
 						}
 					}
@@ -225,7 +219,7 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 			HBufC* str = CEikonEnv::Static()->AllocReadResourceLC(R_PODCAST_FEEDS_UPDATE_MESSAGE);
 			User::InfoPrint(*str);
 			CleanupStack::PopAndDestroy(str);
-			iPodcastModel.ShowEngine().CheckFiles();
+			iPodcastModel.ShowEngine().CheckFilesL();
 			break;
 		case EPodcastShowUnplayedOnly:
 			{
@@ -338,7 +332,7 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 // Engine callback when new shows are available
 void CPodcastClientShowsView::ShowListUpdated()
 {
-	UpdateListboxItemsL();
+	TRAP_IGNORE(UpdateListboxItemsL());
 }
 
 void CPodcastClientShowsView::FeedInfoUpdated(CFeedInfo* aFeedInfo)
@@ -346,9 +340,9 @@ void CPodcastClientShowsView::FeedInfoUpdated(CFeedInfo* aFeedInfo)
 	if(iPodcastModel.ActiveFeedInfo() != NULL && aFeedInfo->Uid() == iPodcastModel.ActiveFeedInfo()->Uid())
 	{
 		iPodcastModel.SetActiveFeedInfo(aFeedInfo);
-		UpdateFeedUpdateStateL();
+		TRAP_IGNORE(UpdateFeedUpdateStateL());
 		// Title might have changed
-		UpdateListboxItemsL();
+		TRAP_IGNORE(UpdateListboxItemsL());
 	}
 }
 

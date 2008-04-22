@@ -261,7 +261,7 @@ TFileName CSettingsEngine::PrivatePath()
 	{
 	TFileName privatePath;
 	iFs.PrivatePath(privatePath);
-	BaflUtils::EnsurePathExistsL(iFs, privatePath);
+	TRAP_IGNORE(BaflUtils::EnsurePathExistsL(iFs, privatePath));
 	return privatePath;
 	}
 

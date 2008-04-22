@@ -35,19 +35,19 @@ public:
 	void SelectShowsDownloaded();
 	void SelectNewShows();
 	void SelectShowsDownloading();
-	void GetShowsForFeed(RShowInfoArray& aShowArray, TUint aFeedUid);
+	void GetShowsForFeedL(RShowInfoArray& aShowArray, TUint aFeedUid);
 
 	void CompleteL(CHttpClient* aClient, TBool aSuccessful);
 	TBool AddShow(CShowInfo *item);
 	void SaveShowsL();
-
+	void SaveShows();
 	void DeletePlayedShows();
 	void DeleteAllShowsByFeed(TUint aFeedUid,TBool aDeleteFiles=ETrue);
 	void DeleteShow(TUint aShowUid, TBool aRemoveFile=ETrue);
 	
 	RShowInfoArray& GetSelectedShows();
 	void SetSelectionPlayed();
-	void CheckFiles();
+	void CheckFilesL();
 	void GetStatsByFeed(TUint aFeedUid, TUint &aNumShows, TUint &aNumUnplayed );
 	void GetStatsForDownloaded(TUint &aNumShows, TUint &aNumUnplayed );
 	void AddObserver(MShowEngineObserver *observer);
@@ -71,14 +71,14 @@ private:
 	CShowEngine(CPodcastModel& aPodcastModel);
 	void ConstructL();
 
-	void GetShow(CShowInfo *info);
+	void GetShowL(CShowInfo *info);
 	void LoadShowsL(TBool aUseBackup = EFalse);
 
 	void NotifyDownloadQueueUpdated();
 	void NotifyShowDownloadUpdated(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt aBytesTotal);
 
 	void DownloadNextShow();
-	void ListDir(TFileName &folder);
+	void ListDirL(TFileName &folder);
 
 	static TInt CompareShowsByDate(const CShowInfo &a, const CShowInfo &b);
 	static TBool CompareShowsByUid(const CShowInfo &a, const CShowInfo &b);
