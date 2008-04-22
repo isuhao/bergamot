@@ -212,10 +212,10 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 								iPodcastModel.ShowEngine().DeleteShow(iPodcastModel.ActiveShowList()[index]->Uid());	
 								}
 						
-							MQikListBoxModel& model(iListbox->Model());
-							model.ModelBeginUpdateLC();
-							model.RemoveDataL(index);
-							model.ModelEndUpdateL();
+							//MQikListBoxModel& model(iListbox->Model());
+							//model.ModelBeginUpdateLC();
+							//model.RemoveDataL(index);
+							//model.ModelEndUpdateL();
 
 							UpdateListboxItemsL();						
 						}
