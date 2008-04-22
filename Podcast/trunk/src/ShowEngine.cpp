@@ -943,6 +943,7 @@ void CShowEngine::CheckFilesL()
 	// check if any new files were added
 	ListDirL(iPodcastModel.SettingsEngine().BaseDir());	
 	SaveShows();
+	NotifyShowListUpdated();
 }
 
 void CShowEngine::ReadMetaData(CShowInfo *aShowInfo)

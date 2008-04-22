@@ -195,9 +195,9 @@ void CPodcastClientShowsView::HandleCommandL(CQikCommand& aCommand)
 
 				if(index >= 0 && index < iPodcastModel.ActiveShowList().Count())
 					{
-					//if (iPodcastModel.PlayingPodcast() == iPodcastModel.ActiveShowList()[index] && iPodcastModel.SoundEngine().State() > ESoundEngineOpening) {
-					//	iPodcastModel.SoundEngine().Stop();
-					//}
+					if (iPodcastModel.PlayingPodcast() == iPodcastModel.ActiveShowList()[index] && iPodcastModel.SoundEngine().State() != ESoundEngineNotInitialized) {
+						iPodcastModel.SoundEngine().Stop();
+					}
 					                               
 					TBool isBook = (iPodcastModel.ActiveShowList()[index]->ShowType() == EAudioBook);
 					if(iEikonEnv->QueryWinL(isBook?R_PODCAST_REMOVE_CHAPTER_TITLE:R_PODCAST_DELETE_SHOW_TITLE, 
@@ -804,7 +804,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 			}
 
 			removeDeleteShowCmd = fItems[index]->DownloadState() != EDownloaded || updatingState || 
-				(iPodcastModel.PlayingPodcast() != NULL && fItems[index] == iPodcastModel.PlayingPodcast());
+				(iPodcastModel.PlayingPodcast() != NULL && fItems[index] == iPodcastModel.PlayingPodcast() && iPodcastModel.SoundEngine().State() == ESoundEnginePlaying);
 
 			if(fItems[index]->DownloadState() == ENotDownloaded)
 			{
