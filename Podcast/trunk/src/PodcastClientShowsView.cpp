@@ -998,6 +998,14 @@ TKeyResponse CPodcastClientShowsView::OfferKeyEventL(const TKeyEvent& aKeyEvent,
 					} else {
 						iPodcastModel.ActiveShowList()[index]->SetPlayState(EPlayed);
 					}
+					
+					if (iPodcastModel.SettingsEngine().SelectUnplayedOnly()) {
+						MQikListBoxModel& model(iListbox->Model());
+						model.ModelBeginUpdateLC();
+						model.RemoveDataL(index);
+						model.ModelEndUpdateL();
+					}
+					
 
 				UpdateListboxItemsL();
 				return EKeyWasConsumed;
