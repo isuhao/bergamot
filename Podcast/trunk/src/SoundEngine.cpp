@@ -110,6 +110,7 @@ void CSoundEngine::OpenFileL(const TDesC& aFileName, TBool aPlayOnInit)
 	iMaxPos = 0;
 	iLastOpenedFileName= aFileName;
 	iPlayer->Stop();
+	iPlayer->Close();
 	iPlayer->OpenFileL(aFileName);
 	iPlayOnInit = aPlayOnInit;
 	iState = ESoundEngineOpening;
