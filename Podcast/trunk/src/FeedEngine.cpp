@@ -31,8 +31,13 @@ void CFeedEngine::ConstructL()
     TRAPD(err, LoadFeedsL());
     
     if (err != KErrNone) {
-    
+    	RDebug::Print(_L("Error, loading feed DB backup"));
+		iSortedFeeds.Reset();
     	TRAP(err, LoadFeedsL(ETrue));
+    	
+    	if (err == KErrNone) {
+    		SaveFeedsL();
+    	}
     }
     
     if (err != KErrNone && BaflUtils::FileExists(iFs, importFile)) {
@@ -48,8 +53,13 @@ void CFeedEngine::ConstructL()
     TRAP(err, LoadBooksL());
     
     if (err != KErrNone) {
-    
+		RDebug::Print(_L("Error, loading book DB backup"));
+		iSortedBooks.Reset();
     	TRAP(err,LoadBooksL(ETrue));
+    	
+    	if (err == KErrNone) {
+    		SaveBooksL();
+    	}
     }
     
 	}

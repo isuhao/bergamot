@@ -5,6 +5,7 @@
 #include <s32file.h>
 #include "SettingsEngine.h"
 #include <e32hashtab.h>
+#include "SoundEngine.h"
 
 const TUint KMaxDownloadErrors=3;
 
@@ -50,6 +51,7 @@ void CShowEngine::ConstructL()
 	// if failure, try to load backup
 	if (err != KErrNone) {
 		RDebug::Print(_L("Loading show database backup"));
+		iShows.Reset();
 		TRAP(err,LoadShowsL(ETrue));
 		if( err == KErrNone) {
 			// and if successfull, save the backup as the real thing
@@ -442,8 +444,10 @@ void CShowEngine::SaveShowsL()
 	
 	RDebug::Print(_L("Saving backup..."));
 	TFileName backupFile;
-	backupFile.Copy(filestorename.FullName());
+	backupFile.Copy(privatePath);
 	backupFile.Append(_L(".old"));
+	BaflUtils::CopyFile(iFs,privatePath,backupFile);
+
 	
 	//RDebug::Print(_L("File: %S"), &privatePath);
 	iFs.Parse(privatePath, filestorename);
@@ -559,7 +563,10 @@ void CShowEngine::DeletePlayedShows()
 	{
 	for (TInt i=0;i<iSelectedShows.Count();i++)
 		{
-		if (iSelectedShows[i]->PlayState() == EPlayed && iPodcastModel.PlayingPodcast() != iSelectedShows[i] && iSelectedShows[i]->FileName().Length() > 0) {
+		if (iSelectedShows[i]->PlayState() == EPlayed && iSelectedShows[i]->FileName().Length() > 0) {
+			if (iPodcastModel.PlayingPodcast() == iSelectedShows[i] && iPodcastModel.SoundEngine().State() != ESoundEngineNotInitialized) {
+				iPodcastModel.SoundEngine().Stop();
+			}
 			BaflUtils::DeleteFile(iFs, iSelectedShows[i]->FileName());
 			iSelectedShows[i]->SetDownloadState(ENotDownloaded);
 			}

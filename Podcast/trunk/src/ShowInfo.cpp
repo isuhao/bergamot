@@ -89,8 +89,14 @@ void CShowInfo::ExternalizeL(RWriteStream& aStream) const
 
 void CShowInfo::InternalizeL(RReadStream& aStream) 
 	{
-	TBuf<2048> buffer;
+	const TUint KBufSize = 2048;
+	TBuf<KBufSize> buffer;
+	
 	TInt len = aStream.ReadInt32L();
+	if (len > KBufSize) {
+		User::Leave(KErrOverflow);
+	}
+	
 	if (len > 0) 
 		{
 		aStream.ReadL(buffer, len);
@@ -98,6 +104,10 @@ void CShowInfo::InternalizeL(RReadStream& aStream)
 		}
 	
 	len = aStream.ReadInt32L();
+	if (len > KBufSize) {
+		User::Leave(KErrOverflow);
+	}
+
 	if (len > 0) 
 		{
 		aStream.ReadL(buffer, len);
@@ -105,6 +115,10 @@ void CShowInfo::InternalizeL(RReadStream& aStream)
 		}
 	
 	len = aStream.ReadInt32L();
+	if (len > KBufSize) {
+		User::Leave(KErrOverflow);
+	}
+
 	if (len > 0) 
 		{
 		aStream.ReadL(buffer, len);
@@ -112,6 +126,10 @@ void CShowInfo::InternalizeL(RReadStream& aStream)
 		}
 
 	len = aStream.ReadInt32L();
+	if (len > KBufSize) {
+		User::Leave(KErrOverflow);
+	}
+
 	if (len > 0) 
 		{
 		aStream.ReadL(buffer, len);
