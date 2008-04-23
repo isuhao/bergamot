@@ -56,7 +56,7 @@ void CSoundEngine::MapcPlayComplete(TInt aError) {
 	{
 		CShowInfo* nextShow = NULL;
 		
-		TRAP_IGNORE(iPodcastModel.ShowEngine().GetNextShowByTrackL(iPodcastModel.PlayingPodcast()));
+		TRAP_IGNORE(nextShow = iPodcastModel.ShowEngine().GetNextShowByTrackL(iPodcastModel.PlayingPodcast()));
 		if(nextShow != NULL)
 		{
 			TRAP_IGNORE(iPodcastModel.PlayPausePodcastL(nextShow, ETrue));
@@ -80,7 +80,13 @@ void CSoundEngine::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds
 		if (iPodcastModel.PlayingPodcast() != NULL) 
 			{
 			RDebug::Print(_L("Resuming from position: %ld"), iPodcastModel.PlayingPodcast()->Position().Int64());
-			iPodcastModel.PlayingPodcast()->SetPlayTime(iPlayer->Duration().Int64()/1000000);
+			TInt duration = (iPlayer->Duration().Int64()/1000000);
+			if(duration == 0) // sounds should at least be marked as one second long if they are <1 second
+				{
+				duration++;
+				}
+
+			iPodcastModel.PlayingPodcast()->SetPlayTime(duration);
 			iPlayer->SetPosition(iPodcastModel.PlayingPodcast()->Position());			
 			}
 		}

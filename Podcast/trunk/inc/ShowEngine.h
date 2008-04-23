@@ -48,7 +48,7 @@ public:
 	RShowInfoArray& GetSelectedShows();
 	void SetSelectionPlayed();
 	void CheckFilesL();
-	void GetStatsByFeed(TUint aFeedUid, TUint &aNumShows, TUint &aNumUnplayed );
+	void GetStatsByFeed(TUint aFeedUid, TUint &aNumShows, TUint &aNumUnplayed, TBool aIsBookFeed );
 	void GetStatsForDownloaded(TUint &aNumShows, TUint &aNumUnplayed );
 	void AddObserver(MShowEngineObserver *observer);
 	void RemoveObserver(MShowEngineObserver *observer);

@@ -164,7 +164,7 @@ void CShowEngine::DownloadInfo(CHttpClient* aHttpClient, TInt aTotalBytes)
 		}
 	}
 
-void CShowEngine::GetStatsByFeed(TUint aFeedUid, TUint &aNumShows, TUint &aNumUnplayed )
+void CShowEngine::GetStatsByFeed(TUint aFeedUid, TUint &aNumShows, TUint &aNumUnplayed, TBool aIsBookFeed)
 	{
 	TInt showsCount = 0;
 	TInt unplayedCount = 0;
@@ -178,10 +178,18 @@ void CShowEngine::GetStatsByFeed(TUint aFeedUid, TUint &aNumShows, TUint &aNumUn
 			}
 			}
 		}
-	
-	int max = iPodcastModel.SettingsEngine().MaxListItems();
-	aNumShows = showsCount < max ? showsCount : max;
-	aNumUnplayed = unplayedCount < max ? unplayedCount : max;
+
+	if(aIsBookFeed)
+		{
+		aNumShows = showsCount;
+		aNumUnplayed = unplayedCount;
+		}
+	else
+		{
+		TInt max = iPodcastModel.SettingsEngine().MaxListItems();
+		aNumShows = showsCount < max ? showsCount : max;
+		aNumUnplayed = unplayedCount < max ? unplayedCount : max;
+		}
 	
 	}
 

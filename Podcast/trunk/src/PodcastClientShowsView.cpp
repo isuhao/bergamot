@@ -538,7 +538,28 @@ void CPodcastClientShowsView::UpdateShowItemDataL(CShowInfo* aShowInfo, MQikList
 	
 	if(aShowInfo->ShowType() == EAudioBook)
 	{
-		infoSize.Format(KChapterFormatting(), aShowInfo->TrackNo());															
+		TBuf<KMaxShortDateFormatSpec*2> showDate;
+
+		infoSize.Format(KChapterFormatting(), aShowInfo->TrackNo());	
+					
+		if(aShowInfo->PlayTime() != 0)
+			{
+			TInt playtime = aShowInfo->PlayTime();
+			TInt hour = playtime/3600;
+			playtime = playtime-(hour*3600);
+			
+			TInt sec = (playtime%60);
+			TInt min = (playtime/60);
+			showDate.Format(_L("%01d:%02d:%02d"),hour, min, sec);
+			}
+		else
+			{
+			HBufC* unknown =  iEikonEnv->AllocReadResourceLC(R_PODCAST_ONPHONE_STATUS_UNKNOWN);
+			showDate = *unknown;
+			CleanupStack::PopAndDestroy(unknown);
+			}
+
+		aListboxData->SetTextL(showDate, EQikListBoxSlotText3);
 	}
 	else
 	{

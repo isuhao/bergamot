@@ -138,7 +138,7 @@ void CPodcastClientFeedView::UpdateFeedInfoDataL(CFeedInfo* aFeedInfo,  MQikList
 		}
 	else
 	{
-		iPodcastModel.ShowEngine().GetStatsByFeed(aFeedInfo->Uid(), showCount, unplayedCount);
+		iPodcastModel.ShowEngine().GetStatsByFeed(aFeedInfo->Uid(), showCount, unplayedCount, aFeedInfo->IsBookFeed());
 		
 		HBufC* templateStr = iEikonEnv->AllocReadResourceLC(R_PODCAST_FEEDS_STATUS_FORMAT);
 		unplayedShows.Format(*templateStr, unplayedCount, showCount);
@@ -373,13 +373,11 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 					
 					CFeedInfo *fi = (*sortedItems)[i];
 					listBoxData->SetItemId(fi->Uid());
-					listBoxData->AddTextL(fi->Title(), EQikListBoxSlotText1);
-					//listBoxData->AddTextL(fi->Description(), EQikListBoxSlotText2);
-
+					listBoxData->AddTextL(fi->Title(), EQikListBoxSlotText1);					
 
 					TUint unplayedCount = 0;
 					TUint showCount = 0;
-					iPodcastModel.ShowEngine().GetStatsByFeed(fi->Uid(), showCount, unplayedCount);
+					iPodcastModel.ShowEngine().GetStatsByFeed(fi->Uid(), showCount, unplayedCount, fi->IsBookFeed());
 					if (fi->IsBookFeed()) {
 						HBufC* templateStr = CEikonEnv::Static()->AllocReadResourceAsDes16LC(R_PODCAST_BOOKS_STATUS_FORMAT);
 						unplayedShows.Format(*templateStr, unplayedCount, showCount);
@@ -389,6 +387,7 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 						unplayedShows.Format(*templateStr, unplayedCount, showCount);
 						CleanupStack::PopAndDestroy(templateStr);
 					}
+
 					if (fi->LastUpdated().Int64() == 0) 
 						{
 						HBufC* neverStr = CEikonEnv::Static()->AllocReadResourceAsDes16LC(R_PODCAST_FEEDS_NEVER_UPDATED);
