@@ -926,7 +926,7 @@ void CPodcastClientPlayView::UpdatePlayStatusL()
 				if (iShowInfo->ShowType() == EAudioBook && iShowInfo->TrackNo()
 						!= KMaxTUint)
 					{
-					totTime.Format(_L("%02d-"), iShowInfo->TrackNo());
+					totTime.Format(_L("%03d - "), iShowInfo->TrackNo());
 					time.Insert(0, totTime);
 					}
 				}
