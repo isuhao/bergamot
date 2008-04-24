@@ -95,6 +95,10 @@ void CShowEngine::RemoveAllDownloads() {
 		return;
 	}
 	
+	for (int i=0;i<iShowsDownloading.Count();i++) {
+		iShowsDownloading[i]->SetDownloadState(ENotDownloaded);
+	}
+	
 	iShowsDownloading.Reset();
 	SaveShows();
 }
@@ -629,7 +633,8 @@ void CShowEngine::DeleteShow(TUint aShowUid, TBool aRemoveFile)
 
 TUint CShowEngine::GetGrossSelectionLength()
 	{
-	return iGrossSelectionLength;
+	int max = iPodcastModel.SettingsEngine().MaxListItems();	
+	return iGrossSelectionLength < max ? iGrossSelectionLength : max;;
 	}
 
 void CShowEngine::SelectShowsByFeed(TUint aFeedUid)
