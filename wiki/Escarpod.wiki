@@ -51,8 +51,16 @@ To download binaries of Escarpod to use on your phone, visit our [http://code.go
     * Audio book improvements
     * Bug fixes
 
-  * Escarpod 0.98 (April 20th)
+  * Escarpod 0.99 (April 26th) [http://bergamot.googlecode.com/svn/Podcast/tags/v099 code]
+    * French translation
+    * Improved resume playback after phone call on bluetooth headsets
+    * Download status corrections
+    
+  * Escarpod 0.98 (April 20th) [http://bergamot.googlecode.com/svn/Podcast/tags/v098 code]
     * "Loss of random shows" bug fixed
+    * Position over ~4200 seconds bug fixed
+    * Add chapters to existing audio books
+    * File sizes shown as MB with one decimal 
 
   * Escarpod 0.97 (April 13th) [http://bergamot.googlecode.com/svn/Podcast/tags/v097 code]
     * Changed downloading icons, now yellow is queued, all are red when suspended
