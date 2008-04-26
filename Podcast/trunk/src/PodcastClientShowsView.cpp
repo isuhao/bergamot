@@ -423,6 +423,10 @@ void CPodcastClientShowsView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownloa
 
 		if(aPercentOfCurrentDownload == KOneHundredPercent)
 		{
+			ViewContext()->RemoveAndDestroyProgressInfo();
+			ViewContext()->DrawNow();
+			iProgressAdded = EFalse;
+
 			// To update icon list status and commands
 			UpdateCommandsL();
 			if(iCurrentCategory == EShowPendingShows && iPodcastModel.ShowEngine().ShowDownloading() != NULL)
