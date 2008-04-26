@@ -519,7 +519,7 @@ TBool CFeedEngine::ExportFeedsL(TFileName& aFile)
 	tft.Set(rfile);
 	
 	TBuf<1024> templ;
-	templ.Copy(KOpmlHeader());
+	templ.Copy(KOpmlFeed());
 	TBuf<1024> line;
 			
 	

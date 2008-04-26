@@ -401,8 +401,8 @@ void CPodcastClientShowsView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownloa
 
 		// we show progress bar only for pending shows and inside the feed to which
 	    // the active download belongs
-		if (iCurrentCategory == EShowPendingShows ||
-				(iPodcastModel.ShowEngine().ShowDownloading()->FeedUid() == iPodcastModel.ActiveFeedInfo()->Uid() &&
+		if ((iCurrentCategory == EShowPendingShows && aBytesOfCurrentDownload != -1) ||
+				(iPodcastModel.ShowEngine().ShowDownloading()!= NULL && iPodcastModel.ShowEngine().ShowDownloading()->FeedUid() == iPodcastModel.ActiveFeedInfo()->Uid() &&
 				aPercentOfCurrentDownload>=0 && aPercentOfCurrentDownload < KOneHundredPercent))
 		{
 			if(!iProgressAdded)
@@ -888,7 +888,8 @@ void CPodcastClientShowsView::UpdateCommandsL()
 		{
 			comMan.SetInvisible(*this, EPodcastMarkAllPlayed, ETrue);
 			comMan.SetInvisible(*this, EPodcastUpdateLibrary, ETrue);
-			comMan.SetInvisible(*this, EPodcastRemoveDownload, (removeRemoveSuspendCmd || !itemCnt));
+			comMan.SetInvisible(*this, EPodcastRemoveDownload, !itemCnt);
+			comMan.SetAvailable(*this, EPodcastRemoveDownload, !removeRemoveSuspendCmd);
 			comMan.SetInvisible(*this, EPodcastRemoveDownloadHardware, (removeRemoveSuspendCmd || !itemCnt));
 			comMan.SetInvisible(*this, EPodcastRemoveAllDownloads, !itemCnt);
 			comMan.SetAvailable(*this, EPodcastRemoveAllDownloads, iPodcastModel.ShowEngine().DownloadsStopped());
@@ -899,6 +900,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 			comMan.SetInvisible(*this, EPodcastDownloadShow, ETrue);
 			comMan.SetInvisible(*this, EPodcastMarkAsPlayed, ETrue);
 			comMan.SetInvisible(*this, EPodcastMarkAsUnplayed, ETrue);
+			comMan.SetInvisible(*this, EPodcastDeleteShow, ETrue);
 		}break;
 	case EShowDownloadedShows:
 		{

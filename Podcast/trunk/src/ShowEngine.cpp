@@ -117,7 +117,7 @@ TBool CShowEngine::RemoveDownload(TUint aUid)
 		for (TInt i=0 ; i < count; i++) 
 			{
 			//RDebug::Print(_L("Comparing %u (%S) to %u"), iShowsDownloading[i]->Uid(), &iShowsDownloading[i]->Title(), aUid );
-			if (iShowsDownloading[i]->Uid() == aUid) 
+			if (iShowsDownloading[i] != NULL && iShowsDownloading[i]->Uid() == aUid) 
 				{
 				//RDebug::Print(_L("Removing by title: %S"), &iShowsDownloading[i]->Title());
 				iShowsDownloading[i]->SetDownloadState(ENotDownloaded);
@@ -130,7 +130,8 @@ TBool CShowEngine::RemoveDownload(TUint aUid)
 				NotifyDownloadQueueUpdated();
 				SaveShows();
 				DownloadNextShow();
-				retVal = ETrue;		
+				retVal = ETrue;	
+				break;
 				}
 			}
 	}
