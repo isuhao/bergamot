@@ -159,10 +159,10 @@ rls_string STRING_podcast_autoupdate_attime "V určený čas"
 rls_string STRING_r_podcast_iap_dlg_title "Vyberte internetový účet"
 
 // Audio book dialog
-rls_string STRING_r_podcast_new_audiobook_title "Vytvořit novou zvukovou knihu"
-rls_string STRING_r_podcast_new_audiobook_prompt "Titulek zvukové knihy"
-rls_string STRING_r_podcast_new_audiobook_label "%d vybaraných souborů pro zvukovou knihu."
-rls_string STRING_r_podcast_new_audiobook_select_files "Výběr souborů knihy:" // Max 80 chars
+rls_string STRING_r_podcast_new_audiobook_title "Vytvořit nový seznam stop"
+rls_string STRING_r_podcast_new_audiobook_prompt "Titul seznamu stop"
+rls_string STRING_r_podcast_new_audiobook_label "%d vybaraných souborů do seznamu stop."
+rls_string STRING_r_podcast_new_audiobook_select_files "Výběr souborů do seznamu stop:" // Max 80 chars
 
 rls_string STRING_r_suspend_download_cmd "Přerušit" // String used for cmd to suspend current download rather than removing it from the que.
 rls_string STRING_r_view_resume_short_dls_cmd "Obnovit" // Short download cmd
@@ -171,7 +171,7 @@ rls_string STRING_r_view_onphone_status "%d Nepřehraných, %d Celkem" // Used i
 rls_string STRING_r_view_onphone_status_unknown "Neznámý" // Used for unknown status event
 
 // Strings used to set the playorder of an audio book
-rls_string STRING_r_view_books_setorder "Pořadí kapitol" // cmd for set audio book playorder
+rls_string STRING_r_view_books_setorder "Pořadí stop" // cmd for set audio book playorder
 rls_string STRING_r_view_books_setorder_dlgtitle "Pořadí přehrávání"
 rls_string STRING_r_view_books_setorder_dlg_swapcmd "Přeskočit"
 rls_string STRING_r_view_books_setorder_dlg_label "Vyberte položku k přeskočení"
@@ -185,19 +185,21 @@ rls_string STRING_r_add_feed_replace_title "Varování" // title to dialog
 rls_string STRING_r_view_export_feeds_cmd "Export Zdrojů" // Export feeds cmd in feedview
 rls_string STRING_r_catchup_feed "Označit všechny šou jako přehrané?" // shown when first updating a new feed
 rls_string STRING_r_catchup_feed_title "První Update" // title to dialog
-rls_string STRING_r_remove_book_title "Odebrat knihu"
-rls_string STRING_r_remove_book_prompt "Opravdu chcete odebrat tuto knihu?"
-rls_string STRING_r_remove_chapter_title "Odebrat kapitolu"
-rls_string STRING_r_remove_chapter_prompt "Opravdu chcete odebrat tuto kapitolu?"
+rls_string STRING_r_remove_book_title "Odebrat Seznam stop"
+rls_string STRING_r_remove_book_prompt "Opravdu chcete odebrat seznam stop?"
+rls_string STRING_r_remove_chapter_title "Odebrat stopu"
+rls_string STRING_r_remove_chapter_prompt "Opravdu chcete odebrat tuto stopu?"
 
 
 // Naposledy pridane polozky
 
-rls_string STRING_r_view_books_no_books "Žádné knihy" // No Books
+rls_string STRING_r_view_books_no_books "Žádné Seznamy stop" // No Books
 rls_string STRING_r_view_import_feeds_cmd "Imporovat zdroje" // Import feeds cmd in feedview
 rls_string STRING_r_view_import_feeds_title "Vyberte soubor OPML"
-rls_string STRING_r_view_books_status "%d Knih" // Used in base view listbox status text max 32 chars
+rls_string STRING_r_view_books_status "%d Seznamů stop" // Used in base view listbox status text max 32 chars
 rls_string STRING_r_view_feeds_status "%d Zdrojů" // Used in base view listbox for feeds status text max 32 chars
 rls_string STRING_r_cancel_update_all_feeds_cmd "Zrušit synchr."
 rls_string STRING_r_cancel_update_all_feeds_short_cmd "Zrušit"
-rls_string STRING_r_podcast_books_add_chapter "Add Chapters"
+
+rls_string STRING_r_podcast_books_status_format "%d/%d stop"
+rls_string STRING_r_podcast_books_add_chapter "Přidat stopu"
