@@ -43,11 +43,15 @@ CPodcastClientFeedView::CPodcastClientFeedView(CQikAppUi& aAppUi, CPodcastModel&
 CPodcastClientFeedView::~CPodcastClientFeedView()
 	{
 	iPodcastModel.FeedEngine().RemoveObserver(this);
+	delete iBooksFormat;
+	delete iFeedsFormat;
+	delete iNeverUpdated;
 	}
 
 void CPodcastClientFeedView::ConstructL()
 	{
 	CPodcastClientView::ConstructL();
+
 	iPodcastModel.FeedEngine().AddObserver(this);
 	}
 
@@ -62,6 +66,9 @@ TVwsViewId CPodcastClientFeedView::ViewId()const
 
 void CPodcastClientFeedView::ViewConstructL()
 	{
+	iNeverUpdated = iEikonEnv->AllocReadResourceL(R_PODCAST_FEEDS_NEVER_UPDATED);
+	iBooksFormat = iEikonEnv->AllocReadResourceL(R_PODCAST_BOOKS_STATUS_FORMAT);
+	iFeedsFormat = iEikonEnv->AllocReadResourceL(R_PODCAST_FEEDS_STATUS_FORMAT);
 	iViewLabel = iEikonEnv->AllocReadResourceL(R_PODCAST_FEEDS_TITLE);
 	iAudioBooksLabel = iEikonEnv->AllocReadResourceL(R_PODCAST_AUDIOBOOKS_TITLE);
     ViewConstructFromResourceL(R_PODCAST_FEEDVIEW_UI_CONFIGURATIONS);
@@ -145,9 +152,11 @@ void CPodcastClientFeedView::UpdateFeedInfoDataL(CFeedInfo* aFeedInfo,  MQikList
 	{
 		iPodcastModel.ShowEngine().GetStatsByFeed(aFeedInfo->Uid(), showCount, unplayedCount, aFeedInfo->IsBookFeed());
 		
-		HBufC* templateStr = iEikonEnv->AllocReadResourceLC(R_PODCAST_FEEDS_STATUS_FORMAT);
-		unplayedShows.Format(*templateStr, unplayedCount, showCount);
-		CleanupStack::PopAndDestroy(templateStr);
+		if (aFeedInfo->IsBookFeed()) {
+			unplayedShows.Format(*iBooksFormat, unplayedCount, showCount);
+		} else {
+			unplayedShows.Format(*iFeedsFormat, unplayedCount, showCount);
+		}	
 		
 		aListboxData->SetEmphasis(unplayedCount > 0);					
 				
@@ -384,20 +393,14 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 					TUint showCount = 0;
 					iPodcastModel.ShowEngine().GetStatsByFeed(fi->Uid(), showCount, unplayedCount, fi->IsBookFeed());
 					if (fi->IsBookFeed()) {
-						HBufC* templateStr = CEikonEnv::Static()->AllocReadResourceAsDes16LC(R_PODCAST_BOOKS_STATUS_FORMAT);
-						unplayedShows.Format(*templateStr, unplayedCount, showCount);
-						CleanupStack::PopAndDestroy(templateStr);					
+						unplayedShows.Format(*iBooksFormat, unplayedCount, showCount);
 					} else {
-						HBufC* templateStr = CEikonEnv::Static()->AllocReadResourceAsDes16LC(R_PODCAST_FEEDS_STATUS_FORMAT);
-						unplayedShows.Format(*templateStr, unplayedCount, showCount);
-						CleanupStack::PopAndDestroy(templateStr);
+						unplayedShows.Format(*iFeedsFormat, unplayedCount, showCount);
 					}
 
 					if (fi->LastUpdated().Int64() == 0) 
 						{
-						HBufC* neverStr = CEikonEnv::Static()->AllocReadResourceAsDes16LC(R_PODCAST_FEEDS_NEVER_UPDATED);
-						updatedDate.Copy(*neverStr);
-						CleanupStack::PopAndDestroy(neverStr);
+						updatedDate.Copy(*iNeverUpdated);					
 						unplayedShows.Copy(KUnknownUpdateDateString());
 						}
 					else 
@@ -710,9 +713,9 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 			if (hasNewFeed) {
 					TBuf<200> message;
 					TBuf<100> title;
-					CEikonEnv::Static()->ReadResourceL(message, R_CATCHUP_FEED);
-					CEikonEnv::Static()->ReadResourceL(title, R_CATCHUP_FEED_TITLE);
-					if (CEikonEnv::Static()->QueryWinL(title, message)) {
+					iEikonEnv->ReadResourceL(message, R_CATCHUP_FEED);
+					iEikonEnv->ReadResourceL(title, R_CATCHUP_FEED_TITLE);
+					if (iEikonEnv->QueryWinL(title, message)) {
 						iPodcastModel.FeedEngine().SetCatchupMode(ETrue);
 					}
 			}
@@ -720,7 +723,7 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 			iUpdatingAllRunning = ETrue;
 			UpdateCommandsL();
 			iPodcastModel.FeedEngine().UpdateAllFeedsL();
-			HBufC* str = CEikonEnv::Static()->AllocReadResourceLC(R_PODCAST_FEEDS_UPDATE_MESSAGE);
+			HBufC* str = iEikonEnv->AllocReadResourceLC(R_PODCAST_FEEDS_UPDATE_MESSAGE);
 			User::InfoPrint(*str);
 			CleanupStack::PopAndDestroy(str);
 		}

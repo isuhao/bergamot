@@ -42,6 +42,9 @@ private:
     TBool iProgressAdded;
 	TBool iUpdatingAllRunning;
 	TFeedsViewMode iCurrentViewMode;
+	HBufC* iBooksFormat;
+	HBufC* iFeedsFormat;
+	HBufC* iNeverUpdated;
 };
 
 
