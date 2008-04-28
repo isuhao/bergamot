@@ -26,25 +26,24 @@ void CFeedEngine::ConstructL()
 	
 	RunFeedTimer();
 	
-    TFileName importFile = iPodcastModel.SettingsEngine().DefaultFeedsFileName();
+    TFileName defaultFile = iPodcastModel.SettingsEngine().DefaultFeedsFileName();
     
     TRAPD(err, LoadFeedsL());
     
     if (err != KErrNone) {
     	RDebug::Print(_L("Error, loading feed DB backup"));
-		iSortedFeeds.Reset();
-    	TRAP(err, LoadFeedsL(ETrue));
+		TRAP(err, LoadFeedsL(ETrue));
     	
     	if (err == KErrNone) {
     		SaveFeedsL();
     	}
     }
     
-    if (err != KErrNone && BaflUtils::FileExists(iFs, importFile)) {
-    	ImportFeedsL(importFile);
+    if (err != KErrNone && BaflUtils::FileExists(iFs, defaultFile)) {
+    	ImportFeedsL(defaultFile);
     }
 
-    importFile = iPodcastModel.SettingsEngine().ImportFeedsFileName();
+    TFileName importFile = iPodcastModel.SettingsEngine().ImportFeedsFileName();
     if (BaflUtils::FileExists(iFs, importFile)) {
     	ImportFeedsL(importFile);
     }
@@ -54,8 +53,7 @@ void CFeedEngine::ConstructL()
     
     if (err != KErrNone) {
 		RDebug::Print(_L("Error, loading book DB backup"));
-		iSortedBooks.Reset();
-    	TRAP(err,LoadBooksL(ETrue));
+		TRAP(err,LoadBooksL(ETrue));
     	
     	if (err == KErrNone) {
     		SaveBooksL();
