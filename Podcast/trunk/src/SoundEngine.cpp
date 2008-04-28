@@ -28,9 +28,9 @@ void CSoundEngine::ConstructL()
     iPlayer = CMdaAudioPlayerUtility::NewL(*this);
 }
 
-void CSoundEngine::SetObserver(MSoundEngineObserver* aObserver)
+void CSoundEngine::AddObserver(MSoundEngineObserver* aObserver)
 {
-	iObserver = aObserver;
+	iObservers.Append(aObserver);
 }
 
 void CSoundEngine::MapcPlayComplete(TInt aError) {
@@ -47,10 +47,7 @@ void CSoundEngine::MapcPlayComplete(TInt aError) {
 
 	iState = ESoundEngineStopped;
 	iPodcastModel.ShowEngine().NotifyShowListUpdated();
-	if(iObserver != NULL)
-	{
-		TRAPD(err, iObserver->PlaybackStoppedL());
-	}
+	NotifyPlaybackStopped();
 
 	if(iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.PlayingPodcast()->ShowType() == EAudioBook)
 	{
@@ -91,9 +88,9 @@ void CSoundEngine::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds
 			}
 		}
 
-	if(iObserver != NULL && aError == KErrNone)
+	if(aError == KErrNone)
 		{
-		TRAPD(err, iObserver->PlaybackInitializedL());
+		NotifyPlaybackInitialized();
 		if(iPlayOnInit)
 			{
 			
@@ -182,15 +179,7 @@ void CSoundEngine::Play()
 		iPlayer->Play();
 		iState = ESoundEnginePlaying;
 
-		// better to do this when the file finishes playing
-//		if (iPodcastModel.PlayingPodcast() != NULL) {
-//			iPodcastModel.PlayingPodcast()->SetPlayState(EPlayed);
-//		}
-
-		if(iObserver != NULL)
-		{
-			TRAPD(err, iObserver->PlaybackStartedL());
-		}
+		NotifyPlaybackStarted();
 	}
 }
 
@@ -240,3 +229,27 @@ void CSoundEngine::SetVolume(TUint aVolume)
 		}
 }
 
+void CSoundEngine::NotifyPlaybackStopped()
+	{
+	for (int i=0;i<iObservers.Count();i++) {
+		TRAPD(err, iObservers[i]->PlaybackStoppedL());
+	}
+	
+	}
+
+
+void CSoundEngine::NotifyPlaybackStarted()
+	{
+	for (int i=0;i<iObservers.Count();i++) {
+		TRAPD(err, iObservers[i]->PlaybackStartedL());
+	}
+	
+	}
+
+void CSoundEngine::NotifyPlaybackInitialized()
+	{
+	for (int i=0;i<iObservers.Count();i++) {
+		TRAPD(err, iObservers[i]->PlaybackInitializedL());
+	}
+	
+	}

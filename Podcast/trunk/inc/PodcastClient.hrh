@@ -53,6 +53,8 @@ enum TPodcatClientCommands
 	EPodcastRemoveAudioBook,
 	EPodcastRemoveAudioBookHardware,
 	EPodcastSetOrderAudioBook,
+	EPodcastPlayAudioBook,
+	EPodcastPauseAudioBook,
 	// Common commands
 	EPodcastZoomSetting,
 	EPodcastSettings,

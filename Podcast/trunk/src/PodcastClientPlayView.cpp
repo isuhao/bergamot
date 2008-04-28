@@ -85,7 +85,7 @@ void CPodcastClientPlayView::ConstructL()
 	// This should always be called in the concrete view implementations.
 	BaseConstructL();
 	iPlaybackTicker = CPeriodic::NewL(CActive::EPriorityStandard);
-	iPodcastModel.SoundEngine().SetObserver(this);
+	iPodcastModel.SoundEngine().AddObserver(this);
 	iBitmapConverter = CQikImageConverter::NewL(iEikonEnv->FsSession(), *this);
 	iPodcastModel.ShowEngine().AddObserver(this);
 	}
@@ -185,6 +185,10 @@ TInt CPodcastClientPlayView::PlayingUpdateStaticCallbackL(TAny* aPlayView)
 
 void CPodcastClientPlayView::PlaybackInitializedL()
 	{
+	if (iShowInfo == NULL) {
+		return;
+	}
+	
 	if (iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.PlayingPodcast()->Uid() == iShowInfo->Uid())
 		{
 		UpdateViewL();
@@ -219,6 +223,10 @@ void CPodcastClientPlayView::UpdateMaxProgressValueL(TInt aDuration)
 
 void CPodcastClientPlayView::PlaybackStartedL()
 	{
+	if (iShowInfo == NULL) {
+		return;
+	}
+	
 	iPlaybackTicker->Cancel();
 
 	if (iPodcastModel.PlayingPodcast() != NULL
@@ -239,6 +247,11 @@ void CPodcastClientPlayView::PlaybackStartedL()
 
 void CPodcastClientPlayView::PlaybackStoppedL()
 	{
+	
+	if (iShowInfo == NULL) {
+		return;
+	}
+	
 	iPlaybackTicker->Cancel();
 
 	if (iPodcastModel.PlayingPodcast() != NULL && iPodcastModel.PlayingPodcast()->Uid() == iShowInfo->Uid())

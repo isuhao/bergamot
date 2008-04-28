@@ -183,6 +183,22 @@ RESOURCE QIK_COMMAND_LIST r_podcast_feedview_commands
 		QIK_COMMAND
 			{
 		//	groupId = 5;
+			id = EPodcastPlayAudioBook;
+			type = EQikCommandTypeDone;
+			text = STRING_r_play_cmd;
+			shortText = STRING_r_play_cmd;
+			},	
+		QIK_COMMAND
+			{
+		//	groupId = 5;
+			id = EPodcastPauseAudioBook;
+			type = EQikCommandTypeDone;
+			text = STRING_r_pause_cmd;
+			shortText = STRING_r_pause_cmd;
+			},	
+		QIK_COMMAND
+			{
+		//	groupId = 5;
 			id = EPodcastCancelUpdateAllFeeds;
 			type = EQikCommandTypeDone;
 			text = STRING_r_cancel_update_all_feeds_cmd;

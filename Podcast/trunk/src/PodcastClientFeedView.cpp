@@ -9,9 +9,12 @@
 #include "PodcastClientAudioBookDlg.h"
 #include "PodcastClientAddFeedDlg.h"
 #include "PodcastClientFeedView.h"
+#include "PodcastClientPlayView.h"
 #include "PodcastModel.h"
 #include "ShowEngine.h"
 #include "SoundEngine.h"
+#include "SettingsEngine.h"
+#include "FeedInfo.h"
 
 const TInt KMaxFeedNameLength = 100;
 const TInt KMaxUnplayedFeedsLength =64;
@@ -81,7 +84,9 @@ void CPodcastClientFeedView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid 
 		}break;
 	default:
 		{
-		if(aPrevViewId == TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID) &&  iPodcastModel.ActiveFeedInfo() != NULL && iPodcastModel.ActiveFeedInfo()->IsBookFeed())
+		if(/*(aPrevViewId == TVwsViewId(KUidPodcastClientID, KUidPodcastShowsViewID) ||
+			aPrevViewId == TVwsViewId(KUidPodcastClientID, KUidPodcastFeedViewID)) &&*/	
+			iPodcastModel.ActiveFeedInfo() != NULL && iPodcastModel.ActiveFeedInfo()->IsBookFeed())
 			{
 			iCurrentViewMode = EFeedsAudioBooksMode;
 			}
@@ -488,6 +493,7 @@ void CPodcastClientFeedView::HandleListBoxEventL(CQikListBox* /*aListBox*/, TQik
 	switch (aEventType)
 		{
 		case EEventHighlightMoved:
+			UpdateCommandsL();
 			break;
 		case EEventItemHighlighted:
 		case EEventItemConfirmed:
@@ -543,6 +549,10 @@ void CPodcastClientFeedView::UpdateCommandsL()
 
 	if (iListbox == NULL)
 		return;
+	
+	TInt index = iListbox->CurrentItemIndex();
+	
+
 	TBool isBookMode = (iCurrentViewMode == EFeedsAudioBooksMode);
 	const RFeedInfoArray* sortedItems = NULL;
 	if(isBookMode)
@@ -555,7 +565,8 @@ void CPodcastClientFeedView::UpdateCommandsL()
 			}
 	
 	// hide commands that should not be visible in no feeds
-	if (sortedItems->Count() == 0)
+	TUint cnt = sortedItems->Count();
+	if (cnt == 0)
 		{
 		comMan.SetInvisible(*this, EQikListBoxCmdSelect, ETrue);
 		comMan.SetInvisible(*this, EPodcastDeleteFeed, ETrue);
@@ -579,7 +590,12 @@ void CPodcastClientFeedView::UpdateCommandsL()
 
 	comMan.SetInvisible(*this, EPodcastViewAudioBooks, isBookMode);
 	comMan.SetInvisible(*this, EPodcastViewFeeds, !isBookMode);
-	
+		
+	TBool playingThisBook = (iPodcastModel.PlayingPodcast() != NULL) && (iPodcastModel.PlayingPodcast()->FeedUid() == (*sortedItems)[index]->Uid()) && iPodcastModel.SoundEngine().State() == ESoundEnginePlaying;
+	comMan.SetAvailable(*this, EPodcastPlayAudioBook, isBookMode && cnt && !playingThisBook);
+	comMan.SetAvailable(*this, EPodcastPauseAudioBook, isBookMode && cnt && playingThisBook);
+		
+	comMan.SetInvisible(*this, EPodcastCancelUpdateAllFeeds, isBookMode);	
 	comMan.SetAvailable(*this, EPodcastUpdateAllFeeds, !iUpdatingAllRunning);
 	comMan.SetAvailable(*this, EPodcastCancelUpdateAllFeeds, iUpdatingAllRunning);
 	comMan.SetDimmed(*this, EPodcastAddFeed, iUpdatingAllRunning);
@@ -591,7 +607,6 @@ void CPodcastClientFeedView::UpdateCommandsL()
 
 	comMan.SetAvailable(*this, EPodcastRemoveAudioBookHardware,iCurrentViewMode==EFeedsAudioBooksMode && !iUpdatingAllRunning);
 	comMan.SetAvailable(*this, EPodcastDeleteFeedHardware,!(iCurrentViewMode==EFeedsAudioBooksMode) && !iUpdatingAllRunning);
-		
 	}
 
 
@@ -739,7 +754,53 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 				}*/
 			break;
 			}
+	case EPodcastPlayAudioBook:
+		{
+		if(iListbox != NULL)
+			{
+			TInt index = iListbox->CurrentItemIndex();
+			MQikListBoxModel& model(iListbox->Model());
+			MQikListBoxData* data = model.RetrieveDataL(index);	
+			if(data != NULL)
+				{
+				CFeedInfo *feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(data->ItemId());
+				
+				if (feedInfo != NULL) {
+					iPodcastModel.SetActiveFeedInfo(feedInfo);
+					TBool aUnplayedOnlyState = iPodcastModel.SettingsEngine().SelectUnplayedOnly();
+					// we only select unplayed chapters
+					iPodcastModel.SettingsEngine().SetSelectUnplayedOnly(ETrue);
+					iPodcastModel.ShowEngine().SelectShowsByFeed(feedInfo->Uid());
+					iPodcastModel.SettingsEngine().SetSelectUnplayedOnly(aUnplayedOnlyState);
 
+					RShowInfoArray& showArray = iPodcastModel.ShowEngine().GetSelectedShows();
+
+					if(showArray.Count() == 0 || showArray[0] == NULL) {
+						// can't play empty books...
+						return;
+					}
+
+					// this should be the first unplayed chapter in this book
+					CShowInfo *startShow = showArray[0];
+
+					TPckgBuf<TInt> showUid;
+					showUid() = startShow->Uid();
+					TVwsViewId viewId = TVwsViewId(KUidPodcastClientID, KUidPodcastPlayViewID);
+					iQikAppUi.ActivateViewL(viewId, TUid::Uid(KActiveShowUIDCmd), showUid);											
+					iPodcastModel.PlayPausePodcastL(startShow, ETrue);
+				}
+				data->Close();
+				}
+			}
+			UpdateCommandsL();
+		}
+		break;
+	case EPodcastPauseAudioBook:
+		{
+		iPodcastModel.SoundEngine().Pause();
+		UpdateCommandsL();
+		}
+		break;
 	case EPodcastAddNewAudioBook:
 		{
 		HandleAddNewAudioBookL();

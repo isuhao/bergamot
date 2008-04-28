@@ -48,10 +48,16 @@ public:
 	void Pause(TBool aOverrideState = EFalse);
 
 	TSoundEngineState State();
-	void SetObserver(MSoundEngineObserver* aObserver);
+	void AddObserver(MSoundEngineObserver* aObserver);
 
 	void SetVolume(TUint aVolume);
 	const TFileName& LastFileName();
+	
+private:
+	void NotifyPlaybackStarted();
+	void NotifyPlaybackStopped();
+	void NotifyPlaybackInitialized();
+	
 protected:
 	CSoundEngine(CPodcastModel& aPodcastModel);
 	void ConstructL();
@@ -61,7 +67,7 @@ private:
     CMdaAudioPlayerUtility *iPlayer;
 	CPodcastModel& iPodcastModel;
 	TSoundEngineState iState;
-	MSoundEngineObserver* iObserver;
+	RArray<MSoundEngineObserver*> iObservers;
 	TFileName	iLastOpenedFileName;
 	TBool iPlayOnInit;
 	TTimeIntervalMicroSeconds iMaxPos;
