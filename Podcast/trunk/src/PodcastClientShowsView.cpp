@@ -387,6 +387,7 @@ void CPodcastClientShowsView::UpdateFeedUpdateStateL()
 
 void CPodcastClientShowsView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt /*aBytesTotal*/)
 {
+	RDebug::Print(_L("CPodcastClientShowsView::ShowDownloadUpdatedL"));
 	if(ViewContext() != NULL)
 	{
 		CShowInfo *showInfo = NULL;
@@ -402,7 +403,7 @@ void CPodcastClientShowsView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownloa
 		// we show progress bar only for pending shows and inside the feed to which
 	    // the active download belongs
 		if ((iCurrentCategory == EShowPendingShows && aBytesOfCurrentDownload != -1) ||
-				(iPodcastModel.ShowEngine().ShowDownloading()!= NULL && iPodcastModel.ShowEngine().ShowDownloading()->FeedUid() == iPodcastModel.ActiveFeedInfo()->Uid() &&
+				(iPodcastModel.ShowEngine().ShowDownloading()!= NULL && iPodcastModel.ActiveFeedInfo() != NULL && iPodcastModel.ShowEngine().ShowDownloading()->FeedUid() == iPodcastModel.ActiveFeedInfo()->Uid() &&
 				aPercentOfCurrentDownload>=0 && aPercentOfCurrentDownload < KOneHundredPercent))
 		{
 			if(!iProgressAdded)

@@ -528,7 +528,7 @@ void CPodcastClientPlayView::ShowDownloadUpdatedL(
 		TInt aBytesTotal)
 
 	{
-
+	RDebug::Print(_L("CPodcastClientPlayView::ShowDownloadUpdatedL"));
 	if (iShowInfo != iPodcastModel.ShowEngine().ShowDownloading()) {
 		iBytesDownloaded = 0;
 		UpdateViewL();

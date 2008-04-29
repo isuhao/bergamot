@@ -125,7 +125,9 @@ TBool CHttpClient::GetL(const TDesC& url, const TDesC& fileName,  TBool aSilent)
 	TBuf<KTempBufferSize> range16;
 	range16.Copy(rangeText);
 	RDebug::Print(_L("range text: %S"), &range16);
-	SetHeaderL(hdr, HTTP::ERange, rangeText);
+	if (rangeText.Length() > 0) {
+		SetHeaderL(hdr, HTTP::ERange, rangeText);
+	}
 	iTransactionCount++;
 	// submit the transaction
 	iTrans.SubmitL();
