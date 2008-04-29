@@ -41,18 +41,18 @@ Before you start using Escarpod, check your data rates with your access provider
 
 Many providers offer flat rate fees that allow you unlimited data for a more reasonable charge.
 
-If your phone supports it, using your own wireless LAN is a great option. Escarpod allows you to specify a connection.
+If your phone supports it, using your own wireless LAN or Bluetooth PAN are great options. Escarpod allows you to specify a connection.
 
 == Releases ==
 
 To download binaries of Escarpod to use on your phone, visit our [http://code.google.com/p/bergamot/downloads/list Downloads] page.
 
-  * Escarpod 1.00 (April 30th)
+  * Escarpod 1.00 (May 5th)
     * Audio book improvements
     * Bug fixes
 
-  * Escarpod 0.99 (April 26th) [http://bergamot.googlecode.com/svn/Podcast/tags/v099 code]
-    * French translation
+  * Escarpod 0.99 (April 29th) [http://bergamot.googlecode.com/svn/Podcast/tags/v099 code]
+    * French and Catalan translations
     * Improved resume playback after phone call on bluetooth headsets
     * Download status corrections
     
