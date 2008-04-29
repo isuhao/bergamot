@@ -123,6 +123,8 @@ There are several sites that list and host podcasts. Some starting points are
   * [http://podcast.cnet.com CNET Podcast Central]
   * [http://podhead.se Podhead] (Swedish)
 
+We have our own international [PodcastFeeds short list of good feeds].
+
 == License ==
 
 Escarpod is licensed under the [http://www.gnu.org/licenses/gpl-3.0.html GPL version 3] open source license.
