@@ -1,9 +1,9 @@
-; EN=01 FR=02 GE=03 IT=05 SW=06 DA=07 RU=16 HU=17 CS=25 PL=27 ET=49; 
+; EN=01 FR=02 GE=03 IT=05 SW=06 DA=07 RU=16 HU=17 CS=25 PL=27 CA=44 ET=49; 
 
-&EN,FR,GE,IT,SW,DA,RU,HU,CS,PL,ET
+&EN,FR,GE,IT,SW,DA,RU,HU,CS,PL,CA,ET
 :"Bergamot Project"
-%{"Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project"}
-#{"Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod", "Escarpod","Escarpod"}, (0xA00046BD), 0, 99, 0, TYPE=SA
+%{"Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project"}
+#{"Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod", "Escarpod","Escarpod"}, (0xA00046BD), 0, 99, 0, TYPE=SA
 
 ;(0x101F6300), 3, 0, 0, {"UIQ30ProductID"}
 
@@ -28,6 +28,7 @@
 "/epoc32/data/z/resource/apps/PodcastClient.R17"
 "/epoc32/data/z/resource/apps/PodcastClient.R25"
 "/epoc32/data/z/resource/apps/PodcastClient.R27"
+"/epoc32/data/z/resource/apps/PodcastClient.R44"
 "/epoc32/data/z/resource/apps/PodcastClient.R49"
 }-"!:\resource\apps\PodcastClient.rsc"
 
