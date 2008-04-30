@@ -4,6 +4,10 @@ These are feeds suggested by other users of Escarpod. Enter the feed URL into Es
 
 == English ==
 
+||Adam Curry's Daily Source Code||http://podshow.com/feeds/dailysourcecode.xml||
+||TWiT (This Week in Tech)||http://leo.am/podcasts/twit||
+||Buzz Out Loud||http://www.cnet.com/i/pod/cnet_buzz.xml||
+
 == German ==
   
 ||Tagessschau (audio) || http://www.tagesschau.de/export/video-podcast/tagesschau||
