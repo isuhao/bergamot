@@ -7,4 +7,5 @@ These books are legally available for free to download. Enjoy!
 
 This is _a new novella that I co-wrote with Hugo- and Nebula-nominee Benjamin Rosenbaum. The story's a big, 32,000-word piece called "True Names" (in homage to Vernor Vinge's famous story of the same name), and it involves the galactic wars between vast, post-Singularity intelligences that are competing to corner the universe's supply of computation before the heat-death of the universe._
 
-You can get it as a podcast feed here: http://bergamot.googlecode.com/svn/wiki/truenames.xml
+  * You can get it as a podcast feed here: http://bergamot.googlecode.com/svn/wiki/truenames.xml
+  * Or as a 97 MB .zip-file here: http://drop.io/truenames
