@@ -15,6 +15,7 @@ Notable features include:
   * Cover art
   * Support for podcasts stored on flash card
   * Automatic downloading of new shows
+  * Audio Book player
 
 You can see some screenshots below, and download the latest version from the [http://code.google.com/p/bergamot/downloads/list Downloads] page. All versions, together with their complete source code is available in our [http://bergamot.googlecode.com/svn/Podcast/ Subversion repository].
 
