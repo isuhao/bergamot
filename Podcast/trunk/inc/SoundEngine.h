@@ -49,7 +49,8 @@ public:
 
 	TSoundEngineState State();
 	void AddObserver(MSoundEngineObserver* aObserver);
-
+	void RemoveObserver(MSoundEngineObserver* aObserver);
+	
 	void SetVolume(TUint aVolume);
 	const TFileName& LastFileName();
 	

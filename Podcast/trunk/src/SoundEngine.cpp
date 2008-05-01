@@ -17,6 +17,7 @@ CSoundEngine* CSoundEngine::NewL(CPodcastModel& aPodcastModel)
 CSoundEngine::~CSoundEngine()
 {
 	delete iPlayer;
+	iObservers.Close();
 }
 
 CSoundEngine::CSoundEngine(CPodcastModel& aPodcastModel): iPodcastModel(aPodcastModel)
@@ -32,6 +33,16 @@ void CSoundEngine::AddObserver(MSoundEngineObserver* aObserver)
 {
 	iObservers.Append(aObserver);
 }
+
+void CSoundEngine::RemoveObserver(MSoundEngineObserver* observer)
+	{
+	TInt index = iObservers.Find(observer);
+	
+	if (index > KErrNotFound)
+		{
+		iObservers.Remove(index);
+		}
+	}
 
 void CSoundEngine::MapcPlayComplete(TInt aError) {
 	RDebug::Print(_L("MapcPlayComplete: %d"), aError);

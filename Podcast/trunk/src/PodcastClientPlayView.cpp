@@ -74,6 +74,7 @@ CPodcastClientPlayView::~CPodcastClientPlayView()
 	delete iBitmapConverter;
 
 	iPodcastModel.ShowEngine().RemoveObserver(this);
+	iPodcastModel.SoundEngine().RemoveObserver(this);
 	}
 
 /**
