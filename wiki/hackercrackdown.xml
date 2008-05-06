@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" >
+	<channel>
+	<title>The Hacker Crackdown</title>
+	<description>Cory Doctorow reads Bruce Sterlings The Hacker Crackdown</description>
+	<pubDate>Wed, 30 Apr 2008 19:25:16 +0000</pubDate>
+	<language>en</language>
+	<item>
+		<title>The Hacker Crackdown, Part 28</title>
+		<pubDate>Sun, 13 Jan 2008 19:58:42 +0000</pubDate>
+		<description><![CDATA[Cory Doctorow reads Bruce Sterling's brilliant, seminal book The Hacker Crackdown, a 1992 book that recounts the events that led to the founding of The Electronic Frontier Foundation]]></description>
+		<enclosure url="http://www.archive.org/download/Cory_Doctorow_Podcast_113/Cory_Doctorow_Podcast_113_The_Hacker_Crackdown_Part_028_64kb.mp3" length="12045600" type="audio/mpeg" />
+	</item>
+</rss>
