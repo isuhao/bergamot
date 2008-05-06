@@ -14,5 +14,4 @@ This is _a new novella that I co-wrote with Hugo- and Nebula-nominee Benjamin Ro
 
 Cory Doctorow reads Bruce Sterling's brilliant, seminal book The Hacker Crackdown, a 1992 book that recounts the events that led to the founding of The Electronic Frontier Foundation.
 
-  * Get the podcast feed here: 
-http://bergamot.googlecode.com/svn/wiki/hackercrackdown.xml
+  * Get the podcast feed here: http://bergamot.googlecode.com/svn/wiki/hackercrackdown.xml
