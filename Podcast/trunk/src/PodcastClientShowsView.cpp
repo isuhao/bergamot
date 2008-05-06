@@ -502,7 +502,7 @@ void CPodcastClientShowsView::GetShowIcons(CShowInfo* aShowInfo, TInt& aImageId,
 		aImageId = EMbmPodcastclientAudiobookchapter_40x40;
 		aMaskId = EMbmPodcastclientAudiobookchapter_40x40m;
 	} else {
-		if (iPodcastModel.PlayingPodcast() == aShowInfo && iPodcastModel.SoundEngine().State() == ESoundEnginePlaying) {
+		if (iPodcastModel.PlayingPodcast() == aShowInfo) { // && iPodcastModel.SoundEngine().State() == ESoundEnginePlaying) {
 					aImageId = EMbmPodcastclientShow_playing_40x40;
 					aMaskId = EMbmPodcastclientShow_playing_40x40m;
 		} else {
@@ -869,7 +869,7 @@ void CPodcastClientShowsView::UpdateCommandsL()
 	comMan.SetAvailable(*this, EPodcastDeleteShow, !removeDeleteShowCmd);
 	comMan.SetAvailable(*this, EPodcastDeleteShowHardware, !removeDeleteShowCmd);
 	comMan.SetAvailable(*this, EPodcastDeleteAllPlayed, !updatingState && !iPodcastModel.SettingsEngine().SelectUnplayedOnly());
-	TBool isOrdinaryList = iCurrentCategory != EShowPendingShows && !(iPodcastModel.ActiveFeedInfo()?iPodcastModel.ActiveFeedInfo()->IsBookFeed():EFalse);
+	TBool isOrdinaryList = iCurrentCategory == EShowDownloadedShows || (iCurrentCategory == EShowFeedShows && !(iPodcastModel.ActiveFeedInfo()?iPodcastModel.ActiveFeedInfo()->IsBookFeed():ETrue));
 	comMan.SetInvisible(*this, EPodcastDeleteAllPlayed, !isOrdinaryList);
 
 	comMan.SetInvisible(*this, EPodcastViewPendingShows, EFalse);

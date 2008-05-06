@@ -144,7 +144,11 @@ TKeyResponse CPodcastClientPlayView::OfferKeyEventL(const TKeyEvent& aKeyEvent,
 					if (aKeyEvent.iCode == EKeyLeftArrow|| aKeyEvent.iCode
 							== EDeviceKeyFourWayLeft || aKeyEvent.iCode == '*')
 						{
-						pos-=stepValue;
+						if (((TInt)pos) - stepValue > 0) {
+							pos-=stepValue;
+						} else {
+							pos = 0;
+						}
 						}
 					else
 						{
