@@ -9,3 +9,10 @@ This is _a new novella that I co-wrote with Hugo- and Nebula-nominee Benjamin Ro
 
   * You can get it as a podcast feed here: http://bergamot.googlecode.com/svn/wiki/truenames.xml
   * Or as a 97 MB .zip-file here: http://drop.io/truenames
+
+==Cory Doctorow reads Bruce Sterling's - _The Hacker Crackdown_ ==
+
+Cory Doctorow reads Bruce Sterling's brilliant, seminal book The Hacker Crackdown, a 1992 book that recounts the events that led to the founding of The Electronic Frontier Foundation.
+
+  * Get the podcast feed here: 
+http://bergamot.googlecode.com/svn/wiki/hackercrackdown.xml
