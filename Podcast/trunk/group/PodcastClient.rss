@@ -267,7 +267,7 @@ RESOURCE DIALOG r_podcast_about_dlg
 			type = EEikCtImage;
 			control = IMAGE
 				{
-			    bmpfile = "z:\\Resource\\Apps\\PodcastClient.mbm";
+			    bmpfile = "\\Resource\\Apps\\PodcastClient.mbm";
 			    bmpid = 2;
 			    bmpmask = 3;
 			};
