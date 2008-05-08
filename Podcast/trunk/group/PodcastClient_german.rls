@@ -200,4 +200,4 @@ rls_string STRING_r_remove_chapter_title "Kapitel entfernen"
 rls_string STRING_r_remove_chapter_prompt "Wollen Sie dieses Kapitel entfernen?"
 
 rls_string STRING_r_podcast_books_status_format "%d/%d Kapitel"
-rls_string STRING_r_podcast_books_add_chapter "Add Chapters"
+rls_string STRING_r_podcast_books_add_chapter "Kapitel hinzufügen"
