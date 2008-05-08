@@ -181,12 +181,12 @@ void CSoundEngine::Play()
 {
 	if(iState > ESoundEngineOpening)
 	{
-		TUint skipBack = 5000000; // 5 seconds
+		/*TUint skipBack = 5000000; // 5 seconds
 		TTimeIntervalMicroSeconds newPos;
 		
 		newPos = (iMaxPos.Int64() - skipBack > 0 ? iMaxPos.Int64() - skipBack : 0) ;
-		iMaxPos = newPos;
-		iPlayer->SetPosition(newPos);
+		iMaxPos = newPos;*/
+		iPlayer->SetPosition(iMaxPos);
 		iPlayer->Play();
 		iState = ESoundEnginePlaying;
 
