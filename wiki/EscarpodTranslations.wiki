@@ -30,7 +30,7 @@ The following translations been done, but they may not be updated for the latest
 || French || Cedric Godart ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_french.rls PodcastClient_french.rls] ||
 || German || Torsten Schenkel ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_german.rls PodcastClient_german.rls] ||
 || Hungarian || Balázs Szücs (Balinov) || [http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_hungarian.rls PodcastClient_hungarian.rls] || 
-|| Italian|| (ganassa) ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_italian.rls PodcastClient_italian.rls] ||
+|| Italian|| Massimiliano Bini ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_italian.rls PodcastClient_italian.rls] ||
 || Polish || (promasterfoxik) ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_polish.rls PodcastClient_polish.rls] ||
 || Russian ||  Kirill Uvaev||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_russian.rls PodcastClient_russian.rls] ||
 || Swedish || Sebastian Brännström (teknolog) ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_swedish.rls PodcastClient_swedish.rls] ||
