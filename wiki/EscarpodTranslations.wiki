@@ -23,7 +23,7 @@ The following translations been done, but they may not be updated for the latest
 
 || *Language* || *Translated by (handle)* || *Language file* ||
 || English || - || [http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_english.rls PodcastClient_english.rls]||
-|| Catalan || Lirdas Thin || [http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_catalan.rls PodcastClient_catalan.rls]||
+|| Catalan || Santi Güell || [http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_catalan.rls PodcastClient_catalan.rls]||
 || Czech|| Jiří Vyhnálek||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_czech.rls PodcastClient_czech.rls] ||
 || Danish || Michell Bak ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_danish.rls PodcastClient_danish.rls] ||
 || Estonian || Valdur Palm ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_estonian.rls PodcastClient_estonian.rls] ||
