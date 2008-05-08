@@ -26,7 +26,7 @@ The following translations been done, but they may not be updated for the latest
 || Czech|| Jiří Vyhnálek||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_czech.rls PodcastClient_czech.rls] ||
 || Danish || Michell Bak ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_danish.rls PodcastClient_danish.rls] ||
 || Estonian || Valdur Palm ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_estonian.rls PodcastClient_estonian.rls] ||
-|| German || ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_german.rls PodcastClient_german.rls] ||
+|| German || Torsten Schenkel ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_german.rls PodcastClient_german.rls] ||
 || Hungarian || Balázs Szücs (Balinov) || [http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_hungarian.rls PodcastClient_hungarian.rls] || 
 || Italian|| (ganassa) ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_italian.rls PodcastClient_italian.rls] ||
 || Polish || ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_polish.rls PodcastClient_polish.rls] ||
