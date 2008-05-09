@@ -469,11 +469,11 @@ void CPodcastClientFeedView::UpdateListboxItemsL()
 			{
 		case EFeedsAudioBooksMode:
 			{
-			templateStr = iEikonEnv->AllocReadResourceAsDes16LC(R_PODCAST_BOOKS_TITLE_FORMAT);
+			templateStr = iEikonEnv->AllocReadResourceLC(R_PODCAST_BOOKS_TITLE_FORMAT);
 			}break;
 		default:
 			{
-			templateStr = iEikonEnv->AllocReadResourceAsDes16LC(R_PODCAST_FEEDS_TITLE_FORMAT);
+			templateStr = iEikonEnv->AllocReadResourceLC(R_PODCAST_FEEDS_TITLE_FORMAT);
 			}
 			break;
 			}
