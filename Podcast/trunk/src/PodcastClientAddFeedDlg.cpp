@@ -10,6 +10,7 @@
 const TInt KMaxTextBuffer = 1024;
 _LIT(KURLPrefix, "http://");
 _LIT(KItpcPrefix, "itpc://");
+_LIT(KPcastPrefix, "pcast://");
 
 CPodcastClientAddFeedDlg::CPodcastClientAddFeedDlg(CPodcastModel& aPodcastModel) : iPodcastModel(aPodcastModel)
 	{
@@ -72,6 +73,15 @@ TBool CPodcastClientAddFeedDlg::OkToExitL(TInt aCommandId)
 		urlPtr.Delete(p, KItpcPrefix().Length());
 		}
 
+	// Some pod links are written in format pcast://mylink.net/podcast.xml
+	// Symbian HTTP stack does not like itpc:// 
+	// Try to use a HTTP instead.
+	p = urlPtr.Find(KPcastPrefix);
+	if (p >= 0)
+		{
+		urlPtr.Delete(p, KPcastPrefix().Length());
+		}
+	
 	// The URL must start with http://, otherwise the HTTP stack fails.
 	TInt pos = urlPtr.Find(KURLPrefix);
 	if (pos == KErrNotFound)

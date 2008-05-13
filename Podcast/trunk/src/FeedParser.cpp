@@ -269,7 +269,6 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt /*aErrorCode*/)
 				}
 				// end hack
 				
-				
 				// hack for feeds that write out months in full
 				
 				if (iBuffer[11] != ' ') {
@@ -289,6 +288,22 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt /*aErrorCode*/)
 					}
 				}
 				
+				// hack for feeds that write days and months as UPPERCASE
+				TChar one(iBuffer[1]);
+				TChar two(iBuffer[2]);
+				TChar nine(iBuffer[9]);
+				TChar ten(iBuffer[10]);
+
+				one.LowerCase();
+				two.LowerCase();
+				nine.LowerCase();
+				ten.LowerCase();
+				
+				iBuffer[1] = one;
+				iBuffer[2] = two;
+				iBuffer[9] = nine;
+				iBuffer[10] = ten;
+				
 				TBuf8<128> temp;
 				temp.Copy(iBuffer);
 
@@ -299,13 +314,13 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt /*aErrorCode*/)
 					iActiveShow->SetPubDate(TTime(internetDate.DateTime()));
 			
 					
-					/*RDebug::Print(_L("Successfully parsed pubdate %d/%d/%d %d:%d:%d"),
-							iActiveShow->iPubDate.DateTime().Year(),
-							iActiveShow->iPubDate.DateTime().Month(),
-							iActiveShow->iPubDate.DateTime().Day(),
-							iActiveShow->iPubDate.DateTime().Hour(),
-							iActiveShow->iPubDate.DateTime().Minute(),
-							iActiveShow->iPubDate.DateTime().Second());*/
+					RDebug::Print(_L("Successfully parsed pubdate %d/%d/%d %d:%d:%d"),
+							iActiveShow->PubDate().DateTime().Year(),
+							iActiveShow->PubDate().DateTime().Month(),
+							iActiveShow->PubDate().DateTime().Day(),
+							iActiveShow->PubDate().DateTime().Hour(),
+							iActiveShow->PubDate().DateTime().Minute(),
+							iActiveShow->PubDate().DateTime().Second());
 							
 				} else {
 					RDebug::Print(_L("Pubdate parse error: '%S', error=%d"), &iBuffer, parseError);
