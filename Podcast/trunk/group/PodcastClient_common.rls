@@ -5,4 +5,4 @@ CHARACTER_SET UTF8
 rls_string STRING_r_caption "Escarpod"
 rls_string STRING_r_short_caption "Escarpod"
 
-rls_string STRING_r_about_text "Escarpod 0.99\n\nCopyright © 2007-2008,\nThe Bergamot Project\n\nhttp://bergamot.googlecode.com"
+rls_string STRING_r_about_text "Escarpod 1.00\n\nCopyright © 2007-2008,\nThe Bergamot Project\n\nhttp://bergamot.googlecode.com"
