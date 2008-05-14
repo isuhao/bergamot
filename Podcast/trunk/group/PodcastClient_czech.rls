@@ -28,9 +28,9 @@ rls_string STRING_r_view_feeds_cmd "Zdroje"
 rls_string STRING_r_view_player_cmd "Přehrávač"
 
 // Navigation to the audio books
-rls_string STRING_r_view_audiobooks_cmd "Zvuková kniha"
-rls_string STRING_r_view_new_audiobook_cmd "Nová zvuková kniha"
-rls_string STRING_r_view_remove_audiobook_cmd "Odstranit zvukovou knihu"
+rls_string STRING_r_view_audiobooks_cmd "Seznamy stop"
+rls_string STRING_r_view_new_audiobook_cmd "Nový seznam stop"
+rls_string STRING_r_view_remove_audiobook_cmd "Odstranit seznam stop"
 
 // Actions for the player
 rls_string STRING_r_play_cmd "Přehrát"
