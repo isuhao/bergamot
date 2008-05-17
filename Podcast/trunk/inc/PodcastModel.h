@@ -57,6 +57,12 @@ public:
 	RConnection& Connection();
 	TConnPref& ConnPref();
 	TBool ConnectHttpSessionL(RHTTPSession& aSession);
+	
+	void SetProxyUsageIfNeeded(RHTTPSession& aSession);
+	void GetProxyInformationForConnectionL(TBool& aIsUsed, HBufC*& aServerName, TUint32& aPort);
+	TInt GetIapId();
+	
+	
 protected:
 	CPodcastModel();
 	void ConstructL();

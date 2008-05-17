@@ -293,6 +293,12 @@ TBool CPodcastModel::ConnectHttpSessionL(RHTTPSession &aSession)
 	// Attach to connection
 	TInt connPtr = REINTERPRET_CAST(TInt, &iConnection);
 	connInfo.SetPropertyL(pool.StringF(HTTP::EHttpSocketConnection, RHTTPSession::GetTable()), THTTPHdrVal(connPtr));
+	
+	
+	SetProxyUsageIfNeeded(aSession);
+
+	
+	
 	RDebug::Print(_L("ConnectHttpSessionL END"));
 	return ETrue;
 }
@@ -309,4 +315,75 @@ void CPodcastModel::SetIap(TInt aIap)
 		iConnPref.SetIapId(aIap);
 	}
 	
+	}
+
+void CPodcastModel::SetProxyUsageIfNeeded(RHTTPSession& aSession)
+	{
+	TBool useProxy = EFalse;
+	HBufC* serverName = NULL;
+	TUint32 port = 0;
+	
+	TRAPD(err,GetProxyInformationForConnectionL(useProxy, serverName, port));
+	if (err == KErrNone && useProxy)
+		{
+		CleanupStack::PushL(serverName);
+		TBuf8<128> proxyAddr;
+		proxyAddr.Append(*serverName);
+		proxyAddr.Append(':');
+		proxyAddr.AppendNum(port);
+				
+		RStringF prxAddr = aSession.StringPool().OpenFStringL(proxyAddr);
+		CleanupClosePushL(prxAddr);
+		THTTPHdrVal prxUsage(aSession.StringPool().StringF(HTTP::EUseProxy,RHTTPSession::GetTable()));
+
+		aSession.ConnectionInfo().SetPropertyL(
+						aSession.StringPool().StringF(HTTP::EProxyUsage,RHTTPSession::GetTable()), 
+						aSession.StringPool().StringF(HTTP::EUseProxy,RHTTPSession::GetTable()));
+
+		aSession.ConnectionInfo().SetPropertyL(aSession.StringPool().StringF(HTTP::EProxyAddress,RHTTPSession::GetTable()), prxAddr); 
+		
+		CleanupStack::PopAndDestroy(&prxAddr);
+		CleanupStack::PopAndDestroy(serverName);
+		}
+	}
+
+
+void CPodcastModel::GetProxyInformationForConnectionL(TBool& aIsUsed, HBufC*& aProxyServerName, TUint32& aPort)
+	{
+	TInt iapId = GetIapId();
+	CCommsDbTableView* table = iCommDB->OpenViewMatchingUintLC(TPtrC(IAP), TPtrC(COMMDB_ID), iapId);
+	
+	TUint32 iapService;
+	HBufC* iapServiceType;
+	table->ReadUintL(TPtrC(IAP_SERVICE), iapService);
+	iapServiceType = table->ReadLongTextLC(TPtrC(IAP_SERVICE_TYPE));
+	
+	CCommsDbTableView* proxyTableView = iCommDB->OpenViewOnProxyRecordLC(iapService, *iapServiceType);
+	TInt err = proxyTableView->GotoFirstRecord();
+	if( err != KErrNone)
+		{
+		User::Leave(KErrNotFound);	
+		}
+
+	proxyTableView->ReadBoolL(TPtrC(PROXY_USE_PROXY_SERVER), aIsUsed);
+	if(aIsUsed)
+		{
+		HBufC* serverName = proxyTableView->ReadLongTextLC(TPtrC(PROXY_SERVER_NAME));
+		proxyTableView->ReadUintL(TPtrC(PROXY_PORT_NUMBER), aPort);
+		aProxyServerName = serverName->AllocL();
+		CleanupStack::PopAndDestroy(serverName);
+		}
+		
+	CleanupStack::PopAndDestroy(proxyTableView);
+	CleanupStack::PopAndDestroy(iapServiceType);
+	CleanupStack::PopAndDestroy(table);
+	}
+	
+	
+TInt CPodcastModel::GetIapId()
+	{
+	_LIT(KSetting, "IAP\\Id");
+	TUint32 iapId = 0;
+	iConnection.GetIntSetting(KSetting, iapId);
+	return iapId;
 	}
