@@ -201,4 +201,4 @@ rls_string STRING_r_remove_chapter_title "Usuń rozdział"
 rls_string STRING_r_remove_chapter_prompt "Czy jesteś pewien, że chcesz usunąć ten rozdział?"
 
 rls_string STRING_r_podcast_books_status_format "%d/%d rozdziałów"
-rls_string STRING_r_podcast_books_add_chapter "Add Chapters"
+rls_string STRING_r_podcast_books_add_chapter "Dodaj rozdział"
