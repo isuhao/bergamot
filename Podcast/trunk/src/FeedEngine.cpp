@@ -292,16 +292,26 @@ void CFeedEngine::EnsureProperPathName(TFileName &aPath)
 	//buf.Append(_L("\\"));
 	}
 
-void CFeedEngine::ReplaceString(TDes & aString, const TDesC& aStringToReplace,const TDesC& aReplacement )
+void CFeedEngine::ReplaceString(TDes & aString, const TDesC& aStringToReplace,
+		const TDesC& aReplacement)
 	{
-		TInt pos=aString.Find(aStringToReplace);
-		while (pos>=0)
+
+	TInt pos=aString.Find(aStringToReplace);
+	TUint offset = 0;
+	while (pos != KErrNotFound)
 		{
-			aString.Replace(pos,aStringToReplace.Length(),aReplacement);
-			pos=aString.Find(aStringToReplace);
+		aString.Replace(offset+pos, aStringToReplace.Length(), aReplacement);
+		offset = pos + 1;
+		if (offset > aString.Length()) {
+			return;
 		}
 		
+
+		pos=aString.Mid(offset).Find(aStringToReplace);
+		}
+
 	}
+
 
 TBool CFeedEngine::AddFeed(CFeedInfo *aItem) 
 	{
@@ -520,12 +530,18 @@ TBool CFeedEngine::ExportFeedsL(TFileName& aFile)
 	templ.Copy(KOpmlFeed());
 	TBuf<1024> line;
 			
-	
+	TBuf<512> url;
+
 	tft.Write(KOpmlHeader());
-	for (int i=0;i<iSortedFeeds.Count();i++) {
-		line.Format(templ, &iSortedFeeds[i]->Title(), &iSortedFeeds[i]->Url());
+	for (int i=0; i<iSortedFeeds.Count(); i++)
+		{
+		url.Copy(iSortedFeeds[i]->Url());
+		ReplaceString(url, _L("&"), _L("&amp;"));
+
+		line.Format(templ, &iSortedFeeds[i]->Title(), &url);
 		tft.Write(line);
-	}
+		}
+
 	tft.Write(KOpmlFooter());
 		
 	rfile.Close();
