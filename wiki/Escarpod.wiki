@@ -1,4 +1,4 @@
-#summary A pocket full of snails
+#summary The UIQ Podcatcher
 #labels Featured
 
 http://bergamot.googlecode.com/svn/wiki/escarpod_10_splash.jpg
