@@ -199,4 +199,4 @@ rls_string STRING_r_remove_chapter_title "Удалить главу"
 rls_string STRING_r_remove_chapter_prompt "Вы уверены, что хотите удалить эту главу?"
 
 rls_string STRING_r_podcast_books_status_format "%d/%d глав"
-rls_string STRING_r_podcast_books_add_chapter "Add Chapters"
+rls_string STRING_r_podcast_books_add_chapter "Добавить главы"
