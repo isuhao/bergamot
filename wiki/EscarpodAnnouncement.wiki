@@ -1,6 +1,6 @@
 = One, point, zero! =
 
-I'm extremely proud to announce version 1.00 of Escarpod - The UIQ Podcatcher. Version one, point, zero!
+I'm extremely proud to announce version 1.00 of [Escarpod] - The UIQ Podcatcher. Version one, point, zero!
 
 After six months of development, more than 11 000 lines of C++ code, over 5000 cumulative downloads, more than 1000 Subversion commits, tons of bugs reports and endless emails discussions, it's ready. It's ready!
 
@@ -16,6 +16,6 @@ This project taught me a lot about professional software development and project
 
 Finally, a thanks to all our users, and everybody who helped in any way! I couldn't have done this by myself!
 
-So, go ahead and download Escarpod 1.0 from our downloads page, and enjoy!
+So, go ahead and download Escarpod 1.0 from [http://code.google.com/p/bergamot/downloads/list our downloads page], and enjoy!
 
 Teknolog
