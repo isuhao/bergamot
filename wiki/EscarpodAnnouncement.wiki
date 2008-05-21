@@ -12,7 +12,7 @@ Of course, I didn't manage this all by myself. There are three people that must 
  * Alan Eddie, who drew all our graphics, giving Escarpod the beautiful UI it has. And at the end of the day, to the user the UI is the program!
  * Lasse Olsson, who came in late, fixing lots of memory leaks and improved stability and responsiveness greatly. 
  
-This project taught me a lot about professional software development and project management. As many before me have learnt, making a product out of a pile of code is really, really hard! And still, we managed!
+This project taught me a lot about professional software development and project management. As many before me have learnt the hard way, making a product out of a pile of code is really, really hard! And still, we managed!
 
 Finally, a thanks to all our users, and everybody who helped in any way! I couldn't have done this by myself!
 
