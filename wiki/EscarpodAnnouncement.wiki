@@ -1,4 +1,4 @@
-= Announcement =
+= One, point, zero! =
 
 I'm extremely proud to announce version 1.00 of Escarpod - The UIQ Podcatcher. Version one, point, zero!
 
