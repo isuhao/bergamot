@@ -33,4 +33,5 @@ The following translations been done, but they may not be updated for the latest
 || Italian|| Massimiliano Bini ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_italian.rls PodcastClient_italian.rls] ||
 || Polish || Bartek Foks ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_polish.rls PodcastClient_polish.rls] ||
 || Russian ||  Kirill Uvaev||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_russian.rls PodcastClient_russian.rls] ||
+|| Spanish ||multiusos || [http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_spanish.rls PodcastClient_spanish.rls] ||
 || Swedish || Sebastian Brännström ||[http://bergamot.googlecode.com/svn/Podcast/trunk/group/PodcastClient_swedish.rls PodcastClient_swedish.rls] ||
