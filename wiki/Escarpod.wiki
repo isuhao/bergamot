@@ -52,6 +52,13 @@ If your phone supports it, using your own wireless LAN or Bluetooth PAN are grea
 
 To download binaries of Escarpod to use on your phone, visit our [http://code.google.com/p/bergamot/downloads/list Downloads] page.
 
+  * Escarpod 1.01 
+    * Spanish language
+    * Polish language fixed
+    * Proxy problems fix
+    * External player fix relating to audio books
+    * M3U import function for audio books
+
   * Escarpod 1.00 (May 22th)
     * Audio book improvements
     * Bug fixes
