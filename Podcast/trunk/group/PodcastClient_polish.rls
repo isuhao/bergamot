@@ -170,7 +170,7 @@ rls_string STRING_r_cancel_update_all_feeds_short_cmd "Anuluj"
 
 rls_string STRING_r_suspend_download_cmd "Wstrzymaj" // String used for cmd to suspend current download rather than removing it from the que.
 rls_string STRING_r_view_resume_short_dls_cmd "Wznów" // Short download cmd
-rls_string STRING_r_view_onphone_status "%d nieodtworzonych, %d wszystkich" // Used in base view listbox status for shows on phone text max 32 chars
+rls_string STRING_r_view_onphone_status "%d nieodtw., %d wszystkich" // Used in base view listbox status for shows on phone text max 32 chars
 rls_string STRING_r_view_onphone_status_unknown "N/A" // Used for unknown status event
 
 // Strings used to set the playorder of an audio book
