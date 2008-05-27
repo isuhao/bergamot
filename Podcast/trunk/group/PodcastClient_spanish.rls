@@ -3,7 +3,7 @@ CHARACTER_SET UTF8
 // Escarpod language file
 //
 // Language:   Spanish SP/04
-// Translator:   Manuel Monteserin
+// Translator:  multiusos
 
 // list view commands
 rls_string STRING_r_listbox_listview_cmd_close_debug "Cerrar (debug)"
