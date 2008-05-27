@@ -1,6 +1,6 @@
 #summary Introduction to podcasts
 
-= What is a podcast= =
+= What is a podcast=
 
 A podcast (portmanteau of pod as in "ipod" and broadcast) is a radio show distributed on the internet, usually for free. Podcasts are usually ordinary [http://en.wikipedia.org/wiki/Mp3 mp3] files, distributed through [http://en.wikipedia.org/wiki/RSS RSS feeds]. Some podcasts are in video form, also known as "vodcasts".
 
