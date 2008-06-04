@@ -59,11 +59,11 @@ To download binaries of Escarpod to use on your phone, visit our [http://code.go
     * External player fix relating to audio books
     * M3U import function for audio books
 
-  * Escarpod 1.00 (May 22th)
+  * Escarpod 1.00 (May 22th) [http://bergamot.googlecode.com/svn/Podcast/tags/v100 code]
     * Audio book improvements
     * Bug fixes
 
-  * Escarpod 0.99 (April 29th) [http://bergamot.googlecode.com/svn/Podcast/tags/v099 code]
+  * Escarpod 0.99 (April 29th)
     * French and Catalan translations
     * Improved resume playback after phone call on bluetooth headsets
     * Download status corrections
