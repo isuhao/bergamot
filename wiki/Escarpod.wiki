@@ -1,10 +1,6 @@
 #summary The UIQ Podcatcher
 #labels Featured
 
-http://bergamot.googlecode.com/svn/wiki/escarpod_10_splash.jpg
-
-Escarpod 1.0 is here! Get it from the [http://code.google.com/p/bergamot/downloads/list downloads page].
-
 = Escarpod =
 
 http://bergamot.googlecode.com/svn/wiki/escarpod_large.jpg
