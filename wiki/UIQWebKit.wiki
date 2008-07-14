@@ -1,13 +1,9 @@
 ...because UIQ needs a decent web browser
 
-= UIQ WebKit =
-
-I am attempting to port the open source Series 60 WebKit to UIQ. This project just started, and I am still hopeful. We'll see how difficult this turns out to be.
-
-== Status ==
-
-As of late October, I have basically just managed to compile relase 21772 of WebKit for S60. 
+= UIQ WebKit == Digia @Web =
+Finnish company Digia has done pretty much what I had in mind with their [http://www.digia.com/C2256FEF0043E9C1/0/405001847 @Web browser].
 
 == Links ==
 
-[http://trac.webkit.org/projects/webkit/wiki/S60Webkit S60WebKit]
+  * [http://trac.webkit.org/projects/webkit/wiki/S60Webkit S60WebKit]
+  * [http://www.digia.com/C2256FEF0043E9C1/0/405001847 @Web browser]
