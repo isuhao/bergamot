@@ -594,7 +594,7 @@ void CPodcastClientFeedView::UpdateCommandsL()
 	comMan.SetInvisible(*this, EPodcastViewAudioBooks, isBookMode);
 	comMan.SetInvisible(*this, EPodcastViewFeeds, !isBookMode);
 		
-	TBool playingThisBook = (iPodcastModel.PlayingPodcast() != NULL) && (iPodcastModel.PlayingPodcast()->FeedUid() == (*sortedItems)[index]->Uid()) && iPodcastModel.SoundEngine().State() == ESoundEnginePlaying;
+	TBool playingThisBook = (iPodcastModel.PlayingPodcast() != NULL) && (sortedItems != NULL && sortedItems->Count() > 0) && (iPodcastModel.PlayingPodcast()->FeedUid() == (*sortedItems)[index]->Uid()) && iPodcastModel.SoundEngine().State() == ESoundEnginePlaying;
 	comMan.SetAvailable(*this, EPodcastPlayAudioBook, isBookMode && cnt && !playingThisBook);
 	comMan.SetAvailable(*this, EPodcastPauseAudioBook, isBookMode && cnt && playingThisBook);
 		
