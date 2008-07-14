@@ -81,7 +81,7 @@ All UIQ 3 based phones should work, however Escarpod has been specifically teste
     * M600
     * W950
     * W960
-    * G900? (Conflicting reports)
+    * G900
 
   * Motorola
     * Z8
