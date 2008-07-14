@@ -175,6 +175,8 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt /*aErrorCode*/)
 		return;
 	}
 	
+	iBuffer.Trim();
+	
 	TDesC8 lName = aElement.LocalName().DesC();
 	TBuf<100> str;
 	str.Copy(aElement.LocalName().DesC());
