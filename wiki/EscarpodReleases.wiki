@@ -2,6 +2,11 @@
 
 This is a complete list of releases of Escarpod.
 
+  * Escarpod 0.99 (April 29th)
+    * French and Catalan translations
+    * Improved resume playback after phone call on bluetooth headsets
+    * Download status corrections
+
   * Escarpod 0.98 (April 20th) [http://bergamot.googlecode.com/svn/Podcast/tags/v098 code]
     * "Loss of random shows" bug fixed
     * Position over ~4200 seconds bug fixed
