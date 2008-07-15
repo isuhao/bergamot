@@ -53,7 +53,7 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 			RStringF statusStr = resp.StatusText();
 			TBuf<32> statusStr16;
 			statusStr16.Copy(statusStr.DesC());
-			RDebug::Print(_L("Status: %d (%S)"), status, &statusStr16);
+			DP2("Status: %d (%S)", status, &statusStr16);
 
 			// Dump the headers if we're being verbose
 			//DumpRespHeadersL(aTransaction);
@@ -66,10 +66,10 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 				//iBytesDownloaded = 0;
 				TInt dataSize = resp.Body()->OverallDataSize();
 				if (dataSize >= 0) {
-					RDebug::Print(_L("Response body size is %d"), dataSize);
+					DP1("Response body size is %d", dataSize);
 					iBytesTotal = dataSize;	
 				} else {
-					RDebug::Print(_L("Response body size is unknown"));
+					DP("Response body size is unknown");
 					iBytesTotal = -1;
 				}
 				iCallbacks.DownloadInfo(iHttpClient, dataSize);
@@ -80,7 +80,7 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 			// If we're cancelling, must do it now..
 			if (cancelling)
 				{
-				RDebug::Print(_L("Transaction Cancelled"));
+				DP("Transaction Cancelled");
 				aTransaction.Close();
 				iHttpClient->ClientRequestCompleteL(EFalse);
 				}
@@ -90,7 +90,7 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 				TInt valid = iFileServ.IsValidName(iFileName);
 				if (!valid)
 					{
-					RDebug::Print(_L("The specified filename is not valid!."));
+					DP("The specified filename is not valid!.");
 					iSavingResponseBody = EFalse;
 					}
 				else
@@ -99,19 +99,19 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 						TInt err = iRespBodyFile.Open(iFileServ, iParsedFileName.FullName(),EFileWrite);
 						if (err)
 							{
-							RDebug::Print(_L("There was an error opening file"));
+							DP("There was an error opening file");
 							iSavingResponseBody = EFalse;
 							User::Leave(err);
 							} else {
 							int pos = -KByteOverlap;
 							if((err=iRespBodyFile.Seek(ESeekEnd, pos)) != KErrNone) {
-								RDebug::Print(_L("Failed to set position!"));
+								DP("Failed to set position!");
 								User::Leave(err);
 							}
 							iBytesDownloaded = pos;
 							iBytesTotal += iBytesDownloaded;
-							RDebug::Print(_L("Total bytes is now %u"), iBytesTotal);
-							RDebug::Print(_L("Seeking end: %d"), pos);
+							DP1("Total bytes is now %u", iBytesTotal);
+							DP1("Seeking end: %d", pos);
 							}
 					} else {
 						TInt err = iRespBodyFile.Replace(iFileServ,
@@ -119,7 +119,7 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 														 EFileWrite);
 						if (err)
 							{
-							RDebug::Print(_L("There was an error replacing file"));
+							DP("There was an error replacing file");
 							iSavingResponseBody = EFalse;
 							User::Leave(err);
 							}
@@ -135,7 +135,7 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 
 			// Some (more) body data has been received (in the HTTP response)
 			//DumpRespBody(aTransaction);
-			//RDebug::Print(_L("Saving: %d"), iSavingResponseBody);
+			//DP1("Saving: %d", iSavingResponseBody);
 			// Append to the output file if we're saving responses
 			if (iSavingResponseBody)
 				{
@@ -164,33 +164,33 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 			{
 			// The transaction's response is complete
 
-			RDebug::Print(_L("Transaction Complete"));
-			RDebug::Print(_L("Closing file"));
+			DP("Transaction Complete");
+			DP("Closing file");
 			iRespBodyFile.Close();
 			} break;
 		case THTTPEvent::ESucceeded:
 			{
-			RDebug::Print(_L("Transaction Successful"));
+			DP("Transaction Successful");
 			aTransaction.Close();
 			iHttpClient->ClientRequestCompleteL(ETrue);
 			} break;
 		case THTTPEvent::EFailed:
 			{
-			RDebug::Print(_L("Transaction Failed"));
+			DP("Transaction Failed");
 			aTransaction.Close();
 			iHttpClient->ClientRequestCompleteL(EFalse);
 			} break;
 		case THTTPEvent::ERedirectedPermanently:
 			{
-			RDebug::Print(_L("Permanent Redirection"));
+			DP("Permanent Redirection");
 			} break;
 		case THTTPEvent::ERedirectedTemporarily:
 			{
-			RDebug::Print(_L("Temporary Redirection"));
+			DP("Temporary Redirection");
 			} break;
 		default:
 			{
-			RDebug::Print(_L("<unrecognised event: %d>"), aEvent.iStatus);
+			DP1("<unrecognised event: %d>", aEvent.iStatus);
 			// close off the transaction if it's an error
 			if (aEvent.iStatus < 0)
 				{
@@ -203,7 +203,7 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 
 TInt CHttpEventHandler::MHFRunError(TInt aError, RHTTPTransaction /*aTransaction*/, const THTTPEvent& /*aEvent*/)
 	{
-	RDebug::Print(_L("MHFRunError fired with error code %d"), aError);
+	DP1("MHFRunError fired with error code %d", aError);
 
 	return KErrNone;
 	}
@@ -236,14 +236,14 @@ void CHttpEventHandler::DumpRespHeadersL(RHTTPTransaction& aTrans)
 			switch (fieldVal.Type())
 				{
 			case THTTPHdrVal::KTIntVal:
-				RDebug::Print(_L("%S: %d"), &fieldName16, fieldVal.Int());
+				DP2("%S: %d", &fieldName16, fieldVal.Int());
 				break;
 			case THTTPHdrVal::KStrFVal:
 				{
 				RStringF fieldValStr = strP.StringF(fieldVal.StrF());
 				const TDesC8& fieldValDesC = fieldValStr.DesC();
 				fieldVal16.Copy(fieldValDesC.Left(KMaxHeaderValueLen));
-				RDebug::Print(_L("%S: %S"), &fieldName16, &fieldVal16);
+				DP2("%S: %S", &fieldName16, &fieldVal16);
 				}
 				break;
 			case THTTPHdrVal::KStrVal:
@@ -251,7 +251,7 @@ void CHttpEventHandler::DumpRespHeadersL(RHTTPTransaction& aTrans)
 				RString fieldValStr = strP.String(fieldVal.Str());
 				const TDesC8& fieldValDesC = fieldValStr.DesC();
 				fieldVal16.Copy(fieldValDesC.Left(KMaxHeaderValueLen));
-				RDebug::Print(_L("%S: %S"), &fieldName16, &fieldVal16);
+				DP2("%S: %S", &fieldName16, &fieldVal16);
 				}
 				break;
 			case THTTPHdrVal::KDateVal:
@@ -260,7 +260,7 @@ void CHttpEventHandler::DumpRespHeadersL(RHTTPTransaction& aTrans)
 				} 
 				break;
 			default:
-				RDebug::Print(_L("%S: <unrecognised value type>"), &fieldName16);
+				DP1("%S: <unrecognised value type>", &fieldName16);
 				break;
 				}
 
@@ -277,7 +277,7 @@ void CHttpEventHandler::DumpRespHeadersL(RHTTPTransaction& aTrans)
 					{
 					RStringF realmValStr = strP.StringF(realmVal.StrF());
 					fieldVal16.Copy(realmValStr.DesC());
-					RDebug::Print(_L("Realm is: %S"), &fieldVal16);
+					DP1("Realm is: %S", &fieldVal16);
 					}
 				}
 			}
@@ -292,7 +292,7 @@ void CHttpEventHandler::DumpRespBody(RHTTPTransaction& aTrans)
 	TBool isLast = body->GetNextDataPart(dataChunk);
 	DumpIt(dataChunk);
 	if (isLast)
-		RDebug::Print(_L("Got last data chunk."));
+		DP("Got last data chunk.");
 	}
 
 
@@ -375,7 +375,7 @@ void CHttpEventHandler::CloseSaveFile()
 		TInt size;
 		
 		iRespBodyFile.Size(size);
-		RDebug::Print(_L("Closing file at size %d, bytes downloaded %d"), size, iBytesDownloaded);
+		DP2("Closing file at size %d, bytes downloaded %d", size, iBytesDownloaded);
 		iRespBodyFile.Close();
 	}
 }
