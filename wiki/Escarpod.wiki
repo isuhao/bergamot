@@ -53,6 +53,7 @@ To download binaries of Escarpod to use on your phone, visit our [http://code.go
     * Proxy problems fix
     * External player fix relating to audio books
     * M3U import function for audio books
+    * Refusal to start when no memory stick bug fixed
 
   * Escarpod 1.00 (May 22th) [http://bergamot.googlecode.com/svn/Podcast/tags/v100 code]
     * Audio book improvements
@@ -80,6 +81,7 @@ All UIQ 3 based phones should work, however Escarpod has been specifically teste
     * M600
     * W950
     * W960
+    * G700
     * G900
 
   * Motorola
