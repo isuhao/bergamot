@@ -5,6 +5,7 @@
 #include <charconv.h>
 #include <eikenv.h>
 #include <mmf\common\mmfMeta.h>
+#include "debug.h"
 
 _LIT(KMP3Extension, ".MP3");
 CMetaDataReader::CMetaDataReader(MMetaDataReaderObserver& aObserver) : iObserver(aObserver)
@@ -23,7 +24,7 @@ CMetaDataReader::~CMetaDataReader()
 
 void CMetaDataReader::ConstructL()
 {
-	RDebug::Print(_L("ConstructL"));
+	DP("ConstructL");
 	iPlayer = CMdaAudioPlayerUtility::NewL(*this);
 
 	TCallBack callback(ParseNextShowCallbackL, this);
@@ -35,7 +36,7 @@ void CMetaDataReader::ConstructL()
 
 void CMetaDataReader::SubmitShowL(CShowInfo *aShowInfo)
 {
-	RDebug::Print(_L("SubmitShow"));
+	DP("SubmitShow");
 	iShowsToParse.Append(aShowInfo);
 	
 	if (iShow == NULL) {
@@ -110,10 +111,10 @@ void CMetaDataReader::ConvertToUniCodeL(TDes& aDestBuffer, TDes8& aInputBuffer, 
 
 void CMetaDataReader::ParseNextShowL()
 	{
-	RDebug::Print(_L("ParseNextShow"));
+	DP("ParseNextShow");
 	iPlayer->Close();
 	if (iShowsToParse.Count() == 0) {
-		RDebug::Print(_L("No more shows, stopping"));
+		DP("No more shows, stopping");
 		iObserver.ReadMetaDataComplete();
 		return;
 	}
@@ -226,14 +227,14 @@ void CMetaDataReader::MapcPlayComplete(TInt /*aError*/)
 
 void CMetaDataReader::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds &aDuration)
 {
-	RDebug::Print(_L("MapcInitComplete, file=%S"), &(iShow->FileName()));
+	DP1("MapcInitComplete, file=%S", &(iShow->FileName()));
 
 
 	if(aError == KErrNone)
 	{
 		TInt numEntries = 0;
 		if (iPlayer->GetNumberOfMetaDataEntries(numEntries) == KErrNone) {
-			RDebug::Print(_L("%d meta data entries"), numEntries);
+			DP1("%d meta data entries", numEntries);
 			iShow->SetPlayTime((aDuration.Int64()/1000000));
 			
 			for (int i=0;i<numEntries;i++) {
@@ -247,7 +248,7 @@ void CMetaDataReader::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeco
 				if (entry->Name() == KMMFMetaEntrySongTitle) {
 					buf.Copy(entry->Value());
 					TRAP_IGNORE(iShow->SetTitleL(buf));
-					RDebug::Print(_L("title: %S"), &(iShow->Title()));
+					DP1("title: %S", &(iShow->Title()));
 				} else if (entry->Name() == _L("artist")) {
 					if (iShow->Description().Length() > 0) {
 						buf.Copy(iShow->Description());

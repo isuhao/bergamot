@@ -45,7 +45,7 @@ void CSoundEngine::RemoveObserver(MSoundEngineObserver* observer)
 	}
 
 void CSoundEngine::MapcPlayComplete(TInt aError) {
-	RDebug::Print(_L("MapcPlayComplete: %d"), aError);
+	DP1("MapcPlayComplete: %d", aError);
 		
 	if (iPodcastModel.PlayingPodcast() != NULL) {
 		if(aError == KErrNone) // normal ending
@@ -75,7 +75,7 @@ void CSoundEngine::MapcPlayComplete(TInt aError) {
 void CSoundEngine::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds &/*aDuration */) {
 	if (aError != KErrNone)
 		{
-		RDebug::Print(_L("MapcInitComplete error=%d"), aError);	
+		DP1("MapcInitComplete error=%d", aError);	
 		
 		iState = ESoundEngineNotInitialized;		
 		}
@@ -87,7 +87,7 @@ void CSoundEngine::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds
 		
 		if (iPodcastModel.PlayingPodcast() != NULL) 
 			{
-			RDebug::Print(_L("Resuming from position: %ld"), iPodcastModel.PlayingPodcast()->Position().Int64());
+			DP1("Resuming from position: %ld", iPodcastModel.PlayingPodcast()->Position().Int64());
 			TInt duration = (iPlayer->Duration().Int64()/1000000);
 			if(duration == 0) // sounds should at least be marked as one second long if they are <1 second
 				{
@@ -211,7 +211,7 @@ void CSoundEngine::Stop(TBool aMarkPlayed)
 
 void CSoundEngine::Pause(TBool aOverrideState)
 {
-	RDebug::Print(_L("Pause"));
+	DP("Pause");
 	if(iState > ESoundEngineOpening || aOverrideState)
 	{
 		iState = ESoundEnginePaused;
@@ -219,7 +219,6 @@ void CSoundEngine::Pause(TBool aOverrideState)
 
 		// had a crash here, so we check for NULL first
 		if (iPodcastModel.PlayingPodcast() != NULL) {
-			RDebug::Print(_L("Setting position..."));
 			iPodcastModel.PlayingPodcast()->SetPosition(iMaxPos);
 			// really wasteful saving EVERYTHING every time
 			TRAP_IGNORE(iPodcastModel.ShowEngine().SaveShowsL());

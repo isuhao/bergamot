@@ -148,6 +148,8 @@ RESOURCE TBUF r_podcast_onphone_status_unknown {buf = STRING_r_view_onphone_stat
 // Books
 RESOURCE TBUF r_podcast_books_title_format {buf = STRING_r_podcast_books_title_format;}
 RESOURCE TBUF r_podcast_books_status_format {buf = STRING_r_podcast_books_status_format;}
+RESOURCE TBUF r_podcast_import_book_title {buf = STRING_r_view_import_book_title;}
+
 
 RESOURCE TBUF r_podcast_feeds_update_message {buf = STRING_r_podcast_feeds_update_message;}
 RESOURCE TBUF r_podcast_feeds_update_error {buf = STRING_r_podcast_feeds_update_error;}

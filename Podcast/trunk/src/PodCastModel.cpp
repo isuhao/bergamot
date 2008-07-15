@@ -167,10 +167,10 @@ void CPodcastModel::PlayPausePodcastL(CShowInfo* aPodcast, TBool aPlayOnInit)
 
 		// we play video podcasts through the external player
 		if(aPodcast != NULL && aPodcast->ShowType() != EVideoPodcast) {
-			RDebug::Print(_L("Starting: %S"), &(aPodcast->FileName()));
+			DP1("Starting: %S", &(aPodcast->FileName()));
 			TRAPD( error, iSoundEngine->OpenFileL(aPodcast->FileName(), aPlayOnInit) );
 			if (error != KErrNone) {
-				RDebug::Print(_L("Error: %d"), error);
+				DP1("Error: %d", error);
 			} else {
 				iSoundEngine->SetPosition(aPodcast->Position().Int64() / 1000000);
 			}
@@ -262,7 +262,7 @@ public:
 
 TBool CPodcastModel::ConnectHttpSessionL(RHTTPSession &aSession)
 {
-	RDebug::Print(_L("ConnectHttpSessionL START"));
+	DP("ConnectHttpSessionL START");
 	iConnection.Stop();
 	if(iSettingsEngine->SpecificIAP() == -1)
 	{
@@ -299,7 +299,7 @@ TBool CPodcastModel::ConnectHttpSessionL(RHTTPSession &aSession)
 
 	
 	
-	RDebug::Print(_L("ConnectHttpSessionL END"));
+	DP("ConnectHttpSessionL END");
 	return ETrue;
 }
 

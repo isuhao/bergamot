@@ -193,11 +193,15 @@ rls_string STRING_r_view_export_feeds_cmd "Export Feeds" // Export feeds cmd in 
 rls_string STRING_r_catchup_feed "Mark all shows as played?" // shown when first updating a new feed
 rls_string STRING_r_catchup_feed_title "First Update" // title to dialog
 
-rls_string STRING_r_remove_book_title "Remove audiobook"
-rls_string STRING_r_remove_book_prompt "Are you sure to remove this audiobook?"
+rls_string STRING_r_remove_book_title "Remove Book"
+rls_string STRING_r_remove_book_prompt "Are you sure to remove this audio book?"
 
-rls_string STRING_r_remove_chapter_title "Remove chapter"
+rls_string STRING_r_remove_chapter_title "Remove Chapter"
 rls_string STRING_r_remove_chapter_prompt "Are you sure to remove this chapter?"
 
 rls_string STRING_r_podcast_books_status_format "%d/%d Chapters"
 rls_string STRING_r_podcast_books_add_chapter "Add Chapters"
+
+rls_string STRING_r_view_import_audiobook_cmd "Import Book"
+rls_string STRING_r_view_import_book_title "Select M3U file"
+

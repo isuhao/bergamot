@@ -10,6 +10,7 @@
 #include <es_sock.h>
 #include <bautils.h>
 #include <CommDbConnPref.h>
+#include "debug.h"
 const TInt KTempBufferSize = 100;
 
 CHttpClient::~CHttpClient()
@@ -67,7 +68,7 @@ void CHttpClient::SetResumeEnabled(TBool aEnabled)
 	}
 
 TBool CHttpClient::GetL(const TDesC& url, const TDesC& fileName,  TBool aSilent) {
-	RDebug::Print(_L("CHttpClient::Get START"));
+	DP("CHttpClient::Get START");
 	
 	__ASSERT_DEBUG((iIsActive==EFalse), User::Panic(_L("Already active"), -2));
 			
@@ -76,7 +77,7 @@ TBool CHttpClient::GetL(const TDesC& url, const TDesC& fileName,  TBool aSilent)
 	
 	if (iTransactionCount == 0) 
 		{
-		RDebug::Print(_L("CHttpClient::GetL\t*** Opening HTTP session ***"));
+		DP("CHttpClient::GetL\t*** Opening HTTP session ***");
 		iSession.OpenL();
 		if(!iPodcastModel.ConnectHttpSessionL(iSession)) // Returns false if not connected
 			{
@@ -87,7 +88,7 @@ TBool CHttpClient::GetL(const TDesC& url, const TDesC& fileName,  TBool aSilent)
 	
 	TUriParser8 uri; 
 	uri.Parse(url8);
-	RDebug::Print(_L("Getting '%S' to '%S'"), &url, &fileName);
+	DP2("Getting '%S' to '%S'", &url, &fileName);
 
 	// since nothing should be downloading now. Delete the handler
 	if (iHandler)
@@ -103,7 +104,7 @@ TBool CHttpClient::GetL(const TDesC& url, const TDesC& fileName,  TBool aSilent)
 	TBuf8<KTempBufferSize> rangeText;
 
 	if (iResumeEnabled && iPodcastModel.EikonEnv()->FsSession().Entry(fileName, entry) == KErrNone) {
-		RDebug::Print(_L("Found file, with size=%d"), entry.iSize);
+		DP1("Found file, with size=%d", entry.iSize);
 		// file exists, so we should probably resume
 		rangeText.Format(_L8("bytes=%d-"), entry.iSize-KByteOverlap);
 		iHandler->SetSaveFileName(fileName, ETrue);
@@ -124,7 +125,7 @@ TBool CHttpClient::GetL(const TDesC& url, const TDesC& fileName,  TBool aSilent)
 	SetHeaderL(hdr, HTTP::EAccept, KAccept);
 	TBuf<KTempBufferSize> range16;
 	range16.Copy(rangeText);
-	RDebug::Print(_L("range text: %S"), &range16);
+	DP1("range text: %S", &range16);
 	if (rangeText.Length() > 0) {
 		SetHeaderL(hdr, HTTP::ERange, rangeText);
 	}
@@ -132,7 +133,7 @@ TBool CHttpClient::GetL(const TDesC& url, const TDesC& fileName,  TBool aSilent)
 	// submit the transaction
 	iTrans.SubmitL();
 	iIsActive = ETrue;	
-	RDebug::Print(_L("CHttpClient::Get END"));
+	DP("CHttpClient::Get END");
 	
 	return ETrue;
 }
@@ -154,7 +155,7 @@ void CHttpClient::Stop()
 		iHandler = NULL;
 		
 		// close the session
-		RDebug::Print(_L("CHttpClient::Stop\t*** Closing HTTP session ***"));
+		DP("CHttpClient::Stop\t*** Closing HTTP session ***");
 		iSession.Close();
 		}
 
@@ -165,12 +166,12 @@ void CHttpClient::Stop()
 void CHttpClient::ClientRequestCompleteL(TBool aSuccessful) {
 	iIsActive = EFalse;
 	iObserver.CompleteL(this, aSuccessful);
-	RDebug::Print(_L("CHttpClient::ClientRequestCompleteL"));
+	DP("CHttpClient::ClientRequestCompleteL");
 	iTransactionCount--;
 	
 	if(iTransactionCount == 0) 
 		{
-		RDebug::Print(_L("CHttpClient::ClientRequestCompleteL\t*** Closing HTTP session ***"));
+		DP("CHttpClient::ClientRequestCompleteL\t*** Closing HTTP session ***");
 		delete iHandler;
 		iHandler = NULL;
 		iSession.Close();

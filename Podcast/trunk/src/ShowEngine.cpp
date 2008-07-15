@@ -6,6 +6,7 @@
 #include "SettingsEngine.h"
 #include <e32hashtab.h>
 #include "SoundEngine.h"
+#include "debug.h"
 
 const TUint KMaxDownloadErrors=3;
 
@@ -50,7 +51,7 @@ void CShowEngine::ConstructL()
 	
 	// if failure, try to load backup
 	if (err != KErrNone) {
-		RDebug::Print(_L("Loading show database backup"));
+		DP("Loading show database backup");
 		iShows.Reset();
 		TRAP(err,LoadShowsL(ETrue));
 		if( err == KErrNone) {
@@ -70,7 +71,7 @@ void CShowEngine::ConstructL()
 
 void CShowEngine::StopDownloads() 
 	{
-	RDebug::Print(_L("StopDownloads"));
+	DP("StopDownloads");
 	iDownloadsSuspended = ETrue;
 	if (iShowClient != NULL) {
 		iShowClient->Stop();
@@ -79,7 +80,7 @@ void CShowEngine::StopDownloads()
 
 void CShowEngine::ResumeDownloads() 
 	{
-	RDebug::Print(_L("ResumeDownloads"));
+	DP("ResumeDownloads");
 	iDownloadsSuspended = EFalse;
 	iDownloadErrors = 0;
 	DownloadNextShow();
@@ -105,26 +106,26 @@ void CShowEngine::RemoveAllDownloads() {
 
 TBool CShowEngine::RemoveDownload(TUint aUid) 
 	{
-	//RDebug::Print(_L("CShowEngine::RemoveDownload\t Trying to remove download"));
-	//RDebug::Print(_L("Title: %S"), &iPodcastModel.ShowEngine().GetShowByUidL(aUid)->Title());
+	//DP("CShowEngine::RemoveDownload\t Trying to remove download");
+	//DP1("Title: %S", &iPodcastModel.ShowEngine().GetShowByUidL(aUid)->Title());
 	TBool retVal = EFalse;
 	// if trying to remove the present download, we first stop it
 	if (!iDownloadsSuspended && iShowDownloading != NULL && iShowDownloading->Uid() == aUid) {
-		RDebug::Print(_L("CShowEngine::RemoveDownload\t This is the active download, we suspend downloading"));
+		DP("CShowEngine::RemoveDownload\t This is the active download, we suspend downloading");
 		StopDownloads();
 	} else {
 		const TInt count = iShowsDownloading.Count();
 		for (TInt i=0 ; i < count; i++) 
 			{
-			//RDebug::Print(_L("Comparing %u (%S) to %u"), iShowsDownloading[i]->Uid(), &iShowsDownloading[i]->Title(), aUid );
+			//DP2("Comparing %u (%S) to %u", iShowsDownloading[i]->Uid(), &iShowsDownloading[i]->Title(), aUid );
 			if (iShowsDownloading[i] != NULL && iShowsDownloading[i]->Uid() == aUid) 
 				{
-				//RDebug::Print(_L("Removing by title: %S"), &iShowsDownloading[i]->Title());
+				//DP1("Removing by title: %S", &iShowsDownloading[i]->Title());
 				iShowsDownloading[i]->SetDownloadState(ENotDownloaded);
 				BaflUtils::DeleteFile(iFs, iShowsDownloading[i]->FileName());
 				iShowsDownloading.Remove(i);
 	
-				RDebug::Print(_L("CShowEngine::RemoveDownload\tDownload removed."));
+				DP("CShowEngine::RemoveDownload\tDownload removed.");
 				
 				NotifyShowDownloadUpdated(-1,-1,-1);
 				NotifyDownloadQueueUpdated();
@@ -136,7 +137,7 @@ TBool CShowEngine::RemoveDownload(TUint aUid)
 			}
 	}
 
-	RDebug::Print(_L("CShowEngine::RemoveDownload\tCould not find downloading show to remove"));
+	DP("CShowEngine::RemoveDownload\tCould not find downloading show to remove");
 	return retVal;
 	}
 
@@ -163,7 +164,7 @@ void CShowEngine::Disconnected(CHttpClient* /*aClient */)
 
 void CShowEngine::DownloadInfo(CHttpClient* aHttpClient, TInt aTotalBytes)
 	{
-	RDebug::Print(_L("About to download %d bytes"), aTotalBytes);
+	DP1("About to download %d bytes", aTotalBytes);
 	if(aHttpClient == iShowClient && iShowDownloading != NULL && aTotalBytes != -1) {
 		iShowDownloading->SetShowSize(aTotalBytes);
 		}
@@ -222,7 +223,7 @@ void CShowEngine::GetShowL(CShowInfo *info)
 	{
 	CFeedInfo *feedInfo = iPodcastModel.FeedEngine().GetFeedInfoByUid(info->FeedUid());
 	if (feedInfo == NULL) {
-		RDebug::Print(_L("Feed not found for this show!"));
+		DP("Feed not found for this show!");
 		return;
 	}
 	
@@ -280,7 +281,7 @@ void CShowEngine::CompleteL(CHttpClient* /*aHttpClient*/, TBool aSuccessful)
 	{
 	if(iShowDownloading != NULL)
 	{
-		RDebug::Print(_L("CShowEngine::Complete\tDownload of file: %S is complete"), &iShowDownloading->FileName());
+		DP1("CShowEngine::Complete\tDownload of file: %S is complete", &iShowDownloading->FileName());
 			
 		// decide what kind of file this is
 		TBuf<100> mimeType;
@@ -306,7 +307,7 @@ void CShowEngine::CompleteL(CHttpClient* /*aHttpClient*/, TBool aSuccessful)
 			iDownloadErrors++;
 			if (iDownloadErrors > KMaxDownloadErrors) 
 			{
-				RDebug::Print(_L("Too many downloading errors, suspending downloads"));
+				DP("Too many downloading errors, suspending downloads");
 				iDownloadsSuspended = ETrue;
 				NotifyShowDownloadUpdated(-1,-1,-1);
 			}
@@ -365,7 +366,7 @@ TBool CShowEngine::CompareShowsByUid(const CShowInfo &a, const CShowInfo &b)
 
 void CShowEngine::LoadShowsL(TBool aUseBackup)
 	{
-	RDebug::Print(_L("CShowEngine::LoadShowsL\tLoad shows from database file"));
+	DP("CShowEngine::LoadShowsL\tLoad shows from database file");
 	TFileName path;
 	TParse	filestorename;
 	
@@ -382,7 +383,7 @@ void CShowEngine::LoadShowsL(TBool aUseBackup)
 
 	if (!BaflUtils::FileExists(iFs, privatePath)) 
 		{
-		RDebug::Print(_L("The show database does not exist"));	
+		DP("The show database does not exist");	
 		User::Leave(KErrNotFound);
 		}
 	
@@ -400,12 +401,12 @@ void CShowEngine::LoadShowsL(TBool aUseBackup)
 
 	
 	TInt version = instream.ReadInt32L();
-	RDebug::Print(_L("CShowEngine::LoadShowsL\tVersion of database file = %d"), version);
+	DP1("CShowEngine::LoadShowsL\tVersion of database file = %d", version);
 
 	
 	if (version != KShowInfoVersion) 
 		{
-		RDebug::Print(_L("CShowEngine::LoadShowsL\tWrong version, discarding"));
+		DP("CShowEngine::LoadShowsL\tWrong version, discarding");
 		User::Leave(KErrGeneral);
 		return;
 		}
@@ -413,7 +414,7 @@ void CShowEngine::LoadShowsL(TBool aUseBackup)
 	CShowInfo *readData;
 	//TUint lastUid = 0;
 	TInt count = instream.ReadInt32L();
-	RDebug::Print(_L("CShowEngine::LoadShowsL\t%d Shows present in database"), count);
+	DP1("CShowEngine::LoadShowsL\t%d Shows present in database", count);
 		
 	for (TInt i=0 ; i < count ; i++) 
 		{
@@ -446,7 +447,7 @@ void CShowEngine::SaveShows()
 
 void CShowEngine::SaveShowsL()
 	{
-	RDebug::Print(_L("void CShowEngine::SaveShows\tAttempt to store shows to db."));
+	DP("void CShowEngine::SaveShows\tAttempt to store shows to db.");
 	
 	TParse	filestorename;
 
@@ -455,14 +456,14 @@ void CShowEngine::SaveShowsL()
 	BaflUtils::EnsurePathExistsL(iFs, privatePath);
 	privatePath.Append(KShowDB);
 	
-	RDebug::Print(_L("Saving backup..."));
+	DP("Saving backup...");
 	TFileName backupFile;
 	backupFile.Copy(privatePath);
 	backupFile.Append(_L(".old"));
 	BaflUtils::CopyFile(iFs,privatePath,backupFile);
 
 	
-	//RDebug::Print(_L("File: %S"), &privatePath);
+	//DP1("File: %S", &privatePath);
 	iFs.Parse(privatePath, filestorename);
 	CFileStore* store = CDirectFileStore::ReplaceLC(iFs, filestorename.FullName(), EFileWrite);
 	store->SetTypeL(KDirectFileStoreLayoutUid);
@@ -473,7 +474,7 @@ void CShowEngine::SaveShowsL()
 	outstream.WriteInt32L(KShowInfoVersion);
 	
 	const TInt numberOfShows = iShows.Count();
-	RDebug::Print(_L("CShowEngine::SaveShows\tDatabase has %d shows entries"), numberOfShows);
+	DP1("CShowEngine::SaveShows\tDatabase has %d shows entries", numberOfShows);
 	
 	//We need to purge the array for entries that should not be saved.
 	RShowInfoArray tempArray;
@@ -489,8 +490,8 @@ void CShowEngine::SaveShowsL()
 		}
 	
 	const TInt countTempArray = tempArray.Count();
-	RDebug::Print(_L("CShowEngine::SaveShows\tDatabase has %d entries marked for delete"), numberOfShows - countTempArray);	
-	RDebug::Print(_L("CShowEngine::SaveShows\tSaving %d show entries"), countTempArray);
+	DP1("CShowEngine::SaveShows\tDatabase has %d entries marked for delete", numberOfShows - countTempArray);	
+	DP1("CShowEngine::SaveShows\tSaving %d show entries", countTempArray);
 	
 	outstream.WriteInt32L(countTempArray);
 	for (TInt i=0 ; i < countTempArray ; i++) 
@@ -522,17 +523,17 @@ TInt CShowEngine::CompareShowsByDate(const CShowInfo &a, const CShowInfo &b)
 	{
 	if (a.PubDate() > b.PubDate()) 
 		{
-//		RDebug::Print(_L("Sorting %S less than %S"), &a.iTitle, &b.iTitle);
+//		DP2("Sorting %S less than %S", &a.iTitle, &b.iTitle);
 		return -1;
 		} 
 	else if (a.PubDate() == b.PubDate()) 
 		{
-//		RDebug::Print(_L("Sorting %S equal to %S"), &a.iTitle, &b.iTitle);
+//		DP2("Sorting %S equal to %S", &a.iTitle, &b.iTitle);
 		return 0;
 		}
 	else 
 		{
-//		RDebug::Print(_L("Sorting %S greater than %S"), &a.iTitle, &b.iTitle);
+//		DP2("Sorting %S greater than %S", &a.iTitle, &b.iTitle);
 		return 1;
 		}
 	}
@@ -557,17 +558,17 @@ TInt CShowEngine::CompareShowsByTitle(const CShowInfo &a, const CShowInfo &b)
 	{
 	if (a.Title() < b.Title()) 
 		{
-//		RDebug::Print(_L("Sorting %S less than %S"), &a.iTitle, &b.iTitle);
+//		DP2("Sorting %S less than %S", &a.iTitle, &b.iTitle);
 		return -1;
 		} 
 	else if (a.Title() == b.Title()) 
 		{
-//		RDebug::Print(_L("Sorting %S equal to %S"), &a.iTitle, &b.iTitle);
+//		DP2("Sorting %S equal to %S", &a.iTitle, &b.iTitle);
 		return 0;
 		}
 	else 
 		{
-//		RDebug::Print(_L("Sorting %S greater than %S"), &a.iTitle, &b.iTitle);
+//		DP2("Sorting %S greater than %S", &a.iTitle, &b.iTitle);
 		return 1;
 		}
 	}
@@ -640,7 +641,7 @@ TUint CShowEngine::GetGrossSelectionLength()
 
 void CShowEngine::SelectShowsByFeed(TUint aFeedUid)
 	{
-	RDebug::Print(_L("SelectShowsByFeed: %u, unplayed only=%d"), aFeedUid, iPodcastModel.SettingsEngine().SelectUnplayedOnly());
+	DP2("SelectShowsByFeed: %u, unplayed only=%d", aFeedUid, iPodcastModel.SettingsEngine().SelectUnplayedOnly());
 	iSelectedShows.Reset();
 	iGrossSelectionLength = 0;
 	for (TInt i=0;i<iShows.Count();i++)
@@ -670,7 +671,7 @@ void CShowEngine::SelectShowsByFeed(TUint aFeedUid)
 		// now purge if more than limit
 		TInt count = iSelectedShows.Count();
 		while (count > iPodcastModel.SettingsEngine().MaxListItems()) {
-			RDebug::Print(_L("Too many items, Removing"));
+			DP("Too many items, Removing");
 			//delete iSelectedShows[count-1];
 			iSelectedShows[count-1]->SetDelete();
 			iSelectedShows[count-1]->SetPlayState(EPlayed);
@@ -787,8 +788,8 @@ void CShowEngine::DownloadNextShow()
 	{
 	// Check if we have anything in the download queue
 	const TInt count = iShowsDownloading.Count();
-	RDebug::Print(_L("CShowEngine::DownloadNextShow\tTrying to start new download"));
-	RDebug::Print(_L("CShowEngine::DownloadNextShow\tShows in download queue %d"), count);
+	DP("CShowEngine::DownloadNextShow\tTrying to start new download");
+	DP1("CShowEngine::DownloadNextShow\tShows in download queue %d", count);
 	
 	// Inform the observers
 	NotifyDownloadQueueUpdated();
@@ -797,12 +798,12 @@ void CShowEngine::DownloadNextShow()
 		{
 		if (iDownloadsSuspended)
 			{
-			RDebug::Print(_L("CShowEngine::DownloadNextShow\tDownload process is suspended, ABORTING"));
+			DP("CShowEngine::DownloadNextShow\tDownload process is suspended, ABORTING");
 			return;
 			}
 		else if (iShowClient->IsActive())
 			{
-			RDebug::Print(_L("CShowEngine::DownloadNextShow\tDownload process is already active."));
+			DP("CShowEngine::DownloadNextShow\tDownload process is already active.");
 			return;
 			}
 		else
@@ -810,7 +811,7 @@ void CShowEngine::DownloadNextShow()
 			
 			// Start the download
 			CShowInfo *info = iShowsDownloading[0];
-			RDebug::Print(_L("CShowEngine::DownloadNextShow\tDownloading: %S"), &(info->Title()));
+			DP1("CShowEngine::DownloadNextShow\tDownloading: %S", &(info->Title()));
 			info->SetDownloadState(EDownloading);
 			iShowDownloading = info;
 			TRAPD(error,GetShowL(info));
@@ -822,7 +823,7 @@ void CShowEngine::DownloadNextShow()
 	else
 		{
 		iShowDownloading = NULL;
-		RDebug::Print(_L("CShowEngine::DownloadNextShow\tNothing to download"));
+		DP("CShowEngine::DownloadNextShow\tNothing to download");
 		}
 	}
 
@@ -855,11 +856,11 @@ void CShowEngine::NotifyShowListUpdated()
 
 void CShowEngine::SetSelectionPlayed()
 	{
-	RDebug::Print(_L("CShowEngine::SetSelectionPlayed"));
+	DP("CShowEngine::SetSelectionPlayed");
 	const TInt count = iSelectedShows.Count();
 	for (TInt i=0 ; i < count ; i++)
 		{
-		//RDebug::Print(_L("Setting %d played"), iSelectedShows[i]->Uid());
+		//DP1("Setting %d played", iSelectedShows[i]->Uid());
 		iSelectedShows[i]->SetPlayState(EPlayed);
 		}
 	SaveShows();
@@ -868,7 +869,7 @@ void CShowEngine::SetSelectionPlayed()
 
 void CShowEngine::ListDirL(TFileName &folder) {
 	CDirScan *dirScan = CDirScan::NewLC(iFs);
-	//RDebug::Print(_L("Listing dir: %S"), &folder);
+	//DP1("Listing dir: %S", &folder);
 	dirScan ->SetScanDataL(folder, KEntryAttDir, ESortByName);
 	
 	CDir *dirPtr;
@@ -893,7 +894,7 @@ void CShowEngine::ListDirL(TFileName &folder) {
 			// decide what kind of file this is
 			TBuf<100> mimeType;
 			iMediaFileFolderUtils->GetMimeType(pathName, mimeType);
-			RDebug::Print(_L("'%S' has mime: '%S'"), &pathName, &mimeType);
+			DP2("'%S' has mime: '%S'", &pathName, &mimeType);
 #ifdef __WINS__
 			if(mimeType.Length() == 0)
 			{
@@ -913,7 +914,7 @@ void CShowEngine::ListDirL(TFileName &folder) {
 			TBool exists = EFalse;
 			for (TInt i=0;i<iShows.Count();i++) {
 				if (iShows[i]->FileName().Compare(pathName) == 0) {
-					RDebug::Print(_L("Already listed %S"), &pathName);
+					DP1("Already listed %S", &pathName);
 					exists = ETrue;
 					break;
 				}
@@ -923,7 +924,7 @@ void CShowEngine::ListDirL(TFileName &folder) {
 				continue;
 			}
 			
-			//RDebug::Print(_L("We found a new file: %S"), &fileName);
+			//DP1("We found a new file: %S", &fileName);
 			
 			CShowInfo *info = CShowInfo::NewL();
 			info->SetFileNameL(pathName);
@@ -952,7 +953,7 @@ void CShowEngine::CheckFilesL()
 	for (TInt i=0;i<iShows.Count();i++) {
 		if(iShows[i]->DownloadState() == EDownloaded) {
 			if(!BaflUtils::FileExists(iFs, iShows[i]->FileName())) {
-				RDebug::Print(_L("%S was removed, delisting"), &iShows[i]->FileName());
+				DP1("%S was removed, delisting", &iShows[i]->FileName());
 				if (iShows[i]->FeedUid() == 0) {
 					iShows[i]->SetDelete();
 				} 
@@ -969,7 +970,7 @@ void CShowEngine::CheckFilesL()
 
 void CShowEngine::ReadMetaData(CShowInfo *aShowInfo)
 	{
-	RDebug::Print(_L("Read %S"), &(aShowInfo->Title()));
+	DP1("Read %S", &(aShowInfo->Title()));
 	}
 
 void CShowEngine::ReadMetaDataComplete()

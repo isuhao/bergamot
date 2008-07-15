@@ -31,7 +31,7 @@ void CFeedEngine::ConstructL()
     TRAPD(err, LoadFeedsL());
     
     if (err != KErrNone) {
-    	RDebug::Print(_L("Error, loading feed DB backup"));
+    	DP("Error, loading feed DB backup");
 		TRAP(err, LoadFeedsL(ETrue));
     	
     	if (err == KErrNone) {
@@ -52,7 +52,7 @@ void CFeedEngine::ConstructL()
     TRAP(err, LoadBooksL());
     
     if (err != KErrNone) {
-		RDebug::Print(_L("Error, loading book DB backup"));
+		DP("Error, loading book DB backup");
 		TRAP(err,LoadBooksL(ETrue));
     	
     	if (err == KErrNone) {
@@ -124,7 +124,7 @@ void CFeedEngine::RunFeedTimer()
 void CFeedEngine::UpdateAllFeedsL()
 	{
 	if (iFeedsUpdating.Count() > 0) {
-		RDebug::Print(_L("Cancelling update"));
+		DP("Cancelling update");
 		iFeedClient->Stop();
 		iFeedsUpdating.Reset();
 		return;
@@ -150,16 +150,16 @@ void CFeedEngine::CancelUpdateAllFeedsL()
 void CFeedEngine::UpdateNextFeedL()
 	{
 
-	RDebug::Print(_L("UpdateNextFeed. %d feeds left to update"), iFeedsUpdating.Count());
+	DP1("UpdateNextFeed. %d feeds left to update", iFeedsUpdating.Count());
 	if (iFeedsUpdating.Count() > 0) {
 		CFeedInfo *info = iFeedsUpdating[0];
 		iFeedsUpdating.Remove(0);
 		TBool result = EFalse;
-		//RDebug::Print(_L("** UpdateNextFeed: %S, ID: %u"), &(info->Url()), info->Uid());
+		//DP2("** UpdateNextFeed: %S, ID: %u", &(info->Url()), info->Uid());
 		TRAPD(error, result = UpdateFeedL(info->Uid()));
 		
 		if (error != KErrNone || !result) {
-			RDebug::Print(_L("Error while updating all feeds"));
+			DP("Error while updating all feeds");
 			for (TInt i=0;i<iObservers.Count();i++) 
 				{
 				TRAP_IGNORE(iObservers[i]->FeedUpdateAllCompleteL());
@@ -194,7 +194,7 @@ TBool CFeedEngine::UpdateFeedL(TUint aFeedUid)
 		for (TInt i=0;i<iObservers.Count();i++) {
 			TRAP_IGNORE(iObservers[i]->FeedDownloadUpdatedL(iActiveFeed->Uid(), 0));
 		}
-		RDebug::Print(_L("Update done"));
+		DP("Update done");
 		return ETrue;
 	}
 	else
@@ -206,13 +206,13 @@ TBool CFeedEngine::UpdateFeedL(TUint aFeedUid)
 
 TBool CFeedEngine::NewShow(CShowInfo *item)
 	{
-	//RDebug::Print(_L("\nTitle: %S\nURL: %S\nDescription length: %d\nFeed: %d"), &(item->Title()), &(item->Url()), item->Description().Length(), item->FeedUid());
+	//DP4("\nTitle: %S\nURL: %S\nDescription length: %d\nFeed: %d", &(item->Title()), &(item->Url()), item->Description().Length(), item->FeedUid());
 	TBuf<2048> description;
 	description.Copy(item->Description());
 	CleanHtml(description);
-	//RDebug::Print(_L("New show has feed ID: %u"), item->FeedUid());
+	//DP1("New show has feed ID: %u") item->FeedUid());
 	TRAP_IGNORE(item->SetDescriptionL(description));
-	//RDebug::Print(_L("Description: %S"), &description);
+	//DP1("Description: %S", &description);
 
 	if (iCatchupMode) {
 		item->SetPlayState(EPlayed);
@@ -230,7 +230,7 @@ TBool CFeedEngine::NewShow(CShowInfo *item)
 
 void CFeedEngine::GetFeedImageL(CFeedInfo *aFeedInfo)
 	{
-	RDebug::Print(_L("GetFeedImage"));
+	DP("GetFeedImage");
 
 	TFileName filePath;
 	filePath.Copy(iPodcastModel.SettingsEngine().BaseDir());
@@ -272,7 +272,7 @@ void CFeedEngine::FileNameFromUrl(const TDesC& aUrl, TFileName &aFileName)
 			aFileName.Copy(str);
 			}
 		}
-	RDebug::Print(_L("FileNameFromUrl in: %S, out: %S"), &aUrl, &aFileName);
+	DP2("FileNameFromUrl in: %S, out: %S", &aUrl, &aFileName);
 	}
 
 void CFeedEngine::EnsureProperPathName(TFileName &aPath)
@@ -315,12 +315,12 @@ void CFeedEngine::ReplaceString(TDes & aString, const TDesC& aStringToReplace,
 
 TBool CFeedEngine::AddFeed(CFeedInfo *aItem) 
 	{
-	RDebug::Print(_L("CFeedEngine::AddFeed, title=%S, URL=%S"), &aItem->Title(), &aItem->Url());
+	DP2("CFeedEngine::AddFeed, title=%S, URL=%S", &aItem->Title(), &aItem->Url());
 	for (TInt i=0;i<iSortedFeeds.Count();i++) 
 		{
 		if (iSortedFeeds[i]->Uid() == aItem->Uid()) 
 			{
-			RDebug::Print(_L("Already have feed %S, discarding"), &aItem->Url());
+			DP1("Already have feed %S, discarding", &aItem->Url());
 			delete aItem;
 			aItem = NULL;
 			return EFalse;
@@ -361,7 +361,7 @@ void CFeedEngine::RemoveFeed(TUint aUid)
 			iSortedFeeds.Remove(i);
 			delete feedToRemove;
 			
-			RDebug::Print(_L("Removed feed"));
+			DP("Removed feed");
 			SaveFeeds();
 			return;
 		}
@@ -426,7 +426,7 @@ void CFeedEngine::Progress(CHttpClient* /*aHttpClient*/, TInt aBytes, TInt aTota
 
 void CFeedEngine::CompleteL(CHttpClient* /*aClient*/, TBool aSuccessful)
 	{
-	RDebug::Print(_L("Complete, aSuccessful=%d"), aSuccessful);
+	DP1("Complete, aSuccessful=%d", aSuccessful);
 	if (iClientState == EUpdatingFeed) 
 		{
 		// Parse the feed. We need to trap this call since it could leave and then
@@ -435,7 +435,7 @@ void CFeedEngine::CompleteL(CHttpClient* /*aClient*/, TBool aSuccessful)
 		if(parserErr)
 			{
 			// we do not need to any special action on this error.
-			RDebug::Print(_L("CFeedEngine::Complete()\t Failed to parse feed. Leave with error code=%d"), parserErr);
+			DP1("CFeedEngine::Complete()\t Failed to parse feed. Leave with error code=%d", parserErr);
 			}
 			
 		// delete the downloaded XML file as it is no longer needed
@@ -496,7 +496,7 @@ void CFeedEngine::Disconnected(CHttpClient* /*aClient*/)
 
 void CFeedEngine::DownloadInfo(CHttpClient* /*aHttpClient */, int /*aTotalBytes*/)
 	{	
-	/*RDebug::Print(_L("About to download %d bytes"), aTotalBytes);
+	/*DP1("About to download %d bytes", aTotalBytes);
 	if(aHttpClient == iShowClient && iShowDownloading != NULL && aTotalBytes != -1) {
 		iShowDownloading->iShowSize = aTotalBytes;
 		}*/
@@ -511,6 +511,43 @@ void CFeedEngine::ImportFeedsL(const TDesC& aFile)
 	opmlParser.ParseOpmlL(opmlPath);
 	}
 
+void CFeedEngine::ImportBookL(const TDesC& aTitle, const TDesC& aFile)
+	{
+	User::InfoPrint(_L("Importing book."));
+	CDesCArrayFlat *files = new (ELeave) CDesCArrayFlat(5);
+	CleanupStack::PushL(files);
+	
+	RFile rfile;
+	TInt error = rfile.Open(iFs, aFile,  EFileRead);
+	if (error != KErrNone) 
+		{
+		rfile.Close();
+		DP("CFeedEngine::ImportBookL\tFailed to read M3U");
+		User::Leave(KErrNotFound);
+		}
+	
+	TFileText tft;
+	tft.Set(rfile);
+	
+	TBuf<1024> line;
+	error = tft.Read(line);
+	
+	while (error == KErrNone) 
+		{
+		if (line.Locate('#') == 0) 
+			{
+			error = tft.Read(line);
+			continue;
+			}
+		
+		files->AppendL(line);
+		error = tft.Read(line);
+		}
+	rfile.Close();
+	AddBookL(aTitle, files);
+	CleanupStack::PopAndDestroy(files);
+	}
+
 TBool CFeedEngine::ExportFeedsL(TFileName& aFile)
 	{
 	RFile rfile;
@@ -519,7 +556,7 @@ TBool CFeedEngine::ExportFeedsL(TFileName& aFile)
 	TInt error = rfile.Temp(iFs, privatePath, aFile, EFileWrite);
 	if (error != KErrNone) 
 		{
-		RDebug::Print(_L("CFeedEngine::ExportFeedsL()\tFailed to open file"));
+		DP("CFeedEngine::ExportFeedsL()\tFailed to open file");
 		return EFalse;
 		}
 	
@@ -551,7 +588,7 @@ TBool CFeedEngine::ExportFeedsL(TFileName& aFile)
 	
 void CFeedEngine::LoadFeedsL(TBool aUseBackup)
 	{
-	RDebug::Print(_L("LoadFeedsL"));
+	DP("LoadFeedsL");
 	TFileName path;
 	TParse	filestorename;
 	
@@ -567,7 +604,7 @@ void CFeedEngine::LoadFeedsL(TBool aUseBackup)
 	iFs.Parse(privatePath, filestorename);
 
 	if (!BaflUtils::FileExists(iFs, privatePath)) {
-		RDebug::Print(_L("No feed DB file"));	
+		DP("No feed DB file");	
 		User::Leave(KErrNotFound);
 	}
 	
@@ -576,7 +613,7 @@ void CFeedEngine::LoadFeedsL(TBool aUseBackup)
 	CleanupStack::PushL(store);
 	
 	if (error != KErrNone) {
-		RDebug::Print(_L("error=%d"), error);
+		DP1("error=%d", error);
 		CleanupStack::Pop(store);
 		User::Leave(error);
 	}
@@ -585,22 +622,22 @@ void CFeedEngine::LoadFeedsL(TBool aUseBackup)
 	instream.OpenLC(*store, store->Root());
 
 	TInt version = instream.ReadInt32L();
-	RDebug::Print(_L("Read version: %d"), version);
+	DP1("Read version: %d", version);
 
 	//if (version != KFeedInfoVersion) {
-	//	RDebug::Print(_L("Wrong version, discarding"));
+	//	DP("Wrong version, discarding"));
 	//	CleanupStack::PopAndDestroy(2); // instream and store
 	//	return EFalse;
 	//}
 	
 	TInt count = instream.ReadInt32L();
-	RDebug::Print(_L("Read count: %d"), count);
+	DP1("Read count: %d", count);
 	CFeedInfo *readData;
 	TLinearOrder<CFeedInfo> sortOrder( CFeedEngine::CompareFeedsByTitle);
 	for (TInt i=0;i<count;i++) {
 		readData = CFeedInfo::NewL(version);
 		TRAP(error, instream  >> *readData);
-		//RDebug::Print(_L("error: %d"), error);
+		//DP1("error: %d", error);
 		iSortedFeeds.InsertInOrder(readData, sortOrder);
 	}
 	CleanupStack::PopAndDestroy(2); // instream and store
@@ -613,7 +650,7 @@ void CFeedEngine::SaveFeeds()
 
 void CFeedEngine::SaveFeedsL()
 	{
-	RDebug::Print(_L("SaveFeeds"));
+	DP("SaveFeeds");
 	TFileName path;
 	TParse	filestorename;
 
@@ -622,9 +659,9 @@ void CFeedEngine::SaveFeedsL()
 	BaflUtils::EnsurePathExistsL(iFs, privatePath);
 	privatePath.Append(KFeedDB);
 	
-	RDebug::Print(_L("File: %S"), &privatePath);
+	DP1("File: %S", &privatePath);
 	iFs.Parse(privatePath, filestorename);
-	RDebug::Print(_L("Saving backup..."));
+	DP("Saving backup...");
 	TFileName backupFile;
 	backupFile.Copy(filestorename.FullName());
 	backupFile.Append(_L(".old"));
@@ -636,10 +673,10 @@ void CFeedEngine::SaveFeedsL()
 	RStoreWriteStream outstream;
 	TStreamId id = outstream.CreateLC(*store);
 	outstream.WriteInt32L(KFeedInfoVersion);
-	RDebug::Print(_L("Saving %d feeds"), iSortedFeeds.Count());
+	DP1("Saving %d feeds", iSortedFeeds.Count());
 	outstream.WriteInt32L(iSortedFeeds.Count());
 	for (TInt i=0;i<iSortedFeeds.Count();i++) {
-//		RDebug::Print(_L("Storing feed %i"), i);
+//		DP1("Storing feed %i", i);
 		outstream  << *iSortedFeeds[i];
 	}
 	
@@ -742,7 +779,7 @@ void CFeedEngine::AddBookL(const TDesC& aBookTitle, CDesCArrayFlat* aFileNameArr
 			{
 			if (iSortedBooks[i]->Uid() == item->Uid()) 
 				{
-				RDebug::Print(_L("Already have book %S, discarding"), &item->Url());
+				DP1("Already have book %S, discarding", &item->Url());
 				CleanupStack::PopAndDestroy(item);
 				return;
 				}
@@ -808,7 +845,7 @@ void CFeedEngine::LoadBooksL(TBool aUseBackup)
 	iFs.Parse(privatePath, filestorename);
 
 	if (!BaflUtils::FileExists(iFs, privatePath)) {
-		RDebug::Print(_L("No books DB file"));	
+		DP("No books DB file");	
 		User::Leave(KErrNotFound);
 	}
 	
@@ -888,13 +925,13 @@ void CFeedEngine::CleanHtml(TDes &str)
 {
 	ReplaceString(str, _L("\n"), _L(""));
 
-//	RDebug::Print(_L("CleanHtml %d, %S"), str.Length(), &str);
+//	DP2("CleanHtml %d, %S", str.Length(), &str);
 	TInt startPos = str.Locate('<');
 	TInt endPos = str.Locate('>');
-	//RDebug::Print(_L("length: %d, startPos: %d, endPos: %d"), str.Length(), startPos, endPos);
+	//DP3("length: %d, startPos: %d, endPos: %d", str.Length(), startPos, endPos);
 	TBuf<2048> tmp;
 	while (startPos != KErrNotFound && endPos != KErrNotFound && endPos > startPos) {
-		//RDebug::Print(_L("Cleaning out %S"), &str.Mid(startPos, endPos-startPos+1));
+		//DP1("Cleaning out %S", &str.Mid(startPos, endPos-startPos+1));
 		tmp.Copy(str.Left(startPos));
 		TPtrC ptr=str.Mid(startPos, endPos-startPos+1);
 		if (ptr.CompareF(_L("<br>"))== 0) {
@@ -928,7 +965,7 @@ void CFeedEngine::CleanHtml(TDes &str)
 
 TInt CFeedEngine::CompareFeedsByTitle(const CFeedInfo &a, const CFeedInfo &b)
 	{
-		//RDebug::Print(_L("Comparing %S to %S"), &a.Title(), &b.Title());
+		//DP2("Comparing %S to %S", &a.Title(), &b.Title());
 		return a.Title().CompareF(b.Title());
 	}
 

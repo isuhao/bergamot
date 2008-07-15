@@ -123,6 +123,13 @@ RESOURCE QIK_COMMAND_LIST r_podcast_feedview_commands
 			type = EQikCommandTypeScreen;
 			text = STRING_r_view_new_audiobook_cmd;
 			},
+	QIK_COMMAND	
+			{
+			groupId = 5;
+			id = EPodcastImportAudioBook;
+			type = EQikCommandTypeScreen;
+			text = STRING_r_view_import_audiobook_cmd;
+			},
 	QIK_COMMAND
 			{
 			groupId = 5;

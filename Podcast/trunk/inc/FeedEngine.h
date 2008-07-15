@@ -44,6 +44,7 @@ public:
 	void AddBookChaptersL(CFeedInfo& aFeedInfo, CDesCArrayFlat* aFileNameArray);
 	void RemoveBookL(TUint aUid);
 	const RFeedInfoArray& GetSortedBooks() const;
+	void ImportBookL(const TDesC& aTitle, const TDesC& aFile);
 
 
 	void AddObserver(MFeedEngineObserver *observer);

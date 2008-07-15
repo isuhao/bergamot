@@ -1,4 +1,5 @@
 #include "OpmlParser.h"
+#include "debug.h"
 #include <f32file.h>
 #include <bautils.h>
 #include <s32file.h>
@@ -18,7 +19,7 @@ COpmlParser::~COpmlParser()
 
 void COpmlParser::ParseOpmlL(const TFileName &feedFileName)
 	{
-	RDebug::Print(_L("ParseOpmlL BEGIN: %S"), &feedFileName);
+	DP1("ParseOpmlL BEGIN: %S", &feedFileName);
 	RFs rfs;
 	rfs.Connect();
 	CleanupClosePushL(rfs);
@@ -33,36 +34,36 @@ void COpmlParser::ParseOpmlL(const TFileName &feedFileName)
 
 	CleanupStack::PopAndDestroy(parser);
 	CleanupStack::PopAndDestroy(&rfs); // this makes sure the file was closed
-	//RDebug::Print(_L("ParseFeedL END"));
+	//DP("ParseFeedL END");
 	}
 
 // from MContentHandler
 void COpmlParser::OnStartDocumentL(const RDocumentParameters& aDocParam, TInt /*aErrorCode*/)
 	{
-	RDebug::Print(_L("OnStartDocumentL()"));
+	DP("OnStartDocumentL()");
 	TBuf<1024> charset;
 	charset.Copy(aDocParam.CharacterSetName().DesC());
 	iEncoding = EUtf8;
 	if (charset.CompareF(_L("utf-8")) == 0) {
-		RDebug::Print(_L("setting UTF8"));
+		DP("setting UTF8");
 		iEncoding = EUtf8;
 	} else if (charset.CompareF(_L("ISO-8859-1")) == 0) {
 		iEncoding = EUtf8; //Latin1;
 	} else {
-		RDebug::Print(_L("unknown charset: %S"), &charset);
+		DP1("unknown charset: %S", &charset);
 	}
 	}
 
 void COpmlParser::OnEndDocumentL(TInt /*aErrorCode*/)
 	{
-	//RDebug::Print(_L("OnEndDocumentL()"));
+	//DP("OnEndDocumentL()");
 	}
 
 void COpmlParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArray& aAttributes, TInt /*aErrorCode*/)
 	{
 	TBuf<100> str;
 	str.Copy(aElement.LocalName().DesC());
-	RDebug::Print(_L("OnStartElementL START state=%d, element=%S"), iOpmlState, &str);
+	DP2("OnStartElementL START state=%d, element=%S", iOpmlState, &str);
 	iBuffer.Zero();
 	switch (iOpmlState) {
 	case EStateOpmlRoot:
@@ -74,7 +75,7 @@ void COpmlParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 	case EStateOpmlBody:
 		// <body> <outline>
 		if(str.CompareF(KTagOutline) == 0) {
-			//RDebug::Print(_L("New item"));
+			//DP("New item");
 			iOpmlState=EStateOpmlOutline;
 			CFeedInfo* newFeed = CFeedInfo::NewL();
 			
@@ -111,10 +112,10 @@ void COpmlParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 		}
 		break;
 	default:
-		//RDebug::Print(_L("Ignoring tag %S when in state %d"), &str, iFeedState);
+		//DP2("Ignoring tag %S when in state %d", &str, iFeedState);
 		break;
 	}
-//	RDebug::Print(_L("OnStartElementL END state=%d"), iFeedState);
+//	DP1("OnStartElementL END state=%d", iFeedState);
 	}
 
 void COpmlParser::OnEndElementL(const RTagInfo& aElement, TInt /*aErrorCode*/)
@@ -124,7 +125,7 @@ void COpmlParser::OnEndElementL(const RTagInfo& aElement, TInt /*aErrorCode*/)
 	TBuf<100> str;
 	str.Copy(aElement.LocalName().DesC());
 
-	//RDebug::Print(_L("OnEndElementL START state=%d, element=%S"), iFeedState, &str);
+	//DP("OnEndElementL START state=%d, element=%S"), iFeedState, &str);
 
 	switch (iOpmlState) {
 		case EStateOpmlOutline:
@@ -136,50 +137,50 @@ void COpmlParser::OnEndElementL(const RTagInfo& aElement, TInt /*aErrorCode*/)
 		default:
 			// fall back to body level when in doubt
 			iOpmlState = EStateOpmlBody;
-			//RDebug::Print(_L("Don't know how to handle end tag %S when in state %d"), &str, iFeedState);
+			//DP("Don't know how to handle end tag %S when in state %d"), &str, iFeedState);
 			break;
 	}
 
-	//RDebug::Print(_L("OnEndElementL END state=%d"), iFeedState);	
+	//DP("OnEndElementL END state=%d"), iFeedState);	
 	}
 
 void COpmlParser::OnContentL(const TDesC8& /*aBytes*/, TInt /*aErrorCode*/)
 	{
-	RDebug::Print(_L("OnContentL()"));
+	DP("OnContentL()");
 	}
 
 void COpmlParser::OnStartPrefixMappingL(const RString& /*aPrefix*/, const RString& /*aUri*/, TInt /*aErrorCode*/)
 	{
-	RDebug::Print(_L("OnStartPrefixMappingL()"));
+	DP("OnStartPrefixMappingL()");
 	}
 
 void COpmlParser::OnEndPrefixMappingL(const RString& /*aPrefix*/, TInt /*aErrorCode*/)
 	{
-	RDebug::Print(_L("OnEndPrefixMappingL()"));
+	DP("OnEndPrefixMappingL()");
 	}
 
 void COpmlParser::OnIgnorableWhiteSpaceL(const TDesC8& /*aBytes*/, TInt /*aErrorCode*/)
 	{
-	RDebug::Print(_L("OnIgnorableWhiteSpaceL()"));
+	DP("OnIgnorableWhiteSpaceL()");
 	}
 
 void COpmlParser::OnSkippedEntityL(const RString& /*aName*/, TInt /*aErrorCode*/)
 	{
-	RDebug::Print(_L("OnSkippedEntityL()"));
+	DP("OnSkippedEntityL()");
 	}
 
 void COpmlParser::OnProcessingInstructionL(const TDesC8& /*aTarget*/, const TDesC8& /*aData*/, TInt /*aErrorCode*/)
 	{
-	RDebug::Print(_L("OnProcessingInstructionL()"));
+	DP("OnProcessingInstructionL()");
 	}
 
 void COpmlParser::OnError(TInt aErrorCode)
 	{
-	RDebug::Print(_L("COpmlParser::OnError %d"), aErrorCode);
+	DP1("COpmlParser::OnError %d", aErrorCode);
 	}
 
 TAny* COpmlParser::GetExtendedInterface(const TInt32 /*aUid*/)
 	{
-	RDebug::Print(_L("GetExtendedInterface()"));
+	DP("GetExtendedInterface()");
 	return NULL;
 	}

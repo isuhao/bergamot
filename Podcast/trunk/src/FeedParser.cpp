@@ -6,6 +6,7 @@
 #include <xml/stringdictionarycollection.h>
 #include <utf.h>
 #include <tinternetdate.h>
+#include "debug.h"
 
 using namespace Xml;
 
@@ -19,7 +20,7 @@ CFeedParser::~CFeedParser()
 
 void CFeedParser::ParseFeedL(const TFileName &feedFileName, CFeedInfo *info, TUint aMaxItems)
 	{
-	//RDebug::Print(_L("ParseFeedL BEGIN: %S"), &feedFileName);
+	//DP1("ParseFeedL BEGIN: %S", &feedFileName);
 	RFs rfs;
 	rfs.Connect();
 	CleanupClosePushL(rfs);
@@ -40,29 +41,29 @@ void CFeedParser::ParseFeedL(const TFileName &feedFileName, CFeedInfo *info, TUi
 	CleanupStack::PopAndDestroy(parser);
 	CleanupStack::PopAndDestroy(&rfs); // this makes sure the file was closed
 	
-	//RDebug::Print(_L("ParseFeedL END"));
+	//DP("ParseFeedL END");
 	}
 
 // from MContentHandler
 void CFeedParser::OnStartDocumentL(const RDocumentParameters& aDocParam, TInt /*aErrorCode*/)
 	{
-	RDebug::Print(_L("OnStartDocumentL()"));
+	DP("OnStartDocumentL()");
 	TBuf<1024> charset;
 	charset.Copy(aDocParam.CharacterSetName().DesC());
 	iEncoding = EUtf8;
 	if (charset.CompareF(_L("utf-8")) == 0) {
-		RDebug::Print(_L("setting UTF8"));
+		DP("setting UTF8");
 		iEncoding = EUtf8;
 	} else if (charset.CompareF(_L("ISO-8859-1")) == 0) {
 		iEncoding = EUtf8; //Latin1;
 	} else {
-		RDebug::Print(_L("unknown charset: %S"), &charset);
+		DP1("unknown charset: %S", &charset);
 	}
 	}
 
 void CFeedParser::OnEndDocumentL(TInt /*aErrorCode*/)
 	{
-	//RDebug::Print(_L("OnEndDocumentL()"));
+	//DP("OnEndDocumentL()");
 	iCallbacks.ParsingComplete(iActiveFeed);
 	}
 
@@ -75,7 +76,7 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 	
 	TBuf<100> str;
 	str.Copy(aElement.LocalName().DesC());
-	//RDebug::Print(_L("OnStartElementL START state=%d, element=%S"), iFeedState, &str);
+	//DP2("OnStartElementL START state=%d, element=%S", iFeedState, &str);
 	iBuffer.Zero();
 	switch (iFeedState) {
 	case EStateRoot:
@@ -87,13 +88,13 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 	case EStateChannel:
 		// <channel> <item>
 		if(str.CompareF(KTagItem) == 0) {
-			//RDebug::Print(_L("New item"));
+			//DP("New item");
 			iFeedState=EStateItem;
 
 			iActiveShow = NULL;
 			iActiveShow = CShowInfo::NewL();
 			if (iActiveShow == NULL) {
-				RDebug::Print(_L("Out of memory!"));
+				DP("Out of memory!");
 				iStoppedParsing = ETrue;
 				return;
 			}
@@ -101,7 +102,7 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 
 		// <channel> <lastBuildDate>
 		} else if (str.CompareF(KTagLastBuildDate) == 0) {
-			RDebug::Print(_L("LastBuildDate BEGIN"));
+			DP("LastBuildDate BEGIN");
 			iFeedState=EStateChannelLastBuildDate;
 		// <channel> <link>
 		}else if (str.CompareF(KTagTitle) == 0) {
@@ -134,7 +135,7 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 			iFeedState=EStateItemLink;
 		// <channel> <item> <enclosure ...>
 		} else if (str.CompareF(KTagEnclosure) == 0) {
-			//RDebug::Print(_L("Enclosure START"));
+			//DP("Enclosure START");
 			for (int i=0;i<aAttributes.Count();i++) {
 				RAttribute attr = aAttributes[i];
 				TBuf<100> attr16;
@@ -157,15 +158,15 @@ void CFeedParser::OnStartElementL(const RTagInfo& aElement, const RAttributeArra
 			iFeedState=EStateItemDescription;
 		// <channel> <item> <pubdate>
 		} else if (str.CompareF(KTagPubDate) == 0) {
-			//RDebug::Print(_L("LastBuildDate BEGIN"));
+			//DP("LastBuildDate BEGIN");
 			iFeedState = EStateItemPubDate;
 		}
 		break;
 	default:
-		//RDebug::Print(_L("Ignoring tag %S when in state %d"), &str, iFeedState);
+		//DP2("Ignoring tag %S when in state %d", &str, iFeedState);
 		break;
 	}
-//	RDebug::Print(_L("OnStartElementL END state=%d"), iFeedState);
+//	DP1("OnStartElementL END state=%d", iFeedState);
 	}
 
 void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt /*aErrorCode*/)
@@ -181,7 +182,7 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt /*aErrorCode*/)
 	TBuf<100> str;
 	str.Copy(aElement.LocalName().DesC());
 
-	//RDebug::Print(_L("OnEndElementL START state=%d, element=%S"), iFeedState, &str);
+	//DP2("OnEndElementL START state=%d, element=%S", iFeedState, &str);
 
 	switch (iFeedState) {
 		case EStateChannelTitle:
@@ -202,7 +203,7 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt /*aErrorCode*/)
 			break;
 		case EStateChannelLastBuildDate:
 			{
-			//RDebug::Print(_L("LastBuildDate END"));
+			//DP("LastBuildDate END");
 			TInternetDate internetDate;
 			TBuf8<128> temp;
 			temp.Copy(iBuffer);
@@ -210,20 +211,20 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt /*aErrorCode*/)
 			TRAPD(parseError, internetDate.SetDateL(temp));
 			if(parseError == KErrNone) {				
 				if (TTime(internetDate.DateTime()) > iActiveFeed->BuildDate()) {
-					RDebug::Print(_L("Successfully parsed build date"));
+					DP("Successfully parsed build date");
 					iActiveFeed->SetBuildDate(TTime(internetDate.DateTime()));
 				} else {
-					RDebug::Print(_L("*** Nothing new, aborting parsing"));
+					DP("*** Nothing new, aborting parsing");
 					iStoppedParsing = ETrue;
 				}
 			} else {
-				RDebug::Print(_L("Failed to parse last build date"));
+				DP("Failed to parse last build date");
 			}
 			iFeedState = EStateChannel;
 			}
 			break;
 		case EStateChannelImageUrl:
-			//RDebug::Print(_L("Image url: %S"), &iBuffer);
+			//DP1("Image url: %S", &iBuffer);
 			iActiveFeed->SetImageUrlL(iBuffer);
 			iFeedState = EStateChannelImage;
 			break;
@@ -245,18 +246,18 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt /*aErrorCode*/)
 				iActiveShow = NULL;
 				
 				iItemsParsed++;
-				//RDebug::Print(_L("iItemsParsed: %d, iMaxItems: %d"), iItemsParsed, iMaxItems);
+				//DP2("iItemsParsed: %d, iMaxItems: %d", iItemsParsed, iMaxItems);
 				if (iItemsParsed > iMaxItems) 
 					{
 					iStoppedParsing = ETrue;
-					RDebug::Print(_L("*** Too many items, aborting parsing"));
+					DP("*** Too many items, aborting parsing");
 					}
 				
 				iFeedState=EStateChannel;
 				}
 			break;
 		case EStateItemPubDate:
-			RDebug::Print(_L("PubDate END: iBuffer='%S'"), &iBuffer);
+			DP1("PubDate END: iBuffer='%S'", &iBuffer);
 			if (str.CompareF(KTagPubDate) == 0) {
 				// hack for feeds that don't always write day as two digits
 				TChar five(iBuffer[5]);
@@ -279,13 +280,13 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt /*aErrorCode*/)
 					int spacePos = midPtr.Find(_L(" "));
 					
 					if (spacePos != KErrNotFound) {
-						//RDebug::Print(_L("Month: %S"), &midPtr.Left(spacePos));
+						//DP1("Month: %S", &midPtr.Left(spacePos));
 						
 						TBuf16<KBufferLength> newBuffer;
 						newBuffer.Copy(iBuffer.Left(11));
 						newBuffer.Append(_L(" "));
 						newBuffer.Append(iBuffer.Mid(11+spacePos));
-						//RDebug::Print(_L("newBuffer: %S"), &newBuffer);
+						//DP1("newBuffer: %S", &newBuffer);
 						iBuffer.Copy(newBuffer);
 					}
 				}
@@ -312,11 +313,11 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt /*aErrorCode*/)
 				TInternetDate internetDate;
 				TRAPD(parseError, internetDate.SetDateL(temp));
 				if(parseError == KErrNone) {				
-					//RDebug::Print(_L("PubDate parse success: '%S'"), &iBuffer);
+					//DP1("PubDate parse success: '%S'", &iBuffer);
 					iActiveShow->SetPubDate(TTime(internetDate.DateTime()));
 			
 					
-					RDebug::Print(_L("Successfully parsed pubdate %d/%d/%d %d:%d:%d"),
+					DP6("Successfully parsed pubdate %d/%d/%d %d:%d:%d",
 							iActiveShow->PubDate().DateTime().Year(),
 							iActiveShow->PubDate().DateTime().Month(),
 							iActiveShow->PubDate().DateTime().Day(),
@@ -325,13 +326,13 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt /*aErrorCode*/)
 							iActiveShow->PubDate().DateTime().Second());
 							
 				} else {
-					RDebug::Print(_L("Pubdate parse error: '%S', error=%d"), &iBuffer, parseError);
+					DP2("Pubdate parse error: '%S', error=%d", &iBuffer, parseError);
 				}
 			}
 			iFeedState=EStateItem;
 			break;
 		case EStateItemTitle:
-			//RDebug::Print(_L("title: %S"), &iBuffer);
+			//DP1("title: %S", &iBuffer);
 			iActiveShow->SetTitleL(iBuffer);
 			iFeedState = EStateItem;
 			break;
@@ -348,11 +349,11 @@ void CFeedParser::OnEndElementL(const RTagInfo& aElement, TInt /*aErrorCode*/)
 		default:
 			// fall back to channel level when in doubt
 			iFeedState = EStateChannel;
-			//RDebug::Print(_L("Don't know how to handle end tag %S when in state %d"), &str, iFeedState);
+			//DP2("Don't know how to handle end tag %S when in state %d", &str, iFeedState);
 			break;
 	}
 
-	//RDebug::Print(_L("OnEndElementL END state=%d"), iFeedState);	
+	//DP1("OnEndElementL END state=%d", iFeedState);	
 	}
 
 void CFeedParser::OnContentL(const TDesC8& aBytes, TInt /*aErrorCode*/)
@@ -371,37 +372,37 @@ void CFeedParser::OnContentL(const TDesC8& aBytes, TInt /*aErrorCode*/)
 
 void CFeedParser::OnStartPrefixMappingL(const RString& /*aPrefix*/, const RString& /*aUri*/, TInt /*aErrorCode*/)
 	{
-	RDebug::Print(_L("OnStartPrefixMappingL()"));
+	DP("OnStartPrefixMappingL()");
 	}
 
 void CFeedParser::OnEndPrefixMappingL(const RString& /*aPrefix*/, TInt /*aErrorCode*/)
 	{
-	RDebug::Print(_L("OnEndPrefixMappingL()"));
+	DP("OnEndPrefixMappingL()");
 	}
 
 void CFeedParser::OnIgnorableWhiteSpaceL(const TDesC8& /*aBytes*/, TInt /*aErrorCode*/)
 	{
-	RDebug::Print(_L("OnIgnorableWhiteSpaceL()"));
+	DP("OnIgnorableWhiteSpaceL()");
 	}
 
 void CFeedParser::OnSkippedEntityL(const RString& /*aName*/, TInt /*aErrorCode*/)
 	{
-	RDebug::Print(_L("OnSkippedEntityL()"));
+	DP("OnSkippedEntityL()");
 	}
 
 void CFeedParser::OnProcessingInstructionL(const TDesC8& /*aTarget*/, const TDesC8& /*aData*/, TInt /*aErrorCode*/)
 	{
-	RDebug::Print(_L("OnProcessingInstructionL()"));
+	DP("OnProcessingInstructionL()");
 	}
 
 void CFeedParser::OnError(TInt aErrorCode)
 	{
-	RDebug::Print(_L("CFeedParser::OnError %d"), aErrorCode);
+	DP1("CFeedParser::OnError %d", aErrorCode);
 	}
 
 TAny* CFeedParser::GetExtendedInterface(const TInt32 /*aUid*/)
 	{
-	RDebug::Print(_L("GetExtendedInterface()"));
+	DP("GetExtendedInterface()");
 	return NULL;
 	}
 

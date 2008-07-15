@@ -387,7 +387,7 @@ void CPodcastClientShowsView::UpdateFeedUpdateStateL()
 
 void CPodcastClientShowsView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt /*aBytesTotal*/)
 {
-	RDebug::Print(_L("CPodcastClientShowsView::ShowDownloadUpdatedL"));
+	DP("CPodcastClientShowsView::ShowDownloadUpdatedL");
 	if(ViewContext() != NULL)
 	{
 		CShowInfo *showInfo = NULL;
@@ -990,7 +990,7 @@ void CPodcastClientShowsView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQ
 
 			if(aItemIndex>=0 && aItemIndex< fItems.Count())
 			{
-				RDebug::Print(_L("Handle event for podcast %S, downloadState is %d"), &(fItems[aItemIndex]->Title()), fItems[aItemIndex]->DownloadState());
+				DP2("Handle event for podcast %S, downloadState is %d", &(fItems[aItemIndex]->Title()), fItems[aItemIndex]->DownloadState());
 				
 				TPckgBuf<TInt> showUid;
 				showUid() = fItems[aItemIndex]->Uid();

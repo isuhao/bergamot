@@ -209,5 +209,5 @@ void CPodcastClientView::ViewDeactivated()
 
 void CPodcastClientView::HandleControlEventL(CCoeControl */*aControl*/, TCoeEvent /*aEventType*/)
 	{
-	RDebug::Print(_L("HandleControlEvent"));
+	//RDebug::Print(_L("HandleControlEvent"));
 	}

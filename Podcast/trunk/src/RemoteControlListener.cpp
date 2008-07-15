@@ -24,28 +24,28 @@ CRemoteControlListener::~CRemoteControlListener()
 	
 void CRemoteControlListener::MrccatoPlay(TRemConCoreApiPlaybackSpeed /*aSpeed*/, TRemConCoreApiButtonAction /*aButtonAct*/)
 	{
-	RDebug::Print(_L("Play Command received"));
+	DP("Play Command received");
 	iModel.SoundEngine().Play();
 	}
 
 void CRemoteControlListener::MrccatoTuneFunction()
 	{
-	RDebug::Print(_L("Tuner Command received"));
+	DP("Tuner Command received");
 	}
 
 void CRemoteControlListener::MrccatoSelectDiskFunction()
 	{
-	RDebug::Print(_L("Select disc function received"));
+	DP("Select disc function received");
 	}
 	
 void CRemoteControlListener::MrccatoSelectAvInputFunction(TUint8 /*aAvInputSignalNumber*/, TRemConCoreApiButtonAction /*aButtonAct*/)
 	{
-	RDebug::Print(_L("Select AV input function received"));
+	DP("Select AV input function received");
 	}
 	
 void CRemoteControlListener::MrccatoSelectAudioInputFunction(TUint8 /*aAudioInputSignalNumber*/, TRemConCoreApiButtonAction /*aButtonAct*/)
 	{
-	RDebug::Print(_L("Select audio input function received"));
+	DP("Select audio input function received");
 	}
 	
 void CRemoteControlListener::MrccatoCommand(TRemConCoreApiOperationId aOperationId, TRemConCoreApiButtonAction /*aButtonAct*/)
@@ -53,234 +53,234 @@ void CRemoteControlListener::MrccatoCommand(TRemConCoreApiOperationId aOperation
 	switch(aOperationId)
 		{
 		case ERemConCoreApiSelect:
-			RDebug::Print(_L("ERemConCoreApiSelect"));
+			DP("ERemConCoreApiSelect");
 			break;
 	/** Up. */
 		case ERemConCoreApiUp:
-			RDebug::Print(_L("ERemConCoreApiUp"));
+			DP("ERemConCoreApiUp");
 			break;
 	/** Down. */
 		case ERemConCoreApiDown:
-			RDebug::Print(_L("ERemConCoreApiDown"));
+			DP("ERemConCoreApiDown");
 			break;
 	/** Left. */
 		case ERemConCoreApiLeft:
-			RDebug::Print(_L("ERemConCoreApiLeft"));
+			DP("ERemConCoreApiLeft");
 			break;
 	/** Right. */
 		case ERemConCoreApiRight:
-			RDebug::Print(_L("ERemConCoreApiRight"));
+			DP("ERemConCoreApiRight");
 			break;
 	/** RightUp. */
 		case ERemConCoreApiRightUp:
-			RDebug::Print(_L("ERemConCoreApiRightUp"));
+			DP("ERemConCoreApiRightUp");
 			break;
 	/** RightDown. */
 		case ERemConCoreApiRightDown:
-			RDebug::Print(_L("ERemConCoreApiRightDown"));
+			DP("ERemConCoreApiRightDown");
 			break; 				
 	/** LeftUp. */
 		case ERemConCoreApiLeftUp:					
-			RDebug::Print(_L("ERemConCoreApiLeftUp"));
+			DP("ERemConCoreApiLeftUp");
 			break;
 	/** LeftDown. */
 		case ERemConCoreApiLeftDown:					
-			RDebug::Print(_L("ERemConCoreApiLeftDown"));
+			DP("ERemConCoreApiLeftDown");
 			break;
 	/** RootMenu. */
 		case ERemConCoreApiRootMenu:				
-			RDebug::Print(_L("ERemConCoreApiRootMenu"));
+			DP("ERemConCoreApiRootMenu");
 			break;
 	/** SetupMenu. */
 		case ERemConCoreApiSetupMenu: 				
-			RDebug::Print(_L("ERemConCoreApiSetupMenu"));
+			DP("ERemConCoreApiSetupMenu");
 			break;
 	/** ContentsMenu. */
 		case ERemConCoreApiContentsMenu:				
-			RDebug::Print(_L("ERemConCoreApiContentsMenu"));
+			DP("ERemConCoreApiContentsMenu");
 			break;
 	/** FavoriteMenu. */
 		case ERemConCoreApiFavoriteMenu:				
-			RDebug::Print(_L("ERemConCoreApiFavoriteMenu"));
+			DP("ERemConCoreApiFavoriteMenu");
 			break;
 	/** Exit. */
 		case ERemConCoreApiExit:						
-			RDebug::Print(_L("ERemConCoreApiExit"));
+			DP("ERemConCoreApiExit");
 			break;
 	/** 0. */
 		case ERemConCoreApi0:
-			RDebug::Print(_L("ERemConCoreApi0"));
+			DP("ERemConCoreApi0");
 			break; 						
 	/** 1. */
 		case ERemConCoreApi1:
-			RDebug::Print(_L("ERemConCoreApi1"));
+			DP("ERemConCoreApi1");
 			break; 					
 	/** 2. */
 		case ERemConCoreApi2: 						
-			RDebug::Print(_L("ERemConCoreApi2"));
+			DP("ERemConCoreApi2");
 			break;
 	/** 3. */
 		case ERemConCoreApi3: 						
-			RDebug::Print(_L("ERemConCoreApi3"));
+			DP("ERemConCoreApi3");
 			break;
 	/** 4. */
 		case ERemConCoreApi4: 						
-			RDebug::Print(_L("ERemConCoreApi4"));
+			DP("ERemConCoreApi4");
 			break;
 	/** 5. */
 		case ERemConCoreApi5:
-			RDebug::Print(_L("ERemConCoreApi5"));
+			DP("ERemConCoreApi5");
 			break; 					
 	/** 6. */
 		case ERemConCoreApi6:
-			RDebug::Print(_L("ERemConCoreApi6"));
+			DP("ERemConCoreApi6");
 			break; 						
 	/** 7. */
 		case ERemConCoreApi7: 
-			RDebug::Print(_L("ERemConCoreApi7"));
+			DP("ERemConCoreApi7");
 			break;					
 	/** 8. */
 		case ERemConCoreApi8:
-			RDebug::Print(_L("ERemConCoreApi8"));
+			DP("ERemConCoreApi8");
 			break; 					
 	/** 9. */
 		case ERemConCoreApi9: 
-			RDebug::Print(_L("ERemConCoreApi9"));
+			DP("ERemConCoreApi9");
 			break;					
 	/** Dot. */
 		case ERemConCoreApiDot:
-			RDebug::Print(_L("ERemConCoreApiDot"));
+			DP("ERemConCoreApiDot");
 			break;					
 	/** Enter. */
 		case ERemConCoreApiEnter:
-			RDebug::Print(_L("ERemConCoreApiEnter"));
+			DP("ERemConCoreApiEnter");
 			break; 					
 	/** Clear. */
 		case ERemConCoreApiClear: 
-			RDebug::Print(_L("ERemConCoreApiClear"));
+			DP("ERemConCoreApiClear");
 			break;				
 	/** ChannelUp. */
 		case ERemConCoreApiChannelUp:
-			RDebug::Print(_L("ERemConCoreApiChannelUp"));
+			DP("ERemConCoreApiChannelUp");
 			break; 				
 	/** ChannelDown. */
 		case ERemConCoreApiChannelDown:
-			RDebug::Print(_L("ERemConCoreApiChannelDown"));
+			DP("ERemConCoreApiChannelDown");
 			break;				
 	/** PreviousChannel. */
 		case ERemConCoreApiPreviousChannel:
-			RDebug::Print(_L("ERemConCoreApiPreviousChannel"));
+			DP("ERemConCoreApiPreviousChannel");
 			break;		
 	/** SoundSelect. */
 		case ERemConCoreApiSoundSelect:
-			RDebug::Print(_L("ERemConCoreApiSoundSelect"));
+			DP("ERemConCoreApiSoundSelect");
 			break;				
 	/** InputSelect. */
 		case ERemConCoreApiInputSelect:	
-			RDebug::Print(_L("ERemConCoreApiInputSelect"));
+			DP("ERemConCoreApiInputSelect");
 			break;		
 	/** DisplayInformation. */
 		case ERemConCoreApiDisplayInformation:	
-			RDebug::Print(_L("ERemConCoreApiDisplayInformation"));
+			DP("ERemConCoreApiDisplayInformation");
 			break;
 	/** Help. */
 		case ERemConCoreApiHelp:
-			RDebug::Print(_L("ERemConCoreApiHelp"));
+			DP("ERemConCoreApiHelp");
 			break;					
 	/** PageUp. */
 		case ERemConCoreApiPageUp:
-			RDebug::Print(_L("ERemConCoreApiPageUp"));
+			DP("ERemConCoreApiPageUp");
 			break;				
 	/** PageDown. */
 		case ERemConCoreApiPageDown:				
-			RDebug::Print(_L("ERemConCoreApiPageDown"));
+			DP("ERemConCoreApiPageDown");
 			break;
 	/** Power. */
 		case ERemConCoreApiPower: 
-			RDebug::Print(_L("ERemConCoreApiPower"));
+			DP("ERemConCoreApiPower");
 			break;				
 	/** VolumeUp. */
 		case ERemConCoreApiVolumeUp:					
-			RDebug::Print(_L("ERemConCoreApiVolumeUp"));
+			DP("ERemConCoreApiVolumeUp");
 			break;
 	/** VolumeDown. */
 		case ERemConCoreApiVolumeDown:
-			RDebug::Print(_L("ERemConCoreApiVolumeDown"));
+			DP("ERemConCoreApiVolumeDown");
 			break;				
 	/** Mute. */
 		case ERemConCoreApiMute:
-			RDebug::Print(_L("ERemConCoreApiMute"));
+			DP("ERemConCoreApiMute");
 			break;						
 	/** Play. */
 		case ERemConCoreApiPlay:
-			RDebug::Print(_L("ERemConCoreApiPlay"));
+			DP("ERemConCoreApiPlay");
 			iModel.SoundEngine().Play();
 			break;						
 	/** Stop. */
 		case ERemConCoreApiStop:
-			RDebug::Print(_L("ERemConCoreApiStop"));
+			DP("ERemConCoreApiStop");
 			iModel.SoundEngine().Stop();
 			break;						
 	/** Pause. */
 		case ERemConCoreApiPause: 
-			RDebug::Print(_L("ERemConCoreApiPause"));
+			DP("ERemConCoreApiPause");
 			iModel.SoundEngine().Pause();
 			break;					
 	/** Record. */
 		case ERemConCoreApiRecord:
-			RDebug::Print(_L("ERemConCoreApiRecord"));
+			DP("ERemConCoreApiRecord");
 			break;					
 	/** Rewind. */
 		case ERemConCoreApiRewind:
-			RDebug::Print(_L("ERemConCoreApiRewind"));
+			DP("ERemConCoreApiRewind");
 			break;					
 	/** FastForward. */
 		case ERemConCoreApiFastForward:				
-			RDebug::Print(_L("ERemConCoreApiFastForward"));
+			DP("ERemConCoreApiFastForward");
 			break;
 	/** Eject. */
 		case ERemConCoreApiEject: 					
-			RDebug::Print(_L("ERemConCoreApiEject"));
+			DP("ERemConCoreApiEject");
 			break;
 	/** Forward. */
 		case ERemConCoreApiForward:					
-			RDebug::Print(_L("ERemConCoreApiForward"));
+			DP("ERemConCoreApiForward");
 			break;
 	/** Backward. */
 		case ERemConCoreApiBackward:					
-			RDebug::Print(_L("ERemConCoreApiBackward"));
+			DP("ERemConCoreApiBackward");
 			break;
 	/** Angle. */
 		case ERemConCoreApiAngle: 					
-			RDebug::Print(_L("ERemConCoreApiAngle"));
+			DP("ERemConCoreApiAngle");
 			break;
 	/** Subpicture. */
 		case ERemConCoreApiSubpicture:				
-			RDebug::Print(_L("ERemConCoreApiSubpicture"));
+			DP("ERemConCoreApiSubpicture");
 			break;
 	/** PausePlayFunction. */
 		case ERemConCoreApiPausePlayFunction: 		
-			RDebug::Print(_L("ERemConCoreApiPausePlayFunction"));
+			DP("ERemConCoreApiPausePlayFunction");
 			break;
 	/** RestoreVolumeFunction. */
 		case ERemConCoreApiRestoreVolumeFunction: 	
-			RDebug::Print(_L("ERemConCoreApiRestoreVolumeFunction"));
+			DP("ERemConCoreApiRestoreVolumeFunction");
 			break;
 	/** TuneFunction. */
 		case ERemConCoreApiTuneFunction:				
-			RDebug::Print(_L("ERemConCoreApiTuneFunctio"));
+			DP("ERemConCoreApiTuneFunctio");
 			break;
 	/** SelectDiskFunction. */
 		case ERemConCoreApiSelectDiskFunction:
-			RDebug::Print(_L("ERemConCoreApiSelectDiskFunction"));
+			DP("ERemConCoreApiSelectDiskFunction");
 			break;		
 	/** SelectAvInputFunction. */
 		case ERemConCoreApiSelectAvInputFunction:
-			RDebug::Print(_L("ERemConCoreApiSelectAvInputFunction"));
+			DP("ERemConCoreApiSelectAvInputFunction");
 			break; 	
 	/** SelectAudioInputFunction. */
 		case ERemConCoreApiSelectAudioInputFunction:
-			RDebug::Print(_L("ERemConCoreApiSelectAudioInputFunction"));
+			DP("ERemConCoreApiSelectAudioInputFunction");
 			break;	
 	/** F1. */
 		case ERemConCoreApiF1:
@@ -289,27 +289,27 @@ void CRemoteControlListener::MrccatoCommand(TRemConCoreApiOperationId aOperation
 			} else if (iModel.SoundEngine().State() == ESoundEnginePaused) {
 				iModel.SoundEngine().Play();
 			}
-			RDebug::Print(_L("ERemConCoreApiF1"));
+			DP("ERemConCoreApiF1");
 			break;							
 	/** F2. */
 		case ERemConCoreApiF2:
-			RDebug::Print(_L("ERemConCoreApiF2"));
+			DP("ERemConCoreApiF2");
 			break;							
 	/** F3. */
 		case ERemConCoreApiF3:
-			RDebug::Print(_L("ERemConCoreApiF3"));
+			DP("ERemConCoreApiF3");
 			break;							
 	/** F4. */
 		case ERemConCoreApiF4:
-			RDebug::Print(_L("ERemConCoreApiF4"));
+			DP("ERemConCoreApiF4");
 			break;							
 	/** F5. */
 		case ERemConCoreApiF5:
-			RDebug::Print(_L("ERemConCoreApiF5"));
+			DP("ERemConCoreApiF5");
 			break;
 		
 		default:
-			RDebug::Print(_L("Unknown"));
+			DP("Unknown");
 			break;						
 		}
 	

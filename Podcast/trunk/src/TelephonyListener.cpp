@@ -32,7 +32,7 @@ CTelephonyListener* CTelephonyListener::NewL(CPodcastModel &aPodcastModel)
 
 void CTelephonyListener::ConstructL()
 	{
-	RDebug::Print(_L("CTelephonyListener::ConstructL"));
+	DP("CTelephonyListener::ConstructL");
 	iTelephony = CTelephony::NewL();
 	CActiveScheduler::Add(this);
 
@@ -46,7 +46,7 @@ void CTelephonyListener::StartL()
 
 void CTelephonyListener::RunL()
 	{
-	RDebug::Print(_L("CTelephonyListener::RunL: iStatus: %u"),iLineStatus.iStatus );
+	DP1("CTelephonyListener::RunL: iStatus: %u",iLineStatus.iStatus );
 
 	switch (iLineStatus.iStatus) {
 	case CTelephony::EStatusRinging:
@@ -69,7 +69,7 @@ void CTelephonyListener::RunL()
 		break;
 
 	default:
-		RDebug::Print(_L("CTelephony:: Other (unhandled)"));
+		DP("CTelephony:: Other (unhandled)");
 		break;
 	};
 

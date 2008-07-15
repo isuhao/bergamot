@@ -29,7 +29,6 @@ Creates and constructs the view.
 */
 CPodcastClientFeedView* CPodcastClientFeedView::NewLC(CQikAppUi& aAppUi, CPodcastModel& aPodcastModel)
 	{
-	//RDebug::Print(_L("NewLC"));
 	CPodcastClientFeedView* self = new (ELeave) CPodcastClientFeedView(aAppUi, aPodcastModel);
 	CleanupStack::PushL(self);
 	self->ConstructL();
@@ -273,7 +272,6 @@ void CPodcastClientFeedView::UpdateFeedInfoStatusL(TUint aFeedUid, TBool aIsUpda
 
 void CPodcastClientFeedView::FeedUpdateCompleteL(TUint aFeedUid)
 	{
-	RDebug::Print(_L("FeedUpdateCompleteL"));
 	UpdateFeedInfoStatusL(aFeedUid, EFalse);
 	}
 
@@ -587,6 +585,7 @@ void CPodcastClientFeedView::UpdateCommandsL()
 		}
 	
 	comMan.SetInvisible(*this, EPodcastAddNewAudioBook, !isBookMode);
+	comMan.SetInvisible(*this, EPodcastImportAudioBook, !isBookMode);
 	comMan.SetInvisible(*this, EPodcastAddFeed, isBookMode);
 	comMan.SetInvisible(*this, EPodcastImportFeeds, isBookMode);
 	comMan.SetInvisible(*this, EPodcastExportFeeds, isBookMode);
@@ -809,7 +808,26 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 		HandleAddNewAudioBookL();
 		UpdateListboxItemsL();
 		}break;
+	case EPodcastImportAudioBook:
+		{
+		CDesCArrayFlat* mimeTypes = new (ELeave) CDesCArrayFlat(KDefaultGran);
+		CleanupStack::PushL(mimeTypes);
 		
+		CDesCArrayFlat* fileNames = new (ELeave) CDesCArrayFlat(KDefaultGran);
+		CleanupStack::PushL(fileNames);
+		HBufC* import_title = iEikonEnv->AllocReadResourceLC(R_PODCAST_IMPORT_BOOK_TITLE);
+		if(CQikSelectFileDlg::RunDlgLD(*mimeTypes, *fileNames, import_title))
+			{
+			if(fileNames->MdcaCount()>0)
+				{
+				CPodcastClientAudioBookDlg* titleDialog = new (ELeave) CPodcastClientAudioBookDlg(iPodcastModel, *fileNames, ETrue);
+				titleDialog->ExecuteLD(R_PODCAST_NEW_AUDIOBOOK_DLG);	
+				}
+			
+			}
+		UpdateListboxItemsL();
+		CleanupStack::PopAndDestroy(3,mimeTypes); // title, fileNames, mimeTypes								
+		}break;
 	case EPodcastRemoveAudioBookHardware:
 	case EPodcastRemoveAudioBook:
 		{

@@ -8,7 +8,7 @@ class CPodcastModel;
 class CPodcastClientAudioBookDlg:public CEikDialog
 {
 public:
-	CPodcastClientAudioBookDlg(CPodcastModel& aPodcastModel, CDesCArrayFlat& aFileNames);
+	CPodcastClientAudioBookDlg(CPodcastModel& aPodcastModel, CDesCArrayFlat& aFileNames, TBool aPlayList=EFalse);
 	~CPodcastClientAudioBookDlg();
 protected:
 	TBool OkToExitL(TInt aCommandId);
@@ -16,6 +16,7 @@ protected:
 private:
 	CPodcastModel& iPodcastModel;
 	CDesCArrayFlat& iSelectedFilenames;
+	TBool iPlayList;
 };
 #endif//PODCASTCLIENTAUDIOBOOKDLGH
 

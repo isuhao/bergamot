@@ -8,7 +8,7 @@
 
 const TInt KNumberOfFilesMaxLength = 4;
 
-CPodcastClientAudioBookDlg::CPodcastClientAudioBookDlg(CPodcastModel& aPodcastModel, CDesCArrayFlat& aSelectedFileNames):iPodcastModel(aPodcastModel),iSelectedFilenames(aSelectedFileNames)
+CPodcastClientAudioBookDlg::CPodcastClientAudioBookDlg(CPodcastModel& aPodcastModel, CDesCArrayFlat& aSelectedFileNames, TBool aPlayList):iPodcastModel(aPodcastModel),iSelectedFilenames(aSelectedFileNames),iPlayList(aPlayList)
 	{
 	}
 
@@ -22,8 +22,12 @@ TBool CPodcastClientAudioBookDlg::OkToExitL(TInt aCommandId)
 		{
 			CEikEdwin* titleEdwin = static_cast<CEikEdwin*>(ControlOrNull(EPodcastNewAudioBookTitle));
 			HBufC* title = titleEdwin->GetTextInHBufL();
-			CleanupStack::PushL(title);		
-			iPodcastModel.FeedEngine().AddBookL(*title, &iSelectedFilenames);
+			CleanupStack::PushL(title);
+			if (iPlayList) {
+				iPodcastModel.FeedEngine().ImportBookL(*title, iSelectedFilenames[0]);
+			} else {
+				iPodcastModel.FeedEngine().AddBookL(*title, &iSelectedFilenames);
+			}
 		
 			CleanupStack::PopAndDestroy(title);
 		}

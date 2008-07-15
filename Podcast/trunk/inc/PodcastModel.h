@@ -10,6 +10,7 @@
 #include "ShowInfo.h"
 #include "TelephonyListener.h"
 #include "RemoteControlListener.h"
+#include "debug.h"
 
 class CFeedEngine;
 class CSoundEngine;

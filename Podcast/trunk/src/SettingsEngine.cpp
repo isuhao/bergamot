@@ -44,20 +44,20 @@ void CSettingsEngine::ConstructL()
 	
 	// Check that our basedir exist. Create it otherwise;
 	GetDefaultBaseDirL(iBaseDir);
-	RDebug::Print(_L("Base dir: %S"), &iBaseDir);
+	DP1("Base dir: %S", &iBaseDir);
 	
 	// load settings
 	TRAPD(loadErr, LoadSettingsL());
 	if (loadErr != KErrNone)
 		{
-		RDebug::Print(_L("CSettingsEngine::ConstructL\tLoadSettingsL returned error=%d"), loadErr);
-		RDebug::Print(_L("CSettingsEngine::ConstructL\tImporting default settings instead"));
+		DP1("CSettingsEngine::ConstructL\tLoadSettingsL returned error=%d", loadErr);
+		DP("CSettingsEngine::ConstructL\tImporting default settings instead");
 	
 		ImportSettings();
 		TRAPD(error,SaveSettingsL());
 		if (error != KErrNone) 
 			{
-			RDebug::Print(_L("error saving: %d"), error);
+			DP1("error saving: %d", error);
 			}
 		}		
 	}
@@ -75,10 +75,10 @@ void CSettingsEngine::GetDefaultBaseDirL(TDes &aBaseDir)
 		return;
 	#endif
 	
-	/*RDebug::Print(_L("Disks count: %u"), disks->Count());
+	/*DP1("Disks count: %u", disks->Count());
 	
 	for (int i=0;i<disks->Count();i++) {
-		RDebug::Print(_L("Disk %u: %S"), i, &(*disks)[i]);
+		DP1("Disk %u: %S", i, &(*disks)[i]);
 	}*/
 	
 	if (disks->Count() == 1)  // if only one drive, use C:\Media files\Podcasts
@@ -94,7 +94,7 @@ void CSettingsEngine::GetDefaultBaseDirL(TDes &aBaseDir)
 		TRAPD(err, BaflUtils::EnsurePathExistsL(iFs, iBaseDir));
 		
 		if (err != KErrNone) {
-			RDebug::Print(_L("Leave in EnsurePathExistsL, revert to internal disk"));
+			DP("Leave in EnsurePathExistsL, revert to internal disk");
 			aBaseDir.Copy(KInternalPodcastDir);
 		}
 		}
@@ -103,14 +103,14 @@ void CSettingsEngine::GetDefaultBaseDirL(TDes &aBaseDir)
 
 void CSettingsEngine::LoadSettingsL()
 	{
-	RDebug::Print(_L("CSettingsEngine::LoadSettingsL\t Trying to load settings"));
+	DP("CSettingsEngine::LoadSettingsL\t Trying to load settings");
 	
 	// Create path for the config file
 	TFileName configPath;
 	configPath.Copy(PrivatePath());
 	configPath.Append(KConfigFile);
 
-	RDebug::Print(_L("Checking settings file: %S"), &configPath);
+	DP1("Checking settings file: %S", &configPath);
 	
 	CDictionaryFileStore* store = CDictionaryFileStore::OpenLC(iFs, configPath, KMainSettingsStoreUid);
 
@@ -142,14 +142,14 @@ void CSettingsEngine::LoadSettingsL()
 			iPodcastModel.SetZoomState(zoomState);
 		}
 		CleanupStack::PopAndDestroy(1); // readStream and iniFile
-		RDebug::Print(_L("CSettingsEngine::LoadSettingsL\t Settings loaded OK"));
+		DP("CSettingsEngine::LoadSettingsL\t Settings loaded OK");
 	}
 	CleanupStack::PopAndDestroy();// close store
 }
 
 void CSettingsEngine::SaveSettingsL()
 	{
-	RDebug::Print(_L("CSettingsEngine::SaveSettingsL\tTrying to save settings"));
+	DP("CSettingsEngine::SaveSettingsL\tTrying to save settings");
 
 	TFileName configPath;
 	configPath.Copy(PrivatePath());
@@ -181,19 +181,19 @@ void CSettingsEngine::SaveSettingsL()
 
 void CSettingsEngine::ImportSettings()
 	{
-	RDebug::Print(_L("CSettingsEngine::ImportSettings"));
+	DP("CSettingsEngine::ImportSettings");
 
 	TFileName configPath;
 	configPath.Copy(PrivatePath());
 	configPath.Append(KConfigImportFile);
 	
-	RDebug::Print(_L("Importing settings from %S"), &configPath);
+	DP1("Importing settings from %S", &configPath);
 	
 	RFile rfile;
 	TInt error = rfile.Open(iFs, configPath,  EFileRead);
 	if (error != KErrNone) 
 		{
-		RDebug::Print(_L("CSettingsEngine::ImportSettings()\tFailed to read settings"));
+		DP("CSettingsEngine::ImportSettings()\tFailed to read settings");
 		return;
 		}
 	
@@ -216,7 +216,7 @@ void CSettingsEngine::ImportSettings()
 			{
 			TPtrC tag = line.Left(equalsPos);
 			TPtrC value = line.Mid(equalsPos+1);
-			RDebug::Print(_L("line: %S, tag: '%S', value: '%S'"), &line, &tag, &value);
+			DP3("line: %S, tag: '%S', value: '%S'", &line, &tag, &value);
 			if (tag.CompareF(_L("BaseDir")) == 0) 
 				{
 				iBaseDir.Copy(value);
@@ -225,25 +225,25 @@ void CSettingsEngine::ImportSettings()
 				{
 				TLex lex(value);
 				lex.Val(iUpdateFeedInterval);
-				RDebug::Print(_L("Updating automatically every %d minutes"), iUpdateFeedInterval);
+				DP1("Updating automatically every %d minutes", iUpdateFeedInterval);
 				} 
 			else if (tag.CompareF(_L("DownloadAutomatically")) == 0) 
 				{
 				TLex lex(value);
 				lex.Val((TInt &) iDownloadAutomatically);
-				RDebug::Print(_L("Download automatically: %d"), iDownloadAutomatically);
+				DP1("Download automatically: %d", iDownloadAutomatically);
 				} 
 			else if (tag.CompareF(_L("MaxSimultaneousDownloads")) == 0) 
 				{
 				TLex lex(value);
 				lex.Val(iMaxSimultaneousDownloads);
-				RDebug::Print(_L("Max simultaneous downloads: %d"), iMaxSimultaneousDownloads);
+				DP1("Max simultaneous downloads: %d", iMaxSimultaneousDownloads);
 				}
 			else if (tag.CompareF(_L("MaxShowsPerFeed")) == 0) 
 				{
 				TLex lex(value);
 				lex.Val(iMaxListItems);
-				RDebug::Print(_L("Max shows per feed: %d"), iMaxListItems);
+				DP1("Max shows per feed: %d", iMaxListItems);
 				}
 			}
 		
