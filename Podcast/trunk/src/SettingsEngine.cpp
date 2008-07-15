@@ -45,7 +45,6 @@ void CSettingsEngine::ConstructL()
 	// Check that our basedir exist. Create it otherwise;
 	GetDefaultBaseDirL(iBaseDir);
 	RDebug::Print(_L("Base dir: %S"), &iBaseDir);
-	BaflUtils::EnsurePathExistsL(iFs, iBaseDir);
 	
 	// load settings
 	TRAPD(loadErr, LoadSettingsL());
@@ -75,7 +74,13 @@ void CSettingsEngine::GetDefaultBaseDirL(TDes &aBaseDir)
 		CleanupStack::PopAndDestroy(disks);
 		return;
 	#endif
-
+	
+	/*RDebug::Print(_L("Disks count: %u"), disks->Count());
+	
+	for (int i=0;i<disks->Count();i++) {
+		RDebug::Print(_L("Disk %u: %S"), i, &(*disks)[i]);
+	}*/
+	
 	if (disks->Count() == 1)  // if only one drive, use C:\Media files\Podcasts
 		{
 		aBaseDir.Copy(KInternalPodcastDir);
@@ -85,6 +90,13 @@ void CSettingsEngine::GetDefaultBaseDirL(TDes &aBaseDir)
 		aBaseDir.Copy((*disks)[1]);
 		aBaseDir.Append(_L(":"));
 		aBaseDir.Append(KFlashPodcastDir);
+		
+		TRAPD(err, BaflUtils::EnsurePathExistsL(iFs, iBaseDir));
+		
+		if (err != KErrNone) {
+			RDebug::Print(_L("Leave in EnsurePathExistsL, revert to internal disk"));
+			aBaseDir.Copy(KInternalPodcastDir);
+		}
 		}
 	CleanupStack::PopAndDestroy(disks);
 	}
