@@ -513,12 +513,11 @@ void CFeedEngine::ImportFeedsL(const TDesC& aFile)
 
 void CFeedEngine::ImportBookL(const TDesC& aTitle, const TDesC& aFile)
 	{
-	User::InfoPrint(_L("Importing book."));
 	CDesCArrayFlat *files = new (ELeave) CDesCArrayFlat(5);
 	CleanupStack::PushL(files);
 	
 	RFile rfile;
-	TInt error = rfile.Open(iFs, aFile,  EFileRead);
+	TInt error = rfile.Open(iFs, aFile,  EFileRead | EFileStreamText);
 	if (error != KErrNone) 
 		{
 		rfile.Close();
@@ -526,23 +525,30 @@ void CFeedEngine::ImportBookL(const TDesC& aTitle, const TDesC& aFile)
 		User::Leave(KErrNotFound);
 		}
 	
-	TFileText tft;
-	tft.Set(rfile);
+	TBuf8<1> buf8;
+	TBuf<1> buf16;
+	TBuf<1024> line16;
 	
-	TBuf<1024> line;
-	error = tft.Read(line);
-	
-	while (error == KErrNone) 
+	error = rfile.Read(buf8);
+	buf16.Copy(buf8);
+	DP("Parsing M3U");
+	while (error == KErrNone && buf16.Length() != 0) 
 		{
-		if (line.Locate('#') == 0) 
-			{
-			error = tft.Read(line);
-			continue;
+		if (buf16[0] == '\r' || buf16[0] == '\n') {
+			if (line16.Length() > 0 && line16[0] != '#') {
+				DP1("File: %S", &line16);
+				files->AppendL(line16);
 			}
-		
-		files->AppendL(line);
-		error = tft.Read(line);
+			line16.Zero();
+		} else {
+			line16.Append(buf16);
 		}
+			
+		error = rfile.Read(buf8);
+		buf16.Copy(buf8);
+		//RDebug::Print(_L("buf: %S\nline: %S"), &buf16, &line16);
+		}
+	
 	rfile.Close();
 	AddBookL(aTitle, files);
 	CleanupStack::PopAndDestroy(files);
