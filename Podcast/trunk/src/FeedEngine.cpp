@@ -525,6 +525,10 @@ void CFeedEngine::ImportBookL(const TDesC& aTitle, const TDesC& aFile)
 		User::Leave(KErrNotFound);
 		}
 	
+	TFileName path;
+	path.Copy(aFile.Left(aFile.LocateReverse('\\')));
+	path.Append('\\');
+	
 	TBuf8<1> buf8;
 	TBuf<1> buf16;
 	TBuf<1024> line16;
@@ -536,6 +540,13 @@ void CFeedEngine::ImportBookL(const TDesC& aTitle, const TDesC& aFile)
 		{
 		if (buf16[0] == '\r' || buf16[0] == '\n') {
 			if (line16.Length() > 0 && line16[0] != '#') {
+				if (line16.Length() > 1 && line16[1] != ':') {
+					TFileName tmp;
+					tmp.Copy(path);
+					tmp.Append(line16);
+					line16.Copy(tmp);
+				}
+				
 				DP1("File: %S", &line16);
 				files->AppendL(line16);
 			}
@@ -550,6 +561,7 @@ void CFeedEngine::ImportBookL(const TDesC& aTitle, const TDesC& aFile)
 		}
 	
 	rfile.Close();
+	iPodcastModel.ShowEngine().MetaDataReader().SetIgnoreTrackNo(ETrue);
 	AddBookL(aTitle, files);
 	CleanupStack::PopAndDestroy(files);
 	}

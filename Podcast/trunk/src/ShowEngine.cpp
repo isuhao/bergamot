@@ -977,6 +977,7 @@ void CShowEngine::ReadMetaDataComplete()
 	{
 	SaveShows();
 	NotifyShowListUpdated();
+	MetaDataReader().SetIgnoreTrackNo(EFalse);
 	}
 
 CMetaDataReader& CShowEngine::MetaDataReader()

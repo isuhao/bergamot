@@ -203,7 +203,7 @@ void CMetaDataReader::ParseNextShowL()
 				iTempDataBuffer.SetLength(len);
 				TLex8 lexer(iTempDataBuffer);
 				TUint value = 0;
-				if(lexer.Val(value) == KErrNone) {
+				if(lexer.Val(value) == KErrNone && !iIgnoreTrackNo) {
 					iShow->SetTrackNo(value);
 				}
 			}
@@ -282,3 +282,8 @@ void CMetaDataReader::MapcInitComplete(TInt aError, const TTimeIntervalMicroSeco
 	iShow = NULL;
 	TRAP_IGNORE(ParseNextShowL());
 }
+
+void CMetaDataReader::SetIgnoreTrackNo(TBool aIgnoreTrackNo)
+	{
+	iIgnoreTrackNo = aIgnoreTrackNo;
+	}

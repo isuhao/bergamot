@@ -16,6 +16,7 @@ public:
 	void SubmitShowL(CShowInfo *aShowInfo);
 	virtual ~CMetaDataReader();
 	void ConstructL();
+	void SetIgnoreTrackNo(TBool aIgnoreTrackNo);
 	
 protected:
 	void MapcPlayComplete(TInt aError);
@@ -37,6 +38,7 @@ private:
 	CAsyncCallBack* iParseNextShowCallBack;
 	CCnvCharacterSetConverter* iCharConverter;
 	TUint iLastConverterCharset;
+	TBool iIgnoreTrackNo;
 };
 
 #endif /*METADATAREADER_H_*/
