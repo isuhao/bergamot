@@ -16,6 +16,7 @@ Notable features include:
   * Support for podcasts manually downloaded to flash card
   * Automatic downloading of new shows
   * Audio Book player
+  * Multiple languages
 
 You can see some screenshots below, and download the latest version from the [http://code.google.com/p/bergamot/downloads/list Downloads] page. All versions, together with their complete source code is available in our [http://bergamot.googlecode.com/svn/Podcast/ Subversion repository].
 
@@ -60,7 +61,7 @@ To download binaries of Escarpod to use on your phone, visit our [http://code.go
     * Audio book improvements
     * Bug fixes
 
-The complete list of releases can be found [EscarpodReleases here].
+Older releases can be found [EscarpodReleases here].
 
 === Frequently Asked Questions ==
 
