@@ -1,5 +1,5 @@
 #summary The UIQ Podcatcher
-#labels .
+#labels Featured
 
 = Escarpod =
 
