@@ -94,7 +94,7 @@ The name Escarpod is a pun on the french Escargot, meaning snail, and also used 
 
 == Feature suggestions ==
 
-Add any ideas as comments to this wiki page, or mail us at bergamot@googlegroups.com, or write directly in the [http://groups.google.com/group/bergamot discussion group].
+Add any ideas as comments to this wiki page, or write directly in the [http://groups.google.com/group/bergamot discussion group].
 
 == Where do I find feeds? ==
 
