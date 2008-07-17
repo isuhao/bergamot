@@ -1,5 +1,5 @@
 #summary The UIQ Podcatcher
-#labels Featured
+#labels .
 
 = Escarpod =
 
@@ -21,11 +21,12 @@ You can see some screenshots below, and download the latest version from the [ht
 
 == Screenshots ==
 
-These screenshots are from Escarpod 0.95.
+These screenshots are from Escarpod 1.10 on a Sony Ericsson G900.
 
-http://bergamot.googlecode.com/svn/wiki/capture0000.png
-http://bergamot.googlecode.com/svn/wiki/capture0001.png
-http://bergamot.googlecode.com/svn/wiki/capture0002.png
+http://bergamot.googlecode.com/svn/wiki/g900-1.png
+http://bergamot.googlecode.com/svn/wiki/g900-2.png
+http://bergamot.googlecode.com/svn/wiki/g900-3.png
+http://bergamot.googlecode.com/svn/wiki/g900-4.png
 
 == Credits ==
 Escarpod was created by:
