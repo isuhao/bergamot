@@ -251,7 +251,9 @@ void CPodcastClientBaseView::HandleListBoxEventL(CQikListBox * /*aListBox*/, TQi
 			{
 			case EBaseViewPlayer:
 				{
-					newview = KUidPodcastPlayViewID;
+					if (iPodcastModel.PlayingPodcast()) {
+						newview = KUidPodcastPlayViewID;
+					}
 				
 				}break;
 			case EBaseViewNewShows:
