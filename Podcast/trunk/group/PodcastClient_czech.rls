@@ -203,3 +203,6 @@ rls_string STRING_r_cancel_update_all_feeds_short_cmd "Zrušit"
 
 rls_string STRING_r_podcast_books_status_format "%d/%d stop"
 rls_string STRING_r_podcast_books_add_chapter "Přidat stopu"
+
+rls_string STRING_r_view_import_audiobook_cmd "Import Book"
+rls_string STRING_r_view_import_book_title "Select M3U file"

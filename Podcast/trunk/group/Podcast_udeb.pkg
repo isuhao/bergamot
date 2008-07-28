@@ -3,7 +3,7 @@
 &EN,FR,GE,SP,IT,SW,DA,RU,HU,CS,PL,CA,ET
 :"Bergamot Project"
 %{"Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project"}
-#{"Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod", "Escarpod","Escarpod"}, (0xA00046BD), 1, 1, 0, TYPE=SA
+#{"Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod", "Escarpod","Escarpod"}, (0xA00046BD), 1, 10, 0, TYPE=SA
 
 ;(0x101F6300), 3, 0, 0, {"UIQ30ProductID"}
 

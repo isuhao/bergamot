@@ -202,3 +202,6 @@ rls_string STRING_r_remove_chapter_prompt "Czy jesteś pewien, że chcesz usuną
 
 rls_string STRING_r_podcast_books_status_format "%d/%d rozdziałów"
 rls_string STRING_r_podcast_books_add_chapter "Dodaj rozdział"
+
+rls_string STRING_r_view_import_audiobook_cmd "Import Book"
+rls_string STRING_r_view_import_book_title "Select M3U file"

@@ -193,11 +193,17 @@ rls_string STRING_r_view_export_feeds_cmd "Salvesta kanalite andmed" // Export f
 rls_string STRING_r_catchup_feed "Kas märkida kõik lood mängituks?" // shown when first updating a new feed
 rls_string STRING_r_catchup_feed_title "Uue kanali lisamine" // title to dialog
 
-rls_string STRING_r_remove_book_title "Eemalda audio raamat"
-rls_string STRING_r_remove_book_prompt "kas eemaldada valitud audio raamat?"
+rls_string STRING_r_remove_book_title "Eemalda raamat"
+rls_string STRING_r_remove_book_prompt "Kas eemaldada valitud raamat?"
 
 rls_string STRING_r_remove_chapter_title "Peatüki eemaldamine"
 rls_string STRING_r_remove_chapter_prompt "Kas eemaldada valitud peatükk?"
 
 rls_string STRING_r_podcast_books_status_format "%d/%d peatükki"
 rls_string STRING_r_podcast_books_add_chapter "Peatükkide lisamine"
+
+rls_string STRING_r_view_import_audiobook_cmd "Laadi raamat failist"
+rls_string STRING_r_view_import_book_title "Vali M3U fail"
+
+rls_string STRING_r_view_import_audiobook_cmd "Import Book"
+rls_string STRING_r_view_import_book_title "Select M3U file"
