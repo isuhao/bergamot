@@ -387,7 +387,7 @@ void CPodcastClientShowsView::UpdateFeedUpdateStateL()
 
 void CPodcastClientShowsView::ShowDownloadUpdatedL(TInt aPercentOfCurrentDownload, TInt aBytesOfCurrentDownload, TInt /*aBytesTotal*/)
 {
-	DP("CPodcastClientShowsView::ShowDownloadUpdatedL");
+	//DP("CPodcastClientShowsView::ShowDownloadUpdatedL");
 	if(ViewContext() != NULL)
 	{
 		CShowInfo *showInfo = NULL;

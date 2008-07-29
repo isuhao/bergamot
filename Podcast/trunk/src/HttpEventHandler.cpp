@@ -108,7 +108,7 @@ void CHttpEventHandler::MHFRunL(RHTTPTransaction aTransaction, const THTTPEvent&
 								DP("Failed to set position!");
 								User::Leave(err);
 							}
-							iBytesDownloaded = pos;
+							iBytesDownloaded = (pos > 0) ? pos : 0;
 							iBytesTotal += iBytesDownloaded;
 							DP1("Total bytes is now %u", iBytesTotal);
 							DP1("Seeking end: %d", pos);

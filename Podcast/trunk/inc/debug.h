@@ -31,10 +31,10 @@
 // This file may be included butThese defines may be individual
 
 //#if defined (_DEBUG) && (__WINS__)
-#if defined _DEBUG
+//#if defined _DEBUG
 #   define SUPPORT_DP_STANDARD
 #   define SUPPORT_DP_FILE
-#endif
+//#endif
 
 // #define SUPPORT_RDEBUG_PRINT
 // #define SUPPORT_DP_VERBOSE

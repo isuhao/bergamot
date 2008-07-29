@@ -72,7 +72,7 @@ TBool CHttpClient::GetL(const TDesC& url, const TDesC& fileName,  TBool aSilent)
 	
 	__ASSERT_DEBUG((iIsActive==EFalse), User::Panic(_L("Already active"), -2));
 			
-	TBuf8<256> url8;
+	TBuf8<2048> url8;
 	url8.Copy(url);
 	
 	if (iTransactionCount == 0) 

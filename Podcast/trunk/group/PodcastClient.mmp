@@ -107,8 +107,8 @@ LIBRARY			ezlib.lib
 staticlibrary	libid3tag.lib
 LIBRARY         remconcoreapi.lib
 LIBRARY 		remconinterfacebase.lib
-DEBUGLIBRARY	flogger.lib
-//LIBRARY			apmime.lib 
+LIBRARY			flogger.lib
+LIBRARY			apmime.lib 
 
 
 START BITMAP PodcastClient.mbm
