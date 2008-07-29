@@ -49,7 +49,7 @@ If your phone supports it, using your own wireless LAN or Bluetooth PAN are grea
 
 To download binaries of Escarpod to use on your phone, visit our [http://code.google.com/p/bergamot/downloads/list Downloads] page.
 
-  * Escarpod 1.10 (July)
+  * Escarpod 1.10 (July 29th) [http://bergamot.googlecode.com/svn/Podcast/tags/v110 code]
     * Spanish language (new)
     * Polish language fixed
     * Updated Estonian language
