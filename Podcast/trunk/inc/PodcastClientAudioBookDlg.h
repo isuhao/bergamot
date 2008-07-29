@@ -14,6 +14,8 @@ protected:
 	TBool OkToExitL(TInt aCommandId);
 	void PreLayoutDynInitL();
 private:
+	TDataType GetMimeTypeL(const TDesC& fileName);
+
 	CPodcastModel& iPodcastModel;
 	CDesCArrayFlat& iSelectedFilenames;
 	TBool iPlayList;

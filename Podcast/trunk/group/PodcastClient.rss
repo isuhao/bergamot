@@ -551,3 +551,13 @@ RESOURCE ARRAY r_podcast_new_audiobook_mimearray
 	};
 
 }
+
+RESOURCE ARRAY r_podcast_import_audiobook_mimearray
+{
+	items = 
+	{
+	 LBUF {txt = "audio/x-mpegurl";},
+	 LBUF {txt = "application/x-mpegurl";}
+	};
+
+}

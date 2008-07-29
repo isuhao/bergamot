@@ -810,7 +810,9 @@ void CPodcastClientFeedView::HandleCommandL(CQikCommand& aCommand)
 		}break;
 	case EPodcastImportAudioBook:
 		{
-		CDesCArrayFlat* mimeTypes = new (ELeave) CDesCArrayFlat(KDefaultGran);
+		CDesCArrayFlat* mimeTypes = iEikonEnv->ReadDesCArrayResourceL(R_PODCAST_IMPORT_AUDIOBOOK_MIMEARRAY);
+			
+		//CDesCArrayFlat* mimeTypes = new (ELeave) CDesCArrayFlat(KDefaultGran);
 		CleanupStack::PushL(mimeTypes);
 		
 		CDesCArrayFlat* fileNames = new (ELeave) CDesCArrayFlat(KDefaultGran);
