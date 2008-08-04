@@ -48,3 +48,7 @@ The text field is optional.
 Save it as a .xml file, for instance myopml.xml, copy it to your phone and use Import feeds from the menu.
 
 _Tip! If you place an OPML file named feeds.xml in your podcasts directory, it will be automatically imported when Escarpod starts!_
+
+== How do I report a bug? ==
+
+Please help us fix all the bugs in Escarpod! You can easily submit a bug using the [http://code.google.com/p/bergamot/issues/list Issues] link at the top of the page.
