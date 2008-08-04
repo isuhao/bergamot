@@ -1,5 +1,10 @@
 #summary Older news postings, for tracking purposes.
 
+  * 2008-06-08 - Escarpod 1.0 has over 2000 downloads! Insane!
+  * 2008-05-21 - It's here! Version 1.0 of [Escarpod]! Read the [EscarpodAnnouncement full Announcement].
+  * 2008-05-01 - Added a [PodcastFeeds list of good podcasts], and a [FreeAudioBooks list of free to download audiobooks]! Help me add more!
+  * 2008-04-29 - The last pre-release version of [Escarpod], version 0.99, is out.
+  * 2008-04-11 - [Escarpod] is featured as the [http://www.uiq.com/my-uiq/application-of-the-month/escarpod application of the month] over at UIQ Technology!
   * 2008-03-30 - [Escarpod] 0.95 provdes several bug fixes, and video support
   * 2008-03-16 - [Escarpod] 0.94 has been released
   * 2008-02-25 - [Swim] 0.20 is available, with fixed autostart feature.
