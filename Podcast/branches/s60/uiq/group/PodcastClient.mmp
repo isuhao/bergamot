@@ -13,6 +13,7 @@ DOCUMENT		  PodcastClientPlayView.ra
 DOCUMENT		  PodcastClientShowsView.ra
 DOCUMENT		  PodcastClientFeedView.ra
 
+USERINCLUDE	  ..\..\common\resources
 START RESOURCE    PodcastClient.rss
 TARGETPATH        \resource\apps
 LANG			  01 02 03 04 05 06 07 16 17 25 27 44 49
@@ -33,7 +34,9 @@ SYSTEMINCLUDE   \epoc32\include
 
 SOURCEPATH      ..\src
 USERINCLUDE     ..\inc 
-USERINCLUDE		..\libid3tag
+USERINCLUDE		..\..\common\libid3tag
+USERINCLUDE		..\..\common
+USERINCLUDE		..\..\common\engine
 
 SOURCE          PodcastClientAppUi.cpp
 SOURCE          PodcastClientDocument.cpp
@@ -47,29 +50,12 @@ SOURCE			PodcastClientFeedView.cpp
 // This is the playview
 SOURCE			PodcastClientPlayView.cpp
 
-
 // Dialogs
 SOURCE			PodcastClientAddFeedDlg.cpp
 SOURCE			PodcastClientSettingsDlg.cpp
 SOURCE			PodcastClientAudioBookDlg.cpp
 
-// Engine
-SOURCE			HttpClient.cpp
-SOURCE			HttpEventHandler.cpp 
-SOURCE			FeedParser.cpp 
-SOURCE			FeedEngine.cpp 
-SOURCE			ShowInfo.cpp
-SOURCE			SoundEngine.cpp
-SOURCE			PodCastModel.cpp 
-SOURCE			FeedInfo.cpp
-SOURCE			FeedTimer.cpp
-SOURCE			ShowEngine.cpp
-SOURCE			SettingsEngine.cpp
-SOURCE			MetaDataReader.cpp 
-SOURCE			TelephonyListener.cpp 
-SOURCE			OpmlParser.cpp 
-SOURCE			RemoteControlListener.cpp
-
+STATICLIBRARY	engine.lib
 LIBRARY         euser.lib
 LIBRARY         apparc.lib
 LIBRARY         cone.lib
@@ -104,17 +90,16 @@ LIBRARY			esock.lib
 LIBRARY			estlib.lib
 LIBRARY			etel3rdparty.lib
 LIBRARY			ezlib.lib
-staticlibrary	libid3tag.lib
+STATICLIBRARY	libid3tag.lib
 LIBRARY         remconcoreapi.lib
 LIBRARY 		remconinterfacebase.lib
 LIBRARY			flogger.lib
 LIBRARY			apmime.lib 
 
-
 START BITMAP PodcastClient.mbm
 	TARGETPATH \resource\apps
 	HEADER
-	SOURCEPATH ..\images
+	SOURCEPATH ..\..\common\images
 	SOURCE c16 PodcastClient_64x64.bmp
 	SOURCE 8 PodcastClient_64x64_mask.bmp
 	SOURCE c16 PodcastClient_40x40.bmp

@@ -1,7 +1,8 @@
-#include "..\libid3tag\bld.inf"
+#include "..\..\common\libid3tag\bld.inf"
 
 PRJ_MMPFILES
 PodcastClient.mmp
+..\..\common\engine\engine.mmp
 
 PRJ_PLATFORMS
 GCCE
@@ -9,5 +10,3 @@ WINSCW
 
 PRJ_EXPORTS
 
-.\config_emu.cfg \epoc32\winscw\c\private\A00046AE\config.cfg
-.\defaultfeeds_emu.xml \epoc32\winscw\c\private\A00046AE\defaultfeeds.xml
