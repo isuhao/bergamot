@@ -22,7 +22,7 @@
 # ifndef LIBID3TAG_DEBUG_H
 # define LIBID3TAG_DEBUG_H
 
-# include <stdlib.h>
+# include <libc/stdlib.h>
 
 void *id3_debug_malloc(size_t, char const *, unsigned int);
 void *id3_debug_calloc(size_t, size_t, char const *, unsigned int);
