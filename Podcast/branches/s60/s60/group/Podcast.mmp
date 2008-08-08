@@ -1,3 +1,4 @@
+#if !defined(__UIQ3_SDK__)
 TARGET			Podcast.exe
 TARGETTYPE  	exe
 UID				0x0 0xA0009D00  
@@ -49,3 +50,4 @@ LIBRARY	gdi.lib
 LANG SC
 
 CAPABILITY	  	  NONE
+#endif
