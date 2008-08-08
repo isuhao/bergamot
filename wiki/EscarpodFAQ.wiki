@@ -15,11 +15,11 @@ To obtain a log, complete the following steps
   # Attach the file to your issue report.
   # Feel good that you contributed to Escarpod!
 
-== I can't add any feeds! ==
+== How do I add new feeds? ==
 
 Escarpod needs URLs to RSS files to access feeds. If Escarpod fails to load a feed, make sure you entered the URL of an RSS file, and not an HTML file. RSS files commonly end with .rss or .xml.
 
-== Feeds work, but downloads fail silently or seem to be broken ==
+== Why do my downloads fail? ==
 
 Strange behavior occurs when the disk is full. Make sure you didn't fill up your flash card with podcasts, as can easily happen with Escarpod. Use the purge feed option to clean a folder from within the program, or remove your downloaded files manually through the file manager.
 
@@ -33,7 +33,7 @@ Yes, you can:
 
   * _Delete shows_ using the backspace/clear button on your phone.
   * _Jump back and ahead_ while playing a show using sideways buttons.
-  * _Mark played/unplayed_ using the asterisk (star)
+  * _Mark played/unplayed_ using the asterisk (`* `)
 
 == Can I use a Remote Control? ==
 
@@ -63,7 +63,3 @@ The text field is optional.
 Save it as a .xml file, for instance myopml.xml, copy it to your phone and use Import feeds from the menu.
 
 _Tip! If you place an OPML file named feeds.xml in your podcasts directory, it will be automatically imported when Escarpod starts!_
-
-== How do I report a bug? ==
-
-Please help us fix all the bugs in Escarpod! You can easily submit a bug using the [http://code.google.com/p/bergamot/issues/list Issues] link at the top of the page.
