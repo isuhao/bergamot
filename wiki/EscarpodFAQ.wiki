@@ -1,5 +1,20 @@
 #summary Frequently Asked Questions for Escarpod
 
+== How do I send a bug report? ==
+
+There are still bugs in Escarpod that may cause the program to crash in some situations. If you find a series of steps that will reliably crash Escarpod, please help us to improve it by sending us a log and a description of what caused the problem using the [http://code.google.com/p/bergamot/issues/entry Issue tracker].
+
+Escarpod maintains an action log in the file `C:\logs\escarpod\debug.log`, assuming the directory `c:\logs\escarpod` exists. The built-in UIQ file manager will not let you access this directory, so you will need a third party tool like [http://cellphonesoft.com/1down.php Swiss Manager] to do this.
+
+To obtain a log, complete the following steps
+
+  # Create the directory `C:\logs\escarpod`
+  # Run Escarpod, reproduce the crash
+  # Copy the file `C:\logs\escarpod\debug.log` to a folder you can access from other UIQ programs, for example the folder `C:\Media Files\other` or your memory stick at `D:` or `E:`
+  # Send the file to your PC using bluetooth, the serial cable, email or by moving your memory stick
+  # Attach the file to your issue report.
+  # Feel good that you contributed to Escarpod!
+
 == I can't add any feeds! ==
 
 Escarpod needs URLs to RSS files to access feeds. If Escarpod fails to load a feed, make sure you entered the URL of an RSS file, and not an HTML file. RSS files commonly end with .rss or .xml.
