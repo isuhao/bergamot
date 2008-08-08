@@ -33,7 +33,7 @@ Yes, you can:
 
   * _Delete shows_ using the backspace/clear button on your phone.
   * _Jump back and ahead_ while playing a show using sideways buttons.
-  * _Mark played/unplayed_ using the asterisk (`* `)
+  * _Mark played/unplayed_ using the asterisk (`*`)
 
 == Can I use a Remote Control? ==
 
