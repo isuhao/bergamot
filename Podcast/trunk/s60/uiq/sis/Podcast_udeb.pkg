@@ -1,0 +1,36 @@
+; EN=01 FR=02 GE=03 SP=04 IT=05 SW=06 DA=07 RU=16 HU=17 CS=25 PL=27 CA=44 ET=49; 
+
+&EN,FR,GE,SP,IT,SW,DA,RU,HU,CS,PL,CA,ET
+:"Bergamot Project"
+%{"Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project","Bergamot Project"}
+#{"Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod","Escarpod", "Escarpod","Escarpod"}, (0xA00046BD), 1, 10, 0, TYPE=SA
+
+;(0x101F6300), 3, 0, 0, {"UIQ30ProductID"}
+
+; Freeware installation "warning" required by Symbian signed
+"../../common/config/FreewareWarningEN.txt"-"",FT 
+;"./DownloadWarningEN.txt"-"",FT 
+
+"$(EPOCROOT)/epoc32/release/gcce/udeb/PodcastClient.exe"-"!:\sys\bin\PodcastClient.exe"
+"$(EPOCROOT)/epoc32/data/z/resource/apps/PodcastClient.mbm"-"!:\resource\apps\PodcastClient.mbm"
+"$(EPOCROOT)/epoc32/data/z/private/10003A3F/apps/PodcastClient_reg.rsc"-"!:\private\10003a3f\import\apps\PodcastClient_reg.rsc"
+"../../common/config/config.cfg"-"c:\private\A00046ae\config.cfg"
+"../../common/config/defaultfeeds.xml"-"c:\private\A00046ae\defaultfeeds.xml"
+
+{
+"$(EPOCROOT)/epoc32/data/z/resource/apps/PodcastClient.R01"
+"$(EPOCROOT)/epoc32/data/z/resource/apps/PodcastClient.R02"
+"$(EPOCROOT)/epoc32/data/z/resource/apps/PodcastClient.R03"
+"$(EPOCROOT)/epoc32/data/z/resource/apps/PodcastClient.R04"
+"$(EPOCROOT)/epoc32/data/z/resource/apps/PodcastClient.R05"
+"$(EPOCROOT)/epoc32/data/z/resource/apps/PodcastClient.R06"
+"$(EPOCROOT)/epoc32/data/z/resource/apps/PodcastClient.R07"
+"$(EPOCROOT)/epoc32/data/z/resource/apps/PodcastClient.R16"
+"$(EPOCROOT)/epoc32/data/z/resource/apps/PodcastClient.R17"
+"$(EPOCROOT)/epoc32/data/z/resource/apps/PodcastClient.R25"
+"$(EPOCROOT)/epoc32/data/z/resource/apps/PodcastClient.R27"
+"$(EPOCROOT)/epoc32/data/z/resource/apps/PodcastClient.R44"
+"$(EPOCROOT)/epoc32/data/z/resource/apps/PodcastClient.R49"
+}-"!:\resource\apps\PodcastClient.rsc"
+
+"$(EPOCROOT)/epoc32/data/z/resource/apps/PodcastClient_loc.rsc"-"!:\resource\apps\PodcastClient_loc.rsc"
