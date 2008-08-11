@@ -1,9 +1,0 @@
-#ifndef PODCAST_HRH
-#define PODCAST_HRH
-
-enum TPodcastCommandIds
-    {    
-    EPodcastCmdSettings = 0x6000
-    };
-
-#endif
