@@ -1,11 +1,9 @@
-#summary You can sync, or you can swim
 #labels Featured
-
 http://bergamot.googlecode.com/svn/wiki/swimicon.jpg 
 
 = Swim =
 
-Swim is a utility for automatic periodic synchronization of data in UIQ3 with internet servers such as Google Calendar (through [http://www.goosync.com/ GooSync]), [http://www.mobical.net Mobical] and [http://zyb.com Zyb]. It makes use of the existing SyncML support in the system, and adds timing capabilities, something UIQ mysteriously lacks! You can set it to sync your data every 5 minutes, every hour, every 4 hours or every 24 hours.
+Swim is a utility for automatic periodic synchronization of data in UIQ3 with internet servers such as Google Calendar (through [http://www.goosync.com/ GooSync]), [http://www.mobical.net Mobical], [http://zyb.com Zyb] and [http://ovi.com/ Ovi]. It makes use of the existing SyncML support in the system, and adds timing capabilities, something UIQ mysteriously lacks! You can set it to sync your data every 5 minutes, every hour, every 4 hours or every 24 hours.
 
 == Screenshots ==
 
