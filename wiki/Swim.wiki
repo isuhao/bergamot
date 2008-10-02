@@ -10,14 +10,15 @@ Swim is a utility for automatic periodic synchronization of data in UIQ3 with in
 http://bergamot.googlecode.com/svn/wiki/swim1.jpg
 http://bergamot.googlecode.com/svn/wiki/swim2.jpg
 
-== How To Get ==
+== How To Install ==
 
-You can download the SIS file from Releases below, however Swim makes use of Symbian features that require signing. As I have not deemed it good enough to send for signing yet, you basically have these two options:
+To use Swim, you need to do two things:
 
-  * Get a developer certificate from symbiansigned.com and sign it yourself in a complicated manner, possibly using [http://www.barakharel.com/signme/ SignMe!]
-  * Wait until I have it signed for everybody to enjoy, which I will do soon!
+  # Download the unsigned Swim SIS file from our [http://code.google.com/p/bergamot/downloads/list download page].
+  # Sign Swim using Symbian [https://www.symbiansigned.com/app/page/public/openSignedOnline.do Open Signed Online]
+  # Install the signed SIS file on your phone.
 
-== Usage ==
+== How to Use ==
 
   # Set up one or more SyncML accounts in your agenda manager
   # Run Swim, and set up a timer
@@ -25,7 +26,10 @@ You can download the SIS file from Releases below, however Swim makes use of Sym
 
 == Releases ==
 
-The complete source code is found in the [http://bergamot.googlecode.com/svn/Sync/trunk subversion repository]. Compiled binaries for each release can be found on our [http://code.google.com/p/bergamot/downloads/list Downloads page]. Note that the unsigned binaries are unusable without signing them yourself. See "Issues" below.
+The complete source code is found in the [http://bergamot.googlecode.com/svn/Sync/trunk subversion repository]. Compiled binaries for each release can be found on our [http://code.google.com/p/bergamot/downloads/list Downloads page]. Note that the unsigned binaries are unusable without signing them yourself!
+
+  * 0.30 (2008-10-??)
+    * Finally changed UIDs so Swim can be signed with Symbian [https://www.symbiansigned.com/app/page/public/openSignedOnline.do Open Signed Online]!
 
   * 0.20 (2008-02-25) [http://bergamot.googlecode.com/svn/Sync/tags/beta2 Source]
     * Autostart now works on newer firmware
