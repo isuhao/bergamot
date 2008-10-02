@@ -1,7 +1,35 @@
 #include "SyncClientAppUi.h"
 #include "SyncClientView.h"
 #include <QikCommand.h>
+#include <EIKDIALG.H>
+#include "SyncClient.hrh"
+#include "SyncClientView.h"
+#include <SyncClient.rsg>
+#include <EIKLABEL.H>
 
+class CAboutDlg:public CEikDialog
+{
+public:
+  CAboutDlg()
+  {
+  }
+
+  ~CAboutDlg()
+  {
+  }
+
+  void PreLayoutDynInitL()
+  {
+	  CEikLabel* label = static_cast<CEikLabel*>(ControlOrNull(ESwimAboutText));
+	  if(label != NULL)
+	  {
+		  HBufC* aboutText = iEikonEnv->AllocReadResourceLC(R_SWIM_ABOUT_TEXT);
+		  label->SetTextL(*aboutText);
+		  CleanupStack::PopAndDestroy(aboutText);
+	  }
+  }
+
+};
 
 /*-----------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------*/
@@ -30,10 +58,10 @@ void CSyncClientAppUi::HandleCommandL(CQikCommand &aCommand)
   {
         case EMyAbout:
         {
-                CEikonEnv::InfoWinL(_L("About Swim"), _L("Swim 0.2\n\n(c) 2008, The Bergamot Project\nhttp://bergamot.googlecode.com"));
+			CEikDialog* dlg = new (ELeave) CAboutDlg;
+			dlg->ExecuteLD(R_SWIM_ABOUT_DLG);
         }
         return;
   }
   CQikAppUi::HandleCommandL(aCommand);
 }
-

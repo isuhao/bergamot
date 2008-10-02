@@ -6,6 +6,7 @@
 #include <BAUTILS.H>
 #include <S32FILE.H>
 #include <e32base.h>
+#include "debug.h"
 
 CSyncServer::CSyncServer(CActive::TPriority aActiveObjectPriority) 
 	: CServer2(aActiveObjectPriority) { }
@@ -41,14 +42,14 @@ TInt CSyncServer::ThreadFunction(TAny * /*aStarted */)
     TRAPD(error, pS->LoadSettingsL());	
     if (error != KErrNone)
     {
-        	RDebug::Print(_L("LoadSettingsL error %d"), error);
+        	DP1("LoadSettingsL error %d", error);
             CSyncServer::PanicServer(EStartServer);
     }
 
     error = pS->Start(KSyncServerName);
     if (error != KErrNone)
     {
-    	RDebug::Print(_L("pS->Start error"));
+    	DP("pS->Start error");
         CSyncServer::PanicServer(EStartServer);
     }
     
@@ -56,19 +57,14 @@ TInt CSyncServer::ThreadFunction(TAny * /*aStarted */)
     RSemaphore s;
 	error = s.OpenGlobal(KSyncServerSemaphore);
 	if (error == KErrNone) {
-		RDebug::Print(_L("Signalling semaphore"));
+		DP("Signalling semaphore");
 		s.Signal();
 	}
 	s.Close();
 	
-    //User::RenameThread(KSyncServerName);
-    //RDebug::Print(_L("Rendezvous"));
-   
-    //RProcess::Rendezvous(KErrNone);
-
-	RDebug::Print(_L("CActiveScheduler::Start"));
+	DP("CActiveScheduler::Start");
 	CActiveScheduler::Start();
-	RDebug::Print(_L("CActiveScheduler::Start done"));
+	DP("CActiveScheduler::Start done");
     delete pS;
     delete pA;
     delete cleanup;
@@ -77,23 +73,23 @@ TInt CSyncServer::ThreadFunction(TAny * /*aStarted */)
 }
 
 void CSyncServer::LoadSettingsL() {
-	RDebug::Print(_L("LoadSettings"));
+	DP("LoadSettings");
 	RFs fsSession;
 	int error = fsSession.Connect(); 
-	RDebug::Print(_L("RFs error: %d"), error);
+	DP1("RFs error: %d", error);
 	TFileName path;
 	TParse	filestorename;
 	
 	TBuf<100> privatePath;
 	fsSession.PrivatePath(privatePath);
-	RDebug::Print(_L("PrivatePath: %S"), &privatePath);
+	DP1("PrivatePath: %S", &privatePath);
 	BaflUtils::EnsurePathExistsL(fsSession, privatePath);
 	privatePath.Append(KConfigFileName);
-	RDebug::Print(_L("File: %S"), &privatePath);
+	DP1("File: %S", &privatePath);
 	fsSession.Parse(privatePath, filestorename);
 
 	if (!BaflUtils::FileExists(fsSession, privatePath)) {
-		RDebug::Print(_L("No config file"));	
+		DP("No config file");	
 		return;
 	}
 	
@@ -102,7 +98,7 @@ void CSyncServer::LoadSettingsL() {
 	CleanupStack::PushL(store);
 	
 	if (error != KErrNone) {
-		RDebug::Print(_L("error=%d"), error);
+		DP1("error=%d", error);
 		fsSession.Close();
 		CleanupStack::Pop(store);
 		return;
@@ -112,15 +108,15 @@ void CSyncServer::LoadSettingsL() {
 	instream.OpenLC(*store, store->Root());
 
 	int count = instream.ReadInt32L();
-	RDebug::Print(_L("Read count: %d"), count);
+	DP1("Read count: %d", count);
 	for (int i=0;i<count;i++) {
 		CSyncServerData readData;
 		instream  >> readData;	
 		timerArray.Append(readData);
-		RDebug::Print(_L("Read settings %d: profile %d with period %d"), i, readData.profileId, readData.period);
+		DP3("Read settings %d: profile %d with period %d", i, readData.profileId, readData.period);
 		SetTimer(readData.profileId, readData.period);
 	}
-	RDebug::Print(_L("Read all accounts"));
+	DP("Read all accounts");
 	CleanupStack::PopAndDestroy(); // instream
 	fsSession.Close();
 	CleanupStack::Pop(store);
@@ -128,7 +124,7 @@ void CSyncServer::LoadSettingsL() {
 
 void CSyncServer::SaveSettings() 
 {
-	RDebug::Print(_L("SaveSettings"));
+	DP("SaveSettings");
 	RFs fsSession;
 	fsSession.Connect(); 
 	TFileName path;
@@ -136,10 +132,9 @@ void CSyncServer::SaveSettings()
 
 	TBuf<100> privatePath;
 	fsSession.PrivatePath(privatePath);
-	RDebug::Print(_L("PrivatePath: %S"), &privatePath);
 	BaflUtils::EnsurePathExistsL(fsSession, privatePath);
 	privatePath.Append(KConfigFileName);
-	RDebug::Print(_L("File: %S"), &privatePath);
+	DP1("File: %S", &privatePath);
 	fsSession.Parse(privatePath, filestorename);
 	CFileStore* store = CDirectFileStore::ReplaceLC(fsSession, filestorename.FullName(), EFileWrite);
 	store->SetTypeL(KDirectFileStoreLayoutUid);
@@ -149,7 +144,7 @@ void CSyncServer::SaveSettings()
 	
 	outstream.WriteInt32L(timerArray.Count());
 	for (int i=0;i<timerArray.Count();i++) {
-		RDebug::Print(_L("Storing account %i"), i);
+		DP1("Storing account %i", i);
 		outstream  << timerArray[i];
 	}
 	
@@ -165,35 +160,35 @@ void CSyncServer::SaveSettings()
 void CSyncServer::SetTimer(TSmlProfileId profileId, TSyncServerPeriod period)
 	{
 	CSyncServerData* sData = NULL;
-	RDebug::Print(_L("SetTimer for profile %d"), profileId);
+	DP1("SetTimer for profile %d", profileId);
 	
 	for (int i=0;i<timerArray.Count();i++) {
 		if (timerArray[i].profileId == profileId) {
-			RDebug::Print(_L("Found profile %d"), profileId);
+			DP1("Found profile %d", profileId);
 			sData = &timerArray[i];
 		}
 	}
 	
 	if (sData == NULL) {
-		RDebug::Print(_L("Creating new sync data for profile %d"), profileId);
+		DP1("Creating new sync data for profile %d", profileId);
 		sData = new CSyncServerData();
 		sData->timer = new CSyncServerTimer(profileId);
 		sData->timer->ConstructL();
 		sData->profileId = profileId;
 		sData->period = period;
 		if (period != ENever) {
-			RDebug::Print(_L("Starting timer for profile %d, period=%d"), profileId, period);
+			DP2("Starting timer for profile %d, period=%d", profileId, period);
 			sData->timer->SetPeriod(period);
 			sData->timer->RunPeriodically();
 		}
 		timerArray.Append(*sData);
 	} else {
 		if (sData->timer == NULL) {
-			RDebug::Print(_L("Creating new timer for profile %d"), profileId);
+			DP1("Creating new timer for profile %d", profileId);
 			sData->timer = new CSyncServerTimer(profileId);
 			sData->timer->ConstructL();
 		} else if (sData->timer != NULL) {
-			RDebug::Print(_L("Stopping existing timer for profile %d"), profileId);
+			DP1("Stopping existing timer for profile %d", profileId);
 			sData->timer->Cancel();
 		}
 
@@ -201,7 +196,7 @@ void CSyncServer::SetTimer(TSmlProfileId profileId, TSyncServerPeriod period)
 		sData->period = period;
 
 		if (period != ENever) {
-			RDebug::Print(_L("Starting timer for profile %d, period=%d"), profileId, period);
+			DP2("Starting timer for profile %d, period=%d", profileId, period);
 			sData->timer->SetPeriod(period);
 			sData->timer->RunPeriodically();
 		}
@@ -214,7 +209,7 @@ TSyncServerPeriod CSyncServer::GetTimer(TSmlProfileId profileId)
 	for (int i=0;i<timerArray.Count();i++)
 		{
 			if (timerArray[i].profileId == profileId) {
-				RDebug::Print(_L("Found profile %d with period %d"), profileId, timerArray[i].period);
+				DP2("Found profile %d with period %d", profileId, timerArray[i].period);
 				return (TSyncServerPeriod) timerArray[i].period;
 			}
 		}
@@ -224,7 +219,7 @@ TSyncServerPeriod CSyncServer::GetTimer(TSmlProfileId profileId)
 
 GLDEF_C TInt E32Main()
 {
-	RDebug::Print(_L("SyncServer: Starting"));
+	DP("SyncServer: Starting");
 
 	CTrapCleanup* cleanup=CTrapCleanup::New();
 	TInt r=KErrNoMemory;
@@ -234,7 +229,7 @@ GLDEF_C TInt E32Main()
 		delete cleanup;
 		}
 	__UHEAP_MARKEND;
-	RDebug::Print(_L("SyncServer: Exiting, error=%d"), r);	
+	DP1("SyncServer: Exiting, error=%d", r);	
 	return r;
 }
 

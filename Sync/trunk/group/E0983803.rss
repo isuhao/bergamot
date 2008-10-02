@@ -1,13 +1,8 @@
-// E8000002.rss
-//
-// Copyright (c) 2005 Symbian Software Ltd.  All rights reserved.
-
-
 #include <RegistryInfo.rh>
 
 RESOURCE REGISTRY_INFO r_registry
 	{
-	dll_uid = 0x2000FED8; // should match name of this file
+	dll_uid = 0xE0983803; // should match name of this file
 	interfaces =
 		{
 		INTERFACE_INFO
@@ -17,7 +12,7 @@ RESOURCE REGISTRY_INFO r_registry
 				{
 				IMPLEMENTATION_INFO
 					{
-					implementation_uid = 0x2000FED8;
+					implementation_uid = 0xE0983803;
 					version_no = 1;
 					display_name = "SyncServerRecognizer";
 					default_data = "";

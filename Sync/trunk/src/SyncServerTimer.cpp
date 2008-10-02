@@ -3,6 +3,7 @@
 #include <EIKENV.h>
 #include <SyncMLClient.h>
 #include <SyncMLClientDS.h>
+#include "debug.h"
 
 CSyncServerTimer::CSyncServerTimer(TSmlProfileId anId) : CTimer::CTimer(EPriorityIdle) {
 	profileId = anId;
@@ -19,14 +20,14 @@ void CSyncServerTimer::ConstructL() {
 void CSyncServerTimer::RunL() {
 //	mutex.OpenGlobal(KSyncServerMutex);
 //	mutex.Wait();
-	RDebug::Print(_L("Mutex Wait finished"));
-	RDebug::Print(_L("Sync account %d"), profileId);
+	DP("Mutex Wait finished");
+	DP1("Sync account %d", profileId);
 	RSyncMLSession session;
 	TInt error;
 	TRAP(error, session.OpenL());
 	if (error!=KErrNone)
 		{
-		RDebug::Print(_L("Session OpenL error: %d"), error);
+		DP1("Session OpenL error: %d", error);
 		}
 	RSyncMLDataSyncJob job;
 	TBuf<255> Buffer;
@@ -35,7 +36,7 @@ void CSyncServerTimer::RunL() {
 	TRAP(error,profile.OpenL(session, profileId,ESmlOpenRead));
 	if (error!=KErrNone)
 	{
-		RDebug::Print(_L("ProfileOpenL error: %d"), error);
+		DP1("ProfileOpenL error: %d", error);
 	}
 	
 	profile.Close();
@@ -45,13 +46,13 @@ void CSyncServerTimer::RunL() {
 	
 	if (error!=KErrNone)
 	{
-		RDebug::Print(_L("CreateL error: %d"), error);
+		DP1("CreateL error: %d", error);
 	}
 	
 	job.Close();
 	
 	session.Close();
-//	RDebug::Print(_L("Mutex Signal"));
+//	DP("Mutex Signal"));
 //	mutex.Signal();
 //	mutex.Close();
 	// run again
@@ -59,12 +60,12 @@ void CSyncServerTimer::RunL() {
 }
 
 void CSyncServerTimer::SetPeriod(int aPeriod) {
-	RDebug::Print(_L("Setting period to %d"), aPeriod);
+	DP1("Setting period to %d", aPeriod);
 	thePeriod = aPeriod;
 }
 
 void CSyncServerTimer::RunPeriodically() {
-	RDebug::Print(_L("RunPeriodically; thePeriod=%d"), thePeriod);
+	DP1("RunPeriodically; thePeriod=%d", thePeriod);
 	TTime time;
 	time.UniversalTime();
 
@@ -100,11 +101,11 @@ void CSyncServerTimer::RunPeriodically() {
 		return;
 	}
 
-	RDebug::Print(_L("Running timer"));
+	DP("Running timer");
 	TRAPD(error,AtUTC(time));
 	
 	if (error != KErrNone) {
-		RDebug::Print(_L("Error from AtUTC: %d"), error);
+		DP1("Error from AtUTC: %d", error);
 	}
 }
 

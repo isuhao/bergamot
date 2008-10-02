@@ -12,10 +12,10 @@
 #include <SyncMLClient.h>
 #include <SyncMLClientDS.h>
 #include "SyncServerTimer.h"
-#include "e32debug.h"
 #include "f32file.h"
 #include "EIKDIALG.H"
 #include <BAUTILS.H>
+#include "debug.h"
 
 /**
 Creates and constructs the view.
@@ -52,6 +52,7 @@ Destructor for the view
 */
 CSyncClientView::~CSyncClientView()
 	{
+	serverSession.Close();
 	}
 
 /**
@@ -96,7 +97,7 @@ void CSyncClientView::HandleCommandL(CQikCommand& aCommand)
 
 
 void CSyncClientView::CreateChoiceListItem(CQikScrollableContainer* container, int id, TDesC16 &caption, int state ) {
-	RDebug::Print(_L("CreateChoiceListItem START"));
+	DP("CreateChoiceListItem START");
 	// Check if control already exists
 	if (container->Controls().Find(EMyViewBuildingBlockBase+id).IsValid() == (int) ETrue) {
 		return;
@@ -130,24 +131,24 @@ void CSyncClientView::CreateChoiceListItem(CQikScrollableContainer* container, i
 	array->AppendL(KChoiceListText5);
 	chlst->SetArrayL(array);
 	CleanupStack::Pop(array);
-	RDebug::Print(_L("Setting handle to: %d"), EMyViewChoiceListBase+id);
+	DP1("Setting handle to: %d", EMyViewChoiceListBase+id);
 	chlst->SetUniqueHandle(EMyViewChoiceListBase+id);
 
 	chlst->SetCurrentItem(state);
 	chlst->SetObserver(this);
 	CleanupStack::Pop(chlst);
 	CleanupStack::Pop(block);
-	RDebug::Print(_L("CreateChoiceListItem END"));
+	DP("CreateChoiceListItem END");
 }
 
 void CSyncClientView::ShowSyncProfiles(CQikScrollableContainer* container) {
-	RDebug::Print(_L("ShowSyncProfiles BEGIN"));
+	DP("ShowSyncProfiles BEGIN");
 	RSyncMLSession session;
 	
 	TInt error;
 	TRAP(error, session.OpenL());
 	if (error!=KErrNone) {
-		CEikonEnv::InfoWinL(_L("KichenSync"), _L("OpenL error"));
+		DP("OpenL error");
 	}
 
 	RSyncMLDataSyncJob job;
@@ -156,21 +157,21 @@ void CSyncClientView::ShowSyncProfiles(CQikScrollableContainer* container) {
 	TRAP(error, session.ListProfilesL(profiles, ESmlDataSync));
 	if (error!=KErrNone)
 		{
-		CEikonEnv::InfoWinL(_L("SyncClient"), _L("ListProfilesL error"));
+		DP("ListProfilesL error");
 		}
 	
 	TInt numItems = profiles.Count();
-	RDebug::Print(_L("Found %d SyncML profiles"), numItems);
+	DP1("Found %d SyncML profiles", numItems);
 	TBuf<255> Buffer;
 	TBool mustRedraw = EFalse;
 	
 	if (profiles.Count() != lastViewProfiles.Count()) {
-		RDebug::Print(_L("Profile count mismatch, clearing list"));
+		DP("Profile count mismatch, clearing list");
 		mustRedraw = ETrue;
 	} else {
 		for (int i=0;i<profiles.Count();i++) {
 			if (lastViewProfiles.Find(profiles[i]) == KErrNotFound) {
-				RDebug::Print(_L("Did not find new profile %d, clearing list"), profiles[i]);
+				DP1("Did not find new profile %d, clearing list", profiles[i]);
 				mustRedraw = ETrue;
 				break;
 			}
@@ -178,6 +179,7 @@ void CSyncClientView::ShowSyncProfiles(CQikScrollableContainer* container) {
 	}
 	
 	if (mustRedraw) {
+		DP("mustRedraw");
 		lastViewProfiles = profiles;
 		CCoeControlArray &array = iContainer->Controls();
 	
@@ -185,31 +187,30 @@ void CSyncClientView::ShowSyncProfiles(CQikScrollableContainer* container) {
 		//iContainer->ResetAndDestroy();
 	    // so instead we remove them manually
 		for (int i=0;i<array.Count();i++) {
+			DP("Removing control");
 			iContainer->RemoveControl(*(array.At(i).iControl));
 		}
 		
+		DP1("profiles.Count()=%d", profiles.Count());
 		for (int i=0;i<profiles.Count();i++) {		
 				
 			RSyncMLDataSyncProfile profile;
-			RDebug::Print(_L("Reading profile %d"), profiles[i]);
+			DP1("Reading profile %d", profiles[i]);
 			TRAPD(error,profile.OpenL(session, profiles[i],ESmlOpenRead));
 			if (error!=KErrNone)
 				{
-					_LIT(KRowFormatter, "OpenL error: %d");
-					Buffer.Format(KRowFormatter, error);
-					CEikonEnv::InfoWinL(_L("SyncClient"), Buffer);
+					DP1("profile.OpenL error: %d", error);
 				}
 		
 			TRAP(error, profile.DisplayName());
 			if (error!=KErrNone)
 				{
-					_LIT(KRowFormatter, "DisplayName error: %d");
-					Buffer.Format(KRowFormatter, error);
-					CEikonEnv::InfoWinL(_L("SyncClient"), Buffer);
+				DP1("profile.DisplayName error: %d", error);
 				}
+			DP("before serverSession.GetTimer");
 			
 			TSyncServerPeriod period = serverSession.GetTimer(profiles[i]);
-			RDebug::Print(_L("DisplayName: %S, period=%d"), &profile.DisplayName(), period);
+			DP2("DisplayName: %S, period=%d", &profile.DisplayName(), period);
 	
 			if(profile.DisplayName().Compare(_L("iSync")) != 0) {
 				int selection = 0;
@@ -223,10 +224,10 @@ void CSyncClientView::ShowSyncProfiles(CQikScrollableContainer* container) {
 	
 		}
 	} else {
-		RDebug::Print(_L("Nothing new to show"));
+		DP("Nothing new to show");
 	}
 	session.Close();
-	RDebug::Print(_L("ShowSyncProfiles END"));
+	DP("ShowSyncProfiles END");
 }
 
 void CSyncClientView::ViewConstructL()
@@ -256,14 +257,14 @@ void CSyncClientView::ViewConstructL()
 
 void CSyncClientView::ViewActivatedL(const TVwsViewId &aPrevViewId, TUid aCustomMessageId, const TDesC8 &aCustomMessage)
 	{
-	RDebug::Print(_L("ViewActivatedL START"));
+	DP("ViewActivatedL START");
 
 	iContainer->BeginUpdateLC();
 	ShowSyncProfiles(iContainer);
 	iContainer->EndUpdateL();
 
 	CQikViewBase::ViewActivatedL(aPrevViewId, aCustomMessageId, aCustomMessage);
-	RDebug::Print(_L("ViewActivatedL END"));
+	DP("ViewActivatedL END");
 	}
 
 void CSyncClientView::HandleControlEventL(CCoeControl *aControl, TCoeEvent aEventType) {
@@ -271,34 +272,9 @@ void CSyncClientView::HandleControlEventL(CCoeControl *aControl, TCoeEvent aEven
 	{
 		int profileId = aControl->UniqueHandle() - EMyViewChoiceListBase;
 		CEikChoiceList* chlst = (CEikChoiceList*) aControl; //LocateControlByUniqueHandle<CEikChoiceList>(aControl->UniqueHandle());
-		RDebug::Print(_L("Handle: %d"), aControl->UniqueHandle());
+		DP1("Handle: %d", aControl->UniqueHandle());
 		TSyncServerPeriod period = (TSyncServerPeriod) chlst->CurrentItem();
-		RDebug::Print(_L("HandleControlEvent for profileNum=%d, item=%d"), profileId, period);
+		DP2("HandleControlEvent for profileNum=%d, item=%d", profileId, period);
 		serverSession.SetTimer(profileId,period);
 	}
 }
-
-
-class CAboutDlg:public CEikDialog
-{
-public:
-  CAboutDlg()
-  {
-  }
-
-  ~CAboutDlg()
-  {
-  }
-
-  void PreLayoutDynInitL()
-  {
-	  CEikLabel* label = static_cast<CEikLabel*>(ControlOrNull(ESwimAboutText));
-	  if(label != NULL)
-	  {
-		  HBufC* aboutText = iEikonEnv->AllocReadResourceLC(R_SWIM_ABOUT_TEXT);
-		  label->SetTextL(*aboutText);
-		  CleanupStack::PopAndDestroy(aboutText);
-	  }
-  }
-
-};

@@ -5,6 +5,7 @@ enum TSyncClientCommands
     {
     ESyncClientBaseViewPage = 1,
     ESwimAboutText,
+    ESwimAboutIcon,
     EMyAbout
     };
     

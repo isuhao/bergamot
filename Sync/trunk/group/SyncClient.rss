@@ -37,23 +37,11 @@ RESOURCE QIK_VIEW_CONFIGURATIONS r_SyncClient_baseview_ui_configurations
       },
     QIK_VIEW_CONFIGURATION
       {
-      ui_config_mode = KQikPenStyleTouchLandscape;
-      view = r_SyncClient_baseview_layout;
-      command_list = r_SyncClient_baseview_commands;
-      },
-    QIK_VIEW_CONFIGURATION
-      {
       ui_config_mode = KQikSoftkeyStyleSmallPortrait;
       view = r_SyncClient_baseview_layout;
       command_list = r_SyncClient_baseview_commands;
-      },
-    QIK_VIEW_CONFIGURATION
-      {
-      ui_config_mode = KQikSoftkeyStyleSmallLandscape;
-      view = r_SyncClient_baseview_layout;
-      command_list = r_SyncClient_baseview_commands;
       }
-    };
+   };
 }
 
 
@@ -104,8 +92,41 @@ RESOURCE DIALOG r_podcast_about_dlg
 		};
 }
 
-rls_string STRING_r_about_text "About"
+rls_string STRING_r_about_title "About"
+rls_string STRING_r_about_text "Swim 0.30\n\nCopyright © 2007-2008,\nThe Bergamot Project\n\nhttp://bergamot.googlecode.com"
 
+RESOURCE TBUF r_swim_about_title { buf = STRING_r_about_title;}
 RESOURCE TBUF r_swim_about_text { buf = STRING_r_about_text;}
 
+RESOURCE DIALOG r_swim_about_dlg
+{
+	buttons = R_EIK_BUTTONS_DONE;
+
+	flags = EEikDialogFlagWait|EEikDialogFlagButtonsBelow;
+	title = STRING_r_about_title;
+	items = 
+		{
+			DLG_LINE
+			{
+			id = ESwimAboutIcon;
+			type = EEikCtImage;
+			control = IMAGE
+				{
+			    bmpfile = "\\Resource\\Apps\\SyncClient.mbm";
+			    bmpid = 2;
+			    bmpmask = 3;
+			};
+			},
+			DLG_LINE
+			{
+			id = ESwimAboutText;
+			itemflags = EQikDlgItemCaptionAboveControl|EQikDlgItemCtlIsEditInPlace|EQikDlgItemHideHighlight;			
+			type = EEikCtLabel;
+			control = LABEL
+			{
+			
+			};
+			}
+		};
+}
 

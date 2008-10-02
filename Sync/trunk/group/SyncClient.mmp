@@ -1,6 +1,6 @@
 TARGET            SyncClient.exe
 TARGETTYPE        exe
-UID               0x100039CE 0x2000FED6
+UID               0x100039CE 0xE0983801
 VENDORID          0
 
 SYSTEMINCLUDE   \epoc32\include
@@ -31,6 +31,9 @@ LIBRARY			eikctl.lib
 LIBRARY			qikdlg.lib
 LIBRARY			qikallocdll.lib 
 LIBRARY			SmlClient.lib
+LIBRARY			eikdlg.lib
+
+DEBUGLIBRARY	flogger.lib
 
 START BITMAP SyncClient.mbm
 	TARGETPATH \resource\apps
@@ -60,4 +63,4 @@ START RESOURCE SyncClient.rss
 	HEADER
 END
 
-CAPABILITY LocalServices NetworkServices ReadDeviceData
+CAPABILITY LocalServices NetworkServices ReadDeviceData WriteDeviceData

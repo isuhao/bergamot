@@ -1,12 +1,13 @@
 #include <eikenv.h>
 #include <ImplementationProxy.h> 
+#include "debug.h"
 
 // User include
 #include "SyncServerRecognizer.h"
 
 const TInt KNumDataTypes = 1;
-const TUid KExampleDllUid = {0x2000FED8};
-const TInt KImplementationUid = 0x2000FED8;
+const TUid KExampleDllUid = {0xE0983803};
+const TInt KImplementationUid = 0xE0983803;
 
 // An example mime type
 _LIT8(KExampleTextMimeType, "text/example");
@@ -91,14 +92,14 @@ void CAppStarter::DoCancel() { }
 
 void CAppStarter::RunL()
 {
-	RDebug::Print(_L("CAppStarter::RunL"));
+	DP("CAppStarter::RunL");
 	User::LeaveIfError(iStatus.Int());
 
 	RProcess process;
 	int ret = process.Create(_L("SyncServer"), _L(""));
 	
 	process.Resume();
-	RDebug::Print(_L("Started process"));
+	DP1("Started process, ret=%d", ret);
 	
 }
 
