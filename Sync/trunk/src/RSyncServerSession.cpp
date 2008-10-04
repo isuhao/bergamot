@@ -1,15 +1,14 @@
 #include "RSyncServerSession.h"
-#include "debug.h"
 
 TInt RSyncServerSession::Connect()
 {
-	DP("RSyncServerSession::Connect");
+	//DP("RSyncServerSession::Connect");
 	int error = CreateSession(KSyncServerName, TVersion(1,0,0), KDefaultMessageSlots);
 	
 	if (error == KErrNone) {
-		DP("Successfully connected to sync server");
+		//DP("Successfully connected to sync server");
 	} else {
-		DP("Failed to connect to sync server, attempting to start");
+		//DP("Failed to connect to sync server, attempting to start");
 		RProcess server;
 
 		RSemaphore s;
@@ -17,47 +16,47 @@ TInt RSyncServerSession::Connect()
 		
 		error = server.Create(KSyncServerExe, TPtr(NULL,0));
 		if (error == KErrNone) {
-			DP("Successfully started server");
+			//DP("Successfully started server");
 			server.Resume();			
 	    	s.Wait();
-			DP("Got semaphore");
+			//DP("Got semaphore");
 
 			error = CreateSession(KSyncServerName, TVersion(1,0,0), KDefaultMessageSlots);
 				
 			if (error == KErrNone) {
-				DP("Successfully connected to sync server");
+				//DP("Successfully connected to sync server");
 			} else {
 				return error;
 			}
 	    	server.Close();
 		} else {
-			DP("Failed to start server");
+			//DP("Failed to start server");
 		}
 		s.Close();	
 	}
 	
-	DP1("RSyncServerSession::Connect returning %d", error);
+	//DP1("RSyncServerSession::Connect returning %d", error);
 	return error;
 }
 
 
 void RSyncServerSession::SetTimer(TSmlProfileId profileId, TSyncServerPeriod period)
 	{
-	DP("RSyncServerSession::SetTimer");
+	//DP("RSyncServerSession::SetTimer BEGIN");
 	TIpcArgs args(profileId, period);
 	SendReceive(ESetTimer, args);
-	
+	//DP("RSyncServerSession::SetTimer END");
 	}
 
 TSyncServerPeriod RSyncServerSession::GetTimer(TSmlProfileId profileId)
 	{
-	DP1("RSyncServerSession::GetTimer, profileId=%d", profileId);
+	//DP("RSyncServerSession::GetTimer BEGIN");
     TPckgBuf<TInt> pckg;
-    TIpcArgs args(profileId, &pckg);
+    TIpcArgs args((TInt)profileId, &pckg);
 	
 	SendReceive(EGetTimer, args);
 	
-	TInt res = pckg();
-	DP1("RSyncServerSession::GetTimer returning %d", res);
+	TInt res = 1;//pckg();
+	//DP1("RSyncServerSession::GetTimer END, res=%d", res);
 	return (TSyncServerPeriod) res;
 	}
