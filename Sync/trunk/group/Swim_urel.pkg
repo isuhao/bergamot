@@ -8,9 +8,12 @@
 
 "\Symbian\UIQ3SDK\epoc32\release\gcce\urel\SyncClient.exe"-"!:\sys\bin\SyncClient.exe", FR
 "\Symbian\UIQ3SDK\epoc32\release\gcce\urel\SyncServer.exe"-"!:\sys\bin\SyncServer.exe"
+
 "\Symbian\UIQ3SDK\epoc32\data\z\resource\apps\SyncClient.rsc"-"!:\resource\apps\SyncClient.rsc"
-"\Symbian\UIQ3SDK\epoc32\data\Z\Resource\Apps\SyncClient.mbm"-"!:\resource\apps\SyncClient.mbm"
+"\Symbian\UIQ3SDK\epoc32\data\z\resource\apps\SyncClient.mbm"-"!:\resource\apps\SyncClient.mbm"
 "\Symbian\UIQ3SDK\epoc32\data\z\resource\apps\SyncClient_loc.RSC"-"!:\resource\apps\SyncClient_loc.RSC"
 "\Symbian\UIQ3SDK\epoc32\data\z\private\10003a3f\apps\SyncClient_reg.rsc"-"!:\private\10003a3f\import\apps\SyncClient_reg.rsc"
-"\Symbian\UIQ3SDK\epoc32\release\gcce\udeb\SyncServerRecognizer.dll" -"!:\sys\bin\SyncServerRecognizer.dll"
-"\Symbian\UIQ3SDK\epoc32\data\z\resource\Plugins\SyncServerRecognizer.rsc" -"!:\resource\Plugins\SyncServerRecognizer.rsc"
+
+; Recognizer for auto start
+"\Symbian\UIQ3SDK\epoc32\release\gcce\urel\SyncServerRecognizer.dll" -"!:\sys\bin\SyncServerRecognizer.dll"
+"\Symbian\UIQ3SDK\epoc32\data\z\resource\plugins\SyncServerRecognizer.rsc" -"!:\resource\Plugins\SyncServerRecognizer.rsc"

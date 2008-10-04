@@ -32,8 +32,7 @@ LIBRARY			qikdlg.lib
 LIBRARY			qikallocdll.lib 
 LIBRARY			SmlClient.lib
 LIBRARY			eikdlg.lib
-
-DEBUGLIBRARY	flogger.lib
+LIBRARY			flogger.lib
 
 START BITMAP SyncClient.mbm
 	TARGETPATH \resource\apps
@@ -63,4 +62,4 @@ START RESOURCE SyncClient.rss
 	HEADER
 END
 
-CAPABILITY LocalServices NetworkServices ReadDeviceData WriteDeviceData
+CAPABILITY LocalServices NetworkServices ReadDeviceData
