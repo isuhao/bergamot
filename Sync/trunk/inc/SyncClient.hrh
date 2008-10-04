@@ -12,7 +12,8 @@ enum TSyncClientCommands
 enum TSyncClientDefines
 	{
 	EMyViewBuildingBlockBase,
-	EMyViewChoiceListBase
+	EMyViewChoiceListBase,
+	ESwimContextLabel
 	};
 
 #endif

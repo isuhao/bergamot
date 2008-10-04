@@ -3,6 +3,7 @@
 #include <EIKENV.h>
 #include <SyncMLClient.h>
 #include <SyncMLClientDS.h>
+#include "SyncServerData.h"
 #include "debug.h"
 
 CSyncServerTimer::CSyncServerTimer(TSmlProfileId anId) : CTimer::CTimer(EPriorityIdle) {
@@ -70,34 +71,47 @@ void CSyncServerTimer::RunPeriodically() {
 	time.UniversalTime();
 
 	switch(thePeriod) {
-	case 0:
+	case ENever:
 		return;
-	case 1: {
+	case EFifteenMinutes: {
 //		TTimeIntervalSeconds tmi; // for testing
 		TTimeIntervalMinutes tmi;
-		tmi = 5;
+		tmi = 15;
 		time = time + tmi;
 		break;
 	}
-	case 2: {
+	case EOneHour: {
 		TTimeIntervalMinutes tmi;
 		tmi = 60;
 		time = time + tmi;
 		break;
 	}
-	case 3: {
+	case EFourHours: {
 		TTimeIntervalHours tmi;
 		tmi = 4;
 		time = time + tmi;
 		break;
 	}
-	case 4: {
+	case ETwelveHours: {
+		TTimeIntervalHours tmi;
+		tmi = 12;
+		time = time + tmi;
+		break;
+	}	
+	case EDaily: {
 		TTimeIntervalHours tmi;
 		tmi = 24;
 		time = time + tmi;
 		break;
 	}
+	case EWeekly: {
+		TTimeIntervalDays tmi;
+		tmi = 7;
+		time = time + tmi;
+		break;
+	}
 	default:
+		DP1("ERROR: Invalid period=%d", thePeriod);
 		return;
 	}
 

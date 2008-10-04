@@ -7,10 +7,12 @@
 enum TSyncServerPeriod
 {
 	ENever,
-	EFiveMinutes,
+	EFifteenMinutes,
 	EOneHour,
 	EFourHours,
-	ETwentyFourHours,
+	ETwelveHours,
+	EDaily,
+	EWeekly,
 	ENoPeriod = -1
 };
 

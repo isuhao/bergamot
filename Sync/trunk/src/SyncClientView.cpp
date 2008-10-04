@@ -3,6 +3,7 @@
 #include <QikScrollableContainer.h>
 #include <QikRowLayoutManager.h>
 #include <QikGridLayoutManager.h>
+#include <QikStockControls.hrh>
 #include <QikBuildingBlock.h>
 #include <QikCommand.h>
 #include "SyncClient.hrh"
@@ -95,6 +96,18 @@ void CSyncClientView::HandleCommandL(CQikCommand& aCommand)
 		}
 	}
 
+void CSyncClientView::CreateNoItemsLabel(CQikScrollableContainer* container) {
+	DP("CreateNoItemsLabel START");
+	CQikBuildingBlock* block = CQikBuildingBlock::CreateSystemBuildingBlockL(EQikCtOnelineBuildingBlock);
+	container->AddControlLC(block, EMyViewBuildingBlockBase);
+	block->ConstructL();
+	block->SetUniqueHandle(EMyViewBuildingBlockBase);
+	block->SetDividerBelow(EFalse);
+	block->SetDimmed(ETrue);
+	block->SetCaptionL(_L("No sync profiles found"), EQikItemSlot1); //the slot ids are defined in qikon.hrh
+	CleanupStack::Pop(block);
+	DP("CreateNoItemsLabel END");
+}
 
 void CSyncClientView::CreateChoiceListItem(CQikScrollableContainer* container, int id, TDesC16 &caption, int state ) {
 	DP("CreateChoiceListItem START");
@@ -112,23 +125,27 @@ void CSyncClientView::CreateChoiceListItem(CQikScrollableContainer* container, i
 	block->SetCaptionL(caption, EQikItemSlot1); //the slot ids are defined in qikon.hrh
 	
 	_LIT(KChoiceListText1, "Manually");
-	_LIT(KChoiceListText2, "Every 5 minutes");
+	_LIT(KChoiceListText2, "Every 15 minutes");
 	_LIT(KChoiceListText3, "Every hour");
 	_LIT(KChoiceListText4, "Every 4 hours");
-	_LIT(KChoiceListText5, "Daily");
+	_LIT(KChoiceListText5, "Every 12 hours");
+	_LIT(KChoiceListText6, "Daily");
+	_LIT(KChoiceListText7, "Weekly");
 	
 	CEikChoiceList* chlst = new (ELeave) CEikChoiceList();
 	block->AddControlLC(chlst, EQikItemSlot2);
 	
 	chlst->ConstructL(0 /*flags*/, 0 /*maxDisplayChar*/);
 	chlst->SetObserver(this);
-	CDesCArrayFlat* array = new(ELeave) CDesCArrayFlat(5);
+	CDesCArrayFlat* array = new(ELeave) CDesCArrayFlat(7);
 	CleanupStack::PushL(array);
 	array->AppendL(KChoiceListText1);
 	array->AppendL(KChoiceListText2);
 	array->AppendL(KChoiceListText3);
 	array->AppendL(KChoiceListText4);
 	array->AppendL(KChoiceListText5);
+	array->AppendL(KChoiceListText6);
+	array->AppendL(KChoiceListText7);
 	chlst->SetArrayL(array);
 	CleanupStack::Pop(array);
 	DP1("Setting handle to: %d", EMyViewChoiceListBase+id);
@@ -165,7 +182,7 @@ void CSyncClientView::ShowSyncProfiles(CQikScrollableContainer* container) {
 	TBuf<255> Buffer;
 	TBool mustRedraw = EFalse;
 	
-	if (profiles.Count() != lastViewProfiles.Count()) {
+	if (profiles.Count() == 0 || profiles.Count() != lastViewProfiles.Count()) {
 		DP("Profile count mismatch, clearing list");
 		mustRedraw = ETrue;
 	} else {
@@ -192,36 +209,40 @@ void CSyncClientView::ShowSyncProfiles(CQikScrollableContainer* container) {
 		}
 		
 		DP1("profiles.Count()=%d", profiles.Count());
-		for (int i=0;i<profiles.Count();i++) {		
+		if (profiles.Count() == 0) {
+			CreateNoItemsLabel(container);
+		} else {
+			for (int i=0;i<profiles.Count();i++) {		
+					
+				RSyncMLDataSyncProfile profile;
+				DP1("Reading profile %d", profiles[i]);
+				TRAPD(error,profile.OpenL(session, profiles[i],ESmlOpenRead));
+				if (error!=KErrNone)
+					{
+						DP1("profile.OpenL error: %d", error);
+					}
+			
+				TRAP(error, profile.DisplayName());
+				if (error!=KErrNone)
+					{
+					DP1("profile.DisplayName error: %d", error);
+					}
+				DP("before serverSession.GetTimer");
 				
-			RSyncMLDataSyncProfile profile;
-			DP1("Reading profile %d", profiles[i]);
-			TRAPD(error,profile.OpenL(session, profiles[i],ESmlOpenRead));
-			if (error!=KErrNone)
-				{
-					DP1("profile.OpenL error: %d", error);
+				TSyncServerPeriod period = serverSession.GetTimer(profiles[i]);
+				DP2("DisplayName: %S, period=%d", &profile.DisplayName(), period);
+		
+				if(profile.DisplayName().Compare(_L("iSync")) != 0) {
+					int selection = 0;
+					if (period != -1) {
+						selection = period;
+					}
+					CreateChoiceListItem(container, profiles[i], (TDesC &)profile.DisplayName(), selection);
 				}
 		
-			TRAP(error, profile.DisplayName());
-			if (error!=KErrNone)
-				{
-				DP1("profile.DisplayName error: %d", error);
-				}
-			DP("before serverSession.GetTimer");
-			
-			TSyncServerPeriod period = serverSession.GetTimer(profiles[i]);
-			DP2("DisplayName: %S, period=%d", &profile.DisplayName(), period);
-	
-			if(profile.DisplayName().Compare(_L("iSync")) != 0) {
-				int selection = 0;
-				if (period != -1) {
-					selection = period;
-				}
-				CreateChoiceListItem(container, profiles[i], (TDesC &)profile.DisplayName(), selection);
+				profile.Close();
+		
 			}
-	
-			profile.Close();
-	
 		}
 	} else {
 		DP("Nothing new to show");
@@ -233,6 +254,7 @@ void CSyncClientView::ShowSyncProfiles(CQikScrollableContainer* container) {
 void CSyncClientView::ViewConstructL()
     {
     	ViewConstructFromResourceL(R_SYNCCLIENT_BASEVIEW_UI_CONFIGURATIONS);
+    	ViewContext()->AddTextL(ESwimContextLabel, _L("Remote Sync Timer"), EHCenterVCenter);
 
         // Give a layout manager to the view
         CQikGridLayoutManager* gridlayout = CQikGridLayoutManager::NewLC();

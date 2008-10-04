@@ -27,6 +27,7 @@ private:
 	void ConstructL();
 	void CreateChoiceListItem(CQikScrollableContainer* container, int id, TDesC16& caption, int state);
 	void HandleControlEventL(CCoeControl *aControl, TCoeEvent aEventType);
+	void CSyncClientView::CreateNoItemsLabel(CQikScrollableContainer* container);
 
 public:
 	void ShowSyncProfiles(CQikScrollableContainer* container);
