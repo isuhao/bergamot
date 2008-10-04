@@ -62,4 +62,4 @@ START RESOURCE SyncClient.rss
 	HEADER
 END
 
-CAPABILITY LocalServices NetworkServices ReadDeviceData
+CAPABILITY LocalServices NetworkServices ReadDeviceData WriteDeviceData
