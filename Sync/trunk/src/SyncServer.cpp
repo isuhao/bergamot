@@ -143,9 +143,11 @@ void CSyncServer::SaveSettings()
 	TStreamId id = outstream.CreateLC(*store);
 	
 	outstream.WriteInt32L(timerArray.Count());
+	DP1("Storing %i accounts", timerArray.Count());
 	for (int i=0;i<timerArray.Count();i++) {
 		DP1("Storing account %i", i);
 		outstream  << timerArray[i];
+		DP("Account stored");
 	}
 	
 	outstream.CommitL();
