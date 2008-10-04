@@ -17,10 +17,10 @@ http://bergamot.googlecode.com/svn/wiki/swim2.jpg
 
 To use Swim, you need to do three things:
 
-  # Download the unsigned Swim SIS file from our [http://code.google.com/p/bergamot/downloads/list download page].
+  # Download the latest unsigned Swim SIS file from our [http://code.google.com/p/bergamot/downloads/list download page].
   # Sign Swim using Symbian [https://www.symbiansigned.com/app/page/public/openSignedOnline.do Open Signed Online]. 
     * Get your IMEI by typing `#*06#`
-    * Select the following capabilities: `LocalServices NetworkServices ReadDeviceData WriteDeviceData Protserv`
+    * Select the following capabilities: `LocalServices NetworkServices ReadDeviceData WriteDeviceData Protserv`, or simply select all.
   # Install the signed SIS file on your phone.
 
 == How to Use ==
