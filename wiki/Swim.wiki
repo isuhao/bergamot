@@ -1,12 +1,12 @@
+#summary Remote Sync Timer
 #labels Featured
-# Remote Sync Timer
 http://bergamot.googlecode.com/svn/wiki/swimicon.jpg 
 
 = Swim =
 
-Swim is a utility for automatic periodic synchronization of data in UIQ3 with internet servers such as Google Calendar (through [http://www.goosync.com/ GooSync]), [http://www.mobical.net Mobical], [http://zyb.com Zyb] and [http://ovi.com/ Ovi]. It makes use of the existing SyncML support in the system, and adds timing capabilities, something UIQ mysteriously lacks! You can set it to sync your data every 5 minutes, every hour, every 4 hours or every 24 hours.
+Swim is a utility for automatic periodic synchronization of data with internet servers such as Google Calendar (through [http://www.goosync.com/ GooSync]), [http://www.mobical.net Mobical], [http://zyb.com Zyb] and [http://ovi.com/ Ovi]. It makes use of the existing SyncML support in the system, and adds timing capabilities, something UIQ mysteriously lacks! You can set it to sync your data every 5 minutes, every hour, every 4 hours or every 24 hours.
 
-An S60 version of Swim will be released sometime in the future.
+At the moment Swim exists for UIQ3. An S60 version of Swim will be released sometime in the future.
 
 == Screenshots ==
 
@@ -15,7 +15,7 @@ http://bergamot.googlecode.com/svn/wiki/swim2.jpg
 
 == How To Install ==
 
-To use Swim, you need to do two things:
+To use Swim, you need to do three things:
 
   # Download the unsigned Swim SIS file from our [http://code.google.com/p/bergamot/downloads/list download page].
   # Sign Swim using Symbian [https://www.symbiansigned.com/app/page/public/openSignedOnline.do Open Signed Online]. 
@@ -33,8 +33,9 @@ To use Swim, you need to do two things:
 
 The complete source code is found in the [http://bergamot.googlecode.com/svn/Sync/trunk subversion repository]. Compiled binaries for each release can be found on our [http://code.google.com/p/bergamot/downloads/list Downloads page]. Note that the unsigned binaries are unusable without signing them yourself!
 
-  * 0.30 (2008-10-??)
+  * 0.30 (2008-10-04)
     * Finally changed UIDs so Swim can be signed with Symbian [https://www.symbiansigned.com/app/page/public/openSignedOnline.do Open Signed Online]!
+    * Added options to synchronize every 12 hours and weekly
 
   * 0.20 (2008-02-25) [http://bergamot.googlecode.com/svn/Sync/tags/beta2 Source]
     * Autostart now works on newer firmware
