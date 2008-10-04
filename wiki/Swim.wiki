@@ -10,8 +10,8 @@ At the moment Swim exists for UIQ3. An S60 version of Swim will be released some
 
 == Screenshots ==
 
-http://bergamot.googlecode.com/svn/wiki/swim1.jpg
-http://bergamot.googlecode.com/svn/wiki/swim2.jpg
+http://bergamot.googlecode.com/svn/wiki/swimg900_1.jpg
+http://bergamot.googlecode.com/svn/wiki/swimg900_2.jpg
 
 == How To Install ==
 
