@@ -33,7 +33,7 @@ To use Swim, you need to do three things:
 
 The complete source code is found in the [http://bergamot.googlecode.com/svn/Sync/trunk subversion repository]. Compiled binaries for each release can be found on our [http://code.google.com/p/bergamot/downloads/list Downloads page]. Note that the unsigned binaries are unusable without signing them yourself!
 
-  * 0.30 (2008-10-04)
+  * 0.30 (2008-10-04) [http://bergamot.googlecode.com/svn/Sync/tags/v030 Source]
     * Finally changed UIDs so Swim can be signed with Symbian [https://www.symbiansigned.com/app/page/public/openSignedOnline.do Open Signed Online]!
     * Added options to synchronize every 12 hours and weekly
 
