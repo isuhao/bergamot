@@ -6,12 +6,17 @@ VENDORID          0
 SYSTEMINCLUDE   \epoc32\include
 
 SOURCEPATH      ..\src
+
 USERINCLUDE     ..\inc
+USERINCLUDE     ..\..\common\inc
 
 SOURCE          SyncClientAppUi.cpp
 SOURCE			SyncClientDocument.cpp 
 SOURCE			SyncClientApplication.cpp
 SOURCE 			SyncClientView.cpp 
+
+SOURCEPATH      ..\..\common\src
+
 SOURCE			RSyncServerSession.cpp
 
 LIBRARY         euser.lib
@@ -37,7 +42,7 @@ LIBRARY			flogger.lib
 START BITMAP SyncClient.mbm
 	TARGETPATH \resource\apps
 	HEADER
-	SOURCEPATH ..\images
+	SOURCEPATH ..\..\common\images
 	SOURCE c16 SyncClient_18x18.bmp
 	SOURCE 8 SyncClient_18x18_mask.bmp
 	SOURCE c16 SyncClient_40x40.bmp

@@ -1,8 +1,0 @@
-prj_mmpfiles
-SyncClient.mmp
-SyncServer.mmp
-..\..\common\groupSyncServerRecognizer.mmp
-
-PRJ_PLATFORMS
-GCCE
-WINSCW

@@ -5,6 +5,7 @@ VENDORID 0
 
 SOURCEPATH      ..\src
 USERINCLUDE     ..\inc
+USERINCLUDE     ..\..\common\inc
 
 SOURCE          SyncServerRecognizer.cpp
 SYSTEMINCLUDE   \EPOC32\INCLUDE
