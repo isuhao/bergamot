@@ -1,7 +1,7 @@
 prj_mmpfiles
 SyncClient.mmp
 SyncServer.mmp
-SyncServerRecognizer.mmp
+..\..\common\groupSyncServerRecognizer.mmp
 
 PRJ_PLATFORMS
 GCCE
