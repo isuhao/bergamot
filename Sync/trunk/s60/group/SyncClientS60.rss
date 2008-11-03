@@ -1,0 +1,337 @@
+
+//  RESOURCE IDENTIFIER
+NAME SWIM    // 4 letter ID
+
+
+//  INCLUDES
+#include <eikon.rh>
+#include <avkon.rh>
+#include <avkon.rsg>
+#include <appinfo.rh>
+#include "SyncClientS60.hrh"
+#include "SyncClient_english.rls"
+
+//  RESOURCE DEFINITIONS
+// -----------------------------------------------------------------------------
+//
+//    Define the resource file signature
+//    This resource should be empty.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE RSS_SIGNATURE
+    {
+    }
+
+// -----------------------------------------------------------------------------
+//
+//    Default Document Name
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_default_document_name
+    {
+    buf="HEWB";
+    }
+
+// -----------------------------------------------------------------------------
+//
+//    Define default menu and CBA key.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE EIK_APP_INFO
+    {
+    menubar = r_helloworldbasic_menubar;
+    cba = R_AVKON_SOFTKEYS_OPTIONS_EXIT;
+    }
+
+
+// -----------------------------------------------------------------------------
+//
+//   r_helloworldbasic_menubar
+//   Menubar for HelloWorldBasic example
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE MENU_BAR r_helloworldbasic_menubar
+    {
+    titles =
+        {
+        MENU_TITLE { menu_pane = r_helloworldbasic_menu; }
+        };
+    }
+
+
+// -----------------------------------------------------------------------------
+//
+//   r_helloworldbasic_menu
+//   Menu for "Options"
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE MENU_PANE r_helloworldbasic_menu
+    {
+    items =
+        {
+        // added the new Options menu command here
+        MENU_ITEM
+                {
+                command = EHelloWorldBasicCommand1;
+                txt = STRING_sync_about;
+                }
+        
+        };
+    }
+
+
+// ---------------------------------------------------------
+//   
+//   SETTING ITEM LIST
+//
+// ---------------------------------------------------------
+//
+RESOURCE AVKON_SETTING_ITEM_LIST r_entry_settings_list
+	{
+	title = "Example";
+	}
+	
+// ---------------------------------------------------------
+//   
+//   TEXT SETTING PAGE
+//
+// ---------------------------------------------------------
+//
+RESOURCE AVKON_SETTING_PAGE r_text_setting_page
+    {
+    type = EEikCtEdwin;
+    editor_resource_id = r_name_edwin;
+    }
+    
+RESOURCE EDWIN r_name_edwin
+    {
+    width = 10;
+    maxlength = 20;
+    }
+    
+// ---------------------------------------------------------
+//   
+//   INTEGER SETTING PAGE
+//
+// ---------------------------------------------------------
+//
+RESOURCE AVKON_SETTING_PAGE r_integer_setting_page
+    {
+    type = EAknCtIntegerEdwin;
+    editor_resource_id = r_integer_edwin;
+    }
+    
+RESOURCE AVKON_INTEGER_EDWIN r_integer_edwin
+    {
+    min = 0;
+    max = 150;
+    }  
+    
+// ---------------------------------------------------------
+//   
+//   PASSWORD SETTING PAGE
+//
+// ---------------------------------------------------------
+//
+RESOURCE AVKON_SETTING_PAGE r_password_setting_page
+    {
+    type = EEikCtSecretEd;
+    editor_resource_id = r_password_edwin;
+    }
+    
+RESOURCE SECRETED r_password_edwin
+	{
+	num_letters = KMaxPasswordLength;
+	}
+	
+// ---------------------------------------------------------
+//   
+//   VOLUME SETTING PAGE
+//
+// ---------------------------------------------------------
+//
+RESOURCE AVKON_SETTING_PAGE r_volume_setting_page
+    {
+    type = EAknCtVolumeControl;
+    editor_resource_id = r_volume_control;
+    }
+    
+RESOURCE VOLUME r_volume_control
+    {
+    flags = ESettingsVolumeControl;
+    value = KDefaultVolume;
+    }
+    
+// ---------------------------------------------------------
+//   
+//   SLIDER SETTING PAGE
+//
+// ---------------------------------------------------------
+//
+RESOURCE AVKON_SETTING_PAGE r_slider_setting_page
+    {
+
+    type = EAknCtSlider;
+    editor_resource_id = r_slider_control;
+    }
+    
+RESOURCE SLIDER r_slider_control
+    {
+    layout = EAknSettingsItemSliderLayout;
+    minvalue = 0;
+    maxvalue = 100;
+    step = 1;
+    valuetype = EAknSliderValuePercentage;
+    minlabel = "empty";
+    maxlabel = "full";
+    }
+    
+// ---------------------------------------------------------
+//   
+//   DATE SETTING PAGE
+//
+// ---------------------------------------------------------
+//
+RESOURCE AVKON_SETTING_PAGE r_date_setting_page
+	{
+	type = EEikCtDateEditor;
+	editor_resource_id = r_date_edwin;
+	}
+	
+RESOURCE DATE_EDITOR r_date_edwin
+    {
+    minDate= DATE {year=1980;};
+    maxDate= DATE {year=2100;};
+    }   
+    
+// ---------------------------------------------------------
+//   
+//   TIME OFFSET SETTING PAGE
+//
+// ---------------------------------------------------------
+//
+RESOURCE AVKON_SETTING_PAGE r_timeoffset_setting_page
+	{
+	type = EEikCtTimeOffsetEditor;
+	editor_resource_id = r_timeoffset_editor;
+	}
+	
+RESOURCE TIME_OFFSET_EDITOR r_timeoffset_editor
+	{
+	minTimeOffset = TIME_OFFSET {seconds=0;};
+	maxTimeOffset = TIME_OFFSET {seconds=43200;};
+	}
+	
+// ---------------------------------------------------------
+//   
+//   IP SETTING PAGE
+//
+// ---------------------------------------------------------
+//
+RESOURCE AVKON_SETTING_PAGE r_ipfield_setting_page
+	{
+	type = EAknCtIpFieldEditor;
+	editor_resource_id = r_ip_editor;
+	}
+	
+RESOURCE IP_FIELD_EDITOR r_ip_editor
+    {
+    min_field_values = IP_FIELD
+        { 
+        first_field = 0;
+        second_field = 0;
+        third_field = 0;
+        fourth_field = 0;
+        };
+    max_field_values = IP_FIELD
+        {
+        first_field = 255;
+        second_field = 255;
+        third_field = 255;
+        fourth_field = 255;
+        };
+    }
+    
+// ---------------------------------------------------------
+//   
+//   ENUMERATED TEXT SETTING PAGE
+//
+// ---------------------------------------------------------
+//
+RESOURCE AVKON_SETTING_PAGE r_enumeratedtext_setting_page
+	{
+	type = EAknCtPopupSettingList;
+	editor_resource_id = r_popup_setting_list;
+	}
+	
+RESOURCE POPUP_SETTING_LIST r_popup_setting_list
+    {
+	flags = 0;
+    }
+    
+RESOURCE AVKON_POPUP_SETTING_TEXTS r_popup_setting_texts
+	{
+    setting_texts_resource = r_texts;
+	}
+	
+RESOURCE ARRAY r_texts
+    {
+    items =
+        {
+        AVKON_ENUMERATED_TEXT { value=0; text = "dummy";}
+        };
+    }    
+
+// ---------------------------------------------------------
+//   
+//   BINARY SETTING PAGE
+//
+// ---------------------------------------------------------
+//
+RESOURCE AVKON_SETTING_PAGE r_binary_setting_page
+	{
+	type = EEikCtEdwin;
+	}
+	
+RESOURCE AVKON_POPUP_SETTING_TEXTS r_binary_texts
+    {
+    setting_texts_resource = r_texts_binary;
+    }
+    
+RESOURCE ARRAY r_texts_binary
+    {
+    items =
+        {
+        AVKON_ENUMERATED_TEXT { value=1; text = "dummy1"; },
+        AVKON_ENUMERATED_TEXT { value=0; text = "dummy2"; }
+        };
+    }   
+    
+
+
+// ---------------------------------------------------------------------------- 
+//
+// r_helloworldbasic_localisable_app_info
+//
+// ---------------------------------------------------------------------------- 
+//
+RESOURCE LOCALISABLE_APP_INFO r_syncclient_localisable_app_info
+    {
+    short_caption = STRING_syncclient_caption_string;
+    caption_and_icon = 
+    CAPTION_AND_ICON_INFO
+        {
+        caption = STRING_syncclient_caption_string;
+
+        number_of_icons = 1;
+	   	icon_file = "\\resource\\apps\\SyncClientS60.mif";
+	    };
+    }
+
+// End of File
+

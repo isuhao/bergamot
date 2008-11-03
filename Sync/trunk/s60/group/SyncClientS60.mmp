@@ -1,0 +1,49 @@
+TARGET            SyncClientS60.exe
+TARGETTYPE        exe
+UID		  		  0x100039CE 0xE0983805
+
+EPOCSTACKSIZE	  0x5000
+
+SYSTEMINCLUDE     \epoc32\include
+USERINCLUDE       ..\inc
+USERINCLUDE		..\..\common\inc
+
+SOURCEPATH 		..\src
+SOURCE			SyncClient.cpp
+SOURCE			SyncClientDocument.cpp
+SOURCE			SyncClientApplication.cpp
+SOURCE			SyncClientAppUi.cpp
+SOURCE			SyncClientAppView.cpp
+
+SOURCEPATH 		..\..\common\src
+SOURCE 			RSyncServerSession.cpp
+
+SYSTEMINCLUDE ..\..\common\group
+
+SOURCEPATH      .
+START RESOURCE    SyncClientS60.rss
+HEADER
+TARGETPATH resource\apps
+END //RESOURCE
+
+START RESOURCE    SyncClientS60_reg.rss
+#ifdef WINSCW
+TARGETPATH 	  \private\10003a3f\apps
+#else
+TARGETPATH 	  \private\10003a3f\import\apps
+#endif
+END //RESOURCE
+
+LIBRARY           euser.lib
+LIBRARY           apparc.lib
+LIBRARY           cone.lib
+LIBRARY           eikcore.lib
+LIBRARY           avkon.lib
+LIBRARY           commonengine.lib
+LIBRARY		  	  efsrv.lib 
+LIBRARY           estor.lib
+DEBUGLIBRARY	  flogger.lib
+
+LANG SC
+
+CAPABILITY LocalServices NetworkServices ReadDeviceData WriteDeviceData
