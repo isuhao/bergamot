@@ -7,7 +7,7 @@ NAME HSEM
 #include <QikCommand.rh>
 #include "SyncClient.hrh"
 #include <eikon.rsg>
-#include SyncClient_English.rls
+#include "SyncClient_English.rls"
 
 RESOURCE RSS_SIGNATURE { }
 RESOURCE TBUF { buf = ""; }
@@ -96,6 +96,17 @@ RESOURCE DIALOG r_podcast_about_dlg
 
 RESOURCE TBUF r_swim_about_title { buf = STRING_about_title;}
 RESOURCE TBUF r_swim_about_text { buf = STRING_about_text_uiq;}
+RESOURCE TBUF r_no_items { buf = STRING_no_items;}
+
+RESOURCE TBUF r_option_0 { buf=STRING_option_0; }
+RESOURCE TBUF r_option_1 { buf=STRING_option_1; }
+RESOURCE TBUF r_option_2 { buf=STRING_option_2; }
+RESOURCE TBUF r_option_3 { buf=STRING_option_3; }
+RESOURCE TBUF r_option_4 { buf=STRING_option_4; }
+RESOURCE TBUF r_option_5 { buf=STRING_option_5; }
+RESOURCE TBUF r_option_6 { buf=STRING_option_6; }
+
+RESOURCE TBUF r_navi_text { buf=STRING_navi_text; }
 
 RESOURCE DIALOG r_swim_about_dlg
 {

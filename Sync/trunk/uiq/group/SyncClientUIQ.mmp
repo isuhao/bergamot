@@ -62,7 +62,10 @@ START RESOURCE SyncClient_reg.rss
 	TARGETPATH \private\10003A3F\apps
 END
 
-START RESOURCE SyncClientUIQ.rss
+
+SYSTEMINCLUDE ..\..\common\group
+
+START RESOURCE SyncClient.rss
 	TARGETPATH \resource\apps
 	HEADER
 END

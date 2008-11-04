@@ -14,3 +14,5 @@ rls_string STRING_option_5 "Daily"
 rls_string STRING_option_6 "Weekly"
 
 rls_string STRING_no_items "No Items"
+
+rls_string STRING_navi_text "Remote Sync Timer"

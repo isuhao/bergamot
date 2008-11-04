@@ -46,6 +46,7 @@ LIBRARY           commonengine.lib
 LIBRARY		  	  efsrv.lib 
 LIBRARY           estor.lib
 LIBRARY	     	  flogger.lib
+LIBRARY			  eikcoctl.lib 
 
 #if defined(__UIQ3_SDK__)
 LIBRARY			SmlClient.lib 

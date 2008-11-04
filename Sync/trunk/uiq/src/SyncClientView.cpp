@@ -104,7 +104,11 @@ void CSyncClientView::CreateNoItemsLabel(CQikScrollableContainer* container) {
 	block->SetUniqueHandle(EMyViewBuildingBlockBase);
 	block->SetDividerBelow(EFalse);
 	block->SetDimmed(ETrue);
-	block->SetCaptionL(_L("No sync profiles found"), EQikItemSlot1); //the slot ids are defined in qikon.hrh
+	
+	
+	HBufC *str = iEikonEnv->AllocReadResourceLC(R_NO_ITEMS);
+	block->SetCaptionL(*str, EQikItemSlot1); //the slot ids are defined in qikon.hrh
+	CleanupStack::PopAndDestroy(str);
 	CleanupStack::Pop(block);
 	DP("CreateNoItemsLabel END");
 }
@@ -124,14 +128,6 @@ void CSyncClientView::CreateChoiceListItem(CQikScrollableContainer* container, i
 	block->SetDividerBelow(ETrue);
 	block->SetCaptionL(caption, EQikItemSlot1); //the slot ids are defined in qikon.hrh
 	
-	_LIT(KChoiceListText1, "Manually");
-	_LIT(KChoiceListText2, "Every 15 minutes");
-	_LIT(KChoiceListText3, "Every hour");
-	_LIT(KChoiceListText4, "Every 4 hours");
-	_LIT(KChoiceListText5, "Every 12 hours");
-	_LIT(KChoiceListText6, "Daily");
-	_LIT(KChoiceListText7, "Weekly");
-	
 	CEikChoiceList* chlst = new (ELeave) CEikChoiceList();
 	block->AddControlLC(chlst, EQikItemSlot2);
 	
@@ -139,13 +135,30 @@ void CSyncClientView::CreateChoiceListItem(CQikScrollableContainer* container, i
 	chlst->SetObserver(this);
 	CDesCArrayFlat* array = new(ELeave) CDesCArrayFlat(7);
 	CleanupStack::PushL(array);
-	array->AppendL(KChoiceListText1);
-	array->AppendL(KChoiceListText2);
-	array->AppendL(KChoiceListText3);
-	array->AppendL(KChoiceListText4);
-	array->AppendL(KChoiceListText5);
-	array->AppendL(KChoiceListText6);
-	array->AppendL(KChoiceListText7);
+	
+	HBufC *str = NULL;
+	str = iEikonEnv->AllocReadResourceLC(R_OPTION_0);
+	array->AppendL(*str);
+	CleanupStack::PopAndDestroy(str);
+	str = iEikonEnv->AllocReadResourceLC(R_OPTION_1);
+	array->AppendL(*str);
+	CleanupStack::PopAndDestroy(str);
+	str = iEikonEnv->AllocReadResourceLC(R_OPTION_2);
+	array->AppendL(*str);
+	CleanupStack::PopAndDestroy(str);
+	str = iEikonEnv->AllocReadResourceLC(R_OPTION_3);
+	array->AppendL(*str);
+	CleanupStack::PopAndDestroy(str);
+	str = iEikonEnv->AllocReadResourceLC(R_OPTION_4);
+	array->AppendL(*str);
+	CleanupStack::PopAndDestroy(str);
+	str = iEikonEnv->AllocReadResourceLC(R_OPTION_5);
+	array->AppendL(*str);
+	CleanupStack::PopAndDestroy(str);
+	str = iEikonEnv->AllocReadResourceLC(R_OPTION_6);
+	array->AppendL(*str);
+	CleanupStack::PopAndDestroy(str);
+
 	chlst->SetArrayL(array);
 	CleanupStack::Pop(array);
 	DP1("Setting handle to: %d", EMyViewChoiceListBase+id);
@@ -254,7 +267,9 @@ void CSyncClientView::ShowSyncProfiles(CQikScrollableContainer* container) {
 void CSyncClientView::ViewConstructL()
     {
     	ViewConstructFromResourceL(R_SYNCCLIENT_BASEVIEW_UI_CONFIGURATIONS);
-    	ViewContext()->AddTextL(ESwimContextLabel, _L("Remote Sync Timer"), EHCenterVCenter);
+    	HBufC *navitext = iEikonEnv->AllocReadResourceLC(R_NAVI_TEXT);
+    	ViewContext()->AddTextL(ESwimContextLabel, *navitext, EHCenterVCenter);
+    	CleanupStack::PopAndDestroy(navitext);
 
         // Give a layout manager to the view
         CQikGridLayoutManager* gridlayout = CQikGridLayoutManager::NewLC();
