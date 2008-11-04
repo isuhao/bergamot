@@ -77,7 +77,7 @@ RESOURCE MENU_PANE r_helloworldbasic_menu
         // added the new Options menu command here
         MENU_ITEM
                 {
-                command = EHelloWorldBasicCommand1;
+                command = ECmdAbout;
                 txt = STRING_sync_about;
                 }
         
@@ -168,6 +168,32 @@ RESOURCE LOCALISABLE_APP_INFO r_syncclient_localisable_app_info
         number_of_icons = 1;
 	   	icon_file = "\\resource\\apps\\SyncClientS60.mif";
 	    };
+    }
+
+RESOURCE TBUF r_about_text { buf=STRING_about_text; }
+
+RESOURCE TBUF r_no_items_text { buf=STRING_no_items; }
+
+
+RESOURCE DIALOG r_dlg_about
+    {
+    flags = EAknInformationNoteFlags;
+    items =
+        {
+        DLG_LINE
+            {
+            type = EAknCtNote;
+            id = EDlgMeLookupAbout;
+            control = AVKON_NOTE
+                {
+                layout = ENoteWithImageLayout;
+                singular_label = STRING_about_text_s60; 
+                imagefile = "\\resource\\apps\\syncclients60.mbm"; 
+                imageid = 0;
+                imagemask = 1;
+                };
+            }
+        };
     }
 
 // End of File

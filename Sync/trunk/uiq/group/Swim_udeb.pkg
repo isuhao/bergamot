@@ -1,6 +1,6 @@
 %{"Bergamot Project"}
 :"Bergamot Project"
-#{"Swim"}, (0xE0983800), 0, 30, 0, TYPE=SA
+#{"Swim"}, (0xE0983800), 0, 40, 0, TYPE=SA
 (0x101F6300), 3, 0, 0, {"UIQ30ProductID"}
 
 ; Freeware installation "warning" required by Symbian signed
@@ -10,6 +10,7 @@
 "\epoc32\release\gcce\udeb\SyncServer.exe"-"!:\sys\bin\SyncServer.exe"
 
 "\epoc32\data\z\resource\apps\SyncClient.rsc"-"!:\resource\apps\SyncClient.rsc"
+"\epoc32\data\z\resource\apps\SyncClient.mif"-"!:\resource\apps\SyncClient.mif"
 "\epoc32\data\z\resource\apps\SyncClient.mbm"-"!:\resource\apps\SyncClient.mbm"
 "\epoc32\data\z\resource\apps\SyncClient_loc.RSC"-"!:\resource\apps\SyncClient_loc.RSC"
 "\epoc32\data\z\private\10003a3f\apps\SyncClient_reg.rsc"-"!:\private\10003a3f\import\apps\SyncClient_reg.rsc"

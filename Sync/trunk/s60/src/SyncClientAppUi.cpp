@@ -3,6 +3,8 @@
 #include "SyncClientAppUi.h"
 #include "SyncClientAppView.h"
 #include "SyncClientS60.hrh"
+#include <aknnotedialog.h> 
+#include <SyncClientS60.rsg>
 
 // ================= MEMBER FUNCTIONS =======================
 
@@ -52,9 +54,25 @@ void CSyncClientAppUi::HandleCommandL(TInt aCommand)
         case EAknSoftkeyExit:
             Exit();
             break;
+        case ECmdAbout:
+        	RunAboutDialogL();
+        	break;
       default:
             break;
         }
     }
+
+void CSyncClientAppUi::RunAboutDialogL()
+{
+    // Create dialog
+	CAknNoteDialog* dlg = new(ELeave) CAknNoteDialog(
+	    CAknNoteDialog::EConfirmationTone,
+	    CAknNoteDialog::ELongTimeout);
+    CleanupStack::PushL(dlg);
+
+    // Show dialog
+    CleanupStack::Pop(dlg);
+    dlg->ExecuteLD(R_DLG_ABOUT);
+}
 
 // End of file

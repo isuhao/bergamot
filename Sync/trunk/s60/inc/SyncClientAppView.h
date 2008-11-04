@@ -6,6 +6,7 @@
 #include <coecntrl.h>
 #include <aknsettingitemlist.h> 
 #include "RSyncServerSession.h"
+#include <eiklabel.h> 
 
 // CLASS DECLARATION
 
@@ -70,12 +71,9 @@ private: // New Functions
     
     void ShowSyncProfiles();
 
-
 private: // Data members
 
 	CAknSettingItemList* iItemList;
-	
-	TInt iEnumText;
 	RSyncServerSession serverSession;
 	RArray<TSmlProfileId> lastViewProfiles;
     };

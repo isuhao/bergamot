@@ -27,6 +27,7 @@ void CSyncServer::RunL() {
 }
 TInt CSyncServer::ThreadFunction(TAny * /*aStarted */)
 {
+	DP("ThreadFunction BEGIN");
 	CTrapCleanup* cleanup=CTrapCleanup::New();
 	if (cleanup == NULL)
 	 {
@@ -68,7 +69,7 @@ TInt CSyncServer::ThreadFunction(TAny * /*aStarted */)
     delete pS;
     delete pA;
     delete cleanup;
-    
+	DP("ThreadFunction END");
     return KErrNone;
 }
 

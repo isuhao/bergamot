@@ -45,6 +45,7 @@ LIBRARY           avkon.lib
 LIBRARY           commonengine.lib
 LIBRARY		  	  efsrv.lib 
 LIBRARY           estor.lib
+LIBRARY	     	  flogger.lib
 
 #if defined(__UIQ3_SDK__)
 LIBRARY			SmlClient.lib 
@@ -53,7 +54,14 @@ LIBRARY			SmlClient.lib
 LIBRARY			syncmlclientapi.lib 
 #endif
 
-LIBRARY	  flogger.lib
+
+START BITMAP SyncClientS60.mbm
+	HEADER
+	TARGETPATH resource\apps
+	SOURCEPATH ..\images
+	SOURCE c24 SyncClient_32x32.bmp
+	SOURCE 1 SyncClient_32x32_mask.bmp
+END
 
 LANG SC
 

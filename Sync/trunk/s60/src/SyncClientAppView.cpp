@@ -136,7 +136,12 @@ void CSyncClientAppView::CreateChoiceListItem(int aId, const TPtrC16 &aCaption, 
 	// The same resource id can be used for multiple enumerated text setting pages.
 	item->ConstructL(isNumberedStyle, aId, aCaption, icons, R_ENUMERATEDTEXT_SETTING_PAGE, -1, 0, R_POPUP_SETTING_TEXTS);
 	iItemList->SettingItemArray()->AppendL(item);
-	item->SetValue(aValue);
+	
+	if (aValue == -1) {
+	} else {
+		item->SetValue(aValue);
+	}
+	
 	CleanupStack::Pop(item);
 
 	DP("CreateChoiceListItem END");
@@ -144,6 +149,7 @@ void CSyncClientAppView::CreateChoiceListItem(int aId, const TPtrC16 &aCaption, 
 
 void CSyncClientAppView::ShowSyncProfiles() {
 #ifdef __WINS__
+
 	CreateChoiceListItem(0, _L("Test profile 1"), 0);
 	CreateChoiceListItem(1, _L("Test profile 2"), 0);
 	CreateChoiceListItem(2, _L("Test profile 3"), 0);
@@ -190,9 +196,7 @@ void CSyncClientAppView::ShowSyncProfiles() {
 		lastViewProfiles = profiles;
 
 		DP1("profiles.Count()=%d", profiles.Count());
-		if (profiles.Count() == 0) {
-			//CreateNoItemsLabel(container);
-		} else {
+		if (profiles.Count() > 0) {
 			for (int i=0;i<profiles.Count();i++) {		
 					
 				RSyncMLDataSyncProfile profile;

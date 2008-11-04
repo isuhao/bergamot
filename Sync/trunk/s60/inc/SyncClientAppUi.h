@@ -44,6 +44,9 @@ public: // Functions from base classes
     */
     void HandleCommandL(TInt aCommand);
 
+private:
+	
+	void RunAboutDialogL();
 private: // Data members
 
     CSyncClientAppView* iAppView;

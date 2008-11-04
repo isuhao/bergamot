@@ -7,7 +7,9 @@ enum THelloWorldBasicIds
     {
     EHelloWorldBasicCommand1 = 0x6001, // start value must not be 0
     EHelloWorldBasicCommand2,
-    ESyncSettingItem
+    ESyncSettingItem,
+    EDlgMeLookupAbout,
+    ECmdAbout
     };
 
 #define KMaxTextLength 50

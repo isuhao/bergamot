@@ -7,6 +7,7 @@ NAME HSEM
 #include <QikCommand.rh>
 #include "SyncClient.hrh"
 #include <eikon.rsg>
+#include SyncClient_English.rls
 
 RESOURCE RSS_SIGNATURE { }
 RESOURCE TBUF { buf = ""; }
@@ -92,11 +93,9 @@ RESOURCE DIALOG r_podcast_about_dlg
 		};
 }
 
-rls_string STRING_r_about_title "About"
-rls_string STRING_r_about_text "Swim 0.30\n\nCopyright © 2007-2008,\nThe Bergamot Project\n\nhttp://bergamot.googlecode.com"
 
-RESOURCE TBUF r_swim_about_title { buf = STRING_r_about_title;}
-RESOURCE TBUF r_swim_about_text { buf = STRING_r_about_text;}
+RESOURCE TBUF r_swim_about_title { buf = STRING_about_title;}
+RESOURCE TBUF r_swim_about_text { buf = STRING_about_text_uiq;}
 
 RESOURCE DIALOG r_swim_about_dlg
 {
