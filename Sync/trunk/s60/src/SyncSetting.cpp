@@ -1,8 +1,8 @@
 #include "SyncSetting.h"
 #include "debug.h"
 
-CSyncSetting::CSyncSetting(TInt aResourceId, RSyncServerSession &aSession) :
-	CAknEnumeratedTextPopupSettingItem(aResourceId, iValue), iSession(aSession),
+CSyncSetting::CSyncSetting(TInt aResourceId, TUint aProfileId, RSyncServerSession &aSession) :
+	CAknEnumeratedTextPopupSettingItem(aResourceId, iValue), iProfileId(aProfileId), iSession(aSession),
 	iValue(0)
 	{
 	}
@@ -29,6 +29,7 @@ void CSyncSetting::EditItemL(TBool aCalledFromMenu)
 	DP("CSyncSetting::EditItemL BEGIN");
 	CAknEnumeratedTextPopupSettingItem::EditItemL(aCalledFromMenu);
 	StoreL();
+	DP2("External value toggled (StoreL), internal=%d, external=%d",InternalValue(), ExternalValue());
 	DP("CSyncSetting::EditItemL END");
 	}
 
@@ -37,6 +38,9 @@ void CSyncSetting::HandleSettingPageEventL(CAknSettingPage* aSettingPage, TAknSe
 	CAknSettingItem::HandleSettingPageEventL(aSettingPage, aEventType);
 	if (aEventType == EEventSettingOked) 
 		{
+		DP2("InternalValue=%d, ExternalValue=%d", InternalValue(), ExternalValue());
+		StoreL();
+		iSession.SetTimer(iProfileId, (TSyncServerPeriod) QueryValue()->CurrentValueIndex());
 		}
 	}
 

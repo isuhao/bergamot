@@ -6,14 +6,13 @@
 
 enum TSyncServerPeriod
 {
-	ENever,
+	ENever = 0,
 	EFifteenMinutes,
 	EOneHour,
 	EFourHours,
 	ETwelveHours,
 	EDaily,
-	EWeekly,
-	ENoPeriod = -1
+	EWeekly
 };
 
 class CSyncServerData {

@@ -216,7 +216,7 @@ TSyncServerPeriod CSyncServer::GetTimer(TSmlProfileId profileId)
 			}
 		}
 	
-	return ENoPeriod;
+	return ENever;
 }
 
 GLDEF_C TInt E32Main()

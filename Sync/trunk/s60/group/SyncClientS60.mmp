@@ -1,6 +1,6 @@
 TARGET            SyncClientS60.exe
 TARGETTYPE        exe
-UID		  		  0x100039CE 0xE0983805
+UID		  		  0x100039CE 0xE0983804
 
 EPOCSTACKSIZE	  0x10000
 

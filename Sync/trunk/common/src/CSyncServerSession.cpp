@@ -18,6 +18,7 @@ void CSyncServerSession::ServiceL(const RMessage2& aMessage)
 		TSmlProfileId profileId = aMessage.Int0();
 		DP1("GetTimer: profileId=%d", profileId);
 		TSyncServerPeriod ret = srv->GetTimer(profileId);
+		DP1("GetTimer: timer=%d", ret);
 	    TPckgBuf<TInt> p(ret);
 	    aMessage.WriteL(1,p);
 		break;

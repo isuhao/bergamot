@@ -131,7 +131,7 @@ void CSyncClientAppView::CreateChoiceListItem(int aId, const TPtrC16 &aCaption, 
 
 	TBool isNumberedStyle = iItemList->IsNumberedStyle();
 	CArrayPtr<CGulIcon>* icons = iItemList->ListBox()->ItemDrawer()->FormattedCellData()->IconArray();
-	CSyncSetting* item = new (ELeave) CSyncSetting(aId, serverSession);
+	CSyncSetting* item = new (ELeave) CSyncSetting(ESyncSettingItem+aId, aId, serverSession);
 	CleanupStack::PushL(item);
 	// The same resource id can be used for multiple enumerated text setting pages.
 	item->ConstructL(isNumberedStyle, aId, aCaption, icons, R_ENUMERATEDTEXT_SETTING_PAGE, -1, 0, R_POPUP_SETTING_TEXTS);
@@ -144,8 +144,8 @@ void CSyncClientAppView::CreateChoiceListItem(int aId, const TPtrC16 &aCaption, 
 
 void CSyncClientAppView::ShowSyncProfiles() {
 #ifdef __WINS__
-	CreateChoiceListItem(0, _L("Test profile 1"), 2);
-	CreateChoiceListItem(1, _L("Test profile 2"), 3);
+	CreateChoiceListItem(0, _L("Test profile 1"), 0);
+	CreateChoiceListItem(1, _L("Test profile 2"), 0);
 	CreateChoiceListItem(2, _L("Test profile 3"), 0);
 #else
 	DP("ShowSyncProfiles BEGIN");

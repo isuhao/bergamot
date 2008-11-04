@@ -57,7 +57,7 @@ TSyncServerPeriod RSyncServerSession::GetTimer(TSmlProfileId profileId)
 	
 	SendReceive(EGetTimer, args);
 	
-	TInt res = 1;//pckg();
+	TInt res = pckg();
 	//DP1("RSyncServerSession::GetTimer END, res=%d", res);
 	return (TSyncServerPeriod) res;
 	}
