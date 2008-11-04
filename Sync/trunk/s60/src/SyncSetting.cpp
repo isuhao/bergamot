@@ -1,9 +1,9 @@
 #include "SyncSetting.h"
 #include "debug.h"
 
-CSyncSetting::CSyncSetting(TInt aResourceId, TInt aData, RSyncServerSession &aSession) :
-	CAknEnumeratedTextPopupSettingItem(aResourceId, iStatusIndex), iSession(aSession),
-	iStatusIndex(0)
+CSyncSetting::CSyncSetting(TInt aResourceId, RSyncServerSession &aSession) :
+	CAknEnumeratedTextPopupSettingItem(aResourceId, iValue), iSession(aSession),
+	iValue(0)
 	{
 	}
 
@@ -15,8 +15,12 @@ void CSyncSetting::CompleteConstructionL()
 	{
 	// Complete construction
 	CAknEnumeratedTextPopupSettingItem::CompleteConstructionL();
+	LoadL();
+	}
 
-	// Set internal value.
+void CSyncSetting::SetValue(TUint value) 
+	{
+	iValue = value;
 	LoadL();
 	}
 
@@ -38,5 +42,5 @@ void CSyncSetting::HandleSettingPageEventL(CAknSettingPage* aSettingPage, TAknSe
 
 TInt CSyncSetting::HandleSetting()
 	{
-	return (iStatusIndex == 0);
+	return ETrue; 
 	}

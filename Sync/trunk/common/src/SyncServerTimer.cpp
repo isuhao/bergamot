@@ -23,6 +23,9 @@ void CSyncServerTimer::RunL() {
 //	mutex.Wait();
 	DP("Mutex Wait finished");
 	DP1("Sync account %d", profileId);
+	
+#ifdef __WINS__
+#else
 	RSyncMLSession session;
 	TInt error;
 	TRAP(error, session.OpenL());
@@ -57,6 +60,7 @@ void CSyncServerTimer::RunL() {
 //	mutex.Signal();
 //	mutex.Close();
 	// run again
+#endif
 	RunPeriodically();
 }
 

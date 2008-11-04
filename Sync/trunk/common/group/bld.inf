@@ -35,8 +35,8 @@ PRJ_EXPORTS
 
 #endif
 
+PRJ_MMPFILES
 SyncServer.mmp
-
 
 PRJ_PLATFORMS
 GCCE

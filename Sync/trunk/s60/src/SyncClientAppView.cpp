@@ -124,86 +124,29 @@ TKeyResponse CSyncClientAppView::OfferKeyEventL(	const TKeyEvent& aKeyEvent,
 	
 	}
 
-void CSyncClientAppView::CreateChoiceListItem(int id, const TPtrC16 &caption, int state ) 
+void CSyncClientAppView::CreateChoiceListItem(int aId, const TPtrC16 &aCaption, int aValue ) 
 	{
 	DP("CreateChoiceListItem START");
-	_LIT(KChoiceListText1, "Manually");
-	_LIT(KChoiceListText2, "Every 15 minutes");
-	_LIT(KChoiceListText3, "Every hour");
-	_LIT(KChoiceListText4, "Every 4 hours");
-	_LIT(KChoiceListText5, "Every 12 hours");
-	_LIT(KChoiceListText6, "Daily");
-	_LIT(KChoiceListText7, "Weekly");
 
 	TBool isNumberedStyle = iItemList->IsNumberedStyle();
 	CArrayPtr<CGulIcon>* icons = iItemList->ListBox()->ItemDrawer()->FormattedCellData()->IconArray();
-
-	CAknEnumeratedTextPopupSettingItem* item = new (ELeave) CSyncSetting(id, iEnumText, serverSession);
+	CSyncSetting* item = new (ELeave) CSyncSetting(aId, serverSession);
 	CleanupStack::PushL(item);
 	// The same resource id can be used for multiple enumerated text setting pages.
-	item->ConstructL(isNumberedStyle, id, caption, icons, R_ENUMERATEDTEXT_SETTING_PAGE, -1, 0, R_POPUP_SETTING_TEXTS);
-	
-	// Load texts dynamically.
-	CArrayPtr<CAknEnumeratedText>* texts = item->EnumeratedTextArray();
-	texts->ResetAndDestroy();
-	CAknEnumeratedText* enumText;
-	// Text 1
-	HBufC* text = KChoiceListText1().AllocLC();
-	enumText = new (ELeave) CAknEnumeratedText(0, text);
-	CleanupStack::Pop(text);
-	CleanupStack::PushL(enumText);
-	texts->AppendL(enumText);
-	CleanupStack::Pop(enumText);
-	// Text 2
-	text = KChoiceListText2().AllocLC();
-	enumText = new (ELeave) CAknEnumeratedText(1, text);
-	CleanupStack::Pop(text);
-	CleanupStack::PushL(enumText);
-	texts->AppendL(enumText);
-	CleanupStack::Pop(enumText);
-
-	text = KChoiceListText3().AllocLC();
-	enumText = new (ELeave) CAknEnumeratedText(2, text);
-	CleanupStack::Pop(text);
-	CleanupStack::PushL(enumText);
-	texts->AppendL(enumText);
-	CleanupStack::Pop(enumText);
-	
-	text = KChoiceListText4().AllocLC();
-	enumText = new (ELeave) CAknEnumeratedText(3, text);
-	CleanupStack::Pop(text);
-	CleanupStack::PushL(enumText);
-	texts->AppendL(enumText);
-	CleanupStack::Pop(enumText);
-	
-	text = KChoiceListText5().AllocLC();
-	enumText = new (ELeave) CAknEnumeratedText(4, text);
-	CleanupStack::Pop(text);
-	CleanupStack::PushL(enumText);
-	texts->AppendL(enumText);
-	CleanupStack::Pop(enumText);
-	
-	text = KChoiceListText6().AllocLC();
-	enumText = new (ELeave) CAknEnumeratedText(5, text);
-	CleanupStack::Pop(text);
-	CleanupStack::PushL(enumText);
-	texts->AppendL(enumText);
-	CleanupStack::Pop(enumText);
-	
-	text = KChoiceListText7().AllocLC();
-	enumText = new (ELeave) CAknEnumeratedText(6, text);
-	CleanupStack::Pop(text);
-	CleanupStack::PushL(enumText);
-	texts->AppendL(enumText);
-	CleanupStack::Pop(enumText);
-	
+	item->ConstructL(isNumberedStyle, aId, aCaption, icons, R_ENUMERATEDTEXT_SETTING_PAGE, -1, 0, R_POPUP_SETTING_TEXTS);
 	iItemList->SettingItemArray()->AppendL(item);
+	item->SetValue(aValue);
 	CleanupStack::Pop(item);
 
 	DP("CreateChoiceListItem END");
 }
 
 void CSyncClientAppView::ShowSyncProfiles() {
+#ifdef __WINS__
+	CreateChoiceListItem(0, _L("Test profile 1"), 2);
+	CreateChoiceListItem(1, _L("Test profile 2"), 3);
+	CreateChoiceListItem(2, _L("Test profile 3"), 0);
+#else
 	DP("ShowSyncProfiles BEGIN");
 	RSyncMLSession session;
 	
@@ -257,6 +200,7 @@ void CSyncClientAppView::ShowSyncProfiles() {
 				if (error!=KErrNone)
 					{
 						DP1("profile.OpenL error: %d", error);
+						continue;
 					}
 			
 				TRAP(error, profile.DisplayName());
@@ -285,6 +229,7 @@ void CSyncClientAppView::ShowSyncProfiles() {
 		DP("Nothing new to show");
 	}
 	session.Close();
+#endif
 	DP("ShowSyncProfiles END");
 }
 
@@ -302,6 +247,7 @@ void CSyncClientAppView::LoadListL()
 	iItemList->SettingItemArray()->RecalculateVisibleIndicesL();
 
 	iItemList->HandleChangeInItemArrayOrVisibilityL();
+	//iItemList->LoadSettingsL();
 	}
 
 // ----------------------------------------------------

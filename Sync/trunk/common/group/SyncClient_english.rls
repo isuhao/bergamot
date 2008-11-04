@@ -1,2 +1,10 @@
 rls_string STRING_syncclient_caption_string "Swim"
 rls_string STRING_sync_about "About"
+
+rls_string STRING_option_0 "Manually"
+rls_string STRING_option_1 "Every 15 minutes"
+rls_string STRING_option_2 "Every hour"
+rls_string STRING_option_3 "Every 4 hours"
+rls_string STRING_option_4 "Every 12 hours"
+rls_string STRING_option_5 "Daily"
+rls_string STRING_option_6 "Weekly"

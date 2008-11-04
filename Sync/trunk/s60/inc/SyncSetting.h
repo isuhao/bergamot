@@ -7,17 +7,17 @@
 class CSyncSetting: public CAknEnumeratedTextPopupSettingItem 
 { 
 public:
-	CSyncSetting(TInt aResourceId, TInt aData, RSyncServerSession &aSession);
+	CSyncSetting(TInt aResourceId, RSyncServerSession &aSession);
     ~CSyncSetting();
 
     void EditItemL(TBool aCalledFromMenu);
 	void HandleSettingPageEventL(CAknSettingPage* aSettingPage, TAknSettingPageEvent aEventType);
 
 	void CompleteConstructionL();
-	
+	void SetValue(TUint value);
 	TInt HandleSetting();
 protected:
-    TInt iStatusIndex;
+    TInt iValue;
     RSyncServerSession &iSession;
 };
 
