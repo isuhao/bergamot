@@ -2,7 +2,7 @@ TARGET            SyncClientS60.exe
 TARGETTYPE        exe
 UID		  		  0x100039CE 0xE0983805
 
-EPOCSTACKSIZE	  0x5000
+EPOCSTACKSIZE	  0x10000
 
 SYSTEMINCLUDE     \epoc32\include
 USERINCLUDE       ..\inc
@@ -34,6 +34,12 @@ TARGETPATH 	  \private\10003a3f\import\apps
 #endif
 END //RESOURCE
 
+// For Nokia Startup List API
+SOURCEPATH      .
+START RESOURCE E0983805.rss
+END
+
+
 LIBRARY           euser.lib
 LIBRARY           apparc.lib
 LIBRARY           cone.lib
@@ -54,7 +60,6 @@ LIBRARY	  flogger.lib
 
 LANG SC
 
-CAPABILITY LocalServices NetworkServices ReadDeviceData WriteDeviceData
-
+CAPABILITY LocalServices NetworkServices WriteDeviceData ReadDeviceData ReadUserData WriteUserData
 SOURCEPATH ..\src
 SOURCE SyncSetting.cpp

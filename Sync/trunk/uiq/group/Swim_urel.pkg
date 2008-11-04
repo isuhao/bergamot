@@ -6,7 +6,7 @@
 ; Freeware installation "warning" required by Symbian signed
 "\Symbian\UIQ3SDK\Sync\group\FreewareWarningEN.txt"-"",FT 
 
-"\Symbian\UIQ3SDK\epoc32\release\gcce\urel\SyncClient.exe"-"!:\sys\bin\SyncClient.exe", FR
+"\Symbian\UIQ3SDK\epoc32\release\gcce\urel\SyncClient.exe"-"!:\sys\bin\SyncClient.exe", FR, RI
 "\Symbian\UIQ3SDK\epoc32\release\gcce\urel\SyncServer.exe"-"!:\sys\bin\SyncServer.exe"
 
 "\Symbian\UIQ3SDK\epoc32\data\z\resource\apps\SyncClient.rsc"-"!:\resource\apps\SyncClient.rsc"

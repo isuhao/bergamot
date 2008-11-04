@@ -30,4 +30,5 @@ LIBRARY 		estor.lib
 LIBRARY			efsrv.lib
 LIBRARY			flogger.lib
 
-CAPABILITY LocalServices NetworkServices ReadDeviceData WriteDeviceData
+CAPABILITY LocalServices NetworkServices WriteDeviceData ReadDeviceData ReadUserData WriteUserData
+

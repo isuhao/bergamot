@@ -32,7 +32,11 @@ void CSyncClientAppView::ConstructL(const TRect& aRect)
     {
     // Create a window for this application view
     CreateWindowL();
-    
+
+    DP("Before serverSession.Connect");
+    User::LeaveIfError(serverSession.Connect());
+    DP("After serverSession.Connect");
+
    	iItemList = new (ELeave) CAknSettingItemList;
    	iItemList->SetMopParent(this);
     iItemList->ConstructFromResourceL(R_ENTRY_SETTINGS_LIST); 
@@ -48,9 +52,6 @@ void CSyncClientAppView::ConstructL(const TRect& aRect)
     // Set the windows size
     SetRect(aRect);
 
-    DP("Before serverSession.Connect");
-    User::LeaveIfError(serverSession.Connect());
-    DP("After serverSession.Connect");
     // Activate the window, which makes it ready to be drawn
     ActivateL();
     }
@@ -213,7 +214,8 @@ void CSyncClientAppView::ShowSyncProfiles() {
 				TSyncServerPeriod period = serverSession.GetTimer(profiles[i]);
 				DP2("DisplayName: %S, period=%d", &profile.DisplayName(), period);
 		
-				if(profile.DisplayName().Compare(_L("iSync")) != 0) {
+				if(profile.DisplayName().Compare(_L("PC Suite")) != 0 &&
+					profile.DisplayName().Compare(_L("Lifeblog")) != 0) {
 					int selection = 0;
 					if (period != -1) {
 						selection = period;
