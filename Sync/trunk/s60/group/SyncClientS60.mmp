@@ -35,9 +35,6 @@ TARGETPATH 	  \private\10003a3f\import\apps
 END //RESOURCE
 
 // For Nokia Startup List API
-SOURCEPATH      .
-START RESOURCE E0983805.rss
-END
 
 
 LIBRARY           euser.lib
