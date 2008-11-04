@@ -1,13 +1,3 @@
-/*
-* ============================================================================
-*  Name     : CSyncClientAppView from SyncClientAppView.cpp
-*  Part of  : Dynamic Setting List
-*  Created  : 09/21/2005 by Forum Nokia
-*  Version  : 1.0
-*  Copyright: Nokia Corporation
-* ============================================================================
-*/
-
 // INCLUDE FILES
 #include <coemain.h>
 #include <SyncClientS60.rsg>
@@ -15,12 +5,9 @@
 #include "SyncClientAppView.h"
 #include <eikfrlbd.h>
 #include "debug.h"
-
-// CONSTANTS
-_LIT(KEmptyText, "None");
-_LIT(KEnumTitle, "Enum");
-_LIT(KEnumText1, "Enum text 1");
-_LIT(KEnumText2, "Enum text 2");
+#include "SyncSetting.h"
+#include <SyncMLClient.h>
+#include <SyncMLClientDS.h>
 
 // ================= MEMBER FUNCTIONS =======================
 
@@ -147,39 +134,14 @@ void CSyncClientAppView::CreateChoiceListItem(int id, const TPtrC16 &caption, in
 	_LIT(KChoiceListText5, "Every 12 hours");
 	_LIT(KChoiceListText6, "Daily");
 	_LIT(KChoiceListText7, "Weekly");
-	
-	/*CEikChoiceList* chlst = new (ELeave) CEikChoiceList();
-	block->AddControlLC(chlst, EQikItemSlot2);
-	
-	chlst->SetObserver(this);
-	CDesCArrayFlat* array = new(ELeave) CDesCArrayFlat(7);
-	CleanupStack::PushL(array);
-	array->AppendL(KChoiceListText1);
-	array->AppendL(KChoiceListText2);
-	array->AppendL(KChoiceListText3);
-	array->AppendL(KChoiceListText4);
-	array->AppendL(KChoiceListText5);
-	array->AppendL(KChoiceListText6);
-	array->AppendL(KChoiceListText7);
-	chlst->SetArrayL(array);
-	CleanupStack::Pop(array);
-	DP1("Setting handle to: %d", EMyViewChoiceListBase+id);
-	chlst->SetUniqueHandle(EMyViewChoiceListBase+id);
-
-	chlst->SetCurrentItem(state);
-	chlst->SetObserver(this);
-	CleanupStack::Pop(chlst);
-	CleanupStack::Pop(block);
-	*/
 
 	TBool isNumberedStyle = iItemList->IsNumberedStyle();
 	CArrayPtr<CGulIcon>* icons = iItemList->ListBox()->ItemDrawer()->FormattedCellData()->IconArray();
 
-	/*Enumerated text setting item*/
-	CAknEnumeratedTextPopupSettingItem* item = new (ELeave) CAknEnumeratedTextPopupSettingItem(9, iEnumText);
+	CAknEnumeratedTextPopupSettingItem* item = new (ELeave) CSyncSetting(id, iEnumText, serverSession);
 	CleanupStack::PushL(item);
 	// The same resource id can be used for multiple enumerated text setting pages.
-	item->ConstructL(isNumberedStyle, 9, caption, icons, R_ENUMERATEDTEXT_SETTING_PAGE, -1, 0, R_POPUP_SETTING_TEXTS);
+	item->ConstructL(isNumberedStyle, id, caption, icons, R_ENUMERATEDTEXT_SETTING_PAGE, -1, 0, R_POPUP_SETTING_TEXTS);
 	
 	// Load texts dynamically.
 	CArrayPtr<CAknEnumeratedText>* texts = item->EnumeratedTextArray();
@@ -241,6 +203,90 @@ void CSyncClientAppView::CreateChoiceListItem(int id, const TPtrC16 &caption, in
 	DP("CreateChoiceListItem END");
 }
 
+void CSyncClientAppView::ShowSyncProfiles() {
+	DP("ShowSyncProfiles BEGIN");
+	RSyncMLSession session;
+	
+	TInt error;
+	TRAP(error, session.OpenL());
+	if (error!=KErrNone) {
+		DP1("OpenL error %d", error);
+		return;
+	}
+
+	RSyncMLDataSyncJob job;
+	
+	RArray<TSmlProfileId> profiles;
+	TRAP(error, session.ListProfilesL(profiles, ESmlDataSync));
+	if (error!=KErrNone)
+		{
+		DP("ListProfilesL error");
+		}
+	
+	TInt numItems = profiles.Count();
+	DP1("Found %d SyncML profiles", numItems);
+	TBuf<255> Buffer;
+	TBool mustRedraw = EFalse;
+	
+	if (profiles.Count() == 0 || profiles.Count() != lastViewProfiles.Count()) {
+		DP("Profile count mismatch, clearing list");
+		mustRedraw = ETrue;
+	} else {
+		for (int i=0;i<profiles.Count();i++) {
+			if (lastViewProfiles.Find(profiles[i]) == KErrNotFound) {
+				DP1("Did not find new profile %d, clearing list", profiles[i]);
+				mustRedraw = ETrue;
+				break;
+			}
+		}
+	}
+	
+	if (mustRedraw) {
+		DP("mustRedraw");
+		lastViewProfiles = profiles;
+
+		DP1("profiles.Count()=%d", profiles.Count());
+		if (profiles.Count() == 0) {
+			//CreateNoItemsLabel(container);
+		} else {
+			for (int i=0;i<profiles.Count();i++) {		
+					
+				RSyncMLDataSyncProfile profile;
+				DP1("Reading profile %d", profiles[i]);
+				TRAPD(error,profile.OpenL(session, profiles[i],ESmlOpenRead));
+				if (error!=KErrNone)
+					{
+						DP1("profile.OpenL error: %d", error);
+					}
+			
+				TRAP(error, profile.DisplayName());
+				if (error!=KErrNone)
+					{
+					DP1("profile.DisplayName error: %d", error);
+					}
+				DP("before serverSession.GetTimer");
+				
+				TSyncServerPeriod period = serverSession.GetTimer(profiles[i]);
+				DP2("DisplayName: %S, period=%d", &profile.DisplayName(), period);
+		
+				if(profile.DisplayName().Compare(_L("iSync")) != 0) {
+					int selection = 0;
+					if (period != -1) {
+						selection = period;
+					}
+					CreateChoiceListItem(profiles[i], profile.DisplayName(), selection);
+				}
+		
+				profile.Close();
+		
+			}
+		}
+	} else {
+		DP("Nothing new to show");
+	}
+	session.Close();
+	DP("ShowSyncProfiles END");
+}
 
 // ----------------------------------------------------
 // CSyncClientAppView::LoadListL()
@@ -250,7 +296,7 @@ void CSyncClientAppView::CreateChoiceListItem(int id, const TPtrC16 &caption, in
 void CSyncClientAppView::LoadListL()
 	{
 
-	CreateChoiceListItem(0,_L("Wongo"), 0);
+	ShowSyncProfiles();
 	
 	// Required when there is only one setting item.
 	iItemList->SettingItemArray()->RecalculateVisibleIndicesL();

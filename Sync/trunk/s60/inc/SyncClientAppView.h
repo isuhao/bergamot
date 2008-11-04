@@ -67,14 +67,17 @@ private: // New Functions
 	* Stores the settings of the setting list.
 	*/	
     void StoreSettingsL();
+    
+    void ShowSyncProfiles();
 
 
 private: // Data members
 
 	CAknSettingItemList* iItemList;
 	
-	TInt						iEnumText;
+	TInt iEnumText;
 	RSyncServerSession serverSession;
+	RArray<TSmlProfileId> lastViewProfiles;
     };
 
 

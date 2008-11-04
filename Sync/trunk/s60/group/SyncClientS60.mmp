@@ -42,8 +42,12 @@ LIBRARY           avkon.lib
 LIBRARY           commonengine.lib
 LIBRARY		  	  efsrv.lib 
 LIBRARY           estor.lib
+LIBRARY           smlclient.lib
 DEBUGLIBRARY	  flogger.lib
 
 LANG SC
 
 CAPABILITY LocalServices NetworkServices ReadDeviceData WriteDeviceData
+
+SOURCEPATH ..\src
+SOURCE SyncSetting.cpp
