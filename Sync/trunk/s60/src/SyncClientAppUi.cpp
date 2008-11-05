@@ -5,10 +5,7 @@
 #include "SyncClientS60.hrh"
 #include <aknnotedialog.h> 
 #include <SyncClientS60.rsg>
-#include <aknnavi.h>
-#include <aknnavide.h> 
-#include <eikspane.h> 
-#include <aknnavilabel.h>
+
 // ================= MEMBER FUNCTIONS =======================
 
 // ----------------------------------------------------------
@@ -28,7 +25,7 @@ void CSyncClientAppUi::ConstructL()
     
 
     CAknNavigationControlContainer *iNaviContainer;
-    CAknNavigationDecorator* iNaviLabelDecorator;
+
      
     CEikStatusPane* sp  = iEikonEnv->AppUiFactory()->StatusPane();
     iNaviContainer      = (CAknNavigationControlContainer *)sp->ControlL(TUid::Uid(EEikStatusPaneUidNavi));
@@ -38,6 +35,7 @@ void CSyncClientAppUi::ConstructL()
     static_cast<CAknNaviLabel*>(iNaviLabelDecorator->DecoratedControl())->SetTextL(*navitext);
     	iNaviContainer->PushL(*iNaviLabelDecorator);
     
+
     CleanupStack::PopAndDestroy(navitext);    	
     }
 
@@ -50,6 +48,7 @@ CSyncClientAppUi::CSyncClientAppUi()
 // Destructor
 CSyncClientAppUi::~CSyncClientAppUi()
     {
+    delete iNaviLabelDecorator;
     if (iAppView)
         {
         RemoveFromStack(iAppView);

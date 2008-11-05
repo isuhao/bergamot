@@ -3,6 +3,10 @@
 
 // INCLUDE FILES
 #include <aknappui.h>
+#include <aknnavi.h>
+#include <aknnavide.h> 
+#include <eikspane.h> 
+#include <aknnavilabel.h>
 
 // FORWARD DECLARATIONS
 class CSyncClientAppView;
@@ -50,6 +54,7 @@ private:
 private: // Data members
 
     CSyncClientAppView* iAppView;
+    CAknNavigationDecorator* iNaviLabelDecorator;
     };
 
 
