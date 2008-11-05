@@ -162,9 +162,10 @@ void CSyncServer::SaveSettings()
 
 void CSyncServer::SetTimer(TSmlProfileId profileId, TSyncServerPeriod period)
 	{
-	CSyncServerData* sData = NULL;
 	DP1("SetTimer for profile %d", profileId);
-	
+
+	CSyncServerData* sData = NULL;
+
 	for (int i=0;i<timerArray.Count();i++) {
 		if (timerArray[i].profileId == profileId) {
 			DP1("Found profile %d", profileId);
