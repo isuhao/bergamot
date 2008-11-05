@@ -60,8 +60,8 @@ START BITMAP SyncClientS60.mbm
 	HEADER
 	TARGETPATH resource\apps
 	SOURCEPATH ..\images
-	SOURCE c24 SyncClient_32x32.bmp
-	SOURCE 1 SyncClient_32x32_mask.bmp
+	SOURCE c24 SyncClient_48x48.bmp
+	SOURCE 1 SyncClient_48x48_mask.bmp
 END
 
 LANG SC
