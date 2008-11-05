@@ -171,9 +171,8 @@ RESOURCE LOCALISABLE_APP_INFO r_syncclient_localisable_app_info
     }
 
 RESOURCE TBUF r_about_text { buf=STRING_about_text; }
-
 RESOURCE TBUF r_no_items_text { buf=STRING_no_items; }
-
+RESOURCE TBUF r_navi_text { buf = STRING_navi_text; }
 
 RESOURCE DIALOG r_dlg_about
     {

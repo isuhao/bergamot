@@ -42,7 +42,7 @@ LIBRARY			flogger.lib
 START BITMAP SyncClient.mbm
 	TARGETPATH \resource\apps
 	HEADER
-	SOURCEPATH ..\..\common\images
+	SOURCEPATH ..\images
 	SOURCE c16 SyncClient_18x18.bmp
 	SOURCE 8 SyncClient_18x18_mask.bmp
 	SOURCE c16 SyncClient_40x40.bmp
