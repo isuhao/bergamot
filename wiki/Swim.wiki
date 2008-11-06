@@ -4,9 +4,9 @@ http://bergamot.googlecode.com/svn/wiki/swimicon.jpg
 
 = Swim =
 
-Swim is a utility for automatic periodic synchronization of data with internet servers such as Google Calendar (through [http://www.goosync.com/ GooSync]), [http://www.mobical.net Mobical], [http://zyb.com Zyb] and [http://ovi.com/ Ovi]. It makes use of the existing SyncML support in the system, and adds timing capabilities, something UIQ mysteriously lacks! You can set it to sync your data every 5 minutes, every hour, every 4 hours or every 24 hours.
+Swim is a utility for automatic periodic synchronization of data with internet servers such as Google Calendar (through [http://www.goosync.com/ GooSync]), [http://www.mobical.net Mobical], [http://zyb.com Zyb] and [http://ovi.com/ Ovi]. It makes use of the existing SyncML support in the system, and adds timing capabilities, something both UIQ and S60 mysteriously lack! You can set it to sync your data every 15 minutes, every hour, every 4 hours, every 12 hours, daily, or weekly.
 
-At the moment Swim exists for UIQ3. An S60 version of Swim will be released in the near future (November-December 2008).
+_Swim is now available for both UIQ and S60!_
 
 == Screenshots ==
 
@@ -20,18 +20,22 @@ To use Swim, you need to do three things:
   # Download the latest unsigned Swim SIS file from our [http://code.google.com/p/bergamot/downloads/list download page].
   # Sign Swim using Symbian [https://www.symbiansigned.com/app/page/public/openSignedOnline.do Open Signed Online]. 
     * Get your IMEI by typing `#*06#` on your phone
-    * Select the following capabilities: `LocalServices NetworkServices ReadDeviceData WriteDeviceData Protserv`, or simply select all.
+    * Select the following capabilities: `LocalServices NetworkServices WriteDeviceData ReadDeviceData ReadUserData WriteUserData`, or simply select all.
   # Install the signed SIS file on your phone.
 
 == How to Use ==
 
-  # Set up one or more SyncML accounts in your agenda manager
+  # Set up one or more SyncML accounts in your agenda manager (UIQ)/sync settings (S60)
   # Run Swim, and set up a timer
   # Enjoy your synchronized data!
 
 == Releases ==
 
 The complete source code is found in the [http://bergamot.googlecode.com/svn/Sync/trunk subversion repository]. Compiled binaries for each release can be found on our [http://code.google.com/p/bergamot/downloads/list Downloads page]. Note that the unsigned binaries are unusable without signing them yourself!
+
+  * 0.40 (2008-11-06) [http://bergamot.googlecode.com/svn/Sync/tags/v040 Source]
+    * First S60 version
+    * Bug fix for UIQ
 
   * 0.30 (2008-10-04) [http://bergamot.googlecode.com/svn/Sync/tags/v030 Source]
     * Finally changed UIDs so Swim can be signed with Symbian [https://www.symbiansigned.com/app/page/public/openSignedOnline.do Open Signed Online]!
