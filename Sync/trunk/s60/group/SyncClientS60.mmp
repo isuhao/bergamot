@@ -55,15 +55,6 @@ LIBRARY			SmlClient.lib
 LIBRARY			syncmlclientapi.lib 
 #endif
 
-
-START BITMAP SyncClientS60.mbm
-	HEADER
-	TARGETPATH resource\apps
-	SOURCEPATH ..\images
-	SOURCE c24 SyncClient_48x48.bmp
-	SOURCE 1 SyncClient_48x48_mask.bmp
-END
-
 LANG SC
 
 CAPABILITY LocalServices NetworkServices WriteDeviceData ReadDeviceData ReadUserData WriteUserData
