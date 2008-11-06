@@ -10,8 +10,14 @@ _Swim is now available for both UIQ and S60!_
 
 == Screenshots ==
 
+===On Sony Ericsson G900===
+
 http://bergamot.googlecode.com/svn/wiki/swimg900_1.png
 http://bergamot.googlecode.com/svn/wiki/swimg900_2.png
+
+===On Nokia N95===
+
+http://bergamot.googlecode.com/svn/wiki/Swim_N95_1.jpg http://bergamot.googlecode.com/svn/wiki/Swim_N95_2.jpg
 
 == How To Install ==
 
